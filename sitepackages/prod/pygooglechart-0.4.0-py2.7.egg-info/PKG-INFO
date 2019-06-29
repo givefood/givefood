@@ -1,0 +1,18 @@
+Metadata-Version: 1.1
+Name: pygooglechart
+Version: 0.4.0
+Summary: A complete Python wrapper for the Google Chart API
+Home-page: https://github.com/gak/pygooglechart
+Author: Gerald Kaszuba
+Author-email: gerald@geraldkaszuba.com
+License: UNKNOWN
+Download-URL: http://slowchop.com/pygooglechart/download/pygooglechart-0.4.0.tar.gz
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

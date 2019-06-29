@@ -1,0 +1,51 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+
+- url: /_ah/(mapreduce|queue|warmup|start|stop).*
+  script: givefood.wsgi.application
+  login: admin
+  secure: always
+
+- url: /_ah/internalupload.*
+  script: givefood.wsgi.application
+  secure: always
+
+- url: /static
+  static_dir: static/
+  secure: always
+
+- url: /favicon.ico
+  static_files: static/img/favicon.ico
+  upload: static/img/favicon.ico
+
+- url: /robots.txt
+  static_files: static/root/robots.txt
+  upload: static/root/robots.txt
+
+- url: /admin.*
+  script: givefood.wsgi.application
+  secure: always
+  login: admin
+
+- url: /.*
+  script: givefood.wsgi.application
+  secure: always
+
+skip_files:
+  - ^manage\.py$
+  - ^README\.md$
+  - ^install_deps$
+  - ^requirements/.*\.txt$
+  - ^sitepackages/dev.*
+  - ^.*\.(egg|dist)-info/.*$
+  - ^elecprod/data/$
+
+  # Defaults.
+  - ^(.*/)?#.*#$
+  - ^(.*/)?.*~$
+  - ^(.*/)?.*\.py[co]$
+  - ^(.*/)?.*/RCS/.*$
+  - ^(.*/)?\..*$

@@ -1,0 +1,10 @@
+django >=1.8,<2.0.99
+six
+
+[quality]
+isort
+flake8
+
+[test]
+mock
+coverage

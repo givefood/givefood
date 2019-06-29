@@ -1,0 +1,14 @@
+Django>=1.8
+
+[jinja2]
+jinja2>=2.9.6
+
+[tests]
+pytest<4.0
+pytest-django
+pytest-flakes==1.0.1
+pytest-pep8==1.0.6
+pep8==1.4.6
+mock==1.0.1
+six==1.12.0
+jinja2>=2.9.6

@@ -1,0 +1,4 @@
+nose
+python-dateutil
+python-twitter
+requests-toolbelt

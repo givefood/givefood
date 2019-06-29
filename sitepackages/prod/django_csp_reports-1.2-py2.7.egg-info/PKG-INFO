@@ -1,0 +1,21 @@
+Metadata-Version: 1.1
+Name: django-csp-reports
+Version: 1.2
+Summary: A Django app for handling reports from web browsers of violations of your website's HTTP Content Security Policy.
+Home-page: https://github.com/adamalton/django-csp-reports
+Author: Adam Alton
+Author-email: adamalton@gmail.com
+License: UNKNOWN
+Download-URL: https://github.com/adamalton/django-csp-reports/tarball/1.1
+Description: A Django app for handling reports from web browsers of violations of your website's HTTP Content Security Policy.
+Keywords: django,csp,content security policy
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Framework :: Django
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6

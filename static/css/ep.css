@@ -1,0 +1,271 @@
+body {
+  font-size:0.9em;
+  color:#212121;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+a {
+  color:#007BC7;
+}
+sub {
+  display:inline-block;
+}
+h1 {
+  font-size:1.8em;
+  margin:20px 0;
+  display:inline-block;
+}
+h1 a {
+  color:#212121;
+}
+h1 a:hover {
+  color:#212121;
+}
+h1 a:visited {
+  color:#212121;
+}
+.beta {
+  color:red;
+  padding-left:10px;
+  font-size:80%;
+}
+h2 {
+  font-size:1.4em;
+  border-bottom:1px solid #efefef;
+  padding-bottom:3px;
+  margin:20px 0 10px 0;
+}
+h3 {
+  font-size:1.1em;
+  font-weight:bold;
+  margin:20px 0 20px 0;
+}
+.dataupdates h3, .siteupdates h3 {
+  margin:20px 0 10px 0;
+}
+h4 {
+  font-size:1em;
+  font-weight:bold;
+}
+.dropdown-menu {
+  font-size:1em;
+}
+.main-nav {
+  margin-bottom:20px;
+}
+.bottom-nav {
+  padding-top:10px;
+}
+.dropdown-item-nested::before {
+    content: "- ";
+    color:#aaa;
+}
+
+.borderless td, .borderless th {
+    border: none;
+}
+.table-reading td {
+  padding:0 0 .3rem 0;
+}
+
+.main-stat {
+  font-size:2em;
+  margin-bottom:0;
+  font-weight:bold;
+}
+.main-stat .arrow {
+  margin:0 5px 7px 0;
+}
+.main-stat .units, .main-stat .badge {
+  font-size:0.5em;
+  font-weight:normal;
+}
+.region.carbon-intensity {
+  font-size:1.2em;
+}
+.live-region h2 {
+  font-size:1.2em;
+}
+
+@media (min-width: 992px) {
+  .sourceclasses {
+    position:absolute;
+    bottom:0;
+  }
+}
+.lastupdated {
+  font-size:0.7em;
+  text-align:right;
+}
+.chart {
+  height:600px;
+  clear:both;
+}
+.small-chart {
+  height:275px;
+}
+.colour-dot {
+  display:inline-block;
+  width:11px;
+  height:11px;
+  border-radius:2px;
+  margin-right:5px;
+}
+.biomass {
+  background-color:#4285f4;
+}
+.ccgt, .gas {
+  background-color:#db4437;
+}
+.coal {
+  background-color:#f4b400;
+}
+.hydro {
+  background-color:#0f9d58;
+}
+.interconnects {
+  background-color:#ab47bc;
+}
+.nuclear {
+  background-color:#00acc1;
+}
+.ocgt {
+  background-color:#ff7043;
+}
+.other {
+  background-color:#5c6bc0;
+}
+.pumpedstorage {
+  background-color:#f06292;
+}
+.wind {
+  background-color:#00796b;
+}
+.solar {
+  background-color:#c2185b;
+}
+.arrow-up {
+  display:inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid green;
+  margin:0 3px 3px 0;
+}
+.arrow-down {
+  display:inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid red;
+  margin:0 3px 3px 0;
+}
+.arrow-prev {
+  display:inline-block;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right:5px solid #007BC7;
+}
+.arrow-next {
+  display:inline-block;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left:5px solid #007BC7;
+}
+.timescale_nav .nav-link {
+  padding:0.2rem 0.5rem 1rem 0.5rem;
+}
+.timescale_nav .active {
+  color:#000;
+}
+.live {
+  background:#f6f6f6;
+  border-radius:5px;
+  padding:0 15px;
+  margin-bottom:40px;
+}
+.live h2 {
+  margin-top:10px;
+}
+.live #map {
+  width:100%;
+  height:350px;
+  margin:0 0 15px 0;
+  border-radius:5px;
+}
+
+@media (min-width: 992px) {
+  .live #map {
+    margin:-2.2em 0 15px 0;
+  }
+}
+
+.badge {
+  font-weight: normal;
+}
+.ci, .tp {
+  color:#fff;
+  display:inline;
+}
+.scale-very-high {
+  background-color: rgb(37, 20, 0);
+}
+.scale-high {
+  background-color: rgb(138, 87, 0);
+}
+.scale-moderate {
+  background-color: rgb(146, 149, 0);
+}
+.scale-low {
+  background-color: rgb(86, 140, 0);
+}
+.scale-very-low {
+  background-color: rgb(16, 130, 0);
+}
+
+.fuel-dropdown button {
+  border:1px solid #efefef
+}
+.plantlist th {
+  border-top:0;
+}
+#plantmap {
+  height:800px;
+}
+.plant-photo {
+  width:640px;
+  height:640px;
+}
+.siteupdates ul {
+  padding-left:20px;
+}
+
+.records p {
+  margin-bottom:0;
+}
+.records h3 {
+  margin-top:20px;
+}
+.records h3:first-child {
+  margin-top:0px;
+}
+.records h4:first-child {
+  margin-top:0;
+}
+.records h4 {
+  margin-top:15px;
+}
+
+footer {
+  margin:50px 0 20px 0;
+  font-size:0.8em;
+  padding-top:10px;
+  border-top:1px solid #efefef;
+}
