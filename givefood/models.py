@@ -1,7 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from const.general import DELIVERY_HOURS
+from const.general import DELIVERY_HOURS_CHOICES
 
 
 class Foodbank(models.Model):
@@ -27,13 +27,13 @@ class Order(models.Model):
 
     foodbank = models.ForeignKey(Foodbank)
     items_text = models.TextField()
-    id = models.CharField(max_length=20, editable=False)
+    id = models.CharField(max_length=20, editable=False, primary_key=True)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     delivery_date = models.DateField()
-    delivery_hour = models.IntegerField(choices=DELIVERY_HOURS)
+    delivery_hour = models.IntegerField(choices=DELIVERY_HOURS_CHOICES)
 
     weight = models.PositiveIntegerField(editable=False)
     calories = models.PositiveIntegerField(editable=False)
