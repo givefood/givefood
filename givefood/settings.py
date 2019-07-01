@@ -30,7 +30,7 @@ DEBUG = True
 
 INSTALLED_APPS = (
     'djangae', # Djangae needs to come before django apps in django 1.7 and above
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'djangae.contrib.contenttypes',
