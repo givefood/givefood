@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/static/css/gf.css">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  <h1>Give Food <span><a href="{% url "admin_index" %}">Admin</a></span></h1>
+  {% block body %}{% endblock %}
+</body>
+</html>

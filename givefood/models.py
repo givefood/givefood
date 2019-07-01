@@ -7,25 +7,28 @@ from const.general import DELIVERY_HOURS_CHOICES
 class Foodbank(models.Model):
 
     name = models.CharField(max_length=50)
-    slug = models.CharField(max_length=50)
+    slug = models.CharField(max_length=50, editable=False)
     address = models.TextField()
-    latt_long = models.CharField(max_length=50)
+    latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
 
     contact_email = models.EmailField()
     notification_email = models.EmailField()
     phone_number = models.CharField(max_length=20)
 
-    url = models.URLField(max_length=200)
-    shopping_list_url = models.URLField(max_length=200)
+    url = models.URLField(max_length=200, verbose_name="URL")
+    shopping_list_url = models.URLField(max_length=200, verbose_name="Shopping list URL")
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
-    last_order = models.DateField(editable=False)
+    last_order = models.DateField(editable=False,null=True)
+
+    def __str__(self):
+        return self.name
 
     def save(self, *args, **kwargs):
-        # set slug
-        pass
+        self.slug = slugify(self.name)
+        super(Foodbank, self).save(*args, **kwargs)
 
 
 class Order(models.Model):

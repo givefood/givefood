@@ -14,13 +14,21 @@ admin.autodiscover()
 urlpatterns = (
     url(r'^_ah/', include('djangae.urls')),
 
+    # PUBLIC
     url(r'^$', givefood.views.public_index, name="public_index"),
 
     # ADMIN
     url(r'^admin/$', givefood.views.admin_index, name="admin_index"),
 
-    url(r'^csp/', include('cspreports.urls')),
+    url(r'^admin/order/new/$', givefood.views.admin_order_form, name="admin_neworder"),
+    url(r'^admin/order/(?P<id>[-\w]+)/$', givefood.views.admin_order_form, name="admin_order"),
 
+    url(r'^admin/foodbank/new/$', givefood.views.admin_foodbank_form, name="admin_newfoodbank"),
+    url(r'^admin/foodbank/(?P<slug>[-\w]+)/$', givefood.views.admin_foodbank_form, name="admin_foodbank"),
+
+
+
+    url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),
 )
 

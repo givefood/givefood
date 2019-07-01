@@ -1,0 +1,25 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Give Food Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Orders</h2>
+  <a href="{% url "admin_neworder" %}">New Order</a>
+
+  <h2>Foodbanks</h2>
+  <a href="{% url "admin_newfoodbank" %}">New Foodbank</a>
+  <ul>
+    {% for foodbank in foodbanks %}
+      <li><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></li>
+    {% endfor %}
+  </ul>
+
+
+
+  <h2>Other</h2>
+  <ul>
+    <li><a href="#">Items without calories</a></li>
+  </ul>
+
+{% endblock %}

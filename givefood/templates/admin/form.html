@@ -1,0 +1,13 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Give Food Admin{% endblock %}
+
+{% block body %}
+
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit">
+  </form>
+
+{% endblock %}
