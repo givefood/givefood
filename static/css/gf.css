@@ -1,0 +1,29 @@
+body {
+  font-size:0.9em;
+  color:#212121;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+a {
+  color:#007BC7;
+}
+sub {
+  display:inline-block;
+}
+h1 {
+  font-size:1.8em;
+  display:inline-block;
+  background: url('/static/img/logo.png');
+  background-repeat: no-repeat;
+  background-size: auto 50px;
+  padding:12px 0 6px 60px;
+  margin:0;
+}
+h2 {
+  font-size:1.3em;
+}
+
+.intro {
+  font-weight:bold;
+}

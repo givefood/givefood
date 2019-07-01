@@ -15,12 +15,17 @@ class Foodbank(models.Model):
     notification_email = models.EmailField()
     phone_number = models.CharField(max_length=20)
 
+    url = models.URLField(max_length=200)
     shopping_list_url = models.URLField(max_length=200)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     last_order = models.DateField(editable=False)
+
+    def save(self, *args, **kwargs):
+        # set slug
+        pass
 
 
 class Order(models.Model):
@@ -34,6 +39,7 @@ class Order(models.Model):
 
     delivery_date = models.DateField()
     delivery_hour = models.IntegerField(choices=DELIVERY_HOURS_CHOICES)
+    delivery_datetime = models.DateTimeField(editable=False)
 
     weight = models.PositiveIntegerField(editable=False)
     calories = models.PositiveIntegerField(editable=False)
@@ -41,8 +47,13 @@ class Order(models.Model):
     no_lines = models.PositiveIntegerField(editable=False)
     no_items = models.PositiveIntegerField(editable=False)
 
+    def delivery_datetime(self):
+        # calculate from delivery_date & delivery_hour
+        pass
+
     def save(self, *args, **kwargs):
         # create ID from fbname and order date
+        # record delivery_datetime
         pass
 
     def lines(self):
