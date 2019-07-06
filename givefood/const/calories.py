@@ -316,4 +316,12 @@ CALORIES = {
     "Tesco Rogan Josh Cooking Sauce 500G":61,
     "Tesco Madras Cooking Sauce 500G":75,
     "Kelloggs Variety Pack Cereal 8 Pack":378,
+    "Stockwell & Co. Rice Pudding 400G":81,
+    "Stockwell & Co. Custard 385G":68,
+    "Stockwell & Co Chilli Con Carne 392G":102,
+    "Stockwell & Co Chicken Curry With Vegetable 392G":67,
+    "Stockwell & Co Spaghetti Hoops 410G":61,
+    "Stockwell & Co Instant Coffee 100G":0,
+    "Stockwell & Co Strawberry Jam 454G":247,
+    "Stockwell & Co Chicken Soup 400G":36,
 }

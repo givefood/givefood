@@ -7,7 +7,9 @@
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-  <h1>Give Food <span><a href="{% url "admin_index" %}">Admin</a></span></h1>
-  {% block body %}{% endblock %}
+  <div class="container">
+    <h1>Give Food <span><a href="{% url "admin_index" %}">Admin</a></span></h1>
+    {% block body %}{% endblock %}
+  </div>
 </body>
 </html>

@@ -53,7 +53,7 @@ MIDDLEWARE_CLASSES = (
     'djangae.contrib.gauth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'csp.middleware.CSPMiddleware',
-    # 'session_csrf.CsrfMiddleware',
+    'session_csrf.CsrfMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -70,7 +70,7 @@ TEMPLATES = [
                 "django.core.context_processors.static",
                 "django.core.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
-                # "session_csrf.context_processor",
+                "session_csrf.context_processor",
             ],
             'debug': True,
             'loaders': [

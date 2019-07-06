@@ -5,10 +5,24 @@
 {% block body %}
 
   <h2>Orders</h2>
-  <a href="{% url "admin_neworder" %}">New Order</a>
+  <a href="{% url "admin_neworder" %}" class="btn btn-primary btn-sm">New Order</a>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Foodbank</th>
+      <th>Date<th>
+    </tr>
+    {% for order in orders %}
+      <tr>
+        <td><a href="{% url 'admin_order' order.order_id %}">{{ order.order_id }}</a></td>
+        <td>{{ order.foodbank }}</td>
+        <td>{{ order.delivery_date }}</td>
+      </tr>
+    {% endfor %}
+  </table>
 
   <h2>Foodbanks</h2>
-  <a href="{% url "admin_newfoodbank" %}">New Foodbank</a>
+  <a href="{% url "admin_newfoodbank" %}" class="btn">New Foodbank</a>
   <ul>
     {% for foodbank in foodbanks %}
       <li><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></li>

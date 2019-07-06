@@ -1,0 +1,46 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Give Food Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Order {{ order.order_id }}</h2>
+
+  <a href="{% url 'admin_order_edit' order.order_id %}" class="btn">Edit</a>
+
+  <dl>
+    <dt>ID</dt>
+    <dd>{{ order.order_id }}
+    <dt>Foodbank</dt>
+    <dd>{{ order.foodbank }}</dd>
+    <dt>Delivery hour</dt>
+    <dd>{{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
+    <dt># items</dt>
+    <dd>{{ order.no_items }}</dd>
+    <dt># lines</dt>
+    <dd>{{ order.no_lines }}</dd>
+    <dt>Weight</dt>
+    <dd>{{ order.weight }}</dd>
+    <dt>Calories</dt>
+    <dd>{{ order.calories }}</dd>
+  </dl>
+
+  <h2>Items</h2>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Weight</th>
+      <th>Calories</th>
+    </tr>
+    {% for line in order.lines %}
+      <tr>
+        <td>{{ line.name }}</td>
+        <td>{{ line.quantity }}</td>
+        <td>{{ line.weight }}</td>
+        <td>{{ line.calories }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}

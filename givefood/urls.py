@@ -21,7 +21,8 @@ urlpatterns = (
     url(r'^admin/$', givefood.views.admin_index, name="admin_index"),
 
     url(r'^admin/order/new/$', givefood.views.admin_order_form, name="admin_neworder"),
-    url(r'^admin/order/(?P<id>[-\w]+)/$', givefood.views.admin_order_form, name="admin_order"),
+    url(r'^admin/order/(?P<id>[-\w]+)/$', givefood.views.admin_order, name="admin_order"),
+    url(r'^admin/order/(?P<id>[-\w]+)/edit/$', givefood.views.admin_order_form, name="admin_order_edit"),
 
     url(r'^admin/foodbank/new/$', givefood.views.admin_foodbank_form, name="admin_newfoodbank"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/$', givefood.views.admin_foodbank_form, name="admin_foodbank"),

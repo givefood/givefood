@@ -17,13 +17,14 @@ h1 {
   background-repeat: no-repeat;
   background-size: auto 50px;
   padding:12px 0 6px 60px;
-  margin:0;
+  margin:0 0 20px 0;
 }
 h1 span {
   color:darkred;
 }
 h2 {
   font-size:1.3em;
+  margin:10px 0 0 0;
 }
 form label {
   display:inline-block;
@@ -34,4 +35,17 @@ form input, form textarea {
 }
 form textarea {
   vertical-align: top;
+  width:600px;
+}
+th {
+  text-align:left;
+}
+.btn {
+  display:inline-block;
+  border-radius:4px;
+  background:#17a2b8;
+  padding:7px 10px;
+  text-decoration:none;
+  color:#fff;
+  margin:5px 0;
 }
