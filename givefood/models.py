@@ -56,9 +56,8 @@ class Order(models.Model):
     no_lines = models.PositiveIntegerField(editable=False)
     no_items = models.PositiveIntegerField(editable=False)
 
-    def delivery_datetime(self):
-        # calculate from delivery_date & delivery_hour
-        pass
+    def weight_kg(self):
+        return self.weight/1000
 
     def save(self, *args, **kwargs):
         # Generate ID
