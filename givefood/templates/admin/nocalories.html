@@ -1,0 +1,26 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Give Food Admin{% endblock %}
+
+{% block body %}
+
+  <h2>No Calories</h2>
+
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Quantity</th>
+      <th>Weight</th>
+      <th>Calories</th>
+    </tr>
+    {% for item in nocalitems %}
+      <tr>
+        <td>{{ line.name }}</td>
+        <td>{{ line.quantity }}</td>
+        <td>{{ line.weight }}</td>
+        <td>{{ line.calories }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}

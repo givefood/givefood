@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 
-from givefood.models import Foodbank, Order
+from givefood.models import Foodbank, Order, OrderLine
 from givefood.forms import FoodbankForm, OrderForm
 
 def admin_index(request):
@@ -69,3 +69,13 @@ def admin_foodbank_form(request, slug = None):
         "form":form,
     }
     return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_nocalories(request):
+
+    nocalitems = OrderLine.objects.filter(calories = 0)
+
+    template_vars = {
+        "nocalitems":nocalitems,
+    }
+    return render_to_response("admin/nocalories.html", template_vars, context_instance=RequestContext(request))
