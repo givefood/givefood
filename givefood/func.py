@@ -49,7 +49,7 @@ def get_weight(text):
 
     # L (Litre)
     if text[-1:] == "L":
-      weight = float(text[-4:].replace("L","")) * 1000
+      weight = float(text[-3:].replace("L","")) * 1000
 
     # Millilitres
     if text[-2:] == "Ml":
