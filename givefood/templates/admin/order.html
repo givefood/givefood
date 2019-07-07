@@ -1,4 +1,5 @@
 {% extends "admin/page.html" %}
+{% load humanize %}
 
 {% block title %}Give Food Admin{% endblock %}
 
@@ -20,9 +21,9 @@
     <dt># lines</dt>
     <dd>{{ order.no_lines }}</dd>
     <dt>Weight</dt>
-    <dd>{{ order.weight }}</dd>
+    <dd>{{ order.weight_kg|intcomma }}Kg</dd>
     <dt>Calories</dt>
-    <dd>{{ order.calories }}</dd>
+    <dd>{{ order.calories|intcomma }}</dd>
   </dl>
 
   <h2>Items</h2>
