@@ -11,6 +11,9 @@ a {
 sub {
   display:inline-block;
 }
+p {
+  max-width: 600px;
+}
 h1 {
   font-size:1.8em;
   background: url('/static/img/logo.png');
@@ -25,27 +28,4 @@ h1 span {
 h2 {
   font-size:1.3em;
   margin:10px 0 0 0;
-}
-form label {
-  display:inline-block;
-  width:200px;
-}
-form input, form textarea {
-  font-size:1.1em;
-}
-form textarea {
-  vertical-align: top;
-  width:600px;
-}
-th {
-  text-align:left;
-}
-.btn {
-  display:inline-block;
-  border-radius:4px;
-  background:#17a2b8;
-  padding:7px 10px;
-  text-decoration:none;
-  color:#fff;
-  margin:5px 0;
 }

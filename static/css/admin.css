@@ -1,0 +1,28 @@
+form label {
+  display:inline-block;
+  width:200px;
+}
+form input, form textarea {
+  font-size:1.1em;
+}
+form textarea {
+  vertical-align: top;
+  width:600px;
+}
+th {
+  text-align:left;
+}
+.btn {
+  display:inline-block;
+  border-radius:4px;
+  background:#17a2b8;
+  padding:7px 10px;
+  text-decoration:none;
+  color:#fff;
+  margin:5px 0;
+}
+dt {
+  float:left;
+  width:150px;
+  font-style:italic;
+}
