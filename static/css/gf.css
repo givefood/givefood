@@ -12,7 +12,7 @@ sub {
   display:inline-block;
 }
 p {
-  max-width: 600px;
+  max-width:700px;
 }
 h1 {
   font-size:1.8em;
@@ -28,4 +28,6 @@ h1 span {
 h2 {
   font-size:1.3em;
   margin:10px 0 0 0;
+  border-bottom:1px solid #ddd;
+  max-width:700px;
 }
