@@ -341,4 +341,6 @@ CALORIES = {
     "Tesco British Semi Skimmed Longlife Uht Milk 500 Ml":49,
     "Princes Reduced Salt Corned Beef 340G":218,
     "Batchelors Super Noodles Pot Bbq Beef 75G":134,
+    "Stockwell & Co Chicken & Vegetable Soup In A Mug 88G":39,
+    "Stockwell & Co Vegetable Soup In A Mug 4 Pack 72G":31,
 }
