@@ -6,20 +6,12 @@
 
   <h2>Orders</h2>
   <a href="{% url "admin_neworder" %}" class="btn btn-primary btn-sm">New Order</a>
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Foodbank</th>
-      <th>Date<th>
-    </tr>
-    {% for order in orders %}
-      <tr>
-        <td><a href="{% url 'admin_order' order.order_id %}">{{ order.order_id }}</a></td>
-        <td>{{ order.foodbank }}</td>
-        <td>{{ order.delivery_date }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+
+  <h3>Upcoming</h3>
+  {% include "admin/includes/ordertable.html" with orders=open_orders %}
+
+  <h3>Previous</h3>
+  {% include "admin/includes/ordertable.html" with orders=prev_orders %}
 
   <h2>Foodbanks</h2>
   <a href="{% url "admin_newfoodbank" %}" class="btn">New Foodbank</a>

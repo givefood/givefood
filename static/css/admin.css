@@ -26,3 +26,13 @@ dt {
   width:150px;
   font-style:italic;
 }
+.orders {
+  border-collapse: collapse;
+}
+.orders td {
+  padding:4px 20px 4px 0;
+  margin:0;
+}
+.orders tr:hover {
+  background:#eee;
+}

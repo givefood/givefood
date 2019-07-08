@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -9,11 +11,17 @@ from givefood.forms import FoodbankForm, OrderForm
 def admin_index(request):
 
     foodbanks = Foodbank.objects.all().order_by("name")
-    orders = Order.objects.all().order_by("delivery_date")[:20]
+
+    open_order_threshold = datetime.now() - timedelta(days=1)
+    open_orders = Order.objects.filter(delivery_datetime__gt = open_order_threshold).order_by("delivery_datetime")
+
+    prev_order_threshold = datetime.now() - timedelta(days=1)
+    prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("delivery_datetime")[:20]
 
     template_vars = {
         "foodbanks":foodbanks,
-        "orders":orders,
+        "open_orders":open_orders,
+        "prev_orders":prev_orders,
     }
     return render_to_response("admin/index.html", template_vars)
 
