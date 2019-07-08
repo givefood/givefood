@@ -2,13 +2,15 @@
   <tr>
     <th>ID</th>
     <th>Foodbank</th>
-    <th>Date<th>
+    <th>Date</th>
+    <th>Items</th>
   </tr>
   {% for order in orders %}
     <tr>
       <td><a href="{% url 'admin_order' order.order_id %}">{{ order.order_id }}</a></td>
       <td>{{ order.foodbank }}</td>
       <td>{{ order.delivery_datetime }}</td>
+      <td>{{ order.no_items }}</td>
     </tr>
   {% endfor %}
 </table>
