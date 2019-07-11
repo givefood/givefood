@@ -62,6 +62,7 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         # Generate ID
         self.order_id = "gf-%s-%s" % (self.foodbank.slug,str(self.delivery_date))
+
         # Store delivery_datetime
         self.delivery_datetime = datetime(
             self.delivery_date.year,
@@ -70,50 +71,42 @@ class Order(models.Model):
             self.delivery_hour,
             0,
         )
-        # Order counts
-        order_weight = 0
-        order_calories = 0
-        order_cost = 0
-        no_lines = 0
-        no_items = 0
 
-        order_lines = parse_order_text(self.items_text)
-
-        for order_line in order_lines:
-            no_lines += 1
-            no_items += order_line.get("quantity")
-
-            line_weight = order_line.get("weight") * order_line.get("quantity")
-            order_weight = order_weight + line_weight
-
-            if order_line.get("calories"):
-                line_calories = (order_line.get("weight") / 100) * order_line.get("calories")
-                order_calories = order_calories + line_calories
-
-            line_cost = order_line.get("item_cost") * order_line.get("quantity")
-            order_cost = order_cost + line_cost
-
-        self.weight = order_weight
-        self.calories = order_calories
-        self.cost = order_cost
-        self.no_lines = no_lines
-        self.no_items = no_items
-
-
+        self.weight = 0
+        self.calories = 0
+        self.cost = 0
+        self.no_lines = 0
+        self.no_items = 0
 
         super(Order, self).save(*args, **kwargs)
 
         # Delete all the existing orderlines
         OrderLine.objects.filter(order = self).delete()
 
+        order_lines = parse_order_text(self.items_text)
+
+        order_weight = 0
+        order_calories = 0
+        order_cost = 0
+        order_items = 0
+
         for order_line in order_lines:
 
+            line_calories = 0
+            line_weight = 0
+            line_cost = 0
+
             line_weight = order_line.get("weight") * order_line.get("quantity")
+            order_weight = order_weight + line_weight
 
             if order_line.get("calories"):
-                line_calories = (order_line.get("weight") / 100) * order_line.get("calories")
+                line_calories = order_line.get("calories")
+                order_calories = order_calories + line_calories
 
             line_cost = order_line.get("item_cost") * order_line.get("quantity")
+            order_cost = order_cost + line_cost
+
+            order_items = order_items + order_line.get("quantity")
 
             new_order_line = OrderLine(
                 foodbank = self.foodbank,
@@ -126,6 +119,18 @@ class Order(models.Model):
                 calories = order_line.get("calories"),
             )
             new_order_line.save()
+
+        self.weight = order_weight
+        self.calories = order_calories
+        self.cost = order_cost
+        self.no_lines = len(order_lines)
+        self.no_items = order_items
+
+        super(Order, self).save(*args, **kwargs)
+
+        # Update last order date on foodbank
+        self.foodbank.last_order = self.delivery_datetime
+        self.foodbank.save()
 
     def lines(self):
         return OrderLine.objects.filter(order = self)

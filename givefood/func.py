@@ -18,16 +18,21 @@ def parse_order_text(order_text):
             "name":order_item_line_bits[1],
             "item_cost":int(float(order_item_line_bits[2].replace(u"\xA3","").replace(".",""))),
             "weight":get_weight(order_item_line_bits[1]),
-            "calories":get_calories(order_item_line_bits[1], get_weight(order_item_line_bits[1])),
+            "calories":get_calories(
+                order_item_line_bits[1],
+                get_weight(order_item_line_bits[1]),
+                int(order_item_line_bits[0])
+            ),
         })
 
     return order_lines
 
 
-def get_calories(text, weight):
+def get_calories(text, weight, quantity):
 
     calories = CALORIES.get(text, 0)
-    total_calories = calories * (weight/10)
+    total_calories = calories * (weight/100) * quantity
+    # logging.info("calories: %s, weight: %s, total: %s" % (calories,weight,total_calories))
     return total_calories
 
 
