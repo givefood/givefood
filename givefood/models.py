@@ -56,6 +56,9 @@ class Order(models.Model):
     no_lines = models.PositiveIntegerField(editable=False)
     no_items = models.PositiveIntegerField(editable=False)
 
+    def natural_cost(self):
+        return "£%s" % (self.cost/100)
+
     def weight_kg(self):
         return self.weight/1000
 
