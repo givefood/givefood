@@ -12,20 +12,20 @@
   <dl>
     <dt>ID</dt>
     <dd>{{ order.order_id }}
-    <dt>Foodbank</dt>
+    <dt>🏢 Foodbank</dt>
     <dd>{{ order.foodbank }}</dd>
-    <dt>Delivery hour</dt>
+    <dt>🚚 Delivery hour</dt>
     <dd>{{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
-    <dt>Items</dt>
+    <dt>🛒 Items</dt>
     <dd>{{ order.no_items }}</dd>
-    <dt>Lines</dt>
+    <dt>🛒 Lines</dt>
     <dd>{{ order.no_lines }}</dd>
-    <dt>Weight</dt>
+    <dt>⚖️ Weight</dt>
     <dd>{{ order.weight_kg|intcomma }} kg</dd>
-    <dt>Calories</dt>
+    <dt>🔥 Calories</dt>
     <dd>{{ order.calories|intcomma }}</dd>
-    <dt>Cost</dt>
-    <dd>{{ order.natural_cost }}</dd>
+    <dt>💷 Cost</dt>
+    <dd>£{{ order.natural_cost }}</dd>
   </dl>
 
   <h2>Items</h2>
