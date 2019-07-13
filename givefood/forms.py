@@ -1,4 +1,4 @@
-from django.forms import ModelForm, DateInput
+from django.forms import ModelForm, DateInput, ModelChoiceField
 
 from models import Foodbank, Order
 
@@ -10,6 +10,7 @@ class FoodbankForm(ModelForm):
 
 
 class OrderForm(ModelForm):
+    foodbank = ModelChoiceField(queryset=Foodbank.objects.order_by('name'))
     class Meta:
         model = Order
         fields = "__all__"
