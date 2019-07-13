@@ -16,7 +16,7 @@ def admin_index(request):
     open_orders = Order.objects.filter(delivery_datetime__gt = open_order_threshold).order_by("delivery_datetime")
 
     prev_order_threshold = datetime.now() - timedelta(days=1)
-    prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("delivery_datetime")[:20]
+    prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")
 
     template_vars = {
         "foodbanks":foodbanks,
