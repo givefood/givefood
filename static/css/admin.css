@@ -5,6 +5,9 @@ form label {
 form input, form textarea {
   font-size:1.1em;
 }
+form input {
+  width:400px;
+}
 form textarea {
   vertical-align: top;
   width:600px;
