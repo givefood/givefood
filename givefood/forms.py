@@ -10,7 +10,7 @@ class FoodbankForm(ModelForm):
 
 
 class OrderForm(ModelForm):
-    foodbank = ModelChoiceField(queryset=Foodbank.objects.order_by('name'))
+    foodbank = ModelChoiceField(queryset=Foodbank.objects.filter(is_closed = False).order_by('name'))
     class Meta:
         model = Order
         fields = "__all__"

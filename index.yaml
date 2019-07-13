@@ -32,3 +32,8 @@ indexes:
   properties:
   - name: app
   - name: name
+
+- kind: givefood_foodbank
+  properties:
+  - name: is_closed
+  - name: name
