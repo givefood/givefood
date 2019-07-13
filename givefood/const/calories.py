@@ -343,4 +343,5 @@ CALORIES = {
     "Batchelors Super Noodles Pot Bbq Beef 75G":134,
     "Stockwell & Co Chicken & Vegetable Soup In A Mug 88G":39,
     "Stockwell & Co Vegetable Soup In A Mug 4 Pack 72G":31,
+    "Tesco Cous Cous 500G":203,
 }
