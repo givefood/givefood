@@ -33,6 +33,17 @@ class Foodbank(models.Model):
     def __str__(self):
         return self.name
 
+    def orders(self):
+        return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")
+
+    def total_weight(self):
+        total_weight = 0
+        orders = self.orders()
+        for order in orders:
+            total_weight = total_weight + order.weight
+        return total_weight
+
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Foodbank, self).save(*args, **kwargs)

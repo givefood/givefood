@@ -1,0 +1,31 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}{{ foodbank }} - GF Admin{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+
+    <div class="column is-half">
+
+      <h2>{{ foodbank }}</h2>
+
+      <a href="{% url 'admin_foodbank_edit' foodbank.slug %}" class="button is-link is-pulled-right">Edit</a>
+
+      <dl>
+        <dt>Foodbank</dt>
+        <dd>{{ foodbank }}</dd>
+        <dt>Total weight</dt>
+        <dd>{{ foodbank.total_weight }}</dd>
+      </dl>
+
+    </div>
+
+    <div class="column is-half">
+      {% include "admin/includes/ordertable.html" with orders=foodbank.orders %}
+    </div>
+
+  </div>
+
+{% endblock %}

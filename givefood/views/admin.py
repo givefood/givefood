@@ -58,6 +58,16 @@ def admin_order_form(request, id = None):
     return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_foodbank(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    template_vars = {
+        "foodbank":foodbank,
+    }
+    return render_to_response("admin/foodbank.html", template_vars, context_instance=RequestContext(request))
+
+
 def admin_foodbank_form(request, slug = None):
 
     if slug:
