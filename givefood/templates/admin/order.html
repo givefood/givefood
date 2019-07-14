@@ -7,7 +7,7 @@
 
   <h2>Order {{ order.order_id }}</h2>
 
-  <a href="{% url 'admin_order_edit' order.order_id %}" class="btn">Edit</a>
+  <a href="{% url 'admin_order_edit' order.order_id %}" class="button is-link is-pulled-right">Edit</a>
 
   <dl>
     <dt>ID</dt>
@@ -29,7 +29,7 @@
   </dl>
 
   <h2>Items</h2>
-  <table>
+  <table class="table is-fullwidth is-hoverable">
     <tr>
       <th>Name</th>
       <th>Quantity</th>

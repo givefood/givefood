@@ -1,16 +1,16 @@
-<table class="orders">
+<table class="table is-fullwidth is-hoverable">
   <tr>
-    <th></th>
     <th>Foodbank</th>
     <th>Date</th>
     <th>Items</th>
+    <th>Cost</th>
   </tr>
   {% for order in orders %}
     <tr>
-      <td><a href="{% url 'admin_order' order.order_id %}">{{ order.order_id }}</a></td>
-      <td>{{ order.foodbank }}</td>
+      <td><a href="{% url 'admin_order' order.order_id %}">{{ order.foodbank }}</a></td>
       <td>{{ order.delivery_datetime }}</td>
       <td>{{ order.no_items }}</td>
+      <td>£{{ order.natural_cost }}</td>
     </tr>
   {% endfor %}
 </table>

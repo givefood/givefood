@@ -4,26 +4,43 @@
 
 {% block body %}
 
-  <h2>Orders</h2>
-  <a href="{% url "admin_neworder" %}" class="btn btn-primary btn-sm">New Order</a>
+  <div class="columns">
 
-  <h3>Upcoming</h3>
-  {% include "admin/includes/ordertable.html" with orders=open_orders %}
+    <div class="column is-half">
 
-  <h3>Previous</h3>
-  {% include "admin/includes/ordertable.html" with orders=prev_orders %}
+      <h2>Orders</h2>
+      <a href="{% url "admin_neworder" %}" class="button is-link">New Order</a>
 
-  <h2>Foodbanks</h2>
-  <a href="{% url "admin_newfoodbank" %}" class="btn">New Foodbank</a>
-  <ul>
-    {% for foodbank in foodbanks %}
-      <li><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></li>
-    {% endfor %}
-  </ul>
+      <h3>Upcoming</h3>
+      {% include "admin/includes/ordertable.html" with orders=open_orders %}
 
-  <h2>Other</h2>
-  <ul>
-    <li><a href="{% url "admin_nocalories" %}">Items without calories</a></li>
-  </ul>
+      <h3>Previous</h3>
+      {% include "admin/includes/ordertable.html" with orders=prev_orders %}
+    </div>
+
+    <div class="column is-half">
+
+      <h2>Foodbanks</h2>
+      <a href="{% url "admin_newfoodbank" %}" class="button is-link">New Foodbank</a>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th></th>
+          <th>Last order</th>
+        </tr>
+        {% for foodbank in foodbanks %}
+          <tr>
+            <td><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
+            <td>{{ foodbank.last_order }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+      <h2>Other</h2>
+      <ul>
+        <li><a href="{% url "admin_nocalories" %}">Items without calories</a></li>
+      </ul>
+    </div>
+
+  </div>
 
 {% endblock %}

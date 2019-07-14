@@ -5,9 +5,6 @@ form label {
 form input, form textarea {
   font-size:1.1em;
 }
-form input {
-  width:400px;
-}
 form textarea {
   vertical-align: top;
   width:600px;
@@ -15,27 +12,8 @@ form textarea {
 th {
   text-align:left;
 }
-.btn {
-  display:inline-block;
-  border-radius:4px;
-  background:#17a2b8;
-  padding:7px 10px;
-  text-decoration:none;
-  color:#fff;
-  margin:5px 0;
-}
 dt {
   float:left;
   width:150px;
   font-style:italic;
-}
-.orders {
-  border-collapse: collapse;
-}
-.orders td {
-  padding:4px 20px 4px 0;
-  margin:0;
-}
-.orders tr:hover {
-  background:#eee;
 }

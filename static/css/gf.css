@@ -1,5 +1,5 @@
 body {
-  font-size:0.95em;
+  font-size:0.9em;
   color:#212121;
   font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 	-webkit-font-smoothing: antialiased;
@@ -20,14 +20,18 @@ h1 {
   background-repeat: no-repeat;
   background-size: auto 50px;
   padding:12px 0 6px 60px;
-  margin:0 0 20px 0;
+  margin:0 0 10px 0;
 }
 h1 span {
   color:darkred;
 }
 h2 {
   font-size:1.3em;
-  margin:10px 0 0 0;
+  margin:10px 0 10px 0;
   border-bottom:1px solid #ddd;
-  max-width:700px;
+  max-width:100%;
+}
+h3 {
+  font-size:1.2em;
+  font-weight:bold;
 }
