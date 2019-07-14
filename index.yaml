@@ -42,3 +42,9 @@ indexes:
   properties:
   - name: foodbank_id
   - name: delivery_datetime
+
+- kind: givefood_order
+  properties:
+  - name: foodbank_id
+  - name: delivery_datetime
+    direction: desc
