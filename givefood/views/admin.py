@@ -10,7 +10,7 @@ from givefood.forms import FoodbankForm, OrderForm
 
 def admin_index(request):
 
-    foodbanks = Foodbank.objects.all().order_by("name")
+    foodbanks = Foodbank.objects.all().order_by("-last_order")
 
     open_order_threshold = datetime.now() - timedelta(days=1)
     open_orders = Order.objects.filter(delivery_datetime__gt = open_order_threshold).order_by("delivery_datetime")
