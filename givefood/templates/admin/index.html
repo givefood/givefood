@@ -29,7 +29,12 @@
         </tr>
         {% for foodbank in foodbanks %}
           <tr>
-            <td><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
+            <td>
+              {% if foodbank.is_closed %}
+                <span style="color:red">X</span>&nbsp;
+              {% endif %}
+              <a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a>
+            </td>
             <td>{{ foodbank.last_order }}</td>
           </tr>
         {% endfor %}
