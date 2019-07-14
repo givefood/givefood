@@ -31,7 +31,7 @@
           <tr>
             <td>
               {% if foodbank.is_closed %}
-                <span style="color:red">X</span>&nbsp;
+                <span style="color:red">X</span>
               {% endif %}
               <a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a>
             </td>
@@ -40,10 +40,10 @@
         {% endfor %}
       </table>
 
-      <h2>Other</h2>
+      <!-- <h2>Other</h2>
       <ul>
         <li><a href="{% url "admin_nocalories" %}">Items without calories</a></li>
-      </ul>
+      </ul> -->
     </div>
 
   </div>
