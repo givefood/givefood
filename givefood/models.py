@@ -36,6 +36,9 @@ class Foodbank(models.Model):
     def orders(self):
         return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")
 
+    def no_orders(self):
+        return len(self.orders())
+
     def total_weight(self):
         total_weight = 0
         orders = self.orders()

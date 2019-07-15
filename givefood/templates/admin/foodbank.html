@@ -11,6 +11,10 @@
 
       <h2>{{ foodbank }}</h2>
 
+      {% if foodbank.is_closed %}
+        <span class="tag is-danger">Closed</span>
+      {% endif %}
+
       <a href="{% url 'admin_foodbank_edit' foodbank.slug %}" class="button is-link is-pulled-right">Edit</a>
 
       <dl>
@@ -18,12 +22,28 @@
         <dd>{{ foodbank }}</dd>
         <dt>Total weight</dt>
         <dd>{{ foodbank.total_weight }}</dd>
+        <dt>Number of orders</dt>
+        <dd>{{ foodbank.no_orders }}</dd>
       </dl>
 
     </div>
 
     <div class="column is-half">
-      {% include "admin/includes/ordertable.html" with orders=foodbank.orders %}
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Cost</th>
+        </tr>
+        {% for order in foodbank.orders %}
+          <tr>
+            <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime }}</a></td>
+            <td>{{ order.no_items }}</td>
+            <td>£{{ order.natural_cost }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
     </div>
 
   </div>
