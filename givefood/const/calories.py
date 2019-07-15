@@ -344,4 +344,7 @@ CALORIES = {
     "Stockwell & Co Chicken & Vegetable Soup In A Mug 88G":39,
     "Stockwell & Co Vegetable Soup In A Mug 4 Pack 72G":31,
     "Tesco Cous Cous 500G":203,
+    "Stockwell & Co Chicken Paste 75G":179,
+    "Stockwell & Co Salmon Paste 75G":165,
+    "Stockwell & Co Ham & Beef Paste 75G":179,
 }
