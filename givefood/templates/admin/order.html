@@ -7,43 +7,51 @@
 
   <h2>Order {{ order.order_id }}</h2>
 
-  <a href="{% url 'admin_order_edit' order.order_id %}" class="button is-link is-pulled-right">Edit</a>
+  <div class="columns">
 
-  <dl>
-    <dt>ID</dt>
-    <dd>{{ order.order_id }}
-    <dt>Foodbank</dt>
-    <dd><a href="{% url "admin_foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a></dd>
-    <dt>Delivery hour</dt>
-    <dd>{{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
-    <dt>Items</dt>
-    <dd>{{ order.no_items }}</dd>
-    <dt>Lines</dt>
-    <dd>{{ order.no_lines }}</dd>
-    <dt>Weight</dt>
-    <dd>{{ order.weight_kg|intcomma }} kg</dd>
-    <dt>Calories</dt>
-    <dd>{{ order.calories|intcomma }}</dd>
-    <dt>Cost</dt>
-    <dd>£{{ order.natural_cost }}</dd>
-  </dl>
+    <div class="column is-two-fifths">
 
-  <h2>Items</h2>
-  <table class="table is-fullwidth is-hoverable">
-    <tr>
-      <th>Name</th>
-      <th>Quantity</th>
-      <th>Weight</th>
-      <th>Calories</th>
-    </tr>
-    {% for line in order.lines %}
-      <tr>
-        <td>{{ line.name }}</td>
-        <td>{{ line.quantity }}</td>
-        <td>{{ line.weight }}</td>
-        <td>{{ line.calories }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+      <a href="{% url 'admin_order_edit' order.order_id %}" class="button is-link is-pulled-right">Edit</a>
+
+      <dl>
+        <dt>ID</dt>
+        <dd>{{ order.order_id }}
+        <dt>Foodbank</dt>
+        <dd><a href="{% url "admin_foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a></dd>
+        <dt>Delivery hour</dt>
+        <dd>{{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
+        <dt>Items</dt>
+        <dd>{{ order.no_items }}</dd>
+        <dt>Lines</dt>
+        <dd>{{ order.no_lines }}</dd>
+        <dt>Weight</dt>
+        <dd>{{ order.weight_kg|intcomma }} kg</dd>
+        <dt>Calories</dt>
+        <dd>{{ order.calories|intcomma }}</dd>
+        <dt>Cost</dt>
+        <dd>£{{ order.natural_cost }}</dd>
+      </dl>
+    </div>
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>Quantity</th>
+          <th>Weight</th>
+          <th>Calories</th>
+        </tr>
+        {% for line in order.lines %}
+          <tr>
+            <td>{{ line.name }}</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.weight }}</td>
+            <td>{{ line.calories }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
 
 {% endblock %}
