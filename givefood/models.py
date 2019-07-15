@@ -46,6 +46,12 @@ class Foodbank(models.Model):
             total_weight = total_weight + order.weight
         return total_weight
 
+    def total_cost(self):
+        total_cost = 0
+        orders = self.orders()
+        for order in orders:
+            total_cost = total_cost + order.cost
+        return total_cost
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
