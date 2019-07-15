@@ -1,7 +1,7 @@
 {% extends "admin/page.html" %}
 {% load humanize %}
 
-{% block title %}Give Food Admin{% endblock %}
+{% block title %}{{ order.order_id }} - GF Admin{% endblock %}
 
 {% block body %}
 
@@ -13,7 +13,7 @@
     <dt>ID</dt>
     <dd>{{ order.order_id }}
     <dt>Foodbank</dt>
-    <dd>{{ order.foodbank }}</dd>
+    <dd><a href="{% url "admin_foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a></dd>
     <dt>Delivery hour</dt>
     <dd>{{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
     <dt>Items</dt>
