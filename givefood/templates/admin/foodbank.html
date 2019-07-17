@@ -5,11 +5,11 @@
 
 {% block body %}
 
+  <h2>{{ foodbank }}</h2>
+
   <div class="columns">
 
     <div class="column is-two-fifths">
-
-      <h2>{{ foodbank }}</h2>
 
       {% if foodbank.is_closed %}
         <span class="tag is-danger">Closed</span>
@@ -18,14 +18,12 @@
       <a href="{% url 'admin_foodbank_edit' foodbank.slug %}" class="button is-link is-pulled-right">Edit</a>
 
       <dl>
-        <dt>Foodbank</dt>
-        <dd>{{ foodbank }}</dd>
-        <dt>Total weight</dt>
-        <dd>{{ foodbank.total_weight }}</dd>
         <dt>Number of orders</dt>
         <dd>{{ foodbank.no_orders }}</dd>
+        <dt>Total weight</dt>
+        <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
         <dt>Total cost</dt>
-        <dd>{{ foodbank.total_cost }}</dd>
+        <dd>£{{ foodbank.total_cost }}</dd>
       </dl>
 
     </div>

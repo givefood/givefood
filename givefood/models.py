@@ -40,18 +40,21 @@ class Foodbank(models.Model):
         return len(self.orders())
 
     def total_weight(self):
-        total_weight = 0
+        total_weight = float(0)
         orders = self.orders()
         for order in orders:
             total_weight = total_weight + order.weight
         return total_weight
 
+    def total_weight_kg(self):
+        return self.total_weight() / 1000
+
     def total_cost(self):
-        total_cost = 0
+        total_cost = float(0)
         orders = self.orders()
         for order in orders:
             total_cost = total_cost + order.cost
-        return total_cost
+        return total_cost / 100
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
