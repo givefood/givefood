@@ -1,4 +1,5 @@
 {% extends "admin/page.html" %}
+{% load humanize %}
 
 {% block title %}Give Food Admin{% endblock %}
 
@@ -7,6 +8,20 @@
   <div class="columns">
 
     <div class="column is-half">
+
+      <h2>Total Stats</h2>
+      <dl>
+        <dt>Orders</dt>
+        <dd>{{ total_orders }}</dd>
+        <dt>Foodbanks</dt>
+        <dd>{{ total_foodbanks }}</dd>
+        <dt>Items</dt>
+        <dd>{{ total_items|intcomma }}</dd>
+        <dt>Weight</dt>
+        <dd>{{ total_weight|intcomma }} kg</dd>
+        <dt>Calories</dt>
+        <dd>{{ total_calories|intcomma }}</dd>
+      </dl>
 
       <h2>Orders</h2>
       <a href="{% url "admin_neworder" %}" class="button is-link">New Order</a>

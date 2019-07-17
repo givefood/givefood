@@ -11,6 +11,21 @@ from givefood.forms import FoodbankForm, OrderForm
 def admin_index(request):
 
     foodbanks = Foodbank.objects.all().order_by("-last_order")
+    total_foodbanks = len(foodbanks)
+
+    total_weight = 0
+    total_calories = 0
+    total_items = 0
+
+    all_orders = Order.objects.all()
+    total_orders = len(all_orders)
+    for order in all_orders:
+        total_weight = total_weight + order.weight
+        total_calories = total_calories + order.calories
+        total_items = total_items + order.no_items
+
+    total_weight = total_weight / 1000
+
 
     open_order_threshold = datetime.now() - timedelta(days=1)
     open_orders = Order.objects.filter(delivery_datetime__gt = open_order_threshold).order_by("delivery_datetime")
@@ -19,6 +34,11 @@ def admin_index(request):
     prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:50]
 
     template_vars = {
+        "total_weight":total_weight,
+        "total_calories":total_calories,
+        "total_items":total_items,
+        "total_orders":total_orders,
+        "total_foodbanks":total_foodbanks,
         "foodbanks":foodbanks,
         "open_orders":open_orders,
         "prev_orders":prev_orders,
