@@ -175,3 +175,6 @@ class OrderLine(models.Model):
 
     weight = models.PositiveIntegerField(editable=False,null=True)
     calories = models.PositiveIntegerField(editable=False,null=True)
+
+    def weight_kg(self):
+        return self.weight/1000

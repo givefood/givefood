@@ -46,7 +46,7 @@
           <tr>
             <td>{{ line.name }}</td>
             <td>{{ line.quantity }}</td>
-            <td>{{ line.weight }}</td>
+            <td>{{ line.weight|intcomma }}g</td>
             <td>{{ line.calories }}</td>
           </tr>
         {% endfor %}
