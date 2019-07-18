@@ -29,6 +29,7 @@ urlpatterns = (
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_foodbank_form, name="admin_foodbank_edit"),
 
     url(r'^admin/nocalories/$', givefood.views.admin_nocalories, name="admin_nocalories"),
+    url(r'^admin/map/$', givefood.views.admin_map, name="admin_map"),
 
 
 

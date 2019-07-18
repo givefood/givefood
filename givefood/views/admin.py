@@ -109,6 +109,15 @@ def admin_foodbank_form(request, slug = None):
     return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_map(request):
+
+    foodbanks = Foodbank.objects.all()
+    template_vars = {
+        "foodbanks":foodbanks,
+    }
+    return render_to_response("admin/map.html", template_vars, context_instance=RequestContext(request))
+
+
 def admin_nocalories(request):
 
     nocalitems = OrderLine.objects.filter(calories = 0)

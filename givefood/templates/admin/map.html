@@ -1,0 +1,40 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Map - Give Food Admin{% endblock %}
+
+{% block body %}
+
+<div id="fbmap"></div>
+
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&amp;sensor=false"></script>
+<script>
+function add_marker(lat, lng, url) {
+  var marker = new google.maps.Marker({
+  position: new google.maps.LatLng(lat, lng),
+  map: map,
+  url: url
+});
+  google.maps.event.addListener(marker, "click", function () {
+  location.assign(marker.url);
+});
+}
+
+var map
+function init_map() {
+var mapOptions = {
+  center: new google.maps.LatLng(55,-4),
+  zoom: 7,
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
+
+{% for foodbank in foodbanks %}
+  add_marker({{ foodbank.latt_long }}, '{% url "admin_foodbank" foodbank.slug %}')
+{% endfor %}
+
+}
+
+google.maps.event.addDomListener(window, 'load', init_map);
+</script>
+
+{% endblock %}
