@@ -1,0 +1,20 @@
+Hello {{ foodbank }} Foodbank,
+
+We at Give Food are sending you an internet shopping delivery via Tesco. The delivery information is below. In the meantime, if you have any suggestions for how we can improve our deliveries do contact us via the following:
+
+Web: https://www.givefood.org.uk
+Twitter: https://twitter.com/GiveFood_org_uk
+Email: mail@givefood.org.uk
+
+We're monitoring your shopping list at:
+{{ foodbank.shopping_list_url }}
+
+The delivery is scheduled for {{ order.delivery_date }}, {{ order.delivery_hour }}:00, contains {{ order.no_items }} and weighs {{ order.weight_kg|intcomma }} kg.
+
+To:
+{{ foodbank.address }}
+
+Items:
+{% for line in order.lines %}
+{{ line.quantity }}x {{ line.name }}
+{% endfor %}
