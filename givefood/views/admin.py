@@ -4,6 +4,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.shortcuts import redirect
 
 from givefood.models import Foodbank, Order, OrderLine
 from givefood.forms import FoodbankForm, OrderForm
@@ -68,7 +69,7 @@ def admin_order_form(request, id = None):
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
             order = form.save()
-            return HttpResponseRedirect(reverse("admin_index"))
+            return redirect("admin_order", id = order.order_id)
     else:
         form = OrderForm(instance=order)
 
@@ -99,7 +100,7 @@ def admin_foodbank_form(request, slug = None):
         form = FoodbankForm(request.POST, instance=foodbank)
         if form.is_valid():
             foodbank = form.save()
-            return HttpResponseRedirect(reverse("admin_index"))
+            return redirect("admin_foodbank", slug = foodbank.slug)
     else:
         form = FoodbankForm(instance=foodbank)
 
