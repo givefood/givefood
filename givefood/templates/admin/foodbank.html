@@ -22,8 +22,8 @@
         <dd>{{ foodbank.no_orders }}</dd>
         <dt>Total weight</dt>
         <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
-        <dt>Total cost</dt>
-        <dd>£{{ foodbank.total_cost }}</dd>
+        <dt>Website</dt>
+        <dd><a href="{{ foodbank.url }}">{{ foodbank.url }}</a></dd>
       </dl>
 
     </div>
