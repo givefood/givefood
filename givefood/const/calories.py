@@ -347,4 +347,5 @@ CALORIES = {
     "Stockwell & Co Chicken Paste 75G":179,
     "Stockwell & Co Salmon Paste 75G":165,
     "Stockwell & Co Ham & Beef Paste 75G":179,
+    "Hearty Food Co. Sweet & Sour Sauce 440G":59,
 }
