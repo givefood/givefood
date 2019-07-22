@@ -24,6 +24,8 @@
         <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
         <dt>Website</dt>
         <dd><a href="{{ foodbank.url }}">{{ foodbank.url }}</a></dd>
+        <dt>Address</dt>
+        <dd>{{ foodbank.address|linebreaksbr }}</dd>
       </dl>
 
     </div>
