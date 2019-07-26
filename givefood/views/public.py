@@ -17,8 +17,8 @@ def public_index(request):
         total_calories = total_calories + order.calories
         total_items = total_items + order.no_items
 
-    total_weight = total_weight / 1000000
-    total_calories = total_calories / 1000000
+    total_weight = float(total_weight) / 1000000
+    total_calories = float(total_calories) / 1000000
 
     no_foodbanks = len(Foodbank.objects.all())
 
