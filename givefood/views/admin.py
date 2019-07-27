@@ -60,6 +60,12 @@ def admin_order(request, id):
 
 def admin_order_form(request, id = None):
 
+    foodbank = None
+    foodbank_slug = request.GET.get("foodbank")
+    if foodbank_slug:
+        foodbank = Foodbank.objects.get(slug=foodbank_slug)
+
+
     if id:
         order = get_object_or_404(Order, order_id = id)
     else:
@@ -71,7 +77,7 @@ def admin_order_form(request, id = None):
             order = form.save()
             return redirect("admin_order", id = order.order_id)
     else:
-        form = OrderForm(instance=order)
+        form = OrderForm(instance=order, initial={"foodbank":foodbank})
 
     template_vars = {
         "form":form,

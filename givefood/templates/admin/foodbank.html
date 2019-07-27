@@ -39,20 +39,25 @@
     </div>
 
     <div class="column">
-      <table class="table is-fullwidth is-hoverable">
-        <tr>
-          <th>Date</th>
-          <th>Items</th>
-          <th>Cost</th>
-        </tr>
-        {% for order in foodbank.orders %}
+      <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
+      {% if foodbank.orders %}
+        <table class="table is-fullwidth is-hoverable">
           <tr>
-            <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime }}</a></td>
-            <td>{{ order.no_items }}</td>
-            <td>£{{ order.natural_cost }}</td>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Cost</th>
           </tr>
-        {% endfor %}
-      </table>
+          {% for order in foodbank.orders %}
+            <tr>
+              <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime }}</a></td>
+              <td>{{ order.no_items }}</td>
+              <td>£{{ order.natural_cost }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p>No orders yet, <a href="{% url 'admin_neworder' %}?foodbank={{ foodbank.slug }}">make one?</a></p>
+      {% endif %}
 
     </div>
 
