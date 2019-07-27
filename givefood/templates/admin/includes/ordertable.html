@@ -7,8 +7,8 @@
   </tr>
   {% for order in orders %}
     <tr>
-      <td><a href="{% url 'admin_order' order.order_id %}">{{ order.foodbank }}</a></td>
-      <td>{{ order.delivery_datetime }}</td>
+      <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime }}</a></td>
+      <td>{{ order.foodbank }}</td>
       <td>{{ order.no_items }}</td>
       <td>£{{ order.natural_cost }}</td>
     </tr>
