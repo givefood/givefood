@@ -1,7 +1,0 @@
-.
-../pygooglechart.py
-../pygooglechart.pyc
-PKG-INFO
-SOURCES.txt
-dependency_links.txt
-top_level.txt

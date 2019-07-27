@@ -7,7 +7,7 @@ six
 python-dateutil
 python-twitter
 requests-toolbelt
-pygooglechart
+django-bulma
 
 # Uncomment these to use mapreduce or djangae.contrib.uniquetool (which uses mapreduce)
 # These are forks of Google's libraries, which contain various fixes and patches
