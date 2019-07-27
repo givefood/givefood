@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'cspreports',
     'djangae.contrib.gauth.datastore',
     'djangae.contrib.security',
+    'bulma',
     'givefood',
     # 'djangae.contrib.uniquetool',
 )

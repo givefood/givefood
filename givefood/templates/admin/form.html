@@ -1,4 +1,5 @@
 {% extends "admin/page.html" %}
+{% load bulma_tags %}
 
 {% block title %}Give Food Admin{% endblock %}
 
@@ -6,7 +7,7 @@
 
   <form method="post" action="">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|bulma }}
     <input type="submit">
   </form>
 
