@@ -26,6 +26,14 @@
         <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
         <dt>Website</dt>
         <dd><a href="{{ foodbank.url }}">{{ foodbank.url }}</a></dd>
+        {% if foodbank.facebook_page %}
+          <dt>Facebook</dt>
+          <dd><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></dd>
+        {% endif %}
+        {% if foodbank.twitter_handle %}
+          <dt>Twitter</dt>
+          <dd><a href="https://twitter.com/{{ foodbank.twitter_handle }}">@{{ foodbank.twitter_handle }}</a></dd>
+        {% endif %}
       </dl>
 
     </div>
