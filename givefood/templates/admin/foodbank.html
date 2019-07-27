@@ -39,8 +39,8 @@
     </div>
 
     <div class="column">
-      <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
       {% if foodbank.orders %}
+        <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th>Date</th>
