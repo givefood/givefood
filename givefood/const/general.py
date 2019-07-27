@@ -8,3 +8,8 @@ COUNTRIES = [
     "Northern Ireland",
 ]
 COUNTRIES_CHOICES = tuple((country, country) for country in COUNTRIES)
+
+DELIVERY_PROVIDERS = [
+    "Tesco",
+]
+DELIVERY_PROVIDER_CHOICES = tuple((delivery_provider, delivery_provider) for delivery_provider in DELIVERY_PROVIDERS)

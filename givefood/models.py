@@ -6,7 +6,7 @@ from datetime import datetime
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES
+from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES
 from func import parse_order_text
 
 
@@ -78,6 +78,9 @@ class Order(models.Model):
     delivery_date = models.DateField()
     delivery_hour = models.IntegerField(choices=DELIVERY_HOURS_CHOICES)
     delivery_datetime = models.DateTimeField(editable=False)
+
+    delivery_provider = models.CharField(max_length=50, choices=DELIVERY_PROVIDER_CHOICES)
+    delivery_provider_id = models.CharField(max_length=50, null=True, blank=True)
 
     weight = models.PositiveIntegerField(editable=False)
     calories = models.PositiveIntegerField(editable=False)
