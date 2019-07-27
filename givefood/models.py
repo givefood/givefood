@@ -15,8 +15,12 @@ class Foodbank(models.Model):
     name = models.CharField(max_length=50)
     slug = models.CharField(max_length=50, editable=False)
     address = models.TextField()
+    delivery_address = models.TextField(null=True, blank=True)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
+
+    facebook_page = models.CharField(max_length=50, null=True, blank=True)
+    twitter_handle = models.CharField(max_length=50, null=True, blank=True)
 
     contact_email = models.EmailField()
     notification_email = models.EmailField()
@@ -29,7 +33,7 @@ class Foodbank(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
-    last_order = models.DateField(editable=False,null=True)
+    last_order = models.DateField(editable=False, null=True)
 
     def __str__(self):
         return self.name
