@@ -8,7 +8,7 @@
   <form method="post" action="">
     {% csrf_token %}
     {{ form|bulma }}
-    <input type="submit">
+    <input type="submit" class="button is-link">
   </form>
 
 {% endblock %}
