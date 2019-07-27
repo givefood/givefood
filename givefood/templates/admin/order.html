@@ -30,6 +30,14 @@
         <dd>{{ order.calories|intcomma }}</dd>
         <dt>Cost</dt>
         <dd>£{{ order.natural_cost }}</dd>
+        {% if order.delivery_provider and order.delivery_provider_id %}
+          <dt>Delivery</dt>
+          <dd>
+            <a href="{% if order.delivery_provider = "Tesco" %}https://www.tesco.com/groceries/en-GB/orders/{{ order.delivery_provider_id }}{% endif %}">
+              {{ order.delivery_provider }}
+            </a>
+          </dd>
+        {% endif %}
       </dl>
     </div>
 
