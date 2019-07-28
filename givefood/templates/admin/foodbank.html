@@ -24,6 +24,8 @@
         <dd>{{ foodbank.no_orders }}</dd>
         <dt>Total weight</dt>
         <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
+        <dt>Total cost</dt>
+        <dd>£{{ foodbank.total_cost|intcomma }}</dd>
         <dt>Website</dt>
         <dd><a href="{{ foodbank.url }}">{{ foodbank.url }}</a></dd>
         {% if foodbank.facebook_page %}
