@@ -4,7 +4,7 @@ from django.views.decorators.cache import cache_page
 from givefood.models import Foodbank, Order
 
 
-@cache_page(60*5)
+@cache_page(60*15)
 def public_index(request):
 
     total_weight = 0
