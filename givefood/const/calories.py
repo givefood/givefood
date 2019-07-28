@@ -348,4 +348,5 @@ CALORIES = {
     "Stockwell & Co Salmon Paste 75G":165,
     "Stockwell & Co Ham & Beef Paste 75G":179,
     "Hearty Food Co. Sweet & Sour Sauce 440G":59,
+    "Tesco Instant Dried Skimmed Milk 340G":353,
 }
