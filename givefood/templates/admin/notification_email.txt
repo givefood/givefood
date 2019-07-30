@@ -1,20 +1,24 @@
-Hello {{ foodbank }} Foodbank,
+{% load humanize %}Hello {{ order.foodbank }} Foodbank,
 
-We at Give Food are sending you an internet shopping delivery via Tesco. The delivery information is below. In the meantime, if you have any suggestions for how we can improve our deliveries do contact us via the following:
+We at Give Food are sending you an internet shopping delivery via {{ order.delivery_provider }}. The delivery information is below. In the meantime, if you have any suggestions for how we can improve our deliveries do contact us via the following...
 
 Web: https://www.givefood.org.uk
 Twitter: https://twitter.com/GiveFood_org_uk
 Email: mail@givefood.org.uk
 
 We're monitoring your shopping list at:
-{{ foodbank.shopping_list_url }}
+{{ order.foodbank.shopping_list_url }}
 
-The delivery is scheduled for {{ order.delivery_date }}, {{ order.delivery_hour }}:00, contains {{ order.no_items }} items and weighs {{ order.weight_kg|intcomma }} kg.
+Our order ID: {{ order.order_id }}
+Delivery provider order ID: {{ order.delivery_provider_id }}
+
+The delivery is scheduled for {{ order.delivery_date }}, at {{ order.delivery_hour }}:00.
+
+It contains {{ order.no_items }} items, {{ order.calories|intcomma }} calories and weighs {{ order.weight_kg|intcomma }} kg.
 
 To:
-{{ foodbank.address }}
+{% if order.foodbank.delivery_address %}{{ order.foodbank.delivery_address }}{% else %}{{ order.foodbank.address }}{% endif %}
 
 Items:
-{% for line in order.lines %}
-{{ line.quantity }}x {{ line.name }}
+{% for line in order.lines %}{{ line.quantity }}x {{ line.name|safe }}
 {% endfor %}
