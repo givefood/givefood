@@ -349,4 +349,5 @@ CALORIES = {
     "Stockwell & Co Ham & Beef Paste 75G":179,
     "Hearty Food Co. Sweet & Sour Sauce 440G":59,
     "Tesco Instant Dried Skimmed Milk 340G":353,
+    "Tesco Syrup Sponge Puddings 2X110g":385,
 }
