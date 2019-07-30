@@ -88,6 +88,9 @@ class Order(models.Model):
     no_lines = models.PositiveIntegerField(editable=False)
     no_items = models.PositiveIntegerField(editable=False)
 
+    def delivery_hour_end(self):
+        return self.delivery_hour + 1
+
     def natural_cost(self):
         return float(self.cost/100)
 
