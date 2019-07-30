@@ -77,7 +77,10 @@ def admin_order_form(request, id = None):
             order = form.save()
             return redirect("admin_order", id = order.order_id)
     else:
-        form = OrderForm(instance=order, initial={"foodbank":foodbank})
+        if foodbank:
+            form = OrderForm(instance=order, initial={"foodbank":foodbank})
+        else:
+            form = OrderForm(instance=order)
 
     template_vars = {
         "form":form,
