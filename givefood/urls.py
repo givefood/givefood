@@ -31,6 +31,8 @@ urlpatterns = (
     url(r'^admin/nocalories/$', givefood.views.admin_nocalories, name="admin_nocalories"),
     url(r'^admin/map/$', givefood.views.admin_map, name="admin_map"),
 
+    url(r'^admin/test_order_email/(?P<id>[-\w]+)/$', givefood.views.admin_test_order_email, name="admin_test_order_email"),
+
 
 
     url(r'^csp/', include('cspreports.urls')),
