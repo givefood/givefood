@@ -136,3 +136,13 @@ def admin_nocalories(request):
         "nocalitems":nocalitems,
     }
     return render_to_response("admin/nocalories.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_test_order_email(request, id):
+
+    order = get_object_or_404(Order, order_id = id)
+
+    template_vars = {
+        "order":order,
+    }
+    return render_to_response("admin/notification_email.txt", template_vars, content_type='text/plain')
