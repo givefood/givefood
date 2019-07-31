@@ -350,4 +350,8 @@ CALORIES = {
     "Hearty Food Co. Sweet & Sour Sauce 440G":59,
     "Tesco Instant Dried Skimmed Milk 340G":353,
     "Tesco Syrup Sponge Puddings 2X110g":385,
+    "Tesco Ripe Bananas 5 Pack":103,
+    "Tesco Seedless Grape Selection Pack 500G":72,
+    "Rosedene Farms Small Sweet Apple 520G":53,
+    "Stockwell & Co Baked Beans In Tomato Sauce 420G":87,
 }
