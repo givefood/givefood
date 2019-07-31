@@ -20,8 +20,6 @@
         <dd><a href="{% url "admin_foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a></dd>
         <dt>Delivery hour</dt>
         <dd>{{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
-        <dt>Created</dt>
-        <dd>{{ order.created }}</dd>
         <dt>Items</dt>
         <dd>{{ order.no_items }}</dd>
         <dt>Lines</dt>
@@ -41,6 +39,10 @@
           </dd>
         {% endif %}
       </dl>
+      <dt>Created</dt>
+      <dd>{{ order.created }}</dd>
+      <dt>Modified</dt>
+      <dd>{{ order.modified }}</dd>
     </div>
 
     <div class="column">
