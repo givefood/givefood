@@ -10,13 +10,14 @@ We're automatically monitoring your shopping list for changes at:
 {{ order.foodbank.shopping_list_url }}
 
 Our order ID: {{ order.order_id }}
-Delivery provider order ID: {{ order.delivery_provider_id }}
+{{ order.delivery_provider }} order ID: {{ order.delivery_provider_id }}
 
 The delivery is scheduled for {{ order.delivery_date }} between {{ order.delivery_hour }}:00 and {{ order.delivery_hour_end }}:00.
 
 It contains {{ order.no_items }} items, weighs {{ order.weight_kg|intcomma }} kg, and contains {{ order.calories|intcomma }} calories.
 
 To:
+{{ order.foodbank }} Foodbank,
 {% if order.foodbank.delivery_address %}{{ order.foodbank.delivery_address }}{% else %}{{ order.foodbank.address }}{% endif %}
 
 Items:
