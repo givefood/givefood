@@ -119,7 +119,7 @@ USE_TZ = True
 # Using a route that is not caught by appengines routing in app.yaml
 STATIC_URL = '/static-dev/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-PREPEND_WWW = True
+#PREPEND_WWW = True
 
 # sensible default CSP settings, feel free to modify them
 CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com")

@@ -70,6 +70,7 @@ class Order(models.Model):
 
     order_id = models.CharField(max_length=50, editable=False)
     foodbank = models.ForeignKey(Foodbank)
+    foodbank_name = models.CharField(max_length=50, editable=False)
     items_text = models.TextField()
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -79,7 +80,7 @@ class Order(models.Model):
     delivery_hour = models.IntegerField(choices=DELIVERY_HOURS_CHOICES)
     delivery_datetime = models.DateTimeField(editable=False)
 
-    delivery_provider = models.CharField(max_length=50, choices=DELIVERY_PROVIDER_CHOICES)
+    delivery_provider = models.CharField(max_length=50, choices=DELIVERY_PROVIDER_CHOICES, null=True, blank=True)
     delivery_provider_id = models.CharField(max_length=50, null=True, blank=True)
 
     weight = models.PositiveIntegerField(editable=False)
@@ -115,6 +116,9 @@ class Order(models.Model):
         self.cost = 0
         self.no_lines = 0
         self.no_items = 0
+
+        #denorm foodbank name
+        self.foodbank_name = self.foodbank.name
 
         super(Order, self).save(*args, **kwargs)
 

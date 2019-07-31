@@ -1,14 +1,14 @@
 <table class="table is-fullwidth is-hoverable">
   <tr>
-    <th></th>
     <th>Date</th>
+    <th>Foodbank</th>
     <th>Items</th>
     <th>Cost</th>
   </tr>
   {% for order in orders %}
     <tr>
       <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime }}</a></td>
-      <td>{{ order.foodbank }}</td>
+      <td>{{ order.foodbank_name }}</td>
       <td>{{ order.no_items }}</td>
       <td>£{{ order.natural_cost }}</td>
     </tr>
