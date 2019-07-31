@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.shortcuts import redirect
@@ -45,6 +45,17 @@ def admin_index(request):
         "prev_orders":prev_orders,
     }
     return render_to_response("admin/index.html", template_vars)
+
+
+def admin_stats(request):
+
+    orders = Order.objects.all().order_by("-delivery_datetime")
+
+    template_vars = {
+        "weeks":weeks,
+    }
+    return render_to_response("admin/stats.html", template_vars)
+
 
 
 def admin_order(request, id):
@@ -146,3 +157,12 @@ def admin_test_order_email(request, id):
         "order":order,
     }
     return render_to_response("admin/notification_email.txt", template_vars, content_type='text/plain')
+
+
+def admin_resave_orders(request):
+
+    orders = Order.objects.all()
+    for order in orders:
+        order.save()
+
+    return HttpResponse("OK")
