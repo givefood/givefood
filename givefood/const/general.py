@@ -13,3 +13,9 @@ DELIVERY_PROVIDERS = [
     "Tesco",
 ]
 DELIVERY_PROVIDER_CHOICES = tuple((delivery_provider, delivery_provider) for delivery_provider in DELIVERY_PROVIDERS)
+
+FOODBANK_NETWORKS = [
+    "Trussell Trust",
+    "Independent",
+]
+FOODBANK_NETWORK_CHOICES = tuple((network, network) for network in FOODBANK_NETWORKS)

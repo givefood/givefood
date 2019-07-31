@@ -6,7 +6,7 @@ from datetime import datetime
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES
+from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES
 from func import parse_order_text
 
 
@@ -18,6 +18,7 @@ class Foodbank(models.Model):
     delivery_address = models.TextField(null=True, blank=True)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
+    network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES)
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
