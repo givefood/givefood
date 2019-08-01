@@ -354,4 +354,5 @@ CALORIES = {
     "Tesco Seedless Grape Selection Pack 500G":72,
     "Rosedene Farms Small Sweet Apple 520G":53,
     "Stockwell & Co Baked Beans In Tomato Sauce 420G":87,
+    "Tesco Ripe Bananas 5 Pack":103,
 }

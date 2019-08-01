@@ -60,4 +60,8 @@ def get_weight(text):
     if text[-2:] == "Ml":
       weight = float(text[-5:].replace("Ml",""))
 
+    # Banana 5-pack
+    if text[-6:] == "5 Pack":
+      weight = 750
+
     return weight
