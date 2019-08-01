@@ -161,7 +161,7 @@ def admin_test_order_email(request, id):
 
 def admin_resave_orders(request):
 
-    orders = Order.objects.all()
+    orders = Order.objects.all().order_by("created")
     for order in orders:
         order.save()
 
