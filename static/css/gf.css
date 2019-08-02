@@ -12,6 +12,9 @@ body {
   margin-bottom:30px;
   background-size: cover;
 }
+.container {
+  padding:20px;
+}
 a {
   color:#007BC7;
 }
