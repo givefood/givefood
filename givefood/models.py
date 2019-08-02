@@ -77,6 +77,8 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
+    notification_email_sent = models.DateTimeField(null=True, blank=True, editable=False)
+
     delivery_date = models.DateField()
     delivery_hour = models.IntegerField(choices=DELIVERY_HOURS_CHOICES)
     delivery_datetime = models.DateTimeField(editable=False)

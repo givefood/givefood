@@ -1,10 +1,14 @@
 from datetime import datetime, timedelta
 
+from google.appengine.api import mail
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.template.loader import render_to_string
 from django.shortcuts import redirect
+from django.views.decorators.http import require_POST
 
 from givefood.models import Foodbank, Order, OrderLine
 from givefood.forms import FoodbankForm, OrderForm
@@ -65,7 +69,7 @@ def admin_order(request, id):
     template_vars = {
         "order":order,
     }
-    return render_to_response("admin/order.html", template_vars)
+    return render_to_response("admin/order.html", template_vars, context_instance=RequestContext(request))
 
 
 
@@ -97,6 +101,23 @@ def admin_order_form(request, id = None):
         "form":form,
     }
     return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+
+
+@require_POST
+def admin_order_send_notification(request, id = None):
+
+    order = get_object_or_404(Order, order_id = id)
+    email_body = render_to_string("admin/notification_email.txt",{"order":order})
+    mail.send_mail(
+        sender="mail@givefood.org.uk",
+        to=order.foodbank.notification_email,
+        cc="deliveries@givefood.org.uk",
+        subject="Food donation from Give Food",
+        body=email_body)
+
+    order.notification_email_sent = datetime.now()
+    order.save()
+    return HttpResponse("OK")
 
 
 def admin_foodbank(request, slug):

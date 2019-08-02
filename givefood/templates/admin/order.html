@@ -38,11 +38,17 @@
             </a>
           </dd>
         {% endif %}
+        <dt>Created</dt>
+        <dd>{{ order.created }}</dd>
+        <dt>Modified</dt>
+        <dd>{{ order.modified }}</dd>
       </dl>
-      <dt>Created</dt>
-      <dd>{{ order.created }}</dd>
-      <dt>Modified</dt>
-      <dd>{{ order.modified }}</dd>
+      <h2>Notification Email</h2>
+      <p>Sent: {{ order.notification_email_sent }}</p>
+      <form action="{% url 'admin_order_send_notification' order.order_id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" class="button is-link" value="Send">
+      </form>
     </div>
 
     <div class="column">
