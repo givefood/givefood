@@ -1,10 +1,16 @@
 body {
-  margin:20px;
   font-size:0.95em;
   color:#212121;
   font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+.headerimg {
+  background: url('/static/img/header.jpg');
+  background-repeat: no-repeat;
+  padding-top:200px;
+  margin-bottom:30px;
+  background-size: cover;
 }
 a {
   color:#007BC7;
@@ -13,14 +19,14 @@ sub {
   display:inline-block;
 }
 p {
-  max-width:700px;
+  margin-bottom:20px;
 }
 h1 {
   font-size:1.8em;
   background: url('/static/img/logo.png');
   background-repeat: no-repeat;
   background-size: auto 50px;
-  padding:11px 0 6px 60px;
+  padding:5px 0 6px 60px;
   margin:0 0 20px 0;
 }
 h1 span {

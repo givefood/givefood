@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/css/bulma.min.css">
   <link rel="stylesheet" href="/static/css/gf.css">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-  <h1>Give Food</h1>
-  {% block body %}{% endblock %}
+  <div class="headerimg"></div>
+  <div class="container">
+    <div class="columns is-centered">
+       <div class="column is-half">
+         <h1>Give Food</h1>
+         {% block body %}{% endblock %}
+       </div>
+    </div>
+  </div>
 </body>
 </html>
