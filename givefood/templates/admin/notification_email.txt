@@ -6,6 +6,10 @@ Web: https://www.givefood.org.uk
 Twitter: https://twitter.com/GiveFood_org_uk
 Email: mail@givefood.org.uk
 
+Jason & Stacey
+
+
+
 We're automatically monitoring your shopping list for changes at:
 {{ order.foodbank.shopping_list_url }}
 
