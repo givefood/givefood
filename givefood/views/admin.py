@@ -112,7 +112,7 @@ def admin_order_send_notification(request, id = None):
         sender="mail@givefood.org.uk",
         to=order.foodbank.notification_email,
         cc="deliveries@givefood.org.uk",
-        subject="Food donation from Give Food",
+        subject="Food donation from Give Food (%s)" % (order.order_id),
         body=email_body)
 
     order.notification_email_sent = datetime.now()
