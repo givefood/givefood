@@ -5,11 +5,36 @@
 
 {% block body %}
 
-  <p>We're a UK charity that delivers food to foodbanks - using technology to supply, in bulk, the food required in a timely manner.</p>
-  <p>We've delivered {{ total_weight|floatformat:1 }} tonnes of food, consisting of {{ total_items|intcomma }} items, and {{ total_calories|floatformat:1 }} million calories to {{ no_foodbanks }} foodbanks around the country.</p>
-  <ul>
-    <li>Email: <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></li>
-    <li>Twitter: <a href="https://twitter.com/GiveFood_org_uk">@GiveFood_org_uk</a></li>
-  </ul>
+  <div class="columns is-centered">
+    <div class="column is-half">
+      <h1>Give Food</h1>
+
+      <p>We're a UK charity that delivers food to foodbanks - using technology to supply, in bulk, the food required in a timely manner.</p>
+      <p>We've delivered {{ total_weight|floatformat:1 }} tonnes of food, consisting of {{ total_items|intcomma }} items, and {{ total_calories|floatformat:1 }} million calories to {{ no_foodbanks }} foodbanks around the country.</p>
+      <ul>
+        <li>Email: <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></li>
+        <li>Twitter: <a href="https://twitter.com/GiveFood_org_uk">@GiveFood_org_uk</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="columns is-centered" id="how-we-work">
+    <div class="column is-one-third">
+
+      <h2>How we work</h2>
+      <p>We automatically monitor foodbank shopping lists and social media to identify what food is needed where. Then we have the food delivered at a time and location that's convenient for easiest distribution.</p>
+      <p>Where possible we notify foodbanks of an upcoming delivery, allowing them to plan - and then get feedback on the service afterwards.</p>
+
+      <h2>What we deliver</h2>
+      <p>We find that items like baked beans, tinned spaghetti and dried pasta are often well provisioned at foodbanks already.</p>
+      <p>As such, we focus on delivering tinned and heavy food like tomatoes, vegetables, meat, fruit, custard, and rice pudding plus UHT milk &amp; fruit juice. Occasionally we'll also supply hygiene products like shower gel, deodorant and shampoo.</p>
+
+      <h2>Where we deliver</h2>
+      <p>We currently deliver to {{ no_foodbanks }} foodbanks around the United Kingdom of varying sizes, members of networks and independent locations.</p>
+
+    </div>
+    <div class="column is-one-third">
+      <img src="/static/img/map.png" alt="Map of the {{ no_foodbanks }} foodbanks that Give Food delivers to" class="map">
+    </div>
+  </div>
 
 {% endblock %}

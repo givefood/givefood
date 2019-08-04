@@ -37,11 +37,17 @@ h1 span {
 }
 h2 {
   font-size:1.3em;
-  margin:10px 0 10px 0;
-  border-bottom:1px solid #ddd;
+  margin:0 0 10px 0;
+  border-bottom:2px solid #f5f5f5;
   max-width:100%;
 }
 h3 {
   font-size:1.2em;
   font-weight:bold;
+}
+#how-we-work {
+  padding:60px 0;
+}
+.map {
+  border-radius:4px;
 }

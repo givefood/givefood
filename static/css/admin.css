@@ -19,6 +19,9 @@ dt {
   float:left;
   width:150px;
 }
+h2 {
+  margin-top:20px;
+}
 #fbmap {
   width:1500px;
   height:1500px;
