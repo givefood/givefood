@@ -1,6 +1,6 @@
 {% load humanize %}Hello {{ order.foodbank }} Foodbank,
 
-We at Give Food are sending you an internet shopping delivery via {{ order.delivery_provider }}. The delivery information is below. In the meantime, if you have any suggestions for how we can improve our deliveries do contact us via the following...
+Give Food are sending you an internet shopping delivery via {{ order.delivery_provider }}. The delivery information is below. In the meantime, if you have any suggestions for how we can improve our deliveries do contact us via the following...
 
 Web: https://www.givefood.org.uk
 Twitter: https://twitter.com/GiveFood_org_uk
