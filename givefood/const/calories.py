@@ -355,4 +355,5 @@ CALORIES = {
     "Rosedene Farms Small Sweet Apple 520G":53,
     "Stockwell & Co Baked Beans In Tomato Sauce 420G":87,
     "Tesco Ripe Bananas 5 Pack":103,
+    "Tesco Instant Custard Mix 76G":87,
 }
