@@ -356,4 +356,5 @@ CALORIES = {
     "Stockwell & Co Baked Beans In Tomato Sauce 420G":87,
     "Tesco Ripe Bananas 5 Pack":103,
     "Tesco Instant Custard Mix 76G":87,
+    "Celebrations Chocolate 240G":493,
 }
