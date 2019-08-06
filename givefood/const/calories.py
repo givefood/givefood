@@ -358,4 +358,6 @@ CALORIES = {
     "Tesco Instant Custard Mix 76G":87,
     "Celebrations Chocolate 240G":493,
     "Tesco Low Fat Creamy Custard 400G":79,
+    "Stockwell & Co No Added Sugar Double Strength Orange Squash 750Ml":1,
+    "Stockwell & Co Apple & Blackcurrant No Added Sugar Squash 750Ml":1,
 }
