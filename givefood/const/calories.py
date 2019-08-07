@@ -360,4 +360,5 @@ CALORIES = {
     "Tesco Low Fat Creamy Custard 400G":79,
     "Stockwell & Co No Added Sugar Double Strength Orange Squash 750Ml":1,
     "Stockwell & Co Apple & Blackcurrant No Added Sugar Squash 750Ml":1,
+    "Tesco Rhubarb & Custard Creams 150G":498,
 }
