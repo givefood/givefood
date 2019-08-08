@@ -361,4 +361,8 @@ CALORIES = {
     "Stockwell & Co No Added Sugar Double Strength Orange Squash 750Ml":1,
     "Stockwell & Co Apple & Blackcurrant No Added Sugar Squash 750Ml":1,
     "Tesco Rhubarb & Custard Creams 150G":498,
+    "Tesco Minestrone Soup 400G":39,
+    "Tesco Mulligatawny Soup 400G":93,
+    "Tesco Pea And Ham Soup 400G":53,
+    "Tesco Cream Of Chicken Soup 400G":48,
 }
