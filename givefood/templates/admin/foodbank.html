@@ -17,6 +17,8 @@
 
       <a href="{% url 'admin_foodbank_edit' foodbank.slug %}" class="button is-link is-pulled-right">Edit</a>
 
+      <p>{{ foodbank.notes|linebreaksbr }}</p><br><br>
+
       <p>{{ foodbank.address|linebreaksbr }}</p><br><br>
 
       <dl>
