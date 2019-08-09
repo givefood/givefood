@@ -16,7 +16,7 @@ We're automatically monitoring your shopping list for changes at:
 Our order ID: {{ order.order_id }}
 {{ order.delivery_provider }} order ID: {{ order.delivery_provider_id }}
 
-The delivery is scheduled for {{ order.delivery_date }} between {{ order.delivery_hour }}:00 and {{ order.delivery_hour_end }}:00.
+The delivery is scheduled for {{ order.delivery_datetime|date:"l" }}, {{ order.delivery_date }} between {{ order.delivery_hour }}:00 and {{ order.delivery_hour_end }}:00.
 
 It contains {{ order.no_items }} items, weighs {{ order.weight_kg|intcomma }} kg, and contains {{ order.calories|intcomma }} calories.
 

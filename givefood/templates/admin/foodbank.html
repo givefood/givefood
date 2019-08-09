@@ -51,7 +51,7 @@
           </tr>
           {% for order in foodbank.orders %}
             <tr>
-              <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime }}</a></td>
+              <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
               <td>{{ order.no_items }}</td>
               <td>£{{ order.natural_cost }}</td>
             </tr>
