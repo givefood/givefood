@@ -78,6 +78,7 @@ class Order(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     notification_email_sent = models.DateTimeField(null=True, blank=True, editable=False)
+    source_url = models.URLField(null=True, blank=True, verbose_name="Source URL", help_text="Optional URL of a tweet, facebook post etc where the food need came from")
 
     delivery_date = models.DateField()
     delivery_hour = models.IntegerField(choices=DELIVERY_HOURS_CHOICES)
