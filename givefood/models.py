@@ -85,7 +85,7 @@ class Order(models.Model):
     delivery_datetime = models.DateTimeField(editable=False)
 
     delivery_provider = models.CharField(max_length=50, choices=DELIVERY_PROVIDER_CHOICES, null=True, blank=True)
-    delivery_provider_id = models.CharField(max_length=50, null=True, blank=True)
+    delivery_provider_id = models.CharField(max_length=50, null=True, blank=True, verbose_name="Delivery provider ID")
 
     weight = models.PositiveIntegerField(editable=False)
     calories = models.PositiveIntegerField(editable=False)
