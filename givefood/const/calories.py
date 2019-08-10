@@ -365,4 +365,5 @@ CALORIES = {
     "Tesco Mulligatawny Soup 400G":93,
     "Tesco Pea And Ham Soup 400G":53,
     "Tesco Cream Of Chicken Soup 400G":48,
+    "Tesco Fruit Splash Apple Juice Drink No Added Sugar 3X250ml":5,
 }
