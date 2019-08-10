@@ -64,4 +64,8 @@ def get_weight(text):
     if text[-6:] == "5 Pack":
       weight = 750
 
+    # 3X250ml
+    if text[-8:] == " 3X250ml":
+      weight = 750
+
     return weight
