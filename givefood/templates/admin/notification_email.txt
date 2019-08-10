@@ -9,10 +9,12 @@ Email: mail@givefood.org.uk
 Jason & Stacey
 
 
-
 We're automatically monitoring your shopping list for changes at:
 {{ order.foodbank.shopping_list_url }}
-
+{% if order.source_url %}
+We got the information that informed us of the food need for this delivery from:
+{{ order.source_url }}
+{% endif %}
 Our order ID: {{ order.order_id }}
 {{ order.delivery_provider }} order ID: {{ order.delivery_provider_id }}
 

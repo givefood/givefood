@@ -30,6 +30,11 @@
         <dd>{{ order.calories|intcomma }}</dd>
         <dt>Cost</dt>
         <dd>£{{ order.natural_cost }}</dd>
+        {% if order.source_url %}
+          <dt>Source URL</dt>
+          <dd><a href="{{ order.source_url }}">{{ order.source_url }}</a></dd>
+        {% endif %}
+        <dt>
         {% if order.delivery_provider and order.delivery_provider_id %}
           <dt>Delivery</dt>
           <dd>
