@@ -367,4 +367,8 @@ CALORIES = {
     "Tesco Cream Of Chicken Soup 400G":48,
     "Tesco Fruit Splash Apple Juice Drink No Added Sugar 3X250ml":5,
     "Ms Molly's Chocolate Digestives Biscuits 300G":490,
+    "Mug Shot On The Go Chicken Tikka Noodles 56G":78,
+    "Mug Shot On The Go Beef Bolognese 68G":87,
+    "Mug Shot Cheese & Broccoli Pasta 68G":101,
+    "Mug Shot On The Go Roast Chicken Pasta 68G":94,
 }
