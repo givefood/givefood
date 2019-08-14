@@ -366,4 +366,5 @@ CALORIES = {
     "Tesco Pea And Ham Soup 400G":53,
     "Tesco Cream Of Chicken Soup 400G":48,
     "Tesco Fruit Splash Apple Juice Drink No Added Sugar 3X250ml":5,
+    "Ms Molly's Chocolate Digestives Biscuits 300G":490,
 }
