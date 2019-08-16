@@ -52,12 +52,14 @@
             <th>Date</th>
             <th>Items</th>
             <th>Cost</th>
+            <th></th>
           </tr>
           {% for order in foodbank.orders %}
             <tr>
               <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
               <td>{{ order.no_items }}</td>
               <td>£{{ order.natural_cost }}</td>
+              <td>{% if order.notification_email_sent %}✉️{% endif %}</td>
             </tr>
           {% endfor %}
         </table>
