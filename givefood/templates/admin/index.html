@@ -7,7 +7,7 @@
 
   <div class="columns">
 
-    <div class="column is-half">
+    <div class="column">
 
       <h2>Total Stats</h2>
       <dl>
@@ -33,7 +33,7 @@
       {% include "admin/includes/ordertable.html" with orders=prev_orders %}
     </div>
 
-    <div class="column is-half">
+    <div class="column">
 
       <h2>Foodbanks</h2>
       <a href="{% url "admin_newfoodbank" %}" class="button is-link">New Foodbank</a>
@@ -55,10 +55,10 @@
         {% endfor %}
       </table>
 
-      <!-- <h2>Other</h2>
-      <ul>
-        <li><a href="{% url "admin_nocalories" %}">Items without calories</a></li>
-      </ul> -->
+    </div>
+
+    <div class="column">
+      <a class="twitter-timeline" href="https://twitter.com/jasoncartwright/lists/foodbanks?ref_src=twsrc%5Etfw">A Twitter List by jasoncartwright</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     </div>
 
   </div>
