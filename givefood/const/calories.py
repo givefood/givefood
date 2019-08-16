@@ -371,4 +371,6 @@ CALORIES = {
     "Mug Shot On The Go Beef Bolognese 68G":87,
     "Mug Shot Cheese & Broccoli Pasta 68G":101,
     "Mug Shot On The Go Roast Chicken Pasta 68G":94,
+    "Stockwell & Co 24 Wheat Biscuits 432G":352,
+    "Stockwell & Co Crunchy Peanut Butter 340G":636,
 }
