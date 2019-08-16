@@ -170,12 +170,6 @@ def admin_nocalories(request):
     return render_to_response("admin/nocalories.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_twittertext(request):
-
-    open_order_threshold = datetime.now() - timedelta(days=1)
-    open_orders = Order.objects.filter(delivery_datetime__gt = open_order_threshold).order_by("delivery_datetime")
-
-
 def admin_test_order_email(request, id):
 
     order = get_object_or_404(Order, order_id = id)
