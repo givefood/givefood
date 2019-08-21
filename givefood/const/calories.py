@@ -373,4 +373,6 @@ CALORIES = {
     "Mug Shot On The Go Roast Chicken Pasta 68G":94,
     "Stockwell & Co 24 Wheat Biscuits 432G":352,
     "Stockwell & Co Crunchy Peanut Butter 340G":636,
+    "Tesco British Garden Peas In Water 140G":96,
+    "Tesco Potato & Leek Soup 400G":41,
 }
