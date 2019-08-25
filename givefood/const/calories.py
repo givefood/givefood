@@ -377,4 +377,5 @@ CALORIES = {
     "Tesco Potato & Leek Soup 400G":41,
     "Tesco Low Fat Rice Pudding 400G":76,
     "Tesco Microwave Long Grain Rice 250G":167,
+    "Tesco Cream Crackers 300G":454,
 }
