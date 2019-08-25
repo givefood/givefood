@@ -1,5 +1,5 @@
-.container {
-  margin-top:10px;
+body {
+  margin:10px;
 }
 form label {
   display:inline-block;
@@ -25,4 +25,7 @@ h2 {
 #fbmap {
   width:1500px;
   height:1500px;
+}
+.twitter-feed {
+  max-width:425px;
 }
