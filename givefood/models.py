@@ -63,6 +63,13 @@ class Foodbank(models.Model):
             total_cost = total_cost + order.cost
         return total_cost / 100
 
+    def total_items(self):
+        total_items = 0
+        orders = self.orders()
+        for order in orders:
+            total_items = total_items + order.no_items
+        return total_items
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Foodbank, self).save(*args, **kwargs)
