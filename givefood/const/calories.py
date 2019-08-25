@@ -375,4 +375,6 @@ CALORIES = {
     "Stockwell & Co Crunchy Peanut Butter 340G":636,
     "Tesco British Garden Peas In Water 140G":96,
     "Tesco Potato & Leek Soup 400G":41,
+    "Tesco Low Fat Rice Pudding 400G":76,
+    "Tesco Microwave Long Grain Rice 250G":167,
 }
