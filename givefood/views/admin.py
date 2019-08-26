@@ -120,7 +120,8 @@ def admin_order_send_notification(request, id = None):
 
     order.notification_email_sent = datetime.now()
     order.save()
-    return HttpResponse("OK")
+    redir_url = "%s?donenotification=true" % (reverse("admin_order", kwargs={'id': order.order_id}))
+    return redirect(redir_url)
 
 
 def admin_foodbank(request, slug):
