@@ -48,6 +48,8 @@ h3 {
 #how-we-work {
   padding:60px 0;
 }
-.map {
-  border-radius:4px;
+#how-you-can-help .column {
+  background:url('/static/img/delivery.jpg') no-repeat;
+  background-size:contain;
+  padding-top:255px;
 }
