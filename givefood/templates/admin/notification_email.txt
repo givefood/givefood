@@ -1,4 +1,4 @@
-{% load humanize %}Hello {{ order.foodbank }} Foodbank,
+{% load humanize %}Hello {{ order.foodbank|safe }} Foodbank,
 
 Give Food are sending you an internet shopping delivery via {{ order.delivery_provider }}. The delivery information is below. In the meantime, if you have any suggestions for how we can improve our deliveries do contact us via the following...
 
