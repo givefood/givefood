@@ -18,7 +18,7 @@ We also used the information provided here to help with picking items for the or
 Our order ID: {{ order.order_id }}
 {{ order.delivery_provider }} order ID: {{ order.delivery_provider_id }}
 
-The delivery is scheduled for {{ order.delivery_date }} between {{ order.delivery_hour }}:00 and {{ order.delivery_hour_end }}:00. It contains {{ order.no_items }} items, weighs {{ order.weight_kg|intcomma }} kg, and contains {{ order.calories|intcomma }} calories. We've given {{ order.delivery_provider }} your published phone number {{ order.foodbank.phone_number }}.
+The delivery is scheduled for {{ order.delivery_date|date:"l" }}, {{ order.delivery_date }} between {{ order.delivery_hour }}:00 and {{ order.delivery_hour_end }}:00. It contains {{ order.no_items }} items, weighs {{ order.weight_kg|intcomma }} kg, and contains {{ order.calories|intcomma }} calories. We've given {{ order.delivery_provider }} your published phone number {{ order.foodbank.phone_number }}.
 
 To:
 {{ order.foodbank }} Foodbank,
