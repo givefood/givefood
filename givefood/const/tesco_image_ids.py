@@ -18,4 +18,11 @@ TESCO_IMAGE_IDS = {
     "Growers Harvest Sweetcorn In Salt Water 325G":"1964130475",
     "Hearty Food Co. Chicken Flavour Noodles 65G":"1864572531",
     "Tesco British Mixed Vegetable In Water 300G":"82534892",
+    "Tesco Instant Chow Mein Noodles 85G":"1636142244",
+    "Tesco Instant Chicken Noodles 85G":"1604646097",
+    "Creamfields Uht Semi Skimmed Milk 1 Litre":"474243748",
+    "Stockwell & Co Spaghetti Hoops 410G":"1902453037",
+    "Grower's Harvest Chopped Tomatoes 400G":"1529386464",
+    "Stockwell & Co Spaghetti Bolognese 400G":"337627934",
+    "Stockwell & Co Strawberry Jam 454G":"466292545",
 }
