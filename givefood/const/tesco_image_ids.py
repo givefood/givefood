@@ -25,4 +25,13 @@ TESCO_IMAGE_IDS = {
     "Grower's Harvest Chopped Tomatoes 400G":"1529386464",
     "Stockwell & Co Spaghetti Bolognese 400G":"337627934",
     "Stockwell & Co Strawberry Jam 454G":"466292545",
+    "Tesco Fruit Splash Apple Juice Drink No Added Sugar 3X250ml":"1061301995",
+    "Stockwell & Co Chicken Curry With Vegetable 392G":"1098353499",
+    "Grower's Harvest Plum Tomatoes 400G":"24704466",
+    "Tesco Easy Cook Long Grain Rice 500G":"1959053344",
+    "Stockwell & Co Instant Coffee 100G":"222926918",
+    "Hearty Food Co. Penne Pasta 500G":"1214670235",
+    "Tesco Sliced Carrots In Water 300G":"116018486",
+    "Tesco Spaghetti Rings In Tomato Sauce 410G":"890303087",
+    "Tesco New Potatoes In Water Tinned 567G":"2088825124",
 }
