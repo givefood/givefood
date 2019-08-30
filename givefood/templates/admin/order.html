@@ -60,6 +60,7 @@
 
       <table class="table is-fullwidth is-hoverable">
         <tr>
+          <th></th>
           <th>Name</th>
           <th>Quantity</th>
           <th>Weight</th>
@@ -67,6 +68,7 @@
         </tr>
         {% for line in order.lines %}
           <tr>
+            <td><img src="{% url 'public_product_image' %}?delivery_provider={{ order.delivery_provider }}&product_name={{ line.name|urlencode }}"></td>
             <td>{{ line.name }}</td>
             <td>{{ line.quantity }}</td>
             <td>{{ line.weight|intcomma }}g</td>

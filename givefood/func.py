@@ -3,6 +3,7 @@
 
 import re, logging
 from givefood.const.calories import CALORIES
+from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
 
 
 def parse_order_text(order_text):
@@ -34,7 +35,6 @@ def get_calories(text, weight, quantity):
     total_calories = calories * (weight/100) * quantity
     # logging.info("calories: %s, weight: %s, total: %s" % (calories,weight,total_calories))
     return total_calories
-
 
 def get_weight(text):
 
@@ -73,3 +73,18 @@ def get_weight(text):
       weight = 220
 
     return weight
+
+
+def get_image(delivery_provider, text):
+
+    url = None
+
+    if delivery_provider == "Tesco":
+        image_id = TESCO_IMAGE_IDS.get(text)
+        if image_id:
+            url = "https://digitalcontent.api.tesco.com/v1/media/ghs/snapshotimagehandler_%s.jpeg?h=50" % (image_id)
+
+    if url:
+        return url
+    else:
+        return "/static/img/1px.gif"

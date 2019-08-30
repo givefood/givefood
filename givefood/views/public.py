@@ -1,7 +1,9 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.cache import cache_page
+from django.shortcuts import redirect
 
 from givefood.models import Foodbank, Order
+from givefood.func import get_image
 
 
 @cache_page(60*15)
@@ -29,3 +31,13 @@ def public_index(request):
         "total_items":total_items,
     }
     return render_to_response("public/index.html", template_vars)
+
+
+def public_product_image(request):
+
+    delivery_provider = request.GET.get("delivery_provider")
+    product_name = request.GET.get("product_name")
+
+    url = get_image(delivery_provider,product_name)
+
+    return redirect(url)

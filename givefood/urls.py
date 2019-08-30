@@ -16,6 +16,7 @@ urlpatterns = (
 
     # PUBLIC
     url(r'^$', givefood.views.public_index, name="public_index"),
+    url(r'^productimage/$', givefood.views.public_product_image, name="public_product_image"),
 
     # ADMIN
     url(r'^admin/$', givefood.views.admin_index, name="admin_index"),
