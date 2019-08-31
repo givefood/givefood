@@ -34,4 +34,6 @@ TESCO_IMAGE_IDS = {
     "Tesco Sliced Carrots In Water 300G":"116018486",
     "Tesco Spaghetti Rings In Tomato Sauce 410G":"890303087",
     "Tesco New Potatoes In Water Tinned 567G":"2088825124",
+    "Tesco Spaghetti Bolognese 400G":"1356520868",
+    "Tesco Apricot Halves In Juice 411G":"183151918",
 }
