@@ -21,7 +21,7 @@ Our order ID: {{ order.order_id }}
 The delivery is scheduled for {{ order.delivery_date|date:"l" }}, {{ order.delivery_date }} between {{ order.delivery_hour }}:00 and {{ order.delivery_hour_end }}:00. It contains {{ order.no_items }} items, weighs {{ order.weight_kg|intcomma }} kg, and contains {{ order.calories|intcomma }} calories. We've given {{ order.delivery_provider }} your published phone number {{ order.foodbank.phone_number }}.
 
 To:
-{{ order.foodbank }} Foodbank,
+{{ order.foodbank|safe }} Foodbank,
 {% if order.foodbank.delivery_address %}{{ order.foodbank.delivery_address|safe }}{% else %}{{ order.foodbank.address|safe }}{% endif %}
 
 Items:
