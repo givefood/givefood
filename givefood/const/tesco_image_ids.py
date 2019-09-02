@@ -36,4 +36,13 @@ TESCO_IMAGE_IDS = {
     "Tesco New Potatoes In Water Tinned 567G":"2088825124",
     "Tesco Spaghetti Bolognese 400G":"1356520868",
     "Tesco Apricot Halves In Juice 411G":"183151918",
+    "Glenryck Pilchards In Tomato Sauce 155G":"1735801601",
+    "Tesco Sardines In Tomato Sauce 120G":"640398597",
+    "Princes Corned Beef 130G":"1714335874",
+    "Tesco Sardines In Sunflower Oil 120G":"2077696430",
+    "Tesco Baby Carrots In Water 300G":"370429621",
+    "Tesco British Marrowfat Peas 300G":"732996713",
+    "Tesco Ready To Serve Custard 400G":"1541443265",
+    "Tesco Wash Up Liquid Apple 450Ml":"1290512402",
+    "Tesco Creamed Rice Pudding 400G":"108284907",
 }
