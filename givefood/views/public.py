@@ -32,7 +32,7 @@ def public_index(request):
     }
     return render_to_response("public/index.html", template_vars)
 
-
+@cache_page(60*60)
 def public_product_image(request):
 
     delivery_provider = request.GET.get("delivery_provider")
