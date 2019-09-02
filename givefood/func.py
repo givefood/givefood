@@ -82,7 +82,7 @@ def get_image(delivery_provider, text):
     if delivery_provider == "Tesco":
         image_id = TESCO_IMAGE_IDS.get(text)
         if image_id:
-            url = "https://digitalcontent.api.tesco.com/v1/media/ghs/snapshotimagehandler_%s.jpeg?h=50" % (image_id)
+            url = "https://digitalcontent.api.tesco.com/v1/media/ghs/snapshotimagehandler_%s.jpeg?w=100" % (image_id)
 
     if url:
         return url
