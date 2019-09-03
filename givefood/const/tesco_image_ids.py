@@ -50,4 +50,6 @@ TESCO_IMAGE_IDS = {
     "Tesco Melt In The Middle Chocolate & Salted Caramel Pudding 227G":"942568879",
     "Tesco Meatballs In Tomato Sauce 395G":"1318008217",
     "Fray Bentos Steak & Kidney Pie 213G":"282794430",
+    "Hearty Food Co. Tomato & Herb Pasta Sauce 440G":"1357571647",
+    "Tesco Low Fat Creamy Custard 400G":"504178719",
 }
