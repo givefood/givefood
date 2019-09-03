@@ -205,3 +205,11 @@ class OrderLine(models.Model):
 
     def weight_kg(self):
         return self.weight/1000
+
+
+class FoodbankChange(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+    foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
+    post_text = models.TextField()
