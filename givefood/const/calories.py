@@ -380,4 +380,5 @@ CALORIES = {
     "Tesco Cream Crackers 300G":454,
     "Fray Bentos Steak & Kidney Pie 213G":128,
     "Tesco Melt In The Middle Chocolate & Salted Caramel Pudding 227G":393,
+    "Hearty Food Co Pasta In Tomato & Onion Sauce 110G":106,
 }
