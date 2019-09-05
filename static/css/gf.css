@@ -58,9 +58,6 @@ h3 {
   overflow:hidden;
   margin-bottom:10px;
 }
-.process-step p {
-  font-size:0.9em;
-}
 .diff {
   font-family:"Courier New", Courier, monospace;
   font-weight:bold;
