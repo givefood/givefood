@@ -45,8 +45,36 @@ h3 {
   font-size:1.2em;
   font-weight:bold;
 }
-#how-we-work {
+
+#process {
   padding:60px 0;
+}
+.process-step h3 {
+  font-weight:normal;
+  padding-bottom:10px;
+}
+.process-step .box {
+  height:140px;
+  overflow:hidden;
+  margin-bottom:10px;
+}
+.process-step p {
+  font-size:0.9em;
+}
+.diff {
+  font-family:"Courier New", Courier, monospace;
+  font-weight:bold;
+}
+ins {
+  background:#b7fdcb;
+  text-decoration:none;
+}
+del {
+  background:#ff9494;
+}
+
+#how-you-can-help {
+  padding-top:60px;
 }
 #how-you-can-help .column {
   background:url('/static/img/delivery.jpg') no-repeat;
