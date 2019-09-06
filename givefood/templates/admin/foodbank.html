@@ -21,8 +21,15 @@
         <p class="box" style="margin-top:20px;">{{ foodbank.notes|linebreaksbr }}</p><br>
       {% endif %}
 
-      <p>{{ foodbank.address|linebreaksbr }}</p><br>
+      <h3>Address</h3>
+      <p>{{ foodbank.address|linebreaksbr }}</p>
 
+      {% if foodbank.delivery_address %}
+        <h3>Delivery Address</h3>
+        <p>{{ foodbank.delivery_address|linebreaksbr }}</p>
+      {% endif %}
+
+      <h3>Stats</h3>
       <dl>
         <dt>Number of orders</dt>
         <dd>{{ foodbank.no_orders }}</dd>
@@ -32,6 +39,10 @@
         <dd>{{ foodbank.total_items|intcomma }}</dd>
         <dt>Total cost</dt>
         <dd>£{{ foodbank.total_cost|intcomma }}</dd>
+      </dl>
+      <br>
+      <h3>Links</h3>
+      <dl>
         <dt>Website</dt>
         <dd><a href="{{ foodbank.url }}">{{ foodbank.url }}</a></dd>
         {% if foodbank.facebook_page %}
