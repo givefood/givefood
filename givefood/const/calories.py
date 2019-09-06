@@ -382,4 +382,5 @@ CALORIES = {
     "Tesco Melt In The Middle Chocolate & Salted Caramel Pudding 227G":393,
     "Hearty Food Co Pasta In Tomato & Onion Sauce 110G":106,
     "Tesco Salad Potatoes 1Kg":71,
+    "Tesco Chopped Ham & Pork 200G":254,
 }
