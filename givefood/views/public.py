@@ -7,7 +7,7 @@ from givefood.models import Foodbank, Order, FoodbankChange
 from givefood.func import get_image
 
 
-# @cache_page(60*15)
+@cache_page(60*15)
 def public_index(request):
 
     total_weight = 0
