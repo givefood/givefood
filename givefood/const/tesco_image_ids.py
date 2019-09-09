@@ -55,4 +55,8 @@ TESCO_IMAGE_IDS = {
     "Tesco Sardines In Brine 120G":"1677112573",
     "Stockwell & Co No Added Sugar Double Strength Orange Squash 750Ml":"937562769",
     "Stockwell & Co Apple & Blackcurrant No Added Sugar Squash 750Ml":"373758129",
+    "Hearty Food Co Pasta In Tomato & Onion Sauce 110G":"1264794024",
+    "Tesco Salad Potatoes 1Kg":"571589908",
+    "Method Antibacterial Kitchen Sunny Citrus 828Ml":"1383763765",
+    "Tesco Original Wash Up Liquid 450Ml":"34323787",
 }
