@@ -383,4 +383,5 @@ CALORIES = {
     "Hearty Food Co Pasta In Tomato & Onion Sauce 110G":106,
     "Tesco Salad Potatoes 1Kg":71,
     "Tesco Chopped Ham & Pork 200G":254,
+    "Princes Corned Beef 200G":228,
 }
