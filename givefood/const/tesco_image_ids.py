@@ -52,4 +52,7 @@ TESCO_IMAGE_IDS = {
     "Fray Bentos Steak & Kidney Pie 213G":"282794430",
     "Hearty Food Co. Tomato & Herb Pasta Sauce 440G":"1357571647",
     "Tesco Low Fat Creamy Custard 400G":"504178719",
+    "Tesco Sardines In Brine 120G":"1677112573",
+    "Stockwell & Co No Added Sugar Double Strength Orange Squash 750Ml":"937562769",
+    "Stockwell & Co Apple & Blackcurrant No Added Sugar Squash 750Ml":"373758129",
 }
