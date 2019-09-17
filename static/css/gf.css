@@ -33,7 +33,15 @@ h1 {
   margin:0 0 20px 0;
 }
 h1 span {
-  color:darkred;
+  display:inline-block;
+  font-size:0.7em;
+  padding-left:10px;
+}
+h1 a {
+  color:#212121;
+}
+h1 a:hover {
+  text-decoration:underline;
 }
 h2 {
   font-size:1.3em;
@@ -77,4 +85,9 @@ del {
   background:url('/static/img/delivery.jpg') no-repeat;
   background-size:contain;
   padding-top:255px;
+}
+
+.arproducts img {
+  width:100px;
+  margin-right:20px;
 }

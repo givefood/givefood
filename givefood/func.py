@@ -88,3 +88,13 @@ def get_image(delivery_provider, text):
         return url
     else:
         return "/static/img/1px.gif"
+
+
+def item_class_count(all_items, item_class_items):
+
+    count = 0
+
+    for class_item in item_class_items:
+        count = count + all_items.get(class_item, 0)
+
+    return count

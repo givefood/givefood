@@ -1,0 +1,35 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}{{ year }} Give Food Annual Report{% endblock %}
+
+{% block body %}
+
+  <h1><a href="/">Give Food</a> <span>{{ year }} Annual Report</span></h1>
+
+  <div class="columns">
+    <div class="column is-one-third intro">
+      <p>We're a UK charity that uses technology to deliver the food needed to foodbanks. You can see how we do this on <a href="/">our homepage</a>. In the meantime, here's a breakdown of what we've done in {{ year }}.</p>
+    </div>
+    <div class="column is-two-thirds">
+
+      <p>In {{ year }} Give Food delivered {{ total_weight|intcomma:1 }}kg of food and supplies consisting of {{ total_items|intcomma }} items  to food banks across England, Scotland, Wales and Northern Ireland.</p>
+
+      <p>If eaten by one person it would take them around {{ calorie_years|intcomma }} years.</p>
+
+      <ul class="arproducts">
+        <li><img src="/static/img/ar/tinned_tomatoes.jpg" alt="Tinned Tomatoes" loading="lazy"> {{ tinned_tom|intcomma }} tins of tomatoes</li>
+        <li><img src="/static/img/ar/rice.jpg" alt="Rice" loading="lazy"> {{ rice|floatformat:2 }} tonnes of rice</li>
+        <li><img src="/static/img/ar/pudding.jpg" alt="Pudding" loading="lazy"> {{ tinned_pud|intcomma }} tins of tinned custard and rice pudding</li>
+        <li><img src="/static/img/ar/soup.jpg" alt="Tinned Tomatoes" loading="lazy"> {{ soup|intcomma }}  tins of soup</li>
+        <li><img src="/static/img/ar/fruit.jpg" alt="Tinned Tomatoes" loading="lazy"> {{ fruit|intcomma }} tins of fruit</li>
+      </ul>
+
+    </div>
+  </div>
+
+
+
+
+
+{% endblock %}
