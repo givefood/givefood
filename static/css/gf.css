@@ -77,8 +77,11 @@ ins {
 del {
   background:#ff9494;
 }
+blockquote {
+  font-style:italic;
+}
 
-#how-you-can-help {
+#how-you-can-help, #quotes {
   padding-top:60px;
 }
 #how-you-can-help .column {
