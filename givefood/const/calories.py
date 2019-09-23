@@ -384,4 +384,5 @@ CALORIES = {
     "Tesco Salad Potatoes 1Kg":71,
     "Tesco Chopped Ham & Pork 200G":254,
     "Princes Corned Beef 200G":228,
+    "Stockwell & Co Tomato Ketchup 550G":82,
 }
