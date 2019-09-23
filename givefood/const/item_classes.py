@@ -63,6 +63,16 @@ SOUP = [
     "Tesco Cream Of Chicken Soup 400G",
     "Tesco Potato & Leek Soup 400G",
 ]
+MILK = [
+    "Creamfields Uht Semi Skimmed Milk 1 Litre",
+    "Creamfields Uht Skimmed Milk 1 Litre",
+    "Tesco British Whole Milk Longlife Uht 1 Litre",
+    "Tesco British Skimmed Longlife Uht Milk 1 Litre",
+    "Tesco British Semi Skimmed Longlife Uht Milk 1 Litre",
+    "Tesco Everyday Value British Skimmed Longlife Uht Milk 1 Litre",
+    "Tesco Everyday Value British Semi Skimmed Longlife Uht Milk 1 Litre",
+    "Tesco British Semi Skimmed Longlife Uht Milk 500 Ml",
+]
 NON_FOOD = [
 
 ]

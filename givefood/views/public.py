@@ -9,7 +9,7 @@ from django.http import HttpResponse, Http404
 
 from givefood.models import Foodbank, Order, FoodbankChange
 from givefood.func import get_image, item_class_count
-from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT
+from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK
 
 
 @cache_page(60*15)
@@ -71,6 +71,7 @@ def public_annual_report(request, year):
     tinned_pud = item_class_count(items, PUDDINGS)
     soup = item_class_count(items, SOUP)
     fruit = item_class_count(items, FRUIT)
+    milk = item_class_count(items, MILK)
 
     calorie_days = total_calories / 2000
     calorie_years = float(calorie_days / 365)
@@ -87,6 +88,7 @@ def public_annual_report(request, year):
         "tinned_pud":tinned_pud,
         "soup":soup,
         "fruit":fruit,
+        "milk":milk,
     }
     return render_to_response("public/annual_report.html", template_vars)
 
