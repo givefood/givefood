@@ -92,5 +92,9 @@ blockquote {
 
 .arproducts img {
   width:100px;
-  margin-right:20px;
+  float:left;
+}
+.arproducts span {
+  font-size:1.4em;
+  font-weight:bold;
 }

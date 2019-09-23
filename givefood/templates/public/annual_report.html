@@ -17,16 +17,38 @@
 
       <p>If eaten by one person it would take them around {{ calorie_years|intcomma }} years.</p>
 
-      <ul class="arproducts">
-        <li><img src="/static/img/ar/tinned_tomatoes.jpg" alt="Tinned Tomatoes" loading="lazy"> {{ tinned_tom|intcomma }} tins of tomatoes</li>
-        <li><img src="/static/img/ar/rice.jpg" alt="Rice" loading="lazy"> {{ rice|floatformat:2 }} tonnes of rice</li>
-        <li><img src="/static/img/ar/pudding.jpg" alt="Pudding" loading="lazy"> {{ tinned_pud|intcomma }} tins of tinned custard and rice pudding</li>
-        <li><img src="/static/img/ar/soup.jpg" alt="Tinned Tomatoes" loading="lazy"> {{ soup|intcomma }}  tins of soup</li>
-        <li><img src="/static/img/ar/fruit.jpg" alt="Tinned Tomatoes" loading="lazy"> {{ fruit|intcomma }} tins of fruit</li>
-        <li><img src="/static/img/ar/milk.jpg" alt="Milk" loading="lazy"> {{ milk|intcomma }} litres of milk</li>
-      </ul>
+      <div class="columns arproducts">
+        <div class="column is-third">
+          <img src="/static/img/ar/tinned_tomatoes.jpg" alt="Tinned Tomatoes" loading="lazy">
+          <span>{{ tinned_tom|intcomma }}</span><br>tins of tomatoes
+        </div>
+        <div class="column is-third">
+          <img src="/static/img/ar/rice.jpg" alt="Rice" loading="lazy">
+          <span>{{ rice|floatformat:2 }}</span><br>tonnes of rice
+        </div>
+        <div class="column is-third">
+          <img src="/static/img/ar/pudding.jpg" alt="Pudding" loading="lazy">
+          <span>{{ tinned_pud|intcomma }}</span><br>tins of tinned custard and rice pudding
+        </div>
+      </div>
+
+      <div class="columns arproducts">
+        <div class="column is-third">
+          <img src="/static/img/ar/soup.jpg" alt="Tinned Soup" loading="lazy">
+          <span>{{ soup|intcomma }}</span><br>tins of soup
+        </div>
+        <div class="column is-third">
+          <img src="/static/img/ar/fruit.jpg" alt="Tinned Tomatoes" loading="lazy">
+          <span>{{ fruit|intcomma }}</span><br>tins of fruit
+        </div>
+        <div class="column is-third">
+          <img src="/static/img/ar/milk.jpg" alt="Milk" loading="lazy">
+          <span>{{ milk|intcomma }}</span><br>litres of milk
+        </div>
+      </div>
 
     </div>
+
   </div>
 
 
