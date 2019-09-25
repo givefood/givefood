@@ -17,7 +17,7 @@
 
       <p>If eaten by one person it would take them around {{ calorie_years|intcomma }} years.</p>
 
-      <div class="columns arproducts">
+      <div class="columns is-desktop arproducts">
         <div class="column is-third">
           <img src="/static/img/ar/tinned_tomatoes.jpg" alt="Tinned Tomatoes" loading="lazy">
           <span>{{ tinned_tom|intcomma }}</span><br>tins of tomatoes
@@ -28,11 +28,11 @@
         </div>
         <div class="column is-third">
           <img src="/static/img/ar/pudding.jpg" alt="Pudding" loading="lazy">
-          <span>{{ tinned_pud|intcomma }}</span><br>tins of tinned custard and rice pudding
+          <span>{{ tinned_pud|intcomma }}</span><br>tins of custard and rice pudding
         </div>
       </div>
 
-      <div class="columns arproducts">
+      <div class="columns is-desktop arproducts">
         <div class="column is-third">
           <img src="/static/img/ar/soup.jpg" alt="Tinned Soup" loading="lazy">
           <span>{{ soup|intcomma }}</span><br>tins of soup
@@ -46,6 +46,35 @@
           <span>{{ milk|intcomma }}</span><br>litres of milk
         </div>
       </div>
+
+      <div id="armap"></div>
+
+      <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&amp;sensor=false"></script>
+      <script>
+      function add_marker(lat, lng) {
+        var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(lat, lng),
+        map: map })
+      }
+
+      var map
+      function init_map() {
+      var mapOptions = {
+        center: new google.maps.LatLng(55,-4),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      };
+      map = new google.maps.Map(document.getElementById("armap"), mapOptions);
+
+      {% for foodbank in foodbanks %}
+        add_marker({{ foodbank.latt_long }})
+      {% endfor %}
+
+      }
+
+      google.maps.event.addDomListener(window, 'load', init_map);
+      </script>
+
 
     </div>
 
