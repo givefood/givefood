@@ -49,7 +49,9 @@ def public_annual_report(request, year):
     total_calories = 0
     total_items = 0
     items = {}
+
     foodbanks = Foodbank.objects.all()
+    no_foodbanks = len(Foodbank.objects.all())
 
     orders = Order.objects.filter(delivery_date__gte = year_start, delivery_date__lte = year_end)
 
@@ -91,6 +93,7 @@ def public_annual_report(request, year):
         "fruit":fruit,
         "milk":milk,
         "foodbanks":foodbanks,
+        "no_foodbanks":no_foodbanks,
     }
     return render_to_response("public/annual_report.html", template_vars)
 
