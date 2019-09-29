@@ -59,4 +59,5 @@ TESCO_IMAGE_IDS = {
     "Tesco Salad Potatoes 1Kg":"571589908",
     "Method Antibacterial Kitchen Sunny Citrus 828Ml":"1383763765",
     "Tesco Original Wash Up Liquid 450Ml":"34323787",
+    "Growers Harvest Peach Slices Syrup 410G":"679788120",
 }
