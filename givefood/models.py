@@ -20,6 +20,7 @@ class Foodbank(models.Model):
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
     network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
+    charity_number = models.IntegerField(null=True, blank=True)
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
@@ -39,6 +40,16 @@ class Foodbank(models.Model):
 
     def __str__(self):
         return self.name
+
+    def charity_register_url(self):
+        if not self.charity_number:
+            return None
+        else:
+            if self.country == "Scotland":
+                return "https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=%s" % (self.charity_number)
+            else:
+                return "https://beta.charitycommission.gov.uk/charity-details/?regId=%s" % (self.charity_number)
+
 
     def orders(self):
         return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")
