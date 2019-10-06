@@ -79,10 +79,10 @@ def admin_order(request, id):
 def admin_order_form(request, id = None):
 
     foodbank = None
+    page_title = None
     foodbank_slug = request.GET.get("foodbank")
     if foodbank_slug:
         foodbank = Foodbank.objects.get(slug=foodbank_slug)
-
 
     if id:
         order = get_object_or_404(Order, order_id = id)
@@ -100,8 +100,17 @@ def admin_order_form(request, id = None):
         else:
             form = OrderForm(instance=order)
 
+    if id:
+        page_title = "Edit %s - " % str(order.order_id)
+    else:
+        if foodbank:
+            page_title = "New Order for %s - " % foodbank
+        else:
+            page_title = "New Order - "
+
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
 
