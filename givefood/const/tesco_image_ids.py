@@ -60,4 +60,7 @@ TESCO_IMAGE_IDS = {
     "Method Antibacterial Kitchen Sunny Citrus 828Ml":"1383763765",
     "Tesco Original Wash Up Liquid 450Ml":"34323787",
     "Growers Harvest Peach Slices Syrup 410G":"679788120",
+    "Tesco Cream Of Chicken Soup 400G":"356637169",
+    "Tesco Cream Of Tomato Soup 295G":"624777905",
+    "Tesco Cream Of Mushroom Soup 400G":"1238507579",
 }
