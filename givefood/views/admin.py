@@ -10,8 +10,11 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 
+from givefood.const.general import PACKAGING_WEIGHT_PC
+
 from givefood.models import Foodbank, Order, OrderLine
 from givefood.forms import FoodbankForm, OrderForm
+
 
 def admin_index(request):
 
@@ -32,6 +35,7 @@ def admin_index(request):
         total_cost = total_cost + order.cost
 
     total_weight = total_weight / 1000
+    total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
     total_cost = float(total_cost) / 100
 
     open_order_threshold = datetime.now() - timedelta(days=1)
@@ -42,6 +46,7 @@ def admin_index(request):
 
     template_vars = {
         "total_weight":total_weight,
+        "total_weight_pkg":total_weight_pkg,
         "total_calories":total_calories,
         "total_items":total_items,
         "total_orders":total_orders,

@@ -19,3 +19,5 @@ FOODBANK_NETWORKS = [
     "Independent",
 ]
 FOODBANK_NETWORK_CHOICES = tuple((network, network) for network in FOODBANK_NETWORKS)
+
+PACKAGING_WEIGHT_PC = 1.12

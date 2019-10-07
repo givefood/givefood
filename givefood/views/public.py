@@ -9,6 +9,7 @@ from django.http import HttpResponse, Http404
 
 from givefood.models import Foodbank, Order, FoodbankChange
 from givefood.func import get_image, item_class_count
+from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK
 
 
@@ -26,6 +27,7 @@ def public_index(request):
         total_items = total_items + order.no_items
 
     total_weight = float(total_weight) / 1000000
+    total_weight = total_weight * PACKAGING_WEIGHT_PC
     total_calories = float(total_calories) / 1000000
 
     no_foodbanks = len(Foodbank.objects.all())
@@ -67,6 +69,7 @@ def public_annual_report(request, year):
                 items[line.name] = line.quantity
 
     total_weight = total_weight / 1000
+    total_weight = total_weight * PACKAGING_WEIGHT_PC
 
     tinned_tom = item_class_count(items, TOMATOES)
     rice = item_class_count(items, RICE)
