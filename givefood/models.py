@@ -6,7 +6,7 @@ from datetime import datetime
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES
+from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC
 from func import parse_order_text
 
 
@@ -66,6 +66,9 @@ class Foodbank(models.Model):
 
     def total_weight_kg(self):
         return self.total_weight() / 1000
+
+    def total_weight_kg_pkg(self):
+        return self.total_weight_kg() * PACKAGING_WEIGHT_PC
 
     def total_cost(self):
         total_cost = float(0)
