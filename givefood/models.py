@@ -125,6 +125,9 @@ class Order(models.Model):
     def weight_kg(self):
         return self.weight/1000
 
+    def weight_kg_pkg(self):
+        return self.weight_kg() * PACKAGING_WEIGHT_PC
+
     def save(self, *args, **kwargs):
         # Generate ID
         self.order_id = "gf-%s-%s" % (self.foodbank.slug,str(self.delivery_date))
