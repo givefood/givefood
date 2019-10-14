@@ -63,4 +63,5 @@ TESCO_IMAGE_IDS = {
     "Tesco Cream Of Chicken Soup 400G":"356637169",
     "Tesco Cream Of Tomato Soup 295G":"624777905",
     "Tesco Cream Of Mushroom Soup 400G":"1238507579",
+    "Tesco Short Cut Spaghetti In Tomato Sauce 410G":"1117357079",
 }
