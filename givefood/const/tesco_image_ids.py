@@ -65,4 +65,6 @@ TESCO_IMAGE_IDS = {
     "Tesco Cream Of Mushroom Soup 400G":"1238507579",
     "Tesco Short Cut Spaghetti In Tomato Sauce 410G":"1117357079",
     "Ye Olde Oak 8 Hot Dogs 400G":"1936000599",
+    "Stockwell & Co Baked Beans In Tomato Sauce 420G":"1778322808",
+    "Granulated Sugar 1Kg":"1658086362",
 }
