@@ -387,4 +387,5 @@ CALORIES = {
     "Stockwell & Co Tomato Ketchup 550G":82,
     "Tesco Double Concentrate Apple & Blackcurrant No Added Sugar Squash 750Ml":1,
     "Tesco Smooth Peanut Butter 340G":633,
+    "Tesco British Mushy Peas 300G":72,
 }
