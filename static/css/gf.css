@@ -89,6 +89,9 @@ blockquote {
   background-size:contain;
   padding-top:255px;
 }
+.map {
+  border-radius:6px;
+}
 
 .arproducts img {
   width:100px;
