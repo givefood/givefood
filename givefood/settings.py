@@ -78,6 +78,9 @@ TEMPLATES = [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
             ],
+            'libraries':{
+                'product_image': 'givefood.templatetags.custom_tags',
+            }
         },
     },
 ]

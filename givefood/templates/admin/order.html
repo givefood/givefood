@@ -1,5 +1,6 @@
 {% extends "admin/page.html" %}
 {% load humanize %}
+{% load product_image %}
 
 {% block title %}{{ order.order_id }} - GF Admin{% endblock %}
 
@@ -70,7 +71,7 @@
         </tr>
         {% for line in order.lines %}
           <tr>
-            <td><img src="{% url 'public_product_image' %}?delivery_provider={{ order.delivery_provider }}&product_name={{ line.name|urlencode }}" class="small-product-image"></td>
+            <td><img src="{% product_image order.delivery_provider line.name %}" class="small-product-image"></td>
             <td>{{ line.name }}</td>
             <td>{{ line.quantity }}</td>
             <td>{{ line.weight|intcomma }}g</td>
