@@ -388,4 +388,5 @@ CALORIES = {
     "Tesco Double Concentrate Apple & Blackcurrant No Added Sugar Squash 750Ml":1,
     "Tesco Smooth Peanut Butter 340G":633,
     "Tesco British Mushy Peas 300G":72,
+    "Jack's Garden Peas In Water 300G":96,
 }
