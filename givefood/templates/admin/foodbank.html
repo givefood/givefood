@@ -90,14 +90,16 @@
 
     {% if foodbank.facebook_page %}
       <div class="column">
-          <div id="fb-root"></div>
-          <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0"></script>
-          <div class="fb-page" data-href="https://www.facebook.com/{{ foodbank.facebook_page }}" data-tabs="timeline" data-width="" data-height="1000" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/{{ foodbank.facebook_page }}" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></blockquote></div>
+        <h2><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">Facebook</a></h2>
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0"></script>
+        <div class="fb-page" data-href="https://www.facebook.com/{{ foodbank.facebook_page }}" data-tabs="timeline" data-width="" data-height="1000" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/{{ foodbank.facebook_page }}" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></blockquote></div>
       </div>
     {% endif %}
 
     {% if foodbank.twitter_handle %}
       <div class="column">
+        <h2><a href="https://twitter.com/{{ foodbank.twitter_handle }}">Twitter</a></h2>
         <div class="twitter-feed">
           <a class="twitter-timeline" href="https://twitter.com/{{ foodbank.twitter_handle }}">Tweets by {{ foodbank.twitter_handle }}</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
