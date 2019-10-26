@@ -57,6 +57,10 @@ h3 {
 #process {
   padding:60px 0;
 }
+#process .arrow {
+  float:right;
+  font-weight:bold;
+}
 .process-step h3 {
   font-weight:normal;
   padding-bottom:10px;
