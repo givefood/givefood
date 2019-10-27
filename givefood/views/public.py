@@ -52,12 +52,18 @@ def public_annual_report(request, year):
     total_items = 0
     items = {}
 
-    foodbanks = Foodbank.objects.all()
-    no_foodbanks = len(Foodbank.objects.all())
+    # foodbanks = Foodbank.objects.all()
+    # no_foodbanks = len(Foodbank.objects.all())
+
+    foodbanks = []
 
     orders = Order.objects.filter(delivery_date__gte = year_start, delivery_date__lte = year_end)
 
     for order in orders:
+
+        if order.foodbank not in foodbanks:
+            foodbanks.append(order.foodbank)
+
         total_weight = total_weight + order.weight
         total_calories = total_calories + order.calories
         total_items = total_items + order.no_items
@@ -81,6 +87,8 @@ def public_annual_report(request, year):
 
     calorie_days = total_calories / 2000
     calorie_years = float(calorie_days / 365)
+
+    no_foodbanks = len(foodbanks)
 
     template_vars = {
         "year":year,
