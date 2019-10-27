@@ -79,6 +79,9 @@ def get_image(delivery_provider, text):
 
     url = None
 
+    if not delivery_provider:
+        delivery_provider = "Tesco"
+
     if delivery_provider == "Tesco":
         image_id = TESCO_IMAGE_IDS.get(text)
         if image_id:
