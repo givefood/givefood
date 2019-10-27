@@ -24,7 +24,8 @@ It contains {{ order.no_items }} items, weighs about {{ order.weight_kg_pkg|floa
 
 To:
 {{ order.foodbank|safe }} Foodbank,
-{% if order.foodbank.delivery_address %}{{ order.foodbank.delivery_address|safe }}{% else %}{{ order.foodbank.address|safe }}{% endif %}
+{% if order.foodbank.delivery_address %}{{ order.foodbank.delivery_address|safe }}{% else %}{{ order.foodbank.address|safe }}
+{{ order.foodbank.postcode }}{% endif %}
 
 Items:
 {% for line in order.lines %}{{ line.quantity }}x {{ line.name|safe }}
