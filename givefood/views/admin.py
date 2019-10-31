@@ -69,6 +69,25 @@ def admin_stats(request):
     return render_to_response("admin/stats.html", template_vars)
 
 
+def admin_foodbanks(request):
+
+    foodbanks = Foodbank.objects.all()
+
+    template_vars = {
+        "foodbanks":foodbanks,
+    }
+    return render_to_response("admin/foodbanks.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_orders(request):
+
+    orders = Order.objects.all()
+
+    template_vars = {
+        "orders":orders,
+    }
+    return render_to_response("admin/orders.html", template_vars, context_instance=RequestContext(request))
+
 
 def admin_order(request, id):
 

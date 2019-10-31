@@ -1,0 +1,53 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Foodbanks - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Foodbanks</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <form action="" method="get">
+        <div class="control">
+          <label class="label">Country</label>
+          <div class="select">
+            <select>
+              <option>Select dropdown</option>
+              <option>With options</option>
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>Postcode</th>
+          <th>Charity No.</th>
+          <th>Country</th>
+          <th>Created</th>
+          <th>Last Order</th>
+          <th>URL</th>
+        </tr>
+        {% for foodbank in foodbanks %}
+          <tr>
+            <td><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
+            <td>{{ foodbank.postcode }}</td>
+            <td>{{ foodbank.charity_number }}</td>
+            <td>{{ foodbank.country }}</td>
+            <td>{{ foodbank.created }}</td>
+            <td>{{ foodbank.last_order }}</td>
+            <td><a href="{{ foodbank.url }}">🔗</a></td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}
