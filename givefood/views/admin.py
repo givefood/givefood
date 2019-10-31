@@ -39,10 +39,10 @@ def admin_index(request):
     total_cost = float(total_cost) / 100
 
     today = datetime.today()
-    today_orders = Order.objects.filter(delivery_datetime = today).order_by("delivery_datetime")
+    today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_date")
 
     # upcoming_order_threshold = datetime.now() - timedelta(days=1)
-    upcoming_orders = Order.objects.filter(delivery_datetime__gt = today).order_by("delivery_datetime")
+    upcoming_orders = Order.objects.filter(delivery_date__gt = today).order_by("delivery_date")
 
     prev_order_threshold = datetime.now() - timedelta(days=1)
     prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:20]
