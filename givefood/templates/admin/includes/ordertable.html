@@ -5,7 +5,6 @@
       <th>Foodbank</th>
       <th>Items</th>
       <th>Cost</th>
-      <th></th>
     </tr>
     {% for order in orders %}
       <tr>
@@ -13,7 +12,6 @@
         <td>{{ order.foodbank_name }}</td>
         <td>{{ order.no_items }}</td>
         <td>£{{ order.natural_cost }}</td>
-        <td>{% if order.notification_email_sent %}✉️{% endif %}</td>
       </tr>
     {% endfor %}
   </table>
