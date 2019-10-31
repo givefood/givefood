@@ -38,8 +38,11 @@ def admin_index(request):
     total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
     total_cost = float(total_cost) / 100
 
-    open_order_threshold = datetime.now() - timedelta(days=1)
-    open_orders = Order.objects.filter(delivery_datetime__gt = open_order_threshold).order_by("delivery_datetime")
+    today = datetime.today()
+    today_orders = Order.objects.filter(delivery_datetime = today).order_by("delivery_datetime")
+
+    # upcoming_order_threshold = datetime.now() - timedelta(days=1)
+    upcoming_orders = Order.objects.filter(delivery_datetime__gt = today).order_by("delivery_datetime")
 
     prev_order_threshold = datetime.now() - timedelta(days=1)
     prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:20]
@@ -53,7 +56,8 @@ def admin_index(request):
         "total_cost":total_cost,
         "total_foodbanks":total_foodbanks,
         "foodbanks":foodbanks,
-        "open_orders":open_orders,
+        "today_orders":today_orders,
+        "upcoming_orders":upcoming_orders,
         "prev_orders":prev_orders,
     }
     return render_to_response("admin/index.html", template_vars)

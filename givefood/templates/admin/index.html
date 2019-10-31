@@ -30,8 +30,11 @@
       <h2>Orders</h2>
       <a href="{% url "admin_neworder" %}" class="button is-link">New Order</a>
 
-      <h3>Upcoming</h3>
-      {% include "admin/includes/ordertable.html" with orders=open_orders %}
+      <h3>Today ({{ today_orders.count }})</h3>
+      {% include "admin/includes/ordertable.html" with orders=today_orders %}
+
+      <h3>Upcoming ({{ upcoming_orders.count }})</h3>
+      {% include "admin/includes/ordertable.html" with orders=upcoming_orders %}
 
       <h3>Previous</h3>
       {% include "admin/includes/ordertable.html" with orders=prev_orders %}
