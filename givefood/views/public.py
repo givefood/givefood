@@ -1,9 +1,11 @@
 from datetime import date
 import operator
 from collections import OrderedDict
+import json
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.cache import cache_page
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 
@@ -120,10 +122,11 @@ def public_product_image(request):
     return redirect(url)
 
 
+@csrf_exempt
 def distill_webhook(request):
 
     new_foodbank_change = FoodbankChange(
-        post_text = request.POST,
+        post_text = json.dumps(request.POST),
     )
     new_foodbank_change.save()
 
