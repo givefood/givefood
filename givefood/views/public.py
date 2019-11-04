@@ -125,8 +125,12 @@ def public_product_image(request):
 @csrf_exempt
 def distill_webhook(request):
 
+    post_text = ""
+    for key, value in request.POST.items():
+        post_text = post_text + "%s: %s\n" % (key, value)
+
     new_foodbank_change = FoodbankChange(
-        post_text = json.dumps(request.POST),
+        post_text = post_text,
     )
     new_foodbank_change.save()
 
