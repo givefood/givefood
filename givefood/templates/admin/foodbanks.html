@@ -31,7 +31,7 @@
           <th>Country</th>
           <th>Created</th>
           <th>Last Order</th>
-          <th>URL</th>
+          <th>Closed</th>
         </tr>
         {% for foodbank in foodbanks %}
           <tr>
@@ -41,7 +41,11 @@
             <td>{{ foodbank.country }}</td>
             <td>{{ foodbank.created }}</td>
             <td>{{ foodbank.last_order }}</td>
-            <td><a href="{{ foodbank.url }}">🔗</a></td>
+            <td>
+              {% if foodbank.is_closed %}
+                <span style="color:red">X</span>
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </table>
