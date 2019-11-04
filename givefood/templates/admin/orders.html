@@ -28,12 +28,20 @@
           <th>ID</th>
           <th>Foodbank</th>
           <th>Delivery</th>
+          <th>Items</th>
+          <th>Weight</th>
+          <th>Calories</th>
+          <th>Cost</th>
         </tr>
         {% for order in orders %}
           <tr>
             <td><a href="{% url "admin_order" order.order_id %}">{{ order.order_id }}</a></td>
             <td>{{ order.foodbank }}</td>
             <td>{{ order.delivery_datetime }}</td>
+            <td>{{ order.no_items }}</td>
+            <td>{{ order.weight_kg_pkg|intcomma }} kg</td>
+            <td>{{ order.calories|intcomma }}</td>
+            <td>£{{ order.natural_cost }}</td>
           </tr>
         {% endfor %}
       </table>
