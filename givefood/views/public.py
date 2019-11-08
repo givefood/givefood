@@ -15,7 +15,7 @@ from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK
 
 
-@cache_page(60*15)
+@cache_page(60*30)
 def public_index(request):
 
     total_weight = 0
