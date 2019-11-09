@@ -72,6 +72,10 @@ def get_weight(text):
     if text[-7:] == " 2X110g":
       weight = 220
 
+    # 2X95g
+    if text[-6:] == " 2X95g":
+      weight = 190
+
     return weight
 
 
