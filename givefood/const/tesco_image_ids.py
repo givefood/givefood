@@ -67,4 +67,7 @@ TESCO_IMAGE_IDS = {
     "Ye Olde Oak 8 Hot Dogs 400G":"1936000599",
     "Stockwell & Co Baked Beans In Tomato Sauce 420G":"1778322808",
     "Granulated Sugar 1Kg":"1658086362",
+    "Cadbury Milk Chocolate Puddings 2X95g":"548110639",
+    "Mr. Kippling Sponge Pudding Golden Syrup 2X95g":"40757726",
+    "Stockwell & Co Hot Chocolate 375G":"336667608",
 }
