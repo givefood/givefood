@@ -390,4 +390,6 @@ CALORIES = {
     "Tesco British Mushy Peas 300G":72,
     "Jack's Garden Peas In Water 300G":96,
     "Fray Bentos Steak & Kidney 425G":115,
+    "Tesco Red Split Lentils 500G":96,
+    "Tesco Olive Oil 250Ml":900,
 }
