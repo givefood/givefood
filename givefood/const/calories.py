@@ -392,4 +392,7 @@ CALORIES = {
     "Fray Bentos Steak & Kidney 425G":115,
     "Tesco Red Split Lentils 500G":96,
     "Tesco Olive Oil 250Ml":900,
+    "Stockwell & Co Hot Chocolate 375G":46,
+    "Cadbury Milk Chocolate Puddings 2X95g":365,
+    "Mr. Kipling Golden Syrup Sponge Pudding 2X95g":1536,
 }
