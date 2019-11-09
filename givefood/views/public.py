@@ -54,6 +54,13 @@ def public_annual_report(request, year):
     total_items = 0
     items = {}
 
+    country_weights = {
+        "England":0,
+        "Scotland":0,
+        "Northern Ireland":0,
+        "Wales":0,
+    }
+
     # foodbanks = Foodbank.objects.all()
     # no_foodbanks = len(Foodbank.objects.all())
 
@@ -76,6 +83,8 @@ def public_annual_report(request, year):
             else:
                 items[line.name] = line.quantity
 
+        country_weights[order.foodbank.country] = country_weights[order.foodbank.country] + order.weight
+
     total_weight = total_weight / 1000
     total_weight = total_weight * PACKAGING_WEIGHT_PC
 
@@ -88,6 +97,7 @@ def public_annual_report(request, year):
     milk = item_class_count(items, MILK)
 
     calorie_days = total_calories / 2000
+    calorie_meals = calorie_days / 3
     calorie_years = float(calorie_days / 365)
 
     no_foodbanks = len(foodbanks)
@@ -98,6 +108,7 @@ def public_annual_report(request, year):
         "total_calories":total_calories,
         "total_items":total_items,
         "calorie_days":calorie_days,
+        "calorie_meals":calorie_meals,
         "calorie_years":calorie_years,
         "tinned_tom":tinned_tom,
         "rice":rice,
@@ -107,6 +118,7 @@ def public_annual_report(request, year):
         "milk":milk,
         "foodbanks":foodbanks,
         "no_foodbanks":no_foodbanks,
+        "country_weights":country_weights,
     }
     return render_to_response("public/annual_report.html", template_vars)
 
