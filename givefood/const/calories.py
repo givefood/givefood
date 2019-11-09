@@ -389,4 +389,5 @@ CALORIES = {
     "Tesco Smooth Peanut Butter 340G":633,
     "Tesco British Mushy Peas 300G":72,
     "Jack's Garden Peas In Water 300G":96,
+    "Fray Bentos Steak & Kidney 425G":115,
 }
