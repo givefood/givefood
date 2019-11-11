@@ -73,6 +73,12 @@ MILK = [
     "Tesco Everyday Value British Semi Skimmed Longlife Uht Milk 1 Litre",
     "Tesco British Semi Skimmed Longlife Uht Milk 500 Ml",
 ]
+FISH = [
+    "Tesco Sardines In Tomato Sauce 120G",
+]
+VEG = [
+    "Tesco Seasonal New Potatoes 750G",
+]
 NON_FOOD = [
 
 ]
