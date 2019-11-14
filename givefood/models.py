@@ -48,7 +48,9 @@ class Foodbank(models.Model):
         else:
             if self.country == "Scotland":
                 return "https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=%s" % (self.charity_number)
-            else:
+            if self.country == "Northern Ireland":
+                return "https://www.charitycommissionni.org.uk/charity-details/?regId=%s" % (self.charity_number)
+            if self.country == "Wales" or self.country == "England":
                 return "https://beta.charitycommission.gov.uk/charity-details/?regId=%s" % (self.charity_number)
 
 
