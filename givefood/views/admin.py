@@ -75,7 +75,7 @@ def admin_stats(request):
 
 def admin_foodbanks(request):
 
-    foodbanks = Foodbank.objects.all()
+    foodbanks = Foodbank.objects.all().order_by("name")
 
     template_vars = {
         "foodbanks":foodbanks,
