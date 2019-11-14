@@ -85,7 +85,7 @@ def admin_foodbanks(request):
 
 def admin_orders(request):
 
-    orders = Order.objects.all()
+    orders = Order.objects.all().order_by("-delivery_datetime")
 
     template_vars = {
         "orders":orders,
