@@ -32,3 +32,11 @@ h2 {
 .small-product-image {
   width:50px;
 }
+h1 {
+  margin:0;
+  padding:8px 8px 8px 60px;
+  font-size:1.5em;
+}
+.navbar {
+  border-radius:6px;
+}

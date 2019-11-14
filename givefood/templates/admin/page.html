@@ -10,8 +10,13 @@
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-    <h1>Give Food <span><a href="{% url "admin_index" %}">Admin</a></span></h1>
+
     <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/admin/">
+          <h1>Give Food Admin</h1>
+        </a>
+      </div>
       <a class="navbar-item" href="/admin/">Home</a>
       <a class="navbar-item" href="/admin/foodbanks/">Foodbanks</a>
       <a class="navbar-item" href="/admin/orders/">Orders</a>
