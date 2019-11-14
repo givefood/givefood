@@ -11,7 +11,7 @@
 
     <div class="column">
 
-      <form action="" method="get">
+      <!-- <form action="" method="get">
         <div class="control">
           <label class="label">Country</label>
           <div class="select">
@@ -21,7 +21,7 @@
             </select>
           </div>
         </div>
-      </form>
+      </form> -->
 
       <table class="table is-fullwidth is-hoverable">
         <tr>
@@ -29,23 +29,27 @@
           <th>Postcode</th>
           <th>Charity No.</th>
           <th>Country</th>
-          <th>Created</th>
           <th>Last Order</th>
+          <th>Network</th>
           <th>Closed</th>
+          <th>Created</th>
+          <th>Modified</th>
         </tr>
         {% for foodbank in foodbanks %}
           <tr>
             <td><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
             <td>{{ foodbank.postcode }}</td>
             <td>{{ foodbank.charity_number }}</td>
-            <td>{{ foodbank.country }}</td>
-            <td>{{ foodbank.created }}</td>
+            <td>{{ foodbank.country_flag }} {{ foodbank.country }}</td>
             <td>{{ foodbank.last_order }}</td>
+            <td>{{ foodbank.network }}</td>
             <td>
               {% if foodbank.is_closed %}
                 <span style="color:red">X</span>
               {% endif %}
             </td>
+            <td>{{ foodbank.created }}</td>
+            <td>{{ foodbank.modified }}</td>
           </tr>
         {% endfor %}
       </table>
