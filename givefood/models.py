@@ -42,6 +42,16 @@ class Foodbank(models.Model):
     def __str__(self):
         return self.name
 
+    def country_flag(self):
+        if self.country == "Scotland":
+            return "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
+        if self.country == "Northern Ireland":
+            return "🇬🇧"
+        if self.country == "Wales":
+            return "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
+        if self.country == "England":
+            return "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
+
     def charity_register_url(self):
         if not self.charity_number:
             return None
