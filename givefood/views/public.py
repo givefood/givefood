@@ -95,7 +95,7 @@ def public_annual_report(request, year):
     soup = item_class_count(items, SOUP)
     fruit = item_class_count(items, FRUIT)
     milk = item_class_count(items, MILK)
-    mince_pies = item_class_count(items, MINCE_PIES)
+    mince_pies = item_class_count(items, MINCE_PIES) * 6
 
     calorie_days = total_calories / 2000
     calorie_meals = calorie_days / 3

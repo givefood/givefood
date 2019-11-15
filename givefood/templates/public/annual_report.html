@@ -46,7 +46,9 @@
         </div>
       </div>
 
-      <p>Also, during the Christmas season we delivered {{ mince_pies }} mince pies!</p>
+      {% if mince_pies %}
+        <p>Also, during the Christmas season we delivered {{ mince_pies }} mince pies!</p>
+      {% endif %}
 
       <p>All this was delivered this to {{ no_foodbanks }} food banks across England, Scotland, Wales and Northern Ireland.</p>
 
