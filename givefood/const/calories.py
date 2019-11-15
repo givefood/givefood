@@ -397,4 +397,5 @@ CALORIES = {
     "Mr. Kipling Golden Syrup Sponge Pudding 2X95g":1536,
     "Stockwell & Co Baked Beans & Pork Sausages 405G":114,
     "Tesco Mince Pies 6 Pack":385,
+    "Tesco Lattice Mince Pies 6 Pack":386,
 }
