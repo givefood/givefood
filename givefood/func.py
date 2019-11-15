@@ -76,7 +76,10 @@ def get_weight(text):
     if text[-6:] == " 2X95g":
       weight = 190
 
+    ## PIES
     if text == "Tesco Mince Pies 6 Pack":
+      weight = 324
+    if text == "Tesco Lattice Mince Pies 6 Pack":
       weight = 324
 
     return weight
