@@ -12,7 +12,7 @@ from django.http import HttpResponse, Http404
 from givefood.models import Foodbank, Order, FoodbankChange
 from givefood.func import get_image, item_class_count
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK
+from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
 @cache_page(60*30)
@@ -95,6 +95,7 @@ def public_annual_report(request, year):
     soup = item_class_count(items, SOUP)
     fruit = item_class_count(items, FRUIT)
     milk = item_class_count(items, MILK)
+    mince_pies = item_class_count(items, MINCE_PIES)
 
     calorie_days = total_calories / 2000
     calorie_meals = calorie_days / 3
@@ -116,6 +117,7 @@ def public_annual_report(request, year):
         "soup":soup,
         "fruit":fruit,
         "milk":milk,
+        "mince_pies":mince_pies,
         "foodbanks":foodbanks,
         "no_foodbanks":no_foodbanks,
         "country_weights":country_weights,

@@ -82,3 +82,7 @@ VEG = [
 NON_FOOD = [
 
 ]
+MINCE_PIES = [
+    "Tesco Mince Pies 6 Pack",
+    "Tesco Lattice Mince Pies 6 Pack",
+]
