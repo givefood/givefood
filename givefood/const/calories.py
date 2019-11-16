@@ -398,4 +398,5 @@ CALORIES = {
     "Stockwell & Co Baked Beans & Pork Sausages 405G":114,
     "Tesco Mince Pies 6 Pack":385,
     "Tesco Lattice Mince Pies 6 Pack":386,
+    "Tesco Nut & Alcohol Free Christmas Pudding 400G":347,
 }
