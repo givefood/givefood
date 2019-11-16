@@ -46,7 +46,8 @@
       <h3>Links</h3>
       <dl>
         <dt>Website</dt>
-        <dd><a href="{{ foodbank.url }}">{{ foodbank.url }}</a></dd>
+        <dd><a href="{{ foodbank.url }}">{{ foodbank.url|truncatechars:40 }}</a></dd>
+        <dd><a href="{{ foodbank.shopping_list_url }}">{{ foodbank.shopping_list_url|truncatechars:40 }}</a></dd>
         {% if foodbank.facebook_page %}
           <dt>Facebook</dt>
           <dd><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></dd>
