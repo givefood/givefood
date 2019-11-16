@@ -38,7 +38,7 @@
         {% for order in orders %}
           <tr>
             <td><a href="{% url "admin_order" order.order_id %}">{{ order.order_id }}</a></td>
-            <td>{{ order.foodbank }}</td>
+            <td><a href="{% url "admin_foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a></td>
             <td>{{ order.delivery_datetime }}</td>
             <td>{{ order.no_items }}</td>
             <td>{{ order.weight_kg_pkg|intcomma }}</td>

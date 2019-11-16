@@ -39,7 +39,11 @@
           <tr>
             <td><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
             <td>{{ foodbank.postcode }}</td>
-            <td>{{ foodbank.charity_number }}</td>
+            <td>
+              {% if foodbank.charity_number %}
+                <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>
+              {% endif %}
+            </td>
             <td>{{ foodbank.country_flag }} {{ foodbank.country }}</td>
             <td>{{ foodbank.last_order }}</td>
             <td>{{ foodbank.network }}</td>
