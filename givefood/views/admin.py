@@ -63,14 +63,14 @@ def admin_index(request):
     return render_to_response("admin/index.html", template_vars)
 
 
-def admin_stats(request):
-
-    orders = Order.objects.all().order_by("-delivery_datetime")
-
-    template_vars = {
-        "weeks":weeks,
-    }
-    return render_to_response("admin/stats.html", template_vars)
+# def admin_stats(request):
+#
+#     orders = Order.objects.all().order_by("-delivery_datetime")
+#
+#     template_vars = {
+#         "weeks":weeks,
+#     }
+#     return render_to_response("admin/stats.html", template_vars)
 
 
 def admin_foodbanks(request):
