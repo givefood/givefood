@@ -399,4 +399,7 @@ CALORIES = {
     "Tesco Mince Pies 6 Pack":385,
     "Tesco Lattice Mince Pies 6 Pack":386,
     "Tesco Nut & Alcohol Free Christmas Pudding 400G":347,
+    "Stockwell & Co Gravy Granules 200G":34,
+    "Hearty Food Co Spicy Curry Noodle Pot 70G":102,
+    "Hearty Food Co Chicken & Mushroom Noodle Pot 70G":99,
 }
