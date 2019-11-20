@@ -31,8 +31,7 @@
           <th>Items</th>
           <th>Weight (kg)</th>
           <th>Calories</th>
-          <th>Lines</th>
-          <th>Cost</th>
+          <th>Cost (p)</th>
           <th>Created</th>
         </tr>
         {% for order in orders %}
@@ -43,8 +42,7 @@
             <td>{{ order.no_items }}</td>
             <td>{{ order.weight_kg_pkg|intcomma }}</td>
             <td>{{ order.calories|intcomma }}</td>
-            <td>{{ order.no_lines }}</td>
-            <td>£{{ order.natural_cost }}</td>
+            <td>{{ order.cost }}</td>
             <td>{{ order.created }}</td>
           </tr>
         {% endfor %}
