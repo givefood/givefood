@@ -402,6 +402,5 @@ CALORIES = {
     "Stockwell & Co Gravy Granules 200G":34,
     "Hearty Food Co Spicy Curry Noodle Pot 70G":102,
     "Hearty Food Co Chicken & Mushroom Noodle Pot 70G":99,
-    "Stockwell & Co Tomato Ketchup 550G":82,
     "Stockwell & Co Brown Sauce 545G":82,
 }
