@@ -403,4 +403,13 @@ CALORIES = {
     "Hearty Food Co Spicy Curry Noodle Pot 70G":102,
     "Hearty Food Co Chicken & Mushroom Noodle Pot 70G":99,
     "Stockwell & Co Brown Sauce 545G":82,
+    "Pringles Smokey Bacon Crisps 200G":675,
+    "Pringles Salt & Vinegar Crisps 200G":675,
+    "Pringles Prawn Cocktail Crisps 200G":675,
+    "Pringles Honey Glazed Ham 200G":675,
+    "Pringles Cheese And Onion Crisps 200G":675,
+    "Pringles Piri Piri Chicken 180G":675,
+    "Pringles Sour Cream & Onion Crisps 200G":675,
+    "Pringles Texas Bbq Sauce Crisps 200G":675,
+    "John West Pink Salmon 213G":131,
 }
