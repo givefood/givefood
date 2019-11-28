@@ -83,6 +83,16 @@ def admin_foodbanks(request):
     return render_to_response("admin/foodbanks.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_foodbanks_christmascards(request):
+
+    foodbanks = Foodbank.objects.filter(is_closed = False).order_by("name")
+
+    template_vars = {
+        "foodbanks":foodbanks,
+    }
+    return render_to_response("admin/foodbanks_christmascards.html", template_vars, context_instance=RequestContext(request))
+
+
 def admin_orders(request):
 
     orders = Order.objects.all().order_by("-delivery_datetime")

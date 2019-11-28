@@ -1,0 +1,33 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Foodbanks - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Foodbanks</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th></th>
+        </tr>
+        {% for foodbank in foodbanks %}
+          <tr>
+            <td>{{ foodbank }}</td>
+            <td><p>{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</p></td>
+            <td>{{ foodbank.total_weight_kg_pkg|intcomma }} kg</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

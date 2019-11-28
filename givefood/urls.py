@@ -29,6 +29,7 @@ urlpatterns = (
     url(r'^admin/order/(?P<id>[-\w]+)/sendnotification/$', givefood.views.admin_order_send_notification, name="admin_order_send_notification"),
 
     url(r'^admin/foodbanks/$', givefood.views.admin_foodbanks, name="admin_foodbanks"),
+    url(r'^admin/foodbanks/christmascards/$', givefood.views.admin_foodbanks_christmascards, name="admin_foodbanks_christmascards"),
     url(r'^admin/orders/$', givefood.views.admin_orders, name="admin_orders"),
 
     url(r'^admin/foodbank/new/$', givefood.views.admin_foodbank_form, name="admin_newfoodbank"),
