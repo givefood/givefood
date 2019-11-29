@@ -47,7 +47,7 @@ CALORIES = {
     "Stockwell And Co Spaghetti Hoops 410G":61,
     "Growers Harvest British Mushy Peas 300G":82,
     "Grower's Harvest Sliced Carrots 300G":28,
-    "Growers Harvest Red Kidney Beans In Water 400G":333,
+    "Growers Harvest Red Kidney Beans In Water 400G":104,
     "Grower Harvest Long Grain Rice 1Kg":153,
     "Tesco Maris Piper Potatoes 2Kg":81,
     "Tesco Instant Mashed Potato 160G":80,
