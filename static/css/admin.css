@@ -37,3 +37,6 @@ h1 {
   padding:8px 8px 8px 60px;
   font-size:1.5em;
 }
+#id_delivery_date {
+  width:200px;
+}
