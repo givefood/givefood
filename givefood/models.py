@@ -22,6 +22,7 @@ class Foodbank(models.Model):
     network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
     charity_number = models.CharField(max_length=50,null=True, blank=True)
+    charity_just_foodbank = models.BooleanField(default=False, verbose_name="Charity just foodbank", help_text="Tick this if the charity is purely used for the foodbank, rather than other uses such as a church")
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
