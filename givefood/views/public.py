@@ -43,6 +43,12 @@ def public_index(request):
     return render_to_response("public/index.html", template_vars)
 
 
+def public_article(request, slug):
+
+    article_template = "public/articles/%s.html" % (slug)
+    return render_to_response(article_template)
+
+
 def public_annual_report(request, year):
 
     year = int(year)
