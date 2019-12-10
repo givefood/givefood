@@ -43,6 +43,7 @@
         <dd>£{{ foodbank.total_cost|intcomma }}</dd>
       </dl>
       <br>
+
       <h3>Links</h3>
       <dl>
         <dt>Website</dt>
@@ -62,6 +63,13 @@
           <dd><a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a></dd>
         {% endif %}
       </dl>
+
+      <h2>Social Media Check</h2>
+      <p>Last check: {{ foodbank.last_social_media_check }}</p>
+      <form action="{% url 'admin_foodbank_sm_checked' foodbank.slug %}" method="post">
+        {% csrf_token %}
+        <input type="submit" class="button is-link" value="I Checked Them!">
+      </form>
 
     </div>
 

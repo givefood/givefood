@@ -202,6 +202,16 @@ def admin_foodbank_form(request, slug = None):
     return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
 
 
+@require_POST
+def admin_foodbank_sm_checked(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank.last_social_media_check = datetime.now()
+    foodbank.save()
+
+    return redirect("admin_foodbank", slug = foodbank.slug)
+
+
 def admin_map(request):
 
     foodbanks = Foodbank.objects.all()

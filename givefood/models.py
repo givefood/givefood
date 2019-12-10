@@ -39,6 +39,7 @@ class Foodbank(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     last_order = models.DateField(editable=False, null=True)
+    last_social_media_check = models.DateTimeField(editable=False, null=True)
 
     def __str__(self):
         return self.name
