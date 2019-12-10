@@ -63,8 +63,9 @@
           <dd><a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a></dd>
         {% endif %}
       </dl>
+      <br>
 
-      <h2>Social Media Check</h2>
+      <h3>Social Media Check</h3>
       <p>Last check: {{ foodbank.last_social_media_check }}</p>
       <form action="{% url 'admin_foodbank_sm_checked' foodbank.slug %}" method="post">
         {% csrf_token %}
