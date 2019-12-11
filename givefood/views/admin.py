@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from google.appengine.api import mail
 
 from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -18,7 +18,15 @@ from givefood.forms import FoodbankForm, OrderForm
 
 def admin_index(request):
 
-    foodbanks = Foodbank.objects.all().order_by("-last_order")
+    foodbank_sort = request.GET.get("foodbank_sort","last_order")
+    VALID_FOODBANK_SORTS = ["last_order", "social_check"]
+    if foodbank_sort not in VALID_FOODBANK_SORTS:
+        return HttpResponseForbidden()
+
+    if foodbank_sort == "last_order":
+        foodbanks = Foodbank.objects.all().order_by("-last_order")
+    else:
+        foodbanks = Foodbank.objects.all().order_by("-last_social_media_check")
     total_foodbanks = len(foodbanks)
 
     total_weight = 0
@@ -59,6 +67,7 @@ def admin_index(request):
         "today_orders":today_orders,
         "upcoming_orders":upcoming_orders,
         "prev_orders":prev_orders,
+        "foodbank_sort":foodbank_sort,
     }
     return render_to_response("admin/index.html", template_vars)
 
