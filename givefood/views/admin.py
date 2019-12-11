@@ -68,6 +68,7 @@ def admin_index(request):
         "upcoming_orders":upcoming_orders,
         "prev_orders":prev_orders,
         "foodbank_sort":foodbank_sort,
+        "section":"home",
     }
     return render_to_response("admin/index.html", template_vars)
 
@@ -88,6 +89,7 @@ def admin_foodbanks(request):
 
     template_vars = {
         "foodbanks":foodbanks,
+        "section":"foodbanks",
     }
     return render_to_response("admin/foodbanks.html", template_vars, context_instance=RequestContext(request))
 
@@ -108,6 +110,7 @@ def admin_orders(request):
 
     template_vars = {
         "orders":orders,
+        "section":"orders",
     }
     return render_to_response("admin/orders.html", template_vars, context_instance=RequestContext(request))
 
@@ -226,6 +229,7 @@ def admin_map(request):
     foodbanks = Foodbank.objects.all()
     template_vars = {
         "foodbanks":foodbanks,
+        "section":"map",
     }
     return render_to_response("admin/map.html", template_vars, context_instance=RequestContext(request))
 
