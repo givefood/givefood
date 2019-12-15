@@ -244,6 +244,7 @@ class FoodbankChange(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
+    distill_id = models.CharField(max_length=250)
     name = models.CharField(max_length=250)
     uri = models.CharField(max_length=250)
     change_text = models.TextField()
