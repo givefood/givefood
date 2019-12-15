@@ -11,7 +11,7 @@ from django.http import HttpResponse, Http404
 
 from givefood.models import Foodbank, Order, FoodbankChange
 from givefood.func import get_image, item_class_count
-from givefood.const.general import PACKAGING_WEIGHT_PC
+from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
@@ -66,6 +66,9 @@ def public_annual_report(request, year):
         "Northern Ireland":0,
         "Wales":0,
     }
+
+    check_count = CHECK_COUNT_PER_DAY.get(year) * 365
+    check_count_bytes = check_count * PAGE_SIZE_PER_COUNT
 
     # foodbanks = Foodbank.objects.all()
     # no_foodbanks = len(Foodbank.objects.all())
@@ -127,6 +130,8 @@ def public_annual_report(request, year):
         "foodbanks":foodbanks,
         "no_foodbanks":no_foodbanks,
         "country_weights":country_weights,
+        "check_count":check_count,
+        "check_count_bytes":check_count_bytes,
     }
     return render_to_response("public/annual_report.html", template_vars)
 

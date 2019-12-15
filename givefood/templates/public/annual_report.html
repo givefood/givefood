@@ -47,9 +47,15 @@
       </div>
 
       {% if mince_pies %}
+        <h2>🥧</h2>
         <p>Also, during the Christmas season we delivered {{ mince_pies }} mince pies!</p>
       {% endif %}
 
+
+      <h2>The techie bit</h2>
+      <p>We've checked foodbank websites and social media for food needs about {{ check_count|intcomma }} times, downloading and parsing over {{ check_count_bytes|filesizeformat }} of data.</p>
+
+      <h2>Map</h2>
       <p>All this was delivered this to {{ no_foodbanks }} food banks across England, Scotland, Wales and Northern Ireland.</p>
 
       <div id="armap"></div>
