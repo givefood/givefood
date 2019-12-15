@@ -154,7 +154,14 @@ def distill_webhook(request):
     for key, value in request.POST.items():
         post_text = post_text + "%s: %s\n" % (key, value)
 
+    name = request.POST.get("name")
+    uri = request.POST.get("uri")
+    change_text = request.POST.get("change_text")
+
     new_foodbank_change = FoodbankChange(
+        name = name,
+        uri = uri,
+        change_text = change_text,
         post_text = post_text,
     )
     new_foodbank_change.save()
