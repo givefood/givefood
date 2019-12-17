@@ -12,8 +12,8 @@ from django.views.decorators.http import require_POST
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 
-from givefood.models import Foodbank, Order, OrderLine
-from givefood.forms import FoodbankForm, OrderForm
+from givefood.models import Foodbank, Order, OrderLine, FoodbankChange
+from givefood.forms import FoodbankForm, OrderForm, NeedForm
 
 
 def admin_index(request):
@@ -55,6 +55,8 @@ def admin_index(request):
     prev_order_threshold = datetime.now() - timedelta(days=1)
     prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:20]
 
+    needs = FoodbankChange.objects.all().order_by("-created")[:20]
+
     template_vars = {
         "total_weight":total_weight,
         "total_weight_pkg":total_weight_pkg,
@@ -68,6 +70,7 @@ def admin_index(request):
         "upcoming_orders":upcoming_orders,
         "prev_orders":prev_orders,
         "foodbank_sort":foodbank_sort,
+        "needs":needs,
         "section":"home",
     }
     return render_to_response("admin/index.html", template_vars)
@@ -222,6 +225,36 @@ def admin_foodbank_sm_checked(request, slug):
     foodbank.save()
 
     return redirect("admin_foodbank", slug = foodbank.slug)
+
+
+def admin_need(request, id):
+
+    need = get_object_or_404(FoodbankChange, need_id = id)
+    template_vars = {
+        "need":need,
+    }
+    return render_to_response("admin/need.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_need_edit(request, id = None):
+
+    if id:
+        need = get_object_or_404(FoodbankChange, need_id = id)
+    else:
+        need = None
+
+    if request.POST:
+        form = NeedForm(request.POST, instance=need)
+        if form.is_valid():
+            need = form.save()
+            return redirect("admin_need", id = need.need_id)
+    else:
+        form = NeedForm(instance=need)
+
+    template_vars = {
+        "form":form,
+    }
+    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
 
 
 def admin_map(request):

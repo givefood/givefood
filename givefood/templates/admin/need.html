@@ -1,0 +1,32 @@
+{% extends "admin/page.html" %}
+
+{% block title %}{{ need }} - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>{{ need }}</h2>
+
+  <div class="columns">
+
+    <div class="column">
+      <a href="{% url "admin_need_edit" need.need_id %}" class="button is-link">Edit</a>
+      <dl>
+        <dt>Created</dt>
+        <dd>{{ need.created }}</dd>
+        <dt>ID</dt>
+        <dd>{{ need.need_id }}</dd>
+        <dt>Foodbank</dt>
+        <dd>{{ need.foodbank }}</dd>
+        <dt>URL</dt>
+        <dd>{{ need.uri }}</dd>
+      </dl>
+
+    </div>
+
+    <div class="column">
+      <p>{{ need.change_text|linebreaksbr }}</p>
+    </div>
+
+  </div>
+
+{% endblock %}

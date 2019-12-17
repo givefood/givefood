@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 
 from givefood.models import Foodbank, Order, FoodbankChange
-from givefood.func import get_image, item_class_count
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
@@ -150,23 +150,20 @@ def public_product_image(request):
 @csrf_exempt
 def distill_webhook(request):
 
-    # post_text = ""
-    # for key, value in request.POST.items():
-    #     post_text = post_text + "%s: %s\n" % (key, value)
-    #
-    # name = request.POST.get("name")
-    # uri = request.POST.get("uri")
-    # change_text = request.POST.get("change_text")
-
     post_text = request.body
     change_details = json.loads(post_text)
 
+    try:
+        foodbank = Foodbank.objects.get(shopping_list_url=self.uri)
+    except Foodbank.DoesNotExist:
+        foodbank = None
+
     new_foodbank_change = FoodbankChange(
-        post_text = post_text,
         distill_id = change_details.get("id"),
         uri = change_details.get("uri"),
         name = change_details.get("name"),
         change_text = change_details.get("text"),
+        foodbank = foodbank,
     )
     new_foodbank_change.save()
 

@@ -1,6 +1,6 @@
 from django.forms import ModelForm, DateInput, ModelChoiceField
 
-from models import Foodbank, Order
+from models import Foodbank, Order, FoodbankChange
 
 
 class FoodbankForm(ModelForm):
@@ -17,3 +17,10 @@ class OrderForm(ModelForm):
         widgets = {
             'delivery_date': DateInput(attrs={'type': 'date'})
         }
+
+class NeedForm(ModelForm):
+    foodbank = ModelChoiceField(queryset=Foodbank.objects.filter().order_by('name'), required=False)
+    order = ModelChoiceField(queryset=Order.objects.filter().order_by('-created'), required=False)
+    class Meta:
+        model = FoodbankChange
+        fields = "__all__"

@@ -72,9 +72,22 @@
     </div>
 
     <div class="column">
-      <div class="twitter-feed">
-        <a class="twitter-timeline" href="https://twitter.com/jasoncartwright/lists/foodbanks?ref_src=twsrc%5Etfw">A Twitter List by jasoncartwright</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div>
+      <h2>Needs</h2>
+      <a href="{% url "admin_newneed" %}" class="button is-link">New Need</a>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Foodbank</th>
+          <th>Need</th>
+          <th>When</th>
+        </tr>
+        {% for need in needs %}
+          <tr>
+            <td>{{ need.foodbank }}</td>
+            <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
+            <td><a href="{% url "admin_need" need.need_id %}">{{ need.created|timesince }} ago</a></td>
+          </tr>
+        {% endfor %}
+      </table>
     </div>
 
   </div>

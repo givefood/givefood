@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import hashlib
 from datetime import datetime
 
 from django.db import models
 from django.template.defaultfilters import slugify
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC
-from func import parse_order_text
+from func import parse_order_text, clean_foodbank_need_text
 
 
 class Foodbank(models.Model):
@@ -130,6 +131,9 @@ class Order(models.Model):
     no_lines = models.PositiveIntegerField(editable=False)
     no_items = models.PositiveIntegerField(editable=False)
 
+    def __str__(self):
+        return self.order_id
+
     def delivery_hour_end(self):
         return self.delivery_hour + 1
 
@@ -243,9 +247,26 @@ class FoodbankChange(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
+    need_id = models.CharField(max_length=8)
+
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
+    order = models.ForeignKey(Order, null=True, blank=True)
+
     distill_id = models.CharField(max_length=250)
     name = models.CharField(max_length=250)
     uri = models.CharField(max_length=250)
     change_text = models.TextField()
-    post_text = models.TextField()
+
+
+    def __str__(self):
+        return self.need_id
+
+    def save(self, *args, **kwargs):
+
+        self.change_text = clean_foodbank_need_text(self.change_text)
+
+        if not self.need_id:
+            need_id = hashlib.sha256("%s%s" % (uri, datetime.now())).hexdigest()[:8]
+            self.need_id = need_id
+
+        super(FoodbankChange, self).save(*args, **kwargs)
