@@ -266,7 +266,7 @@ class FoodbankChange(models.Model):
         self.change_text = clean_foodbank_need_text(self.change_text)
 
         if not self.need_id:
-            need_id = hashlib.sha256("%s%s" % (uri, datetime.now())).hexdigest()[:8]
+            need_id = hashlib.sha256("%s%s" % (self.uri, datetime.now())).hexdigest()[:8]
             self.need_id = need_id
 
         super(FoodbankChange, self).save(*args, **kwargs)
