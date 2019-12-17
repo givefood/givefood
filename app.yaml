@@ -31,10 +31,14 @@ handlers:
   secure: always
   login: admin
 
-- url: /(2018|2019)
+- url: /generate-2019
   script: givefood.wsgi.application
   secure: always
   login: admin
+
+- url: /2019
+  script: givefood.wsgi.application
+  secure: always
 
 - url: /.*
   script: givefood.wsgi.application

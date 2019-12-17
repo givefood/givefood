@@ -49,7 +49,13 @@ def public_article(request, slug):
     return render_to_response(article_template)
 
 
+@cache_page(60*10)
 def public_annual_report(request, year):
+    article_template = "public/ar/%s.html" % (year)
+    return render_to_response(article_template)
+
+
+def public_gen_annual_report(request, year):
 
     year = int(year)
     year_start = date(year, 1, 1)
@@ -69,9 +75,6 @@ def public_annual_report(request, year):
 
     check_count = CHECK_COUNT_PER_DAY.get(year) * 365
     check_count_bytes = check_count * PAGE_SIZE_PER_COUNT
-
-    # foodbanks = Foodbank.objects.all()
-    # no_foodbanks = len(Foodbank.objects.all())
 
     foodbanks = []
 
