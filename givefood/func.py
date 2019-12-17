@@ -116,5 +116,6 @@ def item_class_count(all_items, item_class_items):
 def clean_foodbank_need_text(text):
 
     text = text.replace("Urgently needed food items","")
+    text = text.replace("Urgently needed items","")
     text = text.strip()
     return text
