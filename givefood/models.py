@@ -247,7 +247,7 @@ class FoodbankChange(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    need_id = models.CharField(max_length=8)
+    need_id = models.CharField(max_length=8, editable=False)
 
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
     order = models.ForeignKey(Order, null=True, blank=True)
