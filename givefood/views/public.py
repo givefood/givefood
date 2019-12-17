@@ -154,7 +154,7 @@ def distill_webhook(request):
     change_details = json.loads(post_text)
 
     try:
-        foodbank = Foodbank.objects.get(shopping_list_url=self.uri)
+        foodbank = Foodbank.objects.get(shopping_list_url=change_details.get("uri"))
     except Foodbank.DoesNotExist:
         foodbank = None
 
