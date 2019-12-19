@@ -43,6 +43,7 @@ urlpatterns = (
     url(r'^admin/need/new/$', givefood.views.admin_need_edit, name="admin_newneed"),
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/$', givefood.views.admin_need, name="admin_need"),
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/edit/$', givefood.views.admin_need_edit, name="admin_need_edit"),
+    url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/delete/$', givefood.views.admin_need_delete, name="admin_need_delete"),
 
     url(r'^admin/nocalories/$', givefood.views.admin_nocalories, name="admin_nocalories"),
     url(r'^admin/map/$', givefood.views.admin_map, name="admin_map"),

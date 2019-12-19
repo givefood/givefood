@@ -28,6 +28,11 @@
         <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
       </dl>
 
+      <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" class="button is-danger" value="Delete">
+      </form>
+
     </div>
 
     <div class="column">
