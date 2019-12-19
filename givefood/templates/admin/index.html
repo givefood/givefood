@@ -83,9 +83,13 @@
         {% for need in needs %}
           <tr>
             <td>
-              <a href="{% url 'admin_foodbank' need.foodbank.slug %}">
-                {{ need.foodbank }}
-              </a>
+              {% if need.foodbank %}
+                <a href="{% url 'admin_foodbank' need.foodbank.slug %}">
+                  {{ need.foodbank }}
+                </a>
+              {% else %}
+                Unknown
+              {% endif %}
             </td>
             <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
             <td>

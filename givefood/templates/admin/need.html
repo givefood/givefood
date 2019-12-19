@@ -15,10 +15,17 @@
         <dd>{{ need.created }}</dd>
         <dt>ID</dt>
         <dd>{{ need.need_id }}</dd>
+        <dt>Distill ID</dt>
+        <dd>{{ need.distill_id }}</dd>
         <dt>Foodbank</dt>
-        <dd>{{ need.foodbank }}</dd>
+        <dd>
+          {% if need.foodbank %}
+            <a href="{% url 'admin_foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a></dd>
+          {% else %}
+            Unknown
+          {% endif %}
         <dt>URL</dt>
-        <dd>{{ need.uri }}</dd>
+        <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
       </dl>
 
     </div>
