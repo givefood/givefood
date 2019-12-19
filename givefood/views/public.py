@@ -23,16 +23,19 @@ def public_index(request):
     total_items = 0
 
     orders = Order.objects.all()
+    foodbanks = []
+
     for order in orders:
         total_weight = total_weight + order.weight
         total_calories = total_calories + order.calories
         total_items = total_items + order.no_items
+        foodbanks.append(order.foodbank)
 
     total_weight = float(total_weight) / 1000000
     total_weight = total_weight * PACKAGING_WEIGHT_PC
     total_calories = float(total_calories) / 1000000
 
-    no_foodbanks = len(Foodbank.objects.all())
+    no_foodbanks = len(foodbanks)
 
     template_vars = {
         "no_foodbanks":no_foodbanks,
