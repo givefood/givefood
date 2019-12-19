@@ -82,9 +82,17 @@
         </tr>
         {% for need in needs %}
           <tr>
-            <td>{{ need.foodbank }}</td>
+            <td>
+              <a href="{% url 'admin_foodbank' need.foodbank.slug %}">
+                {{ need.foodbank }}
+              </a>
+            </td>
             <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
-            <td><a href="{% url "admin_need" need.need_id %}">{{ need.created|timesince }} ago</a></td>
+            <td>
+              <a href="{% url "admin_need" need.need_id %}">
+                {{ need.created|timesince }} ago
+              </a>
+            </td>
           </tr>
         {% endfor %}
       </table>
