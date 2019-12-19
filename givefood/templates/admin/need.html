@@ -30,7 +30,7 @@
 
       <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
         {% csrf_token %}
-        <input type="submit" class="button is-danger" value="Delete">
+        <input type="submit" class="button is-danger" value="Delete" onclick="return confirm('Are you sure?')">
       </form>
 
     </div>
