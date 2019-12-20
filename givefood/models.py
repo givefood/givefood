@@ -250,7 +250,6 @@ class FoodbankChange(models.Model):
     need_id = models.CharField(max_length=8, editable=False)
 
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
-    order = models.ForeignKey(Order, null=True, blank=True)
 
     distill_id = models.CharField(max_length=250)
     name = models.CharField(max_length=250)
