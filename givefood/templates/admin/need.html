@@ -28,9 +28,15 @@
         <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
       </dl>
 
+      <br>
+      <form action="{% url 'admin_need_publish' need.need_id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" class="button is-success" value="Publish" onclick="return confirm('Are you sure you want to PUBLISH?')">
+      </form>
+      <br>
       <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
         {% csrf_token %}
-        <input type="submit" class="button is-danger" value="Delete" onclick="return confirm('Are you sure?')">
+        <input type="submit" class="button is-danger" value="Delete" onclick="return confirm('Are you sure you want to DELETE?')">
       </form>
 
     </div>

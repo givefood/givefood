@@ -265,6 +265,14 @@ def admin_need_delete(request, id):
     return redirect("admin_index")
 
 
+@require_POST
+def admin_need_publish(request, id):
+
+    need = get_object_or_404(FoodbankChange, need_id = id)
+    need.published = True
+    need.save()
+    return redirect("admin_index")
+
 def admin_map(request):
 
     foodbanks = Foodbank.objects.all()

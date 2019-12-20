@@ -12,12 +12,20 @@
       <a href="{% url "admin_newneed" %}" class="button is-link">New Need</a>
       <table class="table is-fullwidth is-hoverable">
         <tr>
+          <th></th>
           <th>Foodbank</th>
           <th>Need</th>
           <th>When</th>
         </tr>
         {% for need in needs %}
           <tr>
+            <td>
+              {% if need.published %}
+                ✅
+              {% else %}
+                ❌
+              {% endif %}
+            </td>
             <td>
               {% if need.foodbank %}
                 <a href="{% url 'admin_foodbank' need.foodbank.slug %}">

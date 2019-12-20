@@ -256,7 +256,7 @@ class FoodbankChange(models.Model):
     name = models.CharField(max_length=250)
     uri = models.CharField(max_length=250)
     change_text = models.TextField()
-
+    published = models.BooleanField(default=False)
 
     def __str__(self):
         return self.need_id
