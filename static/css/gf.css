@@ -102,11 +102,17 @@ blockquote {
 .arproducts img {
   width:100px;
   float:left;
-  clear:both;
 }
 .arproducts span {
   font-size:1.2em;
   font-weight:bold;
+}
+.arproducts .box {
+  overflow:hidden;
+  zoom:0;
+}
+.rice img {
+  padding-bottom:54px;
 }
 #armap {
   height:800px;
