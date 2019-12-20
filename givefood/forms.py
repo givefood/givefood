@@ -20,7 +20,6 @@ class OrderForm(ModelForm):
 
 class NeedForm(ModelForm):
     foodbank = ModelChoiceField(queryset=Foodbank.objects.filter().order_by('name'), required=False)
-    order = ModelChoiceField(queryset=Order.objects.filter().order_by('-created'), required=False)
     class Meta:
         model = FoodbankChange
         fields = "__all__"
