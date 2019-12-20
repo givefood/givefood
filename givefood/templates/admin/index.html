@@ -8,70 +8,6 @@
   <div class="columns">
 
     <div class="column">
-
-      <h2>Total Stats</h2>
-      <dl>
-        <dt>Orders</dt>
-        <dd>{{ total_orders }}</dd>
-        <dt>Foodbanks</dt>
-        <dd>{{ total_foodbanks }}</dd>
-        <dt>Items</dt>
-        <dd>{{ total_items|intcomma }}</dd>
-        <dt>Weight</dt>
-        <dd>{{ total_weight|intcomma }} kg</dd>
-        <dt>Weight (inc. pkging)</dt>
-        <dd>{{ total_weight_pkg|intcomma }} kg</dd>
-        <dt>Calories</dt>
-        <dd>{{ total_calories|intcomma }}</dd>
-        <dt>Cost</dt>
-        <dd>£{{ total_cost|intcomma }}</dd>
-      </dl>
-
-      <h2>Orders</h2>
-      <a href="{% url "admin_neworder" %}" class="button is-link">New Order</a><br><br>
-
-      <h3>Today ({{ today_orders.count }})</h3>
-      {% include "admin/includes/ordertable.html" with orders=today_orders %}
-
-      <h3>Upcoming ({{ upcoming_orders.count }})</h3>
-      {% include "admin/includes/ordertable.html" with orders=upcoming_orders %}
-
-      <h3>Previous</h3>
-      {% include "admin/includes/ordertable.html" with orders=prev_orders %}
-    </div>
-
-    <div class="column">
-
-      <h2>Foodbanks</h2>
-      <a href="{% url "admin_newfoodbank" %}" class="button is-link">New Foodbank</a>
-      <div class="foodbank-sort is-pulled-right">
-        {% if foodbank_sort == "last_order" %}
-          <a href="?foodbank_sort=social_check">Switch to Social Check</a>
-        {% else %}
-          <a href="?foodbank_sort=last_order">Switch to Last Order</a>
-        {% endif %}
-      </div>
-      <table class="table is-fullwidth is-hoverable">
-        <tr>
-          <th></th>
-          <th>{% if foodbank_sort == "last_order" %}Last Order{% else %}Last Social Check{% endif %}</th>
-        </tr>
-        {% for foodbank in foodbanks %}
-          <tr>
-            <td>
-              {% if foodbank.is_closed %}
-                <span style="color:red">X</span>
-              {% endif %}
-              <a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a>
-            </td>
-            <td>{% if foodbank_sort == "last_order" %}{{ foodbank.last_order }}{% else %}{{ foodbank.last_social_media_check }}{% endif %}</td>
-          </tr>
-        {% endfor %}
-      </table>
-
-    </div>
-
-    <div class="column">
       <h2>Needs</h2>
       <a href="{% url "admin_newneed" %}" class="button is-link">New Need</a>
       <table class="table is-fullwidth is-hoverable">
@@ -100,6 +36,70 @@
           </tr>
         {% endfor %}
       </table>
+    </div>
+
+    <div class="column">
+
+      <h2>Orders</h2>
+      <a href="{% url "admin_neworder" %}" class="button is-link">New Order</a><br><br>
+
+      <h3>Today ({{ today_orders.count }})</h3>
+      {% include "admin/includes/ordertable.html" with orders=today_orders %}
+
+      <h3>Upcoming ({{ upcoming_orders.count }})</h3>
+      {% include "admin/includes/ordertable.html" with orders=upcoming_orders %}
+
+      <h3>Previous</h3>
+      {% include "admin/includes/ordertable.html" with orders=prev_orders %}
+    </div>
+
+    <div class="column">
+
+      <h2>Total Stats</h2>
+      <dl>
+        <dt>Orders</dt>
+        <dd>{{ total_orders }}</dd>
+        <dt>Foodbanks</dt>
+        <dd>{{ total_foodbanks }}</dd>
+        <dt>Items</dt>
+        <dd>{{ total_items|intcomma }}</dd>
+        <dt>Weight</dt>
+        <dd>{{ total_weight|intcomma }} kg</dd>
+        <dt>Weight (inc. pkging)</dt>
+        <dd>{{ total_weight_pkg|intcomma }} kg</dd>
+        <dt>Calories</dt>
+        <dd>{{ total_calories|intcomma }}</dd>
+        <dt>Cost</dt>
+        <dd>£{{ total_cost|intcomma }}</dd>
+      </dl>
+
+      <h2>Foodbanks</h2>
+      <a href="{% url "admin_newfoodbank" %}" class="button is-link">New Foodbank</a>
+      <div class="foodbank-sort is-pulled-right">
+        {% if foodbank_sort == "last_order" %}
+          <a href="?foodbank_sort=social_check">Switch to Social Check</a>
+        {% else %}
+          <a href="?foodbank_sort=last_order">Switch to Last Order</a>
+        {% endif %}
+      </div>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th></th>
+          <th>{% if foodbank_sort == "last_order" %}Last Order{% else %}Last Social Check{% endif %}</th>
+        </tr>
+        {% for foodbank in foodbanks %}
+          <tr>
+            <td>
+              {% if foodbank.is_closed %}
+                <span style="color:red">X</span>
+              {% endif %}
+              <a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a>
+            </td>
+            <td>{% if foodbank_sort == "last_order" %}{{ foodbank.last_order }}{% else %}{{ foodbank.last_social_media_check }}{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
     </div>
 
   </div>
