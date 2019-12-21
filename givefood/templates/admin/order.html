@@ -19,6 +19,10 @@
         <dd>{{ order.order_id }}
         <dt>Foodbank</dt>
         <dd><a href="{% url "admin_foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a></dd>
+        {% if order.need %}
+          <dt>Need</dt>
+          <dd><a href="{% url "admin_need" order.need.need_id %}">{{ order.need.need_id }}</a></dd>
+        {% endif %}
         <dt>Delivery hour</dt>
         <dd>{{ order.delivery_date|date:"D" }}, {{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
         <dt>Items</dt>

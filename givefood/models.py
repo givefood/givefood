@@ -111,6 +111,7 @@ class Order(models.Model):
     foodbank = models.ForeignKey(Foodbank)
     foodbank_name = models.CharField(max_length=50, editable=False)
     items_text = models.TextField()
+    need = models.ForeignKey("FoodbankChange")
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -258,7 +259,7 @@ class FoodbankChange(models.Model):
     published = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.need_id
+        return "%s - %s (%s)" % (self.foodbank, self.created.strftime("%b %d %Y %H:%M:%S"), self.need_id)
 
     def save(self, *args, **kwargs):
 
