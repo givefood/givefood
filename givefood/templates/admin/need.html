@@ -11,8 +11,18 @@
     <div class="column">
       <a href="{% url "admin_need_edit" need.need_id %}" class="button is-link">Edit</a>
       <dl>
+        <dt>Published</dt>
+        <dd>
+          {% if need.published %}
+            ✅
+          {% else %}
+            ❌
+          {% endif %}
+        </dd>
         <dt>Created</dt>
         <dd>{{ need.created }}</dd>
+        <dt>Modified</dt>
+        <dd>{{ need.modified }}</dd>
         <dt>ID</dt>
         <dd>{{ need.need_id }}</dd>
         <dt>Distill ID</dt>
@@ -42,7 +52,9 @@
     </div>
 
     <div class="column">
-      <p>{{ need.change_text|linebreaksbr }}</p>
+      <div class="box">
+        <p>{{ need.change_text|linebreaksbr }}</p>
+      </div>
     </div>
 
   </div>
