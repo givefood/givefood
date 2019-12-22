@@ -98,7 +98,11 @@ blockquote {
 .map {
   border-radius:6px;
 }
-
+.annualreportteaser {
+  margin-top:30px;
+  padding:20px;
+  background:#FAFAFA;
+}
 .arproducts img {
   width:100px;
   float:left;
