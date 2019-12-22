@@ -16,7 +16,7 @@ DELIVERY_PROVIDER_CHOICES = tuple((delivery_provider, delivery_provider) for del
 
 FOODBANK_NETWORKS = [
     "Trussell Trust",
-    "Independent Food Aid Network (IFAN)",
+    "IFAN",
     "Independent",
 ]
 FOODBANK_NETWORK_CHOICES = tuple((network, network) for network in FOODBANK_NETWORKS)
