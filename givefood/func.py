@@ -6,7 +6,6 @@ from givefood.const.calories import CALORIES
 from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
 
 from math import radians, cos, sin, asin, sqrt
-from geopy.distance import great_circle
 
 
 def parse_order_text(order_text):
