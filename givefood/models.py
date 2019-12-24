@@ -51,6 +51,12 @@ class Foodbank(models.Model):
     def friendly_shopping_list_url(self):
         return self.url.replace("https://","")
 
+    def latt(self):
+        return float(self.latt_long.split(",")[0])
+
+    def long(self):
+        return float(self.latt_long.split(",")[1])
+
     def country_flag(self):
         if self.country == "Scotland":
             return "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
