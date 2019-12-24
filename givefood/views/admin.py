@@ -244,13 +244,17 @@ def admin_need_edit(request, id = None):
         need = None
 
     foodbank = None
+    foodbank_slug = request.GET.get("foodbank")
+    if foodbank_slug:
+        foodbank = Foodbank.objects.get(slug=foodbank_slug)
+
     if request.POST:
         form = NeedForm(request.POST, instance=need)
         if form.is_valid():
             need = form.save()
             return redirect("admin_need", id = need.need_id)
     else:
-        form = NeedForm(instance=need)
+        form = NeedForm(instance=need, initial={"foodbank":foodbank})
 
     template_vars = {
         "form":form,
