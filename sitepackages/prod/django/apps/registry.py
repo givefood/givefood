@@ -75,7 +75,7 @@ class Apps(object):
             # app_config should be pristine, otherwise the code below won't
             # guarantee that the order matches the order in INSTALLED_APPS.
             if self.app_configs:
-                raise RuntimeError("populate() isn't reentrant")
+                self.app_configs = {}
 
             # Load app configs and app modules.
             for entry in installed_apps:

@@ -58,6 +58,9 @@ class GrantTypeBase(object):
         if request.response_type and 'id_token' not in request.response_type:
             return token
 
+        if 'state' not in token:
+            token['state'] = request.state
+
         if request.max_age:
             d = datetime.datetime.utcnow()
             token['auth_time'] = d.isoformat("T") + "Z"
@@ -246,6 +249,29 @@ class GrantTypeBase(object):
         }
 
         return request_info
+
+    def openid_implicit_authorization_validator(self, request):
+        """Additional validation when following the implicit flow.
+        """
+        # Undefined in OpenID Connect, fall back to OAuth2 definition.
+        if request.response_type == 'token':
+            return {}
+
+        # Treat it as normal OAuth 2 auth code request if openid is not present
+        if not request.scopes or 'openid' not in request.scopes:
+            return {}
+
+        # REQUIRED. String value used to associate a Client session with an ID
+        # Token, and to mitigate replay attacks. The value is passed through
+        # unmodified from the Authentication Request to the ID Token.
+        # Sufficient entropy MUST be present in the nonce values used to
+        # prevent attackers from guessing values. For implementation notes, see
+        # Section 15.5.2.
+        if not request.nonce:
+            desc = 'Request is missing mandatory nonce parameter.'
+            raise InvalidRequestError(request=request, description=desc)
+
+        return {}
 
 
 OpenIDConnectBase = GrantTypeBase
