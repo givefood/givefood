@@ -236,7 +236,7 @@ def admin_need(request, id):
     return render_to_response("admin/need.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_need_edit(request, id = None):
+def admin_need_form(request, id = None):
 
     if id:
         need = get_object_or_404(FoodbankChange, need_id = id)
@@ -254,7 +254,10 @@ def admin_need_edit(request, id = None):
             need = form.save()
             return redirect("admin_need", id = need.need_id)
     else:
-        form = NeedForm(instance=need, initial={"foodbank":foodbank})
+        if foodbank:
+            form = NeedForm(instance=need, initial={"foodbank":foodbank})
+        else:
+            form = NeedForm(instance=need)
 
     template_vars = {
         "form":form,
