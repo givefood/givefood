@@ -260,9 +260,9 @@ class FoodbankChange(models.Model):
 
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
 
-    distill_id = models.CharField(max_length=250)
-    name = models.CharField(max_length=250)
-    uri = models.CharField(max_length=250)
+    distill_id = models.CharField(max_length=250, null=True, blank=True)
+    name = models.CharField(max_length=250, null=True, blank=True)
+    uri = models.CharField(max_length=250, null=True, blank=True)
     change_text = models.TextField()
     published = models.BooleanField(default=False)
 
