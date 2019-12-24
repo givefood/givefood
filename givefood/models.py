@@ -81,6 +81,27 @@ class Foodbank(models.Model):
     def needs(self):
         return FoodbankChange.objects.filter(foodbank = self).order_by("-created")
 
+    def latest_need(self):
+        try:
+            need = FoodbankChange.objects.filter(foodbank = self).latest("created")
+            return need
+        except FoodbankChange.DoesNotExist:
+            return None
+
+    def latest_need_text(self):
+        latest_need = self.latest_need()
+        if latest_need:
+            return self.latest_need().change_text
+        else:
+            return "Nothing"
+
+    def latest_need_date(self):
+        latest_need = self.latest_need()
+        if latest_need:
+            return self.latest_need().created
+        else:
+            return self.modified
+
     def orders(self):
         return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")
 

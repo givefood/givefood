@@ -1,6 +1,6 @@
 import json
 
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from givefood.func import find_foodbanks
 
 
@@ -18,8 +18,8 @@ def api_foodbanks(request):
         response_list.append({
             "name":foodbank.name,
             "distance":int(foodbank.distance),
+            "needs":foodbank.latest_need_text(),
+            "updated":str(foodbank.latest_need_date())
         })
 
-    response_json = json.dumps(response_list)
-
-    return HttpResponse(response_json)
+    return JsonResponse(response_list, safe=False)
