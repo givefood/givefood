@@ -38,6 +38,12 @@ indexes:
   - name: is_closed
   - name: name
 
+- kind: givefood_foodbankchange
+  properties:
+  - name: foodbank_id
+  - name: created
+    direction: desc
+
 - kind: givefood_order
   properties:
   - name: delivery_date

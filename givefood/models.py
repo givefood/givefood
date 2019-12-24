@@ -45,6 +45,12 @@ class Foodbank(models.Model):
     def __str__(self):
         return self.name
 
+    def friendly_url(self):
+        return self.url.replace("https://","")
+
+    def friendly_shopping_list_url(self):
+        return self.url.replace("https://","")
+
     def country_flag(self):
         if self.country == "Scotland":
             return "🏴󠁧󠁢󠁳󠁣󠁴󠁿"
@@ -66,6 +72,8 @@ class Foodbank(models.Model):
             if self.country == "Wales" or self.country == "England":
                 return "https://beta.charitycommission.gov.uk/charity-details/?regId=%s" % (self.charity_number)
 
+    def needs(self):
+        return FoodbankChange.objects.filter(foodbank = self).order_by("-created")
 
     def orders(self):
         return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")

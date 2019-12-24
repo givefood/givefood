@@ -9,7 +9,7 @@
 
   <div class="columns">
 
-    <div class="column">
+    <div class="column is-one-fifth">
 
       {% if foodbank.is_closed %}
         <span class="tag is-danger">Closed</span>
@@ -29,27 +29,29 @@
         <p>{{ foodbank.delivery_address|linebreaksbr }}</p>
       {% endif %}
 
-      <h3>Stats</h3>
-      <dl>
-        <dt>Number of orders</dt>
-        <dd>{{ foodbank.no_orders }}</dd>
-        <dt>Total weight</dt>
-        <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
-        <dt>Total weight (pkging)</dt>
-        <dd>{{ foodbank.total_weight_kg_pkg|intcomma }} kg</dd>
-        <dt>Total items</dt>
-        <dd>{{ foodbank.total_items|intcomma }}</dd>
-        <dt>Total cost</dt>
-        <dd>£{{ foodbank.total_cost|intcomma }}</dd>
-      </dl>
-      <br>
+      {% if foodbank.orders %}
+        <h3>Stats</h3>
+        <dl>
+          <dt>Number of orders</dt>
+          <dd>{{ foodbank.no_orders }}</dd>
+          <dt>Total weight</dt>
+          <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
+          <dt>Total weight (pkging)</dt>
+          <dd>{{ foodbank.total_weight_kg_pkg|intcomma }} kg</dd>
+          <dt>Total items</dt>
+          <dd>{{ foodbank.total_items|intcomma }}</dd>
+          <dt>Total cost</dt>
+          <dd>£{{ foodbank.total_cost|intcomma }}</dd>
+        </dl>
+        <br>
+      {% endif %}
 
       <h3>Links</h3>
       <dl>
         <dt>Website</dt>
-        <dd><a href="{{ foodbank.url }}">{{ foodbank.url|truncatechars:35 }}</a></dd>
+        <dd><a href="{{ foodbank.url }}">{{ foodbank.friendly_url|truncatechars:20 }}</a></dd>
         <dt>Shopping list</dt>
-        <dd><a href="{{ foodbank.shopping_list_url }}">{{ foodbank.shopping_list_url|truncatechars:35 }}</a></dd>
+        <dd><a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url|truncatechars:20 }}</a></dd>
         {% if foodbank.facebook_page %}
           <dt>Facebook</dt>
           <dd><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></dd>
@@ -76,8 +78,30 @@
 
     </div>
 
-    <div class="column">
-      {% if foodbank.orders %}
+    {% if foodbank.needs %}
+      <div class="column">
+        <a href="{% url "admin_newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
+        <table class="table is-fullwidth is-hoverable">
+          <tr>
+            <th>Need</th>
+            <th>When</th>
+          </tr>
+          {% for need in foodbank.needs %}
+            <tr>
+              <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
+              <td>
+                <a href="{% url "admin_need" need.need_id %}">
+                  {{ need.created|timesince }} ago
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
+
+    {% if foodbank.orders %}
+      <div class="column">
         <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
@@ -95,11 +119,8 @@
             </tr>
           {% endfor %}
         </table>
-      {% else %}
-        <p>No orders yet, <a href="{% url 'admin_neworder' %}?foodbank={{ foodbank.slug }}">make one?</a></p>
-      {% endif %}
-
-    </div>
+      </div>
+    {% endif %}
 
     {% if foodbank.facebook_page %}
       <div class="column">
