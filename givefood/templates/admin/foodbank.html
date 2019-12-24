@@ -22,7 +22,7 @@
       {% endif %}
 
       <h3>Address</h3>
-      <p>{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</p>
+      <p>{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.country }}<br>{{ foodbank.postcode }}</p>
 
       {% if foodbank.delivery_address %}
         <h3>Delivery Address</h3>
