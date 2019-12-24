@@ -243,6 +243,7 @@ def admin_need_edit(request, id = None):
     else:
         need = None
 
+    foodbank = None
     if request.POST:
         form = NeedForm(request.POST, instance=need)
         if form.is_valid():
