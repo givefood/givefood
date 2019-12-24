@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, logging
+import re, logging, operator
 from givefood.const.calories import CALORIES
 from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
+
+from math import radians, cos, sin, asin, sqrt
+from geopy.distance import great_circle
 
 
 def parse_order_text(order_text):
@@ -120,3 +123,35 @@ def clean_foodbank_need_text(text):
     text = text.replace("This week, we would particularly appreciate donations of:","")
     text = text.strip()
     return text
+
+
+def find_foodbanks(lattlong, quantity = 10):
+
+    from givefood.models import Foodbank
+    foodbanks = Foodbank.objects.filter(is_closed = False)
+
+    latt = float(lattlong.split(",")[0])
+    long = float(lattlong.split(",")[1])
+
+    for foodbank in foodbanks:
+        foodbank.distance = distance_meters(foodbank.latt(), foodbank.long(), latt, long)
+
+    sorted_foodbanks = sorted(foodbanks, key=operator.attrgetter('distance'))
+
+    return sorted_foodbanks[:quantity]
+
+
+def distance_meters(lat1, lon1, lat2, lon2):
+    """
+    Calculate the great circle distance between two points
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+    # haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a))
+    meters = 6367000 * c
+    return meters
