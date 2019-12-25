@@ -134,12 +134,16 @@ def find_foodbanks(lattlong, quantity = 10):
     long = float(lattlong.split(",")[1])
 
     for foodbank in foodbanks:
-        foodbank.distance = distance_meters(foodbank.latt(), foodbank.long(), latt, long)
+        foodbank.distance_m = distance_meters(foodbank.latt(), foodbank.long(), latt, long)
+        foodbank.distance_mi = miles(foodbank.distance_m)
 
-    sorted_foodbanks = sorted(foodbanks, key=operator.attrgetter('distance'))
+    sorted_foodbanks = sorted(foodbanks, key=operator.attrgetter('distance_m'))
 
     return sorted_foodbanks[:quantity]
 
+
+def miles(meters):
+ return meters*0.000621371192
 
 def distance_meters(lat1, lon1, lat2, lon2):
     """
