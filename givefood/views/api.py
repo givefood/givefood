@@ -18,6 +18,7 @@ def api_foodbanks(request):
         response_list.append({
             "name":foodbank.name,
             "distance":int(foodbank.distance),
+            "url":foodbank.url,
             "needs":foodbank.latest_need_text(),
             "updated":str(foodbank.latest_need_date())
         })
