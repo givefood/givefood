@@ -25,17 +25,22 @@
         <dd>{{ need.modified }}</dd>
         <dt>ID</dt>
         <dd>{{ need.need_id }}</dd>
-        <dt>Distill ID</dt>
-        <dd>{{ need.distill_id }}</dd>
+        {% if need.distill_id %}
+          <dt>Distill ID</dt>
+          <dd>{{ need.distill_id }}</dd>
+        {% endif %}
         <dt>Foodbank</dt>
         <dd>
           {% if need.foodbank %}
-            <a href="{% url 'admin_foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a></dd>
+            <a href="{% url 'admin_foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a>
           {% else %}
             Unknown
           {% endif %}
-        <dt>URL</dt>
-        <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
+        </dd>
+        {% if need.uri %}
+          <dt>URL</dt>
+          <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
+        {% endif %}
       </dl>
 
       <br>
