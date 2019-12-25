@@ -6,7 +6,7 @@ if (!navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(success, error);
 }
 function error() {
-  status.textContent = 'Unable to retrieve your location';
+  status.textContent = 'Sorry. Unable to retrieve your location.';
 }
 function success(position) {
   latt  = position.coords.latitude;
@@ -19,18 +19,17 @@ function success(position) {
   oReq.send();
 }
 function api_response() {
-  table_html = "<table class='table'>"
-  table_html += "<tr><th>Name</th><th>Distance</th><th>What They Need</th><th>Updated</th></tr>"
+  table_html = "<table class='table'>";
+  table_html += "<tr><th>Name</th><th>Distance</th><th>What They Need</th><th>Updated</th></tr>";
   console.log(this.response);
   for (i in this.response) {
-    console.log(this.response[i].name)
-    table_html += "<tr>"
-    table_html += "<td><a href='" + this.response[i].url + "'>" + this.response[i].name + "</a></td>"
-    table_html += "<td>" + this.response[i].distance_mi + "mi</td>"
-    table_html += "<td>" + this.response[i].needs.replace(/\n/g, '<br>') + "</td>"
-    table_html += "<td>" + this.response[i].updated_text + " ago</td>"
-    table_html += "</tr>"
+    table_html += "<tr>";
+    table_html += "<td><a href='" + this.response[i].url + "'>" + this.response[i].name + "</a></td>";
+    table_html += "<td>" + this.response[i].distance_mi + "mi</td>";
+    table_html += "<td>" + this.response[i].needs.replace(/\n/g, '<br>') + "</td>";
+    table_html += "<td>" + this.response[i].updated_text + " ago</td>";
+    table_html += "</tr>";
   }
-  table_html += "</table>"
-  document.querySelector('#thecontent').innerHTML = table_html
+  table_html += "</table>";
+  document.querySelector('#thecontent').innerHTML = table_html;
 }
