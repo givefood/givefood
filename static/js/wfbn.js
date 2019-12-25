@@ -25,7 +25,7 @@ function api_response() {
   for (i in this.response) {
     console.log(this.response[i].name)
     table_html += "<tr>"
-    table_html += "<td>" + this.response[i].name + "</td>"
+    table_html += "<td><a href='" + this.response[i].url + "'>" + this.response[i].name + "</a></td>"
     table_html += "<td>" + this.response[i].distance_mi + "mi</td>"
     table_html += "<td>" + this.response[i].needs.replace(/\n/g, '<br>') + "</td>"
     table_html += "<td>" + this.response[i].updated_text + " ago</td>"
