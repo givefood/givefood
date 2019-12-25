@@ -142,6 +142,7 @@ def public_gen_annual_report(request, year):
     return render_to_response("public/annual_report.html", template_vars)
 
 
+@cache_page(60*10)
 def public_what_food_banks_need(request):
 
     template_vars = {}
