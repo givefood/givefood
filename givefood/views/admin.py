@@ -29,6 +29,9 @@ def admin_index(request):
         foodbanks = Foodbank.objects.all().order_by("-last_social_media_check")
     total_foodbanks = len(foodbanks)
 
+    needs = FoodbankChange.objects.all()
+    total_needs = len(needs)
+
     total_weight = 0
     total_calories = 0
     total_items = 0
@@ -65,6 +68,7 @@ def admin_index(request):
         "total_orders":total_orders,
         "total_cost":total_cost,
         "total_foodbanks":total_foodbanks,
+        "total_needs":total_needs,
         "foodbanks":foodbanks,
         "today_orders":today_orders,
         "upcoming_orders":upcoming_orders,
