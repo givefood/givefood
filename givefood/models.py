@@ -57,6 +57,9 @@ class Foodbank(models.Model):
     def long(self):
         return float(self.latt_long.split(",")[1])
 
+    def full_address(self):
+        return "%s\r\n%s" % (self.address, self.postcode)
+
     def country_flag(self):
         if self.country == "Scotland":
             return "🏴󠁧󠁢󠁳󠁣󠁴󠁿"

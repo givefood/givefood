@@ -19,6 +19,8 @@ def api_foodbanks(request):
             "name":foodbank.name,
             "distance":int(foodbank.distance),
             "url":foodbank.url,
+            "phone":foodbank.phone_number,
+            "address":foodbank.full_address(),
             "needs":foodbank.latest_need_text(),
             "updated":str(foodbank.latest_need_date())
         })
