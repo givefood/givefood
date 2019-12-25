@@ -102,6 +102,9 @@
 
     {% if foodbank.orders %}
       <div class="column">
+        {% if not foodbank.needs %}
+          <a href="{% url "admin_newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
+        {% endif %}
         <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
