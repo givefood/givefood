@@ -143,7 +143,8 @@ def find_foodbanks(lattlong, quantity = 10):
 
 
 def miles(meters):
- return meters*0.000621371192
+    return meters*0.000621371192
+
 
 def distance_meters(lat1, lon1, lat2, lon2):
     """
@@ -159,3 +160,7 @@ def distance_meters(lat1, lon1, lat2, lon2):
     c = 2 * asin(sqrt(a))
     meters = 6367000 * c
     return meters
+
+
+def lattlong_from_postcode(postcode):
+    pass
