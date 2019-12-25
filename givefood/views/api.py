@@ -28,6 +28,7 @@ def api_foodbanks(request):
             "phone":foodbank.phone_number,
             "address":foodbank.full_address(),
             "needs":foodbank.latest_need_text(),
+            "number_needs":foodbank.latest_need_text().count('\n'),
             "updated":str(foodbank.latest_need_date()),
             "updated_text":timesince(foodbank.latest_need_date()),
         })
