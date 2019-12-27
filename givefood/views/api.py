@@ -33,6 +33,7 @@ def api_foodbanks(request):
             "distance_m":int(foodbank.distance_m),
             "distance_mi":round(foodbank.distance_mi,2),
             "url":foodbank.url,
+            "shopping_list_url":foodbank.shopping_list_url,
             "phone":foodbank.phone_number,
             "address":foodbank.full_address(),
             "needs":foodbank.latest_need_text(),
