@@ -1,12 +1,29 @@
 {% extends "public/page.html" %}
 
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css">
+{% endblock %}
+
 {% block title %}What Foodbanks Need - Give Food{% endblock %}
 
 {% block body %}
 
   <div class="columns is-centered">
     <div class="column is-three-quarters">
-      <h1><a href="/">Give Food</a> <span>What Food Banks Need</span></h1>
+      <h1><a href="/">Give Food</a></h1>
+      <p>We check {{ no_foodbanks }} food banks around the UK for what they need every two hours. Find out what a foodbank near you needs...</p>
+      <form action="" method="get" id="postcodeform" {% if not postcode %}style="display:none"{% endif %}>
+        <div class="field is-grouped">
+          <p class="control is-expanded">
+            <input class="input" type="text" placeholder="Postcode" minlength="5" maxlength="8" name="postcode" value="{{ postcode }}">
+          </p>
+          <p class="control">
+            <a class="button is-info">
+              Go
+            </a>
+          </p>
+        </div>
+      </form>
       <div id="thecontent"><p id="status"></p></div>
     </div>
   </div>

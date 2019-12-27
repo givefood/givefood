@@ -1,7 +1,10 @@
 import json
 
+from google.appengine.api import urlfetch
+
 from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.timesince import timesince
+
 from givefood.func import find_foodbanks
 
 
@@ -14,7 +17,12 @@ def api_foodbanks(request):
         return HttpResponseForbidden()
 
     if postcode and not lattlong:
-        pass
+        pc_api_url = "https://api.postcodes.io/postcodes/%s" % (postcode)
+        pc_result = urlfetch.fetch(pc_api_url)
+        if pc_result.status_code == 200:
+            pc_result_json = json.loads(pc_result.content)
+            lattlong = "%s,%s" % (pc_result_json["result"]["latitude"],pc_result_json["result"]["longitude"])
+
 
     foodbanks = find_foodbanks(lattlong, 10)
     response_list = []

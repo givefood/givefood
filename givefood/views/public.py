@@ -145,7 +145,14 @@ def public_gen_annual_report(request, year):
 @cache_page(60*10)
 def public_what_food_banks_need(request):
 
-    template_vars = {}
+    foodbanks = Foodbank.objects.all()
+    no_foodbanks = len(foodbanks)
+    postcode = request.GET.get("postcode","")
+
+    template_vars = {
+        "postcode":postcode,
+        "no_foodbanks":no_foodbanks,
+    }
     return render_to_response("public/wfbn.html", template_vars)
 
 
