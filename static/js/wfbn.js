@@ -26,9 +26,9 @@ function success(position) {
   oReq.responseType = 'json';
   oReq.open("GET", api_url);
   oReq.send();
+  document.querySelector('#postcodeform').style.display = "none"
 }
 function api_response() {
-  document.querySelector('#postcodeform').style.display = "none"
   table_html = "<table class='table needs'>";
   console.log(this.response);
   for (i in this.response) {
