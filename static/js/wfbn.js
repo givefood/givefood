@@ -10,6 +10,7 @@ function error() {
       status.textContent = 'Sorry, we can\t find your location automatically. Put your postcode in here instead.';
   }
   document.querySelector('#postcodeform').style.display = ""
+  status.textContent = 'Getting foodbanks...';
   api_url = '/api/foodbanks/?postcode=' + document.querySelector('#postcodeform input').value
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", api_response);
@@ -20,6 +21,7 @@ function error() {
 function success(position) {
   latt  = position.coords.latitude;
   long = position.coords.longitude;
+  status.textContent = 'Getting foodbanks...';
   api_url = '/api/foodbanks/?lattlong=' + latt + ',' + long
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", api_response);
