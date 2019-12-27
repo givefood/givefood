@@ -30,7 +30,6 @@ function success(position) {
 }
 function api_response() {
   table_html = "<table class='table needs'>";
-  console.log(this.response);
   for (i in this.response) {
     table_html += "<tr>";
     table_html += "<td><a href='" + this.response[i].shopping_list_url + "'>" + this.response[i].name + "</a><br><span class='distance'>" + this.response[i].distance_mi + "mi</span><br><span class='updated'>" + this.response[i].updated_text + " ago</span></td>";
