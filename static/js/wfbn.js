@@ -33,7 +33,7 @@ function api_response() {
   console.log(this.response);
   for (i in this.response) {
     table_html += "<tr>";
-    table_html += "<td><a href='" + this.response[i].shopping_list_url + "'>" + this.response[i].name + "</a><br><span class='distance'>" + this.response[i].distance_mi + "mi</span></td>";
+    table_html += "<td><a href='" + this.response[i].shopping_list_url + "'>" + this.response[i].name + "</a><br><span class='distance'>" + this.response[i].distance_mi + "mi</span><br><span class='updated'>" + this.response[i].updated_text + " ago</span></td>";
     table_html += "<td>";
     if (this.response[i].number_needs > 0) {
       table_html += "<details><summary>" + this.response[i].number_needs + " items</summary>" + this.response[i].needs.replace(/\n/g, '<br>') + "</summary>";
@@ -41,7 +41,6 @@ function api_response() {
       table_html += "Nothing right now, thanks"
     }
     table_html += "</td>";
-    table_html += "<td>" + this.response[i].updated_text + " ago</td>";
     table_html += "</tr>";
   }
   table_html += "</table>";

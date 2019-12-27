@@ -5,6 +5,6 @@
 .needs {
   width:100%;
 }
-.distance {
+.distance, .updated {
   font-size:0.8em;
 }
