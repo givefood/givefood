@@ -1,0 +1,45 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Needs - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Needs</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Published?</th>
+          <th>ID</th>
+          <th>Foodbank</th>
+          <th>Created</th>
+          <th>Modified</th>
+        </tr>
+        {% for need in needs %}
+          <tr>
+            <td>
+              {% if need.published %}
+                <span style="color:green">✓</span>
+              {% else %}
+                <span style="color:red">x</span>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url "admin_need" need.need_id %}">{{ need.need_id }}</a>
+            </td>
+            <td>{{ need.foodbank }}</td>
+            <td>{{ need.created }}</td>
+            <td>{{ need.modified }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

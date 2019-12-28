@@ -122,6 +122,17 @@ def admin_orders(request):
     return render_to_response("admin/orders.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_needs(request):
+
+    needs = FoodbankChange.objects.all().order_by("-created")
+
+    template_vars = {
+        "needs":needs,
+        "section":"needs",
+    }
+    return render_to_response("admin/needs.html", template_vars, context_instance=RequestContext(request))
+
+
 def admin_order(request, id):
 
     order = get_object_or_404(Order, order_id = id)
