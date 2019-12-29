@@ -149,7 +149,7 @@ class Order(models.Model):
     foodbank = models.ForeignKey(Foodbank)
     foodbank_name = models.CharField(max_length=50, editable=False)
     items_text = models.TextField()
-    need = models.ForeignKey("FoodbankChange")
+    need = models.ForeignKey("FoodbankChange", null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
