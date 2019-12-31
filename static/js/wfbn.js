@@ -7,6 +7,7 @@ const working_text = "Getting nearby foodbanks...";
 const requesting_loc_text = "Requesting your location...";
 const no_loc_apology_text = 'Sorry, we tried to get your location automatically but couldn\'t. Put your postcode in here instead.';
 const nothing_needed_text = 'Nothing needed right now, thanks';
+const postcode_error_text = 'Sorry, we didn\'t understand that. Is that postcode valid?';
 
 if (!navigator.geolocation) {
   display_postcode_form();
@@ -49,6 +50,11 @@ function api_request(url) {
 }
 
 function api_response() {
+
+  if (this.status == 500) {
+    status.textContent = postcode_error_text;
+    return false;
+  }
 
   template = document.querySelector('#fb_row');
   table = document.querySelector('table');
