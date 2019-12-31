@@ -6,6 +6,7 @@ from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.timesince import timesince
 
 from givefood.func import find_foodbanks
+from givefood.models import ApiFoodbankSearch
 
 
 def api_foodbanks(request):
@@ -23,9 +24,22 @@ def api_foodbanks(request):
             pc_result_json = json.loads(pc_result.content)
             lattlong = "%s,%s" % (pc_result_json["result"]["latitude"],pc_result_json["result"]["longitude"])
 
-
     foodbanks = find_foodbanks(lattlong, 10)
     response_list = []
+
+    if postcode:
+        query_type = "postcode"
+        query = postcode
+    else:
+        query_type = "lattlong"
+        query = lattlong
+
+    api_hit = ApiFoodbankSearch(
+        query_type = query_type,
+        query = query,
+        nearest_foodbank = foodbanks[0].distance_m,
+    )
+    api_hit.save()
 
     for foodbank in foodbanks:
         response_list.append({

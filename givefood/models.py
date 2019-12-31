@@ -312,3 +312,11 @@ class FoodbankChange(models.Model):
             self.need_id = need_id
 
         super(FoodbankChange, self).save(*args, **kwargs)
+
+
+class ApiFoodbankSearch(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    query_type = models.CharField(max_length=8)
+    query = models.CharField(max_length=255)
+    nearest_foodbank = models.IntegerField()
