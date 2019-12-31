@@ -1,49 +1,81 @@
-const status = document.querySelector('#status');
+const status = document.querySelector("#status");
+const postcode_form = document.querySelector("#postcodeform");
+const postcode_field = document.querySelector("#postcodeform input");
+const api_url_root = "/api/foodbanks/";
+
+const working_text = "Getting nearby foodbanks...";
+const requesting_loc_text = "Requesting your location...";
+const no_loc_apology_text = 'Sorry, we tried to get your location automatically but couldn\'t. Put your postcode in here instead.';
+const nothing_needed_text = 'Nothing needed right now, thanks';
+
 if (!navigator.geolocation) {
-  error()
+  display_postcode_form();
 } else {
-  status.textContent = 'Requesting your location...';
-  navigator.geolocation.getCurrentPosition(success, error);
+  status.textContent = requesting_loc_text;
+  navigator.geolocation.getCurrentPosition(
+    do_lattlong,
+    display_postcode_form
+  );
 }
-function error() {
-  if (document.querySelector('#postcodeform input').value == '') {
-      status.textContent = 'Sorry, we can\t find your location automatically. Put your postcode in here instead.';
-  }
-  document.querySelector('#postcodeform').style.display = ""
-  status.textContent = 'Getting foodbanks...';
-  api_url = '/api/foodbanks/?postcode=' + document.querySelector('#postcodeform input').value
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", api_response);
-  oReq.responseType = 'json';
-  oReq.open("GET", api_url);
-  oReq.send();
+
+function display_postcode_form() {
+  status.textContent = no_loc_apology_text;
+  postcode_form.addEventListener("submit", do_postcode);
+  postcode_form.style.display = "";
 }
-function success(position) {
+
+function do_postcode(event) {
+  postcode = postcode_field.value;
+  api_url = api_url_root + "?postcode=" + postcode;
+  api_request(api_url);
+  event.preventDefault();
+}
+
+function do_lattlong(position) {
   latt  = position.coords.latitude;
   long = position.coords.longitude;
-  status.textContent = 'Getting foodbanks...';
-  api_url = '/api/foodbanks/?lattlong=' + latt + ',' + long
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", api_response);
-  oReq.responseType = 'json';
-  oReq.open("GET", api_url);
-  oReq.send();
-  document.querySelector('#postcodeform').style.display = "none"
+  api_url = api_url_root + "?lattlong=" + latt + ',' + long;
+  api_request(api_url);
+  postcode_form.style.display = "none";
 }
+
+function api_request(url) {
+  status.textContent = working_text;
+  var fb_req = new XMLHttpRequest();
+  fb_req.addEventListener("load", api_response);
+  fb_req.responseType = "json";
+  fb_req.open("GET", url);
+  fb_req.send();
+}
+
 function api_response() {
-  table_html = "<table class='table needs'>";
+
+  template = document.querySelector('#fb_row');
+  table = document.querySelector('table');
+
   for (i in this.response) {
-    table_html += "<tr>";
-    table_html += "<td><a href='" + this.response[i].shopping_list_url + "'>" + this.response[i].name + "</a><br><span class='distance'>" + this.response[i].distance_mi + "mi away</span></td>";
-    table_html += "<td class='need_detail'>";
-    if (this.response[i].number_needs > 0 && this.response[i].needs != "Nothing") {
-      table_html += "<details><summary>" + this.response[i].number_needs + " items</summary>" + this.response[i].needs.replace(/\n/g, '<br>') + "</summary></details><div class='updated'>Updated " + this.response[i].updated_text + " ago</div>";
+
+    url = this.response[i].shopping_list_url;
+    name = this.response[i].name;
+    distance = this.response[i].distance_mi;
+    number_needs = this.response[i].number_needs;
+    needs = this.response[i].needs;
+    needs_html = needs.replace(/\n/g, '<br>');
+    updated_text = this.response[i].updated_text;
+
+    currentrow = document.importNode(template.content, true);
+    currentrow.querySelector("a").href = url;
+    currentrow.querySelector("a").textContent = name;
+    currentrow.querySelector(".distance span").textContent = distance;
+    if (number_needs > 0 && needs != "Nothing") {
+      currentrow.querySelector("summary").textContent = number_needs + " items";
+      currentrow.querySelector("details p").innerHTML = needs_html;
     } else {
-      table_html += "Nothing right now, thanks"
+      currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
     }
-    table_html += "</td>";
-    table_html += "</tr>";
+    currentrow.querySelector(".updated span").textContent = updated_text;
+    table.appendChild(currentrow);
   }
-  table_html += "</table>";
-  document.querySelector('#thecontent').innerHTML = table_html;
+
+  status.innerHTML = "";
 }

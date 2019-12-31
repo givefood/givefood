@@ -147,10 +147,8 @@ def public_what_food_banks_need(request):
 
     foodbanks = Foodbank.objects.all()
     no_foodbanks = len(foodbanks)
-    postcode = request.GET.get("postcode","")
 
     template_vars = {
-        "postcode":postcode,
         "no_foodbanks":no_foodbanks,
     }
     return render_to_response("public/wfbn.html", template_vars)

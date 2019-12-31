@@ -2,6 +2,9 @@
   padding-top:50px;
   margin-bottom:20px;
 }
+.foodbank {
+  font-size:1.2em;
+}
 .needs {
   width:100%;
 }
@@ -10,4 +13,10 @@
 }
 .need_detail {
   width:80%;
+}
+summary {
+    cursor:pointer;
+}
+details p {
+  margin-bottom:5px;
 }

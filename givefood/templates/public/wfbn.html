@@ -15,16 +15,38 @@
       <form action="" method="get" id="postcodeform" {% if not postcode %}style="display:none"{% endif %}>
         <div class="field is-grouped">
           <p class="control is-expanded">
-            <input class="input" type="text" placeholder="Postcode" minlength="5" maxlength="8" name="postcode" value="{{ postcode }}">
+            <input class="input" type="text" placeholder="Postcode" minlength="5" maxlength="8" name="postcode">
           </p>
           <p class="control">
             <input type="submit" value="Go" class="button is-info">
           </p>
         </div>
       </form>
-      <div id="thecontent"><p id="status"></p></div>
+      <p id="status"></p>
+      <div id="theresults">
+        <table class="table needs">
+        </table>
+      </div>
     </div>
   </div>
+
+  <template id="fb_row">
+    <tr>
+      <td>
+        <a href="" class="foodbank"></a>
+        <div class="distance"><span></span>mi away</div>
+      </td>
+      <td class="need_detail">
+        <div class="fb_needs">
+          <details>
+            <summary></summary>
+            <p></p>
+          </details>
+        </div>
+        <div class="updated">Updated <span></span> ago</div>
+      </td>
+    </tr>
+  </template>
 
   <script src="/static/js/wfbn.js?ef314923">
 
