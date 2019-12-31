@@ -61,13 +61,15 @@ function api_response() {
 
   for (i in this.response) {
 
-    url = this.response[i].shopping_list_url;
-    name = this.response[i].name;
-    distance = this.response[i].distance_mi;
-    number_needs = this.response[i].number_needs;
-    needs = this.response[i].needs;
+    foodbank = this.response[i]
+
+    url = foodbank.shopping_list_url;
+    name = foodbank.name;
+    distance = foodbank.distance_mi;
+    number_needs = foodbank.number_needs;
+    needs = foodbank.needs;
     needs_html = needs.replace(/\n/g, '<br>');
-    updated_text = this.response[i].updated_text;
+    updated_text = foodbank.updated_text;
 
     currentrow = document.importNode(template.content, true);
     currentrow.querySelector("a").href = url;

@@ -17,7 +17,7 @@
     <div class="column is-three-quarters">
       <h1><a href="/">Give Food</a></h1>
       <p>We automatically check what's needed at {{ no_foodbanks }} UK food banks. Find out what food banks near you are asking for here...</p>
-      <form action="" method="get" id="postcodeform" {% if not postcode %}style="display:none"{% endif %}>
+      <form action="#" method="get" id="postcodeform">
         <div class="field is-grouped">
           <p class="control is-expanded">
             <input class="input" type="text" placeholder="Postcode" minlength="5" maxlength="8" name="postcode">
@@ -29,8 +29,7 @@
       </form>
       <p id="status"></p>
       <div id="theresults">
-        <table class="table needs">
-        </table>
+        <table class="table needs"></table>
       </div>
     </div>
   </div>
@@ -38,7 +37,7 @@
   <template id="fb_row">
     <tr>
       <td>
-        <a href="" class="foodbank"></a>
+        <a href="#" class="foodbank"></a>
         <div class="distance"><span></span>mi away</div>
       </td>
       <td class="need_detail">
@@ -53,6 +52,6 @@
     </tr>
   </template>
 
-  <script src="/static/js/wfbn.js">
+  <script src="/static/js/wfbn.js"></script>
 
 {% endblock %}

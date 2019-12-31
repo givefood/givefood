@@ -14,8 +14,11 @@
 .need_detail {
   width:80%;
 }
+#postcodeform {
+  display:none;
+}
 summary {
-    cursor:pointer;
+  cursor:pointer;
 }
 details p {
   margin-bottom:5px;
