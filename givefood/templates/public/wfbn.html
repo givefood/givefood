@@ -2,6 +2,11 @@
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="What Food Banks Need">
+  <meta property="og:description" content="Use Give Food's tool to find what food banks near you are asking to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
 {% endblock %}
 
 {% block title %}What Foodbanks Need - Give Food{% endblock %}
@@ -11,7 +16,7 @@
   <div class="columns is-centered">
     <div class="column is-three-quarters">
       <h1><a href="/">Give Food</a></h1>
-      <p>We automatically check what's needed at {{ no_foodbanks }} UK food banks. Find out what the food banks near you are asking for here...</p>
+      <p>We automatically check what's needed at {{ no_foodbanks }} UK food banks. Find out what food banks near you are asking for here...</p>
       <form action="" method="get" id="postcodeform" {% if not postcode %}style="display:none"{% endif %}>
         <div class="field is-grouped">
           <p class="control is-expanded">
