@@ -289,6 +289,7 @@ class FoodbankChange(models.Model):
     need_id = models.CharField(max_length=8, editable=False)
 
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
+    foodbank_name = models.CharField(max_length=50, editable=False, null=True, blank=True)
 
     distill_id = models.CharField(max_length=250, null=True, blank=True)
     name = models.CharField(max_length=250, null=True, blank=True)
@@ -300,6 +301,9 @@ class FoodbankChange(models.Model):
         return "%s - %s (%s)" % (self.foodbank, self.created.strftime("%b %d %Y %H:%M:%S"), self.need_id)
 
     def save(self, *args, **kwargs):
+
+        if self.foodbank:
+            self.foodbank_name = self.foodbank.name
 
         self.change_text = clean_foodbank_need_text(self.change_text)
 

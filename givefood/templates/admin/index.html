@@ -27,10 +27,8 @@
               {% endif %}
             </td>
             <td>
-              {% if need.foodbank %}
-                <a href="{% url 'admin_foodbank' need.foodbank.slug %}">
-                  {{ need.foodbank }}
-                </a>
+              {% if need.foodbank_name %}
+                  {{ need.foodbank_name }}
               {% else %}
                 Unknown
               {% endif %}
