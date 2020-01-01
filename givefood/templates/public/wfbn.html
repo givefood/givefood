@@ -1,7 +1,7 @@
 {% extends "public/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <link rel="stylesheet" href="/static/css/wfbn.css?{{ version }}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFood_org_uk">
   <meta property="og:title" content="What Food Banks Need">
@@ -55,5 +55,5 @@
 {% endblock %}
 
 {% block script %}
-  <script src="/static/js/wfbn.js"></script>
+  <script src="/static/js/wfbn.js?{{ version }}"></script>
 {% endblock %}

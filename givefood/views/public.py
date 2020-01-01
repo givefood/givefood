@@ -145,11 +145,14 @@ def public_gen_annual_report(request, year):
 @cache_page(60*10)
 def public_what_food_banks_need(request):
 
+    version = "7f4c37f9"
+
     foodbanks = Foodbank.objects.all()
     no_foodbanks = len(foodbanks)
 
     template_vars = {
         "no_foodbanks":no_foodbanks,
+        "version":version,
     }
     return render_to_response("public/wfbn.html", template_vars)
 
