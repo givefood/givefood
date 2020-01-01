@@ -142,7 +142,7 @@ def public_gen_annual_report(request, year):
     return render_to_response("public/annual_report.html", template_vars)
 
 
-@cache_page(60*10)
+@cache_page(60*2)
 def public_what_food_banks_need(request):
 
     version = "7f4c37f9"
