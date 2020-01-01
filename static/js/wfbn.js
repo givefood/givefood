@@ -5,7 +5,7 @@ const api_url_root = "/api/foodbanks/";
 
 const working_text = "Getting nearby foodbanks...";
 const requesting_loc_text = "Requesting your location...";
-const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Put your postcode in here instead."";
+const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Put your postcode in here instead.";
 const nothing_needed_text = "Nothing right now, thanks";
 const postcode_error_text = "Sorry, we didn't understand that. Is that postcode valid?";
 
@@ -68,7 +68,7 @@ function api_response() {
     distance = foodbank.distance_mi;
     number_needs = foodbank.number_needs;
     needs = foodbank.needs;
-    needs_html = needs.replace(/\n/g, "<br>"");
+    needs_html = needs.replace(/\n/g, "<br>");
     updated_text = foodbank.updated_text;
 
     currentrow = document.importNode(template.content, true);
