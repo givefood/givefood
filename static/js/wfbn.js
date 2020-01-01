@@ -22,7 +22,7 @@ if (!navigator.geolocation) {
 function display_postcode_form() {
   status.textContent = no_loc_apology_text;
   postcode_form.addEventListener("submit", do_postcode);
-  postcode_form.style.display = "";
+  postcode_form.style.display = "block";
 }
 
 function do_postcode(event) {
