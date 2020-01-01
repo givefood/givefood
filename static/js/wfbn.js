@@ -6,7 +6,7 @@ const api_url_root = "/api/foodbanks/";
 const working_text = "Getting nearby foodbanks...";
 const requesting_loc_text = "Requesting your location...";
 const no_loc_apology_text = 'Sorry, we tried to get your location automatically but couldn\'t. Put your postcode in here instead.';
-const nothing_needed_text = 'Nothing needed right now, thanks';
+const nothing_needed_text = 'Nothing right now, thanks';
 const postcode_error_text = 'Sorry, we didn\'t understand that. Is that postcode valid?';
 
 if (!navigator.geolocation) {
