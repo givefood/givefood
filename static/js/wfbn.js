@@ -5,9 +5,9 @@ const api_url_root = "/api/foodbanks/";
 
 const working_text = "Getting nearby foodbanks...";
 const requesting_loc_text = "Requesting your location...";
-const no_loc_apology_text = 'Sorry, we tried to get your location automatically but couldn\'t. Put your postcode in here instead.';
-const nothing_needed_text = 'Nothing right now, thanks';
-const postcode_error_text = 'Sorry, we didn\'t understand that. Is that postcode valid?';
+const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn\'t. Put your postcode in here instead."";
+const nothing_needed_text = "Nothing right now, thanks";
+const postcode_error_text = "Sorry, we didn\'t understand that. Is that postcode valid?";
 
 if (!navigator.geolocation) {
   display_postcode_form();
@@ -35,7 +35,7 @@ function do_postcode(event) {
 function do_lattlong(position) {
   latt  = position.coords.latitude;
   long = position.coords.longitude;
-  api_url = api_url_root + "?lattlong=" + latt + ',' + long;
+  api_url = api_url_root + "?lattlong=" + latt + "," + long;
   api_request(api_url);
   postcode_form.style.display = "none";
 }
@@ -56,19 +56,19 @@ function api_response() {
     return false;
   }
 
-  template = document.querySelector('#fb_row');
-  table = document.querySelector('table');
+  template = document.querySelector("#fb_row");
+  table = document.querySelector("table");
 
   for (i in this.response) {
 
-    foodbank = this.response[i]
+    foodbank = this.response[i];
 
     url = foodbank.shopping_list_url;
     name = foodbank.name;
     distance = foodbank.distance_mi;
     number_needs = foodbank.number_needs;
     needs = foodbank.needs;
-    needs_html = needs.replace(/\n/g, '<br>');
+    needs_html = needs.replace(/\n/g, "<br>"");
     updated_text = foodbank.updated_text;
 
     currentrow = document.importNode(template.content, true);
