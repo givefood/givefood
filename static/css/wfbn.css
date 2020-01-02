@@ -9,6 +9,9 @@
 .needs {
   width:100%;
 }
+.needs td {
+  padding:0.75em 0.75em 0.75em 0;
+}
 .distance, .updated {
   font-size:0.8em;
 }
