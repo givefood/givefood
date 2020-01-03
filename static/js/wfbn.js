@@ -7,7 +7,7 @@ const working_text = "<img src='/static/img/loading.gif' alt='Loading'> Getting 
 const requesting_loc_text = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
 const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Put your postcode in here instead.";
 const nothing_needed_text = "Nothing right now, thanks";
-const postcode_error_text = "Sorry, we didn't understand that. Is that postcode valid?";
+const postcode_error_text = "Sorry, we didn't understand that. Is the postcode valid?";
 
 if (!navigator.geolocation) {
   display_postcode_form();
