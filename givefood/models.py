@@ -298,7 +298,7 @@ class FoodbankChange(models.Model):
     published = models.BooleanField(default=False)
 
     def __str__(self):
-        return "%s - %s (%s)" % (self.foodbank, self.created.strftime("%b %d %Y %H:%M:%S"), self.need_id)
+        return "%s - %s (%s)" % (self.foodbank_name, self.created.strftime("%b %d %Y %H:%M:%S"), self.need_id)
 
     def save(self, *args, **kwargs):
 
