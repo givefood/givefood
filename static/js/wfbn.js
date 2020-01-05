@@ -3,8 +3,8 @@ const postcode_form = document.querySelector("#postcodeform");
 const postcode_field = document.querySelector("#postcodeform input");
 const api_url_root = "/api/foodbanks/";
 
-const working_text = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
-const requesting_loc_text = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
+const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
+const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
 const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Put your postcode in here instead.";
 const nothing_needed_text = "Nothing right now, thanks";
 const postcode_error_text = "Sorry, we didn't understand that. Is the postcode valid?";
@@ -12,7 +12,7 @@ const postcode_error_text = "Sorry, we didn't understand that. Is the postcode v
 if (!navigator.geolocation) {
   display_postcode_form();
 } else {
-  status.innerHTML = requesting_loc_text;
+  status.innerHTML = requesting_loc_html;
   navigator.geolocation.getCurrentPosition(
     do_lattlong,
     display_postcode_form
@@ -41,7 +41,7 @@ function do_lattlong(position) {
 }
 
 function api_request(url) {
-  status.innerHTML = working_text;
+  status.innerHTML = working_html;
   var fb_req = new XMLHttpRequest();
   fb_req.addEventListener("load", api_response);
   fb_req.responseType = "json";
