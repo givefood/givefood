@@ -11,7 +11,7 @@ class FoodbankForm(ModelForm):
 
 class OrderForm(ModelForm):
     foodbank = ModelChoiceField(queryset=Foodbank.objects.filter(is_closed = False).order_by('name'))
-    need = ModelChoiceField(queryset=FoodbankChange.objects.all().order_by('-created'))
+    need = ModelChoiceField(queryset=FoodbankChange.objects.all().order_by('-created'), required=False)
     class Meta:
         model = Order
         fields = "__all__"
