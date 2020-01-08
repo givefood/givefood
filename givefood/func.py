@@ -121,6 +121,7 @@ def clean_foodbank_need_text(text):
     text = text.replace("Urgently needed items","")
     text = text.replace("This week, we would particularly appreciate donations of:","")
     text = text.replace("Items required this week","")
+    text = text.replace("Items that we are currently short of:","")
     text = text.strip()
     return text
 
