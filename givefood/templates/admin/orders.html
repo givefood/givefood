@@ -11,17 +11,20 @@
 
     <div class="column">
 
-      <!-- <form action="" method="get">
+      <div class="field is-pulled-right">
         <div class="control">
-          <label class="label">Country</label>
-          <div class="select">
-            <select>
-              <option>Select dropdown</option>
-              <option>With options</option>
+          <div class="select is-small">
+            <select onchange="javascript:window.location.href=this.value">
+              <option value="?sort=delivery_datetime"{% if sort = "delivery_datetime" %} selected{% endif %}>Delivery Date</option>
+              <option value="?sort=created"{% if sort = "created" %} selected{% endif %}>Created</option>
+              <option value="?sort=no_items"{% if sort = "no_items" %} selected{% endif %}>Items</option>
+              <option value="?sort=weight"{% if sort = "weight" %} selected{% endif %}>Weight</option>
+              <option value="?sort=calories"{% if sort = "calories" %} selected{% endif %}>Calories</option>
+              <option value="?sort=cost"{% if sort = "cost" %} selected{% endif %}>Cost</option>
             </select>
           </div>
         </div>
-      </form> -->
+      </div>
 
       <table class="table is-fullwidth is-hoverable">
         <tr>

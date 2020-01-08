@@ -119,9 +119,25 @@ def admin_foodbanks_christmascards(request):
 
 def admin_orders(request):
 
-    orders = Order.objects.all().order_by("-delivery_datetime")
+    sort_options = [
+        "delivery_datetime",
+        "created",
+        "no_items",
+        "weight",
+        "calories",
+        "cost",
+    ]
+    sort = request.GET.get("sort", "delivery_datetime")
+    if sort not in sort_options:
+        return HttpResponseForbidden()
+
+    sort_string = sort
+    sort = "-%s" % (sort)
+
+    orders = Order.objects.all().order_by(sort)
 
     template_vars = {
+        "sort":sort_string,
         "orders":orders,
         "section":"orders",
     }
