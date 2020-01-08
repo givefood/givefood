@@ -24,10 +24,12 @@ def admin_index(request):
         return HttpResponseForbidden()
 
     if foodbank_sort == "last_order":
-        foodbanks = Foodbank.objects.all().order_by("-last_order")
+        foodbanks = Foodbank.objects.all().order_by("-last_order")[:50]
     else:
-        foodbanks = Foodbank.objects.all().order_by("-last_social_media_check")
-    total_foodbanks = len(foodbanks)
+        foodbanks = Foodbank.objects.all().order_by("-last_social_media_check")[:50]
+
+    all_foodbanks = Foodbank.objects.all()
+    total_foodbanks = len(all_foodbanks)
 
     needs = FoodbankChange.objects.all()
     total_needs = len(needs)
