@@ -11,17 +11,17 @@
 
     <div class="column">
 
-      <!-- <form action="" method="get">
+      <div class="field is-pulled-right">
         <div class="control">
-          <label class="label">Country</label>
-          <div class="select">
-            <select>
-              <option>Select dropdown</option>
-              <option>With options</option>
+          <div class="select is-small">
+            <select onchange="javascript:window.location.href=this.value">
+              <option value="?sort=name"{% if sort = "name" %} selected{% endif %}>Alphabetical</option>
+              <option value="?sort=last_order"{% if sort = "last_order" %} selected{% endif %}>Last Order</option>
+              <option value="?sort=created"{% if sort = "created" %} selected{% endif %}>Created</option>
             </select>
           </div>
         </div>
-      </form> -->
+      </div>
 
       <table class="table is-fullwidth is-hoverable">
         <tr>

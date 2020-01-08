@@ -84,9 +84,23 @@ def admin_index(request):
 
 def admin_foodbanks(request):
 
-    foodbanks = Foodbank.objects.all().order_by("name")
+    sort_options = [
+        "name",
+        "last_order",
+        "created",
+    ]
+    sort = request.GET.get("sort", "name")
+    if sort not in sort_options:
+        return HttpResponseForbidden()
+
+    sort_string = sort
+    if sort != "name":
+        sort = "-%s" % (sort)
+
+    foodbanks = Foodbank.objects.all().order_by(sort)
 
     template_vars = {
+        "sort":sort_string,
         "foodbanks":foodbanks,
         "section":"foodbanks",
     }
