@@ -131,7 +131,7 @@ def clean_foodbank_need_text(text):
     ]
 
     for string_to_clean in to_clean:
-        text.replace(string_to_clean,"")
+        text = text.replace(string_to_clean,"")
     text = text.strip()
     return text
 
