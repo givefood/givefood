@@ -70,6 +70,16 @@
         {% endif %}
         <dt>Network</dt>
         <dd>{{ foodbank.network }}</dd>
+        <dt>Phone</dt>
+        <dd><a href="call:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
+      </dl>
+      <br>
+
+      <dl>
+        <dt>Created</dt>
+        <dd>{{ foodbank.created }}</dd>
+        <dt>Modified</dt>
+        <dd>{{ foodbank.modified}}</dd>
       </dl>
       <br>
 
