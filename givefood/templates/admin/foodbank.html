@@ -58,7 +58,7 @@
         <dd><a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url|truncatechars:20 }}</a></dd>
         {% if foodbank.facebook_page %}
           <dt>Facebook</dt>
-          <dd><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></dd>
+          <dd><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page|truncatechars:20 }}</a></dd>
         {% endif %}
         {% if foodbank.twitter_handle %}
           <dt>Twitter</dt>
