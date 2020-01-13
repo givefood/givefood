@@ -79,7 +79,7 @@ def admin_index(request):
         "needs":needs,
         "section":"home",
     }
-    return render_to_response("admin/index.html", template_vars)
+    return render_to_response("admin/index.html", template_vars, context_instance=RequestContext(request))
 
 
 def admin_foodbanks(request):

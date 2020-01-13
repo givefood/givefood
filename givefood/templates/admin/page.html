@@ -21,11 +21,21 @@
       <a class="navbar-item{% if section = "foodbanks" %} is-active{% endif %}" href="/admin/foodbanks/">Foodbanks</a>
       <a class="navbar-item{% if section = "orders" %} is-active{% endif %}" href="/admin/orders/">Orders</a>
       <a class="navbar-item{% if section = "map" %} is-active{% endif %}" href="/admin/map/">Map</a>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+            <input class="input" type="text" placeholder="Search Foodbanks" list="foodbank_names">
+        </div>
+      </div>
+
     </nav>
     <div class="main">
       {% block body %}{% endblock %}
     </div>
     <script src="/static/js/admin.js"></script>
     <script src="//instant.page/3.0.0" type="module" defer integrity="sha384-OeDn4XE77tdHo8pGtE1apMPmAipjoxUQ++eeJa6EtJCfHlvijigWiJpD7VDPWXV1"></script>
+    <datalist id="foodbank_names">
+      {% for foodbank in all_foodbanks %}<option value="{{ foodbank }}">{% endfor %}
+    </datalist>
 </body>
 </html>

@@ -72,6 +72,7 @@ TEMPLATES = [
                 "django.core.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "session_csrf.context_processor",
+                "givefood.context_processors.admin.all_foodbanks",
             ],
             'debug': True,
             'loaders': [
