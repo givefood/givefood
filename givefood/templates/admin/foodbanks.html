@@ -15,9 +15,9 @@
         <div class="control">
           <div class="select is-small">
             <select onchange="javascript:window.location.href=this.value">
-              <option value="?sort=name"{% if sort = "name" %} selected{% endif %}>Alphabetical</option>
-              <option value="?sort=last_order"{% if sort = "last_order" %} selected{% endif %}>Last Order</option>
-              <option value="?sort=created"{% if sort = "created" %} selected{% endif %}>Created</option>
+              <option value="?sort=name"{% if sort == "name" %} selected{% endif %}>Alphabetical</option>
+              <option value="?sort=last_order"{% if sort == "last_order" %} selected{% endif %}>Last Order</option>
+              <option value="?sort=created"{% if sort == "created" %} selected{% endif %}>Created</option>
             </select>
           </div>
         </div>
