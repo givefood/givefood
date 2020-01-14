@@ -76,7 +76,8 @@ function api_response() {
     currentrow.querySelector("a").textContent = name;
     currentrow.querySelector(".distance span").textContent = distance;
     if (number_needs > 0 && needs != "Nothing") {
-      currentrow.querySelector("summary").textContent = number_needs + " items";
+      if (number_needs > 1) {item_text = "items"} else {item_text = "item"};
+      currentrow.querySelector("summary").textContent = number_needs + " " + item_text;
       currentrow.querySelector("details p").innerHTML = needs_html;
     } else {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
