@@ -19,10 +19,6 @@
         <dd>{{ order.order_id }}
         <dt>Foodbank</dt>
         <dd><a href="{% url "admin_foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a></dd>
-        {% if order.need %}
-          <dt>Need</dt>
-          <dd><a href="{% url "admin_need" order.need.need_id %}">{{ order.need.need_id }}</a></dd>
-        {% endif %}
         <dt>Delivery hour</dt>
         <dd>{{ order.delivery_date|date:"D" }}, {{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
         <dt>Items</dt>
@@ -55,6 +51,10 @@
         <dt>Modified</dt>
         <dd>{{ order.modified }}</dd>
       </dl>
+      {% if order.need %}
+        <h2>Need <a href="{% url "admin_need" order.need.need_id %}">{{ order.need.need_id }}</a></h2>
+        <p>{{ order.need.change_text|linebreaksbr }}</p>
+      {% endif %}
       <h2>Notification Email</h2>
       <p>Sent: {{ order.notification_email_sent }}</p>
       <form action="{% url 'admin_order_send_notification' order.order_id %}" method="post">
