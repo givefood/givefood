@@ -72,6 +72,10 @@
         <dd>{{ foodbank.network }}</dd>
         <dt>Phone</dt>
         <dd><a href="call:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
+        {% if foodbank.secondary_phone_number %}
+          <dt>Secondary Phone</dt>
+          <dd><a href="call:{{ foodbank.secondary_phone_number }}">{{ foodbank.secondary_phone_number }}</a></dd>
+        {% endif %}
       </dl>
       <br>
 
