@@ -33,7 +33,12 @@
                 Unknown
               {% endif %}
             </td>
-            <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
+            <td class="is-size-7">
+              <details>
+                  <summary>Items</summary>
+                  {{ need.change_text|linebreaksbr }}
+              </details>
+            </td>
             <td>
               <a href="{% url "admin_need" need.need_id %}">
                 {{ need.created|timesince }} ago

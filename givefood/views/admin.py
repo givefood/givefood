@@ -60,7 +60,7 @@ def admin_index(request):
     prev_order_threshold = datetime.now() - timedelta(days=1)
     prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:20]
 
-    needs = FoodbankChange.objects.all().order_by("-created")[:20]
+    needs = FoodbankChange.objects.all().order_by("-created")[:50]
 
     template_vars = {
         "total_weight":total_weight,
