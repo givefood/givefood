@@ -50,7 +50,7 @@ class Foodbank(models.Model):
         return self.url.replace("https://","")
 
     def friendly_shopping_list_url(self):
-        return self.url.replace("https://","")
+        return self.shopping_list_url.replace("https://","")
 
     def latt(self):
         return float(self.latt_long.split(",")[0])
