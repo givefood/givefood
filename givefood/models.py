@@ -174,6 +174,9 @@ class Order(models.Model):
     def __str__(self):
         return self.order_id
 
+    def foodbank_name_slug(self):
+        return slugify(self.foodbank_name)
+
     def delivery_hour_end(self):
         return self.delivery_hour + 1
 
