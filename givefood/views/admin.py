@@ -28,29 +28,6 @@ def admin_index(request):
     else:
         foodbanks = Foodbank.objects.all().order_by("-last_social_media_check")[:50]
 
-    all_foodbanks = Foodbank.objects.all()
-    total_foodbanks = len(all_foodbanks)
-
-    needs = FoodbankChange.objects.all()
-    total_needs = len(needs)
-
-    total_weight = 0
-    total_calories = 0
-    total_items = 0
-    total_cost = 0
-
-    all_orders = Order.objects.all()
-    total_orders = len(all_orders)
-    for order in all_orders:
-        total_weight = total_weight + order.weight
-        total_calories = total_calories + order.calories
-        total_items = total_items + order.no_items
-        total_cost = total_cost + order.cost
-
-    total_weight = total_weight / 1000
-    total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
-    total_cost = float(total_cost) / 100
-
     today = datetime.today()
     today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_date")
 
@@ -58,19 +35,11 @@ def admin_index(request):
     upcoming_orders = Order.objects.filter(delivery_date__gt = today).order_by("delivery_date")
 
     prev_order_threshold = datetime.now() - timedelta(days=1)
-    prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:20]
+    prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:40]
 
     needs = FoodbankChange.objects.all().order_by("-created")[:50]
 
     template_vars = {
-        "total_weight":total_weight,
-        "total_weight_pkg":total_weight_pkg,
-        "total_calories":total_calories,
-        "total_items":total_items,
-        "total_orders":total_orders,
-        "total_cost":total_cost,
-        "total_foodbanks":total_foodbanks,
-        "total_needs":total_needs,
         "foodbanks":foodbanks,
         "today_orders":today_orders,
         "upcoming_orders":upcoming_orders,

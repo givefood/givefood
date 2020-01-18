@@ -66,26 +66,6 @@
 
     <div class="column">
 
-      <h2>Total Stats</h2>
-      <dl>
-        <dt>Needs</dt>
-        <dd>{{ total_needs }}</dd>
-        <dt>Orders</dt>
-        <dd>{{ total_orders }}</dd>
-        <dt>Foodbanks</dt>
-        <dd>{{ total_foodbanks }}</dd>
-        <dt>Items</dt>
-        <dd>{{ total_items|intcomma }}</dd>
-        <dt>Weight</dt>
-        <dd>{{ total_weight|intcomma }} kg</dd>
-        <dt>Weight (inc. pkging)</dt>
-        <dd>{{ total_weight_pkg|intcomma }} kg</dd>
-        <dt>Calories</dt>
-        <dd>{{ total_calories|intcomma }}</dd>
-        <!-- <dt>Cost</dt>
-        <dd>£{{ total_cost|intcomma }}</dd> -->
-      </dl>
-
       <h2>Foodbanks</h2>
       <a href="{% url "admin_newfoodbank" %}" class="button is-link">New Foodbank</a>
       <div class="foodbank-sort is-pulled-right">
