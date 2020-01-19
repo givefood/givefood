@@ -17,6 +17,10 @@
 
       <a href="{% url 'admin_foodbank_edit' foodbank.slug %}" class="button is-link">Edit</a>
 
+      {% if not foodbank.orders %}
+        <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
+      {% endif %}
+      
       {% if not foodbank.needs %}
         <a href="{% url "admin_newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
       {% endif %}
