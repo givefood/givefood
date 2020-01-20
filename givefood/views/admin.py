@@ -51,6 +51,14 @@ def admin_index(request):
     return render_to_response("admin/index.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_search(request):
+
+    query = request.GET.get("q")
+    foodbank = get_object_or_404(Foodbank, name=query)
+
+    return redirect("admin_foodbank", slug = foodbank.slug)
+
+
 def admin_foodbanks(request):
 
     sort_options = [

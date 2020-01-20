@@ -24,7 +24,9 @@
 
       <div class="navbar-end">
         <div class="navbar-item">
-            <input class="input" type="text" placeholder="Search Foodbanks" list="foodbank_names">
+          <form action="{% url 'admin_search' %}" method="get">
+            <input name="q" class="input" type="text" placeholder="Search Foodbanks" list="foodbank_names">
+          </form>
         </div>
       </div>
 
