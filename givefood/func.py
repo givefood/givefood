@@ -142,6 +142,7 @@ def clean_foodbank_need_text(text):
         "Current Pantry Items Needed",
         "Items we urgently need",
         "Most needed items",
+        "Most needed food items",
     ]
 
     for string_to_clean in to_clean:
