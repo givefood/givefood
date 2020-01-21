@@ -1,7 +1,7 @@
 const status = document.querySelector("#status");
 const postcode_form = document.querySelector("#postcodeform");
 const postcode_field = document.querySelector("#postcodeform input");
-const api_url_root = "/api/foodbanks/";
+const api_url_root = "/api/1/foodbanks/search/";
 
 const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
 const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";

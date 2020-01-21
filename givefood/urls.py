@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib.staticfiles.views import serve
+from django.views.generic import RedirectView
 
 import givefood.views
 
@@ -16,10 +17,13 @@ urlpatterns = (
 
     # PUBLIC
     url(r'^$', givefood.views.public_index, name="public_index"),
-    url(r'^what-food-banks-need/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
     url(r'^guides/(?P<slug>[-\w]+)/$', givefood.views.public_article, name="public_article"),
     url(r'^(?P<year>(2019))/$', givefood.views.public_annual_report, name="public_annual_report"),
     url(r'^generate-(?P<year>(2019))/$', givefood.views.public_gen_annual_report, name="public_gen_annual_report"),
+
+    # WFBN
+    url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
+    url(r'^needs/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
 
     url(r'^productimage/$', givefood.views.public_product_image, name="public_product_image"),
     url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
@@ -55,7 +59,7 @@ urlpatterns = (
     url(r'^admin/test_order_email/(?P<id>[-\w]+)/$', givefood.views.admin_test_order_email, name="admin_test_order_email"),
     url(r'^admin/resaver/orders/$', givefood.views.admin_resave_orders, name="admin_resave_orders"),
 
-    url(r'^api/foodbanks/$', givefood.views.api_foodbanks, name="api_foodbanks"),
+    url(r'^api/1/foodbanks/search/$', givefood.views.api_foodbanks, name="api_foodbanks"),
 
     url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),
