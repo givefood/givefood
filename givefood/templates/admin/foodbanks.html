@@ -32,6 +32,7 @@
           <th>Last Order</th>
           <th>Network</th>
           <th>Closed</th>
+          <th>Links</th>
           <th>Created</th>
           <th>Modified</th>
         </tr>
@@ -52,6 +53,17 @@
                 <span style="color:red">X</span>
               {% endif %}
             </td>
+            <td>
+              {% if foodbank.facebook_page %}
+                <a href="https://www.facebook.com/{{ foodbank.facebook_page }}">
+                  <img src="/static/img/facebook.png" width="16">
+                </a>
+              {% endif %}
+              {% if foodbank.twitter_handle %}
+                <a href="https://www.twitter.com/{{ foodbank.twitter_handle }}">
+                  <img src="/static/img/twitter.png" width="16">
+                </a>
+              {% endif %}
             <td>{{ foodbank.created }}</td>
             <td>{{ foodbank.modified }}</td>
           </tr>
