@@ -4,6 +4,7 @@ Give Food are sending you an internet shopping delivery via {{ order.delivery_pr
 
 Web: https://www.givefood.org.uk
 Twitter: https://twitter.com/GiveFood_org_uk
+Facebook: https://www.facebook.com/GiveFoodOrgUK
 Email: mail@givefood.org.uk
 
 Jason & Stacey
