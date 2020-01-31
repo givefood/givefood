@@ -145,7 +145,7 @@ def public_gen_annual_report(request, year):
 @cache_page(60*2)
 def public_what_food_banks_need(request):
 
-    version = "a2c600f4"
+    version = "472694a0"
 
     foodbanks = Foodbank.objects.all()
     no_foodbanks = len(foodbanks)
