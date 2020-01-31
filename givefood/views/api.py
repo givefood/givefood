@@ -21,7 +21,6 @@ def api_foodbanks(request):
         address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&address=%s" % (urllib.quote(address))
         address_api_result = urlfetch.fetch(address_api_url)
         if address_api_result.status_code == 200:
-            logging.warning(address_api_result.content)
             address_result_json = json.loads(address_api_result.content)
             lattlong = "%s,%s" % (
                 address_result_json["results"][0]["geometry"]["location"]["lat"],
