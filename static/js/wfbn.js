@@ -25,7 +25,7 @@ function init() {
   addressgo_btn.addEventListener("click", do_address);
 }
 
-function do_geolocation() {
+function do_geolocation(event) {
   if (!navigator.geolocation) {
     status.textContent = no_loc_apology_text;
     uml_btn.style.display = "none"
@@ -38,6 +38,7 @@ function do_geolocation() {
       }
     );
   }
+  event.preventDefault();
 }
 
 function do_address(event) {
