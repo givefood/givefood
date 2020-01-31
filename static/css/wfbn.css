@@ -1,6 +1,12 @@
 .headerimg {
   display:none;
 }
+#status {
+  margin-top:10px;
+}
+.table tr:last-child td {
+  border:0;
+}
 .foodbank {
   font-size:1.2em;
   line-height:1;
@@ -16,9 +22,6 @@
 }
 .need_detail {
   width:80%;
-}
-#postcodeform {
-  display:none;
 }
 summary {
   cursor:pointer;

@@ -1,4 +1,4 @@
-import json
+import json, urllib
 
 from google.appengine.api import urlfetch
 
@@ -12,24 +12,28 @@ from givefood.models import ApiFoodbankSearch
 def api_foodbanks(request):
 
     lattlong = request.GET.get("lattlong")
-    postcode = request.GET.get("postcode")
+    address = request.GET.get("address")
 
-    if not lattlong and not postcode:
+    if not lattlong and not address:
         return HttpResponseForbidden()
 
-    if postcode and not lattlong:
-        pc_api_url = "https://api.postcodes.io/postcodes/%s" % (postcode)
-        pc_result = urlfetch.fetch(pc_api_url)
-        if pc_result.status_code == 200:
-            pc_result_json = json.loads(pc_result.content)
-            lattlong = "%s,%s" % (pc_result_json["result"]["latitude"],pc_result_json["result"]["longitude"])
+    if address and not lattlong:
+        address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&address=%s" % (urllib.quote(address))
+        address_api_result = urlfetch.fetch(address_api_url)
+        if address_api_result.status_code == 200:
+            logging.warning(address_api_result.content)
+            address_result_json = json.loads(address_api_result.content)
+            lattlong = "%s,%s" % (
+                address_result_json["results"][0]["geometry"]["location"]["lat"],
+                address_result_json["results"][0]["geometry"]["location"]["lng"]
+            )
 
     foodbanks = find_foodbanks(lattlong, 10)
     response_list = []
 
-    if postcode:
-        query_type = "postcode"
-        query = postcode
+    if address:
+        query_type = "address"
+        query = address
     else:
         query_type = "lattlong"
         query = lattlong

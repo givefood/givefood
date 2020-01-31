@@ -1,33 +1,48 @@
 const status = document.querySelector("#status");
-const postcode_form = document.querySelector("#postcodeform");
-const postcode_field = document.querySelector("#postcodeform input");
+const uml_btn = document.querySelector("#usemylocationbtn");
+const addressgo_btn = document.querySelector("#addressgobtn");
+const address_field = document.querySelector("#address_field");
 const api_url_root = "/api/1/foodbanks/search/";
 
 const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
 const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
-const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Put your postcode in here instead.";
+const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Try a postcode or address.";
 const nothing_needed_text = "Nothing right now, thanks";
-const postcode_error_text = "Sorry, we didn't understand that. Is the postcode valid?";
 
-if (!navigator.geolocation) {
-  display_postcode_form();
-} else {
-  status.innerHTML = requesting_loc_html;
-  navigator.geolocation.getCurrentPosition(
-    do_lattlong,
-    display_postcode_form
+function init() {
+  var defaultBounds = new google.maps.LatLngBounds(
+    new google.maps.LatLng(60.681380, -15.291107),
+    new google.maps.LatLng(50.053765, 2.010132)
   );
+  var input = address_field;
+  var options = {
+    bounds: defaultBounds,
+    types: ['geocode']
+  };
+
+  autocomplete = new google.maps.places.Autocomplete(input, options);
+  uml_btn.addEventListener("click", do_geolocation);
+  addressgo_btn.addEventListener("click", do_address);
 }
 
-function display_postcode_form() {
-  status.textContent = no_loc_apology_text;
-  postcode_form.addEventListener("submit", do_postcode);
-  postcode_form.style.display = "block";
+function do_geolocation() {
+  if (!navigator.geolocation) {
+    status.textContent = no_loc_apology_text;
+    uml_btn.style.display = "none"
+  } else {
+    status.innerHTML = requesting_loc_html;
+    navigator.geolocation.getCurrentPosition(
+      do_lattlong,
+      function() {
+        status.textContent = no_loc_apology_text;
+      }
+    );
+  }
 }
 
-function do_postcode(event) {
-  postcode = postcode_field.value;
-  api_url = api_url_root + "?postcode=" + postcode;
+function do_address(event) {
+  address = address_field.value;
+  api_url = api_url_root + "?address=" + address;
   api_request(api_url);
   event.preventDefault();
 }
@@ -37,7 +52,6 @@ function do_lattlong(position) {
   long = position.coords.longitude;
   api_url = api_url_root + "?lattlong=" + latt + "," + long;
   api_request(api_url);
-  postcode_form.style.display = "none";
 }
 
 function api_request(url) {
@@ -51,13 +65,11 @@ function api_request(url) {
 
 function api_response() {
 
-  if (this.status == 500) {
-    status.textContent = postcode_error_text;
-    return false;
-  }
-
   template = document.querySelector("#fb_row");
   table = document.querySelector("table");
+  while (table.firstChild) {
+    table.removeChild(table.firstChild);
+  }
 
   for (i in this.response) {
 
@@ -88,3 +100,5 @@ function api_response() {
 
   status.innerHTML = "";
 }
+
+init()
