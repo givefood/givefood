@@ -22,7 +22,7 @@ function init() {
 
   autocomplete = new google.maps.places.Autocomplete(input, options);
   uml_btn.addEventListener("click", do_geolocation);
-  addressgo_btn.addEventListener("click", do_address);
+  addressform.addEventListener("submit", do_address);
 }
 
 function do_geolocation(event) {
