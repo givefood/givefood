@@ -4,6 +4,9 @@
 #status {
   margin-top:10px;
 }
+#address_field {
+  width:220px;
+}
 .table tr:last-child td {
   border:0;
 }
