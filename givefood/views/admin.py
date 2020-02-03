@@ -64,6 +64,7 @@ def admin_foodbanks(request):
     sort_options = [
         "name",
         "last_order",
+        "last_need",
         "created",
     ]
     sort = request.GET.get("sort", "name")

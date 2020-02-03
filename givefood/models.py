@@ -42,6 +42,7 @@ class Foodbank(models.Model):
 
     last_order = models.DateField(editable=False, null=True)
     last_social_media_check = models.DateTimeField(editable=False, null=True)
+    last_need = models.DateTimeField(editable=False, null=True)
 
     def __str__(self):
         return self.name
@@ -319,6 +320,10 @@ class FoodbankChange(models.Model):
             self.need_id = need_id
 
         super(FoodbankChange, self).save(*args, **kwargs)
+
+        if self.foodbank:
+            self.foodbank.last_need = self.created
+            self.foodbank.save()
 
 
 class ApiFoodbankSearch(models.Model):

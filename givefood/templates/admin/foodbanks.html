@@ -17,6 +17,7 @@
             <select onchange="javascript:window.location.href=this.value">
               <option value="?sort=name"{% if sort == "name" %} selected{% endif %}>Alphabetical</option>
               <option value="?sort=last_order"{% if sort == "last_order" %} selected{% endif %}>Last Order</option>
+              <option value="?sort=last_need"{% if sort == "last_need" %} selected{% endif %}>Last Need</option>
               <option value="?sort=created"{% if sort == "created" %} selected{% endif %}>Created</option>
             </select>
           </div>
@@ -30,6 +31,7 @@
           <th>Charity No.</th>
           <th>Country</th>
           <th>Last Order</th>
+          <th>Last Need</th>
           <th>Network</th>
           <th>Closed</th>
           <th>Links</th>
@@ -47,6 +49,7 @@
             </td>
             <td>{{ foodbank.country_flag }} {{ foodbank.country }}</td>
             <td>{{ foodbank.last_order }}</td>
+            <td>{{ foodbank.last_need }}</td>
             <td>{{ foodbank.network }}</td>
             <td>
               {% if foodbank.is_closed %}
