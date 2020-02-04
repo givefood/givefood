@@ -308,6 +308,9 @@ class FoodbankChange(models.Model):
     def foodbank_name_slug(self):
         return slugify(self.foodbank_name)
 
+    def no_items(self):
+        return len(self.change_text.split('\n'))
+
     def save(self, *args, **kwargs):
 
         if self.foodbank:

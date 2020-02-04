@@ -305,15 +305,47 @@ def admin_map(request):
     }
     return render_to_response("admin/map.html", template_vars, context_instance=RequestContext(request))
 
+def admin_stats(request):
 
-def admin_nocalories(request):
+    all_foodbanks = Foodbank.objects.all()
+    total_foodbanks = len(all_foodbanks)
 
-    nocalitems = OrderLine.objects.filter(calories = 0)
+    needs = FoodbankChange.objects.all()
+    total_needs = len(needs)
+    total_need_items = 0
+    for need in needs:
+        total_need_items = total_need_items + need.no_items()
+
+    total_weight = 0
+    total_calories = 0
+    total_items = 0
+    total_cost = 0
+
+    all_orders = Order.objects.all()
+    total_orders = len(all_orders)
+    for order in all_orders:
+        total_weight = total_weight + order.weight
+        total_calories = total_calories + order.calories
+        total_items = total_items + order.no_items
+        total_cost = total_cost + order.cost
+
+    total_weight = total_weight / 1000
+    total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
+    total_cost = float(total_cost) / 100
 
     template_vars = {
-        "nocalitems":nocalitems,
+        "total_foodbanks":total_foodbanks,
+        "total_weight":total_weight,
+        "total_calories":total_calories,
+        "total_items":total_items,
+        "total_orders":total_orders,
+        "total_cost":total_cost,
+        "total_needs":total_needs,
+        "total_need_items":total_need_items,
+        "total_weight_pkg":total_weight_pkg,
+        "section":"stats",
     }
-    return render_to_response("admin/nocalories.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("admin/stats.html", template_vars, context_instance=RequestContext(request))
 
 
 def admin_test_order_email(request, id):

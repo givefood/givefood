@@ -1,0 +1,39 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Stats - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Stats</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <dl>
+        <dt>Needs</dt>
+        <dd>{{ total_needs }}</dd>
+        <dt>Need items</dt>
+        <dd>{{ total_need_items|intcomma }}</dd>
+        <dt>Orders</dt>
+        <dd>{{ total_orders }}</dd>
+        <dt>Foodbanks</dt>
+        <dd>{{ total_foodbanks }}</dd>
+        <dt>Items</dt>
+        <dd>{{ total_items|intcomma }}</dd>
+        <dt>Weight</dt>
+        <dd>{{ total_weight|intcomma }} kg</dd>
+        <dt>Weight (inc. pkging)</dt>
+        <dd>{{ total_weight_pkg|intcomma }} kg</dd>
+        <dt>Calories</dt>
+        <dd>{{ total_calories|intcomma }}</dd>
+        <dt>Cost</dt>
+        <dd>£{{ total_cost|intcomma }}</dd>
+      </dl>
+
+    </div>
+
+  </div>
+
+{% endblock %}
