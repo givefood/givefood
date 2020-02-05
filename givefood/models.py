@@ -311,6 +311,12 @@ class FoodbankChange(models.Model):
     def no_items(self):
         return len(self.change_text.split('\n'))
 
+    def input_method(self):
+        if self.distill_id:
+            return "scrape"
+        else:
+            return "typed"
+
     def save(self, *args, **kwargs):
 
         if self.foodbank:

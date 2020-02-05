@@ -13,6 +13,7 @@
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th></th>
+          <th></th>
           <th>Foodbank</th>
           <th>Need</th>
           <th>When</th>
@@ -25,6 +26,10 @@
               {% else %}
                 <span style="color:red">x</span>
               {% endif %}
+            </td>
+            <td>
+              {% if need.input_method == "typed" %}⌨️{% endif%}
+              {% if need.input_method == "scrape" %}🤖{% endif%}
             </td>
             <td>
               {% if need.foodbank_name %}

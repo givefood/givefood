@@ -20,7 +20,7 @@
       {% if not foodbank.orders %}
         <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
       {% endif %}
-      
+
       {% if not foodbank.needs %}
         <a href="{% url "admin_newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
       {% endif %}
@@ -105,11 +105,16 @@
         <a href="{% url "admin_newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
+            <th></th>
             <th>Need</th>
             <th>When</th>
           </tr>
           {% for need in foodbank.needs %}
             <tr>
+              <td>
+                {% if need.input_method == "typed" %}⌨️{% endif%}
+                {% if need.input_method == "scrape" %}🤖{% endif%}
+              </td>
               <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
               <td>
                 <a href="{% url "admin_need" need.need_id %}">
