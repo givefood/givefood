@@ -1,9 +1,7 @@
-from givefood.models import Foodbank
+from givefood.func import get_all_foodbanks
 
 def all_foodbanks(request):
 
-    foodbanks = Foodbank.objects.all()
-
     return {
-        'all_foodbanks':foodbanks,
+        'all_foodbanks':get_all_foodbanks(),
     }

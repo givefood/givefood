@@ -2,10 +2,23 @@
 # -*- coding: utf-8 -*-
 
 import re, logging, operator
+from math import radians, cos, sin, asin, sqrt
+
+from google.appengine.api import memcache
+
 from givefood.const.calories import CALORIES
 from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
 
-from math import radians, cos, sin, asin, sqrt
+
+def get_all_foodbanks():
+
+    from models import Foodbank
+
+    all_foodbanks = memcache.get("all_foodbanks")
+    if all_foodbanks is None:
+        all_foodbanks = Foodbank.objects.all()
+        memcache.add("all_foodbanks", all_foodbanks, 3600)
+    return all_foodbanks
 
 
 def parse_order_text(order_text):
