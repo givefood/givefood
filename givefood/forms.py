@@ -19,6 +19,16 @@ class OrderForm(ModelForm):
             'delivery_date': DateInput(attrs={'type': 'date'})
         }
 
+    def __init__(self, *args, **kwargs):
+        super(OrderForm, self).__init__(*args, **kwargs)
+        if kwargs.get("initial"):
+            if kwargs['initial']['foodbank']:
+                queryset = FoodbankChange.objects.filter(
+                    foodbank=kwargs['initial']['foodbank']
+                )
+                self.fields['need'].queryset = queryset
+
+
 class NeedForm(ModelForm):
     foodbank = ModelChoiceField(queryset=Foodbank.objects.filter().order_by('name'), required=False)
     class Meta:
