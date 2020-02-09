@@ -25,7 +25,7 @@ class OrderForm(ModelForm):
             if kwargs['initial']['foodbank']:
                 queryset = FoodbankChange.objects.filter(
                     foodbank=kwargs['initial']['foodbank']
-                )
+                ).order_by('-created')
                 self.fields['need'].queryset = queryset
 
 
