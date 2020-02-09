@@ -11,7 +11,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-
+from givefood.func import get_all_foodbanks
 from givefood.models import Foodbank, Order, OrderLine, FoodbankChange
 from givefood.forms import FoodbankForm, OrderForm, NeedForm
 
@@ -298,7 +298,7 @@ def admin_need_publish(request, id):
 
 def admin_map(request):
 
-    foodbanks = Foodbank.objects.all()
+    foodbanks = get_all_foodbanks()
     template_vars = {
         "foodbanks":foodbanks,
         "section":"map",
@@ -307,7 +307,7 @@ def admin_map(request):
 
 def admin_stats(request):
 
-    all_foodbanks = Foodbank.objects.all()
+    all_foodbanks = get_all_foodbanks()
     total_foodbanks = len(all_foodbanks)
 
     needs = FoodbankChange.objects.all()
