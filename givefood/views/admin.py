@@ -305,10 +305,12 @@ def admin_map(request):
     }
     return render_to_response("admin/map.html", template_vars, context_instance=RequestContext(request))
 
+
 def admin_stats(request):
 
     all_foodbanks = get_all_foodbanks()
     total_foodbanks = len(all_foodbanks)
+    active_foodbanks = set()
 
     needs = FoodbankChange.objects.all()
     total_needs = len(needs)
@@ -328,13 +330,17 @@ def admin_stats(request):
         total_calories = total_calories + order.calories
         total_items = total_items + order.no_items
         total_cost = total_cost + order.cost
+        active_foodbanks.add(order.foodbank_name)
 
     total_weight = total_weight / 1000
     total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
     total_cost = float(total_cost) / 100
 
+    total_active_foodbanks = len(active_foodbanks)
+
     template_vars = {
         "total_foodbanks":total_foodbanks,
+        "total_active_foodbanks":total_active_foodbanks,
         "total_weight":total_weight,
         "total_calories":total_calories,
         "total_items":total_items,
