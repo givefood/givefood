@@ -22,6 +22,10 @@ handlers:
   static_files: static/img/favicon.ico
   upload: static/img/favicon.ico
 
+- url: /needs/manifest.json
+  static_files: static/wfbn_manifest.json
+  upload: static/wfbn_manifest.json
+
 - url: /robots.txt
   static_files: static/root/robots.txt
   upload: static/root/robots.txt

@@ -1,0 +1,9 @@
+{
+	"name" : "What Food Banks Need",
+	"short_name" : "What Food Banks Need",
+	"description" : "Find what UK food banks near you need",
+	"start_url" : "https://www.givefood.org.uk/needs/",
+	"scope" : "/needs/",
+	"display" : "minimal-ui",
+	"lang" : "English"
+}
