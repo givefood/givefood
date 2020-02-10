@@ -21,6 +21,17 @@ def get_all_foodbanks():
     return all_foodbanks
 
 
+def get_all_open_foodbanks():
+
+    foodbanks = get_all_foodbanks()
+    foodbanks = list(foodbanks)
+    for foodbank in foodbanks:
+        if foodbank.is_closed:
+            foodbanks.remove(foodbank)
+
+    return foodbanks
+
+
 def parse_order_text(order_text):
 
     order_lines = []
@@ -50,6 +61,7 @@ def get_calories(text, weight, quantity):
     total_calories = calories * (weight/100) * quantity
     # logging.info("calories: %s, weight: %s, total: %s" % (calories,weight,total_calories))
     return total_calories
+
 
 def get_weight(text):
 
@@ -171,7 +183,7 @@ def clean_foodbank_need_text(text):
 def find_foodbanks(lattlong, quantity = 10):
 
     from givefood.models import Foodbank
-    foodbanks = Foodbank.objects.filter(is_closed = False)
+    foodbanks = get_all_open_foodbanks()
 
     latt = float(lattlong.split(",")[0])
     long = float(lattlong.split(",")[1])
