@@ -60,6 +60,11 @@
       <div class="box">
         <p>{{ need.change_text|linebreaksbr }}</p>
       </div>
+      {% if need.diff_from_last %}
+        <div class="box">
+          <p>{{ need.diff_from_last|linebreaksbr }}</p>
+        </div>
+      {% endif %}
     </div>
 
   </div>

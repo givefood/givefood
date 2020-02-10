@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import hashlib
+import hashlib, difflib
 from datetime import datetime
 
 from django.db import models
@@ -316,6 +316,20 @@ class FoodbankChange(models.Model):
             return "scrape"
         else:
             return "typed"
+
+    def change_list(self):
+        return self.change_text.split("\n")
+
+    def diff_from_last(self):
+        last_change = FoodbankChange.objects.filter(
+            foodbank = self.foodbank,
+            created__lt = self.created,
+        )[:1]
+        if not last_change:
+            return None
+        else:
+            d = difflib.unified_diff(last_change[0].change_list(), self.change_list(), lineterm='')
+            return '\n'.join(d)
 
     def save(self, *args, **kwargs):
 
