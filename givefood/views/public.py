@@ -10,7 +10,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 
 from givefood.models import Foodbank, Order, FoodbankChange
-from givefood.func import get_image, item_class_count, clean_foodbank_need_text
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
@@ -142,16 +142,12 @@ def public_gen_annual_report(request, year):
     return render_to_response("public/annual_report.html", template_vars)
 
 
-@cache_page(60*2)
+@cache_page(60*5)
 def public_what_food_banks_need(request):
 
     version = "bd92db6b"
 
-    foodbanks = Foodbank.objects.all()
-    no_foodbanks = len(foodbanks)
-
     template_vars = {
-        "no_foodbanks":no_foodbanks,
         "version":version,
     }
     return render_to_response("public/wfbn.html", template_vars)
