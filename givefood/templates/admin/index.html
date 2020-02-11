@@ -15,7 +15,6 @@
           <th></th>
           <th></th>
           <th>Foodbank</th>
-          <th>Need</th>
           <th>When</th>
         </tr>
         {% for need in needs %}
@@ -39,12 +38,6 @@
               {% else %}
                 Unknown
               {% endif %}
-            </td>
-            <td class="is-size-7">
-              <details>
-                  <summary>Items</summary>
-                  {{ need.change_text|linebreaksbr }}
-              </details>
             </td>
             <td>
               <a href="{% url "admin_need" need.need_id %}">
