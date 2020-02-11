@@ -37,6 +37,20 @@
         <p>{{ foodbank.delivery_address|linebreaksbr }}</p>
       {% endif %}
 
+      <h3>Regions</h3>
+      <dl>
+        <dt>Parl. Con.</dt>
+        <dd>{{ foodbank.parliamentary_constituency }}</dd>
+        <dt>County</dt>
+        <dd>{{ foodbank.county }}</dd>
+        <dt>District</dt>
+        <dd>{{ foodbank.district }}</dd>
+        <dt>Ward</dt>
+        <dd>{{ foodbank.ward }}</dd>
+      </dl>
+
+      <br>
+
       {% if foodbank.orders %}
         <h3>Stats</h3>
         <dl>
