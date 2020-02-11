@@ -59,7 +59,8 @@ urlpatterns = (
     url(r'^admin/test_order_email/(?P<id>[-\w]+)/$', givefood.views.admin_test_order_email, name="admin_test_order_email"),
     url(r'^admin/resaver/orders/$', givefood.views.admin_resave_orders, name="admin_resave_orders"),
 
-    url(r'^api/1/foodbanks/search/$', givefood.views.api_foodbanks, name="api_foodbanks"),
+    url(r'^api/1/foodbanks/$', givefood.views.api_foodbanks, name="api_foodbanks"),
+    url(r'^api/1/foodbanks/search/$', givefood.views.api_foodbank_search, name="api_foodbank_search"),
 
     url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),

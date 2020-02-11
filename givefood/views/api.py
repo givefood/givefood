@@ -5,11 +5,36 @@ from google.appengine.api import urlfetch
 from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.timesince import timesince
 
-from givefood.func import find_foodbanks
+from givefood.func import find_foodbanks, get_all_foodbanks
 from givefood.models import ApiFoodbankSearch
 
-
 def api_foodbanks(request):
+
+    foodbanks = get_all_foodbanks()
+    response_list = []
+
+    for foodbank in foodbanks:
+        response_list.append({
+            "name":foodbank.name,
+            "url":foodbank.url,
+            "shopping_list_url":foodbank.shopping_list_url,
+            "phone":foodbank.phone_number,
+            "address":foodbank.full_address(),
+            "postcode":foodbank.postcode,
+            "country":foodbank.country,
+            "charity_number":foodbank.charity_number,
+            "charity_register_url":foodbank.charity_register_url(),
+            "needs":foodbank.latest_need_text(),
+            "number_needs":foodbank.latest_need_text().count('\n')+1,
+            "updated":str(foodbank.latest_need_date()),
+            "updated_text":timesince(foodbank.latest_need_date()),
+            "closed":foodbank.is_closed,
+        })
+
+    return JsonResponse(response_list, safe=False)
+
+
+def api_foodbank_search(request):
 
     lattlong = request.GET.get("lattlong")
     address = request.GET.get("address")
