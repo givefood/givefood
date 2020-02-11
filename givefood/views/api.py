@@ -4,10 +4,13 @@ from google.appengine.api import urlfetch
 
 from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.timesince import timesince
+from django.views.decorators.cache import cache_page
 
 from givefood.func import find_foodbanks, get_all_foodbanks
 from givefood.models import ApiFoodbankSearch
 
+
+@cache_page(60*10)
 def api_foodbanks(request):
 
     foodbanks = get_all_foodbanks()
@@ -32,6 +35,7 @@ def api_foodbanks(request):
     return JsonResponse(response_list, safe=False)
 
 
+@cache_page(60*10)
 def api_foodbank_search(request):
 
     lattlong = request.GET.get("lattlong")
