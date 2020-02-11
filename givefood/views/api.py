@@ -2,7 +2,7 @@ import json, urllib
 
 from google.appengine.api import urlfetch
 
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.utils.timesince import timesince
 from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
@@ -44,7 +44,7 @@ def api_foodbank_search(request):
     address = request.GET.get("address")
 
     if not lattlong and not address:
-        return HttpResponseForbidden()
+        return HttpResponseBadRequest()
 
     if address and not lattlong:
         address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&address=%s" % (urllib.quote(address))
