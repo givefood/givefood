@@ -96,6 +96,7 @@ def api_foodbank_search(request):
     return JsonResponse(response_list, safe=False)
 
 
+@cache_page(60*10)
 def api_foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
