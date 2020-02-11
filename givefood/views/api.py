@@ -5,9 +5,10 @@ from google.appengine.api import urlfetch
 from django.http import HttpResponseForbidden, JsonResponse
 from django.utils.timesince import timesince
 from django.views.decorators.cache import cache_page
+from django.shortcuts import get_object_or_404
 
 from givefood.func import find_foodbanks, get_all_foodbanks
-from givefood.models import ApiFoodbankSearch
+from givefood.models import ApiFoodbankSearch, Foodbank
 
 
 @cache_page(60*10)
@@ -93,3 +94,28 @@ def api_foodbank_search(request):
         })
 
     return JsonResponse(response_list, safe=False)
+
+
+def api_foodbank(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    foodbank_response = {
+        "name":foodbank.name,
+        "url":foodbank.url,
+        "shopping_list_url":foodbank.shopping_list_url,
+        "phone":foodbank.phone_number,
+        "address":foodbank.full_address(),
+        "postcode":foodbank.postcode,
+        "country":foodbank.country,
+        "charity_number":foodbank.charity_number,
+        "charity_register_url":foodbank.charity_register_url(),
+        "closed":foodbank.is_closed,
+        "latt_long":foodbank.latt_long,
+        "network":foodbank.network,
+        "needs":foodbank.latest_need_text(),
+        "number_needs":foodbank.latest_need_text().count('\n')+1,
+        "need_found":foodbank.last_need,
+    }
+
+    return JsonResponse(foodbank_response, safe=False)

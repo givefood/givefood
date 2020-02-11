@@ -61,6 +61,7 @@ urlpatterns = (
 
     url(r'^api/1/foodbanks/$', givefood.views.api_foodbanks, name="api_foodbanks"),
     url(r'^api/1/foodbanks/search/$', givefood.views.api_foodbank_search, name="api_foodbank_search"),
+    url(r'^api/1/foodbank/(?P<slug>[-\w]+)/$', givefood.views.api_foodbank, name="api_foodbank"),
 
     url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),
