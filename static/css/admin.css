@@ -56,3 +56,8 @@ h1 {
 .extra-form-button {
   margin-top:10px;
 }
+th {
+  position:sticky;
+  top:0;
+  background:#fff;
+}
