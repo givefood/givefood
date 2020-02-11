@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, logging, operator
+import re, logging, operator, json, urllib
 from math import radians, cos, sin, asin, sqrt
 
 from google.appengine.api import memcache
+from google.appengine.api import urlfetch
 
 from givefood.const.calories import CALORIES
 from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
@@ -215,6 +216,22 @@ def distance_meters(lat1, lon1, lat2, lon2):
     c = 2 * asin(sqrt(a))
     meters = 6367000 * c
     return meters
+
+
+def admin_regions_from_postcode(postcode):
+    pc_api_url = "https://api.postcodes.io/postcodes/%s" % (urllib.quote(postcode))
+    pc_api_result = urlfetch.fetch(pc_api_url)
+    if pc_api_result.status_code == 200:
+        pc_api_json = json.loads(pc_api_result.content)
+
+        return {
+            "county":pc_api_json["result"]["admin_county"],
+            "parliamentary_constituency":pc_api_json["result"]["parliamentary_constituency"],
+            "ward":pc_api_json["result"]["admin_ward"],
+            "district":pc_api_json["result"]["admin_district"],
+        }
+    else:
+        return {}
 
 
 def lattlong_from_postcode(postcode):
