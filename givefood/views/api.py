@@ -103,6 +103,7 @@ def api_foodbank(request, slug):
 
     foodbank_response = {
         "name":foodbank.name,
+        "slug":foodbank.slug,
         "url":foodbank.url,
         "shopping_list_url":foodbank.shopping_list_url,
         "phone":foodbank.phone_number,
