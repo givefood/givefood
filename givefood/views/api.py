@@ -24,11 +24,9 @@ def api_foodbanks(request):
             "country":foodbank.country,
             "charity_number":foodbank.charity_number,
             "charity_register_url":foodbank.charity_register_url(),
-            "needs":foodbank.latest_need_text(),
-            "number_needs":foodbank.latest_need_text().count('\n')+1,
-            "updated":str(foodbank.latest_need_date()),
-            "updated_text":timesince(foodbank.latest_need_date()),
             "closed":foodbank.is_closed,
+            "latt_long":foodbank.latt_long,
+            "network":foodbank.network,
         })
 
     return JsonResponse(response_list, safe=False)
