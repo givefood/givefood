@@ -9,7 +9,7 @@ from google.appengine.api import urlfetch
 
 from givefood.const.calories import CALORIES
 from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
-
+from givefood.const.general import FB_MC_KEY
 
 def get_all_foodbanks():
 
@@ -18,7 +18,7 @@ def get_all_foodbanks():
     all_foodbanks = memcache.get("all_foodbanks")
     if all_foodbanks is None:
         all_foodbanks = Foodbank.objects.all()
-        memcache.add("all_foodbanks", all_foodbanks, 3600)
+        memcache.add(FB_MC_KEY, all_foodbanks, 3600)
     return all_foodbanks
 
 

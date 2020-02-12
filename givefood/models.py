@@ -4,10 +4,12 @@
 import hashlib, difflib
 from datetime import datetime
 
+from google.appengine.api import memcache
+
 from django.db import models
 from django.template.defaultfilters import slugify
 
-from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC
+from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
 from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode
 
 
@@ -154,6 +156,8 @@ class Foodbank(models.Model):
             self.ward = regions.get("ward", None)
             self.district = regions.get("district", None)
         super(Foodbank, self).save(*args, **kwargs)
+
+        memcache.delete(FB_MC_KEY)
 
 
 class Order(models.Model):

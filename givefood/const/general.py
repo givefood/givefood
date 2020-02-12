@@ -28,3 +28,5 @@ CHECK_COUNT_PER_DAY = {
     2019:5784,
 }
 PAGE_SIZE_PER_COUNT = 1444997 #Bytes
+
+FB_MC_KEY = "all_foodbanks"
