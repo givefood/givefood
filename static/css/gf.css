@@ -104,6 +104,9 @@ blockquote {
   padding:20px;
   background:#FAFAFA;
 }
+.intro h2 {
+  border:0;
+}
 .arproducts img {
   width:100px;
   float:left;
