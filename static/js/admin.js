@@ -55,7 +55,7 @@ if (change_text_field) {
   titlecase_btn = document.querySelector("#titlecase_btn");
   titlecase_btn.addEventListener("click", function(event) {
     change_text_field.value = titleCase(change_text_field.value);
-    change_text_field.value = change_text_field.value.replace("Uht","UHT")
+    change_text_field.value = change_text_field.value.replace(/Uht/g,"UHT")
     event.preventDefault();
   });
 }
