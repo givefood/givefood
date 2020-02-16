@@ -34,6 +34,8 @@
           <th>Last Need</th>
           <th>Network</th>
           <th>Constituency</th>
+          <th>MP</th>
+          <th>MP Party</th>
           <th>Closed</th>
           <th>Links</th>
           <th>Created</th>
@@ -53,6 +55,8 @@
             <td>{{ foodbank.last_need }}</td>
             <td>{{ foodbank.network }}</td>
             <td>{{ foodbank.parliamentary_constituency }}</td>
+            <td>{{ foodbank.mp }}</td>
+            <td>{{ foodbank.mp_party }}</td>
             <td>
               {% if foodbank.is_closed %}
                 <span style="color:red">X</span>

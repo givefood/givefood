@@ -37,7 +37,7 @@
         <p>{{ foodbank.delivery_address|linebreaksbr }}</p>
       {% endif %}
 
-      <h3>Regions</h3>
+      <h3>Politics</h3>
       <dl>
         <dt>Parl. Con.</dt>
         <dd>{{ foodbank.parliamentary_constituency }}</dd>
@@ -47,6 +47,10 @@
         <dd>{{ foodbank.district }}</dd>
         <dt>Ward</dt>
         <dd>{{ foodbank.ward }}</dd>
+        <dt>MP</dt>
+        <dd>{{ foodbank.mp }}</dd>
+        <dt>MP Party</dt>
+        <dd>{{ foodbank.mp_party }}</dd>
       </dl>
 
       <br>
