@@ -27,6 +27,8 @@ def api_foodbanks(request):
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
             "parliamentary_constituency":foodbank.parliamentary_constituency,
+            "mp":foodbank.mp,
+            "mp_party":foodbank.mp_party,
             "ward":foodbank.ward,
             "district":foodbank.district,
             "country":foodbank.country,
