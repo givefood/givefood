@@ -42,12 +42,18 @@
       <dl>
         <dt>Parl. Con.</dt>
         <dd>{{ foodbank.parliamentary_constituency }}</dd>
-        <dt>County</dt>
-        <dd>{{ foodbank.county }}</dd>
-        <dt>District</dt>
-        <dd>{{ foodbank.district }}</dd>
-        <dt>Ward</dt>
-        <dd>{{ foodbank.ward }}</dd>
+        {% if foodbank.county %}
+          <dt>County</dt>
+          <dd>{{ foodbank.county }}</dd>
+        {% endif %}
+        {% if foodbank.district %}
+          <dt>District</dt>
+          <dd>{{ foodbank.district }}</dd>
+        {% endif %}
+        {% if foodbank.ward %}
+          <dt>Ward</dt>
+          <dd>{{ foodbank.ward }}</dd>
+        {% endif %}
         <dt>MP</dt>
         <dd>{{ foodbank.mp }}</dd>
         <dt>MP Party</dt>
