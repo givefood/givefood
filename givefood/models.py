@@ -31,8 +31,8 @@ class Foodbank(models.Model):
     county = models.CharField(max_length=50, null=True, blank=True)
     district = models.CharField(max_length=50, null=True, blank=True)
     ward = models.CharField(max_length=50, null=True, blank=True)
-    mp = models.CharField(max_length=50, null=True, blank=True)
-    mp_party = models.CharField(max_length=50, null=True, blank=True)
+    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
+    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
