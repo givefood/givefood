@@ -27,12 +27,12 @@ class Foodbank(models.Model):
     charity_number = models.CharField(max_length=50,null=True, blank=True)
     charity_just_foodbank = models.BooleanField(default=False, verbose_name="Charity just foodbank", help_text="Tick this if the charity is purely used for the foodbank, rather than other uses such as a church")
 
-    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True, editable=False)
-    county = models.CharField(max_length=50, null=True, blank=True, editable=False)
-    district = models.CharField(max_length=50, null=True, blank=True, editable=False)
-    ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
-    mp = models.CharField(max_length=50, null=True, blank=True, editable=False)
-    mp_party = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
+    county = models.CharField(max_length=50, null=True, blank=True)
+    district = models.CharField(max_length=50, null=True, blank=True)
+    ward = models.CharField(max_length=50, null=True, blank=True)
+    mp = models.CharField(max_length=50, null=True, blank=True)
+    mp_party = models.CharField(max_length=50, null=True, blank=True)
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)

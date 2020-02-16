@@ -13,7 +13,7 @@ from django.views.decorators.http import require_POST
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks
 from givefood.models import Foodbank, Order, OrderLine, FoodbankChange
-from givefood.forms import FoodbankForm, OrderForm, NeedForm
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm
 
 
 def admin_index(request):
@@ -224,6 +224,27 @@ def admin_foodbank_form(request, slug = None):
             return redirect("admin_foodbank", slug = foodbank.slug)
     else:
         form = FoodbankForm(instance=foodbank)
+
+    template_vars = {
+        "form":form,
+    }
+    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_foodbank_politics_form(request, slug = None):
+
+    if slug:
+        foodbank = get_object_or_404(Foodbank, slug = slug)
+    else:
+        foodbank = None
+
+    if request.POST:
+        form = FoodbankPoliticsForm(request.POST, instance=foodbank)
+        if form.is_valid():
+            foodbank = form.save()
+            return redirect("admin_foodbank", slug = foodbank.slug)
+    else:
+        form = FoodbankPoliticsForm(instance=foodbank)
 
     template_vars = {
         "form":form,

@@ -45,6 +45,7 @@ urlpatterns = (
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/social_media_checked/$', givefood.views.admin_foodbank_sm_checked, name="admin_foodbank_sm_checked"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/$', givefood.views.admin_foodbank, name="admin_foodbank"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_foodbank_form, name="admin_foodbank_edit"),
+    url(r'^admin/foodbank/(?P<slug>[-\w]+)/politics/edit/$', givefood.views.admin_foodbank_politics_form, name="admin_foodbank_politics_edit"),
 
     url(r'^admin/need/new/$', givefood.views.admin_need_form, name="admin_newneed"),
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/$', givefood.views.admin_need, name="admin_need"),

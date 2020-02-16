@@ -7,6 +7,12 @@ class FoodbankForm(ModelForm):
     class Meta:
         model = Foodbank
         fields = "__all__"
+        exclude = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party",)
+
+class FoodbankPoliticsForm(ModelForm):
+    class Meta:
+        model = Foodbank
+        fields = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party",)
 
 
 class OrderForm(ModelForm):
