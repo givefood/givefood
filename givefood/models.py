@@ -10,7 +10,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode
+from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon
 
 
 class Foodbank(models.Model):
@@ -27,10 +27,12 @@ class Foodbank(models.Model):
     charity_number = models.CharField(max_length=50,null=True, blank=True)
     charity_just_foodbank = models.BooleanField(default=False, verbose_name="Charity just foodbank", help_text="Tick this if the charity is purely used for the foodbank, rather than other uses such as a church")
 
-    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
-    county = models.CharField(max_length=50, null=True, blank=True)
-    district = models.CharField(max_length=50, null=True, blank=True)
-    ward = models.CharField(max_length=50, null=True, blank=True)
+    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    county = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    district = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    mp = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    mp_party = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
@@ -155,6 +157,10 @@ class Foodbank(models.Model):
             self.county = regions.get("county", None)
             self.ward = regions.get("ward", None)
             self.district = regions.get("district", None)
+        if not self.mp:
+            mp_details = mp_from_parlcon(self.parliamentary_constituency)
+            self.mp = mp_details.get("mp")
+            self.mp_party = mp_details.get("party")
         super(Foodbank, self).save(*args, **kwargs)
 
         memcache.delete(FB_MC_KEY)

@@ -10,6 +10,8 @@ from google.appengine.api import urlfetch
 from givefood.const.calories import CALORIES
 from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
 from givefood.const.general import FB_MC_KEY
+from givefood.const.parlcon_mp import parlcon_mp
+from givefood.const.parlcon_party import parlcon_party
 
 def get_all_foodbanks():
 
@@ -235,6 +237,14 @@ def admin_regions_from_postcode(postcode):
         }
     else:
         return {}
+
+
+def mp_from_parlcon(parliamentary_constituency):
+
+    return {
+        "mp":parlcon_mp.get(parliamentary_constituency),
+        "party":parlcon_party.get(parliamentary_constituency),
+    }
 
 
 def lattlong_from_postcode(postcode):
