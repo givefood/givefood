@@ -413,4 +413,5 @@ CALORIES = {
     "Pringles Texas Bbq Sauce Crisps 200G":675,
     "John West Pink Salmon 213G":131,
     "Tesco British Whole Uht Milk 6 X 1 Litre":66,
+    "Tesco British Semi Skimmed Uht Milk 6 X 1 Litre":50,
 }
