@@ -11,17 +11,6 @@ h1 {
   padding:0 10px;
   margin-bottom:20px;
 }
-form label {
-  display:inline-block;
-  width:200px;
-}
-form input, form textarea {
-  font-size:1.1em;
-}
-form textarea {
-  vertical-align: top;
-  width:600px;
-}
 th {
   text-align:left;
 }
