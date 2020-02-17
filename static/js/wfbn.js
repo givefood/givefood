@@ -28,7 +28,7 @@ function init() {
 function do_geolocation(event) {
   if (!navigator.geolocation) {
     status.textContent = no_loc_apology_text;
-    uml_btn.style.display = "none"
+    uml_btn.style.display = "none";
   } else {
     status.innerHTML = requesting_loc_html;
     navigator.geolocation.getCurrentPosition(
@@ -102,4 +102,4 @@ function api_response() {
   status.innerHTML = "";
 }
 
-init()
+init();
