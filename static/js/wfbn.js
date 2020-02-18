@@ -7,6 +7,7 @@ const api_url_root = "/api/1/foodbanks/search/";
 const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
 const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
 const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Try a postcode or address.";
+const no_addr_text = "Did you forget to enter an address?";
 const nothing_needed_text = "Nothing right now, thanks";
 
 function init() {
@@ -43,8 +44,12 @@ function do_geolocation(event) {
 
 function do_address(event) {
   address = address_field.value;
-  api_url = api_url_root + "?address=" + address;
-  api_request(api_url);
+  if (address == "") {
+    status.textContent = no_addr_text;
+  } else {
+    api_url = api_url_root + "?address=" + address;
+    api_request(api_url);
+  }
   event.preventDefault();
 }
 
