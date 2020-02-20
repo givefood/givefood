@@ -105,6 +105,16 @@ def api_foodbank_search(request):
 def api_foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
+    locations = foodbank.locations()
+
+    locations_list = []
+    for location in locations:
+        locations_list.append({
+            "name":location.name,
+            "address":location.address,
+            "postcode":location.postcode,
+            "latt_long":location.latt_long,
+        })
 
     foodbank_response = {
         "name":foodbank.name,
@@ -128,6 +138,7 @@ def api_foodbank(request, slug):
         "needs":foodbank.latest_need_text(),
         "number_needs":foodbank.latest_need_text().count('\n')+1,
         "need_found":foodbank.last_need,
+        "locations":locations_list,
     }
 
     return JsonResponse(foodbank_response, safe=False)
