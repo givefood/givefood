@@ -11,6 +11,17 @@
 
     <div class="column">
 
+      <h3>Foodbanks</h3>
+      <dl>
+        <dt>Foodbanks</dt>
+        <dd>{{ total_foodbanks }}</dd>
+        <dt>Active Foodbanks</dt>
+        <dd>{{ total_active_foodbanks }}</dd>
+        <dt>Locations</dt>
+        <dd>{{ total_locations }}</dd>
+      </dl>
+      <br>
+
       <h3>Needs</h3>
       <dl>
         <dt>Needs</dt>
@@ -19,14 +30,11 @@
         <dd>{{ total_need_items|intcomma }}</dd>
       </dl>
       <br>
+
       <h3>Deliveries</h3>
       <dl>
         <dt>Orders</dt>
         <dd>{{ total_orders }}</dd>
-        <dt>Foodbanks</dt>
-        <dd>{{ total_foodbanks }}</dd>
-        <dt>Active Foodbanks</dt>
-        <dd>{{ total_active_foodbanks }}</dd>
         <dt>Items</dt>
         <dd>{{ total_items|intcomma }}</dd>
         <dt>Weight</dt>

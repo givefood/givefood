@@ -365,6 +365,9 @@ def admin_stats(request):
     for need in needs:
         total_need_items = total_need_items + need.no_items()
 
+    locations = FoodbankLocation.objects.all()
+    total_locations = len(locations) + total_foodbanks
+
     total_weight = 0
     total_calories = 0
     total_items = 0
@@ -396,6 +399,7 @@ def admin_stats(request):
         "total_needs":total_needs,
         "total_need_items":total_need_items,
         "total_weight_pkg":total_weight_pkg,
+        "total_locations":total_locations,
         "section":"stats",
     }
     return render_to_response("admin/stats.html", template_vars, context_instance=RequestContext(request))
