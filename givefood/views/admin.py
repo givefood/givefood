@@ -12,8 +12,8 @@ from django.views.decorators.http import require_POST
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks
-from givefood.models import Foodbank, Order, OrderLine, FoodbankChange
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm
+from givefood.models import Foodbank, Order, OrderLine, FoodbankChange, FoodbankLocation
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm
 
 
 def admin_index(request):
@@ -245,6 +245,32 @@ def admin_foodbank_politics_form(request, slug = None):
             return redirect("admin_foodbank", slug = foodbank.slug)
     else:
         form = FoodbankPoliticsForm(instance=foodbank)
+
+    template_vars = {
+        "form":form,
+    }
+    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_fblocation_form(request, slug = None, loc_slug = None):
+
+    if slug:
+        foodbank = get_object_or_404(Foodbank, slug = slug)
+    else:
+        foodbank = None
+
+    if loc_slug:
+        foodbank_location = get_object_or_404(FoodbankLocation, foodbank = foodbank, slug = loc_slug)
+    else:
+        foodbank_location = None
+
+    if request.POST:
+        form = FoodbankLocationForm(request.POST, instance=foodbank_location)
+        if form.is_valid():
+            foodbank_location = form.save()
+            return redirect("admin_foodbank", slug = foodbank_location.foodbank_slug)
+    else:
+        form = FoodbankLocationForm(instance=foodbank_location, initial={"foodbank":foodbank})
 
     template_vars = {
         "form":form,

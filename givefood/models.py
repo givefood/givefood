@@ -149,6 +149,9 @@ class Foodbank(models.Model):
             total_items = total_items + order.no_items
         return total_items
 
+    def locations(self):
+        return FoodbankLocation.objects.filter(foodbank = self)
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         if not self.parliamentary_constituency:
@@ -164,6 +167,24 @@ class Foodbank(models.Model):
         super(Foodbank, self).save(*args, **kwargs)
 
         memcache.delete(FB_MC_KEY)
+
+
+class FoodbankLocation(models.Model):
+
+    foodbank = models.ForeignKey(Foodbank)
+    foodbank_name = models.CharField(max_length=50, editable=False)
+    foodbank_slug = models.CharField(max_length=50, editable=False)
+    name = models.CharField(max_length=50)
+    slug = models.CharField(max_length=50, editable=False)
+    address = models.TextField()
+    postcode = models.CharField(max_length=9)
+    latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        self.foodbank_name = self.foodbank.name
+        self.foodbank_slug = self.foodbank.slug
+        super(FoodbankLocation, self).save(*args, **kwargs)
 
 
 class Order(models.Model):

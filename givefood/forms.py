@@ -1,6 +1,6 @@
-from django.forms import ModelForm, DateInput, ModelChoiceField
+from django.forms import ModelForm, DateInput, ModelChoiceField, HiddenInput
 
-from models import Foodbank, Order, FoodbankChange
+from models import Foodbank, Order, FoodbankChange, FoodbankLocation
 
 
 class FoodbankForm(ModelForm):
@@ -9,10 +9,18 @@ class FoodbankForm(ModelForm):
         fields = "__all__"
         exclude = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party",)
 
+
 class FoodbankPoliticsForm(ModelForm):
     class Meta:
         model = Foodbank
         fields = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party",)
+
+
+class FoodbankLocationForm(ModelForm):
+    class Meta:
+        model = FoodbankLocation
+        fields = "__all__"
+        widgets = {'foodbank': HiddenInput()}
 
 
 class OrderForm(ModelForm):

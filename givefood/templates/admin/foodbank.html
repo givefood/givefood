@@ -9,7 +9,7 @@
 
   <div class="columns">
 
-    <div class="column is-one-fifth">
+    <div class="column">
 
       {% if foodbank.is_closed %}
         <span class="tag is-danger">Closed</span>
@@ -29,16 +29,36 @@
         <p class="box" style="margin-top:20px;">{{ foodbank.notes|linebreaksbr }}</p><br>
       {% endif %}
 
-      <h3>Address</h3>
-      <p>{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.country }}<br>{{ foodbank.postcode }}</p>
-
-      {% if foodbank.delivery_address %}
-        <h3>Delivery Address</h3>
-        <p>{{ foodbank.delivery_address|linebreaksbr }}</p>
-      {% endif %}
+      <br>
+      <h3>Locations</h3>
+      <a href="{% url "admin_fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
+      <table class="table is-fullwidth locationtable">
+        <tr>
+          <td>
+            Main
+          </td>
+          <td class="is-size-7">{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.country }}<br>{{ foodbank.postcode }}</td>
+          <td><a href="{% url 'admin_foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
+        </tr>
+        <tr>
+          {% if foodbank.delivery_address %}
+            <td>
+              Delivery
+            </td>
+            <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
+            <td><a href="{% url 'admin_foodbank_edit' foodbank.slug %}#delivery_address" class="button is-small is-pulled-right">Edit</a></td>
+          {% endif %}
+        </tr>
+        {% for location in foodbank.locations %}
+        <tr>
+          <td>{{ location.name }}</td>
+          <td class="is-size-7">{{ location.address|linebreaksbr }}</td>
+          <td><a href="{% url 'admin_fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a></td>
+        {% endfor %}
+      </table>
 
       <h3>Politics</h3>
-      <a href="{% url 'admin_foodbank_politics_edit' foodbank.slug %}" class="button is-link is-small">Edit politics</a>
+      <a href="{% url 'admin_foodbank_politics_edit' foodbank.slug %}" class="button is-small is-pulled-right">Edit</a>
       <dl>
         <dt>Parl. Con.</dt>
         <dd>{{ foodbank.parliamentary_constituency }}</dd>

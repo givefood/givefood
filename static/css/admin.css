@@ -51,3 +51,6 @@ th {
   top:0;
   background:#fff;
 }
+.locationtable td {
+  padding:5px 0 5px 0;
+}
