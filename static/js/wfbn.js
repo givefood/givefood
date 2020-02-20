@@ -2,6 +2,7 @@ const status = document.querySelector("#status");
 const uml_btn = document.querySelector("#usemylocationbtn");
 const addressgo_btn = document.querySelector("#addressgobtn");
 const address_field = document.querySelector("#address_field");
+const results_table = document.querySelector("table");
 const api_url_root = "/api/1/foodbanks/search/";
 
 const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
@@ -27,6 +28,7 @@ function init() {
 }
 
 function do_geolocation(event) {
+  clear_results();
   if (!navigator.geolocation) {
     status.textContent = no_loc_apology_text;
     uml_btn.style.display = "none";
@@ -43,6 +45,7 @@ function do_geolocation(event) {
 }
 
 function do_address(event) {
+  clear_results();
   address = address_field.value;
   if (address == "") {
     status.textContent = no_addr_text;
@@ -69,13 +72,15 @@ function api_request(url) {
   fb_req.send();
 }
 
+function clear_results() {
+  while (results_table.firstChild) {
+    results_table.removeChild(results_table.firstChild);
+  }
+}
+
 function api_response() {
 
   template = document.querySelector("#fb_row");
-  table = document.querySelector("table");
-  while (table.firstChild) {
-    table.removeChild(table.firstChild);
-  }
 
   for (i in this.response) {
 
@@ -101,7 +106,7 @@ function api_response() {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
     }
     currentrow.querySelector(".updated span").textContent = updated_text;
-    table.appendChild(currentrow);
+    results_table.appendChild(currentrow);
   }
 
   status.innerHTML = "";
