@@ -30,6 +30,7 @@ h2 {
 }
 .small-product-image {
   width:50px;
+  min-width:50px;
 }
 h1 {
   margin:0;
