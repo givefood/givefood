@@ -19,7 +19,7 @@ function init() {
   var input = address_field;
   var options = {
     bounds: defaultBounds,
-    types: ['geocode']
+    types: ["geocode"]
   };
 
   autocomplete = new google.maps.places.Autocomplete(input, options);
