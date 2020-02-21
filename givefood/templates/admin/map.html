@@ -4,6 +4,20 @@
 
 {% block body %}
 
+<div class="field is-pulled-right">
+  <div class="control">
+    <div class="select is-small">
+      <select onchange="javascript:window.location.href=this.value">
+        <option value="?filter=all"{% if filter == "all" %} selected{% endif %}>All</option>
+        <option value="?filter=active"{% if filter == "active" %} selected{% endif %}>Active</option>
+        {% for foodbank in all_foodbanks %}
+          <option value="?filter={{ foodbank.slug }}"{% if filter == foodbank.slug %} selected{% endif %}>{{ foodbank.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+</div>
+
 <div id="fbmap"></div>
 
 <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&amp;sensor=false"></script>
@@ -29,7 +43,7 @@ var mapOptions = {
 map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
 
 {% for foodbank in foodbanks %}
-  add_marker({{ foodbank.latt_long }}, '{% url "admin_foodbank" foodbank.slug %}')
+  add_marker({{ foodbank.latt_long }}, "{{ foodbank.get_absolute_url }}")
 {% endfor %}
 
 }

@@ -345,9 +345,28 @@ def admin_need_publish(request, id):
 
 def admin_map(request):
 
-    foodbanks = get_all_foodbanks()
+    filter = request.GET.get("filter", "all")
+
+    all_foodbanks = get_all_foodbanks()
+
+    if filter == "all":
+        foodbanks = all_foodbanks
+    elif filter == "active":
+        foodbanks = set()
+        all_orders = Order.objects.all()
+        for order in all_orders:
+            foodbanks.add(order.foodbank)
+    else:
+        foodbank = get_object_or_404(Foodbank, slug=filter)
+        foodbanks = []
+        foodbanks.append(foodbank)
+        for location in foodbank.locations():
+            foodbanks.append(location)
+
     template_vars = {
         "foodbanks":foodbanks,
+        "all_foodbanks":all_foodbanks,
+        "filter":filter,
         "section":"map",
     }
     return render_to_response("admin/map.html", template_vars, context_instance=RequestContext(request))
