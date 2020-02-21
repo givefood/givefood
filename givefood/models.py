@@ -182,6 +182,7 @@ class FoodbankLocation(models.Model):
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
+    phone_number = models.CharField(max_length=20, null=True, blank=True)
 
     def get_absolute_url(self):
         return "/admin/foodbank/%s/location/%s/edit/" % (self.foodbank.slug, self.slug)
