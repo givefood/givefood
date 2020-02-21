@@ -152,6 +152,9 @@ class Foodbank(models.Model):
     def locations(self):
         return FoodbankLocation.objects.filter(foodbank = self)
 
+    def get_absolute_url(self):
+        return "/admin/foodbank/%s/" % (self.slug)
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         if not self.parliamentary_constituency:
@@ -179,6 +182,9 @@ class FoodbankLocation(models.Model):
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
+
+    def get_absolute_url(self):
+        return "/admin/foodbank/%s/location/%s/edit/" % (self.foodbank.slug, self.slug)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
