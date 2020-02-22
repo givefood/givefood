@@ -26,7 +26,7 @@
       {% endif %}
 
       {% if foodbank.notes %}
-        <p class="box" style="margin-top:20px;">{{ foodbank.notes|linebreaksbr }}</p><br>
+        <p class="box" style="margin-top:20px;">{{ foodbank.notes|linebreaksbr }}</p>
       {% endif %}
 
       <br>
@@ -40,15 +40,15 @@
           <td class="is-size-7">{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
           <td><a href="{% url 'admin_foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
         </tr>
-        <tr>
-          {% if foodbank.delivery_address %}
+        {% if foodbank.delivery_address %}
+          <tr>
             <td>
               Delivery
             </td>
             <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
             <td><a href="{% url 'admin_foodbank_edit' foodbank.slug %}#delivery_address" class="button is-small is-pulled-right">Edit</a></td>
-          {% endif %}
-        </tr>
+          </tr>
+        {% endif %}
         {% for location in foodbank.locations %}
         <tr>
           <td>{{ location.name }}</td>
