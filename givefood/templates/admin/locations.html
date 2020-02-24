@@ -1,0 +1,48 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Locations - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Locations</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <!-- <div class="field is-pulled-right">
+        <div class="control">
+          <div class="select is-small">
+            <select onchange="javascript:window.location.href=this.value">
+              <option value="?sort=name"{% if sort == "name" %} selected{% endif %}>Alphabetical</option>
+              <option value="?sort=last_order"{% if sort == "last_order" %} selected{% endif %}>Last Order</option>
+              <option value="?sort=last_need"{% if sort == "last_need" %} selected{% endif %}>Last Need</option>
+              <option value="?sort=created"{% if sort == "created" %} selected{% endif %}>Created</option>
+            </select>
+          </div>
+        </div>
+      </div> -->
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Foodbank</th>
+          <th>Location</th>
+          <th>Address</th>
+          <th>Phone Number</th>
+        </tr>
+        {% for location in locations %}
+          <tr>
+            <td><a href="{% url "admin_foodbank" location.foodbank_slug %}">{{ location.foodbank_name }}</a></td>
+            <td><a href="{% url 'admin_fblocation_edit' location.foodbank_slug location.slug %}">{{ location.name }}</a></td>
+            <td>{{ location.address }} {{ location.postcode }}</td>
+            <td>{{ location.phone_number }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -343,6 +343,17 @@ def admin_need_publish(request, id):
     return redirect("admin_index")
 
 
+def admin_locations(request):
+
+    locations = FoodbankLocation.objects.all().order_by("foodbank_name")
+
+    template_vars = {
+        "locations":locations,
+        "section":"locations",
+    }
+    return render_to_response("admin/locations.html", template_vars, context_instance=RequestContext(request))
+
+
 def admin_map(request):
 
     filter = request.GET.get("filter", "all")
