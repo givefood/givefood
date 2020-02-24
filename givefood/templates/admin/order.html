@@ -59,7 +59,7 @@
           <dd>{{ order.need.created }}</dd>
           {% if order.need.uri %}
             <dt>URL</dt>
-            <dd><a href="{{ foodbank.need.uri }}">{{ foodbank.need.uri|truncatechars:20 }}</a></dd>
+            <dd><a href="{{ order.need.uri }}">{{ order.need.uri|truncatechars:20 }}</a></dd>
           {% endif %}
         </dl>
       {% endif %}
