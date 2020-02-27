@@ -376,7 +376,7 @@ class FoodbankChange(models.Model):
         last_change = FoodbankChange.objects.filter(
             foodbank = self.foodbank,
             created__lt = self.created,
-        )[:1]
+        ).order_by("-created")[:1]
         if not last_change:
             return None
         else:
