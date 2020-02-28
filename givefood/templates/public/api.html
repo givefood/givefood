@@ -11,11 +11,16 @@
     <div class="column is-one-third intro content">
       <h2>API</h2>
       <p>Get access to our data over HTTPS in JSON.</p>
-      <p>Please do good with the data, don't request more once every couple of seconds, and credit us with a link to our homepage.</p>
+      <ul>
+        <li><em>Do good</em> with the data</li>
+        <li>Don't request more once every second or so</li>
+        <li>Credit us with a link to our homepage if you republish</li>
+        <li>Don't cache too long, all this is regularly updated</li>
+      </ul>
     </div>
     <div class="column is-two-thirds">
 
-      <h2>All Food Banks</h2>
+      <h2 id="all-food-banks">All Food Banks</h2>
       <p>Returns a list of all food bank organisations known to us.</p>
       <a href="/api/1/foodbanks/">/api/1/foodbanks/</a>
       <table class="table is-fullwidth is-hoverable">
@@ -120,7 +125,7 @@
         </tr>
       </table>
 
-      <h2>Food Bank Search</h2>
+      <h2 id="food-bank-search">Food Bank Search</h2>
       <p>When given a place returns list of food banks nearby that are not closed</p>
       <a href="/api/1/foodbanks/search/?lattlong=53.42,-2.55">/api/1/foodbanks/search/?lattlong=53.42,-2.55</a><br>
       <a href="/api/1/foodbanks/search/?address=66%20The%20Headrow%20Leeds%20LS1%208EQ">/api/1/foodbanks/search/?address=66 The Headrow Leeds LS1 8EQ</a><br>
@@ -163,7 +168,7 @@
         </tr>
       </table>
 
-      <h2>Food Bank</h2>
+      <h2 id="food-bank">Food Bank</h2>
       <p>When given the food bank slug returns the details for an individual food bank organisation.</p>
       <a href="/api/1/foodbank/black-country/">/api/1/foodbank/black-country/</a>
       <p>Returns all of the fields above, plus...</p>
