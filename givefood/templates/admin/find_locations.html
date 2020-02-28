@@ -1,0 +1,35 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Find {{ foodbank }} Locations - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>{{ foodbank }}</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      {% if foodbank.locations %}
+        <dl>
+          {% for location in foodbank.locations %}
+            <dt>{{ location.name }}</dt>
+            <dd>{{ location.address }}</dd>
+          {% endfor %}
+        </dl>
+      {% else %}
+        <p>No locations on foodbank currently</p>
+      {% endif %}
+
+    </div>
+
+    <div class="column">
+      {% for name, address in locations.items %}
+        {{ name }}
+        {{ address }}
+      {% endfor %}
+    </div>
+
+  </div>
+
+{% endblock %}

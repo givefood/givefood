@@ -48,6 +48,7 @@ urlpatterns = (
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_foodbank_form, name="admin_foodbank_edit"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/location/new/$', givefood.views.admin_fblocation_form, name="admin_fblocation_new"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/edit/$', givefood.views.admin_fblocation_form, name="admin_fblocation_edit"),
+    url(r'^admin/foodbank/(?P<slug>[-\w]+)/find-locations/$', givefood.views.admin_findlocations, name="admin_findlocations"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/politics/edit/$', givefood.views.admin_foodbank_politics_form, name="admin_foodbank_politics_edit"),
 
     url(r'^admin/need/new/$', givefood.views.admin_need_form, name="admin_newneed"),

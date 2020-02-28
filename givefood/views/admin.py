@@ -1,6 +1,9 @@
 from datetime import datetime, timedelta
 
+from libs.beautifulsoup import BeautifulSoup
+
 from google.appengine.api import mail
+from google.appengine.api import urlfetch
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
@@ -276,6 +279,36 @@ def admin_fblocation_form(request, slug = None, loc_slug = None):
         "form":form,
     }
     return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_findlocations(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    if foodbank.network != "Trussell Trust":
+        return HttpResponse("NOT TT")
+
+    locations_url = "%s/locations/" % (foodbank.url)
+    locations_result = urlfetch.fetch(locations_url, validate_certificate = False)
+
+    location_soup = BeautifulSoup(locations_result.content)
+    headings = location_soup.findAll("h2", attrs={'class':"[ location__heading ]  h3  heading--foodbank"})
+    addresses = location_soup.findAll("div", attrs={'class':"[ location__address ]"})
+
+    locations = {}
+
+    i = 0
+    while i < len(headings):
+        locations[headings[i].string] = addresses[i].findAll("p")[1].text
+        i += 1
+
+
+    template_vars = {
+        "foodbank":foodbank,
+        "locations":locations,
+    }
+
+    return render_to_response("admin/find_locations.html", template_vars, context_instance=RequestContext(request))
 
 
 @require_POST
