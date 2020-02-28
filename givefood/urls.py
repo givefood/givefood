@@ -17,6 +17,7 @@ urlpatterns = (
 
     # PUBLIC
     url(r'^$', givefood.views.public_index, name="public_index"),
+    url(r'^api/$', givefood.views.public_api, name="public_api"),
     url(r'^guides/(?P<slug>[-\w]+)/$', givefood.views.public_article, name="public_article"),
     url(r'^(?P<year>(2019))/$', givefood.views.public_annual_report, name="public_annual_report"),
     url(r'^generate-(?P<year>(2019))/$', givefood.views.public_gen_annual_report, name="public_gen_annual_report"),

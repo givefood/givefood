@@ -1,0 +1,198 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}Give Food API{% endblock %}
+
+{% block body %}
+
+  <h1><a href="/">Give Food</a></h1>
+
+  <div class="columns">
+    <div class="column is-one-third intro content">
+      <h2>API</h2>
+      <p>Get access to our data over HTTPS in JSON.</p>
+      <p>Please do good with the data, don't request more once every couple of seconds, and credit us with a link to our homepage.</p>
+    </div>
+    <div class="column is-two-thirds">
+
+      <h2>All Food Banks</h2>
+      <p>Returns a list of all food bank organisations known to us.</p>
+      <a href="/api/1/foodbanks/">/api/1/foodbanks/</a>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th></th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><code>name</code></td>
+          <td>Name of the food bank</td>
+          <td>Bristol East</td>
+        </tr>
+        <tr>
+          <td><code>slug</code></td>
+          <td>URL-safe slug of the name of the food bank</td>
+          <td>bristol-east</td>
+        </tr>
+        <tr>
+          <td><code>address</code></td>
+          <td>Address of the food bank name</td>
+          <td>
+            32 Stapleton Road<br>
+            Easton<br>
+            Bristol<br>
+          </td>
+        </tr>
+        <tr>
+          <td><code>postcode</code></td>
+          <td>Postcode of the food bank</td>
+          <td>BS5 0QY</td>
+        </tr>
+        <tr>
+          <td><code>country</code></td>
+          <td>Country (or British crown dependency) of the food bank</td>
+          <td>England</td>
+        </tr>
+        <tr>
+          <td><code>latt_long</code></td>
+          <td>Lattitude and longitude of the food bank</td>
+          <td>51.4597049,-2.577905</td>
+        </tr>
+        <tr>
+          <td><code>closed</code></td>
+          <td>If the food bank has closed</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td><code>phone</code></td>
+          <td>Phone number of the food bank</td>
+          <td>07584 625082</td>
+        </tr>
+        <tr>
+          <td><code>url</code></td>
+          <td>URL of the homepage of the food bank</td>
+          <td>https://eastbristol.foodbank.org.uk</td>
+        </tr>
+        <tr>
+          <td><code>shopping_list_url</code></td>
+          <td>URL of the shopping list for the food bank</td>
+          <td>https://eastbristol.foodbank.org.uk/give-help/donate-food/</td>
+        </tr>
+        <tr>
+          <td><code>charity_number</code></td>
+          <td>Identifer of the charity the food bank runs under in it's country</td>
+          <td>298528</td>
+        </tr>
+        <tr>
+          <td><code>charity_register_url</code></td>
+          <td>URL of the details of the food bank's charity at the charity registrar</td>
+          <td>https://beta.charitycommission.gov.uk/charity-details/?regId=298528</td>
+        </tr>
+        <tr>
+          <td><code>network</code></td>
+          <td>Name of the network the food banks is a member of</td>
+          <td>Trussell Trust</td>
+        </tr>
+        <tr>
+          <td><code>parliamentary_constituency</code></td>
+          <td>Name of the parliamentary constituency in which the food bank is in</td>
+          <td>Bristol West</td>
+        </tr>
+        <tr>
+          <td><code>mp_party</code></td>
+          <td>Name of the political party of the MP representing the parliamentary constituency in which the food bank is in</td>
+          <td>Labour</td>
+        </tr>
+        <tr>
+          <td><code>mp</code></td>
+          <td>Name of the MP representing the parliamentary constituency in which the food bank is in</td>
+          <td>Thangam Debbonaire</td>
+        </tr>
+        <tr>
+          <td><code>district</code></td>
+          <td>Name of the district in the food bank is in</td>
+          <td>Bristol, City of</td>
+        </tr>
+        <tr>
+          <td><code>ward</code></td>
+          <td>Name of the ward in the food bank is in</td>
+          <td>Lawrence Hill</td>
+        </tr>
+      </table>
+
+      <h2>Food Bank Search</h2>
+      <p>When given a place returns list of food banks nearby</p>
+      <a href="/api/1/foodbanks/search/?lattlong=53.42,-2.55">/api/1/foodbanks/search/?lattlong=53.42,-2.55</a><br>
+      <a href="/api/1/foodbanks/search/?address=66 The Headrow, Leeds LS1 8EQ">/api/1/foodbanks/search/?address=66 The Headrow, Leeds LS1 8EQ</a><br>
+      <p>Returns all of the fields above, plus...</p>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th></th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><code>distance_mi</code></td>
+          <td>Distance in miles from the place submitted</td>
+          <td>7.72</td>
+        </tr>
+        <tr>
+          <td><code>number_needs</code></td>
+          <td>Number of line items requested by the food bank</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td><code>needs</code></td>
+          <td>Linebreak separated list of line items requested by the food bank</td>
+          <td>
+            Coffee<br>
+            Long life Juice<br>
+            Cooking sauce<br>
+            Tinned custard
+          </td>
+        </tr>
+        <tr>
+          <td><code>updated</code></td>
+          <td>Date and time the need was updated</td>
+          <td>2020-02-17 09:04:44.603292+00:00</td>
+        </tr>
+        <tr>
+          <td><code>updated_text</code></td>
+          <td>Human readable version of date and time the need was updated</td>
+          <td>1 week, 4 days</td>
+        </tr>
+      </table>
+
+      <h2>Food Bank</h2>
+      <p>When given the food bank slug returns the details for an individual food bank organisation.</p>
+      <a href="/api/1/foodbank/blackburn/">/api/1/foodbank/blackburn/</a>
+      <p>Returns all of the fields above, plus...</p>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th></th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><code>locations</code></td>
+          <td>List of locations we know of for this organisation's outlets</td>
+          <td>
+            <pre>{
+  latt_long: "51.4324167,-0.1034595",
+  postcode: "SE27 0HS",
+  name: "Norwood",
+  address: "St Luke's Church Knights Hill West Norwood London"
+}</pre>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+
+  </div>
+
+
+
+
+
+{% endblock %}

@@ -52,6 +52,12 @@ def public_article(request, slug):
     return render_to_response(article_template)
 
 
+# @cache_page(60*10)
+def public_api(request):
+
+    return render_to_response("public/api.html")
+
+
 @cache_page(60*10)
 def public_annual_report(request, year):
     article_template = "public/ar/%s.html" % (year)
