@@ -144,6 +144,8 @@ def api_foodbank(request, slug):
         "number_needs":foodbank.latest_need_text().count('\n')+1,
         "need_found":foodbank.last_need,
         "locations":locations_list,
+        "updated":str(foodbank.latest_need_date()),
+        "updated_text":timesince(foodbank.latest_need_date()),
     }
 
     return JsonResponse(foodbank_response, safe=False)
