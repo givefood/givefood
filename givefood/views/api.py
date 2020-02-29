@@ -119,6 +119,7 @@ def api_foodbank(request, slug):
             "address":location.address,
             "postcode":location.postcode,
             "latt_long":location.latt_long,
+            "phone":location.phone_number,
         })
 
     foodbank_response = {
