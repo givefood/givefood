@@ -6,10 +6,17 @@
 {% block body %}
 
   <div class="columns is-centered">
-    <div class="column is-half">
+    <div class="column is-three-quarters">
       <h1><a href="/">Give Food</a></h1>
+    </div>
+  </div>
+
+  <div class="columns is-centered">
+
+    <div class="column is-half">
+
       <p>We're a UK charity that delivers food to food banks - using technology to supply, in bulk, the food required in a timely manner.</p>
-      <p>We've delivered {{ total_weight|floatformat:2 }} tonnes of food, consisting of {{ total_items|intcomma }} items and {{ total_calories|floatformat:2 }} million calories, to {{ no_foodbanks }} food banks around the country.</p>
+      <p>We've delivered {{ total_weight|floatformat:2 }} tonnes of food, consisting of {{ total_items|intcomma }} items and {{ total_calories|floatformat:2 }} million calories, to {{ no_active_foodbanks }} food banks around the country.</p>
       <p>Whilst we believe that food banks should not exist in our country, we aim to help local organisations address the immediate and critical need created by food insecurity.</p>
       <p>We operate independent of religion and are privately funded by the Cartwright family.</p>
       <ul>
@@ -20,6 +27,10 @@
       <p class="annualreportteaser">
         Read our <a href="/2019/">2019 Annual Report</a> and <a href="https://twitter.com/GiveFood_org_uk/status/1207939959400759296">aims for 2020</a>.
       </p>
+    </div>
+    <div class="column is-one-quarter">
+      <p>Find out what food banks near you, from {{ total_locations }} around the UK, are requesting at...<br><a href="/needs/" class="is-size-5">givefood.org.uk/needs</a></p>
+      <p>🤓Techies! There is also an <a href="/api/">API</a>.</p>
     </div>
   </div>
 
@@ -69,7 +80,7 @@
       <p>We only deliver items that are requested, and suitable for storage on a shelf for extended periods.</p>
 
       <h2>Where we deliver</h2>
-      <p>We currently supply {{ no_foodbanks }} food banks across England, Scotland, Wales and Northern Ireland of varying sizes. Some are members of networks and some are independent.</p>
+      <p>We currently supply {{ no_active_foodbanks }} food banks across England, Scotland, Wales and Northern Ireland of varying sizes. Some are members of networks and some are independent.</p>
 
     </div>
     <div class="column is-one-third">

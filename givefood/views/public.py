@@ -9,13 +9,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 
-from givefood.models import Foodbank, Order, FoodbankChange
+from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation
 from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
-@cache_page(60*30)
+@cache_page(60*10)
 def public_index(request):
 
     total_weight = 0
@@ -23,22 +23,26 @@ def public_index(request):
     total_items = 0
 
     orders = Order.objects.all()
-    foodbanks = set()
+    active_foodbanks = set()
+    foodbanks = get_all_foodbanks()
+    locations = FoodbankLocation.objects.all()
 
     for order in orders:
         total_weight = total_weight + order.weight
         total_calories = total_calories + order.calories
         total_items = total_items + order.no_items
-        foodbanks.add(order.foodbank_name)
+        active_foodbanks.add(order.foodbank_name)
 
     total_weight = float(total_weight) / 1000000
     total_weight = total_weight * PACKAGING_WEIGHT_PC
     total_calories = float(total_calories) / 1000000
 
-    no_foodbanks = len(foodbanks)
+    no_active_foodbanks = len(active_foodbanks)
+    total_locations = len(locations) + len(foodbanks)
 
     template_vars = {
-        "no_foodbanks":no_foodbanks,
+        "no_active_foodbanks":no_active_foodbanks,
+        "total_locations":total_locations,
         "total_weight":total_weight,
         "total_calories":total_calories,
         "total_items":total_items,
