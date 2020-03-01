@@ -415,4 +415,5 @@ CALORIES = {
     "Tesco British Whole Uht Milk 6 X 1 Litre":66,
     "Tesco British Semi Skimmed Uht Milk 6 X 1 Litre":50,
     "Tesco Peeled Plum Tomatoes 400G":25,
+    "Jack's Peach Slices In Light Syrup 410G":60,
 }
