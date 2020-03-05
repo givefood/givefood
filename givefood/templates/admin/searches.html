@@ -1,0 +1,35 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Searches - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Searches</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Time</th>
+          <th>Query Type</th>
+          <th>Query</th>
+          <th>Nearest Foodbank</th>
+        </tr>
+        {% for search in searches %}
+          <tr>
+            <td>{{ search.created }}</td>
+            <td>{{ search.query_type }}</td>
+            <td>{{ search.query }}</td>
+            <td>{{ search.nearest_foodbank|intcomma }}m</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -58,6 +58,7 @@ urlpatterns = (
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/publish/$', givefood.views.admin_need_publish, name="admin_need_publish"),
 
     url(r'^admin/locations/$', givefood.views.admin_locations, name="admin_locations"),
+    url(r'^admin/searches/$', givefood.views.admin_searches, name="admin_searches"),
     url(r'^admin/map/$', givefood.views.admin_map, name="admin_map"),
     url(r'^admin/search/$', givefood.views.admin_search, name="admin_search"),
     url(r'^admin/stats/$', givefood.views.admin_stats, name="admin_stats"),

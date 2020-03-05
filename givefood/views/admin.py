@@ -15,7 +15,7 @@ from django.views.decorators.http import require_POST
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks
-from givefood.models import Foodbank, Order, OrderLine, FoodbankChange, FoodbankLocation
+from givefood.models import Foodbank, Order, OrderLine, FoodbankChange, FoodbankLocation, ApiFoodbankSearch
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm
 
 
@@ -52,6 +52,18 @@ def admin_index(request):
         "section":"home",
     }
     return render_to_response("admin/index.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_searches(request):
+
+    searches = ApiFoodbankSearch.objects.all().order_by("-created")[:200]
+
+    template_vars = {
+        "searches":searches,
+        "section":"searches",
+    }
+
+    return render_to_response("admin/searches.html", template_vars, context_instance=RequestContext(request))
 
 
 def admin_search(request):
