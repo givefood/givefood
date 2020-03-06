@@ -31,3 +31,6 @@ To:
 Items:
 {% for line in order.lines %}{{ line.quantity }}x {{ line.name|safe }}
 {% endfor %}
+
+
+Give Food is charity number 1188192, registered in England & Wales.
