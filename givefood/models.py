@@ -150,7 +150,7 @@ class Foodbank(models.Model):
         return total_items
 
     def locations(self):
-        return FoodbankLocation.objects.filter(foodbank = self)
+        return FoodbankLocation.objects.filter(foodbank = self).order_by("name")
 
     def get_absolute_url(self):
         return "/admin/foodbank/%s/" % (self.slug)
