@@ -132,3 +132,6 @@ blockquote {
 .content img {
   border-radius:6px;
 }
+footer {
+  font-size:0.9em;
+}
