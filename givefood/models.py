@@ -105,14 +105,22 @@ class Foodbank(models.Model):
     def latest_need_text(self):
         latest_need = self.latest_need()
         if latest_need:
-            return self.latest_need().change_text
+            return latest_need.change_text
         else:
             return "Nothing"
+
+    def latest_need_id(self):
+
+        latest_need = self.latest_need()
+        if latest_need:
+            return latest_need.need_id
+        else:
+            return None
 
     def latest_need_date(self):
         latest_need = self.latest_need()
         if latest_need:
-            return self.latest_need().created
+            return latest_need.created
         else:
             return self.modified
 

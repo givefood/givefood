@@ -101,6 +101,7 @@ def api_foodbank_search(request):
             "charity_register_url":foodbank.charity_register_url(),
             "needs":foodbank.latest_need_text(),
             "number_needs":foodbank.latest_need_text().count('\n')+1,
+            "need_id":foodbank.latest_need_id(),
             "updated":str(foodbank.latest_need_date()),
             "updated_text":timesince(foodbank.latest_need_date()),
         })
@@ -147,6 +148,7 @@ def api_foodbank(request, slug):
         "needs":foodbank.latest_need_text(),
         "number_needs":foodbank.latest_need_text().count('\n')+1,
         "need_found":foodbank.last_need,
+        "need_id":foodbank.latest_need_id(),
         "locations":locations_list,
         "updated":str(foodbank.latest_need_date()),
         "updated_text":timesince(foodbank.latest_need_date()),
