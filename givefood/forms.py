@@ -21,6 +21,7 @@ class FoodbankLocationForm(ModelForm):
         model = FoodbankLocation
         fields = "__all__"
         widgets = {'foodbank': HiddenInput()}
+        exclude = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party",)
 
 
 class OrderForm(ModelForm):
