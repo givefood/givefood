@@ -185,12 +185,20 @@ class FoodbankLocation(models.Model):
     foodbank = models.ForeignKey(Foodbank)
     foodbank_name = models.CharField(max_length=50, editable=False)
     foodbank_slug = models.CharField(max_length=50, editable=False)
+    foodbank_network = models.CharField(max_length=50, editable=False)
     name = models.CharField(max_length=50)
     slug = models.CharField(max_length=50, editable=False)
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
     phone_number = models.CharField(max_length=20, null=True, blank=True)
+
+    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
+    county = models.CharField(max_length=50, null=True, blank=True)
+    district = models.CharField(max_length=50, null=True, blank=True)
+    ward = models.CharField(max_length=50, null=True, blank=True)
+    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
+    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
 
     def __str__(self):
         return self.name
@@ -202,6 +210,19 @@ class FoodbankLocation(models.Model):
         self.slug = slugify(self.name)
         self.foodbank_name = self.foodbank.name
         self.foodbank_slug = self.foodbank.slug
+        self.foodbank_network = self.foodbank.network
+
+        if not self.parliamentary_constituency:
+            regions = admin_regions_from_postcode(self.postcode)
+            self.parliamentary_constituency = regions.get("parliamentary_constituency", None)
+            self.county = regions.get("county", None)
+            self.ward = regions.get("ward", None)
+            self.district = regions.get("district", None)
+        if not self.mp:
+            mp_details = mp_from_parlcon(self.parliamentary_constituency)
+            self.mp = mp_details.get("mp")
+            self.mp_party = mp_details.get("party")
+
         super(FoodbankLocation, self).save(*args, **kwargs)
 
 
