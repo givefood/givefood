@@ -123,6 +123,11 @@ def api_foodbank(request, slug):
             "postcode":location.postcode,
             "latt_long":location.latt_long,
             "phone":location.phone_number,
+            "parliamentary_constituency":location.parliamentary_constituency,
+            "mp":location.mp,
+            "mp_party":location.mp_party,
+            "ward":location.ward,
+            "district":location.district,
         })
 
     foodbank_response = {
