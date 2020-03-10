@@ -25,6 +25,7 @@ urlpatterns = (
     # WFBN
     url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^needs/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
+    url(r'^needs/click/(?P<slug>[-\w]+)/$', givefood.views.public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
 
     url(r'^productimage/$', givefood.views.public_product_image, name="public_product_image"),
     url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),

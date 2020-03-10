@@ -89,13 +89,14 @@ function api_response() {
     url = foodbank.shopping_list_url;
     name = foodbank.name;
     distance = foodbank.distance_mi;
+    slug = foodbank.slug;
     number_needs = foodbank.number_needs;
     needs = foodbank.needs;
     needs_html = needs.replace(/\n/g, "<br>");
     updated_text = foodbank.updated_text;
 
     currentrow = document.importNode(template.content, true);
-    currentrow.querySelector("a").href = url;
+    currentrow.querySelector("a").href = "/needs/click/" + slug + "/";
     currentrow.querySelector("a").textContent = name;
     currentrow.querySelector(".distance span").textContent = distance;
     if (number_needs > 0 && needs != "Nothing") {
