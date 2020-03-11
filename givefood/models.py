@@ -53,6 +53,8 @@ class Foodbank(models.Model):
     last_social_media_check = models.DateTimeField(editable=False, null=True)
     last_need = models.DateTimeField(editable=False, null=True)
 
+    no_locations = models.IntegerField(editable=False)
+
     def __str__(self):
         return self.name
 
@@ -130,6 +132,9 @@ class Foodbank(models.Model):
     def no_orders(self):
         return len(self.orders())
 
+    def get_no_locations(self):
+        return len(self.locations())
+
     def total_weight(self):
         total_weight = float(0)
         orders = self.orders()
@@ -175,6 +180,7 @@ class Foodbank(models.Model):
             mp_details = mp_from_parlcon(self.parliamentary_constituency)
             self.mp = mp_details.get("mp")
             self.mp_party = mp_details.get("party")
+        self.no_locations = self.get_no_locations()
         super(Foodbank, self).save(*args, **kwargs)
 
         memcache.delete(FB_MC_KEY)
@@ -222,6 +228,8 @@ class FoodbankLocation(models.Model):
             mp_details = mp_from_parlcon(self.parliamentary_constituency)
             self.mp = mp_details.get("mp")
             self.mp_party = mp_details.get("party")
+
+        self.foodbank.save()
 
         super(FoodbankLocation, self).save(*args, **kwargs)
 
