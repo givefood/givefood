@@ -93,7 +93,6 @@ function api_response() {
     number_needs = foodbank.number_needs;
     needs = foodbank.needs;
     needs_html = needs.replace(/\n/g, "<br>");
-    updated_text = foodbank.updated_text;
 
     currentrow = document.importNode(template.content, true);
     currentrow.querySelector("a").href = "/needs/click/" + slug + "/";
@@ -106,7 +105,6 @@ function api_response() {
     } else {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
     }
-    currentrow.querySelector(".updated span").textContent = updated_text;
     results_table.appendChild(currentrow);
   }
 
