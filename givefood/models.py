@@ -229,9 +229,9 @@ class FoodbankLocation(models.Model):
             self.mp = mp_details.get("mp")
             self.mp_party = mp_details.get("party")
 
-        self.foodbank.save()
-
         super(FoodbankLocation, self).save(*args, **kwargs)
+
+        self.foodbank.save()
 
 
 class Order(models.Model):
