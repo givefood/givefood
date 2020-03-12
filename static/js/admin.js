@@ -28,7 +28,7 @@ if (lattlong_field) {
   lattlong_btn = document.querySelector("#get_lattlong_btn");
   lattlong_btn.addEventListener("click", function(event) {
     address = address_field.value.replace(/\n/g,", ") + ", " + postcode_field.value;
-    url = geolocation_url + address;
+    url = geolocation_url + encodeURIComponent(address);
     var gl_req = new XMLHttpRequest();
     gl_req.addEventListener("load", function(){
       latt = this.response.results[0].geometry.location.lat
