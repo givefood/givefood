@@ -50,7 +50,7 @@ function do_address(event) {
   if (address == "") {
     status.textContent = no_addr_text;
   } else {
-    api_url = api_url_root + "?address=" + address;
+    api_url = "?address=" + address;
     api_request(api_url);
   }
   event.preventDefault();
@@ -59,17 +59,21 @@ function do_address(event) {
 function do_lattlong(position) {
   latt  = position.coords.latitude;
   long = position.coords.longitude;
-  api_url = api_url_root + "?lattlong=" + latt + "," + long;
+  api_url = "?lattlong=" + latt + "," + long;
   api_request(api_url);
 }
 
 function api_request(url) {
+  url = api_url_root + url
   status.innerHTML = working_html;
   var fb_req = new XMLHttpRequest();
   fb_req.addEventListener("load", api_response);
   fb_req.responseType = "json";
   fb_req.open("GET", url);
   fb_req.send();
+  if (ga) {
+    ga('send', 'pageview', document.location + url);
+  }
 }
 
 function clear_results() {
