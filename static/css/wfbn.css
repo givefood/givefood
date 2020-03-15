@@ -26,9 +26,6 @@
 .need_detail {
   width:80%;
 }
-summary {
-  cursor:pointer;
-}
-details p {
+.fb_needs p {
   margin-bottom:5px;
 }
