@@ -10,7 +10,7 @@ const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> R
 const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Try a postcode or address.";
 const no_addr_text = "Did you forget to enter an address?";
 const nothing_needed_text = "Nothing right now, thanks";
-const need_unknown_text = "Sorry. We don't know what's needed here, contact the food bank";
+const need_unknown_text = "Sorry. We don't know what's needed here, please contact the food bank";
 
 function init() {
   var defaultBounds = new google.maps.LatLngBounds(
