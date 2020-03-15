@@ -1,5 +1,5 @@
 cron:
 
 - description: homepage primer
-  url: /
+  url: /precacher/
   schedule: every 8 minutes

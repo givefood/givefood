@@ -20,15 +20,17 @@ urlpatterns = (
     url(r'^api/$', givefood.views.public_api, name="public_api"),
     url(r'^guides/(?P<slug>[-\w]+)/$', givefood.views.public_article, name="public_article"),
     url(r'^(?P<year>(2019))/$', givefood.views.public_annual_report, name="public_annual_report"),
+
+    # KINDA PUBLIC
+    url(r'^precacher/$', givefood.views.precacher, name="precacher"),
     url(r'^generate-(?P<year>(2019))/$', givefood.views.public_gen_annual_report, name="public_gen_annual_report"),
+    url(r'^productimage/$', givefood.views.public_product_image, name="public_product_image"),
+    url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
 
     # WFBN
     url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^needs/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
     url(r'^needs/click/(?P<slug>[-\w]+)/$', givefood.views.public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
-
-    url(r'^productimage/$', givefood.views.public_product_image, name="public_product_image"),
-    url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
 
     # ADMIN
     url(r'^admin/$', givefood.views.admin_index, name="admin_index"),

@@ -9,7 +9,7 @@ from google.appengine.api import urlfetch
 
 from givefood.const.calories import CALORIES
 from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
-from givefood.const.general import FB_MC_KEY
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -17,7 +17,7 @@ def get_all_foodbanks():
 
     from models import Foodbank
 
-    all_foodbanks = memcache.get("all_foodbanks")
+    all_foodbanks = memcache.get(FB_MC_KEY)
     if all_foodbanks is None:
         all_foodbanks = Foodbank.objects.all()
         memcache.add(FB_MC_KEY, all_foodbanks, 3600)
@@ -33,6 +33,17 @@ def get_all_open_foodbanks():
             foodbanks.remove(foodbank)
 
     return foodbanks
+
+
+def get_all_locations():
+
+    from models import FoodbankLocation
+
+    all_locations = memcache.get(LOC_MC_KEY)
+    if all_locations is None:
+        all_locations = FoodbankLocation.objects.all()
+        memcache.add(LOC_MC_KEY, all_locations, 3600)
+    return all_locations
 
 
 def parse_order_text(order_text):

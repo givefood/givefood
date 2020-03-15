@@ -3,6 +3,8 @@ import operator
 from collections import OrderedDict
 import json
 
+from google.appengine.api import memcache
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
@@ -10,8 +12,9 @@ from django.shortcuts import redirect
 from django.http import HttpResponse, Http404
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation
-from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
@@ -25,7 +28,7 @@ def public_index(request):
     orders = Order.objects.all()
     active_foodbanks = set()
     foodbanks = get_all_foodbanks()
-    locations = FoodbankLocation.objects.all()
+    locations = get_all_locations()
 
     for order in orders:
         total_weight = total_weight + order.weight
@@ -199,5 +202,16 @@ def distill_webhook(request):
         foodbank = foodbank,
     )
     new_foodbank_change.save()
+
+    return HttpResponse("OK")
+
+
+def precacher(request):
+
+    all_locations = FoodbankLocation.objects.all()
+    memcache.add(LOC_MC_KEY, all_locations, 3600)
+
+    all_foodbanks = Foodbank.objects.all()
+    memcache.add(FB_MC_KEY, all_foodbanks, 3600)
 
     return HttpResponse("OK")
