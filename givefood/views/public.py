@@ -158,7 +158,7 @@ def public_gen_annual_report(request, year):
 @cache_page(60*5)
 def public_what_food_banks_need(request):
 
-    version = "7c740068"
+    version = "519715b6"
 
     template_vars = {
         "version":version,
