@@ -1,0 +1,3 @@
+date,foodbank,number_needs
+{% for need in needs%}{{ need.created|date:"Y-m-d" }},{{ need.foodbank_name|slugify }},{{ need.no_items }}
+{% endfor %}
