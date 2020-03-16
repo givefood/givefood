@@ -14,7 +14,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.func import get_all_foodbanks
+from givefood.func import get_all_foodbanks, get_all_locations
 from givefood.models import Foodbank, Order, OrderLine, FoodbankChange, FoodbankLocation, ApiFoodbankSearch
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm
 
@@ -440,7 +440,7 @@ def admin_stats(request):
     for need in needs:
         total_need_items = total_need_items + need.no_items()
 
-    locations = FoodbankLocation.objects.all()
+    locations = get_all_locations()
     total_locations = len(locations) + total_foodbanks
 
     total_weight = 0
