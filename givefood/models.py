@@ -409,16 +409,29 @@ class FoodbankChange(models.Model):
     def change_list(self):
         return self.change_text.split("\n")
 
-    def diff_from_last(self):
-        last_change = FoodbankChange.objects.filter(
+    def last_need(self):
+
+        last_need = FoodbankChange.objects.filter(
             foodbank = self.foodbank,
             created__lt = self.created,
         ).order_by("-created")[:1]
-        if not last_change:
+
+        return last_need
+
+    def diff_from_last(self):
+        last_need = self.last_need()
+        if not last_need:
             return None
         else:
-            d = difflib.unified_diff(last_change[0].change_list(), self.change_list(), lineterm='')
+            d = difflib.unified_diff(last_need[0].change_list(), self.change_list(), lineterm='')
             return '\n'.join(d)
+
+    def last_need_date(self):
+        last_need = self.last_need()
+        if not last_need:
+            return None
+        else:
+            return last_need[0].created
 
     def save(self, *args, **kwargs):
 
