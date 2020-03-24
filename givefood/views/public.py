@@ -159,9 +159,11 @@ def public_gen_annual_report(request, year):
 def public_what_food_banks_need(request):
 
     version = "519715b6"
+    headless = request.GET.get("headless", False)
 
     template_vars = {
         "version":version,
+        "headless":headless,
     }
     return render_to_response("public/wfbn.html", template_vars)
 

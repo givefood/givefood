@@ -14,11 +14,13 @@
   <div class="container">
     {% block body %}{% endblock %}
   </div>
-  <footer class="footer">
-    <div class="content has-text-centered">
-      <p><a href="{% url "public_index" %}">Give Food</a> is a registered charity in England &amp; Wales <a rel="self" href="https://beta.charitycommission.gov.uk/charity-details/?regId=1188192">1188192</a></p>
-    </div>
-  </footer>
+  {% if not headless %}
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p><a href="{% url "public_index" %}">Give Food</a> is a registered charity in England &amp; Wales <a rel="self" href="https://beta.charitycommission.gov.uk/charity-details/?regId=1188192">1188192</a></p>
+      </div>
+    </footer>
+  {% endif %}
   {% block script %}{% endblock %}
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153866507-1"></script>
   <script>

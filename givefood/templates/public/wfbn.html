@@ -16,16 +16,18 @@
 
   <div class="columns is-centered">
     <div class="column is-three-quarters">
-      <h1><a href="/">Give Food</a></h1>
-      <p>Find what food banks near you are requesting. Share on
-          <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.givefood.org.uk%2Fneeds%2F&via=GiveFood_org_uk&text=Find%20out%20what%20food%20banks%20near%20you%20need">
-            <img src="/static/img/twitter_sml.png" width="16">
-          </a>
-        or
-          <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.givefood.org.uk/needs/">
-            <img src="/static/img/facebook_sml.png" width="16">
-          </a>
-      </p>
+      {% if not headless %}
+        <h1><a href="/">Give Food</a></h1>
+        <p>Find what food banks near you are requesting. Share on
+            <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.givefood.org.uk%2Fneeds%2F&via=GiveFood_org_uk&text=Find%20out%20what%20food%20banks%20near%20you%20need">
+              <img src="/static/img/twitter_sml.png" width="16">
+            </a>
+          or
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.givefood.org.uk/needs/">
+              <img src="/static/img/facebook_sml.png" width="16">
+            </a>
+        </p>
+      {% endif %}
       <div id="intro_btns">
         <div class="field">
           <div class="control">

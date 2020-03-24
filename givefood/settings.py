@@ -56,7 +56,7 @@ MIDDLEWARE_CLASSES = (
     'csp.middleware.CSPMiddleware',
     'session_csrf.CsrfMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 TEMPLATES = [
