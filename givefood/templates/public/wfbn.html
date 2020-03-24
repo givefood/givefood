@@ -51,7 +51,7 @@
   <template id="fb_row">
     <tr>
       <td>
-        <a href="#" class="foodbank"></a>
+        <a href="#" class="foodbank"{% if headless %} target="_top"{% endif %}></a>
         <div class="distance"><span></span>mi away</div>
       </td>
       <td class="need_detail">
