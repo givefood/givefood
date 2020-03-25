@@ -1,0 +1,11 @@
+body {
+  padding:2px 0 0 2px;
+  font-family:'Source Sans Pro',arial,sans-serif;
+  font-size: 1.125rem;
+}
+.column {
+  padding:0;
+}
+.container {
+  max-width:100%;
+}

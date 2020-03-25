@@ -2,6 +2,10 @@
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?{{ version }}">
+  {% if where_from == "trusselltrust" %}
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/wfbn-tt.css?{{ version }}">
+  {% endif %}
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFood_org_uk">
   <meta property="og:title" content="What Food Banks Need">
@@ -14,8 +18,8 @@
 
 {% block body %}
 
-  <div class="columns is-centered">
-    <div class="column is-three-quarters">
+  <div class="columns {% if where_from != "trusselltrust" %}is-centered{% endif %}">
+    <div class="column {% if where_from != "trusselltrust" %}is-three-quarters{% endif %}">
       {% if not headless %}
         <h1><a href="/">Give Food</a></h1>
         <p>Find what food banks near you are requesting. Share on
@@ -67,4 +71,7 @@
 {% block script %}
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&libraries=places"></script>
   <script src="/static/js/wfbn.js?{{ version }}"></script>
+  {% if where_from == "trusselltrust" %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.contentWindow.min.js"></script>
+  {% endif %}
 {% endblock %}

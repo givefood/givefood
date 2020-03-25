@@ -1,3 +1,4 @@
+import csv
 from datetime import datetime, timedelta
 
 from libs.beautifulsoup import BeautifulSoup
@@ -12,6 +13,7 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
+from django.utils.encoding import smart_str
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations
@@ -151,11 +153,16 @@ def admin_needs(request):
 def admin_needs_csv(request):
 
     needs = FoodbankChange.objects.all().order_by("-created")
-    template_vars = {
-        "needs":needs,
-        "section":"needs",
-    }
-    return render_to_response("admin/needs.csv", template_vars, context_instance=RequestContext(request))
+
+    output = []
+    response = HttpResponse (content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['id', 'created', 'foodbank', 'needs', 'input_method'])
+    for need in needs:
+        output.append([need.need_id, need.created, need.foodbank_name, smart_str(need.change_text), need.input_method()])
+    writer.writerows(output)
+    return response
+    # return render_to_response("admin/needs.csv", template_vars, context_instance=RequestContext(request))
 
 
 def admin_order(request, id):
