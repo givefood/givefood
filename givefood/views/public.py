@@ -18,7 +18,7 @@ from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
-@cache_page(60*10)
+@cache_page(60*20)
 def public_index(request):
 
     total_weight = 0
@@ -155,7 +155,7 @@ def public_gen_annual_report(request, year):
     return render_to_response("public/annual_report.html", template_vars)
 
 
-@cache_page(60*10)
+@cache_page(60*20)
 def public_what_food_banks_need(request):
 
     version = "187919f5"
