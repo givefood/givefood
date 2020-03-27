@@ -99,7 +99,7 @@ class Foodbank(models.Model):
 
     def latest_need(self):
         try:
-            need = FoodbankChange.objects.filter(foodbank = self).latest("created")
+            need = FoodbankChange.objects.filter(foodbank = self, published = True).latest("created")
             return need
         except FoodbankChange.DoesNotExist:
             return None
