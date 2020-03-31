@@ -104,6 +104,10 @@ blockquote {
   padding:20px;
   background:#FAFAFA;
 }
+.coronavirus {
+  padding:20px;
+  background:#fafccc;
+}
 .intro h2 {
   border:0;
 }
