@@ -26,6 +26,7 @@ function init() {
   autocomplete = new google.maps.places.Autocomplete(input, options);
   uml_btn.addEventListener("click", do_geolocation);
   addressform.addEventListener("submit", do_address);
+  preload_image("/static/img/loading.gif");
 }
 
 function do_geolocation(event) {
@@ -111,6 +112,11 @@ function api_response() {
   }
 
   status.innerHTML = "";
+}
+
+function preload_image(url) {
+    img = new Image();
+    img.src = url;
 }
 
 init();
