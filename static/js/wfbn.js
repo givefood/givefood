@@ -52,8 +52,10 @@ function do_address(event) {
   if (address == "") {
     status.textContent = no_addr_text;
   } else {
-    api_url = api_url_root + "?address=" + address;
+    querystring = "?address=" + address;
+    api_url = api_url_root + querystring;
     api_request(api_url);
+    record_search(querystring);
   }
   event.preventDefault();
 }
@@ -61,8 +63,17 @@ function do_address(event) {
 function do_lattlong(position) {
   latt  = position.coords.latitude;
   long = position.coords.longitude;
-  api_url = api_url_root + "?lattlong=" + latt + "," + long;
+  querystring = "?lattlong=" + latt + "," + long;
+  api_url = api_url_root + querystring;
   api_request(api_url);
+  record_search(querystring);
+}
+
+function record_search(querystring) {
+  gtag('config', 'UA-153866507-1', {
+    'page_title' : 'What Food Banks Need',
+    'page_path': '/needs/' + querystring
+  });
 }
 
 function api_request(url) {
