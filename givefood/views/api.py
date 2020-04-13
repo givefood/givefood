@@ -137,7 +137,7 @@ def api_foodbank(request, slug):
         "shopping_list_url":foodbank.shopping_list_url,
         "phone":foodbank.phone_number,
         "email":foodbank.contact_email,
-        "address":foodbank.full_address(),
+        "address":foodbank.address,
         "postcode":foodbank.postcode,
         "country":foodbank.country,
         "parliamentary_constituency":foodbank.parliamentary_constituency,
