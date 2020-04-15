@@ -194,6 +194,7 @@ def clean_foodbank_need_text(text):
         "Urgently needed food items - all non-perishable:-",
         "Shopping List",
         "Food items needed",
+        "Current Shortages",
     ]
 
     for string_to_clean in to_clean:
