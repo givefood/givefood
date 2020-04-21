@@ -26,6 +26,20 @@ function init() {
   autocomplete = new google.maps.places.Autocomplete(input, options);
   uml_btn.addEventListener("click", do_geolocation);
   addressform.addEventListener("submit", do_address);
+  if (wfbn_address !== "") {
+    address_field.value = wfbn_address;
+    do_address()
+  }
+  if (wfbn_lattlong != "") {
+    [lattitude, longitude] = wfbn_lattlong.split(',');
+    position = {
+      coords: {
+        latitude: lattitude,
+        longitude: longitude,
+      }
+    }
+    do_lattlong(position)
+  }
   preload_image("/static/img/loading.gif");
 }
 

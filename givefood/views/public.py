@@ -158,14 +158,18 @@ def public_gen_annual_report(request, year):
 @cache_page(60*10)
 def public_what_food_banks_need(request):
 
-    version = "6b2b6b56"
+    version = "222f3b10"
     headless = request.GET.get("headless", False)
     where_from = request.GET.get("from", False)
+    address = request.GET.get("address", "")
+    lattlong = request.GET.get("lattlong", "")
 
     template_vars = {
         "version":version,
         "headless":headless,
         "where_from":where_from,
+        "address":address,
+        "lattlong":lattlong,
     }
     return render_to_response("public/wfbn.html", template_vars)
 
