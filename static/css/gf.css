@@ -129,6 +129,9 @@ blockquote {
 #armap {
   height:800px;
 }
+#methods {
+  margin-bottom:50px;
+}
 .content figure {
   margin-left:0;
   margin-right:0;
