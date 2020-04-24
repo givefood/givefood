@@ -1,7 +1,10 @@
 body {
   padding:2px 0 0 2px;
   font-family:'Source Sans Pro',arial,sans-serif;
-  font-size: 1.125rem;
+  font-size: 21px;
+  font-stretch: 100%;
+  line-height: 28.35px;
+  color:#000;
 }
 .column {
   padding:0;
