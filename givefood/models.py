@@ -457,3 +457,6 @@ class ApiFoodbankSearch(models.Model):
     query_type = models.CharField(max_length=8)
     query = models.CharField(max_length=255)
     nearest_foodbank = models.IntegerField()
+
+    def wfbn_url(self):
+        return "https://www.givefood.org.uk/needs/?%s=%s" % (self.query_type, self.query)

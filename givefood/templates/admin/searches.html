@@ -22,7 +22,11 @@
           <tr>
             <td>{{ search.created }}</td>
             <td>{{ search.query_type }}</td>
-            <td>{{ search.query }}</td>
+            <td>
+              <a href="{{ search.wfbn_url }}">
+                {{ search.query }}
+              </a>
+            </td>
             <td>{{ search.nearest_foodbank|intcomma }}m</td>
           </tr>
         {% endfor %}
