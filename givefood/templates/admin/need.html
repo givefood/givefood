@@ -46,7 +46,7 @@
       <br>
       <form action="{% url 'admin_need_publish' need.need_id %}" method="post">
         {% csrf_token %}
-        <input type="submit" class="button is-success" value="Publish" onclick="return confirm('Are you sure you want to PUBLISH?')">
+        <input type="submit" class="button is-success" value="Publish">
       </form>
       <br>
       <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
