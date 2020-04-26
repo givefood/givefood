@@ -7,7 +7,7 @@ from django.utils.timesince import timesince
 from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
 
-from givefood.func import find_foodbanks, get_all_foodbanks
+from givefood.func import find_foodbanks, get_all_foodbanks, geocode
 from givefood.models import ApiFoodbankSearch, Foodbank
 
 
@@ -46,23 +46,16 @@ def api_foodbanks(request):
 @cache_page(60*10)
 def api_foodbank_search(request):
 
-    lattlong = request.GET.get("lattlong")
+    latt_long = request.GET.get("lattlong")
     address = request.GET.get("address")
 
-    if not lattlong and not address:
+    if not latt_long and not address:
         return HttpResponseBadRequest()
 
-    if address and not lattlong:
-        address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&address=%s" % (urllib.quote(address))
-        address_api_result = urlfetch.fetch(address_api_url)
-        if address_api_result.status_code == 200:
-            address_result_json = json.loads(address_api_result.content)
-            lattlong = "%s,%s" % (
-                address_result_json["results"][0]["geometry"]["location"]["lat"],
-                address_result_json["results"][0]["geometry"]["location"]["lng"]
-            )
+    if address and not latt_long:
+        latt_long = geocode(address)
 
-    foodbanks = find_foodbanks(lattlong, 10)
+    foodbanks = find_foodbanks(latt_long, 10)
     response_list = []
 
     if address:
@@ -70,12 +63,13 @@ def api_foodbank_search(request):
         query = address
     else:
         query_type = "lattlong"
-        query = lattlong
+        query = latt_long
 
     api_hit = ApiFoodbankSearch(
         query_type = query_type,
         query = query,
         nearest_foodbank = foodbanks[0].distance_m,
+        latt_long = latt_long,
     )
     api_hit.save()
 

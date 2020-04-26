@@ -10,7 +10,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon
+from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode
 
 
 class Foodbank(models.Model):
@@ -457,6 +457,29 @@ class ApiFoodbankSearch(models.Model):
     query_type = models.CharField(max_length=8)
     query = models.CharField(max_length=255)
     nearest_foodbank = models.IntegerField()
+    latt_long = models.CharField(max_length=50, verbose_name="Latt,Long", null=True, blank=True)
 
     def wfbn_url(self):
         return "https://www.givefood.org.uk/needs/?%s=%s" % (self.query_type, self.query)
+
+    def latt(self):
+        if self.latt_long:
+            return float(self.latt_long.split(",")[0])
+        else:
+            return
+
+    def long(self):
+        if self.latt_long:
+            return float(self.latt_long.split(",")[1])
+        else:
+            return
+
+    def save(self, *args, **kwargs):
+
+        if not self.latt_long:
+            if self.query_type == "lattlong":
+                self.latt_long = self.query
+            else:
+                self.latt_long = geocode(self.query)
+
+        super(ApiFoodbankSearch, self).save(*args, **kwargs)

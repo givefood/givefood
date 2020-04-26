@@ -63,6 +63,7 @@ urlpatterns = (
 
     url(r'^admin/locations/$', givefood.views.admin_locations, name="admin_locations"),
     url(r'^admin/searches/$', givefood.views.admin_searches, name="admin_searches"),
+    url(r'^admin/searches/csv/$', givefood.views.admin_searches_csv, name="admin_searches_csv"),
     url(r'^admin/map/$', givefood.views.admin_map, name="admin_map"),
     url(r'^admin/search/$', givefood.views.admin_search, name="admin_search"),
     url(r'^admin/stats/$', givefood.views.admin_stats, name="admin_stats"),

@@ -58,7 +58,7 @@ def admin_index(request):
 
 def admin_searches(request):
 
-    searches = ApiFoodbankSearch.objects.all().order_by("-created")[:200]
+    searches = ApiFoodbankSearch.objects.all().order_by("-created")[:1000]
 
     template_vars = {
         "searches":searches,
@@ -66,6 +66,20 @@ def admin_searches(request):
     }
 
     return render_to_response("admin/searches.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_searches_csv(request):
+
+    searches = ApiFoodbankSearch.objects.all().order_by("-created")[:20000]
+
+    output = []
+    response = HttpResponse (content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['created', 'query_type', 'query', 'nearest_foodbank', 'latt', 'long'])
+    for search in searches:
+        output.append([search.created, search.query_type, search.query, search.nearest_foodbank, search.latt(), search.long()])
+    writer.writerows(output)
+    return response
 
 
 def admin_search(request):

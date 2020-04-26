@@ -46,6 +46,22 @@ def get_all_locations():
     return all_locations
 
 
+def geocode(address):
+
+    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&address=%s" % (urllib.quote(address))
+    address_api_result = urlfetch.fetch(address_api_url)
+    if address_api_result.status_code == 200:
+        try:
+            address_result_json = json.loads(address_api_result.content)
+            lattlong = "%s,%s" % (
+                address_result_json["results"][0]["geometry"]["location"]["lat"],
+                address_result_json["results"][0]["geometry"]["location"]["lng"]
+            )
+        except:
+            lattlong = "0,0"
+    return lattlong
+
+
 def parse_order_text(order_text):
 
     order_lines = []
