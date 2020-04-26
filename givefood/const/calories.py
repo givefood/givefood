@@ -430,4 +430,6 @@ CALORIES = {
     "Heinz Spaghetti Hoops In Tomato Sauce 205G":218,
     "Heinz Baked Beans Snap Pots In Tomato Sauce 4 X200g":218,
     "Tesco Quick Cook Penne Pasta 500G":176,
+    "Napolina Chopped Tomatoes 4 X 400G":23,
+    "Napolina Plum Tomatoes 4 X 400G":22,
 }
