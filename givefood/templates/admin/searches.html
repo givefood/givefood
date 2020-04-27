@@ -17,6 +17,7 @@
           <th>Query Type</th>
           <th>Query</th>
           <th>Nearest Foodbank</th>
+          <th>Map</th>
         </tr>
         {% for search in searches %}
           <tr>
@@ -28,6 +29,9 @@
               </a>
             </td>
             <td>{{ search.nearest_foodbank|intcomma }}m</td>
+            <td>
+              <img src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=700x150&key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&scale=1&center={{ search.latt_long }}" width="350" loading="lazy">
+            </td>
           </tr>
         {% endfor %}
       </table>
