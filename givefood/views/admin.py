@@ -176,7 +176,6 @@ def admin_needs_csv(request):
         output.append([need.need_id, need.created, need.foodbank_name, smart_str(need.change_text), need.input_method()])
     writer.writerows(output)
     return response
-    # return render_to_response("admin/needs.csv", template_vars, context_instance=RequestContext(request))
 
 
 def admin_order(request, id):
