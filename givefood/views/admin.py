@@ -153,6 +153,20 @@ def admin_orders(request):
     return render_to_response("admin/orders.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_orders_csv(request):
+
+    orders = Order.objects.all().order_by("-created")
+
+    output = []
+    response = HttpResponse (content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['id', 'created', 'foodbank', 'weight', 'calories', 'items', 'cost'])
+    for order in orders:
+        output.append([order.order_id, order.created, order.foodbank_name, order.weight, order.calories, order.no_items, order.cost])
+    writer.writerows(output)
+    return response
+
+
 def admin_needs(request):
 
     needs = FoodbankChange.objects.all().order_by("-created")

@@ -43,6 +43,7 @@ urlpatterns = (
     url(r'^admin/foodbanks/$', givefood.views.admin_foodbanks, name="admin_foodbanks"),
     url(r'^admin/foodbanks/christmascards/$', givefood.views.admin_foodbanks_christmascards, name="admin_foodbanks_christmascards"),
     url(r'^admin/orders/$', givefood.views.admin_orders, name="admin_orders"),
+    url(r'^admin/orders/csv/$', givefood.views.admin_orders_csv, name="admin_orders_csv"),
     url(r'^admin/needs/$', givefood.views.admin_needs, name="admin_needs"),
     url(r'^admin/needs/csv/$', givefood.views.admin_needs_csv, name="admin_needs_csv"),
 
