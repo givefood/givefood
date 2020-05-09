@@ -22,11 +22,12 @@
       <p>Get access to our data over HTTPS in JSON.</p>
       <ul>
         <li><em>Do good</em> with the data</li>
-        <li>Try not to make requests more once every second or so</li>
+        <li>Try not to make requests more than a few times a second</li>
         <li>If you display a food bank and their need also use their URL to link to them</li>
         <li>Credit us with a link to our homepage if you republish</li>
         <li>Don't cache too long, all this is updated at least hourly</li>
       </ul>
+      <p>Our API and data has been used by The Times, Reach PLC, Cuvva, Munch &amp; Trussell Trust. Do not hesitate to contact us at <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a> with any questions.</p>
     </div>
     <div class="column is-two-thirds">
 
@@ -38,7 +39,7 @@
 
       <h2 id="all-food-banks">All Food Banks</h2>
       <p>Returns a list of all food bank organisations known to us.</p>
-      <a href="/api/1/foodbanks/">/api/1/foodbanks/</a>
+      <a href="/api/1/foodbanks/">https://www.givefood.org.uk/api/1/foodbanks/</a>
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th></th>
@@ -148,8 +149,8 @@
 
       <h2 id="food-bank-search">Food Bank Search</h2>
       <p>When given a place returns list of ten food banks nearby that are not closed. Querying by <code>lattlong</code> is much quicker than <code>address</code>, so use that if possible.</p>
-      <a href="/api/1/foodbanks/search/?lattlong=53.42,-2.55">/api/1/foodbanks/search/?lattlong=53.42,-2.55</a><br>
-      <a href="/api/1/foodbanks/search/?address=66%20The%20Headrow%20Leeds%20LS1%208EQ">/api/1/foodbanks/search/?address=66 The Headrow Leeds LS1 8EQ</a><br>
+      <a href="/api/1/foodbanks/search/?lattlong=53.42,-2.55">https://www.givefood.org.uk/api/1/foodbanks/search/?lattlong=53.42,-2.55</a><br>
+      <a href="/api/1/foodbanks/search/?address=66%20The%20Headrow%20Leeds%20LS1%208EQ">https://www.givefood.org.uk/api/1/foodbanks/search/?address=66 The Headrow Leeds LS1 8EQ</a><br>
       <p>Returns all of the fields above, plus...</p>
       <table class="table is-fullwidth is-hoverable">
         <tr>
@@ -196,7 +197,7 @@
 
       <h2 id="food-bank">Food Bank</h2>
       <p>When given the food bank slug returns the details for an individual food bank organisation.</p>
-      <a href="/api/1/foodbank/black-country/">/api/1/foodbank/black-country/</a>
+      <a href="/api/1/foodbank/black-country/">https://www.givefood.org.uk/api/1/foodbank/black-country/</a>
       <p>Returns all of the fields above, plus...</p>
       <table class="table is-fullwidth is-hoverable">
         <tr>
