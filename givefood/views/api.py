@@ -1,8 +1,8 @@
-import json, urllib
+import json, urllib, csv
 
 from google.appengine.api import urlfetch
 
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.utils.timesince import timesince
 from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
@@ -14,8 +14,15 @@ from givefood.models import ApiFoodbankSearch, Foodbank
 @cache_page(60*10)
 def api_foodbanks(request):
 
+    allowed_formats = [
+        "json",
+        "csv",
+    ]
     foodbanks = get_all_foodbanks()
     response_list = []
+    format = request.GET.get("format", "json")
+    if format not in allowed_formats:
+        return HttpResponseBadRequest
 
     for foodbank in foodbanks:
         response_list.append({
@@ -40,7 +47,57 @@ def api_foodbanks(request):
             "network":foodbank.network,
         })
 
-    return JsonResponse(response_list, safe=False)
+    if format == "json":
+        return JsonResponse(response_list, safe=False)
+
+    if format == "csv":
+        response = HttpResponse(content_type='text/csv')
+        writer = csv.writer(response)
+        writer.writerow([
+            "name",
+            "slug",
+            "url",
+            "shopping_list_url",
+            "phone",
+            "email",
+            "address",
+            "postcode",
+            "parliamentary_constituency",
+            "mp",
+            "mp_party",
+            "ward",
+            "district",
+            "country",
+            "charity_number",
+            "charity_register_url",
+            "closed",
+            "latt_long",
+        ])
+        writer_output = []
+        for foodbank in response_list:
+            writer_output.append([
+                foodbank["name"],
+                foodbank["slug"],
+                foodbank["url"],
+                foodbank["shopping_list_url"],
+                foodbank["phone"],
+                foodbank["email"],
+                foodbank["address"],
+                foodbank["postcode"],
+                foodbank["parliamentary_constituency"],
+                foodbank["mp"],
+                foodbank["mp_party"],
+                foodbank["ward"],
+                foodbank["district"],
+                foodbank["country"],
+                foodbank["charity_number"],
+                foodbank["charity_register_url"],
+                foodbank["closed"],
+                foodbank["latt_long"],
+            ])
+        writer.writerows(writer_output)
+        return response
+
 
 
 @cache_page(60*10)
