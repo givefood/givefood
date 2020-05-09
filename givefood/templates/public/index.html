@@ -12,90 +12,70 @@
   </div>
 
   <div class="columns is-centered">
-
-    <div class="column is-half">
-
+    <div class="column is-three-quarters">
       <p class="coronavirus">
-        <strong>Supporting Food Banks During The Coronavirus Pandemic</strong><br>We've shipped half a million food-safe disposable gloves to UK food banks. <a href="mailto:mail@givefood.org.uk">Email us</a> for a form to request a free of charge delivery to your organisation.
+        <strong>Supporting Food Banks During The COVID-19 Pandemic</strong>
+        <br>We've shipped over half a million food-safe disposable gloves to around 600 UK food banks. <a href="mailto:mail@givefood.org.uk">Email us</a> for a form to request a free of charge delivery to your organisation.
       </p>
+    </div>
+  </div>
 
-      <p>We're a UK charity that delivers food &amp; supplies to food banks - using technology to supply, in bulk, what's required in a timely manner.</p>
+  <div class="columns is-centered">
 
-      <p>We've delivered {{ total_weight|floatformat:2 }} tonnes of food, consisting of {{ total_items|intcomma }} items and {{ total_calories|floatformat:2 }} million calories, to {{ no_active_foodbanks }} food banks around the country.</p>
-      <p>Whilst we believe that food banks should not exist in our country, we aim to help local organisations address the immediate and critical need created by food insecurity.</p>
-      <p>We operate independent of religion and are privately funded by the Cartwright family.</p>
-      <ul id="contact">
-        <li>Email: <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></li>
-        <li>Twitter: <a href="https://twitter.com/GiveFood_org_uk" rel="me">@GiveFood_org_uk</a></li>
-        <li>Facebook: <a href="https://www.facebook.com/GiveFoodOrgUK/" rel="me">GiveFoodOrgUK</a></li>
-      </ul>
+      <div class="column is-one-quarter">
+        <h2>Donate to Food Banks</h2>
+        <p>Find out what food banks near you, from {{ total_locations }} around the UK, are requesting at...<br><a href="/needs/" class="is-size-5">givefood.org.uk/needs</a></p>
+        <p>🤓Techies! There is also an <a href="/api/">API</a> to access our data.</p>
+      </div>
+
+      <div class="column is-one-quarter">
+        <h2>For Food Banks</h2>
+        <h3>Data</h3>
+        <p>We aim to index the needs of all UK food banks, covering networked and independent organisations. Contact us to be included if you aren't already.</p>
+        <h3>Food</h3>
+        <p>We're able to deliver the food required at locations within 24-48hrs and have done so to {{ no_active_foodbanks }} food banks.</p>
+        <h3>Supplies</h3>
+        <p>We also deliver non-food items such as toiletries, plus items like cardboard boxes and disposable gloves.</p>
+      </div>
+
+      <div class="column is-one-quarter">
+        <h2>About Us</h2>
+        <p>Whilst we believe that food banks should not exist in our country, we aim to help local organisations address the immediate and critical need created by food insecurity.</p>
+        <p>We've supplied {{ no_active_foodbanks }} food banks need around the UK {{ total_weight|floatformat:2 }} tonnes of food over two year and over four million people have viewed our realtime food bank need data. We became a <a href="https://beta.charitycommission.gov.uk/charity-details/?regId=1188192">charity</a> in 2020.</p>
+        <p>We operate independent of religion and are primarily privately funded by the Cartwright family.</p>
+      </div>
+
+  </div>
+
+  <div class="columns is-centered">
+    <div class="column is-three-quarters">
       <p class="annualreportteaser">
         Read our <a href="/2019/">2019 Annual Report</a> and <a href="https://twitter.com/GiveFood_org_uk/status/1207939959400759296">aims for 2020</a>.
       </p>
     </div>
-    <div class="column is-one-quarter">
-      <p>Find out what food banks near you, from {{ total_locations }} around the UK, are requesting at...<br><a href="/needs/" class="is-size-5">givefood.org.uk/needs</a></p>
-      <hr>
-      <p>🤓Techies! There is also an <a href="/api/">API</a>.</p>
-    </div>
   </div>
 
-  <div class="columns is-centered" id="process">
+  <div class="columns is-centered">
 
-    <div class="column is-one-quarter process-step">
-      <div class="arrow">⮕</div>
-      <h3>Monitor</h3>
-      <div class="box diff">
-        <ul>
-          <li><ins>Tinned Tomatoes</ins></li>
-          <li>Custard</li>
-          <li><del>Rice Pudding</del></li>
-          <li><del>UHT Milk</del></li>
-          <li>Tinned Vegetables</li>
-          <li>Tinned Fruit</li>
-          <li>Tinned Meat</li>
-        </ul>
+      <div class="column is-one-quarter">
+        <p>Email us at...<br>
+          <a href="mailto:mail@givefood.org.uk" class="is-size-5">mail@givefood.org.uk</a>
+        </p>
       </div>
-      <p>We automatically monitor food bank shopping lists &amp; social media thousands of times a day to identify what a location needs.</p>
-    </div>
 
-    <div class="column is-one-quarter process-step">
-      <div class="arrow">⮕</div>
-      <h3>Order</h3>
-      <div class="process-step box">
-        <img src="/static/img/order-create.png" alt="Photo of some cans of food" loading="lazy">
+      <div class="column is-one-quarter">
+        <a class="twitter-timeline" data-lang="en" data-height="800" href="https://twitter.com/GiveFood_org_uk?ref_src=twsrc%5Etfw">Tweets by GiveFood_org_uk</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
-      <p>An order is created when a need is published. This usually happens within an hour or two, but our record is just four minutes! The delivery is made anywhere between 12 hours and a week later.</p>
-    </div>
-    <div class="column is-one-quarter process-step">
-      <h3>Feedback</h3>
-      <div class="process-step box is-centered">
-        <img src="/static/img/feedback.svg" alt="Clipboard with a tick" loading="lazy">
+
+      <div class="column is-one-quarter">
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v7.0"></script>
+        <div class="fb-page" data-href="https://www.facebook.com/GiveFoodOrgUK" data-tabs="timeline" data-width="" data-height="800" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/GiveFoodOrgUK" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/GiveFoodOrgUK">Give Food</a></blockquote></div>
       </div>
-      <p>We get feedback to make sure we've ordered the correct items for delivery at the right time to the best location.</p>
-    </div>
-
-  </div>
-
-  <div class="columns is-centered" id="how-we-work">
-    <div class="column is-one-third">
-
-      <h2>What we deliver</h2>
-      <p>We find that items like baked beans, tinned spaghetti and dried pasta are often well provisioned at food banks already.</p>
-      <p>As such, we focus on delivering tinned and heavy food like tomatoes, vegetables, meat, fish, fruit, custard, and rice pudding plus UHT milk. Occasionally we'll also supply hygiene products like shower gel, deodorant and shampoo.</p>
-      <p>We only deliver items that are requested, and suitable for storage on a shelf for extended periods.</p>
-
-      <h2>Where we deliver</h2>
-      <p>We currently supply {{ no_active_foodbanks }} food banks across England, Scotland, Wales and Northern Ireland of varying sizes. Some are members of networks and some are independent.</p>
-
-    </div>
-    <div class="column is-one-third">
-      <img src="/static/img/map.png" alt="Map of the food banks that Give Food currently delivers to" class="map" loading="lazy">
-    </div>
   </div>
 
   <div class="columns is-centered" id="quotes">
-    <div class="column is-one-third">
+    <div class="column is-two-fifths">
 
       <div class="box">
         <blockquote>"All our most needed items brought to our doorstep. Thank you so much for your commitment & generosity"</blockquote>
@@ -120,8 +100,5 @@
     </div>
   </div>
 
-  <div class="columns is-centered">
-    <p></p>
-  </div>
 
 {% endblock %}
