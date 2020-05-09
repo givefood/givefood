@@ -432,4 +432,9 @@ CALORIES = {
     "Tesco Quick Cook Penne Pasta 500G":176,
     "Napolina Chopped Tomatoes 4 X 400G":23,
     "Napolina Plum Tomatoes 4 X 400G":22,
+    "Uncle Bens Microwave Golden Vegetable Rice 250G":152,
+    "Ambrosia Devon Custard 750G":97,
+    "Ambrosia Creamed Rice Pudding 4X125g":426,
+    "Tesco Ready To Serve Custard 1Kg":99,
+    "Tesco Easy Cook Long Grain Rice 1Kg":155,
 }
