@@ -12,3 +12,6 @@ body {
 .container {
   max-width:100%;
 }
+.headerimg {
+  display:none;
+}
