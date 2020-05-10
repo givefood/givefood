@@ -13,17 +13,13 @@ const nothing_needed_text = "Nothing right now, thanks";
 const need_unknown_text = "Sorry. We don't know what's needed here, please contact the food bank";
 
 function init() {
-  var defaultBounds = new google.maps.LatLngBounds(
-    new google.maps.LatLng(60.681380, -15.291107),
-    new google.maps.LatLng(50.053765, 2.010132)
-  );
   var input = address_field;
   var options = {
-    bounds: defaultBounds,
     types: ["geocode"]
   };
 
   autocomplete = new google.maps.places.Autocomplete(input, options);
+  autocomplete.setComponentRestrictions({'country': ['gb']});
   uml_btn.addEventListener("click", do_geolocation);
   addressform.addEventListener("submit", do_address);
   if (wfbn_address !== "") {
