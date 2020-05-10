@@ -1,6 +1,7 @@
-import json, urllib, csv
+import json, urllib
 
 from google.appengine.api import urlfetch
+import unicodecsv as csv
 
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.utils.timesince import timesince
