@@ -13,6 +13,7 @@ from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
+
 def get_all_foodbanks():
 
     from models import Foodbank
@@ -289,3 +290,9 @@ def mp_from_parlcon(parliamentary_constituency):
 
 def lattlong_from_postcode(postcode):
     pass
+
+
+def make_url_friendly(url):
+    url = url.replace("https://","")
+    url = url.replace("http://","")
+    return url

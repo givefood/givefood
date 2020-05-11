@@ -10,7 +10,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode
+from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly
 
 
 class Foodbank(models.Model):
@@ -59,10 +59,10 @@ class Foodbank(models.Model):
         return self.name
 
     def friendly_url(self):
-        return self.url.replace("https://","")
+        return make_url_friendly(self.url)
 
     def friendly_shopping_list_url(self):
-        return self.shopping_list_url.replace("https://","")
+        return make_url_friendly(self.shopping_list_url)
 
     def latt(self):
         return float(self.latt_long.split(",")[0])
