@@ -36,6 +36,7 @@ class Foodbank(models.Model):
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
+    bankuet_slug = models.CharField(max_length=50, null=True, blank=True)
 
     contact_email = models.EmailField()
     notification_email = models.EmailField()
@@ -167,6 +168,12 @@ class Foodbank(models.Model):
 
     def get_absolute_url(self):
         return "/admin/foodbank/%s/" % (self.slug)
+
+    def bankuet_url(self):
+        if self.bankuet_slug:
+            return "https://www.bankuet.co.uk/%s/?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" % (self.bankuet_slug)
+        else:
+            return None
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
