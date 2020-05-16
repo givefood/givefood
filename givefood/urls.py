@@ -5,6 +5,7 @@ from django.contrib.staticfiles.views import serve
 from django.views.generic import RedirectView
 
 import givefood.views
+from givefood.const.general import RICK_ASTLEY
 
 import session_csrf
 session_csrf.monkeypatch()
@@ -31,6 +32,9 @@ urlpatterns = (
     url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^needs/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
     url(r'^needs/click/(?P<slug>[-\w]+)/$', givefood.views.public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
+
+    # Rickrolling
+    url(r'^wp-login\.php$', RedirectView.as_view(url=RICK_ASTLEY)),
 
     # ADMIN
     url(r'^admin/$', givefood.views.admin_index, name="admin_index"),
