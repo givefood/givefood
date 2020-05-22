@@ -48,7 +48,7 @@
                 <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>
               {% endif %}
             </td>
-            <td>{{ foodbank.country_flag }} {{ foodbank.country }}</td>
+            <td>{% if foodbank.country_flag %}{{ foodbank.country_flag }} {% endif %}{{ foodbank.country }}</td>
             <td>{{ foodbank.last_order }}</td>
             <td>{{ foodbank.last_need }}</td>
             <td>{{ foodbank.no_locations }}</td>
