@@ -57,6 +57,7 @@ def api_foodbanks(request):
 
     if format == "csv":
         response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="foodbanks.csv"'
         writer = csv.writer(response)
         writer.writerow([
             "name",
