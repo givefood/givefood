@@ -19,9 +19,13 @@ def api_foodbanks(request):
         "json",
         "csv",
     ]
+    default_format = "json"
+
     foodbanks = get_all_foodbanks()
     response_list = []
-    format = request.GET.get("format", "json")
+
+    format = request.GET.get("format", default_format)
+
     if format not in allowed_formats:
         return HttpResponseBadRequest
 
