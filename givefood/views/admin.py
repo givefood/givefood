@@ -116,6 +116,20 @@ def admin_foodbanks(request):
     return render_to_response("admin/foodbanks.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_foodbanks_csv(request):
+
+    foodbanks = Foodbank.objects.all().order_by("-created")
+
+    output = []
+    response = HttpResponse (content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['name', 'postcode', 'charity_number', 'country', 'last_order', 'last_need', 'no_locations', 'network', 'closed', 'url', 'created', 'modified', 'email'])
+    for foodbank in foodbanks:
+        output.append([foodbank.name, foodbank.postcode, foodbank.charity_number, foodbank.country, foodbank.last_order, foodbank.last_need, foodbank.no_locations, foodbank.network, foodbank.is_closed, foodbank.url, foodbank.created, foodbank.modified, foodbank.contact_email])
+    writer.writerows(output)
+    return response
+
+
 def admin_foodbanks_christmascards(request):
 
     foodbanks = Foodbank.objects.filter(is_closed = False).order_by("name")
