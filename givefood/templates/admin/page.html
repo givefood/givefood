@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/static/css/admin.css">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
   <script src="/static/js/turbolinks.js" defer></script>
+  <script src="/static/js/admin.js" defer></script>
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
@@ -41,6 +42,5 @@
     <datalist id="foodbank_names">
       {% for foodbank in all_foodbanks %}<option value="{{ foodbank }}">{% endfor %}
     </datalist>
-    <script src="/static/js/admin.js"></script>
 </body>
 </html>
