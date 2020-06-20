@@ -9,7 +9,7 @@ from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
 
 from givefood.func import find_foodbanks, get_all_foodbanks, geocode
-from givefood.models import ApiFoodbankSearch, Foodbank
+from givefood.models import ApiFoodbankSearch, Foodbank, FoodbankChange
 
 
 @cache_page(60*10)
@@ -224,3 +224,22 @@ def api_foodbank_key(request):
     key = request.GET.get("key")
     foodbank = get_object_or_404(Foodbank, pk = key)
     return api_foodbank(request, foodbank.slug)
+
+
+@cache_page(60*2)
+def api_needs(request):
+
+    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:100]
+
+    response_list = []
+
+    for need in needs:
+        response_list.append({
+            "id":need.need_id,
+            "created":need.created,
+            "foodbank_name":need.foodbank_name,
+            "foodbank_slug":need.foodbank_name_slug(),
+            "needs":need.change_text,
+        })
+
+    return JsonResponse(response_list, safe=False)

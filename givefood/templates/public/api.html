@@ -37,6 +37,7 @@
           <li><a href="#all-food-banks">All Food Banks</a> - list of all food bank organisations</li>
           <li><a href="#food-bank-search">Food Bank Search</a> - search by location or lattlong, returns needs</li>
           <li><a href="#food-bank">Food Bank</a> - individual food bank, including their locations &amp; needs</li>
+          <li><a href="#needs">Needs</a> - reverse chronological list of the needs of food banks that we've found</li>
         </ul>
       </nav>
 
@@ -245,6 +246,47 @@
           <td><code>ward</code></td>
           <td>Name of the ward in the food bank is in</td>
           <td>Lawrence Hill</td>
+        </tr>
+      </table>
+
+      <h2 id="needs">Needs</h2>
+      <p>Reverse chronological list of the last 100 needs published by food banks that we've found. This is usually up to the last 5-10 days worth.</p>
+      <a href="/api/1/needs/">https://www.givefood.org.uk/api/1/needs/</a>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th></th>
+          <th>Description</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><code>id</code></td>
+          <td>String that uniquely identifies a need requested</td>
+          <td>57e15d18</td>
+        </tr>
+        <tr>
+          <td><code>created</code></td>
+          <td>Date and time that the need was found</td>
+          <td>2020-06-19T17:09:51.852Z</td>
+        </tr>
+        <tr>
+          <td><code>foodbank_name</code></td>
+          <td>Name of the food bank that published the need</td>
+          <td>Sid Valley</td>
+        </tr>
+        <tr>
+          <td><code>foodbank_slug</code></td>
+          <td>Unique slug of the food bank</td>
+          <td>sid_valley</td>
+        </tr>
+        <tr>
+          <td><code>needs</code></td>
+          <td>Linebreak separated list of line items requested by the food bank, or "Nothing" or "Unknown"</td>
+          <td>
+            Coffee<br>
+            Long life Juice<br>
+            Cooking sauce<br>
+            Tinned custard
+          </td>
         </tr>
       </table>
 
