@@ -240,6 +240,7 @@ def api_needs(request):
             "foodbank_name":need.foodbank_name,
             "foodbank_slug":need.foodbank_name_slug(),
             "needs":need.change_text,
+            "url":need.uri,
         })
 
     return JsonResponse(response_list, safe=False)
