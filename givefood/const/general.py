@@ -33,3 +33,5 @@ FB_MC_KEY = "all_foodbanks"
 LOC_MC_KEY = "all_locations"
 
 RICK_ASTLEY = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+
+API_DOMAIN = "https://www.givefood.org.uk"

@@ -7,6 +7,7 @@ from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.utils.timesince import timesince
 from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse
 
 from givefood.func import find_foodbanks, get_all_foodbanks, geocode
 from givefood.models import ApiFoodbankSearch, Foodbank, FoodbankChange
@@ -51,6 +52,7 @@ def api_foodbanks(request):
             "closed":foodbank.is_closed,
             "latt_long":foodbank.latt_long,
             "network":foodbank.network,
+            "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
         })
 
     if format == "json":
@@ -162,6 +164,7 @@ def api_foodbank_search(request):
             "need_id":foodbank.latest_need_id(),
             "updated":str(foodbank.latest_need_date()),
             "updated_text":timesince(foodbank.latest_need_date()),
+            "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
         })
 
     return JsonResponse(response_list, safe=False)
@@ -215,6 +218,7 @@ def api_foodbank(request, slug):
         "locations":locations_list,
         "updated":str(foodbank.latest_need_date()),
         "updated_text":timesince(foodbank.latest_need_date()),
+        "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
     }
 
     return JsonResponse(foodbank_response, safe=False)
@@ -242,6 +246,7 @@ def api_needs(request):
             "foodbank_slug":need.foodbank_name_slug(),
             "needs":need.change_text,
             "url":need.uri,
+            "self":"%s%s" % (API_DOMAIN, reverse("api_need", kwargs={"id":need.need_id})),
         })
 
     return JsonResponse(response_list, safe=False)
