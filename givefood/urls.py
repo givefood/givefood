@@ -82,6 +82,7 @@ urlpatterns = (
     url(r'^api/1/foodbank/(?P<slug>[-\w]+)/$', givefood.views.api_foodbank, name="api_foodbank"),
     url(r'^api/1/foodbank/$', givefood.views.api_foodbank_key, name="api_foodbank_key"),
     url(r'^api/1/needs/$', givefood.views.api_needs, name="api_needs"),
+    url(r'^api/1/need/(?P<id>\b[0-9a-f]{8}\b)/$', givefood.views.api_need, name="api_need"),
 
     url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),

@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 
 from givefood.func import find_foodbanks, get_all_foodbanks, geocode
 from givefood.models import ApiFoodbankSearch, Foodbank, FoodbankChange
+from givefood.const.general import API_DOMAIN
 
 
 @cache_page(60*10)
@@ -244,3 +245,21 @@ def api_needs(request):
         })
 
     return JsonResponse(response_list, safe=False)
+
+
+@cache_page(60*10)
+def api_need(request, id):
+
+    need = get_object_or_404(FoodbankChange, need_id = id)
+
+    need_response = {
+        "id":need.need_id,
+        "created":need.created,
+        "foodbank_name":need.foodbank_name,
+        "foodbank_slug":need.foodbank_name_slug(),
+        "needs":need.change_text,
+        "url":need.uri,
+        "self":"%s%s" % (API_DOMAIN, reverse("api_need", kwargs={"id":need.need_id})),
+    }
+
+    return JsonResponse(need_response, safe=False)
