@@ -234,7 +234,14 @@ def api_foodbank_key(request):
 @cache_page(60*2)
 def api_needs(request):
 
-    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:100]
+    allowed_limits = [100,2000]
+    default_limit = 100
+    limit = request.GET.get("limit", default_limit)
+    limit = int(limit)
+    if limit not in allowed_limits:
+        return HttpResponseBadRequest()
+
+    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:limit]
 
     response_list = []
 
