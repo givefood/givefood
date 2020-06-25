@@ -32,6 +32,8 @@ urlpatterns = (
     url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^needs/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
     url(r'^needs/click/(?P<slug>[-\w]+)/$', givefood.views.public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
+    url(r'^needs/at/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_foodbank, name="public_wfbn_foodbank"),
+    url(r'^needs/at/(?P<slug>[-\w]+)/map.png$', givefood.views.public_wfbn_foodbank_map, name="public_wfbn_foodbank_map"),
 
     # Rickrolling
     url(r'^wp-login\.php$', RedirectView.as_view(url=RICK_ASTLEY)),
@@ -66,6 +68,7 @@ urlpatterns = (
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/edit/$', givefood.views.admin_need_form, name="admin_need_form"),
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/delete/$', givefood.views.admin_need_delete, name="admin_need_delete"),
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/publish/$', givefood.views.admin_need_publish, name="admin_need_publish"),
+    url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/tweet/$', givefood.views.admin_need_tweet, name="admin_need_tweet"),
 
     url(r'^admin/locations/$', givefood.views.admin_locations, name="admin_locations"),
     url(r'^admin/searches/$', givefood.views.admin_searches, name="admin_searches"),

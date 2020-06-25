@@ -24,6 +24,10 @@ sub {
 p {
   margin-bottom:20px;
 }
+dt {
+  float:left;
+  width:150px;
+}
 h1 a, .content h1 a {
   display:block;
   font-size:1.8em;

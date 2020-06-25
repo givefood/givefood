@@ -1,7 +1,10 @@
 import csv
+import twitter
+import logging
 from datetime import datetime, timedelta
 
 from libs.beautifulsoup import BeautifulSoup
+from djangae.environment import is_production_environment
 
 from google.appengine.api import mail
 from google.appengine.api import urlfetch
@@ -11,6 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidde
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
+from django.template.defaultfilters import truncatechars
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
@@ -443,6 +447,37 @@ def admin_need_publish(request, id):
     need = get_object_or_404(FoodbankChange, need_id = id)
     need.published = True
     need.save()
+    return redirect("admin_index")
+
+
+@require_POST
+def admin_need_tweet(request, id):
+
+    need = get_object_or_404(FoodbankChange, need_id = id)
+
+    api = twitter.Api(consumer_key='fG7cu74X0VvHr4nXNCU8tlw33',
+                          consumer_secret='EzCwDhIsAWZP5HCuLmBLKUKnmv3AsKmuGpUcMLUkytl1s04UbZ',
+                          access_token_key='1275779682726707202-eKyLOrIhfGqkSGAT4XiycGOb7jgKOo',
+                          access_token_secret='LdOS2wWrm5Um9RLuwXWS5oNlmrPlez9Y1V1BO4dTqImM2')
+
+    if need.foodbank.twitter_handle:
+        fb_twitter_handle = " @%s" % (need.foodbank.twitter_handle)
+    else:
+        fb_twitter_handle = ""
+
+    tweet = "%s food bank%s is requesting the donation of...\n\n%s https://www.givefood.org.uk/needs/at/%s/" % (
+        need.foodbank_name,
+        fb_twitter_handle,
+        truncatechars(need.change_text, 150),
+        need.foodbank_name_slug()
+    )
+
+    if is_production_environment():
+        status = api.PostUpdate(tweet, latitude=need.foodbank.latt(), longitude=need.foodbank.long())
+    else:
+        # status = api.PostUpdate(tweet)
+        logging.info(tweet)
+
     return redirect("admin_index")
 
 

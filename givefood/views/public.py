@@ -4,6 +4,7 @@ from collections import OrderedDict
 import json
 
 from google.appengine.api import memcache
+from google.appengine.api import urlfetch
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.cache import cache_page
@@ -185,6 +186,24 @@ def public_what_food_banks_need_click(request, slug):
         utm_querystring,
     )
     return redirect(redirect_url)
+
+
+@cache_page(60*2)
+def public_wfbn_foodbank(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    template_vars = {
+        "foodbank":foodbank,
+    }
+    return render_to_response("public/wfbn_foodbank.html", template_vars)
+
+
+def public_wfbn_foodbank_map(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ" % (foodbank.latt_long))
+    return HttpResponse(result.content, content_type='image/png')
 
 
 @cache_page(60*60)

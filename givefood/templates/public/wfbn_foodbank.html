@@ -1,0 +1,92 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css?{{ version }}">
+  {% if where_from == "trusselltrust" %}
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/wfbn-tt.css?{{ version }}">
+  {% endif %}
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="{{ foodbank }} Food Bank">
+  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/map.png">
+  <link rel="manifest" href="/needs/manifest.json">
+  <meta name="geo.placename" content="{{ foodbank }} Food Bank">
+  <meta name="geo.position" content="{{ foodbank.latt_long }}">
+  <meta property="place:location:latitude" content="{{ foodbank.latt }}">
+  <meta property="place:location:longitude" content="{{ foodbank.long }}">
+{% endblock %}
+
+{% block title %}{{ foodbank }} Food Bank- Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+        <h1><a href="/">Give Food</a></h1>
+        <div class="columns">
+          <div class="column">
+            <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ foodbank.latt_long }}&zoom=15&size=350x700&maptype=roadmap&format=png&visual_refresh=true&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ" alt="Map of {{ foodbank }} Food Bank">
+          </div>
+          <div class="column">
+            <h2>{{ foodbank }} Food Bank</h2>
+            <h3>Items Needed</h3>
+            <p>
+              {{ foodbank.latest_need.change_text|linebreaksbr }}
+              <br><em class="is-size-7">Found on <a href="{{ foodbank.shopping_list_url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.latest_need_date }}</a></em>
+            </p>
+            <h3>Contact</h3>
+            <dl>
+              <dt>Website</dt>
+              <dd><a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:22 }}</a></dd>
+              <dt>Phone</dt>
+              <dd><a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
+              <dt>Email</dt>
+              <dd><a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:22 }}</a></dd>
+            </dl>
+            <br>
+            <p>
+              {{ foodbank.address|linebreaksbr }}<br>
+              {{ foodbank.postcode }}<br>
+              {{ foodbank.country }}
+              <br><a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}" class="button is-link is-small">Directions</a>
+            </p>
+            <p></p>
+            <h3>Political Representatives</h3>
+            <p>This food bank is in the <a href="https://www.google.co.uk/search?q={{ foodbank.parliamentary_constituency }} constituency">{{ foodbank.parliamentary_constituency }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} mp">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party.</p>
+            <p>You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.
+            <br>
+            <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}" class="button is-link is-small">Write</a>
+            </p>
+            <h3>Nearby Food Banks</h3>
+            <ul>
+              {% for foodbank in foodbank.nearby %}
+                <li><a href="../{{ foodbank.slug }}/">{{ foodbank }}</a> <span class="is-size-7">{{ foodbank.distance_mi|floatformat:2 }}mi away</span></li>
+              {% endfor %}
+            </ul>
+            <p>
+              <a href="/needs/?lattlong={{ foodbank.latt_long }}" class="button is-link is-small">More</a>
+            </p>
+            <h3>Anything Wrong Here?</h3>
+            <p>We're very keen to get our data right. You can help us by pointing out any mistakes with an email to <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a>, and we'll fix it promptly.</p>
+          </div>
+          {% if foodbank.facebook_page %}
+            <div class="column">
+              <div id="fb-root"></div>
+              <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v4.0"></script>
+              <div class="fb-page" data-href="https://www.facebook.com/{{ foodbank.facebook_page }}" data-tabs="timeline" data-width="" data-height="1200" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/{{ foodbank.facebook_page }}" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></blockquote></div>
+            </div>
+          {% endif %}
+          {% if foodbank.twitter_handle %}
+            <div class="column">
+              <div class="twitter-feed">
+                <a class="twitter-timeline" href="https://twitter.com/{{ foodbank.twitter_handle }}">Tweets by {{ foodbank.twitter_handle }}</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

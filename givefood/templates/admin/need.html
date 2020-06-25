@@ -48,6 +48,10 @@
         {% csrf_token %}
         <input type="submit" class="button is-success" value="Publish">
       </form>
+      <form action="{% url 'admin_need_tweet' need.need_id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" class="button is-danger" value="TWEET">
+      </form>
       <br>
       <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
         {% csrf_token %}
