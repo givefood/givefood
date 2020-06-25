@@ -227,7 +227,7 @@ def clean_foodbank_need_text(text):
     return text
 
 
-def find_foodbanks(lattlong, quantity = 10):
+def find_foodbanks(lattlong, quantity = 10, skip_first = False):
 
     from givefood.models import Foodbank
     foodbanks = get_all_open_foodbanks()
@@ -241,7 +241,13 @@ def find_foodbanks(lattlong, quantity = 10):
 
     sorted_foodbanks = sorted(foodbanks, key=operator.attrgetter('distance_m'))
 
-    return sorted_foodbanks[:quantity]
+    if skip_first:
+        first_item = 1
+        quantity = quantity + 1
+    else:
+        first_item = 0
+
+    return sorted_foodbanks[first_item:quantity]
 
 
 def miles(meters):

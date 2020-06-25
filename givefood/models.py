@@ -10,7 +10,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly
+from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks
 
 
 class Foodbank(models.Model):
@@ -73,6 +73,9 @@ class Foodbank(models.Model):
 
     def full_address(self):
         return "%s\r\n%s" % (self.address, self.postcode)
+
+    def nearby(self):
+        return find_foodbanks(self.latt_long, 5, True)
 
     def country_flag(self):
         if self.country == "Scotland":
