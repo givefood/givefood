@@ -235,7 +235,7 @@ def api_foodbank_key(request):
 @cache_page(60*2)
 def api_needs(request):
 
-    allowed_limits = [100,2000]
+    allowed_limits = [100,1000]
     default_limit = 100
     limit = request.GET.get("limit", default_limit)
     limit = int(limit)
