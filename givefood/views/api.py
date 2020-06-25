@@ -29,7 +29,7 @@ def api_foodbanks(request):
     format = request.GET.get("format", default_format)
 
     if format not in allowed_formats:
-        return HttpResponseBadRequest
+        return HttpResponseBadRequest()
 
     for foodbank in foodbanks:
         response_list.append({
