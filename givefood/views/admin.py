@@ -465,7 +465,7 @@ def admin_need_tweet(request, id):
     else:
         fb_twitter_handle = ""
 
-    tweet = "%s food bank%s is requesting the donation of...\n\n%s https://www.givefood.org.uk/needs/at/%s/" % (
+    tweet = "%s food bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/" % (
         need.foodbank_name,
         fb_twitter_handle,
         truncatechars(need.change_text, 150),
