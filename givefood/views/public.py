@@ -159,6 +159,16 @@ def public_gen_annual_report(request, year):
 
 
 @cache_page(60*10)
+def public_sitemap(request):
+
+    foodbanks = get_all_foodbanks()
+    template_vars = {
+        "foodbanks":foodbanks,
+    }
+    return render_to_response("public/sitemap.xml", template_vars, content_type='text/xml')
+
+
+@cache_page(60*10)
 def public_what_food_banks_need(request):
 
     version = "222f3b10"
