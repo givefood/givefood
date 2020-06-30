@@ -271,6 +271,7 @@ def api_need(request, id):
         "created":need.created,
         "foodbank_name":need.foodbank_name,
         "foodbank_slug":need.foodbank_name_slug(),
+        "foodbank_self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":need.foodbank_name_slug()})),
         "needs":need.change_text,
         "url":need.uri,
         "self":"%s%s" % (API_DOMAIN, reverse("api_need", kwargs={"id":need.need_id})),
