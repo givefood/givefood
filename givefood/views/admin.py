@@ -14,7 +14,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidde
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.template.defaultfilters import truncatechars
+from django.template.defaultfilters import truncatewords
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
@@ -468,7 +468,7 @@ def admin_need_tweet(request, id):
     tweet = "%s food bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/" % (
         need.foodbank_name,
         fb_twitter_handle,
-        truncatechars(need.change_text, 150),
+        truncatewords(need.change_text, 200),
         need.foodbank_name_slug()
     )
 
