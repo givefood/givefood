@@ -437,4 +437,5 @@ CALORIES = {
     "Ambrosia Creamed Rice Pudding 4X125g":426,
     "Tesco Ready To Serve Custard 1Kg":99,
     "Tesco Easy Cook Long Grain Rice 1Kg":155,
+    "Stockwell & Co Orange Marmalade 454G":260,
 }
