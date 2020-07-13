@@ -176,6 +176,7 @@ def public_what_food_banks_need(request):
     where_from = request.GET.get("from", False)
     address = request.GET.get("address", "")
     lattlong = request.GET.get("lattlong", "")
+    foodbanks = get_all_foodbanks()
 
     template_vars = {
         "version":version,
@@ -183,6 +184,7 @@ def public_what_food_banks_need(request):
         "where_from":where_from,
         "address":address,
         "lattlong":lattlong,
+        "foodbanks":foodbanks,
     }
     return render_to_response("public/wfbn.html", template_vars)
 
