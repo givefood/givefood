@@ -40,7 +40,6 @@ def admin_index(request):
     today = datetime.today()
     today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_date")
 
-    # upcoming_order_threshold = datetime.now() - timedelta(days=1)
     upcoming_orders = Order.objects.filter(delivery_date__gt = today).order_by("delivery_date")
 
     prev_order_threshold = datetime.now() - timedelta(days=1)
