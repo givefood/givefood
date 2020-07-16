@@ -1,0 +1,2 @@
+{% for key, value in form %}
+{{ key }}: {{ value }}{% endfor %}

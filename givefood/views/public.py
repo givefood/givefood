@@ -2,17 +2,23 @@ from datetime import date
 import operator
 from collections import OrderedDict
 import json
+import logging
 
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
+from google.appengine.api import mail
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
+from django.template import RequestContext
+from django.template.loader import render_to_string
 from django.http import HttpResponse, Http404
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation
+from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
@@ -54,6 +60,31 @@ def public_index(request):
         "total_items":total_items,
     }
     return render_to_response("public/index.html", template_vars)
+
+
+def public_reg_foodbank(request):
+
+    done = request.GET.get("thanks", False)
+
+    if request.POST:
+        form = FoodbankRegistrationForm(request.POST)
+        if form.is_valid():
+            email_body = render_to_string("public/registration_email.txt",{"form":request.POST.items()})
+            logging.info(email_body)
+            mail.send_mail(
+                sender="mail@givefood.org.uk",
+                to="mail@givefood.org.uk",
+                subject="New Food Bank Registration - %s" % (request.POST.get("name")),
+                body=email_body)
+            return redirect(reverse('public_reg_foodbank') + '?thanks=yes')
+    else:
+        form = FoodbankRegistrationForm()
+
+    template_vars = {
+        "form":form,
+        "done":done,
+    }
+    return render_to_response("public/register_foodbank.html", template_vars, context_instance=RequestContext(request))
 
 
 def public_article(request, slug):

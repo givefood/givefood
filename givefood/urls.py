@@ -21,6 +21,7 @@ urlpatterns = (
     url(r'^api/$', givefood.views.public_api, name="public_api"),
     url(r'^articles/(?P<slug>[-\w]+)/$', givefood.views.public_article, name="public_article"),
     url(r'^(?P<year>(2019))/$', givefood.views.public_annual_report, name="public_annual_report"),
+    url(r'^register-foodbank/$', givefood.views.public_reg_foodbank, name="public_reg_foodbank"),
     url(r'^sitemap.xml$', givefood.views.public_sitemap, name="public_sitemap"),
 
     # KINDA PUBLIC
