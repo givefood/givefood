@@ -60,8 +60,9 @@ def public_index(request):
         "total_items":total_items,
     }
     return render_to_response("public/index.html", template_vars)
+    
 
-
+@csrf_exempt
 def public_reg_foodbank(request):
 
     done = request.GET.get("thanks", False)
