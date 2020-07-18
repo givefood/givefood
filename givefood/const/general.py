@@ -7,6 +7,8 @@ COUNTRIES = [
     "Scotland",
     "Northern Ireland",
     "Isle of Man",
+    "Jersey",
+    "Guernsey",
 ]
 COUNTRIES_CHOICES = tuple((country, country) for country in COUNTRIES)
 
