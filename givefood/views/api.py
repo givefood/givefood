@@ -164,6 +164,7 @@ def api_foodbank_search(request):
             "need_id":foodbank.latest_need_id(),
             "updated":str(foodbank.latest_need_date()),
             "updated_text":timesince(foodbank.latest_need_date()),
+            "latt_long":foodbank.latt_long,
             "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
         })
 
