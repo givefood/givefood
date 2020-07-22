@@ -27,11 +27,13 @@
           </div>
           <div class="column">
             <h2>{{ foodbank }} Food Bank</h2>
+
             <h3>Items Needed</h3>
             <p>
               {{ foodbank.latest_need.change_text|linebreaksbr }}
               <br><em class="is-size-7">Found on <a href="{{ foodbank.shopping_list_url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.latest_need_date }}</a></em>
             </p>
+
             <h3>Contact</h3>
             <dl>
               <dt>Website</dt>
@@ -49,12 +51,18 @@
               <br><a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}" class="button is-link is-small">Directions</a>
             </p>
             <p></p>
+
             <h3>Political Representatives</h3>
-            <p>This food bank is in the <a href="https://www.google.co.uk/search?q={{ foodbank.parliamentary_constituency }} constituency">{{ foodbank.parliamentary_constituency }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} mp">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party.</p>
-            <p>You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.
+            <p>This food bank is in the <a href="https://www.google.co.uk/search?q={{ foodbank.parliamentary_constituency }} constituency">{{ foodbank.parliamentary_constituency }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} mp">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party. You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.
             <br>
             <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}" class="button is-link is-small">Write</a>
-            </p>
+
+            {% if foodbank.charity_number %}
+              <p></p>
+              <h3>Charity</h3>
+              <p>{{ foodbank }} food bank operates under a charity registered in {{ foodbank.country }}, charity number <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>.</p>
+            {% endif %}
+
             <h3>Nearby Food Banks</h3>
             <ul>
               {% for foodbank in foodbank.nearby %}
@@ -67,6 +75,7 @@
             <h3>Anything Wrong Here?</h3>
             <p>We're very keen to get our data right. You can help us by pointing out any mistakes with an email to <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a>, and we'll fix it promptly.</p>
           </div>
+
           {% if foodbank.facebook_page %}
             <div class="column">
               <div id="fb-root"></div>
@@ -74,6 +83,7 @@
               <div class="fb-page" data-href="https://www.facebook.com/{{ foodbank.facebook_page }}" data-tabs="timeline" data-width="" data-height="1200" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/{{ foodbank.facebook_page }}" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></blockquote></div>
             </div>
           {% endif %}
+
           {% if foodbank.twitter_handle %}
             <div class="column">
               <div class="twitter-feed">
@@ -81,6 +91,7 @@
               </div>
             </div>
           {% endif %}
+          
         </div>
     </div>
   </div>
