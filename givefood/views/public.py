@@ -60,7 +60,7 @@ def public_index(request):
         "total_items":total_items,
     }
     return render_to_response("public/index.html", template_vars)
-    
+
 
 @csrf_exempt
 def public_reg_foodbank(request):
@@ -203,7 +203,7 @@ def public_sitemap(request):
 @cache_page(60*10)
 def public_what_food_banks_need(request):
 
-    version = "222f3b10"
+    version = "dbfa5a58"
     headless = request.GET.get("headless", False)
     where_from = request.GET.get("from", False)
     address = request.GET.get("address", "")
