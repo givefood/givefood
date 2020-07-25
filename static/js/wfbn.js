@@ -114,12 +114,13 @@ function api_response() {
     distance = foodbank.distance_mi;
     slug = foodbank.slug;
     number_needs = foodbank.number_needs;
+    phone = foodbank.phone;
     needs = foodbank.needs;
     needs_html = needs.replace(/\n/g, "<br>");
 
     currentrow = document.importNode(template.content, true);
-    currentrow.querySelector("a").href = "/needs/click/" + slug + "/";
-    currentrow.querySelector("a").textContent = name;
+    currentrow.querySelector("a.foodbank").href = "/needs/click/" + slug + "/";
+    currentrow.querySelector("a.foodbank").textContent = name;
     currentrow.querySelector(".distance span").textContent = distance;
     if (number_needs > 0 && needs != "Nothing" && needs != "Unknown") {
       if (number_needs > 1) {item_text = "items"} else {item_text = "item"};
@@ -128,6 +129,10 @@ function api_response() {
       currentrow.querySelector(".fb_needs").innerHTML = need_unknown_text;
     } else {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
+    }
+    if (currentrow.querySelector(".links")) {
+      currentrow.querySelector(".links .phone").href = "tel:" + phone
+      currentrow.querySelector(".links .info").href = "/needs/at/" + slug + "/";
     }
     results_table.appendChild(currentrow);
   }

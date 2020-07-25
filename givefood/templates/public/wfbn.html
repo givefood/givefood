@@ -61,6 +61,12 @@
       <td>
         <a href="#" class="foodbank" target="_top"></a>
         <div class="distance"><span></span>mi away</div>
+        {% if where_from != "trusselltrust" %}
+          <div class="links">
+            <a class="phone" href="" title="Call the food bank"><img src="/static/img/phone.svg" width="20"></a>
+            <a class="info" href="" title="More information"><img src="/static/img/info.svg" width="20"></a>
+          </div>
+        {% endif %}
       </td>
       <td class="need_detail">
         <div class="fb_needs">
