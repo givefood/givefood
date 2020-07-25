@@ -28,11 +28,13 @@
           <div class="column">
             <h2>{{ foodbank }} Food Bank</h2>
 
-            <h3>Items Needed</h3>
-            <p>
-              {{ foodbank.latest_need.change_text|linebreaksbr }}
-              <br><em class="is-size-7">Found on <a href="{{ foodbank.shopping_list_url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.latest_need_date }}</a></em>
-            </p>
+            {% if foodbank.latest_need.change_text != "Unknown" %}
+              <h3>Items Needed</h3>
+              <p>
+                {{ foodbank.latest_need.change_text|linebreaksbr }}
+                <br><em class="is-size-7">Found on <a href="{{ foodbank.shopping_list_url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.latest_need_date }}</a></em>
+              </p>
+            {% endif %}
 
             <h3>Contact</h3>
             <dl>
@@ -91,7 +93,7 @@
               </div>
             </div>
           {% endif %}
-          
+
         </div>
     </div>
   </div>
