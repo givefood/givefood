@@ -32,7 +32,8 @@
               <h3>Items Needed</h3>
               <p>
                 {{ foodbank.latest_need.change_text|linebreaksbr }}
-                <br><em class="is-size-7">Found on <a href="{{ foodbank.shopping_list_url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.latest_need_date }}</a></em>
+                <br><em class="is-size-7">Found on {{ foodbank.latest_need_date }}</em><br>
+                <a href="{% url 'public_what_food_banks_need_click' foodbank.slug %}" class="button is-link is-small">Details</a>
               </p>
             {% endif %}
 
