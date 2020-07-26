@@ -232,7 +232,7 @@ def public_what_food_banks_need_click(request, slug):
     return redirect(redirect_url)
 
 
-@cache_page(60*2)
+@cache_page(60*10)
 def public_wfbn_foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
