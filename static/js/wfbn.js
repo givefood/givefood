@@ -66,6 +66,7 @@ function do_address(event) {
     api_url = api_url_root + querystring;
     api_request(api_url);
     record_search(querystring);
+    history.pushState({address: address}, "address", querystring)
   }
   event.preventDefault();
 }
@@ -77,6 +78,7 @@ function do_lattlong(position) {
   api_url = api_url_root + querystring;
   api_request(api_url);
   record_search(querystring);
+  history.pushState({lattlong: latt + "," + long}, "lattlong", querystring)
 }
 
 function record_search(querystring) {
