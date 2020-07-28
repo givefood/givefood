@@ -36,6 +36,9 @@ urlpatterns = (
     url(r'^needs/click/(?P<slug>[-\w]+)/$', givefood.views.public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
     url(r'^needs/at/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_foodbank, name="public_wfbn_foodbank"),
     url(r'^needs/at/(?P<slug>[-\w]+)/map.png$', givefood.views.public_wfbn_foodbank_map, name="public_wfbn_foodbank_map"),
+    url(r'^needs/in/constituencies/$', givefood.views.public_wfbn_constituencies, name="public_wfbn_constituencies"),
+    url(r'^needs/in/constituency/$', RedirectView.as_view(url="/needs/in/constituencies/")),
+    url(r'^needs/in/constituency/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_constituency, name="public_wfbn_constituency"),
 
     # Rickrolling
     url(r'^wp-login\.php$', RedirectView.as_view(url=RICK_ASTLEY)),
@@ -73,6 +76,7 @@ urlpatterns = (
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/tweet/$', givefood.views.admin_need_tweet, name="admin_need_tweet"),
 
     url(r'^admin/locations/$', givefood.views.admin_locations, name="admin_locations"),
+    url(r'^admin/politics/$', givefood.views.admin_politics, name="admin_politics"),
     url(r'^admin/searches/$', givefood.views.admin_searches, name="admin_searches"),
     url(r'^admin/searches/csv/$', givefood.views.admin_searches_csv, name="admin_searches_csv"),
     url(r'^admin/map/$', givefood.views.admin_map, name="admin_map"),

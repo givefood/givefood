@@ -294,6 +294,21 @@ def mp_from_parlcon(parliamentary_constituency):
     }
 
 
+def mpid_from_name(name):
+
+    logging.info("getting mp name %s" % (name))
+
+    if name:
+        mpid_url = "https://members-api.parliament.uk/api/Members/Search?Name=%s&House=Commons&IsCurrentMember=true&skip=0&take=20" % (urllib.quote(name))
+        mpid_api_result = urlfetch.fetch(mpid_url)
+        if mpid_api_result.status_code == 200:
+            mpid_api_json = json.loads(mpid_api_result.content)
+            if mpid_api_json["totalResults"] != 0:
+                logging.info("getting got id %s" % (mpid_api_json["items"][0]["value"]["id"]))
+                return mpid_api_json["items"][0]["value"]["id"]
+    return False
+
+
 def lattlong_from_postcode(postcode):
     pass
 

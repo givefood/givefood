@@ -491,6 +491,18 @@ def admin_locations(request):
     return render_to_response("admin/locations.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_politics(request):
+
+    foodbanks = get_all_foodbanks()
+    locations = FoodbankLocation.objects.all().order_by("foodbank_name")
+
+    template_vars = {
+        "foodbanks":foodbanks,
+        "locations":locations,
+        "section":"politics",
+    }
+    return render_to_response("admin/politics.html", template_vars, context_instance=RequestContext(request))
+
 def admin_map(request):
 
     filter = request.GET.get("filter", "all")

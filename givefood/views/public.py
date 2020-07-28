@@ -194,8 +194,15 @@ def public_gen_annual_report(request, year):
 def public_sitemap(request):
 
     foodbanks = get_all_foodbanks()
+    constituencies = set()
+
+    for foodbank in foodbanks:
+        if foodbank.parliamentary_constituency:
+            constituencies.add(foodbank.parliamentary_constituency)
+
     template_vars = {
         "foodbanks":foodbanks,
+        "constituencies":constituencies,
     }
     return render_to_response("public/sitemap.xml", template_vars, content_type='text/xml')
 
@@ -255,6 +262,47 @@ def public_wfbn_foodbank_map(request, slug):
 
     result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ" % (foodbank.latt_long))
     return HttpResponse(result.content, content_type='image/png')
+
+
+def public_wfbn_constituencies(request):
+
+    foodbanks = get_all_foodbanks()
+    constituencies = set()
+
+    for foodbank in foodbanks:
+        if foodbank.parliamentary_constituency:
+            constituencies.add(foodbank.parliamentary_constituency)
+
+    constituencies = sorted(constituencies)
+
+    template_vars = {
+        "constituencies":constituencies,
+    }
+
+    return render_to_response("public/wfbn_constituencies.html", template_vars)
+
+
+def public_wfbn_constituency(request, slug):
+
+    foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = slug)
+    # parliamentary_constituency_locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = slug)
+    if not foodbanks:
+        raise Http404
+    else:
+        constituency_name = foodbanks[0].parliamentary_constituency
+        mp = foodbanks[0].mp
+        mp_party = foodbanks[0].mp_party
+        mp_parl_id = foodbanks[0].mp_parl_id
+
+    template_vars = {
+        "constituency_name":constituency_name,
+        "mp":mp,
+        "mp_party":mp_party,
+        "mp_parl_id":mp_parl_id,
+        "foodbanks":foodbanks,
+    }
+
+    return render_to_response("public/wfbn_constituency.html", template_vars)
 
 
 @cache_page(60*60)

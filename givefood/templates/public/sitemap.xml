@@ -5,4 +5,9 @@
 			<loc>https://www.givefood.org.uk{% url 'public_wfbn_foodbank' foodbank.slug %}</loc>
 		</url>
 	{% endfor %}
+	{% for constituency in constituencies %}
+		<url>
+			<loc>https://www.givefood.org.uk{% url 'public_wfbn_constituency' constituency|slugify %}</loc>
+		</url>
+	{% endfor %}
 </urlset>

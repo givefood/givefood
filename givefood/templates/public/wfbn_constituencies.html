@@ -1,0 +1,38 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css?{{ version }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="{{ foodbank }} Food Bank">
+  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/map.png">
+  <link rel="manifest" href="/needs/manifest.json">
+{% endblock %}
+
+{% block title %}Constituencies - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+        <h1><a href="/">Give Food</a></h1>
+        <div class="columns">
+          <div class="column">
+            <h2>Constituencies</h2>
+            <ul>
+              {% for constituency in constituencies %}
+                <li>
+                  <a href="{% url "public_wfbn_constituency" constituency|slugify %}">
+                    {{ constituency }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

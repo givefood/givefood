@@ -1,0 +1,85 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="Food Banks in {{ constituency_name }}">
+  <link rel="manifest" href="/needs/manifest.json">
+{% endblock %}
+
+{% block title %}{{ constituency_name }} Food Banks - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+        <h1><a href="/">Give Food</a></h1>
+        <div class="columns">
+          <div class="column is-two-fifths">
+            <div id="fbmap" style="height:500px;"></div>
+          </div>
+          <div class="column is-half">
+            <h2>{{ constituency_name }}</h2>
+
+            <img src="https://members-api.parliament.uk/api/Members/{{ mp_parl_id }}/Thumbnail" alt="{{ constituency_name }}" class="mp_photo is-pulled-right">
+
+            <p><a href="https://www.google.co.uk/search?q={{ constituency_name }} constituency">{{ constituency_name }} constituency</a> is represented by <a href="https://www.google.co.uk/search?q={{ mp }} MP">{{ mp }} MP</a> of the {{ mp_party }} party.
+            <p>You can write to your MP to politely help them understand that food banks shouldn't exist in our country.</p>
+            <a href="https://members.parliament.uk/member/{{ mp_parl_id }}/contact" class="button is-link">Write</a><br><br>
+
+            <h3>Food Banks</h3>
+            <p>The following food banks operate in the {{ constituency_name }} constituency.</p>
+            <ul>
+              {% for foodbank in foodbanks %}
+                <li><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
+              {% endfor %}
+            </ul><br>
+
+            <h3>Anything Wrong Here?</h3>
+            <p>We're very keen to get our data right. You can help us by pointing out any mistakes with an email to <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a>, and we'll fix it promptly.</p>
+          </div>
+        </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&amp;sensor=false"></script>
+<script>
+function add_marker(lat, lng, url) {
+  position = new google.maps.LatLng(lat, lng)
+  var marker = new google.maps.Marker({
+  position: position,
+  map: map,
+  url: url
+});
+  bounds.extend(position);
+  google.maps.event.addListener(marker, "click", function () {
+  location.assign(marker.url);
+});
+}
+
+var map
+var bounds = new google.maps.LatLngBounds();
+function init_map() {
+var mapOptions = {
+  center: new google.maps.LatLng(55,-4),
+  zoom: 6,
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+};
+map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
+
+{% for foodbank in foodbanks %}
+  add_marker({{ foodbank.latt_long }}, "{% url 'public_wfbn_foodbank' foodbank.slug %}")
+{% endfor %}
+map.fitBounds(bounds);
+map.panToBounds(bounds);
+}
+
+google.maps.event.addDomListener(window, 'load', init_map);
+</script>
+
+{% endblock %}

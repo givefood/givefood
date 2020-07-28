@@ -1,0 +1,60 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Politics - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Politics</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>Postcode</th>
+          <th>Constituency</th>
+          <th>MP</th>
+          <th>MP Party</th>
+          <th>MP Parliament ID</th>
+          <th>Photo</th>
+        </tr>
+        {% for foodbank in foodbanks %}
+          <tr>
+            <td><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
+            <td>{{ foodbank.postcode }}</td>
+            <td>{{ foodbank.parliamentary_constituency }}</td>
+            <td>{{ foodbank.mp }}</td>
+            <td>{{ foodbank.mp_party }}</td>
+            <td>{{ foodbank.mp_parl_id }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>Postcode</th>
+          <th>Constituency</th>
+          <!-- <th>MP</th> -->
+          <th>MP Party</th>
+          <th>MP Parliament ID</th>
+        </tr>
+        {% for location in locations %}
+          <tr>
+            <td>{{ location }}</td>
+            <td>{{ location.postcode }}</td>
+            <td>{{ location.parliamentary_constituency }}</td>
+            <td>{{ location.mp_party }}</td>
+            <td>{{ location.mp_parl_id }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

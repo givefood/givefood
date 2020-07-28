@@ -56,7 +56,7 @@
             <p></p>
 
             <h3>Political Representatives</h3>
-            <p>This food bank is in the <a href="https://www.google.co.uk/search?q={{ foodbank.parliamentary_constituency }} constituency">{{ foodbank.parliamentary_constituency }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} mp">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party. You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.
+            <p>This food bank is in the <a href="{% url "public_wfbn_constituency" foodbank.parliamentary_constituency_slug %}">{{ foodbank.parliamentary_constituency }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} MP">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party. You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.
             <br>
             <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}" class="button is-link is-small">Write</a>
 
