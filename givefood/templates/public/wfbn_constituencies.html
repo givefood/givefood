@@ -20,7 +20,7 @@
         <div class="columns">
           <div class="column">
             <h2>Constituencies</h2>
-            <ul>
+            <ul style="column-count:3;column-gap: 20px;">
               {% for constituency in constituencies %}
                 <li>
                   <a href="{% url "public_wfbn_constituency" constituency|slugify %}">
