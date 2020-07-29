@@ -22,7 +22,7 @@ from django.utils.encoding import smart_str
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations
 from givefood.models import Foodbank, Order, OrderLine, FoodbankChange, FoodbankLocation, ApiFoodbankSearch
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm
 
 
 def admin_index(request):
@@ -347,6 +347,27 @@ def admin_fblocation_form(request, slug = None, loc_slug = None):
             return redirect("admin_foodbank", slug = foodbank_location.foodbank_slug)
     else:
         form = FoodbankLocationForm(instance=foodbank_location, initial={"foodbank":foodbank})
+
+    template_vars = {
+        "form":form,
+    }
+    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_fblocation_politics_edit(request, slug, loc_slug):
+
+    if slug:
+        foodbank_location = get_object_or_404(FoodbankLocation, foodbank_slug = slug, slug = loc_slug)
+    else:
+        foodbank_location = None
+
+    if request.POST:
+        form = FoodbankLocationPoliticsForm(request.POST, instance=foodbank_location)
+        if form.is_valid():
+            foodbank_location = form.save()
+            return redirect("admin_foodbank", slug = foodbank_location.foodbank.slug)
+    else:
+        form = FoodbankLocationPoliticsForm(instance=foodbank_location)
 
     template_vars = {
         "form":form,

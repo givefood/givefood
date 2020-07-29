@@ -40,6 +40,11 @@ class FoodbankLocationForm(ModelForm):
         exclude = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party", "mp_parl_id")
 
 
+class FoodbankLocationPoliticsForm(ModelForm):
+    class Meta:
+        model = Foodbank
+        fields = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party", "mp_parl_id")
+
 class OrderForm(ModelForm):
     foodbank = ModelChoiceField(queryset=Foodbank.objects.filter(is_closed = False).order_by('name'))
     need = ModelChoiceField(queryset=FoodbankChange.objects.all().order_by('-created'), required=False)

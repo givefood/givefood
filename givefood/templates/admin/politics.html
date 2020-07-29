@@ -45,6 +45,7 @@
           <th>MP</th>
           <th>MP Party</th>
           <th>MP Parliament ID</th>
+          <th></th>
         </tr>
         {% for location in locations %}
           <tr>
@@ -55,6 +56,9 @@
             <td>{{ location.mp }}</td>
             <td>{{ location.mp_party }}</td>
             <td>{{ location.mp_parl_id }}</td>
+            <td>
+              <a href="{% url 'admin_fblocation_politics_edit' location.foodbank_slug location.slug  %}" class="button is-small">Edit</a>
+            </td>
           </tr>
         {% endfor %}
       </table>
