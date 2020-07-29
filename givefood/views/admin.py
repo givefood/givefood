@@ -494,7 +494,7 @@ def admin_locations(request):
 def admin_politics(request):
 
     foodbanks = get_all_foodbanks()
-    locations = FoodbankLocation.objects.all().order_by("foodbank_name")
+    locations = FoodbankLocation.objects.all()
 
     template_vars = {
         "foodbanks":foodbanks,
