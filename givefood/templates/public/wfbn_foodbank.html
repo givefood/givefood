@@ -22,6 +22,13 @@
   <div class="columns">
     <div class="column">
         <h1><a href="/">Give Food</a></h1>
+        <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="{% url 'public_index' %}">Give Food</a></li>
+            <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{ foodbank }} Food Bank</a></li>
+          </ul>
+        </nav>
         <div class="columns">
           <div class="column">
             <img src="{{ map_url }}" alt="Map of {{ foodbank }} Food Bank">
