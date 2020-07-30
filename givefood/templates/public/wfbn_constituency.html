@@ -16,6 +16,14 @@
   <div class="columns">
     <div class="column">
         <h1><a href="/">Give Food</a></h1>
+        <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="{% url 'public_index' %}">Give Food</a></li>
+            <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'public_wfbn_constituencies' %}">Constituencies</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{ constituency_name }}</a></li>
+          </ul>
+        </nav>
         <div class="columns">
           <div class="column is-two-fifths">
             <div id="fbmap" style="height:500px;"></div>
