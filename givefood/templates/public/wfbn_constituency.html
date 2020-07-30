@@ -29,13 +29,16 @@
             <p>You can write to your MP to politely help them understand that food banks shouldn't exist in our country.</p>
             <a href="https://members.parliament.uk/member/{{ mp_parl_id }}/contact" class="button is-link">Write</a><br><br>
 
-            <h3>Food Banks</h3>
-            <p>The following food banks operate in the {{ constituency_name }} constituency.</p>
-            <ul>
-              {% for foodbank in foodbanks %}
-                <li><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
+            <h3 style="clear:right">Food Banks</h3>
+            <p>The following food banks operate in the {{ constituency_name }} constituency, and what they are requesting to have donated.</p>
+            <table class="table is-narrow is-fullwidth">
+              {% for foodbank in constituency_foodbanks %}
+                <tr>
+                  <td><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank.name }}</a></td>
+                  <td>{{ foodbank.needs.change_text|linebreaksbr }}</td>
+                </tr>
               {% endfor %}
-            </ul><br>
+            </table><br>
 
             <h3>Anything Wrong Here?</h3>
             <p>We're very keen to get our data right. You can help us by pointing out any mistakes with an email to <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a>, and we'll fix it promptly.</p>
@@ -69,11 +72,11 @@ function init_map() {
 var mapOptions = {
   center: new google.maps.LatLng(55,-4),
   zoom: 6,
-  mapTypeId: google.maps.MapTypeId.ROADMAP
+  mapTypeId: google.maps.MapTypeId.ROADMAP,
+  maxZoom: 14
 };
 map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
-
-{% for foodbank in foodbanks %}
+{% for foodbank in constituency_locations %}
   add_marker({{ foodbank.latt_long }}, "{% url 'public_wfbn_foodbank' foodbank.slug %}")
 {% endfor %}
 map.fitBounds(bounds);

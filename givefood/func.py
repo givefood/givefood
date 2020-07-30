@@ -47,6 +47,25 @@ def get_all_locations():
     return all_locations
 
 
+def get_all_constituencies():
+
+    foodbanks = get_all_foodbanks()
+    locations = get_all_locations()
+    constituencies = set()
+
+    for foodbank in foodbanks:
+        if foodbank.parliamentary_constituency:
+            constituencies.add(foodbank.parliamentary_constituency)
+
+    for location in locations:
+        if location.parliamentary_constituency:
+            constituencies.add(location.parliamentary_constituency)
+
+    constituencies = sorted(constituencies)
+
+    return constituencies
+
+
 def geocode(address):
 
     address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&address=%s" % (urllib.quote(address))

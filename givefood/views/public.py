@@ -19,7 +19,7 @@ from django.http import HttpResponse, Http404
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
@@ -266,14 +266,7 @@ def public_wfbn_foodbank_map(request, slug):
 
 def public_wfbn_constituencies(request):
 
-    foodbanks = get_all_foodbanks()
-    constituencies = set()
-
-    for foodbank in foodbanks:
-        if foodbank.parliamentary_constituency:
-            constituencies.add(foodbank.parliamentary_constituency)
-
-    constituencies = sorted(constituencies)
+    constituencies = get_all_constituencies()
 
     template_vars = {
         "constituencies":constituencies,
@@ -285,21 +278,53 @@ def public_wfbn_constituencies(request):
 def public_wfbn_constituency(request, slug):
 
     foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = slug)
-    # parliamentary_constituency_locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = slug)
-    if not foodbanks:
+    locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = slug)
+
+    constituency_foodbanks = []
+
+    for foodbank in foodbanks:
+        constituency_foodbanks.append({
+            "name":foodbank.name,
+            "slug":foodbank.slug,
+            "constituency_name":foodbank.parliamentary_constituency,
+            "mp":foodbank.mp,
+            "mp_party":foodbank.mp_party,
+            "mp_parl_id":foodbank.mp_parl_id,
+            "latt_long":foodbank.latt_long,
+            "needs":foodbank.latest_need()
+        })
+
+    for location in locations:
+        constituency_foodbanks.append({
+            "name":location.foodbank_name,
+            "slug":location.foodbank_slug,
+            "constituency_name":location.parliamentary_constituency,
+            "mp":location.mp,
+            "mp_party":location.mp_party,
+            "mp_parl_id":location.mp_parl_id,
+            "latt_long":location.latt_long,
+            "needs":location.latest_need()
+        })
+
+    #Dedupe
+    constituency_locations = constituency_foodbanks
+    constituency_foodbanks = {v['name']:v for v in constituency_foodbanks}.values()
+
+    if not constituency_foodbanks:
         raise Http404
-    else:
-        constituency_name = foodbanks[0].parliamentary_constituency
-        mp = foodbanks[0].mp
-        mp_party = foodbanks[0].mp_party
-        mp_parl_id = foodbanks[0].mp_parl_id
+
+    constituency_name = constituency_foodbanks[0].get("constituency_name")
+    mp = constituency_foodbanks[0].get("mp")
+    mp_party = constituency_foodbanks[0].get("mp_party")
+    mp_parl_id = constituency_foodbanks[0].get("mp_parl_id")
 
     template_vars = {
         "constituency_name":constituency_name,
         "mp":mp,
         "mp_party":mp_party,
         "mp_parl_id":mp_parl_id,
-        "foodbanks":foodbanks,
+        "constituency_foodbanks":constituency_foodbanks,
+        "constituency_locations":constituency_locations,
     }
 
     return render_to_response("public/wfbn_constituency.html", template_vars)
