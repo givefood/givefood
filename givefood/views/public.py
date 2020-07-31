@@ -265,7 +265,7 @@ def public_wfbn_foodbank_map(request, slug):
     return HttpResponse(result.content, content_type='image/png')
 
 
-# @cache_page(60*10)
+@cache_page(60*5)
 def public_wfbn_constituencies(request):
 
     postcode = request.GET.get("postcode", None)
@@ -284,6 +284,7 @@ def public_wfbn_constituencies(request):
     return render_to_response("public/wfbn_constituencies.html", template_vars)
 
 
+@cache_page(60*5)
 def public_wfbn_constituency(request, slug):
 
     foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = slug)
