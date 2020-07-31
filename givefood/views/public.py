@@ -15,11 +15,12 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.template.defaultfilters import slugify
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
@@ -264,7 +265,15 @@ def public_wfbn_foodbank_map(request, slug):
     return HttpResponse(result.content, content_type='image/png')
 
 
+# @cache_page(60*10)
 def public_wfbn_constituencies(request):
+
+    postcode = request.GET.get("postcode", None)
+    if postcode:
+        admin_regions = admin_regions_from_postcode(postcode)
+        parl_con = admin_regions.get("parliamentary_constituency", None)
+        if parl_con:
+            return HttpResponseRedirect(reverse("public_wfbn_constituency", kwargs={"slug":slugify(parl_con)}))
 
     constituencies = get_all_constituencies()
 

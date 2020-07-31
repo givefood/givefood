@@ -26,6 +26,11 @@
         </nav>
         <div class="columns">
           <div class="column">
+            <form id="postcodeform" action="" method="get">
+              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="Search by postcode">
+              <input type="submit" id="addressgobtn" href="#" class="button is-info" value="Go">
+            </form>
+            <br>
             <h2>Constituencies</h2>
             <ul style="column-count:3;column-gap: 20px;">
               {% for constituency in constituencies %}
