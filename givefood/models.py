@@ -132,6 +132,14 @@ class Foodbank(models.Model):
         else:
             return self.modified
 
+    def latest_need_number(self):
+        latest_need_text = self.latest_need_text()
+        if latest_need_text == "Unknown":
+            return 0
+        if latest_need_text == "Nothing":
+            return 0
+        return latest_need_text.count('\n')+1
+
     def orders(self):
         return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")
 
