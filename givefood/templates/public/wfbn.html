@@ -1,10 +1,10 @@
 {% extends "public/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn.css?{{ version }}">
+  <link rel="stylesheet" href="/static/css/wfbn.css">
   {% if where_from == "trusselltrust" %}
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/wfbn-tt.css?{{ version }}">
+    <link rel="stylesheet" href="/static/css/wfbn-tt.css">
   {% endif %}
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFood_org_uk">
@@ -113,7 +113,7 @@
 
       google.maps.event.addDomListener(window, 'load', init_map);
     </script>
-  <script src="/static/js/wfbn.js?{{ version }}"></script>
+  <script src="/static/js/wfbn.js"></script>
   {% if where_from == "trusselltrust" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.contentWindow.min.js"></script>
   {% endif %}

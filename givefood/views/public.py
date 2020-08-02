@@ -211,7 +211,6 @@ def public_sitemap(request):
 @cache_page(60*10)
 def public_what_food_banks_need(request):
 
-    version = "dbfa5a58"
     headless = request.GET.get("headless", False)
     where_from = request.GET.get("from", False)
     address = request.GET.get("address", "")
@@ -219,7 +218,6 @@ def public_what_food_banks_need(request):
     foodbanks = get_all_foodbanks()
 
     template_vars = {
-        "version":version,
         "headless":headless,
         "where_from":where_from,
         "address":address,
