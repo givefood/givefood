@@ -204,7 +204,7 @@ class Foodbank(models.Model):
             self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency)
         if not self.mp_parl_id:
             self.mp_parl_id = mpid_from_name(self.mp)
-        self.no_locations = self.no_locations
+        self.no_locations = self.get_no_locations()
         super(Foodbank, self).save(*args, **kwargs)
 
         memcache.delete(FB_MC_KEY)
