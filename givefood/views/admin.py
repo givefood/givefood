@@ -524,6 +524,7 @@ def admin_politics(request):
     }
     return render_to_response("admin/politics.html", template_vars, context_instance=RequestContext(request))
 
+
 def admin_map(request):
 
     filter = request.GET.get("filter", "all")
