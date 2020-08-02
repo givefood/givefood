@@ -78,6 +78,8 @@
         <dd>{{ foodbank.mp }}</dd>
         <dt>MP Party</dt>
         <dd>{{ foodbank.mp_party }}</dd>
+        <dt>MP ID</dt>
+        <dd>{{ foodbank.mp_parl_id }}</dd>
         <dt>Country</dt>
         <dd>{{ foodbank.country }}</dd>
       </dl>
@@ -103,6 +105,8 @@
 
       <h3>Links</h3>
       <dl>
+        <dt>GF Info</dt>
+        <dd><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank.slug }}</a></dd>
         <dt>Website</dt>
         <dd><a href="{{ foodbank.url }}">{{ foodbank.friendly_url|truncatechars:20 }}</a></dd>
         <dt>Shopping list</dt>
