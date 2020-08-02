@@ -15,7 +15,7 @@
         <span class="tag is-danger">Closed</span>
       {% endif %}
 
-      <a href="{% url 'admin_foodbank_edit' foodbank.slug %}" class="button is-link">Edit Foodbank</a><br>
+      <a href="{% url 'admin_foodbank_edit' foodbank.slug %}" class="button is-link">Edit Food Bank</a><br>
 
       {% if not foodbank.orders %}
         <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
