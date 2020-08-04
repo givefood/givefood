@@ -52,7 +52,7 @@
         {% for location in foodbank.locations %}
         <tr>
           <td>{{ location.name }}</td>
-          <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
+          <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
           <td><a href="{% url 'admin_fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a></td>
         {% endfor %}
       </table>
