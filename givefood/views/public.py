@@ -60,7 +60,7 @@ def public_index(request):
         "total_calories":total_calories,
         "total_items":total_items,
     }
-    return render_to_response("public/index.html", template_vars)
+    return render_to_response("public/index.html", template_vars, context_instance=RequestContext(request))
 
 
 @csrf_exempt
@@ -92,19 +92,19 @@ def public_reg_foodbank(request):
 def public_article(request, slug):
 
     article_template = "public/articles/%s.html" % (slug)
-    return render_to_response(article_template)
+    return render_to_response(article_template, context_instance=RequestContext(request))
 
 
 @cache_page(60*10)
 def public_api(request):
 
-    return render_to_response("public/api.html")
+    return render_to_response("public/api.html", context_instance=RequestContext(request))
 
 
 @cache_page(60*10)
 def public_annual_report(request, year):
     article_template = "public/ar/%s.html" % (year)
-    return render_to_response(article_template)
+    return render_to_response(article_template, context_instance=RequestContext(request))
 
 
 def public_gen_annual_report(request, year):
@@ -188,7 +188,7 @@ def public_gen_annual_report(request, year):
         "check_count":check_count,
         "check_count_bytes":check_count_bytes,
     }
-    return render_to_response("public/annual_report.html", template_vars)
+    return render_to_response("public/annual_report.html", template_vars, context_instance=RequestContext(request))
 
 
 @cache_page(60*10)
@@ -224,7 +224,7 @@ def public_what_food_banks_need(request):
         "lattlong":lattlong,
         "foodbanks":foodbanks,
     }
-    return render_to_response("public/wfbn.html", template_vars)
+    return render_to_response("public/wfbn.html", template_vars, context_instance=RequestContext(request))
 
 
 def public_what_food_banks_need_click(request, slug):
@@ -252,7 +252,7 @@ def public_wfbn_foodbank(request, slug):
         "map_url":map_url,
     }
 
-    return render_to_response("public/wfbn_foodbank.html", template_vars)
+    return render_to_response("public/wfbn_foodbank.html", template_vars, context_instance=RequestContext(request))
 
 
 def public_wfbn_foodbank_map(request, slug):
@@ -279,7 +279,7 @@ def public_wfbn_constituencies(request):
         "constituencies":constituencies,
     }
 
-    return render_to_response("public/wfbn_constituencies.html", template_vars)
+    return render_to_response("public/wfbn_constituencies.html", template_vars, context_instance=RequestContext(request))
 
 
 @cache_page(60*5)
@@ -335,7 +335,7 @@ def public_wfbn_constituency(request, slug):
         "constituency_locations":constituency_locations,
     }
 
-    return render_to_response("public/wfbn_constituency.html", template_vars)
+    return render_to_response("public/wfbn_constituency.html", template_vars, context_instance=RequestContext(request))
 
 
 @cache_page(60*60)
