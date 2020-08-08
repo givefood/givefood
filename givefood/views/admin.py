@@ -503,9 +503,19 @@ def admin_need_tweet(request, id):
 
 def admin_locations(request):
 
-    locations = FoodbankLocation.objects.all().order_by("foodbank_name")
+    sort_options = [
+        "foodbank_name",
+        "name",
+        "parliamentary_constituency",
+    ]
+    sort = request.GET.get("sort", "foodbank_name")
+    if sort not in sort_options:
+        return HttpResponseForbidden()
+
+    locations = FoodbankLocation.objects.all().order_by(sort)
 
     template_vars = {
+        "sort":sort,
         "locations":locations,
         "section":"locations",
     }
