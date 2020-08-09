@@ -36,9 +36,9 @@
 }
 .mp_photo {
   width:260px;
-  height:346px;
   margin:0 0 20px 20px;
   border-radius:3px;
+  max-width:40%;
 }
 .table td.foodbank_name {
   padding-left:0;
