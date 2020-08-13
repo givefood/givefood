@@ -215,14 +215,35 @@ def public_what_food_banks_need(request):
     where_from = request.GET.get("from", False)
     address = request.GET.get("address", "")
     lattlong = request.GET.get("lattlong", "")
-    foodbanks = get_all_foodbanks()
+
+    map_locations = []
+    if where_from != "trusselltrust":
+        foodbanks = get_all_foodbanks()
+        locations = get_all_locations()
+
+        for foodbank in foodbanks:
+            map_locations.append(
+                {
+                    "latt_long":foodbank.latt_long,
+                    "slug":foodbank.slug
+                }
+            )
+
+        for location in locations:
+            map_locations.append(
+                {
+                    "latt_long":location.latt_long,
+                    "slug":location.foodbank_slug
+                }
+            )
+
 
     template_vars = {
         "headless":headless,
         "where_from":where_from,
         "address":address,
         "lattlong":lattlong,
-        "foodbanks":foodbanks,
+        "map_locations":map_locations,
     }
     return render_to_response("public/wfbn.html", template_vars, context_instance=RequestContext(request))
 

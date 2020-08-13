@@ -105,8 +105,8 @@
       };
       map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
 
-      {% for foodbank in foodbanks %}
-        add_marker({{ foodbank.latt_long }}, "/needs/at/{{ foodbank.slug }}/")
+      {% for location in map_locations %}
+        add_marker({{ location.latt_long }}, "/needs/at/{{ location.slug }}/")
       {% endfor %}
 
       }
