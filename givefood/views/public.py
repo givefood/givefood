@@ -52,6 +52,9 @@ def public_index(request):
 
     no_active_foodbanks = len(active_foodbanks)
     total_locations = len(locations) + len(foodbanks)
+    for foodbank in foodbanks:
+        if foodbank.delivery_address:
+            total_locations += 1
 
     template_vars = {
         "no_active_foodbanks":no_active_foodbanks,
