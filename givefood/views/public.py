@@ -198,11 +198,7 @@ def public_gen_annual_report(request, year):
 def public_sitemap(request):
 
     foodbanks = get_all_foodbanks()
-    constituencies = set()
-
-    for foodbank in foodbanks:
-        if foodbank.parliamentary_constituency:
-            constituencies.add(foodbank.parliamentary_constituency)
+    constituencies = get_all_constituencies()
 
     template_vars = {
         "foodbanks":foodbanks,
