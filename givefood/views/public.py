@@ -20,7 +20,7 @@ from django.template.defaultfilters import slugify
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode, find_foodbanks, geocode
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
@@ -216,6 +216,7 @@ def public_what_food_banks_need(request):
     lattlong = request.GET.get("lattlong", "")
 
     map_locations = []
+    foodbank_results = []
     if where_from != "trusselltrust":
         foodbanks = get_all_foodbanks()
         locations = get_all_locations()
@@ -236,6 +237,11 @@ def public_what_food_banks_need(request):
                 }
             )
 
+        if address and not lattlong:
+            lattlong = geocode(address)
+
+        if lattlong:
+            foodbank_results = find_foodbanks(lattlong, 10)
 
     template_vars = {
         "headless":headless,
@@ -243,6 +249,7 @@ def public_what_food_banks_need(request):
         "address":address,
         "lattlong":lattlong,
         "map_locations":map_locations,
+        "foodbank_results":foodbank_results,
     }
     return render_to_response("public/wfbn.html", template_vars, context_instance=RequestContext(request))
 

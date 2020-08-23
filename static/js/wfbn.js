@@ -22,20 +22,6 @@ function init() {
   autocomplete.setComponentRestrictions({'country': ['gb']});
   uml_btn.addEventListener("click", do_geolocation);
   addressform.addEventListener("submit", do_address);
-  if (wfbn_address !== "") {
-    address_field.value = wfbn_address;
-    do_address()
-  }
-  if (wfbn_lattlong != "") {
-    [lattitude, longitude] = wfbn_lattlong.split(',');
-    position = {
-      coords: {
-        latitude: lattitude,
-        longitude: longitude,
-      }
-    }
-    do_lattlong(position)
-  }
   preload_image("/static/img/loading.gif");
 }
 
@@ -74,6 +60,7 @@ function do_address(event) {
 function do_lattlong(position) {
   latt  = position.coords.latitude;
   long = position.coords.longitude;
+  address_field.value = ""
   querystring = "?lattlong=" + latt + "," + long;
   api_url = api_url_root + querystring;
   api_request(api_url);
