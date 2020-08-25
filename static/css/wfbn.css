@@ -5,6 +5,9 @@
 #status {
   margin-top:10px;
 }
+#theresults {
+  margin-top:-10px;
+}
 #postcode_field, #address_field {
   width:220px;
 }
