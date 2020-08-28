@@ -160,8 +160,10 @@
 
       <h2 id="food-bank-search">Food Bank Search</h2>
       <p>When given a place returns list of ten food banks nearby that are not closed. Querying by <code>lattlong</code> is much quicker than <code>address</code>, so use that if possible.</p>
+      <p>Address can be a full address, but works well with just a postcode too.</p>
       <a href="/api/1/foodbanks/search/?lattlong=53.42,-2.55">https://www.givefood.org.uk/api/1/foodbanks/search/?lattlong=53.42,-2.55</a><br>
       <a href="/api/1/foodbanks/search/?address=66%20The%20Headrow%20Leeds%20LS1%208EQ">https://www.givefood.org.uk/api/1/foodbanks/search/?address=66 The Headrow Leeds LS1 8EQ</a><br>
+      <a href="/api/1/foodbanks/search/?address=SW1A%200AA">https://www.givefood.org.uk/api/1/foodbanks/search/?address=SW1A 0AA</a><br><br>
       <p>Returns all of the fields above, plus...</p>
       <table class="table is-fullwidth is-hoverable">
         <tr>
@@ -223,7 +225,7 @@
 
       <h2 id="food-bank">Food Bank</h2>
       <p>When given the food bank slug returns the details for an individual food bank organisation.</p>
-      <a href="/api/1/foodbank/black-country/">https://www.givefood.org.uk/api/1/foodbank/black-country/</a>
+      <a href="/api/1/foodbank/black-country/">https://www.givefood.org.uk/api/1/foodbank/black-country/</a><br><br>
       <p>Returns all of the fields above, plus...</p>
       <table class="table is-fullwidth is-hoverable">
         <tr>
