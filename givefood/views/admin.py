@@ -27,15 +27,7 @@ from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsFo
 
 def admin_index(request):
 
-    foodbank_sort = request.GET.get("foodbank_sort","last_order")
-    VALID_FOODBANK_SORTS = ["last_order", "social_check"]
-    if foodbank_sort not in VALID_FOODBANK_SORTS:
-        return HttpResponseForbidden()
-
-    if foodbank_sort == "last_order":
-        foodbanks = Foodbank.objects.all().order_by("-last_order")[:50]
-    else:
-        foodbanks = Foodbank.objects.all().order_by("-last_social_media_check")[:50]
+    foodbanks = Foodbank.objects.all().order_by("-last_order")[:50]
 
     today = datetime.today()
     today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_date")
@@ -52,7 +44,6 @@ def admin_index(request):
         "today_orders":today_orders,
         "upcoming_orders":upcoming_orders,
         "prev_orders":prev_orders,
-        "foodbank_sort":foodbank_sort,
         "needs":needs,
         "section":"home",
     }
@@ -403,16 +394,6 @@ def admin_findlocations(request, slug):
     }
 
     return render_to_response("admin/find_locations.html", template_vars, context_instance=RequestContext(request))
-
-
-@require_POST
-def admin_foodbank_sm_checked(request, slug):
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-    foodbank.last_social_media_check = datetime.now()
-    foodbank.save()
-
-    return redirect("admin_foodbank", slug = foodbank.slug)
 
 
 def admin_need(request, id):

@@ -60,7 +60,6 @@ urlpatterns = (
     url(r'^admin/needs/csv/$', givefood.views.admin_needs_csv, name="admin_needs_csv"),
 
     url(r'^admin/foodbank/new/$', givefood.views.admin_foodbank_form, name="admin_newfoodbank"),
-    url(r'^admin/foodbank/(?P<slug>[-\w]+)/social_media_checked/$', givefood.views.admin_foodbank_sm_checked, name="admin_foodbank_sm_checked"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/$', givefood.views.admin_foodbank, name="admin_foodbank"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_foodbank_form, name="admin_foodbank_edit"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/location/new/$', givefood.views.admin_fblocation_form, name="admin_fblocation_new"),

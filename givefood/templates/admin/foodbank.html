@@ -140,14 +140,6 @@
         <dt>Modified</dt>
         <dd>{{ foodbank.modified}}</dd>
       </dl>
-      <br>
-
-      <h3>Social Media Check</h3>
-      <p>Last check: {{ foodbank.last_social_media_check }}</p>
-      <form action="{% url 'admin_foodbank_sm_checked' foodbank.slug %}" method="post">
-        {% csrf_token %}
-        <input type="submit" class="button is-link" value="I Checked Them!">
-      </form>
 
     </div>
 

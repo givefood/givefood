@@ -68,17 +68,10 @@
 
       <h2>Foodbanks</h2>
       <a href="{% url "admin_newfoodbank" %}" class="button is-link">New Food Bank</a>
-      <div class="foodbank-sort is-pulled-right">
-        {% if foodbank_sort == "last_order" %}
-          <a href="?foodbank_sort=social_check">Switch to Social Check</a>
-        {% else %}
-          <a href="?foodbank_sort=last_order">Switch to Last Order</a>
-        {% endif %}
-      </div>
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th></th>
-          <th>{% if foodbank_sort == "last_order" %}Last Order{% else %}Last Social Check{% endif %}</th>
+          <th>Last Order</th>
         </tr>
         {% for foodbank in foodbanks %}
           <tr>
@@ -88,7 +81,7 @@
               {% endif %}
               <a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a>
             </td>
-            <td>{% if foodbank_sort == "last_order" %}{{ foodbank.last_order }}{% else %}{{ foodbank.last_social_media_check }}{% endif %}</td>
+            <td>{{ foodbank.last_order }}</td>
           </tr>
         {% endfor %}
       </table>
