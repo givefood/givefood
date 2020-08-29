@@ -12,6 +12,10 @@ document.addEventListener("turbolinks:load", function() {
       );
   }
 
+  function csvToLines(str) {
+    return str.replace(/, /g, "\n")
+  }
+
   const lattlong_field = document.querySelector("#id_latt_long");
   const address_field = document.querySelector("#id_address");
   const postcode_field = document.querySelector("#id_postcode");
@@ -51,14 +55,27 @@ document.addEventListener("turbolinks:load", function() {
   // CHANGETEXT
   if (change_text_field) {
     var titlecase_btn = document.createElement('div');
+    var csvline_btn = document.createElement('div');
+
     titlecase_btn.innerHTML = "<a href='#' id='titlecase_btn' class='extra-form-button button is-info'>Make Titlecase</a>";
+    csvline_btn.innerHTML = "<a href='#' id='csvline_btn' class='extra-form-button button is-info'>CSV to Lines</a>";
+
+    insertAfter(csvline_btn, change_text_field);
     insertAfter(titlecase_btn, change_text_field);
+
     titlecase_btn = document.querySelector("#titlecase_btn");
     titlecase_btn.addEventListener("click", function(event) {
       change_text_field.value = titleCase(change_text_field.value);
       change_text_field.value = change_text_field.value.replace(/Uht/g,"UHT")
       event.preventDefault();
     });
+
+    csvline_btn = document.querySelector("#csvline_btn");
+    csvline_btn.addEventListener("click", function(event) {
+      change_text_field.value = csvToLines(change_text_field.value);
+      event.preventDefault();
+    });
   }
+
 
 })
