@@ -77,7 +77,7 @@ class Foodbank(models.Model):
         return "%s\r\n%s" % (self.address, self.postcode)
 
     def nearby(self):
-        return find_foodbanks(self.latt_long, 5, True)
+        return find_foodbanks(self.latt_long, 10, True)
 
     def country_flag(self):
         if self.country == "Scotland":
