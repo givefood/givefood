@@ -194,7 +194,7 @@ def public_gen_annual_report(request, year):
     return render_to_response("public/annual_report.html", template_vars, context_instance=RequestContext(request))
 
 
-@cache_page(60*10)
+@cache_page(60*60)
 def public_sitemap(request):
 
     foodbanks = get_all_foodbanks()
