@@ -14,8 +14,11 @@ def ApiResponse(data, obj_name, format):
     if format == "json":
         return JsonResponse(data, safe=False)
     elif format == "xml":
-        xml_str = dicttoxml(data, attr_type=False, custom_root=obj_name)
+        xml_str = dicttoxml(data, attr_type=False, custom_root=obj_name, item_func=xml_item_name)
         return HttpResponse(xml_str, content_type="text/xml")
     elif format == "yaml":
         yaml_str = yaml.safe_dump(data, encoding='utf-8', allow_unicode=True, default_flow_style=False)
         return HttpResponse(yaml_str, content_type="text/yaml")
+
+
+xml_item_name = lambda x: x[:-1]
