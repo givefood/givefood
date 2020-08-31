@@ -89,7 +89,7 @@ def foodbank(request, slug):
         },
         "need": {
             "id":foodbank.latest_need_id(),
-            "needs":foodbank.latest_need_text(),
+            "needs":str(foodbank.latest_need_text()),
             "created":foodbank.latest_need_date(),
             "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need_id()),
         },
