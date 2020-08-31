@@ -114,7 +114,7 @@ class Foodbank(models.Model):
     def latest_need_text(self):
         latest_need = self.latest_need()
         if latest_need:
-            return str(latest_need.change_text)
+            return latest_need.change_text
         else:
             return "Nothing"
 
