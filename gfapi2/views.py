@@ -40,6 +40,21 @@ def foodbank(request, slug):
             }
         )
 
+    nearby_foodbank_list = []
+    for nearby_foodbank in foodbank.nearby():
+        nearby_foodbank_list.append(
+            {
+                "name":nearby_foodbank.name,
+                "slug":nearby_foodbank.slug,
+                "urls": {
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (nearby_foodbank.slug),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (nearby_foodbank.slug),
+                },
+                "address":nearby_foodbank.full_address(),
+                "lat_lng":nearby_foodbank.latt_long,
+            }
+        )
+
     response_dict = {
         "name":foodbank.name,
         "alt_name":foodbank.alt_name,
@@ -76,7 +91,9 @@ def foodbank(request, slug):
             "id":foodbank.latest_need_id(),
             "needs":foodbank.latest_need_text(),
             "created":foodbank.latest_need_date(),
-        }
+            "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need_id()),
+        },
+        "nearby_foodbanks": nearby_foodbank_list,
     }
 
     return ApiResponse(response_dict, "foodbank", format)
