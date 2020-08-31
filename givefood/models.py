@@ -16,6 +16,7 @@ from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_
 class Foodbank(models.Model):
 
     name = models.CharField(max_length=50)
+    alt_name = models.CharField(max_length=50, null=True, blank=True, help_text="E.g. Welsh version of the name")
     slug = models.CharField(max_length=50, editable=False)
     address = models.TextField()
     postcode = models.CharField(max_length=9)
