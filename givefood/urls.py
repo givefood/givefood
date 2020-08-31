@@ -93,6 +93,8 @@ urlpatterns = (
     url(r'^api/1/needs/$', givefood.views.api_needs, name="api_needs"),
     url(r'^api/1/need/(?P<id>\b[0-9a-f]{8}\b)/$', givefood.views.api_need, name="api_need"),
 
+    url(r'^api/2/', include('gfapi2.urls')),
+
     url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),
 )

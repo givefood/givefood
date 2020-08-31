@@ -114,7 +114,7 @@ class Foodbank(models.Model):
     def latest_need_text(self):
         latest_need = self.latest_need()
         if latest_need:
-            return latest_need.change_text
+            return str(latest_need.change_text)
         else:
             return "Nothing"
 
@@ -241,6 +241,9 @@ class FoodbankLocation(models.Model):
 
     def latest_need(self):
         return self.foodbank.latest_need()
+
+    def full_address(self):
+        return "%s\r\n%s" % (self.address, self.postcode)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
