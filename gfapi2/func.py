@@ -1,5 +1,5 @@
 import yaml
-from libs.dicttoxml import dicttoxml
+import dicttoxml
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 
 
@@ -14,7 +14,8 @@ def ApiResponse(data, obj_name, format):
     if format == "json":
         return JsonResponse(data, safe=False)
     elif format == "xml":
-        xml_str = dicttoxml(data, attr_type=False, custom_root=obj_name, item_func=xml_item_name)
+        dicttoxml.set_debug(False)
+        xml_str = dicttoxml.dicttoxml(data, attr_type=False, custom_root=obj_name, item_func=xml_item_name)
         return HttpResponse(xml_str, content_type="text/xml")
     elif format == "yaml":
         yaml_str = yaml.safe_dump(data, encoding='utf-8', allow_unicode=True, default_flow_style=False)
