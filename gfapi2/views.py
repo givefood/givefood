@@ -20,6 +20,7 @@ def foodbanks(request):
             "alt_name":foodbank.alt_name,
             "slug":foodbank.slug,
             "phone":foodbank.phone_number,
+            "secondary_phone":foodbank.secondary_phone_number,
             "email":foodbank.contact_email,
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
@@ -30,6 +31,8 @@ def foodbanks(request):
             "urls": {
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
                 "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
+                "homepage":foodbank.url,
+                "shopping_list":foodbank.shopping_list_url,
             },
             "charity": {
                 "registration_id":foodbank.charity_number,
@@ -90,6 +93,8 @@ def foodbank(request, slug):
                 "urls": {
                     "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (nearby_foodbank.slug),
                     "html":"https://www.givefood.org.uk/needs/at/%s/" % (nearby_foodbank.slug),
+                    "homepage":nearby_foodbank.url,
+                    "shopping_list":nearby_foodbank.shopping_list_url,
                 },
                 "address":nearby_foodbank.full_address(),
                 "lat_lng":nearby_foodbank.latt_long,
@@ -101,6 +106,7 @@ def foodbank(request, slug):
         "alt_name":foodbank.alt_name,
         "slug":foodbank.slug,
         "phone":foodbank.phone_number,
+        "secondary_phone":foodbank.secondary_phone_number,
         "email":foodbank.contact_email,
         "address":foodbank.full_address(),
         "postcode":foodbank.postcode,
@@ -111,6 +117,8 @@ def foodbank(request, slug):
         "urls": {
             "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
             "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
+            "homepage":foodbank.url,
+            "shopping_list":foodbank.shopping_list_url,
         },
         "charity": {
             "registration_id":foodbank.charity_number,
