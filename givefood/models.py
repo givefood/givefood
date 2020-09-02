@@ -42,7 +42,7 @@ class Foodbank(models.Model):
     bankuet_slug = models.CharField(max_length=50, null=True, blank=True)
 
     contact_email = models.EmailField()
-    notification_email = models.EmailField()
+    notification_email = models.EmailField(null=True, blank=True)
     phone_number = models.CharField(max_length=20)
     secondary_phone_number = models.CharField(max_length=20, null=True, blank=True)
 
