@@ -516,6 +516,23 @@ def admin_politics(request):
     return render_to_response("admin/politics.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_politics_csv(request):
+
+    foodbanks = get_all_foodbanks()
+    locations = FoodbankLocation.objects.all()
+
+    output = []
+    response = HttpResponse (content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['constituency', 'mp', 'mp_party', 'mp_parl_id'])
+    for foodbank in foodbanks:
+        output.append([foodbank.parliamentary_constituency, foodbank.mp, foodbank.mp_party, foodbank.mp_parl_id])
+    for location in locations:
+        output.append([location.parliamentary_constituency, location.mp, location.mp_party, location.mp_parl_id])
+    writer.writerows(output)
+    return response
+
+
 def admin_map(request):
 
     filter = request.GET.get("filter", "all")
