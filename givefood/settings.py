@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'djangae.contrib.security',
     'bulma',
     'givefood',
+    'gfapi2'
     # 'djangae.contrib.uniquetool',
 )
 

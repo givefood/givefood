@@ -1,10 +1,16 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render_to_response
+from django.template import RequestContext
 
 from givefood.models import Foodbank
 from .func import ApiResponse
 from givefood.func import get_all_foodbanks
 
 DEFAULT_FORMAT = "json"
+
+
+def index(request):
+    template_vars = {}
+    return render_to_response("index.html", template_vars, context_instance=RequestContext(request))
 
 
 def foodbanks(request):
