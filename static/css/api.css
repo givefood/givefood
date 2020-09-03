@@ -9,7 +9,10 @@
 .api_method.active {
     display:block;
 }
-
+dd {
+    clear:left;
+    padding-bottom:5px;
+}
 pre {
     width:100%;
     overflow-x:scroll;

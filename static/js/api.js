@@ -65,7 +65,8 @@ function get_api_result() {
         url = url + "?format=" + format
     }
 
-    document.querySelector("#" + method_name + " .method_url").value = url
+    full_url = api_domain + url
+    document.querySelector("#" + method_name + " .method_url").value = full_url
 
     console.log("Calling API with " + url)
     var api_request = new XMLHttpRequest();
