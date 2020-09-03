@@ -53,32 +53,29 @@
     </dl>
   </div>
 
-  <div id="foodbanks" class="column api_method active is-5">
+  <div id="foodbanks" class="column api_method active is-5" data-method-url="/api/2/foodbanks/">
 
     <div class="method_controls">
       {% include "api_formats.html" %}
-      <div class="control">
-        <input class="input method_url" type="text" value="/api/2/foodbanks/">
-      </div>
+      {% include "method_fields.html" %}
     </div>
+
     <pre class="result"><code class="prettyprint language-json"></code></pre>
 
   </div>
 
-  <div id="foodbank" class="column api_method is-5">
+  <div id="foodbank" class="column api_method is-5" data-method-url="/api/2/foodbank/:foodbank:/">
 
       <div class="method_controls">
         <span class="select">
-          <select class="control api_method_argument" id="id_foodbank" name="foodbank">
+          <select class="control api_method_argument" id="foodbank_argument" name="foodbank">
             {% for foodbank in foodbanks %}
               <option value="{{ foodbank.slug }}">{{ foodbank.name }}</option>
             {% endfor %}
           </select>
         </span>
         {% include "api_formats.html" %}
-        <div class="control">
-          <input class="input method_url" type="text" value="/api/2/foodbank/brixton/">
-        </div>
+        {% include "method_fields.html" %}
       </div>
 
       <pre class="result"><code class="prettyprint language-json"></code></pre>
