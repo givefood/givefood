@@ -61,6 +61,7 @@ function get_api_result() {
         url = url.replace(":" + argument_field.name + ":",argument_field.value)
     })
     format = document.querySelector("#" + method_name).querySelector(".api_format").value
+    console.log("Found format '" + format + "'")
     if (format != default_format) {
         url = url + "?format=" + format
     }
