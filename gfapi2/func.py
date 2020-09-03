@@ -13,7 +13,7 @@ def ApiResponse(data, obj_name, format):
         return HttpResponseBadRequest()
 
     if format == "json":
-        return JsonResponse(data, safe=False)
+        return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
     elif format == "xml":
         dicttoxml.LOG.setLevel(logging.ERROR)
         xml_str = dicttoxml.dicttoxml(data, attr_type=False, custom_root=obj_name, item_func=xml_item_name)
