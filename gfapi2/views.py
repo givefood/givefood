@@ -9,7 +9,15 @@ DEFAULT_FORMAT = "json"
 
 
 def index(request):
-    template_vars = {}
+
+    foodbanks = get_all_foodbanks()
+    api_formats = ["JSON","XML","YAML"]
+    
+    template_vars = {
+        "foodbanks":foodbanks,
+        "api_formats":api_formats,
+    }
+
     return render_to_response("index.html", template_vars, context_instance=RequestContext(request))
 
 

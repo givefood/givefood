@@ -1,0 +1,16 @@
+.headerimg {
+    padding-top:100px;
+    margin-bottom:15px;
+}
+
+.api_method {
+    display:none;
+}
+.api_method.active {
+    display:block;
+}
+
+pre {
+    width:100%;
+    overflow-x:scroll;
+}

@@ -1,0 +1,91 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}Give Food API {% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/api.css">
+  <link rel="stylesheet" href="/static/css/highlight-default.css">
+  <script src="/static/js/api.js" defer></script>
+  <script src="/static/js/highlight.pack.js" defer></script>
+  <meta name="description" content="We're a UK charity that aims to help local organisations address the immediate and critical need created by food insecurity">
+{% endblock %}
+
+{% block containerclass %}is-fluid{% endblock %}
+
+{% block body %}
+
+<div class="columns">
+  <div class="column is-3">
+    <h1><a href="/">Give Food</a></h1>
+    <div class="content">
+     <h2>API</h2>
+      <p><span class="tag is-warning">Alpha</span></p>
+      <p>Get access to our data over HTTPS in JSON, XML or YAML.</p>
+      <ul>
+        <li><em>Do good</em> with the data</li>
+        <li>We only cover the UK</li>
+        <li>Try not to make requests more than a few times a second</li>
+        <li>If you display a food bank and their need also use their URL to link to them</li>
+        <li>Credit us with a link to our homepage if you republish</li>
+        <li>Cache, but don't cache for too long. All this is updated at least hourly</li>
+      </ul>
+      <p>Our API and data has been used by governments, supermarkets, The Times, Reach PLC, Cuvva, Munch &amp; Trussell Trust.</p>
+      <p>Please contact us at <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a> if you're going to launch something using our data. We'll be more than happy to help with any technical questions &amp; optimisations, PR and to ensure that we're all helping food banks as effectively as possible.</p>
+    </div>
+  </div>
+
+  <div class="column is-4">
+    <h3>Methods</h3>
+    <dl id="api_methods">
+      <dt><a href="#">foodbanks</a></dt>
+      <dl>List of all the food banks we know of</dl>
+      <dt><a href="#">foodbank</a></dt>
+      <dl>Food bank including needs and locations</dl>
+      <dt><a href="#">foodbanks/search</a></dt>
+      <dl>Find food banks closest to a location</dl>
+      <dt><a href="#">needs</a></dt>
+      <dl>Latest needs published countrywide</dl>
+      <dt><a href="#">need</a></dt>
+      <dl>Need requested by a food bank</dl>
+      <dt><a href="#">constituency</a></dt>
+      <dl>Parliamentary constituency</dl>
+    </dl>
+  </div>
+
+  <div id="foodbanks" class="column api_method active is-5">
+
+    <div class="method_controls">
+      {% include "api_formats.html" %}
+      <div class="control">
+        <input class="input method_url" type="text" value="/api/2/foodbanks/">
+      </div>
+    </div>
+    <pre class="result"><code class="prettyprint language-json"></code></pre>
+
+  </div>
+
+  <div id="foodbank" class="column api_method is-5">
+
+      <div class="method_controls">
+        <span class="select">
+          <select class="control api_method_argument" id="id_foodbank" name="foodbank">
+            {% for foodbank in foodbanks %}
+              <option value="{{ foodbank.slug }}">{{ foodbank.name }}</option>
+            {% endfor %}
+          </select>
+        </span>
+        {% include "api_formats.html" %}
+        <div class="control">
+          <input class="input method_url" type="text" value="/api/2/foodbank/brixton/">
+        </div>
+      </div>
+
+      <pre class="result"><code class="prettyprint language-json"></code></pre>
+
+  </div>
+
+</div>
+
+
+{% endblock %}
