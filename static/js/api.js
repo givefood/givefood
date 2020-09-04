@@ -53,12 +53,13 @@ function init() {
 
 function show_method(method_name) {
     console.log("Showing method " + method_name)
+    method_name_class = method_name.replace("/","-")
 
     const method_panes = document.querySelectorAll(".api_method")
     method_panes.forEach((method_pane) => {
         method_pane.classList.remove("active")
     })
-    method_pane = document.querySelector("#" + method_name)
+    method_pane = document.querySelector("#" + method_name_class)
     method_pane.classList.add("active")
 
     get_api_result()
@@ -79,7 +80,12 @@ function get_api_result() {
     format = document.querySelector("#" + method_name).querySelector(".api_format").value
     console.log("Found format '" + format + "'")
     if (format != default_format) {
-        url = url + "?format=" + format
+        if (url.includes("?")) {
+            url = url + "&"
+        } else {
+            url = url + "?"
+        }
+        url = url + "format=" + format
     }
 
     full_url = api_domain + url

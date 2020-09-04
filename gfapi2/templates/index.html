@@ -94,6 +94,33 @@
 
   </div>
 
+  <div id="foodbanks-search" class="column api_method is-6" data-method-url="/api/2/foodbanks/search/:search:">
+
+    <table class="table is-fullwidth">
+      <tr>
+        <td>search</td>
+        <td>
+          <span class="select">
+            <select class="control api_method_argument" id="search_argument" name="search">
+              {% for type, search in sample_searches.items %}
+                <option value="?{{ type }}={{ search }}">{{ search }}</option>
+              {% endfor %}
+            </select>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>format</td>
+        <td>{% include "api_formats.html" %}</td>
+      </tr>
+    </table>
+
+    {% include "method_fields.html" %}
+
+    <pre class="result"><code class="language-json"></code></pre>
+
+  </div>
+
 </div>
 
 
