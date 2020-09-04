@@ -70,6 +70,8 @@ function get_api_result() {
     document.querySelector("#" + method_name + " .method_url").value = full_url
 
     console.log("Calling API with " + url)
+    method_pane_results = document.querySelector(".api_method.active code")
+    method_pane_results.innerHTML = "Loading..."
     var api_request = new XMLHttpRequest();
     api_request.addEventListener("load", populate_api_result);
     api_request.open("GET", url);
@@ -79,7 +81,10 @@ function get_api_result() {
 
 
 function populate_api_result() {
+    format = document.querySelector(".api_method.active .api_format").value
     method_pane_results = document.querySelector(".api_method.active code")
+    method_pane_results.setAttribute("class","")
+    method_pane_results.setAttribute("class","language-" + format)
     method_pane_results.innerHTML = escaper(this.responseText)
     hljs.highlightBlock(method_pane_results);
 }
