@@ -30,6 +30,22 @@ function init() {
       })
     })
 
+    clipboard_btns = document.querySelectorAll(".clipboard")
+    clipboard_btns.forEach((clipboard_btn) => {
+        clipboard_btn.addEventListener('click', function(event) {
+            url = document.querySelector(".api_method.active .method_url").value
+            navigator.clipboard.writeText(url)
+      })
+    })
+
+    openurl_btns = document.querySelectorAll(".openurl")
+    openurl_btns.forEach((openurl_btn) => {
+        openurl_btn.addEventListener('click', function(event) {
+            url = document.querySelector(".api_method.active .method_url").value
+            window.open(url)
+      })
+    })
+
     show_method(default_method)
 
 }
