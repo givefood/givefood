@@ -20,6 +20,7 @@ function init() {
         method_link.addEventListener('click', function(event) {
         method_name = this.innerHTML
         show_method(method_name)
+        event.preventDefault()
       })
     })
 
