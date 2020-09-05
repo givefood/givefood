@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest
 
-from givefood.models import Foodbank, ApiFoodbankSearch
+from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange
 from .func import ApiResponse
 from givefood.func import get_all_foodbanks, find_foodbanks, geocode
 
@@ -141,6 +141,7 @@ def foodbank(request, slug):
             "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
             "homepage":foodbank.url,
             "shopping_list":foodbank.shopping_list_url,
+            "map":"https://www.givefood.org.uk/needs/at/%s/map.png" % (foodbank.slug),
         },
         "charity": {
             "registration_id":foodbank.charity_number,
@@ -223,6 +224,7 @@ def foodbank_search(request):
                 "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
                 "homepage":foodbank.url,
                 "shopping_list":foodbank.shopping_list_url,
+                "map":"https://www.givefood.org.uk/needs/at/%s/map.png" % (foodbank.slug),
             },
             "charity": {
                 "registration_id":foodbank.charity_number,
@@ -242,3 +244,28 @@ def foodbank_search(request):
         })
 
     return ApiResponse(response_list, "foodbanks", format)
+
+
+def needs(request):
+
+    format = request.GET.get("format", DEFAULT_FORMAT)
+
+    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:100]
+
+    response_list = []
+
+    for need in needs:
+        response_list.append({
+            "id":need.need_id,
+            "created":need.created,
+            "foodbank": {
+                "name":need.foodbank_name,
+                "slug":str(need.foodbank_name_slug()),
+                "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (need.foodbank_name_slug()),
+            },
+            "needs":str(need.change_text),
+            "url":need.uri,
+            "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
+        })
+
+    return ApiResponse(response_list, "needs", format)
