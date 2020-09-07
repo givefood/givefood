@@ -76,7 +76,7 @@
           <span class="select">
             <select class="control api_method_argument" id="foodbank_argument" name="foodbank">
               {% for foodbank in foodbanks %}
-                <option value="{{ foodbank.slug }}">{{ foodbank.name }}</option>
+                <option value="{{ foodbank|slugify }}">{{ foodbank }}</option>
               {% endfor %}
             </select>
           </span>

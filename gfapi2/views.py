@@ -12,7 +12,13 @@ DEFAULT_FORMAT = "json"
 def index(request):
 
     api_formats = ["JSON","XML","YAML"]
-    foodbanks = get_all_foodbanks()
+
+    all_foodbanks = get_all_foodbanks()
+    foodbanks = []
+    for foodbank in all_foodbanks:
+        foodbanks.append(foodbank.name)
+    foodbanks.sort()
+
     sample_searches = {
         "address":"12 Millbank, Westminster, London SW1P 4QE",
         "address":"Mount Pleasant Rd, Porthleven, Helston TR13 9JS",
