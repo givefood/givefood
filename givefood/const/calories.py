@@ -441,7 +441,7 @@ CALORIES = {
     "Kingsfood 8 Hot Dog Sausages":123,
     "Summer Pride Chopped Tomatoes 400G":18,
     "Tesco Whole Longlife Milk 1L":66,
-    "Tesco Pineapple Slices In Natural Juice":51,
+    "Tesco Pineapple Slices In Natural Juice 227G":51,
     "Aunty's Butterscotch & Pecan Steamed Puddings 2 X 95G":292,
     "Auntys Chocolate Puddings 2 X 95G":292,
 }
