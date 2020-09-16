@@ -11,6 +11,35 @@
 
     <div class="column">
 
+      <h2>Parliamentary Constituencies</h2>
+      <a href="{% url 'admin_parlcon_form' %}" class="button is-link">New ParlCon</a>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>Country</th>
+          <th>MP</th>
+          <th>MP Party</th>
+          <th>MP Parliament ID</th>
+          <th>Electorate</th>
+          <th>GeoJSON?</th>
+          <th></th>
+        </tr>
+        {% for parlcon in parlcons %}
+          <tr>
+            <td>{{ parlcon.name }}</td>
+            <td>{{ parlcon.country }}</td>
+            <td>{{ parlcon.mp }}</td>
+            <td>{{ parlcon.mp_party }}</td>
+            <td>{{ parlcon.mp_parl_id }}</td>
+            <td>{{ parlcon.electorate }}</td>
+            <td>{% if parlcon.boundary_geojson %}GeoJSON{% endif %}</td>
+            <td>
+              <a href="{% url 'admin_parlcon_form' parlcon.slug %}" class="button is-small">Edit</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+
       <h2>Food Banks</h2>
       <table class="table is-fullwidth is-hoverable">
         <tr>

@@ -520,3 +520,25 @@ class ApiFoodbankSearch(models.Model):
                 self.latt_long = geocode(self.query)
 
         super(ApiFoodbankSearch, self).save(*args, **kwargs)
+
+
+class ParliamentaryConstituency(models.Model):
+
+    name = models.CharField(max_length=50, null=True, blank=True)
+    slug = models.CharField(max_length=50, editable=False)
+    # country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
+
+    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
+    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
+    mp_parl_id = models.IntegerField(verbose_name="MP's ID")
+
+    electorate = models.IntegerField(null=True, blank=True)
+    boundary_geojson = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+
+        self.slug = slugify(self.name)
+        super(ParliamentaryConstituency, self).save(*args, **kwargs)

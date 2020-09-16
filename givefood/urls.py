@@ -76,8 +76,14 @@ urlpatterns = (
     url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/tweet/$', givefood.views.admin_need_tweet, name="admin_need_tweet"),
 
     url(r'^admin/locations/$', givefood.views.admin_locations, name="admin_locations"),
+
+    url(r'^admin/parlcon/new/$', givefood.views.admin_parlcon_form, name="admin_parlcon_form"),
+    url(r'^admin/parlcon/loader/$', givefood.views.admin_parlcon_loader, name="admin_parlcon_loader"),
+    url(r'^admin/parlcon/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_parlcon_form, name="admin_parlcon_form"),
+
     url(r'^admin/politics/$', givefood.views.admin_politics, name="admin_politics"),
     url(r'^admin/politics/csv/$', givefood.views.admin_politics_csv, name="admin_politics_csv"),
+
     url(r'^admin/searches/$', givefood.views.admin_searches, name="admin_searches"),
     url(r'^admin/searches/csv/$', givefood.views.admin_searches_csv, name="admin_searches_csv"),
     url(r'^admin/map/$', givefood.views.admin_map, name="admin_map"),

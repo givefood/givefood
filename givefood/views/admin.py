@@ -21,8 +21,8 @@ from django.utils.encoding import smart_str
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations
-from givefood.models import Foodbank, Order, OrderLine, FoodbankChange, FoodbankLocation, ApiFoodbankSearch
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm
+from givefood.models import Foodbank, Order, OrderLine, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm
 
 
 def admin_index(request):
@@ -177,7 +177,7 @@ def admin_orders_csv(request):
 
 def admin_needs(request):
 
-    needs = FoodbankChange.objects.all().order_by("-created")
+    needs = FoodbankChange.objects.all().order_by("-created")[:100]
 
     template_vars = {
         "needs":needs,
@@ -507,10 +507,12 @@ def admin_politics(request):
 
     foodbanks = get_all_foodbanks()
     locations = FoodbankLocation.objects.all()
+    parlcons = ParliamentaryConstituency.objects.all().order_by("name")
 
     template_vars = {
         "foodbanks":foodbanks,
         "locations":locations,
+        "parlcons":parlcons,
         "section":"politics",
     }
     return render_to_response("admin/politics.html", template_vars, context_instance=RequestContext(request))
@@ -629,5 +631,59 @@ def admin_resave_orders(request):
     orders = Order.objects.all().order_by("created")
     for order in orders:
         order.save()
+
+    return HttpResponse("OK")
+
+
+def admin_parlcon_form(request, slug = None):
+
+    if slug:
+        parlcon = get_object_or_404(ParliamentaryConstituency, slug = slug)
+    else:
+        parlcon = None
+
+    if request.POST:
+        form = ParliamentaryConstituencyForm(request.POST, instance=parlcon)
+        if form.is_valid():
+            foodbank = form.save()
+            return redirect("admin_politics")
+    else:
+        form = ParliamentaryConstituencyForm(instance=parlcon)
+
+    template_vars = {
+        "form":form,
+    }
+    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_parlcon_loader(request):
+
+    foodbanks = get_all_foodbanks()
+    locations = FoodbankLocation.objects.all()
+
+    for foodbank in foodbanks:
+        try:
+            parlcon = ParliamentaryConstituency.objects.get(slug = foodbank.parliamentary_constituency_slug)
+        except ParliamentaryConstituency.DoesNotExist:
+            newparlcon = ParliamentaryConstituency(
+                name = foodbank.parliamentary_constituency,
+                mp = foodbank.mp,
+                mp_party = foodbank.mp_party,
+                mp_parl_id = foodbank.mp_parl_id,
+            )
+            newparlcon.save()
+
+
+    for location in locations:
+        try:
+            parlcon = ParliamentaryConstituency.objects.get(slug = location.parliamentary_constituency_slug)
+        except ParliamentaryConstituency.DoesNotExist:
+            newparlcon = ParliamentaryConstituency(
+                name = location.parliamentary_constituency,
+                mp = location.mp,
+                mp_party = location.mp_party,
+                mp_parl_id = location.mp_parl_id,
+            )
+            newparlcon.save()
 
     return HttpResponse("OK")
