@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest
 
-from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange
+from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency
 from .func import ApiResponse
 from givefood.func import get_all_foodbanks, find_foodbanks, geocode
 
@@ -19,6 +19,8 @@ def index(request):
         foodbanks.append(foodbank.name)
     foodbanks.sort()
 
+    parl_cons = ParliamentaryConstituency.objects.all().order_by("name")
+
     sample_searches = {
         "address":"12 Millbank, Westminster, London SW1P 4QE",
         "address":"Mount Pleasant Rd, Porthleven, Helston TR13 9JS",
@@ -30,6 +32,7 @@ def index(request):
         "foodbanks":foodbanks,
         "api_formats":api_formats,
         "sample_searches":sample_searches,
+        "parl_cons":parl_cons,
     }
 
     return render_to_response("index.html", template_vars, context_instance=RequestContext(request))

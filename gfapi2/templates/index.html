@@ -137,6 +137,33 @@
 
   </div>
 
+
+  <div id="constituency" class="column api_method is-6" data-method-url="/api/2/constituency/:constituency:/">
+
+    <table class="table is-fullwidth">
+      <tr>
+        <td>Parliamentary Constituency</td>
+        <td>
+          <span class="select">
+            <select class="control api_method_argument" id="constituency_argument" name="constituency">
+              {% for constituency in parl_cons %}
+                <option value="{{ constituency|slugify }}">{{ constituency }}</option>
+              {% endfor %}
+            </select>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>format</td>
+        <td>{% include "api_formats.html" %}</td>
+      </tr>
+    </table>
+
+    {% include "method_fields.html" %}
+
+    <pre class="result"><code class="language-json"></code></pre>
+
+  </div>
 </div>
 
 
