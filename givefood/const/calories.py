@@ -444,4 +444,5 @@ CALORIES = {
     "Tesco Pineapple Slices In Natural Juice 227G":51,
     "Aunty's Butterscotch & Pecan Steamed Puddings 2 X 95G":292,
     "Auntys Chocolate Puddings 2 X 95G":292,
+    "Tesco Plain Instant Mash Potato 160G":80,
 }
