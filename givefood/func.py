@@ -153,7 +153,7 @@ def get_weight(text):
       weight = float(text[-4:].replace("G",""))
 
     # Grams
-    if text[-1:] == "g":
+    if text[-1:] == "g" and not weight:
       weight = float(text[-4:].replace("g",""))
 
     # Litre
