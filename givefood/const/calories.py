@@ -451,4 +451,5 @@ CALORIES = {
     "Hubbard's Foodstore Peach Slices in Light Syrup 411g":71,
     "Hubbard?s Foodstore Chicken Curry 392g":62,
     "Hubbard?s Foodstore Chopped Tomatoes 400g":22,
+    "Kingsfood 8 Hot Dog Sausages":123,
 }
