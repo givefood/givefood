@@ -10,7 +10,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name
+from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name
 
 
 class Foodbank(models.Model):
@@ -343,7 +343,11 @@ class Order(models.Model):
         # Delete all the existing orderlines
         OrderLine.objects.filter(order = self).delete()
 
-        order_lines = parse_order_text(self.items_text)
+        if self.delivery_provider == "Tesco":
+            order_lines = parse_tesco_order_text(self.items_text)
+        elif self.delivery_provider == "Sainsbury's":
+            order_lines = parse_sainsburys_order_text(self.items_text)
+
 
         order_weight = 0
         order_calories = 0
@@ -363,7 +367,11 @@ class Order(models.Model):
                 line_calories = order_line.get("calories")
                 order_calories = order_calories + line_calories
 
-            line_cost = order_line.get("item_cost") * order_line.get("quantity")
+            if self.delivery_provider == "Tesco":
+                line_cost = order_line.get("item_cost") * order_line.get("quantity")
+            elif self.delivery_provider == "Sainsbury's":
+                line_cost = order_line.get("item_cost")
+            
             order_cost = order_cost + line_cost
 
             order_items = order_items + order_line.get("quantity")

@@ -82,7 +82,9 @@ def geocode(address):
     return lattlong
 
 
-def parse_order_text(order_text):
+def parse_tesco_order_text(order_text):
+
+    # 10	Tesco Sliced Carrots In Water 300G	£0.30	£3.00	
 
     order_lines = []
 
@@ -98,6 +100,31 @@ def parse_order_text(order_text):
             "calories":get_calories(
                 order_item_line_bits[1],
                 get_weight(order_item_line_bits[1]),
+                int(order_item_line_bits[0])
+            ),
+        })
+
+    return order_lines
+
+
+def parse_sainsburys_order_text(order_text):
+
+    # 50 x Hubbard's Foodstore Chicken Curry 392g - Total Price £29.50
+
+    order_lines = []
+
+    order_items = order_text.splitlines()
+    for order_item_line in order_items:
+        order_item_line_bits = re.split(r'( x | - Total Price )', order_item_line)
+
+        order_lines.append({
+            "quantity":int(order_item_line_bits[0]),
+            "name":order_item_line_bits[2],
+            "item_cost":int(float(order_item_line_bits[4].replace(u"\xA3","").replace(".",""))),
+            "weight":get_weight(order_item_line_bits[2]),
+            "calories":get_calories(
+                order_item_line_bits[2],
+                get_weight(order_item_line_bits[2]),
                 int(order_item_line_bits[0])
             ),
         })
@@ -124,6 +151,10 @@ def get_weight(text):
     # Grams
     if text[-1:] == "G":
       weight = float(text[-4:].replace("G",""))
+
+    # Grams
+    if text[-1:] == "g":
+      weight = float(text[-4:].replace("g",""))
 
     # Litre
     if text[-6:] == " Litre":

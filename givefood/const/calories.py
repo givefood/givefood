@@ -445,4 +445,10 @@ CALORIES = {
     "Aunty's Butterscotch & Pecan Steamed Puddings 2 X 95G":292,
     "Auntys Chocolate Puddings 2 X 95G":292,
     "Tesco Plain Instant Mash Potato 160G":80,
+    "Hubbards Foodstore Rice Pudding 400g":86,
+    "Hubbard's Foodstore Canned Potatoes 540g":62,
+    "Hubbard?s Foodstore Chilli Con Carne 392g":86,
+    "Hubbard's Foodstore Peach Slices in Light Syrup 411g":71,
+    "Hubbard?s Foodstore Chicken Curry 392g":62,
+    "Hubbard?s Foodstore Chopped Tomatoes 400g":22,
 }
