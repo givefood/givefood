@@ -318,7 +318,7 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         # Generate ID
-        self.order_id = "gf-%s-%s" % (self.foodbank.slug,str(self.delivery_date))
+        self.order_id = "gf-%s-%s-%s" % (self.foodbank.slug,slugify(self.delivery_provider),str(self.delivery_date))
 
         # Store delivery_datetime
         self.delivery_datetime = datetime(
