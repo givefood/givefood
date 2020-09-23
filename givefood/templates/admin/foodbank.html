@@ -175,6 +175,7 @@
         <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
+            <th></th>
             <th>Date</th>
             <th>Items</th>
             <th>Cost</th>
@@ -182,6 +183,7 @@
           </tr>
           {% for order in foodbank.orders %}
             <tr>
+              <td><img src="/static/img/delivery_provider/icon/{{ order.delivery_provider|slugify }}.png" width="12"></td>
               <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
               <td>{{ order.no_items }}</td>
               <td>£{{ order.natural_cost }}</td>

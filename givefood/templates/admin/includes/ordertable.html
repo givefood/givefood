@@ -1,6 +1,7 @@
 {% if orders.all %}
   <table class="table is-fullwidth is-hoverable">
     <tr>
+      <th></th>
       <th>Date</th>
       <th>Foodbank</th>
       <th>Items</th>
@@ -8,6 +9,7 @@
     </tr>
     {% for order in orders %}
       <tr>
+        <td><img src="/static/img/delivery_provider/icon/{{ order.delivery_provider|slugify }}.png" width="12"></td>
         <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
         <td>
           <a href="{% url 'admin_foodbank' order.foodbank_name_slug %}">
