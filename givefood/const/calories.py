@@ -452,4 +452,8 @@ CALORIES = {
     "Hubbard?s Foodstore Chicken Curry 392g":62,
     "Hubbard?s Foodstore Chopped Tomatoes 400g":22,
     "Kingsfood 8 Hot Dog Sausages":123,
+    "Hubbard's Foodstore Spaghetti Rings 400g":51,
+    "Sainsbury's Baby Carrots In Water 300g (180g*)":21,
+    "Sainsbury's White Granulated Sugar 500g":400,
+    "Sainsbury's Cream Crackers 300g":442,
 }
