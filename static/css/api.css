@@ -13,10 +13,11 @@ dd {
     padding-bottom:5px;
 }
 pre {
-    width:100%;
-    overflow:scroll;
-    max-height:750px;
-    margin-bottom:20px;
+    padding: .25em .5em;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    tab-size: 1em;
 }
 .field_name {
     font-family:monospace;
