@@ -4,165 +4,32 @@
 {% block title %}Give Food API {% endblock %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/api.css">
-  <link rel="stylesheet" href="/static/css/highlight-default.css">
-  <script src="/static/js/api.js" defer></script>
-  <script src="/static/js/highlight.pack.js" defer></script>
   <meta name="description" content="We're a UK charity that aims to help local organisations address the immediate and critical need created by food insecurity">
 {% endblock %}
 
-{% block containerclass %}is-fluid{% endblock %}
-
 {% block body %}
 
-<div class="columns">
-  <div class="column is-2">
+<div class="columns is-centered">
+  <div class="column is-half">
     <h1><a href="/">Give Food</a></h1>
     <div class="content">
      <h2>API</h2>
       <p><span class="tag is-danger">Alpha - don't actually use this</span></p>
-      <p>Get access to our data over HTTPS in JSON, XML or YAML.</p>
+      <p>We maintain the largest public database of UK food banks, and the donations of items they are requesting.</p>
+      <p>This service allows to to get access to this data over HTTPS in JSON, XML or YAML.</p>
       <ul>
         <li><em>Do good</em> with the data</li>
-        <li>We only cover the UK</li>
         <li>Try not to make requests more than a few times a second</li>
-        <li>If you display a food bank and their need also use their URL to link to them</li>
+        <li>If you display a food bank and their need also use their URL to link to them. This will help the user get them what they request</li>
         <li>Credit us with a link to our homepage if you republish</li>
-        <li>Cache, but don't cache for too long. All this is updated at least hourly</li>
+        <li>Cache, but don't cache for too long. All this is updated at least every few hours</li>
       </ul>
       <p>Our API and data has been used by governments, supermarkets, The Times, Reach PLC, Cuvva, Munch &amp; Trussell Trust.</p>
       <p>Please contact us at <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a> if you're going to launch something using our data. We'll be more than happy to help with any technical questions &amp; optimisations, PR and to ensure that we're all helping food banks as effectively as possible.</p>
     </div>
   </div>
-
-  <div class="column is-3">
-    <dl id="api_methods">
-      <dt class="is-size-5"><a href="#">foodbanks</a></dt>
-      <dd>List of all the food banks we know of</dd>
-      <dt class="is-size-5"><a href="#">foodbank</a></dt>
-      <dd>Food bank including needs and locations</dd>
-      <dt class="is-size-5"><a href="#">foodbanks/search</a></dt>
-      <dd>Find food banks closest to a location</dd>
-      <dt class="is-size-5"><a href="#">needs</a></dt>
-      <dd>Latest needs published countrywide</dd>
-      <dt class="is-size-5"><a href="#">need</a></dt>
-      <dd>Need requested by a food bank</dd>
-      <dt class="is-size-5"><a href="#">constituency</a></dt>
-      <dd>Parliamentary constituency</dd>
-    </dl>
-  </div>
-
-  <div id="foodbanks" class="column api_method active is-7" data-method-url="/api/2/foodbanks/">
-
-    <table class="table is-fullwidth">
-      <tr>
-        <td>format</td>
-        <td>{% include "api_formats.html" %}</td>
-      </tr>
-    </table>
-
-    {% include "method_fields.html" %}
-
-    <pre class="result"><code class="prettyprint language-json"></code></pre>
-
-  </div>
-
-  <div id="foodbank" class="column api_method is-7" data-method-url="/api/2/foodbank/:foodbank:/">
-
-    <table class="table is-fullwidth">
-      <tr>
-        <td>foodbank</td>
-        <td>
-          <span class="select">
-            <select class="control api_method_argument" id="foodbank_argument" name="foodbank">
-              {% for foodbank in foodbanks %}
-                <option value="{{ foodbank|slugify }}">{{ foodbank }}</option>
-              {% endfor %}
-            </select>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td>format</td>
-        <td>{% include "api_formats.html" %}</td>
-      </tr>
-    </table>
-
-    {% include "method_fields.html" %}
-
-    <pre class="result"><code class="language-json"></code></pre>
-
-  </div>
-
-  <div id="foodbanks-search" class="column api_method is-7" data-method-url="/api/2/foodbanks/search/:search:">
-
-    <table class="table is-fullwidth">
-      <tr>
-        <td>search</td>
-        <td>
-          <span class="select">
-            <select class="control api_method_argument" id="search_argument" name="search">
-              {% for type, search in sample_searches.items %}
-                <option value="?{{ type }}={{ search }}">{{ search }}</option>
-              {% endfor %}
-            </select>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td>format</td>
-        <td>{% include "api_formats.html" %}</td>
-      </tr>
-    </table>
-
-    {% include "method_fields.html" %}
-
-    <pre class="result"><code class="language-json"></code></pre>
-
-  </div>
-
-
-  <div id="needs" class="column api_method is-7" data-method-url="/api/2/needs/">
-
-    <table class="table is-fullwidth">
-      <tr>
-        <td>format</td>
-        <td>{% include "api_formats.html" %}</td>
-      </tr>
-    </table>
-
-    {% include "method_fields.html" %}
-
-    <pre class="result"><code class="language-json"></code></pre>
-
-  </div>
-
-
-  <div id="constituency" class="column api_method is-7" data-method-url="/api/2/constituency/:constituency:/">
-
-    <table class="table is-fullwidth">
-      <tr>
-        <td>Parliamentary Constituency</td>
-        <td>
-          <span class="select">
-            <select class="control api_method_argument" id="constituency_argument" name="constituency">
-              {% for constituency in parl_cons %}
-                <option value="{{ constituency|slugify }}">{{ constituency }}</option>
-              {% endfor %}
-            </select>
-          </span>
-        </td>
-      </tr>
-      <tr>
-        <td>format</td>
-        <td>{% include "api_formats.html" %}</td>
-      </tr>
-    </table>
-
-    {% include "method_fields.html" %}
-
-    <pre class="result"><code class="language-json"></code></pre>
-
+  <div class="column is-one-fifth">
+    <a href="{% url 'docs' %}" class="button is-medium is-primary">View Docs ➔</a>
   </div>
 </div>
 

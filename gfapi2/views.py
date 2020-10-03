@@ -10,33 +10,41 @@ DEFAULT_FORMAT = "json"
 
 
 def index(request):
+        
+    template_vars = {}
+
+    return render_to_response("index.html", template_vars, context_instance=RequestContext(request))
+
+
+def docs(request):
 
     api_formats = ["JSON","XML","YAML"]
 
-    all_foodbanks = get_all_foodbanks()
-    foodbanks = []
-    for foodbank in all_foodbanks:
-        foodbanks.append(foodbank.name)
-    foodbanks.sort()
+    eg_foodbanks = [
+        "Sid Valley",
+        "Kingsbridge",
+        "Norwood & Brixton",
+    ]
 
-    parl_cons = ParliamentaryConstituency.objects.all().order_by("name")
-
-    sample_searches = {
+    eg_searches = {
         "address":"12 Millbank, Westminster, London SW1P 4QE",
         "address":"Mount Pleasant Rd, Porthleven, Helston TR13 9JS",
         "lat_lng":"51.178889,-1.826111",
         "lat_lng":"52.090833,0.131944",
     }
+
+    eg_parl_cons = {
+        "":""
+    }
     
     template_vars = {
-        "foodbanks":foodbanks,
         "api_formats":api_formats,
-        "sample_searches":sample_searches,
-        "parl_cons":parl_cons,
+        "eg_foodbanks":eg_foodbanks,
+        "eg_searches":eg_searches,
+        "eg_parl_cons":eg_parl_cons,
     }
 
-    return render_to_response("index.html", template_vars, context_instance=RequestContext(request))
-
+    return render_to_response("docs.html", template_vars, context_instance=RequestContext(request))
 
 def foodbanks(request):
 
@@ -56,9 +64,12 @@ def foodbanks(request):
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
             "closed":foodbank.is_closed,
+            "country":foodbank.country,
             "lat_lng":foodbank.latt_long,
             "network":foodbank.network,
+            "created":foodbank.created,
             "modified":foodbank.modified,
+            "created":foodbank.created,
             "urls": {
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
                 "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
@@ -73,6 +84,7 @@ def foodbanks(request):
                 "parliamentary_constituency":foodbank.parliamentary_constituency,
                 "mp":foodbank.mp,
                 "mp_party":foodbank.mp_party,
+                "mp_parl_id":foodbank.mp_parl_id,
                 "ward":foodbank.ward,
                 "district":foodbank.district,
                 "urls": {
@@ -144,6 +156,7 @@ def foodbank(request, slug):
         "closed":foodbank.is_closed,
         "lat_lng":foodbank.latt_long,
         "network":foodbank.network,
+        "created":foodbank.created,
         "modified":foodbank.modified,
         "urls": {
             "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
@@ -226,6 +239,7 @@ def foodbank_search(request):
             "lat_lng":foodbank.latt_long,
             "network":foodbank.network,
             "modified":foodbank.modified,
+            "created":foodbank.created,
             "distance_m":int(foodbank.distance_m),
             "distance_mi":round(foodbank.distance_mi,2),
             "urls": {
@@ -243,6 +257,7 @@ def foodbank_search(request):
                 "parliamentary_constituency":foodbank.parliamentary_constituency,
                 "mp":foodbank.mp,
                 "mp_party":foodbank.mp_party,
+                "mp_parl_id":foodbank.mp_parl_id,
                 "ward":foodbank.ward,
                 "district":foodbank.district,
                 "urls": {

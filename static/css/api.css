@@ -2,12 +2,11 @@
     padding-top:100px;
     margin-bottom:15px;
 }
-
 .api_method {
     display:none;
 }
 .api_method.active {
-    display:block;
+    display:flex;
 }
 dd {
     clear:left;
@@ -15,5 +14,24 @@ dd {
 }
 pre {
     width:100%;
-    overflow-x:scroll;
+    overflow:scroll;
+    max-height:750px;
+    margin-bottom:20px;
+}
+.field_name {
+    font-family:monospace;
+}
+.indented .field_name {
+    border-left:5px solid grey;
+    padding-left:15px;
+}
+.double-indented .field_name {
+    border-left:10px solid grey;
+    padding-left:30px;
+}
+.eg {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

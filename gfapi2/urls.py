@@ -3,6 +3,7 @@ from views import *
 
 urlpatterns = (
     url(r'^$', index, name="index"),
+    url(r'^docs/$', docs, name="docs"),
     url(r'^foodbanks/$', foodbanks, name="foodbanks"),
     url(r'^foodbank/(?P<slug>[-\w]+)/$', foodbank, name="foodbank"),
     url(r'^foodbanks/search/$', foodbank_search, name="foodbank_search"),
