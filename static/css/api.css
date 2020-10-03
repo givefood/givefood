@@ -6,7 +6,11 @@
     display:none;
 }
 .api_method.active {
-    display:flex;
+    display:block;
+}
+.api_method h2 {
+    border:0;
+    font-family:monospace;
 }
 dd {
     clear:left;
