@@ -24,6 +24,7 @@ def docs(request):
         "Sid Valley",
         "Kingsbridge",
         "Norwood & Brixton",
+        "Black Country",
     ]
 
     eg_searches = {
