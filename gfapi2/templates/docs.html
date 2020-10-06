@@ -584,8 +584,8 @@
                             <td>
                             <span class="select">
                                 <select class="control api_method_argument" id="search_argument" name="search">
-                                {% for type, search in eg_searches.items %}
-                                    <option value="?{{ type }}={{ search }}">{{ search }}</option>
+                                {% for search in eg_searches %}
+                                    <option value="?{{ search.type }}={{ search.query }}">{{ search.query }}</option>
                                 {% endfor %}
                                 </select>
                             </span>
@@ -606,45 +606,150 @@
         </div>
 
         {# needs #}
-        <div id="needs" class="column api_method is-7" data-method-url="/api/2/needs/">
+        <div id="needs" class="api_method" data-method-url="/api/2/needs/">
 
-            <table class="table is-fullwidth">
-            <tr>
-                <td>format</td>
-                <td>{% include "api_formats.html" %}</td>
-            </tr>
-            </table>
+            <div class="columns">
+                <div class="column">
+                    <h2>needs</h2>
+                    <p>TODO DESCRIPTION</p>
+                </div>
+            </div>
 
-            {% include "method_fields.html" %}
+            <div class="columns">
 
-            <pre class="result"><code class="language-json"></code></pre>
+                <div class="column">
+                    <table class="table is-narrow">
+                        <tr>
+                            <th>Field</th>
+                            <th>Type</th>
+                            <th>Example</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="field_name">address</td>
+                            <td>Multiline String</td>
+                            <td>Sidmouth Youth Centre<br>Manstone Lane<br>Sidmouth<br>EX10 9TS</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="column">
+                    <table class="table is-fullwidth">
+                        <tr>
+                            <td>format</td>
+                            <td>{% include "api_formats.html" %}</td>
+                        </tr>
+                    </table>
+
+                    {% include "method_fields.html" %}
+
+                    <pre class="result"><code class="language-json"></code></pre>
+                </div>
+            
+            </div>
 
         </div>
 
-        <div id="constituency" class="column api_method is-7" data-method-url="/api/2/constituency/:constituency:/">
 
-            <table class="table is-fullwidth">
-            <tr>
-                <td>Parliamentary Constituency</td>
-                <td>
-                <span class="select">
-                    <select class="control api_method_argument" id="constituency_argument" name="constituency">
-                    {% for constituency in parl_cons %}
-                        <option value="{{ constituency|slugify }}">{{ constituency }}</option>
-                    {% endfor %}
-                    </select>
-                </span>
-                </td>
-            </tr>
-            <tr>
-                <td>format</td>
-                <td>{% include "api_formats.html" %}</td>
-            </tr>
-            </table>
+        {# need #}
+        <div id="need" class="api_method" data-method-url="/api/2/need/:id:/">
 
-            {% include "method_fields.html" %}
+            <div class="columns">
+                <div class="column">
+                    <h2>need</h2>
+                    <p>TODO DESCRIPTION</p>
+                </div>
+            </div>
 
-            <pre class="result"><code class="language-json"></code></pre>
+            <div class="columns">
+
+                <div class="column">
+                    <table class="table is-narrow">
+                        <tr>
+                            <th>Field</th>
+                            <th>Type</th>
+                            <th>Example</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td class="field_name">address</td>
+                            <td>Multiline String</td>
+                            <td>Sidmouth Youth Centre<br>Manstone Lane<br>Sidmouth<br>EX10 9TS</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="column">
+                    <table class="table is-fullwidth">
+                        <tr>
+                            <td>id</td>
+                            <td>
+                            <span class="select">
+                                <select class="control api_method_argument" id="id_argument" name="id">
+                                {% for need_id in eg_needs %}
+                                    <option value="{{ need_id }}">{{ need_id }}</option>
+                                {% endfor %}
+                                </select>
+                            </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>format</td>
+                            <td>{% include "api_formats.html" %}</td>
+                        </tr>
+                    </table>
+
+                    {% include "method_fields.html" %}
+
+                    <pre class="result"><code class="language-json"></code></pre>
+                </div>
+            
+            </div>
+
+        </div>
+
+
+        {# constituency #}
+        <div id="constituency" class="api_method is-7" data-method-url="/api/2/constituency/:constituency:/">
+
+            <div class="columns">
+                <div class="column">
+                    <h2>constituency</h2>
+                    <p>TODO DESCRIPTION</p>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column">
+
+                </div>
+                <div class="column">
+                    <table class="table is-fullwidth">
+                        <tr>
+                            <td>Parliamentary Constituency</td>
+                            <td>
+                            <span class="select">
+                                <select class="control api_method_argument" id="constituency_argument" name="constituency">
+                                {% for constituency in eg_parl_cons %}
+                                    <option value="{{ constituency|slugify }}">{{ constituency }}</option>
+                                {% endfor %}
+                                </select>
+                            </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>format</td>
+                            <td>{% include "api_formats.html" %}</td>
+                        </tr>
+                    </table>
+
+                    {% include "method_fields.html" %}
+
+                    <pre class="result"><code class="language-json"></code></pre>
+                </div>
+            </div>
 
         </div>
     </div>
