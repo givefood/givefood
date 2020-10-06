@@ -27,16 +27,15 @@ def docs(request):
         "Black Country",
     ]
 
-    eg_searches = {
-        "address":"12 Millbank, Westminster, London SW1P 4QE",
-        "address":"Mount Pleasant Rd, Porthleven, Helston TR13 9JS",
-        "lat_lng":"51.178889,-1.826111",
-        "lat_lng":"52.090833,0.131944",
-    }
+    eg_searches = [
+        {"type":"address","query":"12 Millbank, Westminster, London SW1P 4QE"},
+        {"type":"address","query":"Mount Pleasant Rd, Porthleven, Helston TR13 9JSE"},
+        {"type":"lat_lng","query":"51.178889,-1.826111"},
+        {"type":"lat_lng","query":"52.090833,0.131944"},
+    ]
 
     eg_parl_cons = {
         "Uxbridge and South Ruislip",
-        ""
     }
     
     template_vars = {
