@@ -35,7 +35,8 @@ def docs(request):
     }
 
     eg_parl_cons = {
-        "":""
+        "Uxbridge and South Ruislip",
+        ""
     }
     
     template_vars = {
