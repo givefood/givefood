@@ -34,6 +34,10 @@ def docs(request):
         {"type":"lat_lng","query":"52.090833,0.131944"},
     ]
 
+    eg_needs = [
+        "d748993a",
+    ]
+
     eg_parl_cons = {
         "Uxbridge and South Ruislip",
     }
@@ -42,6 +46,7 @@ def docs(request):
         "api_formats":api_formats,
         "eg_foodbanks":eg_foodbanks,
         "eg_searches":eg_searches,
+        "eg_needs":eg_needs,
         "eg_parl_cons":eg_parl_cons,
     }
 
