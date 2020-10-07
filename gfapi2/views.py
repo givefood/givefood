@@ -294,7 +294,6 @@ def needs(request):
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (need.foodbank_name_slug()),
             },
             "needs":str(need.change_text),
-            "url":need.uri,
             "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
         })
 
