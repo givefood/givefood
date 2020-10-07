@@ -185,6 +185,12 @@
                             <td>07413858335</td>
                             <td>Secondary phone number</td>
                         </tr>
+                        <tr>
+                            <td class="field_name">slug</td>
+                            <td>String</td>
+                            <td class="eg">hull</td>
+                            <td>Slugified name of the food bank</td>
+                        </tr>
                         <tr class="indented">
                             <td class="field_name" colspan="4">urls</td>
                         </tr>
@@ -366,6 +372,12 @@
                             <td>String</td>
                             <td>07413858335</td>
                             <td>Secondary phone number</td>
+                        </tr>
+                        <tr>
+                            <td class="field_name">slug</td>
+                            <td>String</td>
+                            <td class="eg">hull</td>
+                            <td>Slugified name of the food bank</td>
                         </tr>
                         <tr class="indented">
                             <td class="field_name" colspan="4">urls</td>
@@ -611,7 +623,7 @@
             <div class="columns">
                 <div class="column">
                     <h2>needs</h2>
-                    <p>TODO DESCRIPTION</p>
+                    <p>The latest 100 food bank needs that we've discovered.</p>
                 </div>
             </div>
 
@@ -626,10 +638,37 @@
                             <th>Description</th>
                         </tr>
                         <tr>
-                            <td class="field_name">address</td>
-                            <td>Multiline String</td>
-                            <td>Sidmouth Youth Centre<br>Manstone Lane<br>Sidmouth<br>EX10 9TS</td>
+                        <td class="field_name">created</td>
+                            <td>Date Time</td>
+                            <td>2019-07-27T17:59:21.975Z</td>
+                            <td>Date and time we first found the food bank</td>
+                        </tr>
+                        <tr>
+                            <td class="field_name" colspan="4">foodbank</td>
+                        </tr>
+                        <tr class="indented">
+                            <td class="field_name">name</td>
+                            <td>String</td>
+                            <td class="eg">Hull</td>
                             <td></td>
+                        </tr>
+                        <tr class="indented">
+                            <td class="field_name">slug</td>
+                            <td>String</td>
+                            <td class="eg">hull</td>
+                            <td>Slugified name of the food bank</td>
+                        </tr>
+                        <tr>
+                            <td class="field_name">id</td>
+                            <td>Eight character string</td>
+                            <td>dc437c31</td>
+                            <td>Unique need identifier</td>
+                        </tr>
+                        <tr>
+                            <td class="field_name">needs</td>
+                            <td>Multiline String</td>
+                            <td>Jam<br>Coffee<br>Tinned Fruit<br>Tinned Meat</td>
+                            <td>Linebreak separated list of items in the need. Or "Unknown", or "Nothing" keywords.</td>
                         </tr>
                     </table>
                 </div>
@@ -658,7 +697,7 @@
             <div class="columns">
                 <div class="column">
                     <h2>need</h2>
-                    <p>TODO DESCRIPTION</p>
+                    <p>When given a need identifier returns the details of that need.</p>
                 </div>
             </div>
 
@@ -673,10 +712,10 @@
                             <th>Description</th>
                         </tr>
                         <tr>
-                            <td class="field_name">address</td>
-                            <td>Multiline String</td>
-                            <td>Sidmouth Youth Centre<br>Manstone Lane<br>Sidmouth<br>EX10 9TS</td>
-                            <td></td>
+                            <td class="field_name">id</td>
+                            <td>Eight character string</td>
+                            <td>dc437c31</td>
+                            <td>Unique need identifier</td>
                         </tr>
                     </table>
                 </div>
