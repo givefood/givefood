@@ -468,4 +468,5 @@ CALORIES = {
     "Sainsbury's Mulligatawny Soup 400g":57,
     "Sainsbury's Lentil & Bacon Soup 400g":54,
     "Sainsbury's Cream Of Chicken Soup 400g":54,
+    "Hubbard's Foodstore Custard 385g":73,
 }
