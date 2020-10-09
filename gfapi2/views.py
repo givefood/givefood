@@ -189,7 +189,7 @@ def foodbank(request, slug):
         },
         "need": {
             "id":foodbank.latest_need_id(),
-            "needs":str(foodbank.latest_need_text()),
+            "needs":foodbank.latest_need().clean_change_text(),
             "created":foodbank.latest_need_date(),
             "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need_id()),
         },
@@ -293,7 +293,7 @@ def needs(request):
                 "slug":str(need.foodbank_name_slug()),
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (need.foodbank_name_slug()),
             },
-            "needs":str(need.change_text),
+            "needs":need.clean_change_text(),
             "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
         })
 

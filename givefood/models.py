@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import hashlib, difflib
+import hashlib, difflib, unicodedata
 from datetime import datetime
 
 from google.appengine.api import memcache
@@ -453,6 +453,9 @@ class FoodbankChange(models.Model):
 
     def change_list(self):
         return self.change_text.split("\n")
+
+    def clean_change_text(self):
+        return unicodedata.normalize('NFKD', self.change_text).encode('ascii', 'ignore')
 
     def last_need(self):
 
