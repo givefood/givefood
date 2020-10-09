@@ -79,6 +79,7 @@ urlpatterns = (
 
     url(r'^admin/parlcon/new/$', givefood.views.admin_parlcon_form, name="admin_parlcon_form"),
     url(r'^admin/parlcon/loader/$', givefood.views.admin_parlcon_loader, name="admin_parlcon_loader"),
+    url(r'^admin/parlcon/loader/geojson/$', givefood.views.admin_parlcon_loader_geojson, name="admin_parlcon_loader_geojson"),
     url(r'^admin/parlcon/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_parlcon_form, name="admin_parlcon_form"),
 
     url(r'^admin/politics/$', givefood.views.admin_politics, name="admin_politics"),

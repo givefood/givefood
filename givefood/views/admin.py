@@ -687,3 +687,22 @@ def admin_parlcon_loader(request):
             newparlcon.save()
 
     return HttpResponse("OK")
+
+
+def admin_parlcon_loader_geojson(request):
+
+    parlcons = ParliamentaryConstituency.objects.all()
+
+    geojson_file = open('./givefood/data/parlcon.geojson', 'r') 
+    lines = geojson_file.readlines()
+    
+    for line in lines:
+        # logging.info(line)
+        for parlcon in parlcons:
+            if parlcon.name in line:
+                logging.info("Found " + parlcon.name)
+                parlcon.boundary_geojson = line
+                parlcon.save()
+
+    return HttpResponse("OK")
+
