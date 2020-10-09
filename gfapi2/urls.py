@@ -8,4 +8,5 @@ urlpatterns = (
     url(r'^foodbank/(?P<slug>[-\w]+)/$', foodbank, name="foodbank"),
     url(r'^foodbanks/search/$', foodbank_search, name="foodbank_search"),
     url(r'^needs/$', needs, name="needs"),
+    url(r'^constituency/(?P<slug>[-\w]+)/$', constituency, name="constituency"),
 )

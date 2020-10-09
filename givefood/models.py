@@ -546,6 +546,9 @@ class ParliamentaryConstituency(models.Model):
     electorate = models.IntegerField(null=True, blank=True)
     boundary_geojson = models.TextField(null=True, blank=True)
 
+    def foodbanks(self):
+        return Foodbank.objects.filter(parliamentary_constituency_slug = self.slug)
+
     def __str__(self):
         return self.name
 

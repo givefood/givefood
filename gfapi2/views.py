@@ -298,3 +298,30 @@ def needs(request):
         })
 
     return ApiResponse(response_list, "needs", format)
+
+def constituency(request, slug):
+
+    format = request.GET.get("format", DEFAULT_FORMAT)
+    constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
+    foodbanks = constituency.foodbanks()
+    foodbank_list = []
+    for foodbank in foodbanks:
+        foodbank_list.append(
+            {
+                "name":foodbank.name,
+                "slug":foodbank.slug,
+            }
+        )
+
+    response_dict = {
+        "name":constituency.name,
+        "slug":constituency.slug,
+        "mp": {
+            "name":constituency.mp,
+            "party":constituency.mp_party,
+            "photo":constituency.mp_party,
+        },
+        "foodbanks":foodbank_list,
+    }
+
+    return ApiResponse(response_dict, "constituency", format)
