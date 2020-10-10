@@ -58,6 +58,7 @@ def docs(request):
 
     return render_to_response("docs.html", template_vars, context_instance=RequestContext(request))
 
+
 def foodbanks(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
