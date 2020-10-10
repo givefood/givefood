@@ -42,6 +42,10 @@ def docs(request):
 
     eg_parl_cons = {
         "Uxbridge and South Ruislip",
+        "Vauxhall",
+        "Exeter",
+        "Orkney and Shetland",
+        "North Somerset",
     }
     
     template_vars = {
