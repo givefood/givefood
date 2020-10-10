@@ -455,7 +455,10 @@ class FoodbankChange(models.Model):
         return self.change_text.split("\n")
 
     def clean_change_text(self):
-        return unicodedata.normalize('NFKD', self.change_text).encode('ascii', 'ignore')
+        if self.change_text:
+            return unicodedata.normalize('NFKD', self.change_text).encode('ascii', 'ignore')
+        else:
+            return None
 
     def last_need(self):
 

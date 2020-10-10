@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest
@@ -302,8 +304,10 @@ def constituency(request, slug):
     for foodbank in foodbanks:
         foodbank_list.append(
             {
-                "name":foodbank.name,
-                "slug":foodbank.slug,
+                "name":foodbank.get("name"),
+                "slug":foodbank.get("slug"),
+                "lat_lng":foodbank.get("lat_lng"),
+                "needs":foodbank.get("needs").clean_change_text(),
             }
         )
 
