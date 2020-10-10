@@ -5,12 +5,50 @@ from xml.dom.minidom import parseString
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 
 
-ACCEPTABLE_FORMATS = ["json","xml","yaml"]
+def accceptable_formats(obj_name):
+    if obj_name == "foodbanks":
+        return ["json","xml","yaml","geojson"]
+    return ["json","xml","yaml"]
+
+
+def make_geojson(data):
+
+    features = []
+    for foodbank in data:
+        features.append(
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [float(foodbank.get("lat_lng").split(",")[1]), float(foodbank.get("lat_lng").split(",")[0])]
+                },
+                "properties": {
+                    "name": foodbank.get("name"),
+                    "address": foodbank.get("address"),
+                    "country": foodbank.get("country"),
+                    "url": foodbank.get("urls").get("homepage"),
+                    "json": foodbank.get("urls").get("self"),
+                    "network": foodbank.get("network"),
+                    "email": foodbank.get("email"),
+                    "telephone": foodbank.get("phone"),
+                    "parliamentary_constituency": foodbank.get("politics").get("parliamentary_constituency")
+                }
+            }
+        )
+
+    geojson = {
+        "type": "FeatureCollection",
+        "features": features
+     }
+
+    return geojson
 
 
 def ApiResponse(data, obj_name, format):
 
-    if format not in ACCEPTABLE_FORMATS:
+    valid_formats = accceptable_formats(obj_name)
+
+    if format not in valid_formats:
         return HttpResponseBadRequest()
 
     if format == "json":
@@ -24,6 +62,9 @@ def ApiResponse(data, obj_name, format):
     elif format == "yaml":
         yaml_str = yaml.safe_dump(data, encoding='utf-8', allow_unicode=True, default_flow_style=False)
         return HttpResponse(yaml_str, content_type="text/yaml")
+    elif format == "geojson":
+        geojson_str = make_geojson(data)
+        return JsonResponse(geojson_str, safe=False, json_dumps_params={'indent': 2})
 
 
 xml_item_name = lambda x: x[:-1]

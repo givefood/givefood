@@ -59,7 +59,14 @@
                     <table class="table">
                         <tr>
                             <td>format</td>
-                            <td>{% include "api_formats.html" %}</td>
+                            <td><span class="select">
+                                <select class="control api_format" name="api_format">
+                                    {% for api_format in api_formats %}
+                                        <option value="{{ api_format|lower }}">{{ api_format }}</option>
+                                    {% endfor %}
+                                    <option value="geojson">GeoJSON</option>
+                                </select>
+                            </span></td>
                         </tr>
                     </table>
 
