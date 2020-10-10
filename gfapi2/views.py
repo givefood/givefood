@@ -74,8 +74,6 @@ def foodbanks(request):
             "lat_lng":foodbank.latt_long,
             "network":foodbank.network,
             "created":foodbank.created,
-            "modified":foodbank.modified,
-            "created":foodbank.created,
             "urls": {
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
                 "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
@@ -162,8 +160,6 @@ def foodbank(request, slug):
         "closed":foodbank.is_closed,
         "lat_lng":foodbank.latt_long,
         "network":foodbank.network,
-        "created":foodbank.created,
-        "modified":foodbank.modified,
         "urls": {
             "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
             "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
@@ -244,8 +240,6 @@ def foodbank_search(request):
             "closed":foodbank.is_closed,
             "lat_lng":foodbank.latt_long,
             "network":foodbank.network,
-            "modified":foodbank.modified,
-            "created":foodbank.created,
             "distance_m":int(foodbank.distance_m),
             "distance_mi":round(foodbank.distance_mi,2),
             "urls": {
