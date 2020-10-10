@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest
 
-from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency
+from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
 from givefood.func import get_all_foodbanks, find_foodbanks, geocode
 
@@ -298,6 +298,19 @@ def needs(request):
         })
 
     return ApiResponse(response_list, "needs", format)
+
+
+def need(request, id):
+
+    format = request.GET.get("format", DEFAULT_FORMAT)
+    need = get_object_or_404(FoodbankChange, need_id = id)
+
+    response_dict = {
+
+    }
+
+    return ApiResponse(response_dict, "need", format)
+
 
 def constituency(request, slug):
 
