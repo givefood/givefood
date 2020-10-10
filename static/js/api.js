@@ -105,6 +105,7 @@ function get_api_result() {
 
 function populate_api_result() {
     format = document.querySelector(".api_method.active .api_format").value
+    if (format == "geojson") { format = "json" }
     method_pane_results = document.querySelector(".api_method.active code")
     method_pane_results.setAttribute("class","")
     method_pane_results.setAttribute("class","language-" + format)
