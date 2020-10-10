@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import hashlib, difflib, unicodedata
+import hashlib, difflib, unicodedata, logging
 from datetime import datetime
 
 from google.appengine.api import memcache
@@ -550,7 +550,31 @@ class ParliamentaryConstituency(models.Model):
     boundary_geojson = models.TextField(null=True, blank=True)
 
     def foodbanks(self):
-        return Foodbank.objects.filter(parliamentary_constituency_slug = self.slug)
+
+        foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = self.slug)
+        locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = self.slug)
+
+        constituency_foodbanks = []
+        for foodbank in foodbanks:
+            constituency_foodbanks.append({
+                "name":foodbank.name,
+                "slug":foodbank.slug,
+                "lat_lng":foodbank.latt_long,
+                "needs":foodbank.latest_need()
+            })
+
+        for location in locations:
+            constituency_foodbanks.append({
+                "name":location.foodbank_name,
+                "slug":location.foodbank_slug,
+                "lat_lng":location.latt_long,
+                "needs":location.latest_need()
+            })
+        
+        constituency_foodbanks = {v['name']:v for v in constituency_foodbanks}.values()
+
+        return constituency_foodbanks
+
 
     def __str__(self):
         return self.name
