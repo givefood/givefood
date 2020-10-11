@@ -191,6 +191,12 @@ class Foodbank(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+
+        if self.phone_number:
+            self.phone_number = self.phone_number.replace(" ","")
+        if self.secondary_phone_number:
+            self.secondary_phone_number = self.secondary_phone_number.replace(" ","")
+
         if not self.parliamentary_constituency:
             regions = admin_regions_from_postcode(self.postcode)
             self.parliamentary_constituency = regions.get("parliamentary_constituency", None)
@@ -205,7 +211,9 @@ class Foodbank(models.Model):
             self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency)
         if not self.mp_parl_id:
             self.mp_parl_id = mpid_from_name(self.mp)
+
         self.no_locations = self.get_no_locations()
+
         super(Foodbank, self).save(*args, **kwargs)
 
         memcache.delete(FB_MC_KEY)
@@ -247,9 +255,13 @@ class FoodbankLocation(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+
         self.foodbank_name = self.foodbank.name
         self.foodbank_slug = self.foodbank.slug
         self.foodbank_network = self.foodbank.network
+
+        if self.phone_number:
+            self.phone_number = self.phone_number.replace(" ","")
 
         if not self.parliamentary_constituency:
             regions = admin_regions_from_postcode(self.postcode)
