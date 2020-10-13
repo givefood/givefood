@@ -335,7 +335,7 @@ def constituency(request, slug):
         "mp": {
             "name":constituency.mp,
             "party":constituency.mp_party,
-            "photo":constituency.mp_party,
+            "photo":"https://www.givefood.org.uk/needs/in/constituency/%s/mp_photo_threefour.png" % (constituency.slug),
         },
         "foodbanks":foodbank_list,
     }
