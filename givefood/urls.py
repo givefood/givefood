@@ -39,6 +39,7 @@ urlpatterns = (
     url(r'^needs/in/constituencies/$', givefood.views.public_wfbn_constituencies, name="public_wfbn_constituencies"),
     url(r'^needs/in/constituency/$', RedirectView.as_view(url="/needs/in/constituencies/")),
     url(r'^needs/in/constituency/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_constituency, name="public_wfbn_constituency"),
+    url(r'^needs/in/constituency/(?P<slug>[-\w]+)/mp_photo_(?P<size>full|threefour).png$', givefood.views.public_wfbn_constituency_mp_photo, name="public_wfbn_constituency_mp_photo"),
 
     # Rickrolling
     url(r'^wp-login\.php$', RedirectView.as_view(url=RICK_ASTLEY)),

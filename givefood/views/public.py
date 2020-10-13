@@ -18,7 +18,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template.defaultfilters import slugify
 
-from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation
+from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode, find_foodbanks, geocode
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
@@ -356,6 +356,7 @@ def public_wfbn_constituency(request, slug):
 
     template_vars = {
         "constituency_name":constituency_name,
+        "constituency_slug":slugify(constituency_name),
         "mp":mp,
         "mp_party":mp_party,
         "mp_parl_id":mp_parl_id,
@@ -364,6 +365,15 @@ def public_wfbn_constituency(request, slug):
     }
 
     return render_to_response("public/wfbn_constituency.html", template_vars, context_instance=RequestContext(request))
+
+
+@cache_page(60*30)
+def public_wfbn_constituency_mp_photo(request, slug, size):
+
+    parl_con = get_object_or_404(ParliamentaryConstituency, slug=slug)
+    result = urlfetch.fetch("https://storage.googleapis.com/mp_photos/%s/%s.png" % (size, parl_con.mp_parl_id))
+
+    return HttpResponse(result.content, content_type='image/png')
 
 
 @cache_page(60*60)
