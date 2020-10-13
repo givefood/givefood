@@ -292,7 +292,11 @@ def needs(request):
             "foodbank": {
                 "name":need.foodbank_name,
                 "slug":str(need.foodbank_name_slug()),
-                "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (need.foodbank_name_slug()),
+                "urls": {
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (need.foodbank_name_slug()),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (need.foodbank_name_slug()),
+                }
+                
             },
             "needs":need.clean_change_text(),
             "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
