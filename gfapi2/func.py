@@ -6,12 +6,17 @@ from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 
 
 def accceptable_formats(obj_name):
-    if obj_name == "foodbanks":
-        return ["json","xml","yaml","geojson"]
-    return ["json","xml","yaml"]
+
+    have_geojson = ["foodbanks","constituency"]
+    valid_formats = ["json","xml","yaml"]
+
+    if obj_name in have_geojson:
+        valid_formats.append("geojson")
+
+    return valid_formats
 
 
-def make_geojson(data):
+def foodbank_geojson(data):
 
     features = []
     for foodbank in data:
@@ -44,6 +49,12 @@ def make_geojson(data):
     return geojson
 
 
+def constituency_geojson(data):
+
+    return {}
+
+
+
 def ApiResponse(data, obj_name, format):
 
     valid_formats = accceptable_formats(obj_name)
@@ -63,7 +74,10 @@ def ApiResponse(data, obj_name, format):
         yaml_str = yaml.safe_dump(data, encoding='utf-8', allow_unicode=True, default_flow_style=False)
         return HttpResponse(yaml_str, content_type="text/yaml")
     elif format == "geojson":
-        geojson_str = make_geojson(data)
+        if obj_name == "foodbanks":
+            geojson_str = foodbank_geojson(data)
+        if obj_name == "constituency":
+            geojson_str = constituency_geojson(data)
         return JsonResponse(geojson_str, safe=False, json_dumps_params={'indent': 2})
 
 
