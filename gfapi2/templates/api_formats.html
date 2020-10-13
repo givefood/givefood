@@ -3,5 +3,8 @@
         {% for api_format in api_formats %}
             <option value="{{ api_format|lower }}">{{ api_format }}</option>
         {% endfor %}
+        {% if hasgeojson %}
+            <option value="geojson">GeoJSON</option>
+        {% endif %}
     </select>
 </span>
