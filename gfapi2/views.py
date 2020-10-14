@@ -66,44 +66,73 @@ def foodbanks(request):
     foodbanks = get_all_foodbanks()
     response_list = []
 
-    for foodbank in foodbanks:
-        response_list.append({
-            "name":foodbank.name,
-            "alt_name":foodbank.alt_name,
-            "slug":foodbank.slug,
-            "phone":foodbank.phone_number,
-            "secondary_phone":foodbank.secondary_phone_number,
-            "email":foodbank.contact_email,
-            "address":foodbank.full_address(),
-            "postcode":foodbank.postcode,
-            "closed":foodbank.is_closed,
-            "country":foodbank.country,
-            "lat_lng":foodbank.latt_long,
-            "network":foodbank.network,
-            "created":foodbank.created,
-            "urls": {
-                "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
-                "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
-                "homepage":foodbank.url,
-                "shopping_list":foodbank.shopping_list_url,
-            },
-            "charity": {
-                "registration_id":foodbank.charity_number,
-                "register_url":foodbank.charity_register_url(),
-            },
-            "politics": {
-                "parliamentary_constituency":foodbank.parliamentary_constituency,
-                "mp":foodbank.mp,
-                "mp_party":foodbank.mp_party,
-                "mp_parl_id":foodbank.mp_parl_id,
-                "ward":foodbank.ward,
-                "district":foodbank.district,
+    if format != "geojson":
+        for foodbank in foodbanks:
+            response_list.append({
+                "name":foodbank.name,
+                "alt_name":foodbank.alt_name,
+                "slug":foodbank.slug,
+                "phone":foodbank.phone_number,
+                "secondary_phone":foodbank.secondary_phone_number,
+                "email":foodbank.contact_email,
+                "address":foodbank.full_address(),
+                "postcode":foodbank.postcode,
+                "closed":foodbank.is_closed,
+                "country":foodbank.country,
+                "lat_lng":foodbank.latt_long,
+                "network":foodbank.network,
+                "created":foodbank.created,
                 "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (foodbank.parliamentary_constituency_slug),
-                    "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (foodbank.parliamentary_constituency_slug),
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
+                    "homepage":foodbank.url,
+                    "shopping_list":foodbank.shopping_list_url,
                 },
-            }
-        })
+                "charity": {
+                    "registration_id":foodbank.charity_number,
+                    "register_url":foodbank.charity_register_url(),
+                },
+                "politics": {
+                    "parliamentary_constituency":foodbank.parliamentary_constituency,
+                    "mp":foodbank.mp,
+                    "mp_party":foodbank.mp_party,
+                    "mp_parl_id":foodbank.mp_parl_id,
+                    "ward":foodbank.ward,
+                    "district":foodbank.district,
+                    "urls": {
+                        "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (foodbank.parliamentary_constituency_slug),
+                        "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (foodbank.parliamentary_constituency_slug),
+                    },
+                }
+            })
+    else:
+        features = []
+        for foodbank in foodbanks:
+            features.append(
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [float(foodbank.latt_long.split(",")[1]), float(foodbank.latt_long.split(",")[0])]
+                    },
+                    "properties": {
+                        "name": foodbank.name,
+                        "address": foodbank.address,
+                        "country": foodbank.country,
+                        "url": "https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
+                        "json": "https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
+                        "network": foodbank.network,
+                        "email": foodbank.contact_email,
+                        "telephone": foodbank.phone_number,
+                        "parliamentary_constituency": foodbank.parliamentary_constituency,
+                    }
+                }
+            )
+
+        response_list = {
+            "type": "FeatureCollection",
+            "features": features
+        }
 
     return ApiResponse(response_list, "foodbanks", format)
 

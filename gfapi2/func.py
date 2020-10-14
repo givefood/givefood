@@ -16,39 +16,6 @@ def accceptable_formats(obj_name):
     return valid_formats
 
 
-def foodbank_geojson(data):
-
-    features = []
-    for foodbank in data:
-        features.append(
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [float(foodbank.get("lat_lng").split(",")[1]), float(foodbank.get("lat_lng").split(",")[0])]
-                },
-                "properties": {
-                    "name": foodbank.get("name"),
-                    "address": foodbank.get("address"),
-                    "country": foodbank.get("country"),
-                    "url": foodbank.get("urls").get("homepage"),
-                    "json": foodbank.get("urls").get("self"),
-                    "network": foodbank.get("network"),
-                    "email": foodbank.get("email"),
-                    "telephone": foodbank.get("phone"),
-                    "parliamentary_constituency": foodbank.get("politics").get("parliamentary_constituency")
-                }
-            }
-        )
-
-    geojson = {
-        "type": "FeatureCollection",
-        "features": features
-     }
-
-    return geojson
-
-
 def constituency_geojson(data):
 
     return {}
@@ -62,7 +29,7 @@ def ApiResponse(data, obj_name, format):
     if format not in valid_formats:
         return HttpResponseBadRequest()
 
-    if format == "json":
+    if format == "json" or format == "geojson":
         return JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
     elif format == "xml":
         dicttoxml.LOG.setLevel(logging.ERROR)
@@ -73,12 +40,12 @@ def ApiResponse(data, obj_name, format):
     elif format == "yaml":
         yaml_str = yaml.safe_dump(data, encoding='utf-8', allow_unicode=True, default_flow_style=False)
         return HttpResponse(yaml_str, content_type="text/yaml")
-    elif format == "geojson":
-        if obj_name == "foodbanks":
-            geojson_str = foodbank_geojson(data)
-        if obj_name == "constituency":
-            geojson_str = constituency_geojson(data)
-        return JsonResponse(geojson_str, safe=False, json_dumps_params={'indent': 2})
+    # elif format == "geojson":
+    #     if obj_name == "foodbanks":
+    #         geojson_str = foodbank_geojson(data)
+    #     if obj_name == "constituency":
+    #         geojson_str = constituency_geojson(data)
+    #     return JsonResponse(geojson_str, safe=False, json_dumps_params={'indent': 2})
 
 
 xml_item_name = lambda x: x[:-1]
