@@ -47,7 +47,11 @@ function init() {
       })
     })
 
-    show_method(default_method)
+    if(window.location.hash) {
+        show_method(window.location.hash.replace("#",""))
+    } else {
+        show_method(default_method)
+    }
 
 }
 
@@ -64,6 +68,14 @@ function show_method(method_name) {
     method_pane.classList.add("active")
 
     get_api_result()
+
+    if (window.location.hash.replace("#","") != method_name){
+        if (method_name != default_method) {
+            history.pushState({},"","#" + method_name)
+        } else {
+            history.pushState({},"",window.location.pathname)
+        }
+    }
 
 }
 
