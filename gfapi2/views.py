@@ -157,6 +157,7 @@ def foodbank(request, slug):
                     "parliamentary_constituency":location.parliamentary_constituency,
                     "mp":location.mp,
                     "mp_party":location.mp_party,
+                    "mp_parl_id":foodbank.mp_parl_id,
                     "ward":location.ward,
                     "district":location.district,
                     "urls": {
