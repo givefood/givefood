@@ -26,13 +26,17 @@ pre {
 .field_name {
     font-family:monospace;
 }
+td[colspan] {
+    background: #f5f5f5;
+}
+.indented, .double-indented {
+    background:#f5f5f5;
+}
 .indented .field_name {
-    border-left:5px solid grey;
-    padding-left:15px;
+    padding-left:15px !important;
 }
 .double-indented .field_name {
-    border-left:10px solid grey;
-    padding-left:30px;
+    padding-left:30px !important;
 }
 .eg {
     max-width: 100px;
