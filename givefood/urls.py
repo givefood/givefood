@@ -43,6 +43,7 @@ urlpatterns = (
 
     # Rickrolling
     url(r'^wp-login\.php$', RedirectView.as_view(url=RICK_ASTLEY)),
+    url(r'^static/img/map-allloc\.png$', RedirectView.as_view(url="/static/img/map.png")),
 
     # ADMIN
     url(r'^admin/$', givefood.views.admin_index, name="admin_index"),

@@ -15,6 +15,10 @@ handlers:
   script: givefood.wsgi.application
   secure: always
 
+- url: /static/img/map-allloc.png
+  script: givefood.wsgi.application
+  secure: always
+
 - url: /static
   static_dir: static/
   secure: always
