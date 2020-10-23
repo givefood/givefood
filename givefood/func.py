@@ -110,12 +110,16 @@ def parse_tesco_order_text(order_text):
 def parse_sainsburys_order_text(order_text):
 
     # 50 x Hubbard's Foodstore Chicken Curry 392g - Total Price £29.50
+    # 25 x Hubbard's Foodstore Strawberry Jam 454g - Total Price £7.00
 
     order_lines = []
 
     order_items = order_text.splitlines()
     for order_item_line in order_items:
         order_item_line_bits = re.split(r'( x | - Total Price )', order_item_line)
+
+        logging.info(order_item_line)
+        logging.info("Got bits %s, %s, %s" % (order_item_line_bits[0], order_item_line_bits[1], order_item_line_bits[2]))
 
         order_lines.append({
             "quantity":int(order_item_line_bits[0]),
@@ -144,6 +148,26 @@ def get_weight(text):
 
     weight = 0
 
+    # 3X250ml
+    if text[-8:] == " 3X250ml":
+      weight = 750
+
+    # 4X125g
+    if text[-7:] == " 4X125g":
+      weight = 500
+
+    # 2X110g
+    if text[-7:] == " 2X110g":
+      weight = 220
+
+    # 2X95g
+    if text[-6:] == " 2X95g":
+      weight = 190
+
+    # 2x95g
+    if text[-6:] == " 2x95g":
+      weight = 190
+
     # Kilogram
     if text[-2:] == "Kg":
         weight = float(text[-4:].replace("Kg","")) * 1000
@@ -171,22 +195,6 @@ def get_weight(text):
     # Banana 5-pack
     if text[-6:] == "5 Pack":
       weight = 750
-
-    # 3X250ml
-    if text[-8:] == " 3X250ml":
-      weight = 750
-
-    # 4X125g
-    if text[-7:] == " 4X125g":
-      weight = 500
-
-    # 2X110g
-    if text[-7:] == " 2X110g":
-      weight = 220
-
-    # 2X95g
-    if text[-6:] == " 2X95g":
-      weight = 190
 
     # 4 X 410G
     if text[-9:] == " 4 X 410G":
