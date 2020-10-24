@@ -45,7 +45,8 @@
               <h3>Other locations</h3>
               {% for location in foodbank.locations %}
                 <a href="https://www.google.co.uk/maps/?q={{ location.latt_long }}">{{ location.name }}</a><br>
-                {{ foodbank.address|linebreaksbr }}<br><br>
+                {{ location.address|linebreaksbr }}<br>
+                {{ location.postcode }}<br><br>
               {% endfor %}
             {% endif %}
           </div>
