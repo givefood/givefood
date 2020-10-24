@@ -287,7 +287,6 @@ def clean_foodbank_need_text(text):
 
 def find_foodbanks(lattlong, quantity = 10, skip_first = False):
 
-    from givefood.models import Foodbank
     foodbanks = get_all_open_foodbanks()
 
     latt = float(lattlong.split(",")[0])
