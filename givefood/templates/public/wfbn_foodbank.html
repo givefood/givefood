@@ -32,6 +32,20 @@
         <div class="columns">
           <div class="column">
             <img src="{{ map_url }}" alt="Map of {{ foodbank }} Food Bank">
+            <br>
+            <p>
+              {{ foodbank.address|linebreaksbr }}<br>
+              {{ foodbank.postcode }}<br>
+              {{ foodbank.country }}
+              <br><a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}" class="button is-link is-small">Directions</a>
+            </p>
+            {% if foodbank.locations %}
+              <h3>Other locations</h3>
+              {% for location in foodbank.locations %}
+                <a href="https://www.google.co.uk/maps/?q={{ location.latt_long }}">{{ location.name }}</a><br>
+                {{ foodbank.address|linebreaksbr }}<br><br>
+              {% endfor %}
+            {% endif %}
           </div>
           <div class="column">
             <h2>{{ foodbank }} Food Bank</h2>
@@ -46,21 +60,9 @@
             {% endif %}
 
             <h3>Contact</h3>
-            <dl>
-              <dt>Website</dt>
-              <dd><a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:22 }}</a></dd>
-              <dt>Phone</dt>
-              <dd><a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
-              <dt>Email</dt>
-              <dd><a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:22 }}</a></dd>
-            </dl>
-            <br>
-            <p>
-              {{ foodbank.address|linebreaksbr }}<br>
-              {{ foodbank.postcode }}<br>
-              {{ foodbank.country }}
-              <br><a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}" class="button is-link is-small">Directions</a>
-            </p>
+            <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
+            <a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a><br>
+            <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:22 }}</a><br>
             <p></p>
 
             {% if foodbank.parliamentary_constituency %}
