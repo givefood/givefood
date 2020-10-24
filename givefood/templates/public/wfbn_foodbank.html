@@ -31,7 +31,9 @@
         </nav>
         <div class="columns">
           <div class="column">
-            <img src="{{ map_url }}" alt="Map of {{ foodbank }} Food Bank">
+            <a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}">
+              <img src="{{ map_url }}" alt="Map of {{ foodbank }} Food Bank">
+            </a>
             <br>
             <p>
               {{ foodbank.address|linebreaksbr }}<br>
