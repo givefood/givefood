@@ -46,3 +46,8 @@
 .table td.foodbank_name {
   padding-left:0;
 }
+.contact-icon {
+  width:14px;
+  display:inline-block;
+  padding:2px 2px 0 0;
+}
