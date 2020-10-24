@@ -73,7 +73,9 @@ function show_method(method_name) {
         if (method_name != default_method) {
             history.pushState({},"","#" + method_name)
         } else {
-            history.pushState({},"",window.location.pathname)
+            if (window.location.hash){
+                history.pushState({},"",window.location.pathname)
+            }
         }
     }
 
