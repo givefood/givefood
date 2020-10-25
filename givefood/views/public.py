@@ -208,6 +208,10 @@ def public_sitemap(request):
 
 
 @cache_page(60*10)
+def public_privacy(request):
+    return render_to_response("public/privacy.html", context_instance=RequestContext(request))
+
+@cache_page(60*10)
 def public_what_food_banks_need(request):
 
     headless = request.GET.get("headless", False)
