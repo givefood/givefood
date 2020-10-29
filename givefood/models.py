@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import hashlib, difflib, unicodedata, logging
+import hashlib, difflib, unicodedata, logging, json
 from datetime import datetime
 
 from google.appengine.api import memcache
@@ -560,6 +560,14 @@ class ParliamentaryConstituency(models.Model):
 
     electorate = models.IntegerField(null=True, blank=True)
     boundary_geojson = models.TextField(null=True, blank=True)
+    
+    def boundary_geojson_dict(self):
+        # remove last char if a comma
+        if self.boundary_geojson[-1:] == ",":
+            boundary_geojson = self.boundary_geojson[:-1]
+        else:
+            boundary_geojson = self.boundary_geojson
+        return json.loads(boundary_geojson)
 
     def foodbanks(self):
 

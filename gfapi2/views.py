@@ -117,6 +117,7 @@ def foodbanks(request):
                     },
                     "properties": {
                         "name": foodbank.name,
+                        "slug": foodbank.slug,
                         "address": foodbank.address,
                         "country": foodbank.country,
                         "url": "https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
@@ -366,26 +367,62 @@ def constituency(request, slug):
     format = request.GET.get("format", DEFAULT_FORMAT)
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
     foodbanks = constituency.foodbanks()
-    foodbank_list = []
-    for foodbank in foodbanks:
-        foodbank_list.append(
-            {
-                "name":foodbank.get("name"),
-                "slug":foodbank.get("slug"),
-                "lat_lng":foodbank.get("lat_lng"),
-                "needs":foodbank.get("needs").clean_change_text(),
-            }
-        )
 
-    response_dict = {
-        "name":constituency.name,
-        "slug":constituency.slug,
-        "mp": {
-            "name":constituency.mp,
-            "party":constituency.mp_party,
-            "photo":"https://www.givefood.org.uk/needs/in/constituency/%s/mp_photo_threefour.png" % (constituency.slug),
-        },
-        "foodbanks":foodbank_list,
-    }
+    if format != "geojson":
+        foodbank_list = []
+        for foodbank in foodbanks:
+            foodbank_list.append(
+                {
+                    "name":foodbank.get("name"),
+                    "slug":foodbank.get("slug"),
+                    "lat_lng":foodbank.get("lat_lng"),
+                    "needs":foodbank.get("needs").clean_change_text(),
+                    "urls": {
+                        "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.get("slug")),
+                        "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.get("slug")),
+                        "homepage":foodbank.get("url"),
+                        "shopping_list":foodbank.get("shopping_list_url"),
+                        "map":"https://www.givefood.org.uk/needs/at/%s/map.png" % (foodbank.get("slug")),
+                    },
+                }
+            )
+
+        response_dict = {
+            "name":constituency.name,
+            "slug":constituency.slug,
+            "mp": {
+                "name":constituency.mp,
+                "party":constituency.mp_party,
+                "urls": {
+                    "html":"https://members.parliament.uk/member/%s/contact" % (constituency.mp_parl_id),
+                    "photo":"https://www.givefood.org.uk/needs/in/constituency/%s/mp_photo_threefour.png" % (constituency.slug),
+                }
+            },
+            "foodbanks":foodbank_list,
+        }
+    else:
+        features = []
+        for foodbank in foodbanks:
+            features.append(
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [float(foodbank.get("lat_lng").split(",")[1]), float(foodbank.get("lat_lng").split(",")[0])]
+                    },
+                    "properties": {
+                        "name": foodbank.get("name"),
+                        "slug": foodbank.get("slug"),
+                        "needs": foodbank.get("needs").change_text,
+                    }
+                }
+            )
+
+        features.append(constituency.boundary_geojson_dict())
+
+        response_dict = {
+            "type": "FeatureCollection",
+            "features": features,
+        }
 
     return ApiResponse(response_dict, "constituency", format)
