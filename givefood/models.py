@@ -562,11 +562,12 @@ class ParliamentaryConstituency(models.Model):
     boundary_geojson = models.TextField(null=True, blank=True)
     
     def boundary_geojson_dict(self):
+        boundary_geojson = self.boundary_geojson.strip()
         # remove last char if a comma
-        if self.boundary_geojson[-1:] == ",":
-            boundary_geojson = self.boundary_geojson[:-1]
+        if boundary_geojson[-1:] == ",":
+            boundary_geojson = boundary_geojson[:-1]
         else:
-            boundary_geojson = self.boundary_geojson
+            boundary_geojson = boundary_geojson
         return json.loads(boundary_geojson)
 
     def foodbanks(self):
