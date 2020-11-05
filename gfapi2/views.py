@@ -283,6 +283,10 @@ def foodbank_search(request):
             "distance_m":int(foodbank.distance_m),
             "distance_mi":round(foodbank.distance_mi,2),
             "created":foodbank.created,
+            "needs": {
+                "needs":foodbank.latest_need().clean_change_text(),
+                "found":foodbank.latest_need().created,
+            },
             "urls": {
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
                 "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
