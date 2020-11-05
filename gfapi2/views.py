@@ -334,6 +334,8 @@ def location_search(request):
             "lat_lng":location.get("lat_lng"),
             "distance_m":location.get("distance_m"),
             "distance_mi":round(location.get("distance_mi"),2),
+            "phone":location.get("phone"),
+            "email":location.get("email"),
             "needs": {
                 "needs":location.get("needs").clean_change_text(),
                 "found":location.get("needs").created,

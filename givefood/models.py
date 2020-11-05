@@ -250,6 +250,15 @@ class FoodbankLocation(models.Model):
     def full_name(self):
         return "%s, %s" % (self.name, self.foodbank_name)
 
+    def email(self):
+        return self.foodbank.contact_email
+        
+    def phone_or_foodbank_phone(self):
+        if self.phone_number:
+            return self.phone_number
+        else:
+            return self.foodbank.phone_number
+
     def latest_need(self):
         return self.foodbank.latest_need()
 

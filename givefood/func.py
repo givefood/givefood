@@ -334,6 +334,8 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "mp_parl_id":location.mp_parl_id,
             "ward":location.ward,
             "district":location.district,
+            "phone":location.phone_or_foodbank_phone(),
+            "email":location.email(),
         })
 
     for foodbank in foodbanks:
@@ -353,6 +355,8 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "mp_parl_id":foodbank.mp_parl_id,
             "ward":foodbank.ward,
             "district":foodbank.district,
+            "phone":foodbank.phone_number,
+            "email":foodbank.contact_email,
         })
 
     for searchable_location in searchable_locations:
