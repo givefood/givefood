@@ -319,18 +319,40 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
 
     for location in locations:
         searchable_locations.append({
+            "type":"location",
             "name":location.full_name(),
             "lat":location.latt(),
             "lng":location.long(),
             "lat_lng":location.latt_long,
+            "needs":location.latest_need(),
+            "address":location.full_address(),
+            "postcode":location.postcode,
+            "parliamentary_constituency":location.parliamentary_constituency,
+            "parliamentary_constituency_slug":location.parliamentary_constituency_slug,
+            "mp":location.mp,
+            "mp_party":location.mp_party,
+            "mp_parl_id":location.mp_parl_id,
+            "ward":location.ward,
+            "district":location.district,
         })
 
     for foodbank in foodbanks:
         searchable_locations.append({
+            "type":"organisation",
             "name":foodbank.name,
             "lat":foodbank.latt(),
             "lng":foodbank.long(),
             "lat_lng":foodbank.latt_long,
+            "needs":foodbank.latest_need(),
+            "address":foodbank.full_address(),
+            "postcode":foodbank.postcode,
+            "parliamentary_constituency":foodbank.parliamentary_constituency,
+            "parliamentary_constituency_slug":foodbank.parliamentary_constituency_slug,
+            "mp":foodbank.mp,
+            "mp_party":foodbank.mp_party,
+            "mp_parl_id":foodbank.mp_parl_id,
+            "ward":foodbank.ward,
+            "district":foodbank.district,
         })
 
     for searchable_location in searchable_locations:

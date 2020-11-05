@@ -332,10 +332,29 @@ def location_search(request):
     response_list = []
     for location in locations:
         response_list.append({
+            "type":location.get("type"),
             "name":location.get("name"),
             "lat_lng":location.get("lat_lng"),
             "distance_m":location.get("distance_m"),
-            "distance_mi":location.get("distance_mi"),
+            "distance_mi":round(location.get("distance_mi"),2),
+            "needs": {
+                "needs":location.get("needs").clean_change_text(),
+                "found":location.get("needs").created,
+            },
+            "address":location.get("address"),
+            "postcode":location.get("postcode"),
+            "politics": {
+                "parliamentary_constituency":location.get("parliamentary_constituency"),
+                "mp":location.get("mp"),
+                "mp_party":location.get("mp_party"),
+                "mp_parl_id":location.get("mp_parl_id"),
+                "ward":location.get("ward"),
+                "district":location.get("district"),
+                "urls": {
+                    "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (location.get("parliamentary_constituency_slug")),
+                    "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (location.get("parliamentary_constituency_slug")),
+                },
+            }
         })
     
     return ApiResponse(response_list, "locations", format)
