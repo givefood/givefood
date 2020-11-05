@@ -150,6 +150,7 @@ def foodbank(request, slug):
         location_list.append(
             {
                 "name":location.name,
+                "slug":location.slug,
                 "address":location.full_address(),
                 "postcode":location.postcode,
                 "lat_lng":location.latt_long,
