@@ -307,6 +307,48 @@ def find_foodbanks(lattlong, quantity = 10, skip_first = False):
     return sorted_foodbanks[first_item:quantity]
 
 
+def find_locations(lattlong, quantity = 10, skip_first = False):
+
+    locations = get_all_locations()
+    foodbanks = get_all_open_foodbanks()
+
+    latt = float(lattlong.split(",")[0])
+    long = float(lattlong.split(",")[1])
+
+    searchable_locations = []
+
+    for location in locations:
+        searchable_locations.append({
+            "name":location.full_name(),
+            "lat":location.latt(),
+            "lng":location.long(),
+            "lat_lng":location.latt_long,
+        })
+
+    for foodbank in foodbanks:
+        searchable_locations.append({
+            "name":foodbank.name,
+            "lat":foodbank.latt(),
+            "lng":foodbank.long(),
+            "lat_lng":foodbank.latt_long,
+        })
+
+    for searchable_location in searchable_locations:
+        searchable_location["distance_m"] = distance_meters(searchable_location.get("lat"), searchable_location.get("lng"), latt, long)
+        searchable_location["distance_mi"] = miles(searchable_location.get("distance_m"))
+        logging.info(searchable_location)
+
+    sorted_searchable_locations = sorted(searchable_locations, key=lambda k: k['distance_m'])
+
+    if skip_first:
+        first_item = 1
+        quantity = quantity + 1
+    else:
+        first_item = 0
+
+    return sorted_searchable_locations[first_item:quantity]
+
+
 def miles(meters):
     return meters*0.000621371192
 

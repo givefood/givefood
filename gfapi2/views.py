@@ -6,7 +6,7 @@ from django.http import HttpResponseBadRequest
 
 from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import get_all_foodbanks, find_foodbanks, geocode
+from givefood.func import get_all_foodbanks, find_foodbanks, geocode, find_locations
 
 DEFAULT_FORMAT = "json"
 
@@ -309,6 +309,32 @@ def foodbank_search(request):
         })
 
     return ApiResponse(response_list, "foodbanks", format)
+
+
+def location_search(request):
+
+    format = request.GET.get("format", DEFAULT_FORMAT)
+    lat_lng = request.GET.get("lat_lng")
+    address = request.GET.get("address")
+
+    if not lat_lng and not address:
+        return HttpResponseBadRequest()
+
+    if address and not lat_lng:
+        lat_lng = geocode(address)
+
+    locations = find_locations(lat_lng, 10)
+
+    response_list = []
+    for location in locations:
+        response_list.append({
+            "name":location.get("name"),
+            "lat_lng":location.get("lat_lng"),
+            "distance_m":location.get("distance_m"),
+            "distance_mi":location.get("distance_mi"),
+        })
+    
+    return ApiResponse(response_list, "locations", format)
 
 
 def needs(request):
