@@ -247,11 +247,20 @@ class FoodbankLocation(models.Model):
     def get_absolute_url(self):
         return "/admin/foodbank/%s/location/%s/edit/" % (self.foodbank.slug, self.slug)
 
+    def full_name(self):
+        return "%s, %s" % (self.name, self.foodbank_name)
+
     def latest_need(self):
         return self.foodbank.latest_need()
 
     def full_address(self):
         return "%s\r\n%s" % (self.address, self.postcode)
+
+    def latt(self):
+        return float(self.latt_long.split(",")[0])
+
+    def long(self):
+        return float(self.latt_long.split(",")[1])
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
