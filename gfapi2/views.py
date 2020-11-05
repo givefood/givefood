@@ -277,7 +277,6 @@ def foodbank_search(request):
             "email":foodbank.contact_email,
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
-            "closed":foodbank.is_closed,
             "lat_lng":foodbank.latt_long,
             "network":foodbank.network,
             "distance_m":int(foodbank.distance_m),
