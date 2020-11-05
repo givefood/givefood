@@ -278,10 +278,8 @@ def foodbank_search(request):
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
             "lat_lng":foodbank.latt_long,
-            "network":foodbank.network,
             "distance_m":int(foodbank.distance_m),
             "distance_mi":round(foodbank.distance_mi,2),
-            "created":foodbank.created,
             "needs": {
                 "needs":foodbank.latest_need().clean_change_text(),
                 "found":foodbank.latest_need().created,
