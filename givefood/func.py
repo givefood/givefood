@@ -171,6 +171,10 @@ def get_weight(text):
     # Kilogram
     if text[-2:] == "Kg":
         weight = float(text[-4:].replace("Kg","")) * 1000
+    
+    # Kilogram
+    if text[-2:] == "kg":
+        weight = float(text[-4:].replace("kg","")) * 1000
 
     # Grams
     if text[-1:] == "G":
