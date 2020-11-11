@@ -20,9 +20,9 @@
           {% endif %}
         </dd>
         <dt>Created</dt>
-        <dd>{{ need.created }}</dd>
+        <dd>{{ need.created }} ({{ need.created|timesince }} ago)</dd>
         <dt>Modified</dt>
-        <dd>{{ need.modified }}</dd>
+        <dd>{{ need.modified }} ({{ need.modified|timesince }} ago)</dd>
         <dt>ID</dt>
         <dd>{{ need.need_id }}</dd>
         {% if need.distill_id %}
@@ -48,9 +48,10 @@
         {% csrf_token %}
         <input type="submit" class="button is-success" value="Publish">
       </form>
+      <br>
       <form action="{% url 'admin_need_tweet' need.need_id %}" method="post">
         {% csrf_token %}
-        <input type="submit" class="button is-danger" value="TWEET">
+        <input type="submit" class="button is-danger" value="Tweet">
       </form>
       <br>
       <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
@@ -68,7 +69,7 @@
         <div class="box">
           <p>{{ need.diff_from_last|linebreaksbr }}</p>
         </div>
-        {{ need.last_need_date }}
+        {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)
       {% endif %}
     </div>
 
