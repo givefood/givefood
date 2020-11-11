@@ -520,4 +520,12 @@ CALORIES = {
     "Sainsbury's Chocolate Sponge Pudding 110g":294,
     "Aunty's Golden Syrup Steamed Pudding 2x100g":294,
     "Sainsbury's Sticky Toffee Sponge Pudding 2x110g":294,
+    "Sainsbury's Whole British Milk 1L":64,
+    "Tesco Pilau Rice 250G":154,
+    "Tesco Indian Basmati Rice 1Kg":153,
+    "Tesco Spaghetti Rings 410G":59,
+    "Summer Pride Peach Slices in Syrup 220g":67,
+    "Summer Pride Peaches Slices in Grape Juice 220g":51,
+    "Sainsbury's Mandarin Segments in Fruit Juice 298g":54,
+    "Fray Bentos Chicken Meatballs in Chilli Sauce 380g":115,
 }
