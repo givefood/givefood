@@ -528,4 +528,6 @@ CALORIES = {
     "Summer Pride Peaches Slices in Grape Juice 220g":51,
     "Sainsbury's Mandarin Segments in Fruit Juice 298g":54,
     "Fray Bentos Chicken Meatballs in Chilli Sauce 380g":115,
+    "KTC Chopped Tomatoes 400g":16,
+    "Fray Bentos Chicken Meatballs in Barbecue Sauce 380g":112,
 }
