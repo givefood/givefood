@@ -530,4 +530,7 @@ CALORIES = {
     "Fray Bentos Chicken Meatballs in Chilli Sauce 380g":115,
     "KTC Chopped Tomatoes 400g":16,
     "Fray Bentos Chicken Meatballs in Barbecue Sauce 380g":112,
+    "Quaker Oat So Simple Original Porridge 20x27g":1557,
+    "Fray Bentos Meatballs In Tomato Sauce 380g":113,
+    "Fray Bentos Meatballs In Gravy 380g":104,
 }
