@@ -332,7 +332,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
     for location in locations:
         searchable_locations.append({
             "type":"location",
-            "name":location.full_name(),
+            "name":location.name,
             "lat":location.latt(),
             "lng":location.long(),
             "lat_lng":location.latt_long,
