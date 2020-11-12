@@ -544,4 +544,7 @@ CALORIES = {
     "Sainsbury's Microwave Rice Spicy Mexican 250g":182,
     "Sainsbury's Savoury Rice, Golden Vegetable 105g":129,
     "Sainsbury's Chopped Tomatoes With Herbs 227g":25,
+    "Hubbard's Foodstore Strawberry Jam 454g":247,
+    "Dairy Pride Semi-Skimmed Longer Lasting UHT Milk 1 Litre":46,
+    "Sainsbury's Semi Skimmed British Milk 1L":47,
 }
