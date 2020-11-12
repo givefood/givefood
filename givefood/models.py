@@ -225,6 +225,9 @@ class FoodbankLocation(models.Model):
     foodbank_name = models.CharField(max_length=50, editable=False)
     foodbank_slug = models.CharField(max_length=50, editable=False)
     foodbank_network = models.CharField(max_length=50, editable=False)
+    foodbank_phone_number = models.CharField(max_length=20, null=True, blank=True, editable=False)
+    foodbank_email = models.EmailField(editable=False)
+
     name = models.CharField(max_length=50)
     slug = models.CharField(max_length=50, editable=False)
     address = models.TextField()
@@ -249,15 +252,12 @@ class FoodbankLocation(models.Model):
 
     def full_name(self):
         return "%s, %s" % (self.name, self.foodbank_name)
-
-    def email(self):
-        return self.foodbank.contact_email
         
     def phone_or_foodbank_phone(self):
         if self.phone_number:
             return self.phone_number
         else:
-            return self.foodbank.phone_number
+            return self.foodbank_phone_number
 
     def latest_need(self):
         return self.foodbank.latest_need()
@@ -277,6 +277,8 @@ class FoodbankLocation(models.Model):
         self.foodbank_name = self.foodbank.name
         self.foodbank_slug = self.foodbank.slug
         self.foodbank_network = self.foodbank.network
+        self.foodbank_phone_number = self.foodbank.phone_number
+        self.foodbank_email = self.foodbank.contact_email
 
         if self.phone_number:
             self.phone_number = self.phone_number.replace(" ","")

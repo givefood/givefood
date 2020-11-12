@@ -58,6 +58,13 @@ indexes:
 
 - kind: givefood_foodbankchange
   properties:
+  - name: foodbank_name
+  - name: published
+  - name: created
+    direction: desc
+
+- kind: givefood_foodbankchange
+  properties:
   - name: published
   - name: created
     direction: desc

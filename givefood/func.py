@@ -336,7 +336,6 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "lat":location.latt(),
             "lng":location.long(),
             "lat_lng":location.latt_long,
-            "needs":location.latest_need(),
             "address":location.full_address(),
             "postcode":location.postcode,
             "parliamentary_constituency":location.parliamentary_constituency,
@@ -347,7 +346,10 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "ward":location.ward,
             "district":location.district,
             "phone":location.phone_or_foodbank_phone(),
-            "email":location.email(),
+            "email":location.foodbank_email,
+            "slug":location.slug,
+            "foodbank_slug":location.foodbank_slug,
+            "foodbank_name":location.foodbank_name,
         })
 
     for foodbank in foodbanks:
@@ -357,7 +359,6 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "lat":foodbank.latt(),
             "lng":foodbank.long(),
             "lat_lng":foodbank.latt_long,
-            "needs":foodbank.latest_need(),
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
             "parliamentary_constituency":foodbank.parliamentary_constituency,
@@ -369,6 +370,9 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "district":foodbank.district,
             "phone":foodbank.phone_number,
             "email":foodbank.contact_email,
+            "slug":foodbank.slug,
+            "foodbank_slug":foodbank.slug,
+            "foodbank_name":foodbank.name,
         })
 
     for searchable_location in searchable_locations:
