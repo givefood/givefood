@@ -41,13 +41,15 @@
               {{ foodbank.country }}
               <br><a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}" class="button is-link is-small">Directions</a>
             </p>
-            {% if foodbank.locations %}
-              <h3>Other locations</h3>
-              {% for location in foodbank.locations %}
-                <a href="https://www.google.co.uk/maps/?q={{ location.latt_long }}">{{ location.name }}</a><br>
-                {{ location.address|linebreaksbr }}<br>
-                {{ location.postcode }}<br><br>
-              {% endfor %}
+            {% if not foodbank.name == "Salvation Army" %}
+              {% if foodbank.locations %}
+                <h3>Other locations</h3>
+                {% for location in foodbank.locations %}
+                  <a href="https://www.google.co.uk/maps/?q={{ location.latt_long }}">{{ location.name }}</a><br>
+                  {{ location.address|linebreaksbr }}<br>
+                  {{ location.postcode }}<br><br>
+                {% endfor %}
+              {% endif %}
             {% endif %}
           </div>
           <div class="column">
