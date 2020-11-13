@@ -503,6 +503,36 @@ def admin_locations(request):
     return render_to_response("admin/locations.html", template_vars, context_instance=RequestContext(request))
 
 
+def admin_locations_loader_sa(request):
+
+    sa_foodbank = Foodbank.objects.get(slug="salvation-army")
+
+    with open('./givefood/data/sa_locations.csv') as csvfile:
+        readCSV = csv.reader(csvfile, delimiter=',')
+        for row in readCSV:
+
+            logging.info(row)
+            name = row[0]
+            address = row[1]
+            postcode = row[2]
+            email = row[3]
+            phone = row[4]
+            lat_lng = row[5]
+
+            foodbank_location = FoodbankLocation(
+                foodbank = sa_foodbank,
+                name = name,
+                address = address,
+                postcode = postcode,
+                email = email,
+                phone_number = phone,
+                latt_long = lat_lng,
+            )
+            foodbank_location.save()
+    
+
+    return HttpResponse("OK")
+
 def admin_politics(request):
 
     foodbanks = get_all_foodbanks()
