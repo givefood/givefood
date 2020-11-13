@@ -346,7 +346,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "ward":location.ward,
             "district":location.district,
             "phone":location.phone_or_foodbank_phone(),
-            "email":location.foodbank_email,
+            "email":location.email_or_foodbank_email(),
             "slug":location.slug,
             "foodbank_slug":location.foodbank_slug,
             "foodbank_name":location.foodbank_name,

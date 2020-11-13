@@ -234,6 +234,7 @@ class FoodbankLocation(models.Model):
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
     phone_number = models.CharField(max_length=20, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
 
     parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
     parliamentary_constituency_slug = models.CharField(max_length=50, null=True, blank=True, editable=False)
@@ -258,6 +259,12 @@ class FoodbankLocation(models.Model):
             return self.phone_number
         else:
             return self.foodbank_phone_number
+
+    def email_or_foodbank_email(self):
+        if self.email:
+            return self.email
+        else:
+            return self.foodbank_email
 
     def latest_need(self):
         return self.foodbank.latest_need()
