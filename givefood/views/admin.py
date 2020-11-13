@@ -519,16 +519,19 @@ def admin_locations_loader_sa(request):
             phone = row[4]
             lat_lng = row[5]
 
-            foodbank_location = FoodbankLocation(
-                foodbank = sa_foodbank,
-                name = name,
-                address = address,
-                postcode = postcode,
-                email = email,
-                phone_number = phone,
-                latt_long = lat_lng,
-            )
-            foodbank_location.save()
+            try:
+                foodbank_location = FoodbankLocation.objects.get(name=name,foodbank=sa_foodbank)
+            except FoodbankLocation.DoesNotExist:
+                foodbank_location = FoodbankLocation(
+                    foodbank = sa_foodbank,
+                    name = name,
+                    address = address,
+                    postcode = postcode,
+                    email = email,
+                    phone_number = phone,
+                    latt_long = lat_lng,
+                )
+                foodbank_location.save()
     
 
     return HttpResponse("OK")
