@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="/static/css/wfbn.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFood_org_uk">
-  <meta property="og:title" content="{{ foodbank }} Food Bank">
+  <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
   <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
   <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
   <meta property="og:image" content="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/map.png">
@@ -26,7 +26,7 @@
           <ul>
             <li><a href="{% url 'public_index' %}">Give Food</a></li>
             <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
-            <li class="is-active"><a href="#" aria-current="page">{{ foodbank }} Food Bank</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
           </ul>
         </nav>
         <div class="columns">
