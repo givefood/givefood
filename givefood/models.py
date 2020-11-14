@@ -99,7 +99,7 @@ class Foodbank(models.Model):
             if self.country == "Northern Ireland":
                 return "https://www.charitycommissionni.org.uk/charity-details/?regId=%s" % (self.charity_number)
             if self.country == "Wales" or self.country == "England":
-                return "https://beta.charitycommission.gov.uk/charity-details/?regId=%s" % (self.charity_number)
+                return "https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=%s&subid=0" % (self.charity_number)
 
     def needs(self):
         return FoodbankChange.objects.filter(foodbank = self).order_by("-created")
