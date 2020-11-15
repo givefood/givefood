@@ -586,4 +586,13 @@ CALORIES = {
     "Sainsbury's Macaroni 500g":159,
     "Sainsbury's Penne Rigate 500g":159,
     "Sainsbury's Fusilli 500g":159,
+    "Heinz No Added Sugar Cream Of Tomato Soup 4x400g":34,
+    "Sainsbury's Cream Of Tomato Soup 4x400g":57,
+    "Aunty's Delicious Spotted Dick Sultana & Raisin Steamed Puddings 2x95g":294,
+    "Napolina Chopped Tomatoes 400g":23,
+    "Heinz Minestrone Soup 4x400g":32,
+    "Heinz Oxtail Soup 4x400g":45,
+    "Heinz Cream of Tomato Soup x4 400g":51,
+    "Heinz Mushroom Soup 4x400g":43,
+    "Heinz Classic Potato & Leek Soup 400g":49,
 }
