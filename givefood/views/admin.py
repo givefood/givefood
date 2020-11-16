@@ -119,7 +119,10 @@ def admin_foodbanks_csv(request):
     writer = csv.writer(response)
     writer.writerow(['name', 'postcode', 'charity_number', 'country', 'last_order', 'last_need', 'no_locations', 'network', 'closed', 'url', 'created', 'modified', 'email'])
     for foodbank in foodbanks:
+        logging.info(foodbank.name)
+
         output.append([foodbank.name, foodbank.postcode, foodbank.charity_number, foodbank.country, foodbank.last_order, foodbank.last_need, foodbank.no_locations, foodbank.network, foodbank.is_closed, foodbank.url, foodbank.created, foodbank.modified, foodbank.contact_email])
+        
     writer.writerows(output)
     return response
 
