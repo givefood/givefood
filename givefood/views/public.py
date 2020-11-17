@@ -286,7 +286,7 @@ def public_wfbn_foodbank(request, slug):
     return render_to_response("public/wfbn_foodbank.html", template_vars, context_instance=RequestContext(request))
 
 
-@cache_page(60*10)
+@cache_page(60*30)
 def public_wfbn_foodbank_map(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
