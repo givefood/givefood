@@ -1,0 +1,37 @@
+{% extends "public/page.html" %}
+
+{% block title %}Trussell Trust Old Data - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+
+    <div class="column">
+        <h2>Old Data</h2>
+        <table class="table is-striped is-narrow is-fullwidth">
+            <tr><th>Food Bank</th><th>Last Need Found</th></tr>
+            {% for foodbank in old %}
+            <tr>
+                <td><a href="{{ foodbank.url }}">{{ foodbank.name }}</a></td>
+                <td>{{ foodbank.last_need|timesince }} ago</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="column">
+        <h2>Recent Changes</h2>
+        <table class="table is-striped is-narrow is-fullwidth">
+            <tr><th>Food Bank</th><th>Last Need Found</th></tr>
+            {% for foodbank in recent %}
+                <tr>
+                    <td><a href="{{ foodbank.url }}">{{ foodbank.name }}</a></td>
+                    <td>{{ foodbank.last_need|timesince }} ago</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+  </div><br><br>
+
+{% endblock %}

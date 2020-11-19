@@ -38,6 +38,17 @@ indexes:
   - name: is_closed
   - name: name
 
+- kind: givefood_foodbank
+  properties:
+  - name: network
+  - name: last_need
+
+- kind: givefood_foodbank
+  properties:
+  - name: network
+  - name: last_need
+    direction: desc
+
 - kind: givefood_foodbankchange
   properties:
   - name: foodbank_id

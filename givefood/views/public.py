@@ -211,6 +211,19 @@ def public_sitemap(request):
 def public_privacy(request):
     return render_to_response("public/privacy.html", context_instance=RequestContext(request))
 
+
+def public_tt_old_data(request):
+
+    recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:50]
+    old = Foodbank.objects.filter(network = "Trussell Trust").order_by("last_need")[:50]
+
+    template_vars = {
+        "recent":recent,
+        "old":old,
+    }
+    return render_to_response("public/tt-old-data.html", template_vars, context_instance=RequestContext(request))
+
+
 @cache_page(60*10)
 def public_what_food_banks_need(request):
 
@@ -293,6 +306,20 @@ def public_wfbn_foodbank_map(request, slug):
 
     result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ" % (foodbank.latt_long))
     return HttpResponse(result.content, content_type='image/png')
+
+
+@cache_page(60*10)
+def public_wfbn_foodbank_location(request, slug, locslug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    location = get_object_or_404(Location, slug = slug, foodbank = foodbank)
+
+    template_vars = {
+        "foodbank":foodbank,
+        "location":location,
+    }
+
+    return render_to_response("public/wfbn_foodbank_location.html", template_vars, context_instance=RequestContext(request))
 
 
 @cache_page(60*5)

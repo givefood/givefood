@@ -33,10 +33,14 @@ urlpatterns = (
 
     # WFBN
     url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
+    url(r'^needs/tt-old-data/$', givefood.views.public_tt_old_data, name="public_tt_old_data"),
     url(r'^needs/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
     url(r'^needs/click/(?P<slug>[-\w]+)/$', givefood.views.public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
+
     url(r'^needs/at/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_foodbank, name="public_wfbn_foodbank"),
     url(r'^needs/at/(?P<slug>[-\w]+)/map.png$', givefood.views.public_wfbn_foodbank_map, name="public_wfbn_foodbank_map"),
+    url(r'^needs/at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', givefood.views.public_wfbn_foodbank_location, name="public_wfbn_foodbank_location"),
+
     url(r'^needs/in/constituencies/$', givefood.views.public_wfbn_constituencies, name="public_wfbn_constituencies"),
     url(r'^needs/in/constituency/$', RedirectView.as_view(url="/needs/in/constituencies/")),
     url(r'^needs/in/constituency/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_constituency, name="public_wfbn_constituency"),
