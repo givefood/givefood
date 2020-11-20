@@ -595,4 +595,6 @@ CALORIES = {
     "Heinz Cream of Tomato Soup x4 400g":51,
     "Heinz Mushroom Soup 4x400g":43,
     "Heinz Classic Potato & Leek Soup 400g":49,
+    "Sainsbury's Peanut Butter Crunchy 340g":632,
+    "Sainsbury's Peanut Butter Smooth 340g":624,
 }
