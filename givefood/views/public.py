@@ -214,8 +214,6 @@ def public_privacy(request):
 
 def public_tt_old_data(request):
 
-    recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:50]
-    old = Foodbank.objects.filter(network = "Trussell Trust").order_by("last_need")[:50]
 
     template_vars = {
         "recent":recent,
