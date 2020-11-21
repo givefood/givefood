@@ -43,7 +43,7 @@
             <table class="table is-narrow is-fullwidth">
               {% for foodbank in constituency_foodbanks %}
                 <tr>
-                  <td class="foodbank_name"><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank.name }}</a></td>
+                  <td class="foodbank_name"><a href="{{ foodbank.url }}">{{ foodbank.name }}</a></td>
                   <td>
                     {% if foodbank.needs.change_text != "Unknown" %}
                       {{ foodbank.needs.change_text|linebreaksbr }}

@@ -134,7 +134,7 @@
       map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
 
       {% for location in map_locations %}
-        add_marker({{ location.latt_long }}, "/needs/at/{{ location.slug }}/")
+        add_marker({{ location.latt_long }}, "{{ location.url }}")
       {% endfor %}
 
       }

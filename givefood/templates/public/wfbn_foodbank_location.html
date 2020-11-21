@@ -4,18 +4,18 @@
   <link rel="stylesheet" href="/static/css/wfbn.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFood_org_uk">
-  <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
-  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
-  <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
-  <meta property="og:image" content="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/map.png">
+  <meta property="og:title" content="{{ location }}, {{ foodbank }} Food Bank">
+  <meta property="og:description" content="Find what {{ location }}, {{ foodbank }} food bank is requesting to have donated">
+  <meta name="description" content="Find what {{ location }}, {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/{{ location.slug }}/map.png">
   <link rel="manifest" href="/needs/manifest.json">
-  <meta name="geo.placename" content="{{ foodbank }} Food Bank">
-  <meta name="geo.position" content="{{ foodbank.latt_long }}">
-  <meta property="place:location:latitude" content="{{ foodbank.latt }}">
-  <meta property="place:location:longitude" content="{{ foodbank.long }}">
+  <meta name="geo.placename" content="{{ location }}, {{ foodbank }} Food Bank">
+  <meta name="geo.position" content="{{ location.latt_long }}">
+  <meta property="place:location:latitude" content="{{ location.latt }}">
+  <meta property="place:location:longitude" content="{{ location.long }}">
 {% endblock %}
 
-{% block title %}{{ foodbank }} Food Bank - Give Food{% endblock %}
+{% block title %}{{ location.name }} - {{ foodbank.name }} Food Bank - Give Food{% endblock %}
 
 {% block body %}
 
@@ -26,34 +26,25 @@
           <ul>
             <li><a href="{% url 'public_index' %}">Give Food</a></li>
             <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
-            <li class="is-active"><a href="#" aria-current="page">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
+            <li><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{ location.name }}</a></li>
           </ul>
         </nav>
         <div class="columns">
           <div class="column">
-            <a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}">
-              <img src="{{ map_url }}" alt="Map of {{ foodbank }} Food Bank">
+            <a href="https://www.google.co.uk/maps/?q={{ location.latt_long }}">
+              <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ location.latt_long }}&size=350x700&scale=2&maptype=roadmap&format=png&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ&markers={{ location.latt_long }}" alt="Map of {{ location }}, {{ foodbank }} Food Bank">
             </a>
             <br>
             <p>
-              {{ foodbank.address|linebreaksbr }}<br>
-              {{ foodbank.postcode }}<br>
-              {{ foodbank.country }}
-              <br><a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}" class="button is-link is-small">Directions</a>
+              {{ location.address|linebreaksbr }}<br>
+              {{ location.postcode }}<br>
+              {{ location.country }}
+              <br><a href="https://www.google.co.uk/maps/?q={{ location.latt_long }}" class="button is-link is-small">Directions</a>
             </p>
-            {% if not foodbank.name == "Salvation Army" %}
-              {% if foodbank.locations %}
-                <h3>Other locations</h3>
-                {% for location in foodbank.locations %}
-                  <a href="{% url 'public_wfbn_foodbank_location' location.foodbank_slug location.slug %}">{{ location.name }}</a><br>
-                  {{ location.address|linebreaksbr }}<br>
-                  {{ location.postcode }}<br><br>
-                {% endfor %}
-              {% endif %}
-            {% endif %}
           </div>
           <div class="column">
-            <h2>{{ foodbank }} Food Bank</h2>
+            <h2>{{ location }}, {{ foodbank }} Food Bank</h2>
 
             {% if foodbank.latest_need.change_text != "Unknown" %}
               <h3>Items Needed</h3>
@@ -70,23 +61,23 @@
             <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:40 }}</a><br>
             <p></p>
 
-            {% if foodbank.parliamentary_constituency %}
+            {% if location.parliamentary_constituency %}
               <h3>Political Representatives</h3>
-              <p>This food bank is in the <a href="{% url "public_wfbn_constituency" foodbank.parliamentary_constituency_slug %}">{{ foodbank.parliamentary_constituency }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} MP">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party. You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.
+              <p>This food bank is in the <a href="{% url "public_wfbn_constituency" location.parliamentary_constituency_slug %}">{{ location.parliamentary_constituency }} constituency</a> ({{ location.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ location.mp }} MP">{{ location.mp }} MP</a> of the {{ location.mp_party }} party. You can use <a href="https://www.writetothem.com/who?pc={{ location.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.
               <br>
-              <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}" class="button is-link is-small">Write</a>
+              <a href="https://www.writetothem.com/who?pc={{ location.postcode }}" class="button is-link is-small">Write</a>
             {% endif %}
 
             {% if foodbank.charity_number %}
               <p></p>
               <h3>Charity</h3>
-              <p>{{ foodbank }} food bank operates under a charity registered in {{ foodbank.country }}, charity number <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>.</p>
+              <p>{{ foodbank }} operates under a charity registered in {{ foodbank.country }}, charity number <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>.</p>
             {% endif %}
 
             <h3>Nearby Food Banks</h3>
             <ul>
               {% for foodbank in foodbank.nearby %}
-                <li><a href="../{{ foodbank.slug }}/">{{ foodbank }}</a> <span class="is-size-7">{{ foodbank.distance_mi|floatformat:2 }}mi away</span></li>
+                <li><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank }}</a> <span class="is-size-7">{{ foodbank.distance_mi|floatformat:2 }}mi away</span></li>
               {% endfor %}
             </ul>
             <p>

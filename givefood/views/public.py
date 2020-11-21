@@ -199,10 +199,12 @@ def public_sitemap(request):
 
     foodbanks = get_all_foodbanks()
     constituencies = get_all_constituencies()
+    sa_locations = FoodbankLocation.objects.filter(foodbank_name = "Salvation Army")
 
     template_vars = {
         "foodbanks":foodbanks,
         "constituencies":constituencies,
+        "sa_locations":sa_locations,
     }
     return render_to_response("public/sitemap.xml", template_vars, content_type='text/xml')
 
@@ -214,6 +216,8 @@ def public_privacy(request):
 
 def public_tt_old_data(request):
 
+    recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
+    old = Foodbank.objects.filter(network = "Trussell Trust").order_by("last_need")[:100]
 
     template_vars = {
         "recent":recent,
@@ -240,7 +244,7 @@ def public_what_food_banks_need(request):
             map_locations.append(
                 {
                     "latt_long":foodbank.latt_long,
-                    "slug":foodbank.slug
+                    "url":"/needs/at/%s/" % (foodbank.slug)
                 }
             )
 
@@ -248,7 +252,7 @@ def public_what_food_banks_need(request):
             map_locations.append(
                 {
                     "latt_long":location.latt_long,
-                    "slug":location.foodbank_slug
+                    "url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
                 }
             )
 
@@ -306,11 +310,11 @@ def public_wfbn_foodbank_map(request, slug):
     return HttpResponse(result.content, content_type='image/png')
 
 
-@cache_page(60*10)
+# @cache_page(60*10)
 def public_wfbn_foodbank_location(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    location = get_object_or_404(Location, slug = slug, foodbank = foodbank)
+    location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
 
     template_vars = {
         "foodbank":foodbank,
@@ -356,7 +360,8 @@ def public_wfbn_constituency(request, slug):
             "mp_party":foodbank.mp_party,
             "mp_parl_id":foodbank.mp_parl_id,
             "latt_long":foodbank.latt_long,
-            "needs":foodbank.latest_need()
+            "needs":foodbank.latest_need(),
+            "url":"/needs/at/%s/" % (foodbank.slug)
         })
 
     for location in locations:
@@ -368,7 +373,8 @@ def public_wfbn_constituency(request, slug):
             "mp_party":location.mp_party,
             "mp_parl_id":location.mp_parl_id,
             "latt_long":location.latt_long,
-            "needs":location.latest_need()
+            "needs":location.latest_need(),
+            "url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
         })
 
     #Dedupe
