@@ -310,7 +310,7 @@ def public_wfbn_foodbank_map(request, slug):
     return HttpResponse(result.content, content_type='image/png')
 
 
-# @cache_page(60*10)
+@cache_page(60*10)
 def public_wfbn_foodbank_location(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
