@@ -597,4 +597,12 @@ CALORIES = {
     "Heinz Classic Potato & Leek Soup 400g":49,
     "Sainsbury's Peanut Butter Crunchy 340g":632,
     "Sainsbury's Peanut Butter Smooth 340g":624,
+    "Sainsbury's Rice Pudding, Creamed 400g":94,
+    "Sainsbury's Rice Pudding, Low Fat, Be Good To Yourself 400g":87,
+    "Ambrosia Custard Can 400g":96,
+    "Ambrosia Rice Pudding Pot 150g":98,
+    "Sainsbury's Beef Paste 75g":27,
+    "Ambrosia Rice Pudding Can 400g":96,
+    "Ambrosia Low Fat Rice Pudding Can 400g":88,
+    "Ambrosia Light Rice Pudding Pot 150g":88,
 }
