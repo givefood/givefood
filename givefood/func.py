@@ -138,7 +138,14 @@ def parse_sainsburys_order_text(order_text):
 
 def get_calories(text, weight, quantity):
 
-    calories = CALORIES.get(text, 0)
+    from givefood.models import OrderItem
+
+    try:
+        order_item = OrderItem.objects.get(name = text)
+        calories = order_item.calories
+    except OrderItem.DoesNotExist:
+        calories = 0
+
     total_calories = calories * (weight/100) * quantity
     # logging.info("calories: %s, weight: %s, total: %s" % (calories,weight,total_calories))
     return total_calories
@@ -192,12 +199,16 @@ def get_weight(text):
     if text[-1:] == "g" and not weight:
       weight = float(text[-4:].replace("g",""))
 
+    # 6x1L
+    if text[-5:] == " 6x1L":
+      weight = 6000
+
     # Litre
     if text[-6:] == " Litre":
       weight = float(text[-7:].replace(" Litre","")) * 1000
 
     # L (Litre)
-    if text[-1:] == "L":
+    if text[-1:] == "L" and not weight:
       weight = float(text[-3:].replace("L","")) * 1000
 
     # Millilitres

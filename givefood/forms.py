@@ -1,7 +1,7 @@
 from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
 
-from models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency
+from models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem
 from const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
@@ -45,6 +45,7 @@ class FoodbankLocationPoliticsForm(ModelForm):
         model = Foodbank
         fields = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party", "mp_parl_id")
 
+
 class OrderForm(ModelForm):
     foodbank = ModelChoiceField(queryset=Foodbank.objects.filter(is_closed = False).order_by('name'))
     need = ModelChoiceField(queryset=FoodbankChange.objects.all().order_by('-created'), required=False)
@@ -64,6 +65,11 @@ class OrderForm(ModelForm):
                 ).order_by('-created')
                 self.fields['need'].queryset = queryset
 
+
+class OrderItemForm(ModelForm):
+    class Meta:
+        model = OrderItem
+        fields = "__all__"
 
 class NeedForm(ModelForm):
     foodbank = ModelChoiceField(queryset=Foodbank.objects.filter().order_by('name'), required=False)

@@ -20,9 +20,11 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
+# from givefood.const.calories import CALORIES
+# from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
 from givefood.func import get_all_foodbanks, get_all_locations
-from givefood.models import Foodbank, Order, OrderLine, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm
+from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm, OrderItemForm
 
 
 def admin_index(request):
@@ -535,6 +537,51 @@ def admin_locations_loader_sa(request):
     
 
     return HttpResponse("OK")
+
+
+def admin_items(request):
+
+    items = OrderItem.objects.all()
+
+    template_vars = {
+        "items":items,
+        "section":"items",
+    }
+    return render_to_response("admin/items.html", template_vars, context_instance=RequestContext(request))
+
+
+def admin_items_loader(request):
+    
+#     for name,calories in CALORIES.items():
+#         new_item = OrderItem.objects.get_or_create(
+#             name = name,
+#             calories = calories,
+#             tesco_image_id = TESCO_IMAGE_IDS.get(name),
+#         )
+
+    return HttpResponse("OK")
+
+
+def admin_item_form(request, slug = None):
+
+    if slug:
+        item = get_object_or_404(OrderItem, slug = slug)
+    else:
+        item = None
+
+    if request.POST:
+        form = OrderItemForm(request.POST, instance=item)
+        if form.is_valid():
+            need = form.save()
+            return redirect("admin_items")
+    else:
+        form = OrderItemForm(instance=item)
+
+    template_vars = {
+        "form":form,
+    }
+    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+
 
 def admin_politics(request):
 

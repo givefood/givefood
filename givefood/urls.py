@@ -61,10 +61,17 @@ urlpatterns = (
     url(r'^admin/foodbanks/$', givefood.views.admin_foodbanks, name="admin_foodbanks"),
     url(r'^admin/foodbanks/christmascards/$', givefood.views.admin_foodbanks_christmascards, name="admin_foodbanks_christmascards"),
     url(r'^admin/foodbanks/csv/$', givefood.views.admin_foodbanks_csv, name="admin_foodbanks_csv"),
+
     url(r'^admin/orders/$', givefood.views.admin_orders, name="admin_orders"),
     url(r'^admin/orders/csv/$', givefood.views.admin_orders_csv, name="admin_orders_csv"),
+
     url(r'^admin/needs/$', givefood.views.admin_needs, name="admin_needs"),
     url(r'^admin/needs/csv/$', givefood.views.admin_needs_csv, name="admin_needs_csv"),
+
+    url(r'^admin/items/$', givefood.views.admin_items, name="admin_items"),
+    url(r'^admin/items/loader/$', givefood.views.admin_items_loader, name="admin_items_loader"),
+    url(r'^admin/item/new/$', givefood.views.admin_item_form, name="admin_item_new"),
+    url(r'^admin/item/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_item_form, name="admin_item_form"),
 
     url(r'^admin/foodbank/new/$', givefood.views.admin_foodbank_form, name="admin_newfoodbank"),
     url(r'^admin/foodbank/(?P<slug>[-\w]+)/$', givefood.views.admin_foodbank, name="admin_foodbank"),

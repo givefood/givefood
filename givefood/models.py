@@ -460,6 +460,20 @@ class OrderLine(models.Model):
         return self.weight/1000
 
 
+class OrderItem(models.Model):
+
+    name = models.CharField(max_length=100)
+    slug = models.CharField(max_length=100, editable=False)
+    calories = models.PositiveIntegerField()
+    tesco_image_id = models.CharField(max_length=100, null=True, blank=True)
+    sainsburys_image_id = models.CharField(max_length=100, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+
+        self.slug = slugify(self.name)
+        super(OrderItem, self).save(*args, **kwargs)
+
+
 class FoodbankChange(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)

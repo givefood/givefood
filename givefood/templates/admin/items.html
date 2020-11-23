@@ -1,0 +1,39 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Items - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Items</h2>
+
+  <a href="{% url "admin_item_new" %}" class="button is-link">New Item</a>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>Calories</th>
+          <th>Tesco ID</th>
+          <th>Sainsburys ID</th>
+          <th></th>
+        </tr>
+        {% for item in items %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.calories }}</td>
+            <td>{{ item.tesco_image_id }}</td>
+            <td>{{ item.sainsburys_image_id }}</td>
+            <td><a href="{% url "admin_item_form" item.slug %}" class="button is-small">Edit</a></td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}
