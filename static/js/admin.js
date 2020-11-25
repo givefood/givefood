@@ -56,12 +56,15 @@ document.addEventListener("turbolinks:load", function() {
   if (change_text_field) {
     var titlecase_btn = document.createElement('div');
     var csvline_btn = document.createElement('div');
+    var findreplace_btn = document.createElement('div');
 
     titlecase_btn.innerHTML = "<a href='#' id='titlecase_btn' class='extra-form-button button is-info'>Make Titlecase</a>";
     csvline_btn.innerHTML = "<a href='#' id='csvline_btn' class='extra-form-button button is-info'>CSV to Lines</a>";
+    findreplace_btn.innerHTML = "<a href='#' id='findreplace_btn' class='extra-form-button button is-info'>Find & Replace</a>";
 
     insertAfter(csvline_btn, change_text_field);
     insertAfter(titlecase_btn, change_text_field);
+    insertAfter(findreplace_btn, change_text_field);
 
     titlecase_btn = document.querySelector("#titlecase_btn");
     titlecase_btn.addEventListener("click", function(event) {
@@ -73,6 +76,14 @@ document.addEventListener("turbolinks:load", function() {
     csvline_btn = document.querySelector("#csvline_btn");
     csvline_btn.addEventListener("click", function(event) {
       change_text_field.value = csvToLines(change_text_field.value);
+      event.preventDefault();
+    });
+
+    findreplace_btn = document.querySelector("#findreplace_btn");
+    findreplace_btn.addEventListener("click", function(event) {
+      find_text = prompt("Find what?")
+      replace_text = prompt("Replace with what?")
+      change_text_field.value = change_text_field.value.replaceAll(find_text,replace_text)
       event.preventDefault();
     });
   }
