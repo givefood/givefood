@@ -8,6 +8,7 @@ from djangae.environment import is_production_environment
 
 from google.appengine.api import mail
 from google.appengine.api import urlfetch
+from google.appengine.ext import deferred
 
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
@@ -179,7 +180,7 @@ def admin_orders_csv(request):
 
 def admin_needs(request):
 
-    needs = FoodbankChange.objects.all().order_by("-created")[:100]
+    needs = FoodbankChange.objects.all().order_by("-created")[:1000]
 
     template_vars = {
         "needs":needs,

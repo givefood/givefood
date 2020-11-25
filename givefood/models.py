@@ -59,6 +59,11 @@ class Foodbank(models.Model):
 
     no_locations = models.IntegerField(editable=False, default=0)
 
+    class Search:
+         fields = [
+             "name",
+         ]
+
     def __str__(self):
         return self.name
 
@@ -488,6 +493,11 @@ class FoodbankChange(models.Model):
     uri = models.CharField(max_length=250, null=True, blank=True)
     change_text = models.TextField()
     published = models.BooleanField(default=False)
+
+    class Search:
+         fields = [
+             "change_text",
+         ]
 
     def __str__(self):
         return "%s - %s (%s)" % (self.foodbank_name, self.created.strftime("%b %d %Y %H:%M:%S"), self.need_id)
