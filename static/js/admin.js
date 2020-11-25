@@ -63,8 +63,8 @@ document.addEventListener("turbolinks:load", function() {
     findreplace_btn.innerHTML = "<a href='#' id='findreplace_btn' class='extra-form-button button is-info'>Find & Replace</a>";
 
     insertAfter(csvline_btn, change_text_field);
-    insertAfter(titlecase_btn, change_text_field);
     insertAfter(findreplace_btn, change_text_field);
+    insertAfter(titlecase_btn, change_text_field);
 
     titlecase_btn = document.querySelector("#titlecase_btn");
     titlecase_btn.addEventListener("click", function(event) {
