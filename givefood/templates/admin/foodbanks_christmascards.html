@@ -18,11 +18,13 @@
           <th></th>
         </tr>
         {% for foodbank in foodbanks %}
+          {% if foodbank.last_order %}
           <tr>
             <td>{{ foodbank }}</td>
             <td><p>{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</p></td>
             <td>{{ foodbank.total_weight_kg_pkg|intcomma }} kg</td>
           </tr>
+          {% endif %}
         {% endfor %}
       </table>
 
