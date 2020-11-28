@@ -3,6 +3,8 @@ import logging
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest
+from django.template.defaultfilters import slugify
+from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
@@ -283,6 +285,7 @@ def foodbank_search(request):
             "needs": {
                 "needs":foodbank.latest_need().clean_change_text(),
                 "found":foodbank.latest_need().created,
+                "number":foodbank.latest_need().no_items(),
             },
             "urls": {
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
@@ -312,6 +315,7 @@ def foodbank_search(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
+@cache_page(60*10)
 def location_search(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -334,14 +338,22 @@ def location_search(request):
         response_list.append({
             "type":location.get("type"),
             "name":location.get("name"),
-            "foodbank_name":location.get("foodbank_name"),
             "lat_lng":location.get("lat_lng"),
             "distance_m":location.get("distance_m"),
             "distance_mi":round(location.get("distance_mi"),2),
             "phone":location.get("phone"),
             "email":location.get("email"),
+            "foodbank": {
+                "name":location.get("foodbank_name"),
+                "slug":slugify(location.get("foodbank_name")),
+                "urls": {
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % slugify(location.get("foodbank_name")),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/" % slugify(location.get("foodbank_name")),
+                }
+            },
             "needs": {
                 "needs":location_need.clean_change_text(),
+                "number":location_need.no_items(),
                 "found":location_need.created,
             },
             "address":location.get("address"),
@@ -406,7 +418,6 @@ def need(request, id):
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (need.foodbank_name_slug()),
                 "html":"https://www.givefood.org.uk/needs/at/%s/" % (need.foodbank_name_slug()),
             }
-            
         },
         "needs":need.clean_change_text(),
         "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
