@@ -36,6 +36,12 @@ indexes:
 - kind: givefood_foodbank
   properties:
   - name: is_closed
+  - name: last_order
+  - name: name
+
+- kind: givefood_foodbank
+  properties:
+  - name: is_closed
   - name: name
 
 - kind: givefood_foodbank
