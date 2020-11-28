@@ -20,7 +20,7 @@ from django.template.defaultfilters import slugify
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode, find_foodbanks, geocode
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode, find_foodbanks, geocode, find_locations
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
@@ -232,10 +232,11 @@ def public_what_food_banks_need(request):
     headless = request.GET.get("headless", False)
     where_from = request.GET.get("from", False)
     address = request.GET.get("address", "")
-    lattlong = request.GET.get("lattlong", "")
+    lattlong = request.GET.get("lat_lng", "")
 
     map_locations = []
-    foodbank_results = []
+    location_results = []
+
     if where_from != "trusselltrust":
         foodbanks = get_all_foodbanks()
         locations = get_all_locations()
@@ -260,7 +261,11 @@ def public_what_food_banks_need(request):
             lattlong = geocode(address)
 
         if lattlong:
-            foodbank_results = find_foodbanks(lattlong, 10)
+            location_results = find_locations(lattlong, 10)
+
+            for location in location_results:
+                location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
+                location["needs"] = location_need.change_text
 
     template_vars = {
         "headless":headless,
@@ -268,7 +273,7 @@ def public_what_food_banks_need(request):
         "address":address,
         "lattlong":lattlong,
         "map_locations":map_locations,
-        "foodbank_results":foodbank_results,
+        "location_results":location_results,
     }
     return render_to_response("public/wfbn.html", template_vars, context_instance=RequestContext(request))
 

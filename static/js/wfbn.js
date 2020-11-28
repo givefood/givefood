@@ -3,7 +3,7 @@ const uml_btn = document.querySelector("#usemylocationbtn");
 const addressgo_btn = document.querySelector("#addressgobtn");
 const address_field = document.querySelector("#address_field");
 const results_table = document.querySelector("table");
-const api_url_root = "/api/1/foodbanks/search/";
+const api_url_root = "/api/2/locations/search/";
 
 const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
 const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
@@ -61,7 +61,7 @@ function do_lattlong(position) {
   latt  = position.coords.latitude;
   long = position.coords.longitude;
   address_field.value = ""
-  querystring = "?lattlong=" + latt + "," + long;
+  querystring = "?lat_lng=" + latt + "," + long;
   api_url = api_url_root + querystring;
   api_request(api_url);
   record_search(querystring);
@@ -96,20 +96,28 @@ function api_response() {
 
   for (i in this.response) {
 
-    foodbank = this.response[i];
+    loctn = this.response[i];
 
-    url = foodbank.shopping_list_url;
-    name = foodbank.name;
-    distance = foodbank.distance_mi;
-    slug = foodbank.slug;
-    number_needs = foodbank.number_needs;
-    phone = foodbank.phone;
-    needs = foodbank.needs;
+    url = loctn.shopping_list_url;
+    name = loctn.name;
+    distance = loctn.distance_mi;
+    slug = loctn.foodbank.slug;
+    number_needs = loctn.needs.number;
+    org_type = loctn.type;
+    parent_org = loctn.foodbank.name;
+    parent_org_slug = loctn.foodbank.slug;
+    phone = loctn.phone;
+    needs = loctn.needs.needs;
     needs_html = needs.replace(/\n/g, "<br>");
 
     currentrow = document.importNode(template.content, true);
     currentrow.querySelector("a.foodbank").href = "/needs/click/" + slug + "/";
     currentrow.querySelector("a.foodbank").textContent = name;
+    if (org_type == "location" && currentrow.querySelector(".parent_org")) {
+      currentrow.querySelector(".parent_org span").innerHTML = "Part of"
+      currentrow.querySelector(".parent_org a").innerHTML = parent_org;
+      currentrow.querySelector(".parent_org a").href = "/needs/at/" + parent_org_slug + "/";
+    }
     currentrow.querySelector(".distance span").textContent = distance;
     if (number_needs > 0 && needs != "Nothing" && needs != "Unknown") {
       if (number_needs > 1) {item_text = "items"} else {item_text = "item"};

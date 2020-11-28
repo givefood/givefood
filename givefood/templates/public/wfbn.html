@@ -53,16 +53,21 @@
       <div id="theresults">
         
         <table class="table needs">
-          {% if foodbank_results %}
-            {% for foodbank in foodbank_results %}
+          {% if location_results %}
+            {% for location in location_results %}
               <tr>
                 <td>
-                  <a href="/needs/click/{{ foodbank.slug }}/" class="foodbank" target="_top">{{ foodbank.name }}</a>
-                  <div class="distance">{{ foodbank.distance_mi|floatformat:2 }}mi away</div>
-                    <div class="links">
-                      <a class="phone" href="tel:{{ foodbank.phone_number }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
-                      <a class="info" href="/needs/at/{{ foodbank.slug }}/" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
-                    </div>
+                  <a href="/needs/click/{{ location.foodbank_slug }}/" class="foodbank" target="_top">{{ location.name }}</a>
+                  <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
+                  {% if where_from != "trusselltrust" %}
+                    {% if location.type == "location" %}
+                      <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
+                    {% endif %}
+                  {% endif %}
+                  <div class="links">
+                    <a class="phone" href="tel:{{ location.phone_or_foodbank_phone }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
+                    <a class="info" href="/needs/at/{{ location.foodbank_slug }}/" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
+                  </div>
                 </td>
                 <td class="need_detail">
                   <div class="fb_needs">
@@ -71,7 +76,7 @@
                     {% elif foodbank.latest_need_text == "Unknown" %}
                       Sorry. We don't know what's needed here, please contact the food bank
                     {% else %}
-                      {{ foodbank.latest_need_text|linebreaks }}
+                      {{ location.needs|linebreaks }}
                     {% endif %}
                   </div>
                 </td>
@@ -91,6 +96,9 @@
     <tr>
       <td>
         <a href="#" class="foodbank" target="_top"></a>
+        {% if where_from != "trusselltrust" %}
+          <div class="parent_org"><span></span> <a href="#"></a></div>
+        {% endif %}
         <div class="distance"><span></span>mi away</div>
         {% if where_from != "trusselltrust" %}
           <div class="links">

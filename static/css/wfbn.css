@@ -24,7 +24,7 @@
 .needs td {
   padding:0.75em 0.75em 0.75em 0;
 }
-.distance, .updated {
+.distance, .updated, .parent_org {
   font-size:0.8em;
 }
 .need_detail {
