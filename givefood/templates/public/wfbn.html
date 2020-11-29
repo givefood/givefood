@@ -71,9 +71,9 @@
                 </td>
                 <td class="need_detail">
                   <div class="fb_needs">
-                    {% if foodbank.latest_need_text == "Nothing" %}
+                    {% if location.needs == "Nothing" %}
                       Nothing right now, thanks
-                    {% elif foodbank.latest_need_text == "Unknown" %}
+                    {% elif location.needs == "Unknown" %}
                       Sorry. We don't know what's needed here, please contact the food bank
                     {% else %}
                       {{ location.needs|linebreaks }}
