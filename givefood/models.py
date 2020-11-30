@@ -506,7 +506,10 @@ class FoodbankChange(models.Model):
         return slugify(self.foodbank_name)
 
     def no_items(self):
-        return len(self.change_text.split('\n'))
+        if self.change_text == "Unknown" or self.change_text == "Nothing":
+            return 0
+        else:
+            return len(self.change_text.split('\n'))
 
     def input_method(self):
         if self.distill_id:
