@@ -118,6 +118,7 @@
 {% endblock %}
 
 {% block script %}
+{% if where_from != "trusselltrust" %}
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&libraries=places"></script>
     <script>
 
@@ -149,6 +150,7 @@
 
       google.maps.event.addDomListener(window, 'load', init_map);
     </script>
+  {% endif %}
   <script src="/static/js/wfbn.js"></script>
   {% if where_from == "trusselltrust" %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.contentWindow.min.js"></script>
