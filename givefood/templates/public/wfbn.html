@@ -118,8 +118,9 @@
 {% endblock %}
 
 {% block script %}
-{% if where_from != "trusselltrust" %}
+
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&libraries=places"></script>
+  {% if where_from != "trusselltrust" %}
     <script>
 
       function add_marker(lat, lng, url) {
