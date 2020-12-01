@@ -5,6 +5,7 @@ import hashlib, difflib, unicodedata, logging, json
 from datetime import datetime
 
 from google.appengine.api import memcache
+from google.appengine.ext import deferred
 
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -218,6 +219,12 @@ class Foodbank(models.Model):
             self.mp_parl_id = mpid_from_name(self.mp)
 
         self.no_locations = self.get_no_locations()
+
+        try:
+            last_need = FoodbankChange.objects.filter(foodbank = self).latest("created")
+            self.last_need = last_need.created
+        except FoodbankChange.DoesNotExist:
+            self.last_need = None
 
         super(Foodbank, self).save(*args, **kwargs)
 
@@ -563,9 +570,7 @@ class FoodbankChange(models.Model):
 
         super(FoodbankChange, self).save(*args, **kwargs)
 
-        if self.foodbank:
-            self.foodbank.last_need = self.created
-            self.foodbank.save()
+        deferred.defer(self.foodbank.save)
 
 
 class ApiFoodbankSearch(models.Model):
