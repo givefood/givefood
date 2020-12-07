@@ -3,7 +3,6 @@ import twitter
 import logging
 from datetime import datetime, timedelta
 
-from libs.beautifulsoup import BeautifulSoup
 from djangae.environment import is_production_environment
 
 from google.appengine.api import mail
@@ -370,36 +369,6 @@ def admin_fblocation_politics_edit(request, slug, loc_slug):
         "form":form,
     }
     return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
-
-
-def admin_findlocations(request, slug):
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-
-    if foodbank.network != "Trussell Trust":
-        return HttpResponse("NOT TT")
-
-    locations_url = "%s/locations/" % (foodbank.url)
-    locations_result = urlfetch.fetch(locations_url, validate_certificate = False)
-
-    location_soup = BeautifulSoup(locations_result.content)
-    headings = location_soup.findAll("h2", attrs={'class':"[ location__heading ]  h3  heading--foodbank"})
-    addresses = location_soup.findAll("div", attrs={'class':"[ location__address ]"})
-
-    locations = {}
-
-    i = 0
-    while i < len(headings):
-        locations[headings[i].string] = addresses[i].findAll("p")[1].text
-        i += 1
-
-
-    template_vars = {
-        "foodbank":foodbank,
-        "locations":locations,
-    }
-
-    return render_to_response("admin/find_locations.html", template_vars, context_instance=RequestContext(request))
 
 
 def admin_need(request, id):
