@@ -48,11 +48,15 @@
         {% csrf_token %}
         <input type="submit" class="button is-success" value="Publish">
       </form>
-      <br>
-      <form action="{% url 'admin_need_tweet' need.need_id %}" method="post">
-        {% csrf_token %}
-        <input type="submit" class="button is-danger" value="Tweet">
-      </form>
+      {% if need.change_text != "Nothing" %}
+        {% if need.change_text != "Unknown" %}
+          <br>
+          <form action="{% url 'admin_need_tweet' need.need_id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="button is-danger" value="Tweet">
+          </form>
+        {% endif %}
+      {% endif %}
       <br>
       <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
         {% csrf_token %}
