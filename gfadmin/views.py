@@ -20,8 +20,6 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-# from givefood.const.calories import CALORIES
-# from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
 from givefood.func import get_all_foodbanks, get_all_locations
 from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm, OrderItemForm
