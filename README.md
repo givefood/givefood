@@ -2,6 +2,9 @@
 
 The source of https://www.givefood.org.uk, the website of a UK charity that runs the largest database of food banks in the country.
 
+Give Food is a registered charity in England & Wales 1188192
+
+
 ## Data
 
 * We have an API at https://www.givefood.org.uk/api/
