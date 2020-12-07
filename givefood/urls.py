@@ -40,6 +40,7 @@ urlpatterns = (
     url(r'^needs/at/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_foodbank, name="public_wfbn_foodbank"),
     url(r'^needs/at/(?P<slug>[-\w]+)/map.png$', givefood.views.public_wfbn_foodbank_map, name="public_wfbn_foodbank_map"),
     url(r'^needs/at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', givefood.views.public_wfbn_foodbank_location, name="public_wfbn_foodbank_location"),
+    url(r'^needs/at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/map.png$', givefood.views.public_wfbn_foodbank_location_map, name="public_wfbn_foodbank_location_map"),
 
     url(r'^needs/in/constituencies/$', givefood.views.public_wfbn_constituencies, name="public_wfbn_constituencies"),
     url(r'^needs/in/constituency/$', RedirectView.as_view(url="/needs/in/constituencies/")),

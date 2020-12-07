@@ -335,6 +335,17 @@ def public_wfbn_foodbank_location(request, slug, locslug):
     return render_to_response("public/wfbn_foodbank_location.html", template_vars, context_instance=RequestContext(request))
 
 
+@cache_page(60*30)
+def public_wfbn_foodbank_location_map(request, slug, locslug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
+
+    result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ" % (location.latt_long))
+
+    return HttpResponse(result.content, content_type='image/png')
+
+
 @cache_page(60*5)
 def public_wfbn_constituencies(request):
 
