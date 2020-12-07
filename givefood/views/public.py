@@ -38,7 +38,7 @@ def public_index(request):
     foodbanks = get_all_foodbanks()
     locations = get_all_locations()
 
-    TOTAL_GLOVE_WEIGHT = 2.715
+    TOTAL_PPE_WEIGHT = 2.715
 
     for order in orders:
         total_weight = total_weight + order.weight
@@ -47,7 +47,7 @@ def public_index(request):
         active_foodbanks.add(order.foodbank_name)
 
     total_weight = float(total_weight) / 1000000
-    total_weight = (total_weight * PACKAGING_WEIGHT_PC) + TOTAL_GLOVE_WEIGHT
+    total_weight = (total_weight * PACKAGING_WEIGHT_PC) + TOTAL_PPE_WEIGHT
     total_calories = float(total_calories) / 1000000
 
     no_active_foodbanks = len(active_foodbanks)
