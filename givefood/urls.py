@@ -32,7 +32,6 @@ urlpatterns = (
     url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
 
     # WFBN
-    url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^needs/tt-old-data/$', givefood.views.public_tt_old_data, name="public_tt_old_data"),
     url(r'^needs/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
     url(r'^needs/click/(?P<slug>[-\w]+)/$', givefood.views.public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
@@ -49,66 +48,12 @@ urlpatterns = (
 
     # Rickrolling
     url(r'^wp-login\.php$', RedirectView.as_view(url=RICK_ASTLEY)),
+
+    # Old URL redirects
+    url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^static/img/map-allloc\.png$', RedirectView.as_view(url="/static/img/map.png")),
 
-    # ADMIN
-    url(r'^admin/$', givefood.views.admin_index, name="admin_index"),
-
-    url(r'^admin/order/new/$', givefood.views.admin_order_form, name="admin_neworder"),
-    url(r'^admin/order/(?P<id>[-\w]+)/$', givefood.views.admin_order, name="admin_order"),
-    url(r'^admin/order/(?P<id>[-\w]+)/edit/$', givefood.views.admin_order_form, name="admin_order_edit"),
-    url(r'^admin/order/(?P<id>[-\w]+)/sendnotification/$', givefood.views.admin_order_send_notification, name="admin_order_send_notification"),
-
-    url(r'^admin/foodbanks/$', givefood.views.admin_foodbanks, name="admin_foodbanks"),
-    url(r'^admin/foodbanks/christmascards/$', givefood.views.admin_foodbanks_christmascards, name="admin_foodbanks_christmascards"),
-    url(r'^admin/foodbanks/csv/$', givefood.views.admin_foodbanks_csv, name="admin_foodbanks_csv"),
-
-    url(r'^admin/orders/$', givefood.views.admin_orders, name="admin_orders"),
-    url(r'^admin/orders/csv/$', givefood.views.admin_orders_csv, name="admin_orders_csv"),
-
-    url(r'^admin/needs/$', givefood.views.admin_needs, name="admin_needs"),
-    url(r'^admin/needs/csv/$', givefood.views.admin_needs_csv, name="admin_needs_csv"),
-
-    url(r'^admin/items/$', givefood.views.admin_items, name="admin_items"),
-    url(r'^admin/items/loader/$', givefood.views.admin_items_loader, name="admin_items_loader"),
-    url(r'^admin/item/new/$', givefood.views.admin_item_form, name="admin_item_new"),
-    url(r'^admin/item/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_item_form, name="admin_item_form"),
-
-    url(r'^admin/foodbank/new/$', givefood.views.admin_foodbank_form, name="admin_newfoodbank"),
-    url(r'^admin/foodbank/(?P<slug>[-\w]+)/$', givefood.views.admin_foodbank, name="admin_foodbank"),
-    url(r'^admin/foodbank/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_foodbank_form, name="admin_foodbank_edit"),
-    url(r'^admin/foodbank/(?P<slug>[-\w]+)/location/new/$', givefood.views.admin_fblocation_form, name="admin_fblocation_new"),
-    url(r'^admin/foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/edit/$', givefood.views.admin_fblocation_form, name="admin_fblocation_edit"),
-    url(r'^admin/foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/politics/edit/$', givefood.views.admin_fblocation_politics_edit, name="admin_fblocation_politics_edit"),
-    url(r'^admin/foodbank/(?P<slug>[-\w]+)/politics/edit/$', givefood.views.admin_foodbank_politics_form, name="admin_foodbank_politics_edit"),
-
-    url(r'^admin/need/new/$', givefood.views.admin_need_form, name="admin_newneed"),
-    url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/$', givefood.views.admin_need, name="admin_need"),
-    url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/edit/$', givefood.views.admin_need_form, name="admin_need_form"),
-    url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/delete/$', givefood.views.admin_need_delete, name="admin_need_delete"),
-    url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/publish/$', givefood.views.admin_need_publish, name="admin_need_publish"),
-    url(r'^admin/need/(?P<id>\b[0-9a-f]{8}\b)/tweet/$', givefood.views.admin_need_tweet, name="admin_need_tweet"),
-
-    url(r'^admin/locations/$', givefood.views.admin_locations, name="admin_locations"),
-    url(r'^admin/locations/loader/sa/$', givefood.views.admin_locations_loader_sa, name="admin_locations_loader_sa"),
-
-    url(r'^admin/parlcon/new/$', givefood.views.admin_parlcon_form, name="admin_parlcon_form"),
-    url(r'^admin/parlcon/loader/$', givefood.views.admin_parlcon_loader, name="admin_parlcon_loader"),
-    url(r'^admin/parlcon/loader/geojson/$', givefood.views.admin_parlcon_loader_geojson, name="admin_parlcon_loader_geojson"),
-    url(r'^admin/parlcon/(?P<slug>[-\w]+)/edit/$', givefood.views.admin_parlcon_form, name="admin_parlcon_form"),
-
-    url(r'^admin/politics/$', givefood.views.admin_politics, name="admin_politics"),
-    url(r'^admin/politics/csv/$', givefood.views.admin_politics_csv, name="admin_politics_csv"),
-
-    url(r'^admin/searches/$', givefood.views.admin_searches, name="admin_searches"),
-    url(r'^admin/searches/csv/$', givefood.views.admin_searches_csv, name="admin_searches_csv"),
-    url(r'^admin/map/$', givefood.views.admin_map, name="admin_map"),
-    url(r'^admin/search/$', givefood.views.admin_search, name="admin_search"),
-    url(r'^admin/stats/$', givefood.views.admin_stats, name="admin_stats"),
-
-    url(r'^admin/test_order_email/(?P<id>[-\w]+)/$', givefood.views.admin_test_order_email, name="admin_test_order_email"),
-    url(r'^admin/resaver/orders/$', givefood.views.admin_resave_orders, name="admin_resave_orders"),
-
+    # API1
     url(r'^api/1/foodbanks/$', givefood.views.api_foodbanks, name="api_foodbanks"),
     url(r'^api/1/foodbanks/search/$', givefood.views.api_foodbank_search, name="api_foodbank_search"),
     url(r'^api/1/foodbank/(?P<slug>[-\w]+)/$', givefood.views.api_foodbank, name="api_foodbank"),
@@ -116,8 +61,11 @@ urlpatterns = (
     url(r'^api/1/needs/$', givefood.views.api_needs, name="api_needs"),
     url(r'^api/1/need/(?P<id>\b[0-9a-f]{8}\b)/$', givefood.views.api_need, name="api_need"),
 
+    # Apps
     url(r'^api/2/', include('gfapi2.urls')),
+    url(r'^admin/', include('gfadmin.urls')),
 
+    # CSP & Auth
     url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),
 )

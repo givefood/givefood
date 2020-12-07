@@ -45,7 +45,8 @@ INSTALLED_APPS = (
     'bulma',
     'simple_search',
     'givefood',
-    'gfapi2'
+    'gfapi2',
+    'gfadmin',
     # 'djangae.contrib.uniquetool',
 )
 
@@ -74,7 +75,7 @@ TEMPLATES = [
                 "django.core.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "session_csrf.context_processor",
-                "givefood.context_processors.admin.all_foodbanks",
+                "gfadmin.context_processors.all_foodbanks",
                 "givefood.context_processors.public.context",
             ],
             'debug': True,
@@ -84,7 +85,7 @@ TEMPLATES = [
             ],
             'libraries':{
                 'product_image': 'givefood.templatetags.custom_tags',
-            }
+            },
         },
     },
 ]

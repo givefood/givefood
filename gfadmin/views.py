@@ -27,7 +27,7 @@ from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChang
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm, OrderItemForm
 
 
-def admin_index(request):
+def index(request):
 
     foodbanks = Foodbank.objects.all().order_by("-last_order")[:50]
 
@@ -49,10 +49,10 @@ def admin_index(request):
         "needs":needs,
         "section":"home",
     }
-    return render_to_response("admin/index.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("adminindex.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_searches(request):
+def searches(request):
 
     searches = ApiFoodbankSearch.objects.all().order_by("-created")[:1000]
 
@@ -61,10 +61,10 @@ def admin_searches(request):
         "section":"searches",
     }
 
-    return render_to_response("admin/searches.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("searches.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_searches_csv(request):
+def searches_csv(request):
 
     searches = ApiFoodbankSearch.objects.all().order_by("-created")[:20000]
 
@@ -78,7 +78,7 @@ def admin_searches_csv(request):
     return response
 
 
-def admin_search(request):
+def search(request):
 
     query = request.GET.get("q")
     foodbank = get_object_or_404(Foodbank, name=query)
@@ -86,7 +86,7 @@ def admin_search(request):
     return redirect("admin_foodbank", slug = foodbank.slug)
 
 
-def admin_foodbanks(request):
+def foodbanks(request):
 
     sort_options = [
         "name",
@@ -112,10 +112,10 @@ def admin_foodbanks(request):
         "foodbanks":foodbanks,
         "section":"foodbanks",
     }
-    return render_to_response("admin/foodbanks.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("foodbanks.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_foodbanks_csv(request):
+def foodbanks_csv(request):
 
     foodbanks = Foodbank.objects.all().order_by("-created")
 
@@ -129,17 +129,17 @@ def admin_foodbanks_csv(request):
     return response
 
 
-def admin_foodbanks_christmascards(request):
+def foodbanks_christmascards(request):
 
     foodbanks = Foodbank.objects.filter(is_closed = False).order_by("name")
 
     template_vars = {
         "foodbanks":foodbanks,
     }
-    return render_to_response("admin/foodbanks_christmascards.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("foodbanks_christmascards.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_orders(request):
+def orders(request):
 
     sort_options = [
         "delivery_datetime",
@@ -163,10 +163,10 @@ def admin_orders(request):
         "orders":orders,
         "section":"orders",
     }
-    return render_to_response("admin/orders.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("orders.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_orders_csv(request):
+def orders_csv(request):
 
     orders = Order.objects.all().order_by("-created")
 
@@ -180,7 +180,7 @@ def admin_orders_csv(request):
     return response
 
 
-def admin_needs(request):
+def needs(request):
 
     needs = FoodbankChange.objects.all().order_by("-created")[:1000]
 
@@ -188,10 +188,10 @@ def admin_needs(request):
         "needs":needs,
         "section":"needs",
     }
-    return render_to_response("admin/needs.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("needs.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_needs_csv(request):
+def needs_csv(request):
 
     needs = FoodbankChange.objects.all().order_by("-created")
 
@@ -205,17 +205,17 @@ def admin_needs_csv(request):
     return response
 
 
-def admin_order(request, id):
+def order(request, id):
 
     order = get_object_or_404(Order, order_id = id)
 
     template_vars = {
         "order":order,
     }
-    return render_to_response("admin/order.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("order.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_order_form(request, id = None):
+def order_form(request, id = None):
 
     foodbank = None
     page_title = None
@@ -251,14 +251,14 @@ def admin_order_form(request, id = None):
         "form":form,
         "page_title":page_title,
     }
-    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
 @require_POST
-def admin_order_send_notification(request, id = None):
+def order_send_notification(request, id = None):
 
     order = get_object_or_404(Order, order_id = id)
-    email_body = render_to_string("admin/notification_email.txt",{"order":order})
+    email_body = render_to_string("notification_email.txt",{"order":order})
     mail.send_mail(
         sender="mail@givefood.org.uk",
         to=order.foodbank.notification_email,
@@ -272,17 +272,17 @@ def admin_order_send_notification(request, id = None):
     return redirect(redir_url)
 
 
-def admin_foodbank(request, slug):
+def foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
     template_vars = {
         "foodbank":foodbank,
     }
-    return render_to_response("admin/foodbank.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("foodbank.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_foodbank_form(request, slug = None):
+def foodbank_form(request, slug = None):
 
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -300,10 +300,10 @@ def admin_foodbank_form(request, slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_foodbank_politics_form(request, slug = None):
+def foodbank_politics_form(request, slug = None):
 
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -321,10 +321,10 @@ def admin_foodbank_politics_form(request, slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_fblocation_form(request, slug = None, loc_slug = None):
+def fblocation_form(request, slug = None, loc_slug = None):
 
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -347,10 +347,10 @@ def admin_fblocation_form(request, slug = None, loc_slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_fblocation_politics_edit(request, slug, loc_slug):
+def fblocation_politics_edit(request, slug, loc_slug):
 
     if slug:
         foodbank_location = get_object_or_404(FoodbankLocation, foodbank_slug = slug, slug = loc_slug)
@@ -368,19 +368,19 @@ def admin_fblocation_politics_edit(request, slug, loc_slug):
     template_vars = {
         "form":form,
     }
-    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_need(request, id):
+def need(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
     template_vars = {
         "need":need,
     }
-    return render_to_response("admin/need.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("need.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_need_form(request, id = None):
+def need_form(request, id = None):
 
     if id:
         need = get_object_or_404(FoodbankChange, need_id = id)
@@ -406,11 +406,11 @@ def admin_need_form(request, id = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
 @require_POST
-def admin_need_delete(request, id):
+def need_delete(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
     need.delete()
@@ -418,7 +418,7 @@ def admin_need_delete(request, id):
 
 
 @require_POST
-def admin_need_publish(request, id):
+def need_publish(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
     need.published = True
@@ -427,7 +427,7 @@ def admin_need_publish(request, id):
 
 
 @require_POST
-def admin_need_tweet(request, id):
+def need_tweet(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
 
@@ -457,7 +457,7 @@ def admin_need_tweet(request, id):
     return redirect("admin_index")
 
 
-def admin_locations(request):
+def locations(request):
 
     sort_options = [
         "foodbank_name",
@@ -475,10 +475,10 @@ def admin_locations(request):
         "locations":locations,
         "section":"locations",
     }
-    return render_to_response("admin/locations.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("locations.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_locations_loader_sa(request):
+def locations_loader_sa(request):
 
     sa_foodbank = Foodbank.objects.get(slug="salvation-army")
 
@@ -512,7 +512,7 @@ def admin_locations_loader_sa(request):
     return HttpResponse("OK")
 
 
-def admin_items(request):
+def items(request):
 
     items = OrderItem.objects.all()
 
@@ -520,10 +520,10 @@ def admin_items(request):
         "items":items,
         "section":"items",
     }
-    return render_to_response("admin/items.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("items.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_items_loader(request):
+def items_loader(request):
     
 #     for name,calories in CALORIES.items():
 #         new_item = OrderItem.objects.get_or_create(
@@ -535,7 +535,7 @@ def admin_items_loader(request):
     return HttpResponse("OK")
 
 
-def admin_item_form(request, slug = None):
+def item_form(request, slug = None):
 
     if slug:
         item = get_object_or_404(OrderItem, slug = slug)
@@ -553,10 +553,10 @@ def admin_item_form(request, slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_politics(request):
+def politics(request):
 
     foodbanks = get_all_foodbanks()
     locations = FoodbankLocation.objects.all()
@@ -568,10 +568,10 @@ def admin_politics(request):
         "parlcons":parlcons,
         "section":"politics",
     }
-    return render_to_response("admin/politics.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("politics.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_politics_csv(request):
+def politics_csv(request):
 
     foodbanks = get_all_foodbanks()
     locations = FoodbankLocation.objects.all()
@@ -588,7 +588,7 @@ def admin_politics_csv(request):
     return response
 
 
-def admin_map(request):
+def map(request):
 
     filter = request.GET.get("filter", "all")
 
@@ -614,10 +614,10 @@ def admin_map(request):
         "filter":filter,
         "section":"map",
     }
-    return render_to_response("admin/map.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("map.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_stats(request):
+def stats(request):
 
     all_foodbanks = get_all_foodbanks()
     total_foodbanks = len(all_foodbanks)
@@ -666,20 +666,20 @@ def admin_stats(request):
         "total_locations":total_locations,
         "section":"stats",
     }
-    return render_to_response("admin/stats.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("stats.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_test_order_email(request, id):
+def test_order_email(request, id):
 
     order = get_object_or_404(Order, order_id = id)
 
     template_vars = {
         "order":order,
     }
-    return render_to_response("admin/notification_email.txt", template_vars, content_type='text/plain')
+    return render_to_response("notification_email.txt", template_vars, content_type='text/plain')
 
 
-def admin_resave_orders(request):
+def resave_orders(request):
 
     orders = Order.objects.all().order_by("created")
     for order in orders:
@@ -688,7 +688,7 @@ def admin_resave_orders(request):
     return HttpResponse("OK")
 
 
-def admin_parlcon_form(request, slug = None):
+def parlcon_form(request, slug = None):
 
     if slug:
         parlcon = get_object_or_404(ParliamentaryConstituency, slug = slug)
@@ -706,10 +706,10 @@ def admin_parlcon_form(request, slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("admin/form.html", template_vars, context_instance=RequestContext(request))
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
-def admin_parlcon_loader(request):
+def parlcon_loader(request):
 
     foodbanks = get_all_foodbanks()
     locations = FoodbankLocation.objects.all()
@@ -742,7 +742,7 @@ def admin_parlcon_loader(request):
     return HttpResponse("OK")
 
 
-def admin_parlcon_loader_geojson(request):
+def parlcon_loader_geojson(request):
 
     parlcons = ParliamentaryConstituency.objects.all()
 
