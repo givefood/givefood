@@ -1,3 +1,3 @@
-from public import public_index, public_article, public_annual_report, public_gen_annual_report, public_product_image, distill_webhook, public_what_food_banks_need, public_api, public_what_food_banks_need_click, precacher, public_wfbn_foodbank, public_wfbn_foodbank_map, public_sitemap, public_reg_foodbank, public_wfbn_constituencies, public_wfbn_constituency, public_wfbn_constituency_mp_photo, public_privacy, public_wfbn_foodbank_location, public_tt_old_data, public_wfbn_foodbank_location_map
+from public import public_index, public_article, public_annual_report, public_gen_annual_report, public_product_image, distill_webhook, public_api, precacher, public_sitemap, public_reg_foodbank, public_privacy
 
 from api import api_foodbanks, api_foodbank_search, api_foodbank, api_foodbank_key, api_needs, api_need

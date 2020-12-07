@@ -31,21 +31,6 @@ urlpatterns = (
     url(r'^productimage/$', givefood.views.public_product_image, name="public_product_image"),
     url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
 
-    # WFBN
-    url(r'^needs/tt-old-data/$', givefood.views.public_tt_old_data, name="public_tt_old_data"),
-    url(r'^needs/$', givefood.views.public_what_food_banks_need, name="public_what_food_banks_need"),
-    url(r'^needs/click/(?P<slug>[-\w]+)/$', givefood.views.public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
-
-    url(r'^needs/at/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_foodbank, name="public_wfbn_foodbank"),
-    url(r'^needs/at/(?P<slug>[-\w]+)/map.png$', givefood.views.public_wfbn_foodbank_map, name="public_wfbn_foodbank_map"),
-    url(r'^needs/at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', givefood.views.public_wfbn_foodbank_location, name="public_wfbn_foodbank_location"),
-    url(r'^needs/at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/map.png$', givefood.views.public_wfbn_foodbank_location_map, name="public_wfbn_foodbank_location_map"),
-
-    url(r'^needs/in/constituencies/$', givefood.views.public_wfbn_constituencies, name="public_wfbn_constituencies"),
-    url(r'^needs/in/constituency/$', RedirectView.as_view(url="/needs/in/constituencies/")),
-    url(r'^needs/in/constituency/(?P<slug>[-\w]+)/$', givefood.views.public_wfbn_constituency, name="public_wfbn_constituency"),
-    url(r'^needs/in/constituency/(?P<slug>[-\w]+)/mp_photo_(?P<size>full|threefour).png$', givefood.views.public_wfbn_constituency_mp_photo, name="public_wfbn_constituency_mp_photo"),
-
     # Rickrolling
     url(r'^wp-login\.php$', RedirectView.as_view(url=RICK_ASTLEY)),
 
@@ -62,9 +47,10 @@ urlpatterns = (
     url(r'^api/1/need/(?P<id>\b[0-9a-f]{8}\b)/$', givefood.views.api_need, name="api_need"),
 
     # Apps
+    url(r'^needs/', include('gfwfbn.urls')),
     url(r'^api/2/', include('gfapi2.urls')),
     url(r'^admin/', include('gfadmin.urls')),
-
+    
     # CSP & Auth
     url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),

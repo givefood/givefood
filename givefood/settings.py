@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'givefood',
     'gfapi2',
     'gfadmin',
+    'gfwfbn',
     # 'djangae.contrib.uniquetool',
 )
 
