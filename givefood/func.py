@@ -7,8 +7,6 @@ from math import radians, cos, sin, asin, sqrt
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 
-from givefood.const.calories import CALORIES
-from givefood.const.tesco_image_ids import TESCO_IMAGE_IDS
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
