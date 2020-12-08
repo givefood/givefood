@@ -411,7 +411,7 @@ def need_form(request, id = None):
 def need_delete(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
-    need.delete()
+    deferred.defer(need.delete)
     return redirect("admin_index")
 
 
