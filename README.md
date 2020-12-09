@@ -8,7 +8,7 @@ We maintain the the largest publically available database of food banks and what
 
 The data is used by supermarkets, food bank networks, governments, media partners, phone apps and voice devices.
 
-Give Food is a registered charity in England & Wales 1188192
+Give Food is a registered charity in England & Wales [1188192](https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=1188192&subid=0)
 
 ## Data
 
