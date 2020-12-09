@@ -38,16 +38,9 @@ urlpatterns = (
     url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^static/img/map-allloc\.png$', RedirectView.as_view(url="/static/img/map.png")),
 
-    # API1
-    url(r'^api/1/foodbanks/$', givefood.views.api_foodbanks, name="api_foodbanks"),
-    url(r'^api/1/foodbanks/search/$', givefood.views.api_foodbank_search, name="api_foodbank_search"),
-    url(r'^api/1/foodbank/(?P<slug>[-\w]+)/$', givefood.views.api_foodbank, name="api_foodbank"),
-    url(r'^api/1/foodbank/$', givefood.views.api_foodbank_key, name="api_foodbank_key"),
-    url(r'^api/1/needs/$', givefood.views.api_needs, name="api_needs"),
-    url(r'^api/1/need/(?P<id>\b[0-9a-f]{8}\b)/$', givefood.views.api_need, name="api_need"),
-
     # Apps
     url(r'^needs/', include('gfwfbn.urls')),
+    url(r'^api/1/', include('gfapi1.urls')),
     url(r'^api/2/', include('gfapi2.urls')),
     url(r'^admin/', include('gfadmin.urls')),
     
