@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 
 from google.appengine.api import urlfetch
 
-from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency
+from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange
 from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations
 
 
