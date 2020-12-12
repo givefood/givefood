@@ -7,7 +7,7 @@ from django.template.defaultfilters import slugify
 from google.appengine.api import urlfetch
 
 from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange
-from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations
+from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode
 
 
 def public_tt_old_data(request):
