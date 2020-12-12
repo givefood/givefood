@@ -1,5 +1,5 @@
 from django.shortcuts import render_to_response, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 from django.template.defaultfilters import slugify
