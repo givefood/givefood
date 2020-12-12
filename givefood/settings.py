@@ -137,9 +137,9 @@ CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com", "syndication.twitter.com")
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "*.gstatic.com", "cdnjs.cloudflare.com", "platform.twitter.com", "ton.twimg.com", "cdn.jsdelivr.net")
 CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com", "maps.googleapis.com")
 CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", "accounts.google.com", "apis.google.com", "plus.google.com", "staticxx.facebook.com","www.facebook.com", "platform.twitter.com", "syndication.twitter.com", "web.facebook.com")
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "instant.page", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com", "cdnjs.cloudflare.com", "www.gstatic.com", "www.googletagmanager.com", "maps.googleapis.com", "connect.facebook.net","platform.twitter.com", "cdn.syndication.twimg.com", "syndication.twitter.com")
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "instant.page", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com", "cdnjs.cloudflare.com", "www.gstatic.com", "www.googletagmanager.com", "maps.googleapis.com", "connect.facebook.net","platform.twitter.com", "cdn.syndication.twimg.com", "syndication.twitter.com", "*.cloudflareinsights.com")
 CSP_IMG_SRC = ("'self'", "data:", "s.ytimg.com", "*.googleusercontent.com", "*.gstatic.com", "www.google-analytics.com", "www.googletagmanager.com", "abs.twimg.com", "platform.twitter.com", "syndication.twitter.com", "pbs.twimg.com", "ton.twimg.com", "digitalcontent.api.tesco.com", "*.googleapis.com", "members-api.parliament.uk", "storage.googleapis.com")
-CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com", "maps.googleapis.com")
+CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com", "maps.googleapis.com", "cloudflareinsights.com")
 
 
 from djangae.contrib.gauth.settings import *
