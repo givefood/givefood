@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidde
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 from django.template.defaultfilters import slugify
+from django.core.urlresolvers import reverse
 
 from google.appengine.api import urlfetch
 
