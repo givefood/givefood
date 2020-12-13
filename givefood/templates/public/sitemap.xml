@@ -20,9 +20,9 @@
 			<loc>https://www.givefood.org.uk{% url 'public_wfbn_foodbank' foodbank.slug %}</loc>
 		</url>
 	{% endfor %}
-	{% for location in sa_locations %}
+	{% for location in locations %}
 		<url>
-			<loc>https://www.givefood.org.uk/needs/at/salvation-army/{{ location.slug}}/</loc>
+			<loc>https://www.givefood.org.uk/needs/at/{{ location.foodbank_slug }}/{{ location.slug}}/</loc>
 		</url>
 	{% endfor %}
 	{% for constituency in constituencies %}

@@ -199,12 +199,12 @@ def public_sitemap(request):
 
     foodbanks = get_all_foodbanks()
     constituencies = get_all_constituencies()
-    sa_locations = FoodbankLocation.objects.filter(foodbank_name = "Salvation Army")
+    locations = get_all_locations()
 
     template_vars = {
         "foodbanks":foodbanks,
         "constituencies":constituencies,
-        "sa_locations":sa_locations,
+        "locations":locations,
     }
     return render_to_response("public/sitemap.xml", template_vars, content_type='text/xml')
 
