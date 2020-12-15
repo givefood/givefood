@@ -582,7 +582,12 @@ class ApiFoodbankSearch(models.Model):
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long", null=True, blank=True)
 
     def wfbn_url(self):
-        return "https://www.givefood.org.uk/needs/?%s=%s" % (self.query_type, self.query)
+        if self.query_type == "latt_long":
+            query_type == "lat_lng"
+        else:
+            query_type = "address"
+
+        return "https://www.givefood.org.uk/needs/?%s=%s" % (query_type, self.query)
 
     def latt(self):
         if self.latt_long:
