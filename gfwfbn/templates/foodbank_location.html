@@ -47,13 +47,8 @@
           <div class="column">
             <h2>{{ location }}, {{ foodbank }} Food Bank</h2>
 
-            {% if foodbank.latest_need.change_text != "Unknown" %}
-              <h3>Items Needed</h3>
-              <p>
-                {{ foodbank.latest_need.change_text|linebreaksbr }}
-                <br><em class="is-size-7">Found on {{ foodbank.latest_need_date }}</em><br>
-                <a href="{% url 'public_what_food_banks_need_click' foodbank.slug %}" class="button is-link is-small">Details</a>
-              </p>
+            {% if foodbank.name != "Salvation Army" %}
+              {% include "includes/need.html" with need_text=foodbank.latest_need.change_text %}
             {% endif %}
 
             <h3>Contact</h3>

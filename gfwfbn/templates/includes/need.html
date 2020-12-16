@@ -1,0 +1,16 @@
+<h3>Items Needed</h3>
+<p>
+
+  {% if need_text == "Unknown" %}
+    We currently don't know what is needed at this food bank. Please contact them to find out.
+  {% else %}
+    {% if need_text == "Nothing" %}
+      This food bank isn't requesting anything, but may appreciate other support like a financial donation or volunteers. Please contact them to find out.
+    {% else %}
+      {{ need_text|linebreaksbr }}
+    {% endif %}
+  {% endif %}
+
+  <br><em class="is-size-7">Updated on {{ foodbank.latest_need_date }}</em><br>
+  <a href="{% url 'public_what_food_banks_need_click' foodbank.slug %}" class="button is-link is-small">Details</a>
+</p>

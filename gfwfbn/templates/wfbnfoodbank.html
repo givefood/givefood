@@ -56,14 +56,7 @@
           <div class="column">
             <h2>{{ foodbank }} Food Bank</h2>
 
-            {% if foodbank.latest_need.change_text != "Unknown" %}
-              <h3>Items Needed</h3>
-              <p>
-                {{ foodbank.latest_need.change_text|linebreaksbr }}
-                <br><em class="is-size-7">Found on {{ foodbank.latest_need_date }}</em><br>
-                <a href="{% url 'public_what_food_banks_need_click' foodbank.slug %}" class="button is-link is-small">Details</a>
-              </p>
-            {% endif %}
+            {% include "includes/need.html" with need_text=foodbank.latest_need.change_text %}
 
             <h3>Contact</h3>
             <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
