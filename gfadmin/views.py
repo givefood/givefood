@@ -20,9 +20,9 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.func import get_all_foodbanks, get_all_locations
-from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm, OrderItemForm
+from givefood.func import get_all_foodbanks, get_all_locations, get_cred
+from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm
 
 
 def index(request):
@@ -429,10 +429,12 @@ def need_tweet(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
 
-    api = twitter.Api(consumer_key='fG7cu74X0VvHr4nXNCU8tlw33',
-                          consumer_secret='EzCwDhIsAWZP5HCuLmBLKUKnmv3AsKmuGpUcMLUkytl1s04UbZ',
-                          access_token_key='1275779682726707202-eKyLOrIhfGqkSGAT4XiycGOb7jgKOo',
-                          access_token_secret='LdOS2wWrm5Um9RLuwXWS5oNlmrPlez9Y1V1BO4dTqImM2')
+    api = twitter.Api(
+        consumer_key = get_cred("twitter_consumer_key"),
+        consumer_secret = get_cred("twitter_consumer_secret"),
+        access_token_key = get_cred("twitter_access_token_key"),
+        access_token_secret = get_cred("twitter_access_token_secret"),
+    )
 
     if need.foodbank.twitter_handle:
         fb_twitter_handle = " @%s" % (need.foodbank.twitter_handle)
@@ -757,3 +759,36 @@ def parlcon_loader_geojson(request):
 
     return HttpResponse("OK")
 
+
+def settings(request):
+
+    template_vars = {
+        "section":"settings",
+    }
+    return render_to_response("settings.html", template_vars, context_instance=RequestContext(request))
+
+
+def credentials(request):
+
+    credentials = GfCredential.objects.all().order_by("-created")
+
+    template_vars = {
+        "section":"settings",
+        "credentials":credentials,
+    }
+    return render_to_response("credentials.html", template_vars, context_instance=RequestContext(request))
+
+def credentials_form(request):
+
+    if request.POST:
+        form = GfCredentialForm(request.POST)
+        if form.is_valid():
+            need = form.save()
+            return redirect("admin_credentials")
+    else:
+        form = GfCredentialForm()
+
+    template_vars = {
+        "form":form,
+    }
+    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))

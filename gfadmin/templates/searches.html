@@ -30,7 +30,7 @@
             </td>
             <td>{{ search.nearest_foodbank|intcomma }}m</td>
             <td>
-              <img src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=700x150&key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&scale=1&center={{ search.latt_long }}" width="350" loading="lazy">
+              <img src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=700x150&key={{ gmap_key }}&scale=1&center={{ search.latt_long }}" width="350" loading="lazy">
             </td>
           </tr>
         {% endfor %}

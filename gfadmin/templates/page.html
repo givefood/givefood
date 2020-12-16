@@ -24,10 +24,7 @@
       <a class="navbar-item{% if section = "orders" %} is-active{% endif %}" href="/admin/orders/">Orders</a>
       <a class="navbar-item{% if section = "locations" %} is-active{% endif %}" href="/admin/locations/">Locations</a>
       <a class="navbar-item{% if section = "politics" %} is-active{% endif %}" href="/admin/politics/">Politics</a>
-      <a class="navbar-item{% if section = "map" %} is-active{% endif %}" href="/admin/map/" data-turbolinks="false">Map</a>
-      <a class="navbar-item{% if section = "stats" %} is-active{% endif %}" href="/admin/stats/">Stats</a>
-      <a class="navbar-item{% if section = "searches" %} is-active{% endif %}" href="/admin/searches/">Searches</a>
-      <a class="navbar-item{% if section = "items" %} is-active{% endif %}" href="/admin/items/">Items</a>
+      <a class="navbar-item{% if section = "settings" %} is-active{% endif %}" href="/admin/settings/">Settings</a>
 
       <div class="navbar-end">
         <div class="navbar-item">
@@ -44,5 +41,9 @@
     <datalist id="foodbank_names">
       {% for foodbank in all_foodbanks %}<option value="{{ foodbank }}">{% endfor %}
     </datalist>
+
+    <script>
+      const gmap_key = "{{ gmap_key }}";
+    </script>
 </body>
 </html>

@@ -119,9 +119,11 @@
 
 {% block script %}
 
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&libraries=places"></script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
   {% if where_from != "trusselltrust" %}
     <script>
+
+      const gmap_key = "{{ gmap_key }}"
 
       function add_marker(lat, lng, url) {
         var marker = new google.maps.Marker({

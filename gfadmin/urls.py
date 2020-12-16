@@ -51,6 +51,9 @@ urlpatterns = (
     url(r'^politics/$', politics, name="admin_politics"),
     url(r'^politics/csv/$', politics_csv, name="admin_politics_csv"),
 
+    url(r'^settings/$', settings, name="admin_settings"),
+    url(r'^credentials/$', credentials, name="admin_credentials"),
+    url(r'^credentials/new/$', credentials_form, name="admin_credential_new"),
     url(r'^searches/$', searches, name="admin_searches"),
     url(r'^searches/csv/$', searches_csv, name="admin_searches_csv"),
     url(r'^map/$', map, name="admin_map"),

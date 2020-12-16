@@ -1,7 +1,7 @@
 from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
 
-from models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem
+from models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential
 from const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
@@ -81,4 +81,10 @@ class NeedForm(ModelForm):
 class ParliamentaryConstituencyForm(ModelForm):
     class Meta:
         model = ParliamentaryConstituency
+        fields = "__all__"
+
+
+class GfCredentialForm(ModelForm):
+    class Meta:
+        model = GfCredential
         fields = "__all__"

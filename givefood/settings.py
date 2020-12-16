@@ -77,6 +77,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "session_csrf.context_processor",
                 "gfadmin.context_processors.all_foodbanks",
+                "gfadmin.context_processors.gmap_key",
                 "givefood.context_processors.public.context",
             ],
             'debug': True,

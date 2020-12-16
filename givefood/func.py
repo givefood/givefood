@@ -66,7 +66,9 @@ def get_all_constituencies():
 
 def geocode(address):
 
-    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk&address=%s" % (urllib.quote(address))
+    gmap_key = get_cred("gmap_key")
+
+    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=%s" % (gmap_key, urllib.quote(address))
     address_api_result = urlfetch.fetch(address_api_url)
     if address_api_result.status_code == 200:
         try:
@@ -471,3 +473,14 @@ def make_url_friendly(url):
     url = url.replace("https://","")
     url = url.replace("http://","")
     return url
+
+
+def get_cred(cred_name):
+
+    from models import GfCredential
+
+    try:
+        credential = GfCredential.objects.filter(cred_name = cred_name).latest("created")
+        return credential.cred_value
+    except GfCredential.DoesNotExist():
+        return False

@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from google.appengine.api import urlfetch
 
 from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange
-from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode
+from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred
 
 
 def public_tt_old_data(request):
@@ -69,6 +69,7 @@ def public_what_food_banks_need(request):
         "where_from":where_from,
         "address":address,
         "lattlong":lattlong,
+        "gmap_key":get_cred("gmap_key"),
         "map_locations":map_locations,
         "location_results":location_results,
     }
@@ -180,6 +181,7 @@ def public_wfbn_constituency(request, slug):
             "mp_parl_id":foodbank.mp_parl_id,
             "latt_long":foodbank.latt_long,
             "needs":foodbank.latest_need(),
+            "gmap_key":get_cred("gmap_key"),
             "url":"/needs/at/%s/" % (foodbank.slug)
         })
 

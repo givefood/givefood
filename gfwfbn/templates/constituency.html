@@ -66,7 +66,7 @@
 
 {% block script %}
 
-<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyC2EtAunWviftkU8nI_NmEZMuKTC8SPNME&amp;sensor=false"></script>
+<script src="//maps.googleapis.com/maps/api/js?key={{ gmap_key }}&amp;sensor=false"></script>
 <script>
 function add_marker(lat, lng, url) {
   position = new google.maps.LatLng(lat, lng)
