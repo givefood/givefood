@@ -32,9 +32,7 @@
         </nav>
         <div class="columns">
           <div class="column">
-            <a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}">
-              <img src="{{ map_url }}" alt="Map of {{ foodbank }} Food Bank">
-            </a>
+            <div id="fbmap" style="height:600px;"></div>
             <br>
             <p>
               {{ foodbank.address|linebreaksbr }}<br>
@@ -117,3 +115,44 @@
   </div>
 
 {% endblock %}
+
+{% block script %}
+
+<script src="//maps.googleapis.com/maps/api/js?key={{ gmap_key }}&amp;sensor=false"></script>
+<script>
+function add_marker(lat, lng, url) {
+  position = new google.maps.LatLng(lat, lng)
+  var marker = new google.maps.Marker({
+  position: position,
+  map: map,
+  url: url
+});
+  bounds.extend(position);
+  google.maps.event.addListener(marker, "click", function () {
+  location.assign(marker.url);
+});
+}
+
+var map
+var bounds = new google.maps.LatLngBounds();
+function init_map() {
+var mapOptions = {
+  center: new google.maps.LatLng(55,-4),
+  zoom: 6,
+  mapTypeId: google.maps.MapTypeId.ROADMAP,
+  maxZoom: 14
+};
+map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
+add_marker({{ foodbank.latt_long }}, "{% url 'public_wfbn_foodbank' foodbank.slug %}")
+{% for location in foodbank.locations %}
+  add_marker({{ location.latt_long }}, "{% url 'public_wfbn_foodbank_location' foodbank.slug location.slug %}")
+{% endfor %}
+map.fitBounds(bounds);
+map.panToBounds(bounds);
+}
+
+google.maps.event.addDomListener(window, 'load', init_map);
+</script>
+
+{% endblock %}
+

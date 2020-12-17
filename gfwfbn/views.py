@@ -91,17 +91,11 @@ def public_what_food_banks_need_click(request, slug):
 def public_wfbn_foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-
-    map_url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=350x700&scale=2&maptype=roadmap&format=png&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ&markers=%s&markers=size:small|" % (foodbank.latt_long,foodbank.latt_long)
-    for location in foodbank.locations():
-        map_url += "|%s" % (location.latt_long)
-
     nearby_locations = find_locations(foodbank.latt_long, 10, True)
 
     template_vars = {
         "foodbank":foodbank,
         "nearby_locations":nearby_locations,
-        "map_url":map_url,
     }
 
     return render_to_response("wfbnfoodbank.html", template_vars, context_instance=RequestContext(request))
