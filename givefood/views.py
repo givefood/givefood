@@ -15,12 +15,12 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.template.defaultfilters import slugify
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode, find_foodbanks, find_locations, geocode, find_locations
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode, find_foodbanks, find_locations, geocode, find_locations, get_cred
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
@@ -227,6 +227,12 @@ def public_product_image(request):
 
 @csrf_exempt
 def distill_webhook(request):
+
+    distill_key = get_cred("distill_key")
+    given_key = request.GET.get("key", None)
+
+    if distill_key != given_key:
+        return HttpResponseForbidden()
 
     post_text = request.body
     change_details = json.loads(post_text)
