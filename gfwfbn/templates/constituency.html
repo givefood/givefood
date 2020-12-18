@@ -45,11 +45,7 @@
                 <tr>
                   <td class="foodbank_name"><a href="{{ foodbank.url }}">{{ foodbank.name }}</a></td>
                   <td>
-                    {% if foodbank.needs.change_text != "Unknown" %}
-                      {{ foodbank.needs.change_text|linebreaksbr }}
-                    {% else %}
-                      We don't know what this food bank is requesting, please contact them
-                    {% endif %}
+                    {% include "includes/need_text.html" with need_text=foodbank.needs.change_text %}
                   </td>
                 </tr>
               {% endfor %}
