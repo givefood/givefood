@@ -32,7 +32,7 @@
         </nav>
         <div class="columns">
           <div class="column">
-            <div id="fbmap" style="height:600px;"></div>
+            <div id="fbmap" style="height:500px;"></div>
             <br>
             <p>
               {{ foodbank.address|linebreaksbr }}<br>
@@ -140,14 +140,19 @@ var mapOptions = {
   center: new google.maps.LatLng(55,-4),
   zoom: 6,
   mapTypeId: google.maps.MapTypeId.ROADMAP,
-  maxZoom: 14
 };
 map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
 add_marker({{ foodbank.latt_long }}, "{% url 'public_wfbn_foodbank' foodbank.slug %}")
 {% for location in foodbank.locations %}
   add_marker({{ location.latt_long }}, "{% url 'public_wfbn_foodbank_location' foodbank.slug location.slug %}")
 {% endfor %}
-map.fitBounds(bounds);
+google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+  var maxZoom = 15
+  if (this.getZoom() > maxZoom) {
+      this.setZoom(maxZoom);
+  }
+});
+map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
 map.panToBounds(bounds);
 }
 
