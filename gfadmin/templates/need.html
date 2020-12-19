@@ -23,6 +23,14 @@
         <dd>{{ need.created }} ({{ need.created|timesince }} ago)</dd>
         <dt>Modified</dt>
         <dd>{{ need.modified }} ({{ need.modified|timesince }} ago)</dd>
+        <dt>Tweeted</dt>
+        <dd>
+          {% if need.tweet_sent %}
+            {{ need.tweet_sent }}
+          {% else %}
+            Never
+          {% endif %}
+        </dd>
         <dt>ID</dt>
         <dd>{{ need.need_id }}</dd>
         {% if need.distill_id %}

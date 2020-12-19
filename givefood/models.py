@@ -488,6 +488,8 @@ class OrderItem(models.Model):
 
 class FoodbankChange(models.Model):
 
+    # This is known on the frontend as a 'need'
+
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     need_id = models.CharField(max_length=8, editable=False)
@@ -500,6 +502,7 @@ class FoodbankChange(models.Model):
     uri = models.CharField(max_length=250, null=True, blank=True)
     change_text = models.TextField()
     published = models.BooleanField(default=False)
+    tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
 
     class Search:
          fields = [

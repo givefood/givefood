@@ -454,6 +454,9 @@ def need_tweet(request, id):
         # status = api.PostUpdate(tweet)
         logging.info(tweet)
 
+    need.tweet_sent = datetime.now()
+    need.save()
+
     return redirect("admin_index")
 
 
