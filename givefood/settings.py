@@ -78,7 +78,7 @@ TEMPLATES = [
                 "session_csrf.context_processor",
                 "gfadmin.context_processors.all_foodbanks",
                 "gfadmin.context_processors.gmap_keys",
-                "givefood.context_processors.public.context",
+                "givefood.context_processors.context",
             ],
             'debug': True,
             'loaders': [
