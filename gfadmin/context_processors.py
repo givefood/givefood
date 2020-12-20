@@ -6,8 +6,10 @@ def all_foodbanks(request):
         'all_foodbanks':get_all_foodbanks(),
     }
 
-def gmap_key(request):
+def gmap_keys(request):
 
     return {
         'gmap_key':get_cred("gmap_key"),
+        'gmap_static_key':get_cred("gmap_static_key"),
+        'gmap_geocode_key':get_cred("gmap_geocode_key")
     }

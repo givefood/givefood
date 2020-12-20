@@ -21,8 +21,8 @@ document.addEventListener("turbolinks:load", function() {
   const postcode_field = document.querySelector("#id_postcode");
   const change_text_field = document.querySelector("#id_change_text");
 
-  const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?key=" + gmap_key + "&address="
-  const map_url = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&key=" + gmap_key + "&scale=2&center="
+  const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?key=" + gmap_geocode_key + "&address="
+  const map_url = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&key=" + gmap_static_key + "&scale=2&center="
 
 
   // LATTLONG

@@ -105,8 +105,9 @@ def public_wfbn_foodbank(request, slug):
 def public_wfbn_foodbank_map(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
+    gmap_static_key = get_cred("gmap_static_key")
 
-    result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ" % (foodbank.latt_long))
+    result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (foodbank.latt_long, gmap_static_key))
     return HttpResponse(result.content, content_type='image/png')
 
 
@@ -132,8 +133,9 @@ def public_wfbn_foodbank_location_map(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
+    gmap_static_key = get_cred("gmap_static_key")
 
-    result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=AIzaSyAyeRIfEOZenxIew6fSIQjl0AF0q1qIXoQ" % (location.latt_long))
+    result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.latt_long, gmap_static_key))
 
     return HttpResponse(result.content, content_type='image/png')
 
