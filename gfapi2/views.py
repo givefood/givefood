@@ -330,6 +330,21 @@ def location_search(request):
 
     locations = find_locations(lat_lng, 10)
 
+    if address:
+        query_type = "address"
+        query = address
+    else:
+        query_type = "lattlong"
+        query = lat_lng
+
+    api_hit = ApiFoodbankSearch(
+        query_type = query_type,
+        query = query,
+        nearest_foodbank = locations[0].get("distance_m"),
+        latt_long = lat_lng,
+    )
+    api_hit.save()
+
     response_list = []
     for location in locations:
 
