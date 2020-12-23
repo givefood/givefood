@@ -573,7 +573,8 @@ class FoodbankChange(models.Model):
 
         super(FoodbankChange, self).save(*args, **kwargs)
 
-        deferred.defer(self.foodbank.save)
+        if self.foodbank:
+            deferred.defer(self.foodbank.save)
 
 
 class ApiFoodbankSearch(models.Model):
