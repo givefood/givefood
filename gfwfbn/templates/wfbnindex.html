@@ -86,7 +86,11 @@
         </table>
       </div>
       {% if where_from != "trusselltrust" %}
-        <div id="fbmap"></div>
+        <div id="map-container">
+          <div id="map-main"></div>
+          <div id="map-channelislands"></div>
+          <div id="map-shetlandislands"></div>
+        </div>
       {% endif %}
 
     </div>
@@ -126,28 +130,57 @@
       const gmap_key = "{{ gmap_key }}"
 
       function add_marker(lat, lng, url) {
-        var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(lat, lng),
-        map: map,
-        url: url
-      });
-        google.maps.event.addListener(marker, "click", function () {
-        location.assign(marker.url);
-      });
+        var main_marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat, lng),
+          map: map_main,
+          url: url
+        });
+        var ci_marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat, lng),
+          map: map_channelislands,
+          url: url
+        });
+        var s_marker = new google.maps.Marker({
+          position: new google.maps.LatLng(lat, lng),
+          map: map_shetlandislands,
+          url: url
+        });
+        google.maps.event.addListener(main_marker, "click", function () {
+          location.assign(main_marker.url);
+        });
+        google.maps.event.addListener(ci_marker, "click", function () {
+          location.assign(ci_marker.url);
+        });
+        google.maps.event.addListener(s_marker, "click", function () {
+          location.assign(s_marker.url);
+        });
       }
 
-      var map
+      var map_main
+      var map_channelislands
+      var map_shetlandislands
       function init_map() {
-      var mapOptions = {
-        center: new google.maps.LatLng(55,-4),
-        zoom: 6,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      };
-      map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
+        map_main = new google.maps.Map(document.getElementById("map-main"), {
+          center: new google.maps.LatLng(55,-4),
+          zoom: 6,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        map_channelislands = new google.maps.Map(document.getElementById("map-channelislands"), {
+          center: new google.maps.LatLng(49.4,-2.4),
+          zoom: 8,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+        });
+        map_shetlandislands = new google.maps.Map(document.getElementById("map-shetlandislands"), {
+          center: new google.maps.LatLng(60.35,-1.3),
+          zoom: 7,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          disableDefaultUI: true,
+        });
 
-      {% for location in map_locations %}
-        add_marker({{ location.latt_long }}, "{{ location.url }}")
-      {% endfor %}
+        {% for location in map_locations %}
+          add_marker({{ location.latt_long }}, "{{ location.url }}")
+        {% endfor %}
 
       }
 
