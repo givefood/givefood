@@ -4,11 +4,11 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import slugify
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page, cache_control
 
 from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import get_all_foodbanks, find_foodbanks, geocode, find_locations
+from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations
 
 DEFAULT_FORMAT = "json"
 
@@ -318,6 +318,75 @@ def foodbank_search(request):
         })
 
     return ApiResponse(response_list, "foodbanks", format)
+
+
+@cache_control(public=True, max_age=3600)
+def locations(request):
+
+    format = request.GET.get("format", DEFAULT_FORMAT)
+
+    locations = get_all_locations()
+    response_list = []
+
+    if format != "geojson":
+        for location in locations:
+
+            response_list.append({
+                "name":location.name,
+                "slug":location.slug,
+                "phone":location.phone_or_foodbank_phone(),
+                "email":location.email_or_foodbank_email(),
+                "address":location.full_address(),
+                "postcode":location.postcode,
+                "lat_lng":location.latt_long,
+                "network":location.foodbank_network,
+                "urls": {
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/location/%s/" % (location.foodbank_slug, location.slug),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
+                },
+                "politics": {
+                    "parliamentary_constituency":location.parliamentary_constituency,
+                    "mp":location.mp,
+                    "mp_party":location.mp_party,
+                    "mp_parl_id":location.mp_parl_id,
+                    "ward":location.ward,
+                    "district":location.district,
+                    "urls": {
+                        "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (location.parliamentary_constituency_slug),
+                        "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (location.parliamentary_constituency_slug),
+                    },
+                }
+            })
+    else:
+
+        features = []
+        for location in locations:
+            features.append(
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [float(location.latt_long.split(",")[1]), float(location.latt_long.split(",")[0])]
+                    },
+                    "properties": {
+                        "name": location.name,
+                        "slug": location.slug,
+                        "address": location.full_address(),
+                        "url": "https://www.givefood.org.uk/needs/at/%s/%s/" % (location.foodbank_slug, location.slug),
+                        "network": location.foodbank_network,
+                        "email": location.email_or_foodbank_email(),
+                        "telephone": location.phone_or_foodbank_phone(),
+                        "parliamentary_constituency": location.parliamentary_constituency,
+                    }
+                }
+            )
+
+        response_list = {
+            "type": "FeatureCollection",
+            "features": features
+        }
+
+    return ApiResponse(response_list, "locations", format)
 
 
 @cache_page(60*20)

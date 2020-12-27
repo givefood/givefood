@@ -7,6 +7,7 @@ urlpatterns = (
     url(r'^foodbanks/$', foodbanks, name="foodbanks"),
     url(r'^foodbank/(?P<slug>[-\w]+)/$', foodbank, name="foodbank"),
     url(r'^foodbanks/search/$', foodbank_search, name="foodbank_search"),
+    url(r'^locations/$', locations, name="locations"),
     url(r'^locations/search/$', location_search, name="location_search"),
     url(r'^needs/$', needs, name="needs"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/$', need, name="need"),

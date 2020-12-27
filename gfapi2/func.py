@@ -7,8 +7,19 @@ from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 
 def accceptable_formats(obj_name):
 
-    have_geojson = ["foodbanks","constituency"]
-    valid_formats = ["json","xml","yaml"]
+    # response objects that have geojson available
+    have_geojson = [
+        "foodbanks",
+        "constituency",
+        "locations",
+    ]
+
+    # default formats
+    valid_formats = [
+        "json",
+        "xml",
+        "yaml",
+    ]
 
     if obj_name in have_geojson:
         valid_formats.append("geojson")
