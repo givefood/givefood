@@ -123,7 +123,7 @@ def foodbanks(request):
                     "properties": {
                         "name": foodbank.name,
                         "slug": foodbank.slug,
-                        "address": foodbank.address,
+                        "address": foodbank.full_address(),
                         "country": foodbank.country,
                         "url": "https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
                         "json": "https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
