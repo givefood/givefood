@@ -1,0 +1,230 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}2020 Give Food Annual Report{% endblock %}
+
+{% block head %}
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@GiveFood_org_uk">
+<meta property="og:title" content="Give Food 2020 Annual Report">
+<meta property="og:description" content="Find out what we've been done in 2020">
+<meta name="description" content="Find out what we've been done in 2020">
+<meta property="og:image" content="https://www.givefood.org.uk/static/img/ar/2020/sharing.jpg">
+{% endblock %}
+
+{% block body %}
+
+  <h1><a href="/">Give Food</a></h1>
+
+  <div class="columns">
+    <div class="column is-one-third intro content">
+
+        <h2>2020 Annual Report</h2>
+        <p>We're a UK charity that supports food banks around the country. We do this by using technology to identify what is needed at food banks, distributing this information and also making our own deliveries.</p>
+        <p>We run the largest and most complete public database of UK food banks and scrape their websites for what they are requesting in real time.</p>
+
+        <div style="position:sticky;top:10px;">
+            <ul class="is-size-6">
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#aim-review">Aim Review</a></li>
+                <li><a href="#ppe-supplies">PPE &amp; Supplies</a></li>
+                <li><a href="#data-code">Data &amp; Code</a></li>
+                <li><a href="#aims-2021">Aims for 2021</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="column is-half content">
+
+        <h2 id="summary">Summary</h2>
+
+        <ul>
+            <li><em>Tens of millions</em> of people viewed data from our realtime food bank need database</li>
+            <li><em>One million</em> items of PPE delivered</li>
+            <li><em>Tens of thousands</em> of items of food delivered directly to food banks</li>
+            <li><em>Thousands</em> of lines of code & much of our data made open</li>
+        </ul>
+
+        <figure>
+            <img src="/static/img/ar/2020/van.jpg" alt="Van full of parcels">
+            <figcaption>Filling a Royal Mail van with PPE deliveries to food banks in May</figcaption>
+        </figure>
+
+
+        <h2 id="aim-review">Aim Review</h2>
+
+        <p>As part of <a href="/2019/">last year's report</a> we outlined <a href="https://twitter.com/GiveFood_org_uk/status/1207939959400759296">some aims</a> that we would like to accomplish in 2020, so let’s check how we did with those. To recap, they were...</p>
+
+        <ul>
+            <li>Form a charity to manage the organisation</li>
+            <li>Continue visiting food banks around country</li>
+            <li>Reach out to more independent food banks</li>
+            <li>Find methods of talking to food banks that aren't internet-savvy</li>
+            <li>Publish our tech & data</li>
+            <li>Double the deliveries</li>
+        </ul>
+
+
+        <h3>Form a charity to manage the organisation</h3>
+
+        <p>✅ Give Food was <a href="https://twitter.com/GiveFood_org_uk/status/1233458615836708864">accepted</a> to become a <a href="https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=1188192&subid=0">registered charity</a>, in England &amp; Wales, on 26th February. It was a surprising amount of paperwork, and we were very impressed by the professionalism of the Charity Commission pushed us to formalise and document how we work.</p>
+        <p>Thanks to Chris from our accountants <a href="https://numbergeek.com">Numbergeek</a> for guiding us through this, and my friend Luke for agreeing to oversee us as a trustee.</p>
+
+
+        <h3>Continue visiting food banks around country</h3>
+
+        <p>❌ As the country went into various states of lockdown we failed to visit any food banks - apart from the local South London warehouse briefly to drop off PPE & other donations. We very much hope to get out to meet more food banks to see how they operate and how we can potentially help in 2021.</p>
+
+
+        <h3>Reach out to more independent food banks</h3>
+
+        <p>✅ Networked food banks are easy to find, but independent ones less so. We’ve tried a few methods of discovering these often small &amp; local (but nonetheless important) organisations. Many have also reached out to us to be included in our database. We found 835 food bank locations that aren't part of the Trussell Trust or IFAN.</p>
+        <p>Keeping track of popup food banks and existing organisation’s changing locations during the pandemic was a challenge.</p>
+
+
+        <h3>Find methods of talking to food banks that aren't internet-savvy</h3>
+
+        <p>❌ This is unfortunately and definitely a big red cross. We rely heavily on food banks using email and social media. If they want what they are requesting to have donated indexed then we need a website too.</p>
+        <p>It's tough to quantify how much, but this appears to be a blindspot - and we've not fixed it this year.</p>
+
+
+        <h3>Publish our tech & data</h3>
+
+        <p>✅ A big green tick. You can read more about this in the <a href="#data-code">section below</a>, but we’ve been extremely successful with this aim in 2020.</p>
+
+
+        <h3>Double the deliveries</h3>
+
+        <p>❌ We could have been generous and given ourselves a tick for this one, but that wouldn't in the spirit of what we were aiming for. The stated aim referred to our internet grocery deliveries which became difficult, and then impossible, to arrange during the lockdowns.</p>
+        <p>2020 delivery stats:</p>
+        <ul>
+            <li>15,549kg of food and toiletries (down from 60,479kg in 2019)</li>
+            <li>30,814 items (down from 123,344 items in 2019)</li>
+            <li>Including nearly a tonne of rice, 2,182 litres of UHT milk, 1,678 tins of tomatoes, and 3,407 tins of puddings</li>
+            <li>Delivered to 95 food bank organisations (down from 154 in 2019)</li>
+        </ul>
+            
+        <p>Our attempts to mitigate difficult deliveries by adapting our systems to use multiple supermarkets helped, but not enough.</p>
+        <p>This is extremely disappointing and certainly exposed the brittleness of our approach of using supermarket deliveries.</p>
+        <p>That said, we were able to help support food banks with PPE & cardboard delivery boxes - more on that just below.</p>
+
+
+        <h2 id="ppe-supplies">PPE &amp; Supplies</h2>
+
+        <p>When it became clear in early March that the pandemic was going to adversely affect food banks we were at the same time starting to struggle to secure delivery slots from supermarkets.</p>
+
+        <p>Spurred by a suggestion from Sabine at IFAN, who also very helpfully researched the specifications of PPE required, we started bulk purchasing disposable food-safe gloves. These proved to be a quick, cost-effective, and straightforward way to help food banks protect their volunteers and emergency food recipients.</p>
+
+        <p>We used 27 different PPE suppliers around the country and also received a donation of gloves from <a href="https://www.foodaidnetwork.org.uk/">IFAN</a>. In addition to this 100,000 face masks were donated by a Chinese company and imported directly from China. This was facilitated by an extremely helpful trade organisation who did translations and engaged the Foreign & Commonwealth Office to ensure smooth transit.</p>
+
+        <p>All told we repackaged and delivered over a million items of PPE (around 2.7 tonnes, in 1421 parcels) to help 815 food bank organisations, covering thousands of locations from Penzance to Lerwick.</p>
+
+        <figure>
+            <img src="/static/img/ar/2020/glove-pallet.jpg" alt="Pallets of cartons of gloves">
+            <figcaption>Around 1/4m gloves on three pallets</figcaption>
+        </figure>
+
+        <p>Slightly bizarrely this operation was mainly carried out on the pavement outside our house, and simply couldn’t have happened without the enormous, socially-distanced, help of our wonderful neighbours Helen, Mark & Niko. Also thanks to the understanding and kind Royal Mail employees at Stockwell delivery office who dealt with endless cages of parcels being rolled in every morning whilst they were already busy.</p>
+
+        <figure>
+            <img src="/static/img/ar/2020/delivery-office.jpg" alt="Cages of parcels of gloves">
+            <figcaption>We posted up to 80,000 gloves a day to UK food banks</figcaption>
+        </figure>
+
+        <p>We also supplied over 4800 flat-packed cardboard boxes to 11 food bank organisations to aid them in a switch to making deliveries, so that emergency food recipients didn't need to visit the location.</p>
+
+        <figure>
+            <img src="/static/img/ar/2020/boxes.jpg" alt="Food bank volunteer loading delivery boxes">
+            <figcaption>A delivery of our flat-pack boxes being put to use at South London food bank warehouse</figcaption>
+        </figure>
+
+        <p>Over the summer we made age-appropriate activity packs to be distributed by the South London food bank warehouse. These amongst the games, toys and activities were some wonderful books donated by a local author Magda Brol, and a 94 year old great grandmother in Devon knitted footballs to be included.</p>
+
+        <figure>
+            <img src="/static/img/ar/2020/activity-packs.jpg" alt="Activity packs">
+            <figcaption>Summer activity packs ready to go</figcaption>
+        </figure>
+
+        <figure>
+            <img src="/static/img/ar/2020/activity-pack.jpg" alt="Activity pack">
+            <figcaption>Contents of a summer activity pack for a younger child</figcaption>
+        </figure>
+
+        <h2 id="data-code">Data &amp; Code</h2>
+
+        <p>We maintain the largest public database of UK food banks - currently covering 2329 locations. In addition we also crawl these food bank's websites to find what they are requesting to have donated. Our software indexed what food banks require 2.82m times (up from 2.11m in 2019) in 2020, downloading and parsing over 3.7 TB of data. This would take about a week to download all at once on an average UK broadband connection.</p>
+
+        <p>We maintain our tool that allows users to find food banks and what they are requesting to have donated at <a href="https://www.givefood.org.uk/needs/">givefood.org.uk/needs/</a>.</p>
+
+        <figure>
+            <img src="/static/img/ar/2020/search-heatmap.png" alt="Heatmap showing where people searched for food banks">
+            <figcaption>Where people searched for food banks, and their needs, using our tool in 2020</figcaption>
+        </figure>
+
+        <figure>
+            <img src="/static/img/ar/2020/needs-graph.svg" alt="Graph showing the number of items requested by UK food banks per week">
+            <figcaption>Number of items requested by UK food banks per week in 2020</figcaption>
+        </figure>
+
+        <p>Releasing our data for use programmatically in many formats, permissionlessly usable by anyone has seen it viewed by at least 20 million people during the year.</p>
+            
+        <p>At the beginning of the year we started releasing our data in the form of an <a href="/api/">API</a>, which we had already been using internally, and followed up in the summer with the <a href="/api/2/">second version</a> which is currently of alpha quality.</p>
+            
+        <p>In February we started including political data on food banks. This allows users to view all the food banks in a <a href="https://www.givefood.org.uk/needs/in/constituency/north-east-somerset/">parliamentary constituency</a>, or view details such as the MP that represents the area the food bank operates in.</p>
+
+        <p>Like the rest of our data this is released a variety of formats for interested parties to utilise.</p>
+
+        <figure>
+            <img src="/static/img/ar/2020/constituency.png" alt="Map of a UK parliamentary constituency with food bank locations marked">
+            <figcaption>Parliamentary constituency outline with food banks marked using GeoJSON</figcaption>
+        </figure>
+            
+        <p>In March we built and deployed (in about four hours!) a widget for the Trussell Trust's website (UK's largest food bank network, covering over 1200 locations) that allows them to show what food banks are requesting. This regularly receives large amounts of traffic due to Trussell Trust social media and celebrity mentions.</p>
+            
+        <p>This widget is shown at <a href="https://www.trusselltrust.org/get-involved/ways-to-give/donate-food/">www.trusselltrust.org/get-involved/ways-to-give/donate-food/</a></p>
+            
+        <p>Also in March we started supplying data to the talented folk at <a href="https://www.reachplc.com/">Reach PLC</a> (formerly Mirror Group). They republish the information in widgets that allow the users of their many highly-trafficed web properties, and In Your Area app, to see food banks near them and what they are requesting.</p>
+
+        <figure>
+            <img src="/static/img/ar/2020/iya-widget.png" alt="Screenshot of the food bank widget">
+            <figcaption>Food bank widget</figcaption>
+        </figure>
+
+        <p>We also started publishing every change to our data in various formats, from October, at <a href="https://github.com/givefood/data">github.com/givefood/data</a></p>
+
+        <p>Also in October we released our first mobile app - <a href="https://play.google.com/store/apps/details?id=uk.org.givefood.cordova">Give Food</a> on Android. This was built by Linus from YunoJuno.</p>
+
+        <p>In December we also open sourced all our code. Hopefully being open source can help fix some of the dubious code quality and structural problems over time. This is available at <a href="https://github.com/givefood/givefood">github.com/givefood/givefood</a></p>
+
+        <p>There were also some wonderful &amp; creative uses of our data over the year...</p>
+            
+        <ul>
+            <li><a href="https://dev.to/graphcms/create-your-own-apollo-data-source-package-1o4m">GraphQL interface</a> from Jamie</li>
+            <li><a href="https://medium.com/@mariomenti/ask-alexa-or-google-assistant-what-the-your-nearest-food-banks-need-11cc5ef908cd">Voice interfaces</a> from Mario</li>
+            <li><a href="https://www.cuvva.com/cuvva/hello-food-bank-finder">In-app food bank finder</a> by Cuvva</li>
+            <li>Visualisation of items needed by <a href="https://www.thetimes.co.uk/article/how-to-donate-to-the-food-bank-find-the-items-needed-near-me-tr7zb3xg6">The Times</a></li>
+        </ul>
+
+        <h2 id="aims-2021">Aims for 2021</h2>
+
+        <p>Whilst it's difficult to anticipate what 2021 will bring (!), we've decided on some broad aims for the next year.</p>
+
+        <ul>
+            <li>Release more data, including dashboards</li>
+            <li>Improve data &amp; code quality with audits and rewrites</li>
+            <li>Find methods of finding &amp; communicating with food banks that aren't internet-savvy</li>
+            <li>Reach out to more independent food banks</li>
+            <li>Create a tool to allow users to better contact their local and national political representatives about the food bank cause</li>
+        </ul>
+
+        <br><br><br><br>
+
+    </div>
+
+  </div>
+
+
+
+
+
+{% endblock %}
