@@ -52,6 +52,11 @@
             {% endif %}
           </div>
           <div class="column">
+
+            {% if foodbank.is_closed %}
+              <p class="tag is-danger is-size-5">This food bank has closed</p>
+            {% endif %}
+
             <h2>{{ foodbank }} Food Bank</h2>
 
             {% include "includes/need.html" with need_text=foodbank.latest_need.change_text %}
