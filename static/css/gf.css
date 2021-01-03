@@ -139,3 +139,7 @@ blockquote {
 footer {
   font-size:0.9em;
 }
+.sticky-toc {
+  position:sticky;
+  top:10px;
+}
