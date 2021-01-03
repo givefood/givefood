@@ -112,3 +112,14 @@ indexes:
   - name: foodbank_id
   - name: delivery_datetime
     direction: desc
+
+- kind: givefood_orderline
+  properties:
+  - name: order_id
+  - name: weight
+    direction: desc
+
+- kind: givefood_orderline
+  properties:
+  - name: order_id
+  - name: weight

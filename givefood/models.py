@@ -452,7 +452,7 @@ class Order(models.Model):
         self.foodbank.save()
 
     def lines(self):
-        return OrderLine.objects.filter(order = self)
+        return OrderLine.objects.filter(order = self).order_by("-weight")
 
 
 class OrderLine(models.Model):
