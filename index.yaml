@@ -118,8 +118,3 @@ indexes:
   - name: order_id
   - name: weight
     direction: desc
-
-- kind: givefood_orderline
-  properties:
-  - name: order_id
-  - name: weight
