@@ -759,10 +759,11 @@ def parlcon_loader_geojson(request):
     for line in lines:
         # logging.info(line)
         for parlcon in parlcons:
-            if parlcon.name in line:
-                logging.info("Found " + parlcon.name)
-                parlcon.boundary_geojson = line
-                parlcon.save()
+            if not parlcon.boundary_geojson:
+                if parlcon.name in line:
+                    logging.info("Found " + parlcon.name)
+                    parlcon.boundary_geojson = line
+                    parlcon.save()
 
     return HttpResponse("OK")
 
