@@ -715,12 +715,14 @@ def parlcon_form(request, slug = None):
 def parlcon_loader(request):
 
     foodbanks = get_all_foodbanks()
-    locations = FoodbankLocation.objects.all()
+    locations = get_all_locations()
 
     for foodbank in foodbanks:
         try:
+            logging.info("trying fb parlcon %s" % foodbank.parliamentary_constituency_slug)
             parlcon = ParliamentaryConstituency.objects.get(slug = foodbank.parliamentary_constituency_slug)
         except ParliamentaryConstituency.DoesNotExist:
+            logging.info("adding %s" % foodbank.parliamentary_constituency_slug)
             newparlcon = ParliamentaryConstituency(
                 name = foodbank.parliamentary_constituency,
                 mp = foodbank.mp,
@@ -732,8 +734,10 @@ def parlcon_loader(request):
 
     for location in locations:
         try:
+            logging.info("trying loc parlcon %s" % location.parliamentary_constituency_slug)
             parlcon = ParliamentaryConstituency.objects.get(slug = location.parliamentary_constituency_slug)
         except ParliamentaryConstituency.DoesNotExist:
+            logging.info("adding %s" % location.parliamentary_constituency_slug)
             newparlcon = ParliamentaryConstituency(
                 name = location.parliamentary_constituency,
                 mp = location.mp,
