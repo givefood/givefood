@@ -51,8 +51,8 @@
 
             <h3>Contact</h3>
             <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
-            <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a><br>
-            <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:40 }}</a><br>
+            <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ location.phone_or_foodbank_phone }}">{{ location.phone_or_foodbank_phone }}</a><br>
+            <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}">{{ location.email_or_foodbank_email|truncatechars:40 }}</a><br>
             <p></p>
 
             {% if location.parliamentary_constituency %}
