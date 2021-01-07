@@ -75,6 +75,11 @@ function record_search(querystring) {
   });
 }
 
+function record_click() {
+  gtag('event', 'conversion', {'send_to': 'AW-448372895/rBD8CKOqkPABEJ_B5tUB'});
+}
+
+
 function api_request(url) {
   status.innerHTML = working_html;
   var fb_req = new XMLHttpRequest();
@@ -131,6 +136,7 @@ function api_response() {
       currentrow.querySelector(".links .phone").href = "tel:" + phone
       currentrow.querySelector(".links .info").href = "/needs/at/" + slug + "/";
     }
+    currentrow.querySelector("a.foodbank").addEventListener("click", record_click);
     results_table.appendChild(currentrow);
   }
 
