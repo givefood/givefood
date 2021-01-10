@@ -162,6 +162,9 @@ def public_wfbn_constituencies(request):
 @cache_page(60*5)
 def public_wfbn_constituency(request, slug):
 
+    if slug == "none":
+        raise Http404
+
     foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = slug)
     locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = slug)
 
