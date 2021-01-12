@@ -92,12 +92,6 @@ def public_reg_foodbank(request):
     return render_to_response("public/register_foodbank.html", template_vars, context_instance=RequestContext(request))
 
 
-def public_article(request, slug):
-
-    article_template = "public/articles/%s.html" % (slug)
-    return render_to_response(article_template, context_instance=RequestContext(request))
-
-
 @cache_page(60*10)
 def public_api(request):
 
