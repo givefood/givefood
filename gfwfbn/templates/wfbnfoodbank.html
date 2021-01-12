@@ -61,6 +61,10 @@
 
             {% include "includes/need.html" with need_text=foodbank.latest_need.change_text %}
 
+            {% if foodbank.bankuet_slug %}
+              <p><a href="https://www.bankuet.co.uk/{{ foodbank.bankuet_slug }}/?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs"><img src="/static/img/bankuet.png" alt="Bankuet logo" style="width:15px;"> Donate using Bankuet</a></p>
+            {% endif %}
+
             <h3>Contact</h3>
             <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
             <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a><br>
