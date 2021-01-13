@@ -57,3 +57,9 @@ th {
 .locationtable td {
   padding:5px 5px 5px 0;
 }
+table td.delivery-provider-icon {
+  padding:.5em 0;
+}
+td.delivery-provider-icon img {
+  width:12px;
+}
