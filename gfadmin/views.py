@@ -1,6 +1,7 @@
 import csv
 import twitter
 import logging
+import facebook
 from datetime import datetime, timedelta
 
 from djangae.environment import is_production_environment
@@ -425,7 +426,7 @@ def need_publish(request, id):
 
 
 @require_POST
-def need_tweet(request, id):
+def need_social_post(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
 
@@ -441,18 +442,28 @@ def need_tweet(request, id):
     else:
         fb_twitter_handle = ""
 
-    tweet = "%s Food Bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/" % (
+    tweet = "%s food bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/" % (
         need.foodbank_name,
         fb_twitter_handle,
         truncatechars(need.change_text, 150),
         need.foodbank_name_slug()
     )
 
+    fb_post_text = "%s food bank is requesting the donation of:\n\n%s" % (
+        need.foodbank_name,
+        need.change_text,
+    )
+    fb_post_link = "https://www.givefood.org.uk/needs/at/%s/" % (need.foodbank_name_slug())
+
+    graph = facebook.GraphAPI(access_token=get_cred("facebook_wfbn"), version="2.12")
+
     if is_production_environment():
         status = api.PostUpdate(tweet, latitude=need.foodbank.latt(), longitude=need.foodbank.long())
+        graph.put_object(parent_object='whatfoodbanksneed', connection_name='feed', message=fb_post_text, link=fb_post_link)
     else:
-        # status = api.PostUpdate(tweet)
-        logging.info(tweet)
+        logging.info("tweet is %s" % (tweet))
+        logging.info("fb_post_text is %s" % (fb_post_text))
+        logging.info("fb_post_link is %s" % (fb_post_link))
 
     need.tweet_sent = datetime.now()
     need.save()

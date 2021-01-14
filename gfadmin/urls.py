@@ -38,7 +38,7 @@ urlpatterns = (
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/edit/$', need_form, name="admin_need_form"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/delete/$', need_delete, name="admin_need_delete"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/publish/$', need_publish, name="admin_need_publish"),
-    url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/tweet/$', need_tweet, name="admin_need_tweet"),
+    url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/socialmedia/$', need_social_post, name="admin_need_social_post"),
 
     url(r'^locations/$', locations, name="admin_locations"),
     url(r'^locations/loader/sa/$', locations_loader_sa, name="admin_locations_loader_sa"),

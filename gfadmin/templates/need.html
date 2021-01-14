@@ -59,9 +59,9 @@
       {% if need.change_text != "Nothing" %}
         {% if need.change_text != "Unknown" %}
           <br>
-          <form action="{% url 'admin_need_tweet' need.need_id %}" method="post">
+          <form action="{% url 'admin_need_social_post' need.need_id %}" method="post">
             {% csrf_token %}
-            <input type="submit" class="button is-danger" value="Tweet">
+            <input type="submit" class="button is-danger" value="Post to social media">
           </form>
         {% endif %}
       {% endif %}
