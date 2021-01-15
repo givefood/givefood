@@ -458,8 +458,8 @@ def need_social_post(request, id):
     graph = facebook.GraphAPI(access_token=get_cred("facebook_wfbn"), version="2.12")
 
     if is_production_environment():
-        status = api.PostUpdate(tweet, latitude=need.foodbank.latt(), longitude=need.foodbank.long())
         graph.put_object(parent_object='whatfoodbanksneed', connection_name='feed', message=fb_post_text, link=fb_post_link)
+        status = api.PostUpdate(tweet, latitude=need.foodbank.latt(), longitude=need.foodbank.long())
     else:
         logging.info("tweet is %s" % (tweet))
         logging.info("fb_post_text is %s" % (fb_post_text))
