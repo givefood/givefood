@@ -63,7 +63,7 @@ def docs(request):
     return render_to_response("docs.html", template_vars, context_instance=RequestContext(request))
 
 
-@cache_page(60*20)
+@cache_control(public=True, max_age=3600)
 def foodbanks(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
