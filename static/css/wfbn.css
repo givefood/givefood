@@ -53,6 +53,7 @@
 }
 #map-container {
   position: relative;
+  background:#AADAFF;
 }
 #map-main {
   width:100%;
