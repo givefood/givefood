@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404
 from django.template import RequestContext
@@ -107,7 +109,16 @@ def public_wfbn_foodbank_map(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     gmap_static_key = get_cred("gmap_static_key")
 
-    result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (foodbank.latt_long, gmap_static_key))
+    markers = "%s|" % foodbank.latt_long
+    for location in foodbank.locations():
+        markers = "%s%s|" % (markers, location.latt_long)
+
+    if foodbank.name == "Salvation Army":
+        markers = "&zoom=15"
+
+    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=400x400&maptype=roadmap&format=png&visual_refresh=true&key=%s&markers=%s" % (foodbank.latt_long, gmap_static_key, markers)
+
+    result = urlfetch.fetch(url)
     return HttpResponse(result.content, content_type='image/png')
 
 
