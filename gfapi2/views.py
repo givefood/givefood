@@ -40,9 +40,10 @@ def docs(request):
         {"type":"lat_lng","query":"52.090833,0.131944"},
     ]
 
-    eg_needs = [
-        "d748993a",
-    ]
+    eg_needs_obj = FoodbankChange.objects.all().order_by("-created")[:5]
+    eg_needs = []
+    for eg_need in eg_needs_obj:
+        eg_needs.append(eg_need.need_id)
 
     eg_parl_cons = {
         "Uxbridge and South Ruislip",
