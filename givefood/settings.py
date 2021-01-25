@@ -140,7 +140,7 @@ CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com", "maps
 CSP_FRAME_SRC = ("'self'", "www.google.com", "www.youtube.com", "accounts.google.com", "apis.google.com", "plus.google.com", "staticxx.facebook.com","www.facebook.com", "platform.twitter.com", "syndication.twitter.com", "web.facebook.com")
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "instant.page", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com", "cdnjs.cloudflare.com", "www.gstatic.com", "www.googletagmanager.com", "maps.googleapis.com", "connect.facebook.net","platform.twitter.com", "cdn.syndication.twimg.com", "syndication.twitter.com", "*.cloudflareinsights.com", "www.googleadservices.com", "googleads.g.doubleclick.net")
 CSP_IMG_SRC = ("'self'", "data:", "s.ytimg.com", "*.googleusercontent.com", "*.gstatic.com", "www.google-analytics.com", "www.googletagmanager.com", "abs.twimg.com", "platform.twitter.com", "syndication.twitter.com", "pbs.twimg.com", "ton.twimg.com", "digitalcontent.api.tesco.com", "*.googleapis.com", "storage.googleapis.com", "www.google.com", "www.google.co.uk")
-CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com", "maps.googleapis.com", "cloudflareinsights.com")
+CSP_CONNECT_SRC = ("'self'", "plus.google.com", "www.google-analytics.com", "maps.googleapis.com", "cloudflareinsights.com", "stats.g.doubleclick.net")
 
 
 from djangae.contrib.gauth.settings import *
