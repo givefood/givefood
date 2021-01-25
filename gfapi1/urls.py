@@ -1,8 +1,10 @@
 from django.conf.urls import include, url
 from views import *
+from givefood.views import public_api
 
 urlpatterns = (
 
+    url(r'^$', public_api, name="api_index"),
     url(r'^foodbanks/$', api_foodbanks, name="api_foodbanks"),
     url(r'^foodbanks/search/$', api_foodbank_search, name="api_foodbank_search"),
     url(r'^foodbank/(?P<slug>[-\w]+)/$', api_foodbank, name="api_foodbank"),
