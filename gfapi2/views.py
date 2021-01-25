@@ -36,6 +36,9 @@ def docs(request):
     eg_searches = [
         {"type":"address","query":"12 Millbank, Westminster, London SW1P 4QE"},
         {"type":"address","query":"Mount Pleasant Rd, Porthleven, Helston TR13 9JSE"},
+        {"type":"address","query":"Gartocharn, Scotland"},
+        {"type":"address","query":"Bexhill-on-Sea"},
+        {"type":"address","query":"ZE2 9AU"},
         {"type":"lat_lng","query":"51.178889,-1.826111"},
         {"type":"lat_lng","query":"52.090833,0.131944"},
     ]
