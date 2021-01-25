@@ -27,7 +27,11 @@
             <dt class="is-size-5"><a href="#foodbank">foodbank</a></dt>
             <dd>Food bank including needs and locations</dd>
             <dt class="is-size-5"><a href="#foodbanks/search">foodbanks/search</a></dt>
-            <dd>Find food banks closest to a location</dd>
+            <dd>Find food banks closest to an inputted location</dd>
+            <dt class="is-size-5"><a href="#locations">locations</a></dt>
+            <dd>List of all the food bank loctions we know of</dd>
+            <dt class="is-size-5"><a href="#locations/search">locations/search</a></dt>
+            <dd>Find food bank locations closest to an inputted location</dd>
             <dt class="is-size-5"><a href="#needs">needs</a></dt>
             <dd>Latest needs published countrywide</dd>
             <dt class="is-size-5"><a href="#need">need</a></dt>
@@ -158,6 +162,81 @@
                 </div>
             </div>
 
+        </div>
+
+        {# locations #}
+        <div id="locations" class="api_method active" data-method-url="/api/2/locations/">
+
+            <div class="columns">
+                <div class="column">
+                    <h2>locations</h2>
+                    <p>Returns a list of all known food bank locations, with limited information about them. This is a large request (returns around 1MB uncompressed) and can take us a couple of seconds to produce, to please use sparingly.</p>
+                </div>
+            </div>
+
+            <div class="columns">
+
+                <div class="column">
+                    {% include "method_table/locations.html" %}
+                </div>
+
+                <div class="column">
+                    <table class="table">
+                        <tr>
+                            <td>format</td>
+                            <td>{% include "api_formats.html" with hasgeojson=True %}</td>
+                        </tr>
+                    </table>
+
+                    {% include "method_fields.html" %}
+
+                    <pre><code class="prettyprint language-json"></code></pre>
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {# locations/search #}
+        <div id="locations-search" class="api_method active" data-method-url="/api/2/locations/search/:search:">
+
+            <div class="columns">
+                <div class="column">
+                    <h2>locations/search</h2>
+                    <p>When given a location (either lattitude and longitude or an address) returns the details of the closest open food banks locations, including what is being requested to have donated.</p>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column">
+                    {% include "method_table/locations-search.html" %}
+                </div>
+                <div class="column">
+                    <table class="table is-fullwidth">
+                        <tr>
+                            <td>search</td>
+                            <td>
+                            <span class="select">
+                                <select class="control api_method_argument" id="search_argument" name="search">
+                                {% for search in eg_searches %}
+                                    <option value="?{{ search.type }}={{ search.query }}">{{ search.query }}</option>
+                                {% endfor %}
+                                </select>
+                            </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>format</td>
+                            <td>{% include "api_formats.html" %}</td>
+                        </tr>
+                    </table>
+                    {% include "method_fields.html" %}
+
+                    <pre class="result"><code class="language-json"></code></pre>
+                </div>
+            </div>
 
         </div>
 

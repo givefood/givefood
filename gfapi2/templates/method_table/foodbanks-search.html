@@ -51,6 +51,18 @@
         <td>Date and time of when we first found the food bank</td>
     </tr>
     <tr>
+        <td class="field_name">distance_m</td>
+        <td>Float</td>
+        <td>5218</td>
+        <td>Distance from the inputted location to this food bank in metres</td>
+    </tr>
+    <tr>
+        <td class="field_name">distance_mi</td>
+        <td>Float</td>
+        <td>7.12</td>
+        <td>Distance from the inputted location to this food bank in miles to two decimal places</td>
+    </tr>
+    <tr>
         <td class="field_name">email</td>
         <td>Email Address</td>
         <td>info@sidvalleyfoodbank.org.uk</td>
@@ -66,7 +78,28 @@
         <td class="field_name">name</td>
         <td>String</td>
         <td>Sid Valley</td>
-        <td></td>
+        <td>Name of the food bank</td>
+    </tr>
+    <tr>
+        <td class="field_name" colspan="4">needs</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">found</td>
+        <td>Date time</td>
+        <td class="eg">2020-11-27T09:55:57.877Z</td>
+        <td>Date and time of when we found what the food bank needs</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">needs</td>
+        <td>Multiline String</td>
+        <td class="eg">UHT Milk<br>Tinned Tomatoes<br>Tinned Sweetcorn<br>Custard</td>
+        <td>Linebreak separated list of items in the need. Or "Unknown", or "Nothing" keywords.</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">number</td>
+        <td>Integer</td>
+        <td class="eg">6</td>
+        <td>Number of different items requested by the food bank</td>
     </tr>
     <tr>
         <td class="field_name">network</td>
@@ -113,6 +146,21 @@
         <td class="eg">Lambeth</td>
         <td>Name of the district the food bank's main location is in</td>
     </tr>
+    <tr class="indented">
+        <td class="field_name" colspan="4">urls</td>
+    </tr>
+    <tr class="double-indented">
+        <td class="field_name">html</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/needs/in/constituency/vauxhall/</td>
+        <td>HTML URL of the parliamentary constituency</td>
+    </tr>
+    <tr class="double-indented">
+        <td class="field_name">self</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/api/2/constituency/vauxhall/</td>
+        <td>API URL of the parliamentary constituency</td>
+    </tr>
     <tr>
         <td class="field_name">postcode</td>
         <td>String</td>
@@ -124,6 +172,12 @@
         <td>String</td>
         <td>07413858335</td>
         <td>Secondary phone number</td>
+    </tr>
+    <tr>
+        <td class="field_name">slug</td>
+        <td>String</td>
+        <td class="eg">hull</td>
+        <td>Slugified name of the food bank</td>
     </tr>
     <tr class="indented">
         <td class="field_name" colspan="4">urls</td>
@@ -139,5 +193,32 @@
         <td>URL</td>
         <td class="eg">https://www.givefood.org.uk/api/2/constituency/vauxhall/</td>
         <td>API URL of the parliamentary constituency</td>
+    </tr>
+    <tr>
+        <td class="field_name" colspan="4">urls</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">homepage</td>
+        <td>URL</td>
+        <td class="eg">https://norwoodbrixton.foodbank.org.uk/</td>
+        <td>Homepage of the food bank</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">html</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/needs/at/norwoodbrixton/</td>
+        <td>HTML URL of the food bank</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">self</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/api/2/foodbank/norwoodbrixton/</td>
+        <td>API URL of the food bank</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">shopping_list</td>
+        <td>URL</td>
+        <td class="eg">https://norwoodbrixton.foodbank.org.uk/give-help/donate-food/</td>
+        <td>URL of the shopping list where we find what a food bank requires</td>
     </tr>
 </table>

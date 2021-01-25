@@ -9,10 +9,22 @@
         <td class="field_name" colspan="4">foodbanks</td>
     </tr>
     <tr class="indented">
+        <td class="field_name">lat_lng</td>
+        <td>String</td>
+        <td>51.4630738,-0.1207938</td>
+        <td>Comma separated latitude and longitude</td>
+    </tr>
+    <tr class="indented">
         <td class="field_name">name</td>
         <td>String</td>
         <td class="eg">Hull</td>
         <td></td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">needs</td>
+        <td>Multiline String</td>
+        <td class="eg">UHT Milk<br>Tinned Tomatoes<br>Tinned Sweetcorn<br>Custard</td>
+        <td>Linebreak separated list of items in the need. Or "Unknown", or "Nothing" keywords.</td>
     </tr>
     <tr class="indented">
         <td class="field_name">slug</td>
@@ -24,16 +36,52 @@
         <td class="field_name" colspan="4">urls</td>
     </tr>
     <tr class="double-indented">
-        <td class="field_name">self</td>
+        <td class="field_name">homepage</td>
         <td>URL</td>
-        <td class="eg">https://www.givefood.org.uk/api/2/foodbank/hull/</td>
-        <td></td>
+        <td class="eg">https://norwoodbrixton.foodbank.org.uk/</td>
+        <td>Homepage of the food bank</td>
     </tr>
     <tr class="double-indented">
         <td class="field_name">html</td>
         <td>URL</td>
-        <td class="eg">https://www.givefood.org.uk/needs/at/hull/</td>
-        <td></td>
+        <td class="eg">https://www.givefood.org.uk/needs/in/sid-valley/</td>
+        <td>HTML URL of the food bank</td>
+    </tr>
+    <tr class="double-indented">
+        <td class="field_name">self</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/api/2/foodbank/sid-valley/</td>
+        <td>API URL of the food bank</td>
+    </tr>
+    <tr class="double-indented">
+        <td class="field_name">shopping_list</td>
+        <td>URL</td>
+        <td class="eg">https://norwoodbrixton.foodbank.org.uk/give-help/donate-food/</td>
+        <td>URL of the shopping list where we find what a food bank requires</td>
+    </tr>
+    <tr>
+        <td class="field_name" colspan="4">mp</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">name</td>
+        <td>String</td>
+        <td>Florence Eshalomi</td>
+        <td>Name of the MP representing the parliamentary constituency</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">party</td>
+        <td>String</td>
+        <td>Labour</td>
+        <td>Name of the party the MP representing the parliamentary constituency is a member of</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name" colspan="4">urls</td>
+    </tr>
+    <tr class="double-indented">
+        <td class="field_name">html</td>
+        <td>URL</td>
+        <td class="eg">https://members.parliament.uk/member/4870/contact</td>
+        <td>HTML URL of the MP</td>
     </tr>
     <td class="field_name">name</td>
         <td>String</td>
@@ -45,5 +93,20 @@
         <td>String</td>
         <td>vauxhall</td>
         <td>Slug of the parlimentary constituency</td>
+    </tr>
+    <tr>
+        <td class="field_name" colspan="4">urls</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">self</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/api/2/constituency/exeter/</td>
+        <td>API URL of the parliamentary constituency</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">html</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/needs/in/constituency/orkney-and-shetland/</td>
+        <td>HTML URL of the parliamentary constituency</td>
     </tr>
 </table>

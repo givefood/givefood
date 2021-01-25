@@ -12,49 +12,58 @@
         <td></td>
     </tr>
     <tr>
-        <td class="field_name">alt_name</td>
-        <td>String</td>
-        <td>Carerdydd</td>
-        <td>Alternative name, for example in Welsh</td>
+        <td class="field_name">distance_m</td>
+        <td>Float</td>
+        <td>5218</td>
+        <td>Distance from the inputted location to this food bank in metres</td>
     </tr>
     <tr>
-        <td class="field_name">closed</td>
-        <td>Boolean</td>
-        <td>false</td>
-        <td></td>
-    </tr>
-    <tr>
-        <td class="field_name">country</td>
-        <td>String</td>
-        <td>England</td>
-        <td>Country, or Crown dependency, that the food bank's main location is in</td>
-    </tr>
-    <tr>
-        <td class="field_name" colspan="4">charity</td>
-    </tr>
-    <tr class="indented">
-        <td class="field_name">registration_id</td>
-        <td>String</td>
-        <td>1188192</td>
-        <td>Charity number of the registered charity that the food bank operates under</td>
-    </tr>
-    <tr class="indented">
-        <td class="field_name">register_url</td>
-        <td>URL</td>
-        <td class="eg">https://beta.charitycommission.gov.uk/charity-details/?regId=1151274</td>
-        <td>URL of the charity entry with the local registrar</td>
-    </tr>
-    <tr>
-        <td class="field_name">created</td>
-        <td>String</td>
-        <td>2019-07-01T13:42:01.565Z</td>
-        <td>Date and time of when we first found the food bank</td>
+        <td class="field_name">distance_mi</td>
+        <td>Float</td>
+        <td>7.12</td>
+        <td>Distance from the inputted location to this food bank in miles to two decimal places</td>
     </tr>
     <tr>
         <td class="field_name">email</td>
         <td>Email Address</td>
         <td>info@sidvalleyfoodbank.org.uk</td>
         <td></td>
+    </tr>
+    <tr>
+        <td class="field_name" colspan="4">foodbank</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">name</td>
+        <td>String</td>
+        <td>Sid Valley</td>
+        <td>Name of the food bank location</td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">network</td>
+        <td>String</td>
+        <td>Independent</td>
+        <td></td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name">slug</td>
+        <td>String</td>
+        <td>sid-valley</td>
+        <td></td>
+    </tr>
+    <tr class="indented">
+        <td class="field_name" colspan="4">urls</td>
+    </tr>
+    <tr class="double-indented">
+        <td class="field_name">html</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/needs/in/sid-valley/</td>
+        <td>HTML URL of the food bank</td>
+    </tr>
+    <tr class="double-indented">
+        <td class="field_name">self</td>
+        <td>URL</td>
+        <td class="eg">https://www.givefood.org.uk/api/2/foodbank/sid-valley/</td>
+        <td>API URL of the food bank</td>
     </tr>
     <tr>
         <td class="field_name">lat_lng</td>
@@ -66,19 +75,7 @@
         <td class="field_name">name</td>
         <td>String</td>
         <td>Sid Valley</td>
-        <td>Name of the food bank</td>
-    </tr>
-    <tr>
-        <td class="field_name">nearby_foodbanks</td>
-        <td>List</td>
         <td></td>
-        <td>Some fields of the food banks nearby</td>
-    </tr>
-    <tr>
-        <td class="field_name">network</td>
-        <td>String</td>
-        <td>IFAN</td>
-        <td>Name of the food bank network the food bank is in, or "Independent"</td>
     </tr>
     <tr>
         <td class="field_name">phone</td>
@@ -141,12 +138,6 @@
         <td></td>
     </tr>
     <tr>
-        <td class="field_name">secondary_phone</td>
-        <td>String</td>
-        <td>07413858335</td>
-        <td>Secondary phone number</td>
-    </tr>
-    <tr>
         <td class="field_name">slug</td>
         <td>String</td>
         <td class="eg">hull</td>
@@ -156,27 +147,9 @@
         <td class="field_name" colspan="4">urls</td>
     </tr>
     <tr class="indented">
-        <td class="field_name">homepage</td>
-        <td>URL</td>
-        <td class="eg">https://norwoodbrixton.foodbank.org.uk/</td>
-        <td>Homepage of the food bank</td>
-    </tr>
-    <tr class="indented">
         <td class="field_name">html</td>
         <td>URL</td>
-        <td class="eg">https://www.givefood.org.uk/needs/at/norwoodbrixton/</td>
-        <td>HTML URL of the food bank</td>
-    </tr>
-    <tr class="indented">
-        <td class="field_name">self</td>
-        <td>URL</td>
-        <td class="eg">https://www.givefood.org.uk/api/2/foodbank/norwoodbrixton/</td>
-        <td>API URL of the food bank</td>
-    </tr>
-    <tr class="indented">
-        <td class="field_name">shopping_list</td>
-        <td>URL</td>
-        <td class="eg">https://norwoodbrixton.foodbank.org.uk/give-help/donate-food/</td>
-        <td>URL of the shopping list where we find what a food bank requires</td>
+        <td class="eg">https://www.givefood.org.uk/needs/at/norwoodbrixton/brixton/</td>
+        <td>HTML URL of the location</td>
     </tr>
 </table>
