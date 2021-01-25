@@ -366,6 +366,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "slug":location.slug,
             "foodbank_slug":location.foodbank_slug,
             "foodbank_name":location.foodbank_name,
+            "foodbank_network":location.foodbank_network,
         })
 
     for foodbank in foodbanks:
@@ -389,6 +390,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "slug":foodbank.slug,
             "foodbank_slug":foodbank.slug,
             "foodbank_name":foodbank.name,
+            "foodbank_network":location.foodbank_network,
         })
 
     for searchable_location in searchable_locations:

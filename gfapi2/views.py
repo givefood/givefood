@@ -339,10 +339,18 @@ def locations(request):
                 "address":location.full_address(),
                 "postcode":location.postcode,
                 "lat_lng":location.latt_long,
-                "network":location.foodbank_network,
                 "urls": {
                     "self":"https://www.givefood.org.uk/api/2/foodbank/%s/location/%s/" % (location.foodbank_slug, location.slug),
                     "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
+                },
+                "foodbank": {
+                    "name":location.foodbank_name,
+                    "slug":location.foodbank_slug,
+                    "network":location.foodbank_network,
+                    "urls": {
+                        "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (location.foodbank_slug),
+                        "html":"https://www.givefood.org.uk/needs/at/%s/" % (location.foodbank_slug)
+                    },
                 },
                 "politics": {
                     "parliamentary_constituency":location.parliamentary_constituency,
@@ -435,6 +443,7 @@ def location_search(request):
             "foodbank": {
                 "name":location.get("foodbank_name"),
                 "slug":slugify(location.get("foodbank_name")),
+                "network":location.get("foodbank_network"),
                 "urls": {
                     "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % slugify(location.get("foodbank_name")),
                     "html":"https://www.givefood.org.uk/needs/at/%s/" % slugify(location.get("foodbank_name")),
