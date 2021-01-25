@@ -442,7 +442,7 @@ def location_search(request):
             "email":location.get("email"),
             "foodbank": {
                 "name":location.get("foodbank_name"),
-                "slug":slugify(location.get("foodbank_name")),
+                "slug":str(slugify(location.get("foodbank_name"))),
                 "network":location.get("foodbank_network"),
                 "urls": {
                     "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % slugify(location.get("foodbank_name")),
