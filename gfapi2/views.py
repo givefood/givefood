@@ -340,7 +340,6 @@ def locations(request):
                 "postcode":location.postcode,
                 "lat_lng":location.latt_long,
                 "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/location/%s/" % (location.foodbank_slug, location.slug),
                     "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
                 },
                 "foodbank": {
@@ -436,7 +435,7 @@ def location_search(request):
             "type":location.get("type"),
             "name":location.get("name"),
             "lat_lng":location.get("lat_lng"),
-            "distance_m":location.get("distance_m"),
+            "distance_m":int(location.get("distance_m")),
             "distance_mi":round(location.get("distance_mi"),2),
             "phone":location.get("phone"),
             "email":location.get("email"),
