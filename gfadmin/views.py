@@ -442,7 +442,7 @@ def need_social_post(request, id):
     else:
         fb_twitter_handle = ""
 
-    tweet = "%s food bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/" % (
+    tweet = "%s food bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/?utm_source=twitter&utm_medium=wfbn&utm_campaign=needs" % (
         need.foodbank_name,
         fb_twitter_handle,
         truncatechars(need.change_text, 150),
@@ -453,7 +453,7 @@ def need_social_post(request, id):
         need.foodbank_name,
         need.change_text,
     )
-    fb_post_link = "https://www.givefood.org.uk/needs/at/%s/" % (need.foodbank_name_slug())
+    fb_post_link = "https://www.givefood.org.uk/needs/at/%s/?utm_source=facebook&utm_medium=wfbn&utm_campaign=needs" % (need.foodbank_name_slug())
 
     graph = facebook.GraphAPI(access_token=get_cred("facebook_wfbn"), version="2.12")
 
