@@ -21,7 +21,6 @@ urlpatterns = (
     url(r'^needs/csv/$', needs_csv, name="admin_needs_csv"),
 
     url(r'^items/$', items, name="admin_items"),
-    url(r'^items/loader/$', items_loader, name="admin_items_loader"),
     url(r'^item/new/$', item_form, name="admin_item_new"),
     url(r'^item/(?P<slug>[-\w]+)/edit/$', item_form, name="admin_item_form"),
 
