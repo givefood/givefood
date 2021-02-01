@@ -36,6 +36,7 @@ PAGE_SIZE_PER_COUNT = 1444997 #Bytes
 
 FB_MC_KEY = "all_foodbanks"
 LOC_MC_KEY = "all_locations"
+ITEMS_MC_KEY = "all_items"
 
 RICK_ASTLEY = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 

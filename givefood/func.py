@@ -7,7 +7,7 @@ from math import radians, cos, sin, asin, sqrt
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -242,17 +242,35 @@ def get_weight(text):
     return weight
 
 
+def get_all_items():
+
+    from models import OrderItem
+
+    all_items = memcache.get(ITEMS_MC_KEY)
+    if all_items is None:
+        all_items = OrderItem.objects.all()
+        memcache.add(ITEMS_MC_KEY, all_items, 3600)
+    return all_items
+
+
 def get_image(delivery_provider, text):
 
+    item_id = ""
     url = None
 
     if not delivery_provider:
         delivery_provider = "Tesco"
 
-    if delivery_provider == "Tesco":
-        image_id = TESCO_IMAGE_IDS.get(text)
-        if image_id:
-            url = "https://digitalcontent.api.tesco.com/v1/media/ghs/snapshotimagehandler_%s.jpeg?w=100" % (image_id)
+    all_items = get_all_items()
+
+    for item in all_items:
+        if item.name == text:
+            if delivery_provider == "Sainsbury's":
+                if item.sainsburys_image_id:
+                    url = "https://assets.sainsburys-groceries.co.uk/gol/%s/image.jpg" % (item.sainsburys_image_id)
+            if delivery_provider == "Tesco":
+                if item.tesco_image_id:
+                    url = "https://digitalcontent.api.tesco.com/v1/media/ghs/snapshotimagehandler_%s.jpeg?w=100" % (item.tesco_image_id)
 
     if url:
         return url
