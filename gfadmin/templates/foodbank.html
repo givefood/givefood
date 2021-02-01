@@ -141,7 +141,13 @@
         <tr>
           <td>{{ location.name }}</td>
           <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
-          <td><a href="{% url 'admin_fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a></td>
+          <td>
+            <a href="{% url 'admin_fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
+            <form action="{% url 'admin_fblocation_delete' foodbank.slug location.slug %}" method="post">
+              {% csrf_token %}
+              <input type="submit" class="button is-small is-danger is-pulled-right" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
+            </form>
+          </td>
         {% endfor %}
       </table>
 

@@ -30,6 +30,7 @@ urlpatterns = (
     url(r'^foodbank/(?P<slug>[-\w]+)/edit/$', foodbank_form, name="admin_foodbank_edit"),
     url(r'^foodbank/(?P<slug>[-\w]+)/location/new/$', fblocation_form, name="admin_fblocation_new"),
     url(r'^foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/edit/$', fblocation_form, name="admin_fblocation_edit"),
+    url(r'^foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/delete/$', fblocation_delete, name="admin_fblocation_delete"),
     url(r'^foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/politics/edit/$', fblocation_politics_edit, name="admin_fblocation_politics_edit"),
     url(r'^foodbank/(?P<slug>[-\w]+)/politics/edit/$', foodbank_politics_form, name="admin_foodbank_politics_edit"),
 

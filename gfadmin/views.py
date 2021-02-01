@@ -370,6 +370,15 @@ def fblocation_politics_edit(request, slug, loc_slug):
     return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
 
 
+@require_POST
+def fblocation_delete(request, slug, loc_slug):
+
+    foodbank_location = get_object_or_404(FoodbankLocation, foodbank_slug = slug, slug = loc_slug)
+    foodbank_location.delete()
+
+    return redirect("admin_foodbank", slug = foodbank_location.foodbank_slug)
+
+
 def need(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
