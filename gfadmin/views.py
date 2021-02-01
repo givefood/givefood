@@ -546,18 +546,6 @@ def items(request):
     return render_to_response("items.html", template_vars, context_instance=RequestContext(request))
 
 
-def items_loader(request):
-    
-#     for name,calories in CALORIES.items():
-#         new_item = OrderItem.objects.get_or_create(
-#             name = name,
-#             calories = calories,
-#             tesco_image_id = TESCO_IMAGE_IDS.get(name),
-#         )
-
-    return HttpResponse("OK")
-
-
 def item_form(request, slug = None):
 
     if slug:
