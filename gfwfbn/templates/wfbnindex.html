@@ -66,7 +66,7 @@
                   {% endif %}
                   <div class="links">
                     <a class="phone" href="tel:{{ location.phone_or_foodbank_phone }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
-                    <a class="info" href="/needs/at/{{ location.foodbank_slug }}/" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
+                    <a class="info" href="/needs/at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
                   </div>
                 </td>
                 <td class="need_detail">

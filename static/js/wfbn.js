@@ -103,7 +103,7 @@ function api_response() {
 
     loctn = this.response[i];
 
-    url = loctn.shopping_list_url;
+    url = loctn.urls.html;
     name = loctn.name;
     distance = loctn.distance_mi;
     slug = loctn.foodbank.slug;
@@ -134,7 +134,7 @@ function api_response() {
     }
     if (currentrow.querySelector(".links")) {
       currentrow.querySelector(".links .phone").href = "tel:" + phone
-      currentrow.querySelector(".links .info").href = "/needs/at/" + slug + "/";
+      currentrow.querySelector(".links .info").href = url;
     }
     currentrow.querySelector("a.foodbank").addEventListener("click", record_click);
     results_table.appendChild(currentrow);
