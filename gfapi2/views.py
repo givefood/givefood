@@ -470,7 +470,10 @@ def location_search(request):
                     "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (location.get("parliamentary_constituency_slug")),
                     "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (location.get("parliamentary_constituency_slug")),
                 },
-            }
+            },
+            "urls": {
+                "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (slugify(location.get("foodbank_name")), slugify(location.get("name"))),
+            },
         })
     
     return ApiResponse(response_list, "locations", format)
