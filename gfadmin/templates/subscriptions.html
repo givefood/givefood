@@ -15,12 +15,14 @@
           <th>Email</th>
           <th>Foodbank</th>
           <th>Created</th>
+          <th>Confirmed</th>
         </tr>
         {% for subscription in subscriptions %}
           <tr>
             <td>{{ subscription.email }}</td>
             <td>{{ subscription.foodbank_name }}</td>
             <td>{{ subscription.created }}</td>
+            <td>{% if subscription.confirmed %}Y{% else %}N{% endif %}</td>
           </tr>
         {% endfor %}
       </table>
