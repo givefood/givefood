@@ -7,6 +7,8 @@ urlpatterns = (
     url(r'^$', public_what_food_banks_need, name="public_what_food_banks_need"),
     url(r'^click/(?P<slug>[-\w]+)/$', public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
 
+    url(r'^updates/(?P<action>subscribe|confirm|unsubscribe)/$', public_what_food_banks_need_updates, name="public_what_food_banks_need_updates"),
+
     url(r'^at/(?P<slug>[-\w]+)/$', public_wfbn_foodbank, name="public_wfbn_foodbank"),
     url(r'^at/(?P<slug>[-\w]+)/map.png$', public_wfbn_foodbank_map, name="public_wfbn_foodbank_map"),
     url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', public_wfbn_foodbank_location, name="public_wfbn_foodbank_location"),

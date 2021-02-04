@@ -21,8 +21,8 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.func import get_all_foodbanks, get_all_locations, get_cred
-from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential
+from givefood.func import get_all_foodbanks, get_all_locations, get_cred, post_to_subscriber
+from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential, FoodbankSubscriber
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm
 
 
@@ -480,6 +480,18 @@ def need_social_post(request, id):
     return redirect("admin_index")
 
 
+@require_POST
+def need_updates(request, id):
+
+    need = get_object_or_404(FoodbankChange, need_id = id)
+    subscribers = FoodbankSubscriber.objects.filter(foodbank = need.foodbank, confirmed = True)
+
+    for subscriber in subscribers:
+        deferred.defer(post_to_subscriber, need, subscriber)
+
+    return redirect("admin_index")
+
+
 def locations(request):
 
     sort_options = [
@@ -808,3 +820,14 @@ def credentials_form(request):
         "form":form,
     }
     return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+
+
+def subscriptions(request):
+
+    subscriptions = FoodbankSubscriber.objects.all()
+
+    template_vars = {
+        "section":"settings",
+        "subscriptions":subscriptions,
+    }
+    return render_to_response("subscriptions.html", template_vars, context_instance=RequestContext(request))

@@ -1,0 +1,32 @@
+{% extends "page.html" %}
+
+{% block title %}Subscriptions - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Subscriptions</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Email</th>
+          <th>Foodbank</th>
+          <th>Created</th>
+        </tr>
+        {% for subscription in subscriptions %}
+          <tr>
+            <td>{{ subscription.email }}</td>
+            <td>{{ subscription.foodbank_name }}</td>
+            <td>{{ subscription.created }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

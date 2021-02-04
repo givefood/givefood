@@ -2,15 +2,18 @@ import logging
 
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404
+from django.db import IntegrityError
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.validators import validate_email
 
 from google.appengine.api import urlfetch
 
-from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange
-from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred
+from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber
+from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email
 
 
 def public_tt_old_data(request):
@@ -240,3 +243,66 @@ def public_wfbn_constituency_mp_photo(request, slug, size):
     result = urlfetch.fetch("https://storage.googleapis.com/mp_photos/%s/%s.png" % (size, parl_con.mp_parl_id))
 
     return HttpResponse(result.content, content_type='image/png')
+    
+
+@csrf_exempt
+def public_what_food_banks_need_updates(request, action):
+
+    key = request.GET.get("key", None)
+    email = request.POST.get("email", None)
+
+    if action == "subscribe":
+
+        try:
+            validate_email(email)
+        except forms.ValidationError:
+            return HttpResponseForbidden()
+
+        foodbank_slug = request.POST.get("foodbank")
+        foodbank = get_object_or_404(Foodbank, slug=foodbank_slug)
+
+        try:
+            new_sub = FoodbankSubscriber(
+                foodbank = foodbank,
+                email = email,
+            )
+            new_sub.save()
+            sub_key = new_sub.sub_key
+            
+
+            send_email(
+                email,
+                "Confirm your Give Food subscription",
+                "Someone asked for updates on %s foodbank from Give Food. If this was you click here, otherwise ignore.\n\nhttps://www.givefood.org.uk/needs/updates/confirm/?key=%s" % (
+                    foodbank.name,
+                    sub_key,
+                )
+            )
+
+            message = "Check your email for subscription confirmation"
+
+        except IntegrityError:
+
+            message = "That email address is already subscribed to that food bank"
+
+
+    if action == "confirm":
+
+        sub = get_object_or_404(FoodbankSubscriber, sub_key=key)
+        sub.confirmed = True
+        sub.save()
+
+        message = "Thank you for confirming your subscription"
+
+    if action == "unsubscribe":
+
+        sub = get_object_or_404(FoodbankSubscriber, unsub_key=key)
+        sub.delete()
+
+        message = "You have been unsubscribed"
+
+
+    template_vars = {
+        "message":message,
+    }
+    return render_to_response("updates.html", template_vars, context_instance=RequestContext(request))

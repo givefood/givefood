@@ -63,6 +63,11 @@
             {% csrf_token %}
             <input type="submit" class="button is-danger" value="Post to social media">
           </form>
+          <br>
+          <form action="{% url 'admin_need_updates' need.need_id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" class="button is-danger" value="Post to subscribers">
+          </form>
         {% endif %}
       {% endif %}
       <br>

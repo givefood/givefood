@@ -39,6 +39,7 @@ urlpatterns = (
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/delete/$', need_delete, name="admin_need_delete"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/publish/$', need_publish, name="admin_need_publish"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/socialmedia/$', need_social_post, name="admin_need_social_post"),
+    url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/sendupdates/$', need_updates, name="admin_need_updates"),
 
     url(r'^locations/$', locations, name="admin_locations"),
     url(r'^locations/loader/sa/$', locations_loader_sa, name="admin_locations_loader_sa"),
@@ -59,6 +60,7 @@ urlpatterns = (
     url(r'^map/$', map, name="admin_map"),
     url(r'^search/$', search, name="admin_search"),
     url(r'^stats/$', stats, name="admin_stats"),
+    url(r'^subscriptions/$', subscriptions, name="admin_subscriptions"),
 
     url(r'^test_order_email/(?P<id>[-\w]+)/$', test_order_email, name="admin_test_order_email"),
     url(r'^resaver/orders/$', resave_orders, name="admin_resave_orders"),

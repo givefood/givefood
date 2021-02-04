@@ -507,3 +507,50 @@ def get_cred(cred_name):
         return credential.cred_value
     except GfCredential.DoesNotExist():
         return False
+
+
+def post_to_subscriber(need, subscriber):
+
+    subject = "New items requested by %s foodbank" % (need.foodbank_name)
+    message = """Hello,\n\nWe've found new items requested by %s foodbank. They are...\n\n%s\n\nYou can find more details at https://www.givefood.org.uk/needs/at/%s/\n\nYou're getting these emails because you subscribed to them at www.givefood.org.uk. To unsubscribe visit http://www.givefood.org.uk/needs/updates/unsubscribe/?key=%s""" % (
+        need.foodbank_name,
+        need.change_text,
+        need.foodbank_name_slug(),
+        subscriber.unsub_key,
+    )
+    
+    send_email(subscriber.email, subject, message)
+
+
+def send_email(to, subject, body):
+    
+    api_url = "https://inject.socketlabs.com/api/v1/email"
+    api_server = get_cred("socketlabs_server")
+    api_key = get_cred("socketlabs_key")
+
+    api_call = """{
+        "serverId": %s,
+        "APIKey": "%s",
+        "Messages": [
+            {
+            "To": [
+                {
+                "emailAddress": "%s"
+                }
+            ],
+            "From": {
+                "emailAddress": "mail@givefood.org.uk"
+            },
+            "Subject": "%s",
+            "TextBody": "%s"
+            }
+        ]
+    }""" % (
+        api_server,
+        api_key,
+        to,
+        subject,
+        body,
+    )
+
+    result = urlfetch.fetch(api_url, payload=api_call, method=urlfetch.POST, headers={'Content-Type': 'application/json'})

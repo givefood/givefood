@@ -1,0 +1,32 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
+  <link rel="manifest" href="/needs/manifest.json">
+{% endblock %}
+
+{% block title %}Foodbank Updates - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+        <h1><a href="/">Give Food</a></h1>
+        <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="{% url 'public_index' %}">Give Food</a></li>
+            <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
+          </ul>
+        </nav>
+        <div class="columns">
+            <div class="column">
+                <p>{{ message }}</p>
+            </div>
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

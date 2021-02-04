@@ -679,3 +679,28 @@ class GfCredential(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     cred_name = models.CharField(max_length=50)
     cred_value = models.CharField(max_length=255)
+
+
+class FoodbankSubscriber(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    last_contacted = models.DateTimeField(editable=False, null=True, blank=True)
+    foodbank = models.ForeignKey(Foodbank)
+    foodbank_name = models.CharField(max_length=50, editable=False, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    confirmed = models.BooleanField(default=False)
+
+    sub_key = models.CharField(max_length=16, editable=False)
+    unsub_key = models.CharField(max_length=16, editable=False)
+
+    class Meta:
+       unique_together = ('email', 'foodbank',)
+
+    def save(self, *args, **kwargs):
+
+        if not self.sub_key:
+            self.sub_key = hashlib.sha256("sub-%s" % (datetime.now())).hexdigest()[:16]
+            self.unsub_key = hashlib.sha256("unsub-%s" % (datetime.now())).hexdigest()[:16]
+
+        self.foodbank_name = self.foodbank.name
+        super(FoodbankSubscriber, self).save(*args, **kwargs)
