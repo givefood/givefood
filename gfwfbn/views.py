@@ -9,6 +9,7 @@ from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
+from django import forms
 
 from google.appengine.api import urlfetch
 

@@ -687,7 +687,7 @@ class FoodbankSubscriber(models.Model):
     last_contacted = models.DateTimeField(editable=False, null=True, blank=True)
     foodbank = models.ForeignKey(Foodbank)
     foodbank_name = models.CharField(max_length=50, editable=False, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
+    email = models.EmailField()
     confirmed = models.BooleanField(default=False)
 
     sub_key = models.CharField(max_length=16, editable=False)
