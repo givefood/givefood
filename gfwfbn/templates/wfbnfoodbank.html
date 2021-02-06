@@ -72,23 +72,23 @@
             <p></p>
 
             {% if not foodbank.is_closed %}
-            {% if not foodbank.name == "Salvation Army" %}
-              <h3>Get Email Updates</h3>
-              <p>We'll email you every time we find this food bank is asking for some items.</p>
-              <form action="{% url 'public_what_food_banks_need_updates' 'subscribe' %}" method="post">
-                <div class="field has-addons">
-                    <div class="control is-expanded">
-                      <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address">
-                    </div>
-                    <div class="control">
-                      <button type="submit" class="button is-link">Subscribe</button>
-                    </div>
-                </div>
-                <input type="hidden" name="foodbank" value="{{ foodbank.slug }}">
-              </form>
-              <p class="is-size-7">We'll never use your email address for anything else, and you can unsubscribe at any time.</p>
+              {% if not foodbank.name == "Salvation Army" %}
+                <h3>Get Email Updates</h3>
+                <p>We'll email you every time we find this food bank is asking for some items.</p>
+                <form action="{% url 'public_what_food_banks_need_updates' 'subscribe' %}" method="post">
+                  <div class="field has-addons">
+                      <div class="control is-expanded">
+                        <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address">
+                      </div>
+                      <div class="control">
+                        <button type="submit" class="button is-link">Subscribe</button>
+                      </div>
+                  </div>
+                  <input type="hidden" name="foodbank" value="{{ foodbank.slug }}">
+                </form>
+                <p class="is-size-7">We'll never use your email address for anything else, and you can unsubscribe at any time.</p>
+              {% endif %}
             {% endif %}
-          {% endif %}
 
             {% if foodbank.parliamentary_constituency %}
               <h3>Political Representatives</h3>
