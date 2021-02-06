@@ -280,11 +280,11 @@ def public_what_food_banks_need_updates(request, action):
                 )
             )
 
-            message = "Check your email for subscription confirmation"
+            message = "Thanks, but we're not quite done yet. Check your email for a link to click to confirmation your subscription."
 
         except IntegrityError:
 
-            message = "That email address is already subscribed to that food bank"
+            message = "Sorry! That email address is already subscribed to that food bank."
 
 
     if action == "confirm":
@@ -293,14 +293,14 @@ def public_what_food_banks_need_updates(request, action):
         sub.confirmed = True
         sub.save()
 
-        message = "Thank you for confirming your subscription"
+        message = "Great! Thank you for confirming your subscription."
 
     if action == "unsubscribe":
 
         sub = get_object_or_404(FoodbankSubscriber, unsub_key=key)
         sub.delete()
 
-        message = "You have been unsubscribed"
+        message = "You have been unsubscribed."
 
 
     template_vars = {
