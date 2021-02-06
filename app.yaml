@@ -4,6 +4,10 @@ threadsafe: true
 default_expiration: "30m"
 instance_class: F2
 
+libraries:
+- name: ssl
+  version: latest
+
 handlers:
 
 - url: /_ah/(mapreduce|queue|warmup|start|stop).*
