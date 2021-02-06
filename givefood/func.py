@@ -4,8 +4,12 @@
 import re, logging, operator, json, urllib
 from math import radians, cos, sin, asin, sqrt
 
+import facebook, twitter
+
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
+
+from django.template.defaultfilters import truncatechars
 
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
@@ -507,6 +511,55 @@ def get_cred(cred_name):
         return credential.cred_value
     except GfCredential.DoesNotExist():
         return False
+
+
+def post_to_facebook(need):
+
+    logging.info("Posting need %s to facebook" % (need.need_id))
+
+    fb_post_text = "%s food bank is requesting the donation of:\n\n%s" % (
+        need.foodbank_name,
+        need.change_text,
+    )
+    fb_post_link = "https://www.givefood.org.uk/needs/at/%s/?utm_source=facebook&utm_medium=wfbn&utm_campaign=needs" % (need.foodbank_name_slug())
+
+    graph = facebook.GraphAPI(access_token=get_cred("facebook_wfbn"), version="2.12")
+    graph.put_object(parent_object = 'whatfoodbanksneed', connection_name = 'feed', message = fb_post_text, link = fb_post_link)
+
+    logging.info("Posted to facebook: %s" % (fb_post_text))
+
+    return True
+
+
+def post_to_twitter(need):
+
+    logging.info("Posting need %s to twitter" % (need.need_id))
+
+    api = twitter.Api(
+        consumer_key = get_cred("twitter_consumer_key"),
+        consumer_secret = get_cred("twitter_consumer_secret"),
+        access_token_key = get_cred("twitter_access_token_key"),
+        access_token_secret = get_cred("twitter_access_token_secret"),
+    )
+
+    if need.foodbank.twitter_handle:
+        fb_twitter_handle = " @%s" % (need.foodbank.twitter_handle)
+    else:
+        fb_twitter_handle = ""
+
+    tweet = "%s food bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/?utm_source=twitter&utm_medium=wfbn&utm_campaign=needs" % (
+        need.foodbank_name,
+        fb_twitter_handle,
+        truncatechars(need.change_text, 150),
+        need.foodbank_name_slug()
+    )
+
+    api.PostUpdate(tweet, latitude = need.foodbank.latt(), longitude = need.foodbank.long())
+
+    logging.info("Posted to twitter: %s" % (tweet))
+
+    return True
+
 
 
 def post_to_subscriber(need, subscriber):

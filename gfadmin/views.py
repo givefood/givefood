@@ -1,7 +1,5 @@
 import csv
-import twitter
 import logging
-import facebook
 from datetime import datetime, timedelta
 
 from djangae.environment import is_production_environment
@@ -15,13 +13,12 @@ from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidde
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.template.defaultfilters import truncatechars
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.func import get_all_foodbanks, get_all_locations, get_cred, post_to_subscriber
+from givefood.func import get_all_foodbanks, get_all_locations, get_cred, post_to_facebook, post_to_twitter, post_to_subscriber
 from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential, FoodbankSubscriber
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm
 
@@ -435,57 +432,20 @@ def need_publish(request, id):
 
 
 @require_POST
-def need_social_post(request, id):
+def need_notifications(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
 
-    api = twitter.Api(
-        consumer_key = get_cred("twitter_consumer_key"),
-        consumer_secret = get_cred("twitter_consumer_secret"),
-        access_token_key = get_cred("twitter_access_token_key"),
-        access_token_secret = get_cred("twitter_access_token_secret"),
-    )
+    # Defer the postings
+    deferred.defer(post_to_facebook, need)
+    deferred.defer(post_to_twitter, need)
 
-    if need.foodbank.twitter_handle:
-        fb_twitter_handle = " @%s" % (need.foodbank.twitter_handle)
-    else:
-        fb_twitter_handle = ""
-
-    tweet = "%s food bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/?utm_source=twitter&utm_medium=wfbn&utm_campaign=needs" % (
-        need.foodbank_name,
-        fb_twitter_handle,
-        truncatechars(need.change_text, 150),
-        need.foodbank_name_slug()
-    )
-
-    fb_post_text = "%s food bank is requesting the donation of:\n\n%s" % (
-        need.foodbank_name,
-        need.change_text,
-    )
-    fb_post_link = "https://www.givefood.org.uk/needs/at/%s/?utm_source=facebook&utm_medium=wfbn&utm_campaign=needs" % (need.foodbank_name_slug())
-
-    graph = facebook.GraphAPI(access_token=get_cred("facebook_wfbn"), version="2.12")
-
-    if is_production_environment():
-        deferred.defer(graph.put_object, parent_object = 'whatfoodbanksneed', connection_name = 'feed', message = fb_post_text, link = fb_post_link)
-        deferred.defer(api.PostUpdate, tweet, latitude = need.foodbank.latt(), longitude = need.foodbank.long())
-    else:
-        logging.info("tweet is %s" % (tweet))
-        logging.info("fb_post_text is %s" % (fb_post_text))
-        logging.info("fb_post_link is %s" % (fb_post_link))
-
+    # Update tweet time
     need.tweet_sent = datetime.now()
     need.save()
 
-    return redirect("admin_index")
-
-
-@require_POST
-def need_updates(request, id):
-
-    need = get_object_or_404(FoodbankChange, need_id = id)
+    # Email subscriptions
     subscribers = FoodbankSubscriber.objects.filter(foodbank = need.foodbank, confirmed = True)
-
     for subscriber in subscribers:
         deferred.defer(post_to_subscriber, need, subscriber)
 
