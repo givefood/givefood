@@ -11,7 +11,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name
+from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred
 
 
 class Foodbank(models.Model):
@@ -699,8 +699,9 @@ class FoodbankSubscriber(models.Model):
     def save(self, *args, **kwargs):
 
         if not self.sub_key:
-            self.sub_key = hashlib.sha256("sub-%s" % (datetime.now())).hexdigest()[:16]
-            self.unsub_key = hashlib.sha256("unsub-%s" % (datetime.now())).hexdigest()[:16]
+            salt = get_cred("salt")
+            self.sub_key = hashlib.sha256("sub-%s-%s" % (datetime.now(), salt)).hexdigest()[:16]
+            self.unsub_key = hashlib.sha256("unsub-%s-%s" % (datetime.now(), salt)).hexdigest()[:16]
 
         self.foodbank_name = self.foodbank.name
         super(FoodbankSubscriber, self).save(*args, **kwargs)
