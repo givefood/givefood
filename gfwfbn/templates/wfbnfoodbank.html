@@ -71,6 +71,25 @@
             <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:40 }}</a><br>
             <p></p>
 
+            {% if not foodbank.is_closed %}
+            {% if not foodbank.name == "Salvation Army" %}
+              <h3>Get Email Updates</h3>
+              <p>We'll email you every time we find this food bank is asking for some items.</p>
+              <form action="{% url 'public_what_food_banks_need_updates' 'subscribe' %}" method="post">
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address">
+                    </div>
+                    <div class="control">
+                      <button type="submit" class="button is-link">Subscribe</button>
+                    </div>
+                </div>
+                <input type="hidden" name="foodbank" value="{{ foodbank.slug }}">
+              </form>
+              <p class="is-size-7">We'll never use your email address for anything else, and you can unsubscribe at any time.</p>
+            {% endif %}
+          {% endif %}
+
             {% if foodbank.parliamentary_constituency %}
               <h3>Political Representatives</h3>
               <p>This food bank is in the <a href="{% url "public_wfbn_constituency" foodbank.parliamentary_constituency_slug %}">{{ foodbank.parliamentary_constituency }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} MP">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party. You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.
@@ -82,26 +101,6 @@
               <p></p>
               <h3>Charity</h3>
               <p>{{ foodbank }} food bank operates under a charity registered in {{ foodbank.country }}, charity number <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>.</p>
-            {% endif %}
-
-            {% if not foodbank.is_closed %}
-              {% if not foodbank.name == "Salvation Army" %}
-                <h3>Get Email Updates</h3>
-                <p>We'll email you every time we find this food bank is asking for some items.</p>
-                <form action="{% url 'public_what_food_banks_need_updates' 'subscribe' %}" method="post">
-                  <div class="field has-addons">
-                      <div class="control is-expanded">
-                        <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address">
-                      </div>
-                      <div class="control">
-                        <button type="submit" class="button is-link">Subscribe</button>
-                      </div>
-                  </div>
-                  <input type="hidden" name="foodbank" value="{{ foodbank.slug }}">
-                </form>
-                <br>
-                <p class="is-size-7">We'll never use your email address for anything else, and you can unsubscribe at any time.</p>
-              {% endif %}
             {% endif %}
 
             <h3>Nearby Food Banks</h3>
