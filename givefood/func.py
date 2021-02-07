@@ -517,6 +517,9 @@ def post_to_facebook(need):
 
     logging.info("Posting need %s to facebook" % (need.need_id))
 
+    from google.appengine.api import urlfetch
+    urlfetch.set_default_fetch_deadline(60)
+
     fb_post_text = "%s food bank is requesting the donation of:\n\n%s" % (
         need.foodbank_name,
         need.change_text,
