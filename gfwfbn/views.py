@@ -274,7 +274,7 @@ def public_what_food_banks_need_updates(request, action):
             send_email(
                 email,
                 "Confirm your Give Food subscription",
-                "Someone asked for updates on %s foodbank from Give Food. If this was you click here, otherwise ignore.\n\nhttps://www.givefood.org.uk/needs/updates/confirm/?key=%s" % (
+                "Someone asked for updates on %s foodbank from Give Food. Please confirm this was you by clicking this link...\n\nhttps://www.givefood.org.uk/needs/updates/confirm/?key=%s" % (
                     foodbank.name,
                     sub_key,
                 )
