@@ -784,7 +784,7 @@ def credentials_form(request):
 
 def subscriptions(request):
 
-    subscriptions = FoodbankSubscriber.objects.all()
+    subscriptions = FoodbankSubscriber.objects.all().order_by("-created")
 
     template_vars = {
         "section":"settings",
