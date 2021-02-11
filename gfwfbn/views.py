@@ -280,7 +280,7 @@ def public_what_food_banks_need_updates(request, action):
                 )
             )
 
-            message = "Thanks, but we're not quite done yet. Check your email for a link to click to confirmation your subscription."
+            message = "Thanks, but we're not quite done yet. Check your email for a link to click to confirmation your subscription - you might have to check your spam folder though."
 
         except IntegrityError:
 
