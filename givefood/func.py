@@ -595,7 +595,8 @@ def send_email(to, subject, body):
                 }
             ],
             "From": {
-                "emailAddress": "mail@givefood.org.uk"
+                "emailAddress": "mail@givefood.org.uk",
+                "friendlyName": "Give Food"
             },
             "Subject": "%s",
             "TextBody": "%s"
