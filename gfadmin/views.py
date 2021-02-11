@@ -169,9 +169,9 @@ def orders_csv(request):
     output = []
     response = HttpResponse (content_type='text/csv')
     writer = csv.writer(response)
-    writer.writerow(['id', 'created', 'delivery', 'foodbank', 'weight', 'calories', 'items', 'cost'])
+    writer.writerow(['id', 'created', 'delivery', 'delivery_provider', 'foodbank', 'weight', 'calories', 'items', 'cost'])
     for order in orders:
-        output.append([order.order_id, order.created, order.delivery_datetime, order.foodbank_name, order.weight, order.calories, order.no_items, order.cost])
+        output.append([order.order_id, order.created, order.delivery_datetime, order.delivery_provider, order.foodbank_name, order.weight, order.calories, order.no_items, order.cost])
     writer.writerows(output)
     return response
 
