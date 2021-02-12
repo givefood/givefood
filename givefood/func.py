@@ -187,6 +187,10 @@ def get_weight(text):
     if text[-7:] == " 20x27g":
       weight = 540
 
+    #4x22g
+    if text[-6:] == " 4x22g":
+        weight = 88
+
     # Kilogram
     if text[-2:] == "Kg":
         weight = float(text[-4:].replace("Kg","")) * 1000
