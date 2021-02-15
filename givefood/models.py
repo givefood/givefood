@@ -196,30 +196,32 @@ class Foodbank(models.Model):
             return None
 
     def save(self, *args, **kwargs):
+
+        # Slugify name
         self.slug = slugify(self.name)
 
+        # Cleanup phone numbers
         if self.phone_number:
             self.phone_number = self.phone_number.replace(" ","")
         if self.secondary_phone_number:
             self.secondary_phone_number = self.secondary_phone_number.replace(" ","")
 
-        if not self.parliamentary_constituency:
-            regions = admin_regions_from_postcode(self.postcode)
-            self.parliamentary_constituency = regions.get("parliamentary_constituency", None)
-            self.county = regions.get("county", None)
-            self.ward = regions.get("ward", None)
-            self.district = regions.get("district", None)
-        if not self.mp:
-            mp_details = mp_from_parlcon(self.parliamentary_constituency)
-            self.mp = mp_details.get("mp")
-            self.mp_party = mp_details.get("party")
-        if not self.parliamentary_constituency_slug:
-            self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency)
-        if not self.mp_parl_id:
-            self.mp_parl_id = mpid_from_name(self.mp)
+        # Update politics
+        regions = admin_regions_from_postcode(self.postcode)
+        self.parliamentary_constituency = regions.get("parliamentary_constituency", None)
+        self.county = regions.get("county", None)
+        self.ward = regions.get("ward", None)
+        self.district = regions.get("district", None)
+        mp_details = mp_from_parlcon(self.parliamentary_constituency)
+        self.mp = mp_details.get("mp")
+        self.mp_party = mp_details.get("party")
+        self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency)
+        self.mp_parl_id = mpid_from_name(self.mp)
 
+        # Cache number of locations
         self.no_locations = self.get_no_locations()
 
+        # Cache last need date
         try:
             last_need = FoodbankChange.objects.filter(foodbank = self).latest("created")
             self.last_need = last_need.created
@@ -228,6 +230,7 @@ class Foodbank(models.Model):
 
         super(Foodbank, self).save(*args, **kwargs)
 
+        # Delete the now stale memcache entry
         memcache.delete(FB_MC_KEY)
 
 
@@ -291,34 +294,36 @@ class FoodbankLocation(models.Model):
         return float(self.latt_long.split(",")[1])
 
     def save(self, *args, **kwargs):
+
+        # Slugify name
         self.slug = slugify(self.name)
 
+        # Cache foodbank details
         self.foodbank_name = self.foodbank.name
         self.foodbank_slug = self.foodbank.slug
         self.foodbank_network = self.foodbank.network
         self.foodbank_phone_number = self.foodbank.phone_number
         self.foodbank_email = self.foodbank.contact_email
 
+        # Cleanup phone number
         if self.phone_number:
             self.phone_number = self.phone_number.replace(" ","")
 
-        if not self.parliamentary_constituency:
-            regions = admin_regions_from_postcode(self.postcode)
-            self.parliamentary_constituency = regions.get("parliamentary_constituency", None)
-            self.county = regions.get("county", None)
-            self.ward = regions.get("ward", None)
-            self.district = regions.get("district", None)
-        if not self.mp:
-            mp_details = mp_from_parlcon(self.parliamentary_constituency)
-            self.mp = mp_details.get("mp")
-            self.mp_party = mp_details.get("party")
-        if not self.parliamentary_constituency_slug:
-            self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency)
-        if self.mp_parl_id == None:
-            self.mp_parl_id = mpid_from_name(self.mp)
+        # Update politics
+        regions = admin_regions_from_postcode(self.postcode)
+        self.parliamentary_constituency = regions.get("parliamentary_constituency", None)
+        self.county = regions.get("county", None)
+        self.ward = regions.get("ward", None)
+        self.district = regions.get("district", None)
+        mp_details = mp_from_parlcon(self.parliamentary_constituency)
+        self.mp = mp_details.get("mp")
+        self.mp_party = mp_details.get("party")
+        self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency)
+        self.mp_parl_id = mpid_from_name(self.mp)
 
         super(FoodbankLocation, self).save(*args, **kwargs)
 
+        # Resave the parent food bank, to update location count
         self.foodbank.save()
 
 
