@@ -15,7 +15,7 @@
         <div class="control">
           <div class="select is-small">
             <select onchange="javascript:window.location.href=this.value">
-              <option value="?sort=delivery_datetime"{% if sort = "delivery_datetime" %} selected{% endif %}>Delivery Date</option>
+              <option value="?sort=delivery_datetime"{% if sort == "delivery_datetime" %} selected{% endif %}>Delivery Date</option>
               <option value="?sort=created"{% if sort == "created" %} selected{% endif %}>Created</option>
               <option value="?sort=no_items"{% if sort == "no_items" %} selected{% endif %}>Items</option>
               <option value="?sort=weight"{% if sort == "weight" %} selected{% endif %}>Weight</option>

@@ -15,10 +15,10 @@ DEFAULT_FORMAT = "json"
 
 @cache_page(60*10)
 def index(request):
-        
+
     template_vars = {}
 
-    return render_to_response("index.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "index.html", template_vars)
 
 
 @cache_page(60*10)
@@ -55,7 +55,7 @@ def docs(request):
         "Orkney and Shetland",
         "North Somerset",
     }
-    
+
     template_vars = {
         "api_formats":api_formats,
         "eg_foodbanks":eg_foodbanks,
@@ -64,7 +64,7 @@ def docs(request):
         "eg_parl_cons":eg_parl_cons,
     }
 
-    return render_to_response("docs.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "docs.html", template_vars)
 
 
 @cache_control(public=True, max_age=3600)
@@ -247,7 +247,7 @@ def foodbank(request, slug):
 
 @cache_page(60*20)
 def foodbank_search(request):
-    
+
     format = request.GET.get("format", DEFAULT_FORMAT)
     lat_lng = request.GET.get("lat_lng")
     address = request.GET.get("address")
@@ -475,7 +475,7 @@ def location_search(request):
                 "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (slugify(location.get("foodbank_name")), slugify(location.get("name"))),
             },
         })
-    
+
     return ApiResponse(response_list, "locations", format)
 
 
@@ -499,7 +499,7 @@ def needs(request):
                     "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (need.foodbank_name_slug()),
                     "html":"https://www.givefood.org.uk/needs/at/%s/" % (need.foodbank_name_slug()),
                 }
-                
+
             },
             "needs":need.clean_change_text(),
             "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),

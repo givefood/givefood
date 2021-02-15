@@ -8,10 +8,10 @@ from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 from google.appengine.api import mail
 
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -63,7 +63,7 @@ def public_index(request):
         "total_calories":total_calories,
         "total_items":total_items,
     }
-    return render_to_response("public/index.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "public/index.html", template_vars)
 
 
 @csrf_exempt
@@ -89,19 +89,18 @@ def public_reg_foodbank(request):
         "form":form,
         "done":done,
     }
-    return render_to_response("public/register_foodbank.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "public/register_foodbank.html", template_vars)
 
 
 @cache_page(60*10)
 def public_api(request):
-
-    return render_to_response("public/api.html", context_instance=RequestContext(request))
+    return render(request, "public/api.html")
 
 
 @cache_page(60*10)
 def public_annual_report(request, year):
     article_template = "public/ar/%s.html" % (year)
-    return render_to_response(article_template, context_instance=RequestContext(request))
+    return render(request, article_template)
 
 
 def public_gen_annual_report(request, year):
@@ -185,7 +184,7 @@ def public_gen_annual_report(request, year):
         "check_count":check_count,
         "check_count_bytes":check_count_bytes,
     }
-    return render_to_response("public/annual_report.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "public/annual_report.html", template_vars)
 
 
 @cache_page(60*60)
@@ -200,12 +199,12 @@ def public_sitemap(request):
         "constituencies":constituencies,
         "locations":locations,
     }
-    return render_to_response("public/sitemap.xml", template_vars, content_type='text/xml')
+    return render(request, "public/sitemap.xml", template_vars, content_type='text/xml')
 
 
 @cache_page(60*10)
 def public_privacy(request):
-    return render_to_response("public/privacy.html", context_instance=RequestContext(request))
+    return render(request, "public/privacy.html")
 
 
 @cache_page(60*60)
