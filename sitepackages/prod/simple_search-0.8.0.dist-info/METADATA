@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: simple-search
+Version: 0.8.0
+Summary: A basic search app for Django
+Home-page: https://github.com/potatolondon/simple_search
+Author: Potato London Ltd.
+Author-email: UNKNOWN
+License: UNKNOWN
+Keywords: simple_search,search,Django,Google App Engine
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Framework :: Django
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+
+This is a really basic search engine for Django. To use, simply add simple_search to INSTALLED_APPS
+and register models for searching as follows:
+
+class MyModel(Model):
+    field1 = models.CharField(max_length=1000)
+
+    class Search:
+         fields = [
+             "field1"
+         ]
+
+
+Then import simple_search.models.search and call:
+
+search(MyModel, 'this is a "search string"')
+
+search() can take pagination options. There is still plenty unimplemented (see the comment in models.py)
+
+The ranking algorithm prioritises multiple word matches and uncommon matches.
+
+
