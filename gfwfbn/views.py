@@ -1,6 +1,6 @@
 import logging
 
-from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404
 from django.db import IntegrityError
 from django.template import RequestContext

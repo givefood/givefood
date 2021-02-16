@@ -1,6 +1,6 @@
 import logging
 
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext
 from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import slugify
