@@ -39,10 +39,10 @@ urlpatterns = (
     # Apps
     url(r'^needs/', include('gfwfbn.urls')),
     url(r'^api/1/', include('gfapi1.urls')),
-    url(r'^api/$', include('gfapi2.urls')),
     url(r'^api/2/', include('gfapi2.urls')),
+    url(r'^api/', include('gfapi2.urls')),
     url(r'^admin/', include('gfadmin.urls')),
-    
+
     # CSP & Auth
     url(r'^csp/', include('cspreports.urls')),
     url(r'^auth/', include('djangae.contrib.gauth.urls')),

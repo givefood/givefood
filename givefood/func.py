@@ -88,7 +88,7 @@ def geocode(address):
 
 def parse_tesco_order_text(order_text):
 
-    # 10	Tesco Sliced Carrots In Water 300G	£0.30	£3.00	
+    # 10	Tesco Sliced Carrots In Water 300G	£0.30	£3.00
 
     order_lines = []
 
@@ -194,7 +194,7 @@ def get_weight(text):
     # Kilogram
     if text[-2:] == "Kg":
         weight = float(text[-4:].replace("Kg","")) * 1000
-    
+
     # Kilogram
     if text[-2:] == "kg":
         weight = float(text[-4:].replace("kg","")) * 1000
@@ -513,8 +513,8 @@ def get_cred(cred_name):
     try:
         credential = GfCredential.objects.filter(cred_name = cred_name).latest("created")
         return credential.cred_value
-    except GfCredential.DoesNotExist():
-        return False
+    except GfCredential.DoesNotExist:
+        return None
 
 
 def post_to_facebook(need):
@@ -578,12 +578,12 @@ def post_to_subscriber(need, subscriber):
         need.foodbank_name_slug(),
         subscriber.unsub_key,
     )
-    
+
     send_email(subscriber.email, subject, message)
 
 
 def send_email(to, subject, body):
-    
+
     api_url = "https://inject.socketlabs.com/api/v1/email"
     api_server = get_cred("socketlabs_server")
     api_key = get_cred("socketlabs_key")

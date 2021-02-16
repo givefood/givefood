@@ -1,6 +1,6 @@
 import logging
 
-from django.shortcuts import render_to_response, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404
 from django.db import IntegrityError
 from django.template import RequestContext
@@ -26,7 +26,7 @@ def public_tt_old_data(request):
         "recent":recent,
         "old":old,
     }
-    return render_to_response("tt-old-data.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "tt-old-data.html", template_vars)
 
 
 @cache_page(60*10)
@@ -79,7 +79,7 @@ def public_what_food_banks_need(request):
         "map_locations":map_locations,
         "location_results":location_results,
     }
-    return render_to_response("wfbnindex.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "wfbnindex.html", template_vars)
 
 
 def public_what_food_banks_need_click(request, slug):
@@ -104,7 +104,7 @@ def public_wfbn_foodbank(request, slug):
         "nearby_locations":nearby_locations,
     }
 
-    return render_to_response("wfbnfoodbank.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "wfbnfoodbank.html", template_vars)
 
 
 @cache_page(60*30)
@@ -140,7 +140,7 @@ def public_wfbn_foodbank_location(request, slug, locslug):
         "nearby_locations":nearby_locations,
     }
 
-    return render_to_response("foodbank_location.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "foodbank_location.html", template_vars)
 
 
 @cache_page(60*30)
@@ -171,7 +171,7 @@ def public_wfbn_constituencies(request):
         "constituencies":constituencies,
     }
 
-    return render_to_response("constituencies.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "constituencies.html", template_vars)
 
 
 @cache_page(60*5)
@@ -234,7 +234,7 @@ def public_wfbn_constituency(request, slug):
         "constituency_locations":constituency_locations,
     }
 
-    return render_to_response("constituency.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "constituency.html", template_vars)
 
 
 @cache_page(60*30)
@@ -244,7 +244,7 @@ def public_wfbn_constituency_mp_photo(request, slug, size):
     result = urlfetch.fetch("https://storage.googleapis.com/mp_photos/%s/%s.png" % (size, parl_con.mp_parl_id))
 
     return HttpResponse(result.content, content_type='image/png')
-    
+
 
 @csrf_exempt
 def public_what_food_banks_need_updates(request, action):
@@ -269,7 +269,7 @@ def public_what_food_banks_need_updates(request, action):
             )
             new_sub.save()
             sub_key = new_sub.sub_key
-            
+
 
             send_email(
                 email,
@@ -306,4 +306,4 @@ def public_what_food_banks_need_updates(request, action):
     template_vars = {
         "message":message,
     }
-    return render_to_response("updates.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "updates.html", template_vars)

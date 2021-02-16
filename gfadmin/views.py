@@ -8,7 +8,7 @@ from google.appengine.api import mail
 from google.appengine.api import urlfetch
 from google.appengine.ext import deferred
 
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -45,7 +45,7 @@ def index(request):
         "needs":needs,
         "section":"home",
     }
-    return render_to_response("adminindex.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "adminindex.html", template_vars)
 
 
 def searches(request):
@@ -57,7 +57,7 @@ def searches(request):
         "section":"searches",
     }
 
-    return render_to_response("searches.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "searches.html", template_vars)
 
 
 def searches_csv(request):
@@ -108,7 +108,7 @@ def foodbanks(request):
         "foodbanks":foodbanks,
         "section":"foodbanks",
     }
-    return render_to_response("foodbanks.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "foodbanks.html", template_vars)
 
 
 def foodbanks_csv(request):
@@ -132,7 +132,7 @@ def foodbanks_christmascards(request):
     template_vars = {
         "foodbanks":foodbanks,
     }
-    return render_to_response("foodbanks_christmascards.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "foodbanks_christmascards.html", template_vars)
 
 
 def orders(request):
@@ -159,7 +159,7 @@ def orders(request):
         "orders":orders,
         "section":"orders",
     }
-    return render_to_response("orders.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "orders.html", template_vars)
 
 
 def orders_csv(request):
@@ -184,7 +184,7 @@ def needs(request):
         "needs":needs,
         "section":"needs",
     }
-    return render_to_response("needs.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "needs.html", template_vars)
 
 
 def needs_csv(request):
@@ -208,7 +208,7 @@ def order(request, id):
     template_vars = {
         "order":order,
     }
-    return render_to_response("order.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "order.html", template_vars)
 
 
 def order_form(request, id = None):
@@ -247,7 +247,7 @@ def order_form(request, id = None):
         "form":form,
         "page_title":page_title,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 @require_POST
@@ -275,7 +275,7 @@ def foodbank(request, slug):
     template_vars = {
         "foodbank":foodbank,
     }
-    return render_to_response("foodbank.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "foodbank.html", template_vars)
 
 
 def foodbank_form(request, slug = None):
@@ -296,7 +296,7 @@ def foodbank_form(request, slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 def foodbank_politics_form(request, slug = None):
@@ -317,7 +317,7 @@ def foodbank_politics_form(request, slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 def fblocation_form(request, slug = None, loc_slug = None):
@@ -343,7 +343,7 @@ def fblocation_form(request, slug = None, loc_slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 def fblocation_politics_edit(request, slug, loc_slug):
@@ -364,7 +364,7 @@ def fblocation_politics_edit(request, slug, loc_slug):
     template_vars = {
         "form":form,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 @require_POST
@@ -382,7 +382,7 @@ def need(request, id):
     template_vars = {
         "need":need,
     }
-    return render_to_response("need.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "need.html", template_vars)
 
 
 def need_form(request, id = None):
@@ -411,7 +411,7 @@ def need_form(request, id = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 @require_POST
@@ -470,7 +470,7 @@ def locations(request):
         "locations":locations,
         "section":"locations",
     }
-    return render_to_response("locations.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "locations.html", template_vars)
 
 
 def locations_loader_sa(request):
@@ -502,7 +502,7 @@ def locations_loader_sa(request):
                     latt_long = lat_lng,
                 )
                 foodbank_location.save()
-    
+
 
     return HttpResponse("OK")
 
@@ -515,7 +515,7 @@ def items(request):
         "items":items,
         "section":"items",
     }
-    return render_to_response("items.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "items.html", template_vars)
 
 
 def item_form(request, slug = None):
@@ -536,7 +536,7 @@ def item_form(request, slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 def politics(request):
@@ -551,7 +551,7 @@ def politics(request):
         "parlcons":parlcons,
         "section":"politics",
     }
-    return render_to_response("politics.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "politics.html", template_vars)
 
 
 def politics_csv(request):
@@ -597,7 +597,7 @@ def map(request):
         "filter":filter,
         "section":"map",
     }
-    return render_to_response("map.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "map.html", template_vars)
 
 
 def stats(request):
@@ -649,7 +649,7 @@ def stats(request):
         "total_locations":total_locations,
         "section":"stats",
     }
-    return render_to_response("stats.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "stats.html", template_vars)
 
 
 def test_order_email(request, id):
@@ -659,7 +659,7 @@ def test_order_email(request, id):
     template_vars = {
         "order":order,
     }
-    return render_to_response("notification_email.txt", template_vars, content_type='text/plain')
+    return render(request, "notification_email.txt", template_vars, content_type='text/plain')
 
 
 def resave_orders(request):
@@ -689,7 +689,7 @@ def parlcon_form(request, slug = None):
     template_vars = {
         "form":form,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 def parlcon_loader(request):
@@ -733,9 +733,9 @@ def parlcon_loader_geojson(request):
 
     parlcons = ParliamentaryConstituency.objects.all()
 
-    geojson_file = open('./givefood/data/parlcon.geojson', 'r') 
+    geojson_file = open('./givefood/data/parlcon.geojson', 'r')
     lines = geojson_file.readlines()
-    
+
     for line in lines:
         # logging.info(line)
         for parlcon in parlcons:
@@ -753,7 +753,7 @@ def settings(request):
     template_vars = {
         "section":"settings",
     }
-    return render_to_response("settings.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "settings.html", template_vars)
 
 
 def credentials(request):
@@ -764,7 +764,7 @@ def credentials(request):
         "section":"settings",
         "credentials":credentials,
     }
-    return render_to_response("credentials.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "credentials.html", template_vars)
 
 def credentials_form(request):
 
@@ -779,7 +779,7 @@ def credentials_form(request):
     template_vars = {
         "form":form,
     }
-    return render_to_response("form.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "form.html", template_vars)
 
 
 def subscriptions(request):
@@ -790,4 +790,4 @@ def subscriptions(request):
         "section":"settings",
         "subscriptions":subscriptions,
     }
-    return render_to_response("subscriptions.html", template_vars, context_instance=RequestContext(request))
+    return render(request, "subscriptions.html", template_vars)

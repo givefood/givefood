@@ -17,6 +17,15 @@ Give Food is a registered charity in England & Wales [1188192](https://register-
 
 ## Contact us
 
-* Email mail@givefood.org.uk 
+* Email mail@givefood.org.uk
 * Twitter https://twitter.com/GiveFood_org_uk
 * Facebook https://www.facebook.com/GiveFoodOrgUK
+
+# Local development
+
+To set up for local development, run the following:
+
+ - `virtualenv --python=python2.7 .venv`
+ - `source .venv/bin/activate`
+ - `./install_deps`
+ - `./manage.py runserver`
