@@ -41,7 +41,7 @@
         {% if order.delivery_provider and order.delivery_provider_id %}
           <dt>Delivery</dt>
           <dd>
-            <a href="{% if order.delivery_provider = "Tesco" %}https://www.tesco.com/groceries/en-GB/orders/{{ order.delivery_provider_id }}{% endif %}{% if order.delivery_provider = "Sainsbury's" %}https://www.sainsburys.co.uk/gol-ui/my-account/orders/{{ order.delivery_provider_id }}{% endif %}">
+            <a href="{% if order.delivery_provider == "Tesco" %}https://www.tesco.com/groceries/en-GB/orders/{{ order.delivery_provider_id }}{% endif %}{% if order.delivery_provider == "Sainsbury's" %}https://www.sainsburys.co.uk/gol-ui/my-account/orders/{{ order.delivery_provider_id }}{% endif %}">
               {{ order.delivery_provider }}
             </a>
           </dd>
