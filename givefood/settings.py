@@ -40,7 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'csp',
     'cspreports',
-    'djangae.contrib.gauth.datastore',
+    'djangae.contrib.gauth_datastore',
     'djangae.contrib.security',
     'bulma',
     'simple_search',
