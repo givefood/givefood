@@ -4,8 +4,7 @@ from datetime import datetime, timedelta
 
 from djangae.environment import is_production_environment
 
-from google.appengine.api import mail
-from google.appengine.api import urlfetch
+from google.appengine.api import mail, urlfetch, memcache
 from google.appengine.ext import deferred
 
 from django.shortcuts import render, get_object_or_404
@@ -794,3 +793,9 @@ def subscriptions(request):
         "subscriptions":subscriptions,
     }
     return render(request, "subscriptions.html", template_vars)
+
+
+def clearcache(request):
+
+    memcache.flush_all()
+    return redirect("admin_index")
