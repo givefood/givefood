@@ -63,6 +63,7 @@
             {% csrf_token %}
             <input type="submit" class="button is-danger" value="Send notifications">
           </form>
+          <p>{{ subscribers|length }} subscribers</p>
         {% endif %}
       {% endif %}
       <br>

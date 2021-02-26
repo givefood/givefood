@@ -379,8 +379,11 @@ def fblocation_delete(request, slug, loc_slug):
 def need(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
+    subscribers = FoodbankSubscriber.objects.filter(foodbank = need.foodbank)
+    
     template_vars = {
         "need":need,
+        "subscribers":subscribers,
     }
     return render(request, "need.html", template_vars)
 
