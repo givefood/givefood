@@ -71,11 +71,13 @@
             <h3>Nearby Food Banks</h3>
             <ul>
               {% for location in nearby_locations %}
-                {% if location.type == "location" %}
-                  <a href="{% url 'public_wfbn_foodbank_location' location.foodbank_slug location.slug %}">{{ location.name }}</a> ({{ location.foodbank_name }}) <span class="is-size-7">{{ location.distance_mi|floatformat:2 }}mi away</span>
-                {% else %}
-                  <a href="{% url 'public_wfbn_foodbank' location.foodbank_slug %}">{{ location.name }}</a> <span class="is-size-7">{{ location.distance_mi|floatformat:2 }}mi away</span>
-                {% endif %}
+                <li>
+                  {% if location.type == "location" %}
+                    <a href="{% url 'public_wfbn_foodbank_location' location.foodbank_slug location.slug %}">{{ location.name }}</a> ({{ location.foodbank_name }}) <span class="is-size-7">{{ location.distance_mi|floatformat:2 }}mi away</span>
+                  {% else %}
+                    <a href="{% url 'public_wfbn_foodbank' location.foodbank_slug %}">{{ location.name }}</a> <span class="is-size-7">{{ location.distance_mi|floatformat:2 }}mi away</span>
+                  {% endif %}
+                </li>
               {% endfor %}
             </ul>
             <p>
