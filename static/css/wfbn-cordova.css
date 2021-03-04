@@ -1,6 +1,9 @@
 .headerimg {
   display:none;
 }
+.container {
+  padding:0;
+}
 .column {
   margin: 0;
 }
