@@ -39,6 +39,10 @@ handlers:
   static_files: static/root/robots.txt
   upload: static/root/robots.txt
 
+- url: /security.txt
+  static_files: static/root/security.txt
+  upload: static/root/security.txt
+
 - url: /admin.*
   script: givefood.wsgi.application
   secure: always
