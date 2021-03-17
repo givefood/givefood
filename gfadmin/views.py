@@ -8,7 +8,7 @@ from google.appengine.api import mail, urlfetch, memcache
 from google.appengine.ext import deferred
 
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
