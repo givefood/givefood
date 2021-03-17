@@ -60,6 +60,7 @@ urlpatterns = (
     url(r'^search/$', search, name="admin_search"),
     url(r'^stats/$', stats, name="admin_stats"),
     url(r'^subscriptions/$', subscriptions, name="admin_subscriptions"),
+    url(r'^subscription/delete/$', delete_subscription, name="admin_delete_subscription"),
     url(r'^clearcache/$', clearcache, name="admin_clearcache"),
 
     url(r'^test_order_email/(?P<id>[-\w]+)/$', test_order_email, name="admin_test_order_email"),

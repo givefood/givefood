@@ -16,6 +16,7 @@
           <th>Foodbank</th>
           <th>Created</th>
           <th>Confirmed</th>
+          <th></th>
         </tr>
         {% for subscription in subscriptions %}
           <tr>
@@ -23,6 +24,13 @@
             <td>{{ subscription.foodbank_name }}</td>
             <td>{{ subscription.created }}</td>
             <td>{% if subscription.confirmed %}Y{% else %}N{% endif %}</td>
+            <td>
+              <form action="{% url 'admin_delete_subscription' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="email" value="{{ subscription.email }}">
+                <input type="submit" value="Delete" onclick="return confirm('Delete {{ subscription.email }}?')" class="button is-danger is-small">
+              </form>
+            </td>
           </tr>
         {% endfor %}
       </table>

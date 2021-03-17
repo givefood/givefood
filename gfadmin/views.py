@@ -795,6 +795,16 @@ def subscriptions(request):
     return render(request, "subscriptions.html", template_vars)
 
 
+@require_POST
+def delete_subscription(request):
+
+    email = request.POST.get("email")
+    subscriber = get_object_or_404(FoodbankSubscriber, email = email)
+    subscriber.delete()
+
+    return redirect("admin_subscriptions")
+
+
 def clearcache(request):
 
     memcache.flush_all()
