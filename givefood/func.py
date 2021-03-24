@@ -70,6 +70,8 @@ def get_all_constituencies():
 
 def geocode(address):
 
+    logging.info("Geocode %s" % (address))
+
     gmap_geocode_key = get_cred("gmap_geocode_key")
 
     address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=%s" % (gmap_geocode_key, urllib.quote(address.encode('utf8')))
