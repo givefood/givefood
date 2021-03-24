@@ -344,6 +344,26 @@ def clean_foodbank_need_text(text):
     return text
 
 
+def is_uk(lat_lng):
+
+    logging.info("is_uk %s" % lat_lng)
+
+    lat = float(lat_lng.split(",")[0])
+    lng = float(lat_lng.split(",")[1])
+
+    sw_lat = 49.674
+    sw_lng = -14.015517
+    ne_lat = 61.061
+    ne_lng = 2.0919117
+
+    if lat < sw_lat: return False
+    if lng < sw_lng: return False
+    if lat > ne_lat: return False
+    if lng > ne_lng: return False
+
+    return True
+
+
 def find_foodbanks(lattlong, quantity = 10, skip_first = False):
 
     foodbanks = get_all_open_foodbanks()

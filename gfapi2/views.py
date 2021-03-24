@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_page, cache_control
 
 from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations
+from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, is_uk
 
 DEFAULT_FORMAT = "json"
 
@@ -258,6 +258,9 @@ def foodbank_search(request):
     if address and not lat_lng:
         lat_lng = geocode(address)
 
+    if not is_uk(lat_lng):
+        return HttpResponseBadRequest() 
+
     foodbanks = find_foodbanks(lat_lng, 10)
     response_list = []
 
@@ -412,6 +415,9 @@ def location_search(request):
 
     if address and not lat_lng:
         lat_lng = geocode(address)
+
+    if not is_uk(lat_lng):
+        return HttpResponseBadRequest() 
 
     locations = find_locations(lat_lng, 10)
 
