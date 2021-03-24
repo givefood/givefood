@@ -421,7 +421,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "slug":foodbank.slug,
             "foodbank_slug":foodbank.slug,
             "foodbank_name":foodbank.name,
-            "foodbank_network":location.foodbank_network,
+            "foodbank_network":foodbank.network,
         })
 
     for searchable_location in searchable_locations:
