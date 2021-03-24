@@ -11,6 +11,8 @@ const no_loc_apology_text = "Sorry, we tried to get your location automatically 
 const no_addr_text = "Did you forget to enter an address?";
 const nothing_needed_text = "Nothing right now, thanks";
 const need_unknown_text = "Sorry. We don't know what's needed here, please contact the food bank";
+const loc_not_uk = "Sorry, we couldn't use that location. Is it inside the United Kingdom?";
+const search_error = "Sorry, we had a problem finding food banks there. The error was logged. Please try again later."
 
 function init() {
   var input = address_field;
@@ -96,6 +98,15 @@ function clear_results() {
 }
 
 function api_response() {
+
+  if (this.status != 200) {
+    if (this.status == 400) {
+      status.innerHTML = loc_not_uk;
+    } else {
+      status.innerHTML = search_error;
+    }
+    return false;
+  }
 
   template = document.querySelector("#fb_row");
 
