@@ -6,11 +6,19 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 .headerimg {
-  background: url('/static/img/header.jpg');
   background-repeat: no-repeat;
   padding-top:200px;
   margin-bottom:30px;
   background-size: cover;
+}
+html.no-webp .headerimg {
+  background-image: url('/static/img/header.jpg');
+}
+html.no-js .headerimg {
+  background-image: url('/static/img/header.jpg');
+}
+html.webp .headerimg {
+  background-image: url('/static/img/header.webp');
 }
 .container {
   padding:10px;
