@@ -17,31 +17,32 @@
 
   <div class="columns is-centered">
 
-      <div class="column is-one-quarter">
-        <h2>Donate to Food Banks</h2>
-        <p>Find out what food banks near you, from {{ total_locations }} around the UK, are requesting at...<br><a href="/needs/" class="is-size-5">givefood.org.uk/needs</a></p>
-        <p>You can also find out <a href="/needs/in/constituencies/">what food banks operate in your MP's constituency</a>, and contact them about it.</p>
-        <p>🤓 Techies! There is an <a href="/api/">API</a> to access our data.</p>
-        <p><a href="https://play.google.com/store/apps/details?id=uk.org.givefood.cordova"><img src="/static/img/googleplay.png" alt="Get it on Google Play" style="width:120px;"></a></p>
-      </div>
+      <section class="column is-one-third donate-to-foodbanks">
+        <div class="card">
+          <div class="card-content">
+            <h2>Donate to Food Banks</h2>
+            <p>Find out what food banks near you, from {{ total_locations }} around the UK, are requesting at...<br><a href="/needs/" class="is-size-5">givefood.org.uk/needs</a></p>
+            <p>You can also find out <a href="/needs/in/constituencies/">what food banks operate in your MP's constituency</a>, and contact them.</p>
+            <p>🤓 Techies! There is an <a href="/api/">API</a> to access our data.</p>
+            <p><a href="https://play.google.com/store/apps/details?id=uk.org.givefood.cordova"><img src="/static/img/googleplay.png" alt="Get it on Google Play" style="width:120px;"></a></p>
+          </div>
+        </div>
+      </section>
 
-      <div class="column is-one-quarter">
+      <section class="column is-one-quarter for-food-banks">
         <h2>For Food Banks</h2>
         <h3>Data</h3>
-        <p>We aim to index the needs of all UK food banks, covering networked and independent organisations. Contact us to be included if you aren't already.</p>
-        <h3>Food</h3>
-        <p>We're able to deliver the food required at locations within 24-48hrs and have done so to {{ no_active_foodbanks }} food banks.</p>
-        <h3>Supplies</h3>
-        <p>We also deliver non-food items such as toiletries, plus items like cardboard boxes, disposable gloves and face masks.</p>
-      </div>
+        <p>We aim to index the needs of all UK food banks, covering networked and independent organisations. If you're not included you can <a href="/register-foodbank/">register here</a>.</p>
+        <h3>Food &amp; Supplies</h3>
+        <p>We're able to help support food banks with food deliveries and non-food item such as toiletries. Addtionally we've previously supplied cardboard boxes, disposable gloves and face masks.</p>
+      </section>
 
-      <div class="column is-one-quarter">
+      <section class="column is-one-quarter about-us">
         <h2>About Us</h2>
         <p>Whilst we believe that food banks should not exist in our country, we aim to help local organisations address the immediate and critical need created by food insecurity.</p>
         <p>We've supplied over 700 UK food banks around {{ total_weight|floatformat:1 }} tonnes of precisely needed food and supplies.</p>
-        <p>Millions of people every month view our realtime food bank need data. We became a <a href="https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=1188192&subid=0">charity</a> in 2020.</p>
-        <p>We operate independent of religion and are primarily privately funded by the Cartwright family.</p>
-      </div>
+        <p>Millions of people every month view our realtime food bank need data, and we became a <a href="https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=1188192&subid=0">registered charity</a> in 2020.</p>
+      </section>
 
   </div>
 

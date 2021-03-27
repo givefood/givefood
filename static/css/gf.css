@@ -72,6 +72,12 @@ h3, .content h3 {
   font-weight:bold;
 }
 
+@media screen and (min-width: 769px) {
+  .for-food-banks, .about-us {
+    margin-top:24px;
+  }
+}
+
 #process {
   padding:60px 0;
 }
