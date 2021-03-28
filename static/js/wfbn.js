@@ -19,12 +19,13 @@ function init() {
   var options = {
     types: ["geocode"]
   };
-
   autocomplete = new google.maps.places.Autocomplete(input, options);
   autocomplete.setComponentRestrictions({'country': ['gb']});
   uml_btn.addEventListener("click", do_geolocation);
   addressform.addEventListener("submit", do_address);
   preload_image("/static/img/loading.gif");
+  preload_image("/static/img/phone.svg");
+  preload_image("/static/img/info.svg");
 }
 
 function do_geolocation(event) {
