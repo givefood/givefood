@@ -115,7 +115,7 @@ function api_response() {
     loctn = this.response[i];
 
     url = loctn.urls.html;
-    name = loctn.name;
+    fb_name = loctn.name;
     distance = loctn.distance_mi;
     slug = loctn.foodbank.slug;
     number_needs = loctn.needs.number;
@@ -128,7 +128,7 @@ function api_response() {
 
     currentrow = document.importNode(template.content, true);
     currentrow.querySelector("a.foodbank").href = "/needs/click/" + slug + "/";
-    currentrow.querySelector("a.foodbank").textContent = name;
+    currentrow.querySelector("a.foodbank").textContent = fb_name;
     if (org_type == "location" && currentrow.querySelector(".parent_org")) {
       currentrow.querySelector(".parent_org span").innerHTML = "Part of"
       currentrow.querySelector(".parent_org a").innerHTML = parent_org;
