@@ -1,6 +1,6 @@
 # Give Food
 
-The source of https://www.givefood.org.uk
+The source of https://www.givefood.org.uk, a Google App Engine app written in Python.
 
 ## About Us
 
