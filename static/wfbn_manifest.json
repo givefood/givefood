@@ -12,5 +12,17 @@
 			"type": "image/png",
 			"sizes": "256x256"
 		}
-	]
+	],
+	"screenshots": [
+		{
+		  "src": "/static/img/wfbn_screenshot_1.png",
+		  "type": "image/png",
+		  "sizes": "1172x1844"
+		},
+		{
+		  "src": "/static/img/wfbn_screenshot_2.png",
+		  "type": "image/jpg",
+		  "sizes": "1174x1844"
+		}
+	  ]
 }
