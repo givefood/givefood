@@ -1,6 +1,6 @@
 # Give Food
 
-The source of https://www.givefood.org.uk, a Google App Engine app written in Python.
+The source of https://www.givefood.org.uk. A Google App Engine app written in Python, using Django ano [Djangae](/potatolondon/djangae).
 
 ## About Us
 
