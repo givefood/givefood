@@ -75,9 +75,11 @@
     </div>
 
     <div class="column">
+      
       <div class="box">
         <p>{{ need.change_text|linebreaksbr }}</p>
       </div>
+
       {% if need.diff_from_last %}
         <h3>Previous Need</h3>
         <div class="box">
@@ -85,6 +87,14 @@
         </div>
         {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)
       {% endif %}
+
+      {% if need.change_text_original %}
+        <h3>Original Text</h3>
+        <div class="box">
+          <p>{{ need.change_text_original|linebreaksbr }}</p>
+        </div>
+      {% endif %}
+
     </div>
 
   </div>
