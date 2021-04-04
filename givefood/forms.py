@@ -76,6 +76,7 @@ class NeedForm(ModelForm):
     class Meta:
         model = FoodbankChange
         fields = "__all__"
+        exclude = ['change_text_original']
 
 
 class ParliamentaryConstituencyForm(ModelForm):

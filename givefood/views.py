@@ -240,6 +240,7 @@ def distill_webhook(request):
         uri = change_details.get("uri"),
         name = change_details.get("name"),
         change_text = change_details.get("text"),
+        change_text_original = change_details.get("text"),
         foodbank = foodbank,
     )
     new_foodbank_change.save()

@@ -506,6 +506,7 @@ class FoodbankChange(models.Model):
     name = models.CharField(max_length=250, null=True, blank=True)
     uri = models.CharField(max_length=250, null=True, blank=True)
     change_text = models.TextField()
+    change_text_original = models.TextField()
     published = models.BooleanField(default=False)
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
 
