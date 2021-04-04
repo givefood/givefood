@@ -67,6 +67,7 @@ def public_what_food_banks_need(request):
             location_results = find_locations(lattlong, 10)
 
             for location in location_results:
+                logging.info("Getting needs for %s" % location.get("foodbank_name"))
                 location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
                 location["needs"] = location_need.change_text
 
