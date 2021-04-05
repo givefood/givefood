@@ -604,36 +604,38 @@ def post_to_subscriber(need, subscriber):
     send_email(subscriber.email, subject, message)
 
 
-def send_email(to, subject, body):
+def send_email(to, subject, body, cc = None):
 
     api_url = "https://inject.socketlabs.com/api/v1/email"
     api_server = get_cred("socketlabs_server")
     api_key = get_cred("socketlabs_key")
 
-    api_call = """{
-        "serverId": %s,
-        "APIKey": "%s",
+    api_call_body = {
+        "serverId": api_server,
+        "APIKey": api_key,
         "Messages": [
             {
-            "To": [
-                {
-                "emailAddress": "%s"
-                }
-            ],
-            "From": {
-                "emailAddress": "mail@givefood.org.uk",
-                "friendlyName": "Give Food"
+                "To": [
+                    {
+                        "emailAddress": to,
+                    }
+                ],
+                "CC": [
+                    {
+                        "emailAddress": cc,
+                    }
+                ],
+                "From": {
+                    "emailAddress": "mail@givefood.org.uk",
+                    "friendlyName": "Give Food"
+                },
+                "Subject": subject,
+                "TextBody": body,
             },
-            "Subject": "%s",
-            "TextBody": "%s"
-            }
-        ]
-    }""" % (
-        api_server,
-        api_key,
-        to,
-        subject,
-        body,
-    )
+        ],
+    }
 
-    result = urlfetch.fetch(api_url, payload=api_call, method=urlfetch.POST, headers={'Content-Type': 'application/json'})
+    api_body = json.dumps(api_call_body)
+    logging.info(api_body)
+
+    result = urlfetch.fetch(api_url, payload=api_body, method=urlfetch.POST, headers={'Content-Type': 'application/json'})
