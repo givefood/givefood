@@ -55,7 +55,7 @@
 
             {% if action == "locations" %}
 
-                <p>Sorry we've got a location of <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> wrong.</p>
+                <p>Sorry we've got a location of <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> wrong. You can amend it below.</p>
 
                 <div class="columns">
                     <div class="column is-one-third">
@@ -70,11 +70,24 @@
                     </div>
 
                     <div class="column is-two-thirds">
+
                       <form method="post" action="">
                         {% csrf_token %}
                         {{ form|bulma }}
                         <input type="submit" class="button is-link" value="Submit">
                       </form>
+
+                      <hr>
+
+                      {% if location %}
+                        <p>If the location has closed (or isn't a food bank), please press this button.</p>
+                        <form method="post" action="">
+                          {% csrf_token %}
+                          <input type="hidden" name="closed" value="closed">
+                          <input type="submit" class="button is-danger" value="The {{ location.name }} location has closed">
+                        </form><br><br>
+                      {% endif %}
+
                     </div>
 
                 </div>

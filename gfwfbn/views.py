@@ -325,6 +325,7 @@ def public_wfbn_foodbank_edit(request, slug):
 def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
+    location = None
 
     if action == "needs":
         heading = "Shopping List"
@@ -380,6 +381,7 @@ def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
         "foodbank":foodbank,
         "action":action,
         "locslug":locslug,
+        "location":location,
         "form":form,
         "heading":heading,
     }
