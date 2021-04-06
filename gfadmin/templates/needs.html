@@ -33,6 +33,7 @@
             <td>
               {% if need.input_method == "typed" %}⌨️{% endif%}
               {% if need.input_method == "scrape" %}🤖{% endif%}
+              {% if need.input_method == "user" %}🧑{% endif%}
             </td>
             <td>
               <a href="{% url "admin_need" need.need_id %}">{{ need.need_id }}</a>
