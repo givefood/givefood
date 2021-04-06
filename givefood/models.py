@@ -248,8 +248,8 @@ class FoodbankLocation(models.Model):
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
+    phone_number = models.CharField(max_length=20, null=True, blank=True, help_text="If different to the main location")
+    email = models.EmailField(null=True, blank=True, help_text="If different to the main location")
 
     parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
     parliamentary_constituency_slug = models.CharField(max_length=50, null=True, blank=True, editable=False)
@@ -505,10 +505,12 @@ class FoodbankChange(models.Model):
     distill_id = models.CharField(max_length=250, null=True, blank=True)
     name = models.CharField(max_length=250, null=True, blank=True)
     uri = models.CharField(max_length=250, null=True, blank=True)
-    change_text = models.TextField()
-    change_text_original = models.TextField()
+    change_text = models.TextField(verbose_name="Shopping List")
+    change_text_original = models.TextField(null=True, blank=True)
     published = models.BooleanField(default=False)
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
+
+    input_method = models.CharField(max_length=10)
 
     class Search:
          fields = [
@@ -527,7 +529,7 @@ class FoodbankChange(models.Model):
         else:
             return len(self.change_text.split('\n'))
 
-    def input_method(self):
+    def set_input_method(self):
         if self.distill_id:
             return "scrape"
         else:
@@ -567,6 +569,9 @@ class FoodbankChange(models.Model):
             return last_need[0].created
 
     def save(self, *args, **kwargs):
+
+        if not self.input_method:
+            self.input_method = self.set_input_method()
 
         if self.foodbank:
             self.foodbank_name = self.foodbank.name

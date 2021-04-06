@@ -604,6 +604,23 @@ def post_to_subscriber(need, subscriber):
     send_email(subscriber.email, subject, message)
 
 
+def post_to_email(post, extra = {}, header = None):
+
+    body_str = ""
+    fields = post.copy()
+    fields.update(extra)
+
+    fields.pop("csrfmiddlewaretoken", None)
+
+    for fieldname, fieldvalue in fields.items():
+        body_str += "%s: %s\n" % (fieldname, fieldvalue)
+
+    if header:
+        body_str = header + "\n\n" + body_str
+
+    send_email("mail@givefood.org.uk", "Food Bank Data Amendment", body_str)
+
+
 def send_email(to, subject, body, cc = None):
 
     api_url = "https://inject.socketlabs.com/api/v1/email"

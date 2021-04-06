@@ -14,7 +14,8 @@ from django import forms
 from google.appengine.api import urlfetch
 
 from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber
-from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email
+from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email
+from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
 def public_tt_old_data(request):
@@ -308,3 +309,87 @@ def public_what_food_banks_need_updates(request, action):
         "message":message,
     }
     return render(request, "updates.html", template_vars)
+
+
+
+def public_wfbn_foodbank_edit(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    template_vars = {
+        "foodbank":foodbank,
+    }
+    return render(request, "wfbn_foodbank_edit.html", template_vars)
+
+
+def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    if action == "needs":
+        heading = "Shopping List"
+        if request.POST:
+            form = NeedForm(request.POST)
+            if form.is_valid():
+                foodbank_change = form.save(commit=False)
+                foodbank_change.foodbank = foodbank
+                foodbank_change.input_method = "user"
+                foodbank_change.save()
+                return redirect("public_wfbn_foodbank_edit_thanks", slug = slug)
+        else:
+            form = NeedForm(instance=foodbank.latest_need())
+
+    if action == "locations":
+        heading = "Locations"
+
+        if locslug:
+            location = get_object_or_404(FoodbankLocation, slug = locslug)
+            form = LocationLocationForm(instance=location)
+        else:
+            location = None
+            form = FoodbankLocationForm(instance=foodbank)
+
+        if request.POST:
+            post_to_email(request.POST, {
+                "foodbank":foodbank.name,
+                "location":location,
+            })
+            return redirect("public_wfbn_foodbank_edit_thanks", slug = slug)
+
+    if action == "contacts":
+        heading = "Contact Information"
+        form = ContactForm(instance=foodbank)
+
+        if request.POST:
+            post_to_email(request.POST, {
+                "foodbank":foodbank.name,
+            })
+            return redirect("public_wfbn_foodbank_edit_thanks", slug = slug)
+
+    if action == "closed":
+        heading = "Closed"
+        form = None
+
+        if request.POST:
+            post_to_email(request.POST, {
+                "foodbank":foodbank.name,
+            }, "CLOSED")
+            return redirect("public_wfbn_foodbank_edit_thanks", slug = slug)
+
+    template_vars = {
+        "foodbank":foodbank,
+        "action":action,
+        "locslug":locslug,
+        "form":form,
+        "heading":heading,
+    }
+    return render(request, "wfbn_foodbank_edit_form.html", template_vars)
+
+
+def public_wfbn_foodbank_edit_thanks(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    template_vars = {
+        "foodbank":foodbank,
+    }
+    return render(request, "wfbn_foodbank_edit_thanks.html", template_vars)

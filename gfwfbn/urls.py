@@ -11,6 +11,12 @@ urlpatterns = (
 
     url(r'^at/(?P<slug>[-\w]+)/$', public_wfbn_foodbank, name="public_wfbn_foodbank"),
     url(r'^at/(?P<slug>[-\w]+)/map.png$', public_wfbn_foodbank_map, name="public_wfbn_foodbank_map"),
+
+    url(r'^at/(?P<slug>[-\w]+)/edit/$', public_wfbn_foodbank_edit, name="public_wfbn_foodbank_edit"),
+    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/$', public_wfbn_foodbank_edit_form, name="public_wfbn_foodbank_edit_form"),
+    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/(?P<locslug>[-\w]+)/$', public_wfbn_foodbank_edit_form, name="public_wfbn_foodbank_edit_form_location"),
+    url(r'^at/(?P<slug>[-\w]+)/edit/thanks/$', public_wfbn_foodbank_edit_thanks, name="public_wfbn_foodbank_edit_thanks"),
+
     url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', public_wfbn_foodbank_location, name="public_wfbn_foodbank_location"),
     url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/map.png$', public_wfbn_foodbank_location_map, name="public_wfbn_foodbank_location_map"),
 

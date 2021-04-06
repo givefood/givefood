@@ -1,0 +1,118 @@
+{% extends "public/page.html" %}
+{% load bulma_tags %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
+  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/map.png">
+  <link rel="manifest" href="/needs/manifest.json">
+  <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block title %}Edit {{ heading }} - {{ foodbank }} Food Bank - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+        <h1><a href="/">Give Food</a></h1>
+        <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="{% url 'public_index' %}">Give Food</a></li>
+            <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
+            <li><a href="{% url 'public_wfbn_foodbank_edit' foodbank.slug %}">Edit</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{ heading }}</a></li>
+          </ul>
+        </nav>
+        <div class="columns is-centered">
+
+          <div class="column is-two-thirds">
+            <h2>Edit {{ foodbank }} Food Bank {{ heading }}</h2>
+
+            {% if action == "needs" %}
+
+                <p>Sorry we've got what <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> is requesting to have donated wrong. Usually we crawl your website to find this. Let's fix it.</p>
+                <p>Here is what we think is the shopping list, which we last updated <em>{{ foodbank.latest_need.created }} ({{ foodbank.latest_need.modified|timesince }} ago</em>). We found this by {% if foodbank.latest_need.input_method == "typed" %}inputting it manually{% endif %}{% if foodbank.latest_need.input_method == "scrape" %}automatically scraping it from the food bank's website{% endif %}{% if foodbank.latest_need.input_method == "user" %}someone filling out this form{% endif %}.</p>
+
+                <div class="box">
+                    <p>{{ foodbank.latest_need.change_text|linebreaks }}</p>
+                </div>
+
+                <p>You can submit a new shopping list for us to review here. Please use one line per item.</p>
+
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{ form|bulma }}
+                    <input type="submit" class="button is-link" value="Submit">
+                </form>
+
+            {% endif %}
+
+            {% if action == "locations" %}
+
+                <p>Sorry we've got a location of <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> wrong.</p>
+
+                <div class="columns">
+                    <div class="column is-one-third">
+                        <aside class="menu">
+                            <ul class="menu-list">
+                                <li><a {% if not locslug %}class="is-active"{% endif %} href="{% url 'public_wfbn_foodbank_edit_form' foodbank.slug action %}">Main Location</a></li>
+                                {% for location in foodbank.locations %}
+                                    <li><a {% if locslug == location.slug %}class="is-active"{% endif %} href="{% url 'public_wfbn_foodbank_edit_form_location' foodbank.slug action location.slug %}">{{ location.name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                          </aside>
+                    </div>
+
+                    <div class="column is-two-thirds">
+                      <form method="post" action="">
+                        {% csrf_token %}
+                        {{ form|bulma }}
+                        <input type="submit" class="button is-link" value="Submit">
+                      </form>
+                    </div>
+
+                </div>
+
+
+            {% endif %}
+
+            {% if action == "contacts" %}
+
+                <p>Sorry we've got some of the details of <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> wrong. You can use the form below to fix it...</p>
+
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {{ form|bulma }}
+                    <input type="submit" class="button is-link" value="Submit">
+                </form>
+
+                
+            {% endif %}
+
+            {% if action == "closed" %}
+
+              <p>Is <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> closed? Tell us by clicking the button below.</p>
+
+              <form method="post" action="">
+                {% csrf_token %}
+                <input type="submit" class="button is-link is-danger" value="Yes, it is closed">
+              </form>
+
+            {% endif %}
+
+            <br><br>
+            
+
+          </div>
+
+        </div>
+    </div>
+  </div>
+
+{% endblock %}
