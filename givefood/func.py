@@ -213,6 +213,10 @@ def get_weight(text):
     if text[-5:] == " 6x1L":
       weight = 6000
 
+    # 6x1l
+    if text[-5:] == " 6x1l":
+      weight = 6000
+
     # Litre
     if text[-6:] == " Litre":
       weight = float(text[-7:].replace(" Litre","")) * 1000
