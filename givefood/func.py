@@ -214,7 +214,7 @@ def get_weight(text):
       weight = 6000
 
     # 6x1l
-    if text[-5:] == " 6x1l":
+    if text[-5:] == " 6X1l":
       weight = 6000
 
     # Litre
