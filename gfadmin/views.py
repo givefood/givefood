@@ -44,7 +44,7 @@ def index(request):
         "needs":needs,
         "section":"home",
     }
-    return render(request, "adminindex.html", template_vars)
+    return render(request, "admin_index.html", template_vars)
 
 
 def searches(request):

@@ -81,7 +81,7 @@ def public_what_food_banks_need(request):
         "map_locations":map_locations,
         "location_results":location_results,
     }
-    return render(request, "wfbnindex.html", template_vars)
+    return render(request, "wfbn_index.html", template_vars)
 
 
 def public_what_food_banks_need_click(request, slug):
@@ -106,7 +106,7 @@ def public_wfbn_foodbank(request, slug):
         "nearby_locations":nearby_locations,
     }
 
-    return render(request, "wfbnfoodbank.html", template_vars)
+    return render(request, "wfbn_foodbank.html", template_vars)
 
 
 @cache_page(60*30)
@@ -142,7 +142,7 @@ def public_wfbn_foodbank_location(request, slug, locslug):
         "nearby_locations":nearby_locations,
     }
 
-    return render(request, "foodbank_location.html", template_vars)
+    return render(request, "wfbn_foodbank_location.html", template_vars)
 
 
 @cache_page(60*30)
@@ -173,7 +173,7 @@ def public_wfbn_constituencies(request):
         "constituencies":constituencies,
     }
 
-    return render(request, "constituencies.html", template_vars)
+    return render(request, "wfbn_constituencies.html", template_vars)
 
 
 @cache_page(60*5)
@@ -236,7 +236,7 @@ def public_wfbn_constituency(request, slug):
         "constituency_locations":constituency_locations,
     }
 
-    return render(request, "constituency.html", template_vars)
+    return render(request, "wfbn_constituency.html", template_vars)
 
 
 @cache_page(60*30)
@@ -308,7 +308,7 @@ def public_what_food_banks_need_updates(request, action):
     template_vars = {
         "message":message,
     }
-    return render(request, "updates.html", template_vars)
+    return render(request, "wfbn_updates.html", template_vars)
 
 
 
