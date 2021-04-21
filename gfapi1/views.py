@@ -81,6 +81,7 @@ def api_foodbanks(request):
             "charity_register_url",
             "closed",
             "latt_long",
+            "network",
         ])
         writer_output = []
         for foodbank in response_list:
@@ -103,6 +104,7 @@ def api_foodbanks(request):
                 foodbank["charity_register_url"],
                 foodbank["closed"],
                 foodbank["latt_long"],
+                foodbank["network"],
             ])
         writer.writerows(writer_output)
         return response
