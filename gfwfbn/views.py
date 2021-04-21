@@ -18,18 +18,6 @@ from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_loc
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
-def public_tt_old_data(request):
-
-    recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
-    old = Foodbank.objects.filter(network = "Trussell Trust").order_by("last_need")[:100]
-
-    template_vars = {
-        "recent":recent,
-        "old":old,
-    }
-    return render(request, "tt-old-data.html", template_vars)
-
-
 @cache_page(60*10)
 def public_what_food_banks_need(request):
 

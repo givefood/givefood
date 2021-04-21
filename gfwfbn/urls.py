@@ -3,7 +3,8 @@ from django.views.generic import RedirectView
 from views import *
 
 urlpatterns = (
-    url(r'^tt-old-data/$', public_tt_old_data, name="public_tt_old_data"),
+    url(r'^tt-old-data/$', RedirectView.as_view(url='/dashboard/trusselltrust/old-data/')),
+
     url(r'^$', public_what_food_banks_need, name="public_what_food_banks_need"),
     url(r'^click/(?P<slug>[-\w]+)/$', public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
 

@@ -42,6 +42,7 @@ urlpatterns = (
     url(r'^api/2/', include('gfapi2.urls')),
     url(r'^api/', include('gfapi2.urls')),
     url(r'^admin/', include('gfadmin.urls')),
+    url(r'^dashboard/', include('gfdash.urls')),
 
     # CSP & Auth
     url(r'^csp/', include('cspreports.urls')),

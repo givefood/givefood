@@ -1,0 +1,37 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block title %}Dashboards - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+        <h1><a href="/">Give Food</a></h1>
+        <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="{% url 'public_index' %}">Give Food</a></li>
+            <li class="is-active"><a href="{% url 'dash_index' %}" aria-current="page">Dashboards</a></li>
+          </ul>
+        </nav>
+        <div class="columns">
+          <div class="column">
+            <table class="table">
+              <tr>
+                <td><a href="{% url 'dash_tt_old_data' %}">Trussell Trust - old data</a></td>
+                <td>Trussell Trust food banks that haven't updated their shopping lists.</td>
+              </tr>
+              <tr>
+                <td><a href="{% url 'dash_tt_most_requested_items' %}">Trussell Trust - most requested items</a></td>
+                <td>Most requested items by Trussell Trust food banks.</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

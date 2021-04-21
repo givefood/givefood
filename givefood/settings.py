@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'gfapi2',
     'gfadmin',
     'gfwfbn',
+    'gfdash',
     # 'djangae.contrib.uniquetool',
 )
 

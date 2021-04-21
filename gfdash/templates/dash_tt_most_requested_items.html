@@ -1,0 +1,36 @@
+{% extends "public/page.html" %}
+
+{% block title %}Trussell Trust Most Requested Items - Give Food{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h1><a href="/">Give Food</a></h1>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash_index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash_tt_most_requested_items' %}" aria-current="page">Trussell Trust Most Requested Items</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+        <p><i>Oldest item counted {{ oldest_foodbank.latest_need.created }}</i></p>
+        <table class="table is-striped is-narrow is-fullwidth">
+            {% for item in items_sorted %}
+                <tr>
+                    <td>{{ item.0 }}</td>
+                    <td>{{ item.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+  </div><br><br>
+
+{% endblock %}
