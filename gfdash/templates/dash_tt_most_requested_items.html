@@ -24,7 +24,18 @@
   <div class="columns">
 
     <div class="column">
-        <p><i>Oldest item counted {{ oldest_foodbank.latest_need.created }}</i></p>
+        <p class="is-pulled-left">Found {{ number_items }} items from {{ number_foodbanks }} food bank organisations in the last {{ days }} days.</p>
+        <div class="field is-pulled-right">
+            <div class="control">
+              <div class="select is-small">
+                <select onchange="javascript:window.location.href=this.value">
+                    {% for allowed_day in allowed_days %}
+                        <option value="?days={{ allowed_day }}"{% if allowed_day == days %} selected{% endif %}>{{ allowed_day }} days</option>
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
         <table class="table is-striped is-narrow is-fullwidth">
             {% for item in items_sorted %}
                 <tr>
