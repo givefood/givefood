@@ -21,6 +21,7 @@
 	{% for foodbank in foodbanks %}
 		<url>
 			<loc>https://www.givefood.org.uk{% url 'public_wfbn_foodbank' foodbank.slug %}</loc>
+			<lastmod>{{ foodbank.modified|date:"Y-m-d" }}</lastmod>
 		</url>
 	{% endfor %}
 	{% for location in locations %}
