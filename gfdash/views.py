@@ -1,11 +1,12 @@
 import logging
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
+from collections import OrderedDict
 
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
 
-from givefood.models import Foodbank
+from givefood.models import Foodbank, FoodbankChange
 from givefood.func import group_list
 
 
@@ -13,19 +14,26 @@ def dash_index(request):
     return render(request, "dash_index.html")
 
 
-def dash_tt_old_data(request):
+def dash_weekly_itemcount(request):
 
-    recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
-    old = Foodbank.objects.filter(network = "Trussell Trust").order_by("last_need")[:100]
+    week_needs = OrderedDict()
+
+    start_date = date(2020,1,1)
+    needs = FoodbankChange.objects.filter(created__gt = start_date).order_by("created")
+
+    for need in needs:
+        week_number = need.created.isocalendar()[1]
+        year = need.created.year
+        week_key = "%s-%s" % (year, week_number)
+        week_needs[week_key] = week_needs.get(week_key, 0) + need.no_items()
 
     template_vars = {
-        "recent":recent,
-        "old":old,
+        "week_needs":week_needs,
     }
-    return render(request, "dash_tt_old_data.html", template_vars)
+    return render(request, "dash_weekly_itemcount.html", template_vars)
 
 
-def dash_tt_most_requested_items(request):
+def dash_most_requested_items(request):
 
     # Handle allowed day parameters
     default_days = 30
@@ -35,13 +43,18 @@ def dash_tt_most_requested_items(request):
         return HttpResponseForbidden()
     day_threshold = datetime.now() - timedelta(days=days)
 
+    trusselltrust = ("trusselltrust" in request.path)
+
     # Empty vars we'll use
     items = []
     number_foodbanks = 0
     number_items = 0
 
-    # Find the food banks that are in the Trussell Trust and have updated their needs within the day threshold
-    recent_foodbanks = Foodbank.objects.filter(network = "Trussell Trust", last_need__gt = day_threshold).order_by("-last_need")
+    # Find the food banks that have updated their needs within the day threshold
+    if trusselltrust:
+        recent_foodbanks = Foodbank.objects.filter(network = "Trussell Trust", last_need__gt = day_threshold).order_by("-last_need")
+    else:
+        recent_foodbanks = Foodbank.objects.filter(last_need__gt = day_threshold).order_by("-last_need")
 
     # Keywords we use in need text that we'll exclude
     invalid_text = ["Nothing", "Unknown"]
@@ -77,7 +90,19 @@ def dash_tt_most_requested_items(request):
         "days": days,
         "number_foodbanks": number_foodbanks,
         "number_items": number_items,
+        "trusselltrust":trusselltrust,
     }
 
     return render(request, "dash_tt_most_requested_items.html", template_vars)
 
+
+def dash_tt_old_data(request):
+
+    recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
+    old = Foodbank.objects.filter(network = "Trussell Trust").order_by("last_need")[:100]
+
+    template_vars = {
+        "recent":recent,
+        "old":old,
+    }
+    return render(request, "dash_tt_old_data.html", template_vars)

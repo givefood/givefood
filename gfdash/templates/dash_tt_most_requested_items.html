@@ -1,6 +1,6 @@
 {% extends "public/page.html" %}
 
-{% block title %}Trussell Trust Most Requested Items - Give Food{% endblock %}
+{% block title %}{% if trusselltrust %}Trussell Trust {% endif %}Most Requested Items - Give Food{% endblock %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/dash.css">
@@ -15,7 +15,7 @@
             <ul>
                 <li><a href="{% url 'public_index' %}">Give Food</a></li>
                 <li><a href="{% url 'dash_index' %}">Dashboards</a></li>
-                <li class="is-active"><a href="{% url 'dash_tt_most_requested_items' %}" aria-current="page">Trussell Trust Most Requested Items</a></li>
+                <li class="is-active"><a href="{% url 'dash_tt_most_requested_items' %}" aria-current="page">{% if trusselltrust %}Trussell Trust {% endif %}Most Requested Items</a></li>
             </ul>
             </nav>
         </div>

@@ -19,16 +19,24 @@
         </nav>
         <div class="columns">
           <div class="column">
-            <table class="table">
-              <tr>
-                <td><a href="{% url 'dash_tt_old_data' %}">Trussell Trust - old data</a></td>
-                <td>Trussell Trust food banks that haven't updated their shopping lists.</td>
-              </tr>
-              <tr>
-                <td><a href="{% url 'dash_tt_most_requested_items' %}">Trussell Trust - most requested items</a></td>
-                <td>Most requested items by Trussell Trust food banks.</td>
-              </tr>
-            </table>
+
+            <p>Dashboard views of Give Food data. You may also enjoy <a href="https://datasette.givefood.org.uk">datasette</a> or our <a href="/api/">API</a>.</p>
+            
+            <h2>General</h2>
+            <ul>
+              <li><a href="{% url 'dash_weekly_itemcount' %}">Items requested weekly</a> - Number of items requested by UK food banks per week</li>
+              <li><a href="{% url 'dash_most_requested_items' %}">Most requested items</a> - Most requested items by all food banks we know of</li>
+            </ul>
+
+            <br>
+            <h2>Trussell Trust</h2>
+            <ul>
+              <li><a href="{% url 'dash_tt_old_data' %}">Trussell Trust - old data</a> - Trussell Trust food banks that haven't updated their shopping lists</li>
+              <li><a href="{% url 'dash_tt_most_requested_items' %}">Trussell Trust - most requested items</a> - Most requested items by Trussell Trust food banks</li>
+            </ul>
+
+            <br><br>
+
           </div>
         </div>
     </div>
