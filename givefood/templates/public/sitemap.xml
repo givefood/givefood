@@ -16,6 +16,9 @@
 		<loc>https://www.givefood.org.uk/needs/</loc>
 	</url>
 	<url>
+		<loc>https://www.givefood.org.uk/dashboard/</loc>
+	</url>
+	<url>
 		<loc>https://www.givefood.org.uk/needs/in/constituencies/</loc>
 	</url>
 	{% for foodbank in foodbanks %}
