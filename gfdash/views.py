@@ -5,15 +5,17 @@ from collections import OrderedDict
 
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
+from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, FoodbankChange
 from givefood.func import group_list
 
-
+@cache_page(60*10)
 def dash_index(request):
     return render(request, "dash_index.html")
 
 
+@cache_page(60*10)
 def dash_weekly_itemcount(request):
 
     week_needs = OrderedDict()
@@ -33,6 +35,7 @@ def dash_weekly_itemcount(request):
     return render(request, "dash_weekly_itemcount.html", template_vars)
 
 
+@cache_page(60*10)
 def dash_most_requested_items(request):
 
     # Handle allowed day parameters
@@ -96,6 +99,7 @@ def dash_most_requested_items(request):
     return render(request, "dash_tt_most_requested_items.html", template_vars)
 
 
+@cache_page(60*10)
 def dash_tt_old_data(request):
 
     recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
