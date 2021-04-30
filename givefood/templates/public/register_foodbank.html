@@ -40,6 +40,7 @@
           <p>We hope to get back to you in a couple days, but sometimes it can take a little longer.</p>
 
           <form method="post" action="">
+            {% csrf_token %}
             {{ form|bulma }}
             <input type="submit" class="button is-link">
           </form>

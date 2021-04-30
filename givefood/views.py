@@ -16,6 +16,7 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.template.defaultfilters import slugify
+from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
@@ -66,7 +67,7 @@ def public_index(request):
     return render(request, "public/index.html", template_vars)
 
 
-@csrf_exempt
+@anonymous_csrf
 def public_reg_foodbank(request):
 
     done = request.GET.get("thanks", False)
