@@ -12,6 +12,7 @@ from django.core.validators import validate_email
 from django import forms
 
 from google.appengine.api import urlfetch
+from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber
 from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email
@@ -310,6 +311,7 @@ def public_wfbn_foodbank_edit(request, slug):
     return render(request, "wfbn_foodbank_edit.html", template_vars)
 
 
+@anonymous_csrf
 def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
