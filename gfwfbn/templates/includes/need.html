@@ -1,8 +1,12 @@
-<h3>Items Needed</h3>
-<p>
+{% if need_text != "Unknown" %}
 
-  {% include "includes/need_text.html" with need_text=need_text %}
+  <h3>Items Needed</h3>
+  <p>
 
-  <br><em class="is-size-7">Updated on {{ foodbank.latest_need_date }}</em><br>
-  <a href="{% url 'public_what_food_banks_need_click' foodbank.slug %}" class="button is-link is-small">Details</a>
-</p>
+    {% include "includes/need_text.html" with need_text=need_text %}
+
+    <br><em class="is-size-7">Updated on {{ foodbank.latest_need_date }}</em><br>
+    <a href="{% url 'public_what_food_banks_need_click' foodbank.slug %}" class="button is-link is-small">Details</a>
+  </p>
+
+{% endif %}
