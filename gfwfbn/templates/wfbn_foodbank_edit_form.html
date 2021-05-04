@@ -46,9 +46,9 @@
                 <p>You can submit a new shopping list here. We usually review and publish this to everywhere that uses our data within a couple of hours. Please use one line per item.</p>
 
                 <form method="post" action="">
-                    {% csrf_token %}
                     {{ form|bulma }}
                     <input type="submit" class="button is-link" value="Submit">
+                    {% csrf_token %}
                 </form>
 
             {% endif %}
@@ -72,9 +72,9 @@
                     <div class="column is-two-thirds">
 
                       <form method="post" action="">
-                        {% csrf_token %}
                         {{ form|bulma }}
                         <input type="submit" class="button is-link" value="Submit">
+                        {% csrf_token %}
                       </form>
 
                       <hr>
@@ -82,9 +82,9 @@
                       {% if location %}
                         <p>If the location has closed (or isn't a food bank), please press this button.</p>
                         <form method="post" action="">
-                          {% csrf_token %}
                           <input type="hidden" name="closed" value="closed">
                           <input type="submit" class="button is-danger" value="The {{ location.name }} location has closed">
+                          {% csrf_token %}
                         </form><br><br>
                       {% endif %}
 
@@ -100,9 +100,9 @@
                 <p>Sorry if we've got some of the details of <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> wrong. You can use the form below to fix it...</p>
 
                 <form method="post" action="">
-                    {% csrf_token %}
                     {{ form|bulma }}
                     <input type="submit" class="button is-link" value="Submit">
+                    {% csrf_token %}
                 </form>
 
                 
@@ -113,8 +113,8 @@
               <p>Is <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> closed? Tell us by clicking the button below.</p>
 
               <form method="post" action="">
-                {% csrf_token %}
                 <input type="submit" class="button is-danger" value="Yes, it is closed">
+                {% csrf_token %}
               </form>
 
             {% endif %}

@@ -53,23 +53,23 @@
 
       <br>
       <form action="{% url 'admin_need_publish' need.need_id %}" method="post">
-        {% csrf_token %}
         <input type="submit" class="button is-success" value="Publish">
+        {% csrf_token %}
       </form>
       {% if need.change_text != "Nothing" %}
         {% if need.change_text != "Unknown" %}
           <br>
           <form action="{% url 'admin_need_notifications' need.need_id %}" method="post">
-            {% csrf_token %}
             <input type="submit" class="button is-danger" value="Send notifications">
+            {% csrf_token %}
           </form>
           <p>{{ subscribers|length }} subscribers</p>
         {% endif %}
       {% endif %}
       <br>
       <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
-        {% csrf_token %}
         <input type="submit" class="button is-danger" value="Delete" onclick="return confirm('Are you sure you want to DELETE?')">
+        {% csrf_token %}
       </form>
 
     </div>

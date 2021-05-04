@@ -66,8 +66,8 @@
       <h2>Notification Email</h2>
       <p>Sent: {{ order.notification_email_sent }}</p>
       <form action="{% url 'admin_order_send_notification' order.order_id %}" method="post">
-        {% csrf_token %}
         <input type="submit" class="button is-link" value="Send">
+        {% csrf_token %}
       </form>
     </div>
 
