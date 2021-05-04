@@ -97,6 +97,12 @@
 
     </div>
 
+    {% if need.uri %}
+      <div class="column">
+        <iframe class="need_preview" src="{{ need.uri }}"></iframe>
+      </div>
+    {% endif %}
+
   </div>
 
 {% endblock %}
