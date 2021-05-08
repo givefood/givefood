@@ -349,6 +349,8 @@ def clean_foodbank_need_text(text):
         "We are short of:",
         "Food items urgently needed right now",
         " Find out what's in a food parcel",
+        "Our current needs",
+        "(updated weekly)",
     ]
 
     for string_to_clean in to_clean:
