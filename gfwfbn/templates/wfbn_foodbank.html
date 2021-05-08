@@ -35,19 +35,23 @@
           <div class="column">
             <div id="fbmap" style="height:500px;"></div>
             <br>
-            <p>
+            <address>
               {{ foodbank.address|linebreaksbr }}<br>
               {{ foodbank.postcode }}<br>
               {{ foodbank.country }}
-              <br><a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}" class="button is-link is-small">Directions</a>
-            </p>
+            </address>
+            <a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}" class="button is-link is-small">Directions</a>
+            <br><br>
             {% if not foodbank.name == "Salvation Army" %}
               {% if foodbank.locations %}
                 <h3>Other locations</h3>
                 {% for location in foodbank.locations %}
-                  <a href="{% url 'public_wfbn_foodbank_location' location.foodbank_slug location.slug %}">{{ location.name }}</a><br>
-                  {{ location.address|linebreaksbr }}<br>
-                  {{ location.postcode }}<br><br>
+                  <address>
+                    <a href="{% url 'public_wfbn_foodbank_location' location.foodbank_slug location.slug %}">{{ location.name }}</a><br>
+                    {{ location.address|linebreaksbr }}<br>
+                    {{ location.postcode }}
+                  </address>
+                  <br>
                 {% endfor %}
               {% endif %}
             {% endif %}
@@ -67,12 +71,14 @@
             {% endif %}
 
             <h3>Contact</h3>
-            <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
-            {% if foodbank.phone_number %}
-              <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a><br>
-            {% endif %}
-            <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:40 }}</a><br>
-            <p></p>
+            <address>
+              <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
+              {% if foodbank.phone_number %}
+                <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a><br>
+              {% endif %}
+              <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:40 }}</a>
+            </address>
+            <br>
 
             {% if not foodbank.is_closed %}
               {% if not foodbank.name == "Salvation Army" %}
