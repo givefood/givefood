@@ -637,6 +637,9 @@ def stats(request):
 
     total_active_foodbanks = len(active_foodbanks)
 
+    subscriptions = FoodbankSubscriber.objects.filter(confirmed = True)
+    total_subscriptions = len(subscriptions)
+
     template_vars = {
         "total_foodbanks":total_foodbanks,
         "total_active_foodbanks":total_active_foodbanks,
@@ -649,6 +652,7 @@ def stats(request):
         "total_need_items":total_need_items,
         "total_weight_pkg":total_weight_pkg,
         "total_locations":total_locations,
+        "total_subscriptions":total_subscriptions,
         "section":"stats",
     }
     return render(request, "stats.html", template_vars)
