@@ -5,7 +5,7 @@
 
     {% include "includes/need_text.html" with need_text=need_text %}
 
-    <br><em class="is-size-7">Updated on {{ foodbank.latest_need_date }}</em><br>
+    <br><em class="is-size-7">Found on {{ foodbank.latest_need_date }}</em><br>
     <a href="{% url 'public_what_food_banks_need_click' foodbank.slug %}" class="button is-link is-small">Details</a>
   </p>
 
