@@ -28,6 +28,7 @@ urlpatterns = (
     url(r'^generate-(?P<year>(2019|2020))/$', givefood.views.public_gen_annual_report, name="public_gen_annual_report"),
     url(r'^productimage/$', givefood.views.public_product_image, name="public_product_image"),
     url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
+    url(r'^proxy/(trusselltrust|ifan)/$', givefood.views.proxy, name="proxy"),
 
     # Rickrolling
     url(r'^wp-login\.php$', RedirectView.as_view(url=RICK_ASTLEY)),

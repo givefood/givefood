@@ -258,3 +258,24 @@ def precacher(request):
     memcache.add(FB_MC_KEY, all_foodbanks, 3600)
 
     return HttpResponse("OK")
+
+
+def proxy(request, item):
+
+    if item == "trusselltrust":
+        url = "https://www.trusselltrust.org/get-help/find-a-foodbank/foodbank-search/?foodbank_s=all&callback=?"
+    if item == "ifan":
+        url = "https://www.google.com/maps/d/u/0/kml?mid=1r8XyrXu-aFXnVaEVgegVquyIt94quP0q&forcekml=1"
+
+    result = urlfetch.fetch(url)
+    if result.status_code == 200:
+
+        content = result.content
+
+        if item == "trusselltrust":
+            content = content.replace("?(","")
+            content = content.replace(");","")
+            content = json.loads(content)
+            content = json.dumps(content, indent=4)
+
+        return HttpResponse(content)
