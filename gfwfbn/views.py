@@ -334,7 +334,7 @@ def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
         heading = "Locations"
 
         if locslug:
-            location = get_object_or_404(FoodbankLocation, slug = locslug)
+            location = get_object_or_404(FoodbankLocation, foodbank = foodbank, slug = locslug)
             form = LocationLocationForm(instance=location)
         else:
             location = None
