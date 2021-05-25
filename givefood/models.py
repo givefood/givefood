@@ -481,7 +481,7 @@ class OrderItem(models.Model):
 
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, editable=False)
-    calories = models.PositiveIntegerField()
+    calories = models.PositiveIntegerField(help_text="Per 100g")
     tesco_image_id = models.CharField(max_length=100, null=True, blank=True)
     sainsburys_image_id = models.CharField(max_length=100, null=True, blank=True)
 
