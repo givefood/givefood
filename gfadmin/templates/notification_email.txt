@@ -20,10 +20,10 @@ We also used the information provided here to help with picking items for the or
 {{ order.source_url }}
 {% endif %}
 The details we have for you food bank are over here:
-https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/
+https://www.givefood.org.uk/needs/at/{{ order.foodbank.slug }}/
 
 If we've got anything wrong you can update your address(es), shopping list, or contact information here:
-https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/edit/
+https://www.givefood.org.uk/needs/at/{{ order.foodbank.slug }}/edit/
 
 
 Delivery Details
