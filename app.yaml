@@ -48,7 +48,7 @@ handlers:
   secure: always
   login: admin
 
-- url: /generate-2019
+- url: /generate-(2019|2020|2021)/$
   script: givefood.wsgi.application
   secure: always
   login: admin
