@@ -399,7 +399,7 @@ class Order(models.Model):
         # Delete all the existing orderlines
         OrderLine.objects.filter(order = self).delete()
 
-        if self.delivery_provider == "Tesco" or self.delivery_provider == "Costco":
+        if self.delivery_provider == "Tesco" or self.delivery_provider == "Costco" or self.delivery_provider == "Pedal Me":
             order_lines = parse_tesco_order_text(self.items_text)
         elif self.delivery_provider == "Sainsbury's":
             order_lines = parse_sainsburys_order_text(self.items_text)

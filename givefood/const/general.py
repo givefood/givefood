@@ -16,6 +16,7 @@ DELIVERY_PROVIDERS = [
     "Tesco",
     "Sainsbury's",
     "Costco",
+    "Pedal Me",
 ]
 DELIVERY_PROVIDER_CHOICES = tuple((delivery_provider, delivery_provider) for delivery_provider in DELIVERY_PROVIDERS)
 
