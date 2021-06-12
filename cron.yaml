@@ -1,5 +1,13 @@
 cron:
 
 - description: precacher
-  url: /precacher/
-  schedule: every 8 minutes
+  url: /offline/precacher/
+  schedule: every 10 minutes
+
+- description: search cleanup
+  url: /offline/search/cleanup/
+  schedule: every 6 hours
+
+- description: search hydrate
+  url: /offline/search/hydrate/
+  schedule: every 6 hours

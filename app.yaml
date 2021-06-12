@@ -43,6 +43,12 @@ handlers:
   static_files: static/root/security.txt
   upload: static/root/security.txt
 
+
+- url: /offline.*
+  script: givefood.wsgi.application
+  secure: always
+  login: admin
+
 - url: /admin.*
   script: givefood.wsgi.application
   secure: always

@@ -24,7 +24,6 @@ urlpatterns = (
     url(r'^privacy/$', givefood.views.public_privacy, name="public_privacy"),
 
     # KINDA PUBLIC
-    url(r'^precacher/$', givefood.views.precacher, name="precacher"),
     url(r'^generate-(?P<year>(2019|2020|2021))/$', givefood.views.public_gen_annual_report, name="public_gen_annual_report"),
     url(r'^productimage/$', givefood.views.public_product_image, name="public_product_image"),
     url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
@@ -44,6 +43,7 @@ urlpatterns = (
     url(r'^api/', include('gfapi2.urls')),
     url(r'^admin/', include('gfadmin.urls')),
     url(r'^dashboard/', include('gfdash.urls')),
+    url(r'^offline/', include('gfoffline.urls')),
 
     # CSP & Auth
     url(r'^csp/', include('cspreports.urls')),

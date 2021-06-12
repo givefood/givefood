@@ -4,7 +4,6 @@ from collections import OrderedDict
 import json
 import logging
 
-from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 
 from django.shortcuts import get_object_or_404
@@ -23,7 +22,6 @@ from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, get_all_constituencies, admin_regions_from_postcode, find_foodbanks, find_locations, geocode, find_locations, get_cred
 from givefood.func import send_email
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
@@ -245,17 +243,6 @@ def distill_webhook(request):
         foodbank = foodbank,
     )
     new_foodbank_change.save()
-
-    return HttpResponse("OK")
-
-
-def precacher(request):
-
-    all_locations = FoodbankLocation.objects.all()
-    memcache.add(LOC_MC_KEY, all_locations, 3600)
-
-    all_foodbanks = Foodbank.objects.all()
-    memcache.add(FB_MC_KEY, all_foodbanks, 3600)
 
     return HttpResponse("OK")
 
