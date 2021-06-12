@@ -17,6 +17,11 @@
           <th>Query Type</th>
           <th>Query</th>
           <th>Nearest Foodbank</th>
+          <th>District</th>
+          <th>Ward</th>
+          <th>LSOA</th>
+          <th>MSOA</th>
+          <th>ParlCon</th>
           <th>Map</th>
         </tr>
         {% for search in searches %}
@@ -29,6 +34,11 @@
               </a>
             </td>
             <td>{{ search.nearest_foodbank|intcomma }}m</td>
+            <td>{{ search.admin_district }}</td>
+            <td>{{ search.admin_ward }}</td>
+            <td>{{ search.lsoa }}</td>
+            <td>{{ search.msoa }}</td>
+            <td>{{ search.parliamentary_constituency }}</td>
             <td>
               <img src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=700x150&key={{ gmap_static_key }}&scale=1&center={{ search.latt_long }}" width="350" loading="lazy">
             </td>
