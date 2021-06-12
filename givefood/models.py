@@ -591,10 +591,17 @@ class FoodbankChange(models.Model):
 class ApiFoodbankSearch(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
     query_type = models.CharField(max_length=8)
     query = models.CharField(max_length=255)
     nearest_foodbank = models.IntegerField()
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long", null=True, blank=True)
+
+    admin_district = models.CharField(max_length=50, null=True, blank=True)
+    admin_ward = models.CharField(max_length=50, null=True, blank=True)
+    lsoa = models.CharField(max_length=50, null=True, blank=True)
+    msoa = models.CharField(max_length=50, null=True, blank=True)
+    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
 
     def wfbn_url(self):
         if self.query_type == "latt_long":
