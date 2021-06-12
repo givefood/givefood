@@ -86,6 +86,8 @@
           <p>{{ need.diff_from_last|linebreaksbr }}</p>
         </div>
         {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)
+      {% else %}
+        No change from need found {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)<br><br>
       {% endif %}
 
       {% if need.change_text_original %}
