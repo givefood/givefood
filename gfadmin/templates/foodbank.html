@@ -103,6 +103,16 @@
       </dl>
       <br>
 
+      <h3>Email</h3>
+      <dl>
+        <dt>Contact email</dt>
+        <dd><a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email }}</a></dd>
+        {% if foodbank.delivery_email %}
+          <dt>Delivery email</dt>
+          <dd><a href="mailto:{{ foodbank.notification_email }}">{{ foodbank.notification_email }}</a></dd>
+        {% endif %}
+      </dl>
+      <br>
 
       <h3>Phone</h3>
       <dl>
@@ -111,11 +121,11 @@
           <dd><a href="call:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
         {% endif %}
         {% if foodbank.secondary_phone_number %}
-          <dt>Secondary Phone</dt>
+          <dt>Secondary phone</dt>
           <dd><a href="call:{{ foodbank.secondary_phone_number }}">{{ foodbank.secondary_phone_number }}</a></dd>
         {% endif %}
         {% if foodbank.delivery_phone_number %}
-          <dt>Delivery Phone</dt>
+          <dt>Delivery phone</dt>
           <dd><a href="call:{{ foodbank.delivery_phone_number }}">{{ foodbank.delivery_phone_number }}</a></dd>
         {% endif %}
       </dl>
@@ -128,7 +138,7 @@
         <dd>{{ foodbank.modified}}</dd>
       </dl>
       <br>
-      
+
       <h3>Locations</h3>
       <a href="{% url "admin_fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
       <table class="table is-fullwidth locationtable">
