@@ -96,7 +96,7 @@ def dash_most_requested_items(request):
         "trusselltrust":trusselltrust,
     }
 
-    return render(request, "dash_tt_most_requested_items.html", template_vars)
+    return render(request, "dash_most_requested_items.html", template_vars)
 
 
 @cache_page(60*10)
