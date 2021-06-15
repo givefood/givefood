@@ -46,6 +46,7 @@ class Foodbank(models.Model):
     notification_email = models.EmailField(null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     secondary_phone_number = models.CharField(max_length=20, null=True, blank=True)
+    delivery_phone_number = models.CharField(max_length=20, null=True, blank=True)
 
     url = models.URLField(max_length=200, verbose_name="URL")
     shopping_list_url = models.URLField(max_length=200, verbose_name="Shopping list URL")
