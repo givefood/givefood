@@ -55,7 +55,6 @@
         <dt>Country</dt>
         <dd>{{ foodbank.country }}</dd>
       </dl>
-
       <br>
 
       {% if foodbank.orders %}
@@ -101,11 +100,23 @@
         {% endif %}
         <dt>Network</dt>
         <dd>{{ foodbank.network }}</dd>
-        <dt>Phone</dt>
-        <dd><a href="call:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
+      </dl>
+      <br>
+
+
+      <h3>Phone</h3>
+      <dl>
+        {% if foodbank.phone_number %}
+          <dt>Phone</dt>
+          <dd><a href="call:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
+        {% endif %}
         {% if foodbank.secondary_phone_number %}
           <dt>Secondary Phone</dt>
           <dd><a href="call:{{ foodbank.secondary_phone_number }}">{{ foodbank.secondary_phone_number }}</a></dd>
+        {% endif %}
+        {% if foodbank.delivery_phone_number %}
+          <dt>Delivery Phone</dt>
+          <dd><a href="call:{{ foodbank.delivery_phone_number }}">{{ foodbank.delivery_phone_number }}</a></dd>
         {% endif %}
       </dl>
       <br>
@@ -116,8 +127,8 @@
         <dt>Modified</dt>
         <dd>{{ foodbank.modified}}</dd>
       </dl>
-
       <br>
+      
       <h3>Locations</h3>
       <a href="{% url "admin_fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
       <table class="table is-fullwidth locationtable">
