@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import hashlib, difflib, unicodedata, logging, json
+import hashlib, unicodedata, logging, json
 from datetime import datetime
 
 from google.appengine.api import memcache
@@ -11,7 +11,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred
+from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html
 
 
 class Foodbank(models.Model):
@@ -559,20 +559,10 @@ class FoodbankChange(models.Model):
         if not last_need:
             return None
         else:
-            the_diff = list(difflib.unified_diff(last_need[0].change_list(), self.change_list(), n=999))
-
-            if the_diff:
-                the_diff.pop(0)
-                the_diff.pop(0)
-                the_diff.pop(0)
-
-            for i in range(len(the_diff)):
-                if the_diff[i][:1] == "-":
-                    the_diff[i] = "<del>%s</del>" % the_diff[i][1:].rstrip()
-                if the_diff[i][:1] == "+":
-                    the_diff[i] = "<ins>%s</ins>" % the_diff[i][1:].rstrip()
-            
-        return '\n'.join(the_diff) 
+            return diff_html(
+                last_need[0].change_list(),
+                self.change_list()
+            )
 
 
     def last_need_date(self):

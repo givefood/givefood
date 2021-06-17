@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, logging, operator, json, urllib
+import re, logging, operator, json, urllib, difflib
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
 
@@ -67,6 +67,23 @@ def get_all_constituencies():
     constituencies = sorted(constituencies)
 
     return constituencies
+
+def diff_html(a,b):
+
+    the_diff = list(difflib.unified_diff(a, b, n=999))
+
+    if the_diff:
+        the_diff.pop(0)
+        the_diff.pop(0)
+        the_diff.pop(0)
+
+    for i in range(len(the_diff)):
+        if the_diff[i][:1] == "-":
+            the_diff[i] = "<del>%s</del>" % the_diff[i][1:].rstrip()
+        if the_diff[i][:1] == "+":
+            the_diff[i] = "<ins>%s</ins>" % the_diff[i][1:].rstrip()
+            
+    return '\n'.join(the_diff) 
 
 
 def geocode(address):
