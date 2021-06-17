@@ -559,8 +559,21 @@ class FoodbankChange(models.Model):
         if not last_need:
             return None
         else:
-            d = difflib.unified_diff(last_need[0].change_list(), self.change_list(), lineterm='')
-            return '\n'.join(d)
+            the_diff = list(difflib.unified_diff(last_need[0].change_list(), self.change_list(), n=999))
+
+            if the_diff:
+                the_diff.pop(0)
+                the_diff.pop(0)
+                the_diff.pop(0)
+
+            for i in range(len(the_diff)):
+                if the_diff[i][:1] == "-":
+                    the_diff[i] = "<del>%s</del>" % the_diff[i][1:].rstrip()
+                if the_diff[i][:1] == "+":
+                    the_diff[i] = "<ins>%s</ins>" % the_diff[i][1:].rstrip()
+            
+        return '\n'.join(the_diff) 
+
 
     def last_need_date(self):
         last_need = self.last_need()

@@ -83,7 +83,7 @@
       {% if need.diff_from_last %}
         <h3>Previous Need</h3>
         <div class="box">
-          <p>{{ need.diff_from_last|linebreaksbr }}</p>
+          <p>{{ need.diff_from_last|safe|linebreaksbr }}</p>
         </div>
         {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)
       {% else %}
