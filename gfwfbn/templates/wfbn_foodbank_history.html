@@ -1,0 +1,58 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
+  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/map.png">
+  <link rel="manifest" href="/needs/manifest.json">
+  <meta name="geo.placename" content="{{ foodbank }} Food Bank">
+  <meta name="geo.position" content="{{ foodbank.latt_long }}">
+  <meta property="place:location:latitude" content="{{ foodbank.latt }}">
+  <meta property="place:location:longitude" content="{{ foodbank.long }}">
+  <link rel="preconnect" href="{{ foodbank.shopping_list_url }}">
+  <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block title %}{{ foodbank }} Food Bank - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+        <h1><a href="/">Give Food</a></h1>
+        <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <ul>
+            <li><a href="{% url 'public_index' %}">Give Food</a></li>
+            <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Request History</a></li>
+          </ul>
+        </nav>
+        <div class="columns">
+          <div class="column">
+            <h2>{{ foodbank }} Food Bank Request History</h2>
+            <p>What {{ foodbank }} food bank has requested over time. <ins>Green</ins> is for new items, <del>red</del> are ones that have been removed.</p>
+            <table>
+              {% for need in needs %}
+                <tr>
+                  <td>
+                    {{ need.created }}<br>
+                    <span class="is-size-7">{{ need.created|timesince}} ago</span>
+                  </td>
+                  <td style="padding-left:20px;"><p>{{ need.diff_from_last|safe|linebreaksbr }}</p></td>
+                </tr>
+              {% endfor %}
+            </table>
+            
+              
+          </div>
+        </div>
+    </div>
+  </div>
+
+{% endblock %}
+

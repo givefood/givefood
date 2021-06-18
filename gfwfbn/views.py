@@ -116,6 +116,19 @@ def public_wfbn_foodbank_map(request, slug):
     result = urlfetch.fetch(url)
     return HttpResponse(result.content, content_type='image/png')
 
+@cache_page(60*10)
+def public_wfbn_foodbank_history(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).order_by("-created")[:25]
+
+    template_vars = {
+        "foodbank":foodbank,
+        "needs":needs,
+    }
+
+    return render(request, "wfbn_foodbank_history.html", template_vars)
+
 
 @cache_page(60*10)
 def public_wfbn_foodbank_location(request, slug, locslug):
