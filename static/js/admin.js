@@ -70,6 +70,7 @@ document.addEventListener("turbolinks:load", function() {
     titlecase_btn.addEventListener("click", function(event) {
       change_text_field.value = titleCase(change_text_field.value);
       change_text_field.value = change_text_field.value.replace(/Uht/g,"UHT")
+      change_text_field.value = change_text_field.value.replace(/Spf/g,"SPF")
       event.preventDefault();
     });
 
