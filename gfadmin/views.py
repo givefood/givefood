@@ -439,8 +439,8 @@ def need_notifications(request, id):
     need = get_object_or_404(FoodbankChange, need_id = id)
 
     # Defer the postings
-    deferred.defer(post_to_facebook, need)
-    deferred.defer(post_to_twitter, need)
+    deferred.defer(post_to_facebook, need, _queue="socialpost")
+    deferred.defer(post_to_twitter, need, _queue="socialpost")
 
     # Update tweet time
     need.tweet_sent = datetime.now()
