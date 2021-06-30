@@ -335,6 +335,7 @@ class Order(models.Model):
     foodbank_name = models.CharField(max_length=50, editable=False)
     items_text = models.TextField()
     need = models.ForeignKey("FoodbankChange", null=True, blank=True)
+    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -392,8 +393,9 @@ class Order(models.Model):
         self.no_lines = 0
         self.no_items = 0
 
-        #denorm foodbank name
+        #denorm foodbank name & country
         self.foodbank_name = self.foodbank.name
+        self.country = self.foodbank.country
 
         super(Order, self).save(*args, **kwargs)
 
