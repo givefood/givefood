@@ -73,6 +73,17 @@ def public_what_food_banks_need(request):
     return render(request, "wfbn_index.html", template_vars)
 
 
+def public_what_food_banks_need_click(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    utm_querystring = "?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs"
+    redirect_url = "%s%s" % (
+        foodbank.shopping_list_url,
+        utm_querystring,
+    )
+    return redirect(redirect_url)
+
+
 @cache_page(60*10)
 def public_wfbn_foodbank(request, slug):
 
