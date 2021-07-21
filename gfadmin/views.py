@@ -24,7 +24,7 @@ from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsFo
 
 def index(request):
 
-    foodbanks = Foodbank.objects.all().order_by("-last_order")[:50]
+    foodbanks = Foodbank.objects.all().order_by("-last_order")[:20]
 
     today = datetime.today()
     today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_date")
@@ -32,16 +32,18 @@ def index(request):
     upcoming_orders = Order.objects.filter(delivery_date__gt = today).order_by("delivery_date")
 
     prev_order_threshold = datetime.now() - timedelta(days=1)
-    prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:40]
+    prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:20]
 
-    needs = FoodbankChange.objects.all().order_by("-created")[:50]
+    unpublished_needs = FoodbankChange.objects.filter(published = False).order_by("-created")
+    published_needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:20]
 
     template_vars = {
         "foodbanks":foodbanks,
         "today_orders":today_orders,
         "upcoming_orders":upcoming_orders,
         "prev_orders":prev_orders,
-        "needs":needs,
+        "unpublished_needs":unpublished_needs,
+        "published_needs":published_needs,
         "section":"home",
     }
     return render(request, "admin_index.html", template_vars)

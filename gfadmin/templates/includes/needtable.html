@@ -1,0 +1,34 @@
+{% if needs.all %}
+  <table class="table is-fullwidth is-hoverable">
+    <tr>
+      <th></th>
+      <th>Foodbank</th>
+      <th>When</th>
+    </tr>
+    {% for need in needs %}
+      <tr>
+        <td>
+          {% if need.input_method == "typed" %}⌨️{% endif%}
+          {% if need.input_method == "scrape" %}🤖{% endif%}
+          {% if need.input_method == "user" %}🧑{% endif%}
+        </td>
+        <td>
+          {% if need.foodbank_name %}
+              <a href="{% url 'admin_foodbank' need.foodbank_name_slug %}">
+                {{ need.foodbank_name }}
+              </a>
+          {% else %}
+            Unknown
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url "admin_need" need.need_id %}">
+            {{ need.created|timesince }} ago
+          </a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% else %}
+  <p>No needs</p>
+{% endif %}

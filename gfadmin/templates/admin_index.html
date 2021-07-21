@@ -9,45 +9,13 @@
 
     <div class="column">
       <h2>Needs</h2>
-      <a href="{% url "admin_newneed" %}" class="button is-link">New Need</a>
-      <table class="table is-fullwidth is-hoverable">
-        <tr>
-          <th></th>
-          <th></th>
-          <th>Foodbank</th>
-          <th>When</th>
-        </tr>
-        {% for need in needs %}
-          <tr>
-            <td>
-              {% if need.published %}
-                <span style="color:green">✓</span>
-              {% else %}
-                <span style="color:red">x</span>
-              {% endif %}
-            </td>
-            <td>
-              {% if need.input_method == "typed" %}⌨️{% endif%}
-              {% if need.input_method == "scrape" %}🤖{% endif%}
-              {% if need.input_method == "user" %}🧑{% endif%}
-            </td>
-            <td>
-              {% if need.foodbank_name %}
-                  <a href="{% url 'admin_foodbank' need.foodbank_name_slug %}">
-                    {{ need.foodbank_name }}
-                  </a>
-              {% else %}
-                Unknown
-              {% endif %}
-            </td>
-            <td>
-              <a href="{% url "admin_need" need.need_id %}">
-                {{ need.created|timesince }} ago
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-      </table>
+      <a href="{% url "admin_newneed" %}" class="button is-link">New Need</a><br><br>
+
+      <h3>Unpublished</h3>
+      {% include "includes/needtable.html" with needs=unpublished_needs %}
+
+      <h3>Published</h3>
+      {% include "includes/needtable.html" with needs=published_needs %}
     </div>
 
     <div class="column">
