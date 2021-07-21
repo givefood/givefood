@@ -335,7 +335,7 @@ class Order(models.Model):
     foodbank_name = models.CharField(max_length=50, editable=False)
     items_text = models.TextField()
     need = models.ForeignKey("FoodbankChange", null=True, blank=True)
-    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
+    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
