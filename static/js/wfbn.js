@@ -23,6 +23,7 @@ function init() {
   autocomplete.setComponentRestrictions({'country': ['gb']});
   uml_btn.addEventListener("click", do_geolocation);
   addressform.addEventListener("submit", do_address);
+  add_click_recorders();
   preload_image("/static/img/loading.gif");
   preload_image("/static/img/phone.svg");
   preload_image("/static/img/info.svg");
@@ -76,6 +77,10 @@ function record_search(querystring) {
     'page_title' : 'What Food Banks Need',
     'page_path': '/needs/' + querystring
   });
+}
+
+function add_click_recorders() {
+  document.querySelector("a.foodbank").addEventListener("click", record_click);
 }
 
 function record_click() {
@@ -145,13 +150,15 @@ function api_response() {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
     }
     if (currentrow.querySelector(".links")) {
-      currentrow.querySelector(".links .phone").href = "tel:" + phone
+      currentrow.querySelector(".links .phone").href = "tel:" + phone;
       currentrow.querySelector(".links .info").href = url;
     }
-    currentrow.querySelector("a.foodbank").addEventListener("click", record_click);
+    if (!phone) {
+      currentrow.querySelector(".links .phone").remove();
+    }
     results_table.appendChild(currentrow);
   }
-
+  add_click_recorders();
   status.innerHTML = "";
 }
 

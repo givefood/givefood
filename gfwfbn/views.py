@@ -26,29 +26,10 @@ def public_what_food_banks_need(request):
     where_from = request.GET.get("from", False)
     address = request.GET.get("address", "")
     lattlong = request.GET.get("lat_lng", "")
-
-    map_locations = []
+    
     location_results = []
 
     if where_from != "trusselltrust":
-        foodbanks = get_all_foodbanks()
-        locations = get_all_locations()
-
-        for foodbank in foodbanks:
-            map_locations.append(
-                {
-                    "latt_long":foodbank.latt_long,
-                    "url":"/needs/at/%s/" % (foodbank.slug)
-                }
-            )
-
-        for location in locations:
-            map_locations.append(
-                {
-                    "latt_long":location.latt_long,
-                    "url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
-                }
-            )
 
         if address and not lattlong:
             lattlong = geocode(address)
@@ -57,17 +38,17 @@ def public_what_food_banks_need(request):
             location_results = find_locations(lattlong, 10)
 
             for location in location_results:
-                logging.info("Getting needs for %s" % location.get("foodbank_name"))
                 location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
                 location["needs"] = location_need.change_text
+
+    gmap_key = get_cred("gmap_key")
 
     template_vars = {
         "headless":headless,
         "where_from":where_from,
         "address":address,
         "lattlong":lattlong,
-        "gmap_key":get_cred("gmap_key"),
-        "map_locations":map_locations,
+        "gmap_key":gmap_key,
         "location_results":location_results,
     }
     return render(request, "wfbn_index.html", template_vars)
