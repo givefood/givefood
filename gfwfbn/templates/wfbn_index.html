@@ -16,6 +16,10 @@
   <meta name="description" content="Use Give Food's tool to find what food banks near you are requesting to have donated">
   <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
   <link rel="manifest" href="/needs/manifest.json">
+  {% if where_from != "trusselltrust" %}
+    <link rel="preload" href="/api/2/foodbanks/?format=geojson" as="fetch">
+    <link rel="preload" href="/api/2/locations/?format=geojson" as="fetch">
+  {% endif %}
 {% endblock %}
 
 {% block title %}What Food Banks Need - Give Food{% endblock %}
