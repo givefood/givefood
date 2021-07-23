@@ -43,7 +43,13 @@
                     {{ need.created }}<br>
                     <span class="is-size-7">{{ need.created|timesince}} ago</span>
                   </td>
-                  <td style="padding-left:20px;"><p>{{ need.diff_from_last|safe|linebreaksbr }}</p></td>
+                  <td style="padding-left:20px;">
+                    {% if need.diff_from_last%}
+                      <p>{{ need.diff_from_last|safe|linebreaksbr }}</p>
+                    {% else %}
+                      <p class="nochange"><span>No change</span></p>
+                    {% endif %}
+                  </td>
                 </tr>
               {% endfor %}
             </table>

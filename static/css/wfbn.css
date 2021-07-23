@@ -69,3 +69,6 @@ address {
   width:16px;
   height:16px;
 }
+.nochange span {
+  background:#fff87f;
+}
