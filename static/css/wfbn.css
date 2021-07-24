@@ -11,7 +11,7 @@
 #postcode_field, #address_field {
   width:220px;
 }
-html.no-js #usemylocationbtn {
+html.no-js #usemylocationbtn, html.no-js #map-container {
   display:none;
 }
 .table tr:last-child td {
