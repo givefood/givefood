@@ -27,7 +27,7 @@ def index(request):
     foodbanks = Foodbank.objects.all().order_by("-last_order")[:20]
 
     today = datetime.today()
-    today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_date")
+    today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_hour")
 
     upcoming_orders = Order.objects.filter(delivery_date__gt = today).order_by("delivery_date")
 

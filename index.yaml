@@ -104,6 +104,11 @@ indexes:
 
 - kind: givefood_order
   properties:
+  - name: delivery_date
+  - name: delivery_hour
+
+- kind: givefood_order
+  properties:
   - name: foodbank_id
   - name: delivery_datetime
 
