@@ -269,6 +269,13 @@ def order_send_notification(request, id = None):
     return redirect(redir_url)
 
 
+def order_delete(request, id):
+
+    order = get_object_or_404(Order, order_id = id)
+    order.delete()
+    return redirect(reverse("admin_index"))
+
+
 def foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)

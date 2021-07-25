@@ -9,6 +9,7 @@ from google.appengine.ext import deferred
 
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.core.exceptions import ValidationError
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
 from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html
@@ -376,6 +377,11 @@ class Order(models.Model):
 
     def weight_kg_pkg(self):
         return self.weight_kg() * PACKAGING_WEIGHT_PC
+
+    def delete(self, *args, **kwargs):
+
+        OrderLine.objects.filter(order = self).delete()
+        super(Order, self).delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         # Generate ID

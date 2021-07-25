@@ -9,6 +9,7 @@ urlpatterns = (
     url(r'^order/(?P<id>[-\w]+)/$', order, name="admin_order"),
     url(r'^order/(?P<id>[-\w]+)/edit/$', order_form, name="admin_order_edit"),
     url(r'^order/(?P<id>[-\w]+)/sendnotification/$', order_send_notification, name="admin_order_send_notification"),
+    url(r'^order/(?P<id>[-\w]+)/delete/$', order_delete, name="admin_order_delete"),
 
     url(r'^foodbanks/$', foodbanks, name="admin_foodbanks"),
     url(r'^foodbanks/christmascards/$', foodbanks_christmascards, name="admin_foodbanks_christmascards"),

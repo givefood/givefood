@@ -51,6 +51,7 @@
         <dt>Modified</dt>
         <dd>{{ order.modified }}</dd>
       </dl>
+
       {% if order.need %}
         <h2>Need <a href="{% url "admin_need" order.need.need_id %}">{{ order.need.need_id }}</a></h2>
         <p>{{ order.need.change_text|linebreaksbr }}</p>
@@ -63,12 +64,20 @@
           {% endif %}
         </dl>
       {% endif %}
+
       <h2>Notification Email</h2>
       <p>Sent: {{ order.notification_email_sent }}</p>
       <form action="{% url 'admin_order_send_notification' order.order_id %}" method="post">
         <input type="submit" class="button is-link" value="Send">
         {% csrf_token %}
       </form>
+
+      <h2>Danger Zone</h2>
+      <form action="{% url 'admin_order_delete' order.order_id %}" method="post">
+        <input type="submit" class="button is-danger" value="Cancel" onclick="return confirm('Are you sure you want to cancel?')">
+        {% csrf_token %}
+      </form>
+
     </div>
 
     <div class="column">
