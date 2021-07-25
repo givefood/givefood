@@ -77,9 +77,8 @@
                         {% csrf_token %}
                       </form>
 
-                      <hr>
-
                       {% if location %}
+                        <hr>
                         <p>If the location has closed (or isn't a food bank), please press this button.</p>
                         <form method="post" action="">
                           <input type="hidden" name="closed" value="closed">
