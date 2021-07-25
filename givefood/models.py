@@ -356,6 +356,9 @@ class Order(models.Model):
     no_lines = models.PositiveIntegerField(editable=False)
     no_items = models.PositiveIntegerField(editable=False)
 
+    class Meta:
+       unique_together = ('foodbank', 'delivery_date',)
+
     def __str__(self):
         return self.order_id
 
