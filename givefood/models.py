@@ -523,6 +523,10 @@ class FoodbankChange(models.Model):
              "change_text",
          ]
 
+    def clean(self):
+        if self.foodbank == None and self.published == True:
+            raise ValidationError('Need to set a food bank to publish need')
+
     def __str__(self):
         return "%s - %s (%s)" % (self.foodbank_name, self.created.strftime("%b %d %Y %H:%M:%S"), self.need_id)
 
