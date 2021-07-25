@@ -39,6 +39,9 @@ handlers:
   static_files: static/root/security.txt
   upload: static/root/security.txt
 
+- url: /humans.txt
+  static_files: static/root/humans.txt
+  upload: static/root/humans.txt
 
 - url: /offline.*
   script: givefood.wsgi.application
