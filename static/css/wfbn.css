@@ -78,3 +78,9 @@ address {
 .nochange span {
   background:#fff87f;
 }
+.echoneed {
+  background:#efefef;
+}
+.echoneed p {
+  margin-bottom:0;
+}
