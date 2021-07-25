@@ -52,10 +52,17 @@
       </dl>
 
       <br>
-      <form action="{% url 'admin_need_publish' need.need_id %}" method="post">
-        <input type="submit" class="button is-success" value="Publish">
-        {% csrf_token %}
-      </form>
+      {% if need.published %}
+        <form action="{% url 'admin_need_publish' need.need_id 'unpublish' %}" method="post">
+          <input type="submit" class="button is-warning" value="Unpublish">
+          {% csrf_token %}
+        </form>
+      {% else %}
+        <form action="{% url 'admin_need_publish' need.need_id 'publish' %}" method="post">
+          <input type="submit" class="button is-success" value="Publish">
+          {% csrf_token %}
+        </form>
+      {% endif %}
       {% if need.change_text != "Nothing" %}
         {% if need.change_text != "Unknown" %}
           <br>

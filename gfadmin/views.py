@@ -427,10 +427,13 @@ def need_delete(request, id):
 
 
 @require_POST
-def need_publish(request, id):
+def need_publish(request, id, action):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
-    need.published = True
+    if action == "publish":
+        need.published = True
+    if action == "unpublish":
+        need.published = False
     need.save()
     return redirect("admin_index")
 
