@@ -44,9 +44,9 @@ document.addEventListener("turbolinks:load", function() {
   const map_url = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&key=" + gmap_static_key + "&scale=2&center="
 
   // Check FB slug
-  var fb_name_dupe = document.createElement('div');
-  insertAfter(fb_name_dupe, fb_name_field);
   if (fb_name_field) {
+    var fb_name_dupe = document.createElement('div');
+    insertAfter(fb_name_dupe, fb_name_field);
     fb_name_field.addEventListener("keyup", function(event) {
       fb_name = fb_name_field.value;
       fb_slug = slugify(fb_name);
