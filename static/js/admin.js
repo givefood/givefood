@@ -1,4 +1,5 @@
 document.addEventListener("turbolinks:load", function() {
+
   function insertAfter(newNode, referenceNode) {
       referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
   }
@@ -13,7 +14,7 @@ document.addEventListener("turbolinks:load", function() {
   }
 
   function csvToLines(str) {
-    return str.replace(/, /g, "\n")
+    return str.replace(/, /g, "\n");
   }
 
   function slugify(str) {
@@ -51,23 +52,22 @@ document.addEventListener("turbolinks:load", function() {
       fb_name = fb_name_field.value;
       fb_slug = slugify(fb_name);
       api_url = "/api/2/foodbank/" + fb_slug + "/";
-      console.log(api_url)
       var fb_slug_req = new XMLHttpRequest();
       fb_slug_req.addEventListener("load", function(){
         if (this.status == 404) {
-          fb_name_dupe.className = "notification is-success"
-          fb_name_dupe.innerHTML = "No food bank with the name '" + fb_name + "'"
+          fb_name_dupe.className = "notification is-success";
+          fb_name_dupe.innerHTML = "No food bank with the name '" + fb_name + "'";
         };
         if (this.status == 200) {
-          fb_name_dupe.className = "notification is-warning"
-          fb_name_dupe.innerHTML = "'" + fb_name + "' food bank already exists"
+          fb_name_dupe.className = "notification is-warning";
+          fb_name_dupe.innerHTML = "'" + fb_name + "' food bank already exists";
         }
       });
       fb_slug_req.responseType = "json";
       fb_slug_req.open("GET", api_url);
       fb_slug_req.send();
     })
-  }
+  };
 
   // LATTLONG
   if (lattlong_field) {
@@ -93,7 +93,7 @@ document.addEventListener("turbolinks:load", function() {
       gl_req.send();
       event.preventDefault();
     })
-  }
+  };
 
 
   // CHANGETEXT
@@ -113,8 +113,8 @@ document.addEventListener("turbolinks:load", function() {
     titlecase_btn = document.querySelector("#titlecase_btn");
     titlecase_btn.addEventListener("click", function(event) {
       change_text_field.value = titleCase(change_text_field.value);
-      change_text_field.value = change_text_field.value.replace(/Uht/g,"UHT")
-      change_text_field.value = change_text_field.value.replace(/Spf/g,"SPF")
+      change_text_field.value = change_text_field.value.replace(/Uht/g,"UHT");
+      change_text_field.value = change_text_field.value.replace(/Spf/g,"SPF");
       event.preventDefault();
     });
 
@@ -126,12 +126,12 @@ document.addEventListener("turbolinks:load", function() {
 
     findreplace_btn = document.querySelector("#findreplace_btn");
     findreplace_btn.addEventListener("click", function(event) {
-      find_text = prompt("Find what?")
-      replace_text = prompt("Replace with what?")
+      find_text = prompt("Find what?");
+      replace_text = prompt("Replace with what?");
       change_text_field.value = change_text_field.value.replaceAll(find_text,replace_text)
       event.preventDefault();
     });
-  }
+  };
 
 
 })
