@@ -1,9 +1,13 @@
 {% extends "page.html" %}
 {% load bulma_tags %}
 
-{% block title %}{{ page_title }}Give Food Admin{% endblock %}
+{% block title %}{% if page_title %}{{ page_title }} - {% endif %}Give Food Admin{% endblock %}
 
 {% block body %}
+
+  {% if page_title %}
+    <h2>{{ page_title }}</h2>
+  {% endif %}
 
   <form method="post" action="">
     {{ form|bulma }}

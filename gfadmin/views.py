@@ -237,12 +237,12 @@ def order_form(request, id = None):
             form = OrderForm(instance=order)
 
     if id:
-        page_title = "Edit %s - " % str(order.order_id)
+        page_title = "Edit %s" % str(order.order_id)
     else:
         if foodbank:
-            page_title = "New Order for %s - " % foodbank
+            page_title = "New Order for %s" % foodbank
         else:
-            page_title = "New Order - "
+            page_title = "New Order"
 
     template_vars = {
         "form":form,
@@ -290,8 +290,10 @@ def foodbank_form(request, slug = None):
 
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
+        page_title = "Edit %s Food Bank" % (foodbank.name)
     else:
         foodbank = None
+        page_title = "New Food Bank"
 
     if request.POST:
         form = FoodbankForm(request.POST, instance=foodbank)
@@ -303,6 +305,7 @@ def foodbank_form(request, slug = None):
 
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render(request, "form.html", template_vars)
 
@@ -311,6 +314,7 @@ def foodbank_politics_form(request, slug = None):
 
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
+        page_title = "Edit %s Food Bank Politics" % (foodbank.name)
     else:
         foodbank = None
 
@@ -324,6 +328,7 @@ def foodbank_politics_form(request, slug = None):
 
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render(request, "form.html", template_vars)
 
@@ -332,6 +337,7 @@ def fblocation_form(request, slug = None, loc_slug = None):
 
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
+        page_title = "Edit %s Food Bank Location" % (foodbank.name)
     else:
         foodbank = None
 
@@ -350,6 +356,7 @@ def fblocation_form(request, slug = None, loc_slug = None):
 
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render(request, "form.html", template_vars)
 
@@ -358,6 +365,7 @@ def fblocation_politics_edit(request, slug, loc_slug):
 
     if slug:
         foodbank_location = get_object_or_404(FoodbankLocation, foodbank_slug = slug, slug = loc_slug)
+        page_title = "Edit %s Food Bank Location Politics" % (FoodbankLocation.foodbank.name)
     else:
         foodbank_location = None
 
@@ -371,6 +379,7 @@ def fblocation_politics_edit(request, slug, loc_slug):
 
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render(request, "form.html", template_vars)
 
@@ -400,8 +409,10 @@ def need_form(request, id = None):
 
     if id:
         need = get_object_or_404(FoodbankChange, need_id = id)
+        page_title = "Edit Need"
     else:
         need = None
+        page_title = "New Need"
 
     foodbank = None
     foodbank_slug = request.GET.get("foodbank")
@@ -421,6 +432,7 @@ def need_form(request, id = None):
 
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render(request, "form.html", template_vars)
 
@@ -536,8 +548,10 @@ def item_form(request, slug = None):
 
     if slug:
         item = get_object_or_404(OrderItem, slug = slug)
+        page_title = "Edit Item"
     else:
         item = None
+        page_title = "New Item"
 
     if request.POST:
         form = OrderItemForm(request.POST, instance=item)
@@ -549,6 +563,7 @@ def item_form(request, slug = None):
 
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render(request, "form.html", template_vars)
 
@@ -693,8 +708,10 @@ def parlcon_form(request, slug = None):
 
     if slug:
         parlcon = get_object_or_404(ParliamentaryConstituency, slug = slug)
+        page_title = "Edit Parlimentary Constituency"
     else:
         parlcon = None
+        page_title = "New Parlimentary Constituency"
 
     if request.POST:
         form = ParliamentaryConstituencyForm(request.POST, instance=parlcon)
@@ -706,6 +723,7 @@ def parlcon_form(request, slug = None):
 
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render(request, "form.html", template_vars)
 
@@ -793,9 +811,11 @@ def credentials_form(request):
             return redirect("admin_credentials")
     else:
         form = GfCredentialForm()
+        page_title = "New Credential"
 
     template_vars = {
         "form":form,
+        "page_title":page_title,
     }
     return render(request, "form.html", template_vars)
 
