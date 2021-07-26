@@ -16,14 +16,58 @@ document.addEventListener("turbolinks:load", function() {
     return str.replace(/, /g, "\n")
   }
 
+  function slugify(str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+  
+    // remove accents, swap ñ for n, etc
+    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to   = "aaaaeeeeiiiioooouuuunc------";
+    for (var i=0, l=from.length ; i<l ; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+    return str;
+  }
+
   const lattlong_field = document.querySelector("#id_latt_long");
   const address_field = document.querySelector("#id_address");
   const postcode_field = document.querySelector("#id_postcode");
   const change_text_field = document.querySelector("#id_change_text");
+  const fb_name_field = document.querySelector(".form-new-food-bank #id_name");
 
   const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?key=" + gmap_geocode_key + "&address="
   const map_url = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&key=" + gmap_static_key + "&scale=2&center="
 
+  // Check FB slug
+  var fb_name_dupe = document.createElement('div');
+  insertAfter(fb_name_dupe, fb_name_field);
+  if (fb_name_field) {
+    fb_name_field.addEventListener("keyup", function(event) {
+      fb_name = fb_name_field.value;
+      fb_slug = slugify(fb_name);
+      api_url = "/api/2/foodbank/" + fb_slug + "/";
+      console.log(api_url)
+      var fb_slug_req = new XMLHttpRequest();
+      fb_slug_req.addEventListener("load", function(){
+        if (this.status == 404) {
+          fb_name_dupe.className = "notification is-success"
+          fb_name_dupe.innerHTML = "No food bank with the name '" + fb_name + "'"
+        };
+        if (this.status == 200) {
+          fb_name_dupe.className = "notification is-warning"
+          fb_name_dupe.innerHTML = "'" + fb_name + "' food bank already exists"
+        }
+      });
+      fb_slug_req.responseType = "json";
+      fb_slug_req.open("GET", api_url);
+      fb_slug_req.send();
+    })
+  }
 
   // LATTLONG
   if (lattlong_field) {

@@ -9,7 +9,7 @@
     <h2>{{ page_title }}</h2>
   {% endif %}
 
-  <form method="post" action="">
+  <form method="post" action="" class="form-{{ page_title|slugify }}">
     {{ form|bulma }}
     <input type="submit" class="button is-link" value="Submit">
     {% csrf_token %}
