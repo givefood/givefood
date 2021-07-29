@@ -13,6 +13,7 @@ python-twitter
 dicttoxml
 git+https://github.com/potatolondon/simple_search.git#egg=simple_search
 facebook-sdk==3.1.0
+feedparser
 
 # Uncomment these to use mapreduce or djangae.contrib.uniquetool (which uses mapreduce)
 # These are forks of Google's libraries, which contain various fixes and patches

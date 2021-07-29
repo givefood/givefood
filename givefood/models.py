@@ -51,6 +51,7 @@ class Foodbank(models.Model):
 
     url = models.URLField(max_length=200, verbose_name="URL")
     shopping_list_url = models.URLField(max_length=200, verbose_name="Shopping list URL")
+    rss_url = models.URLField(max_length=200, verbose_name="RSS feed URL", null=True, blank=True)
     is_closed = models.BooleanField(default=False)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -87,6 +88,9 @@ class Foodbank(models.Model):
 
     def nearby(self):
         return find_foodbanks(self.latt_long, 10, True)
+
+    def articles(self):
+        return FoodbankArticle.objects.filter(foodbank = self).order_by("-published_date")[:10]
 
     def country_flag(self):
         if self.country == "Scotland":
@@ -501,6 +505,27 @@ class OrderItem(models.Model):
 
         self.slug = slugify(self.name)
         super(OrderItem, self).save(*args, **kwargs)
+
+
+class FoodbankArticle(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
+    foodbank_name = models.CharField(max_length=50, editable=False, null=True, blank=True)
+
+    published_date = models.DateTimeField(editable=False)
+    title = models.CharField(max_length=250)
+    url = models.CharField(max_length=250, unique=True)
+
+    def save(self, *args, **kwargs):
+
+        if self.foodbank:
+            self.foodbank_name = self.foodbank.name
+
+        super(FoodbankArticle, self).save(*args, **kwargs)
+
 
 
 class FoodbankChange(models.Model):

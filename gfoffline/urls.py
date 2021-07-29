@@ -6,4 +6,5 @@ urlpatterns = (
     url(r'^search/cleanup/$', offline_search_cleanup, name="offline_search_cleanup"),
     url(r'^search/saver/$', offline_search_saver, name="offline_search_saver"),
     url(r'^search/hydrate/$', offline_fire_search_hydrate, name="offline_fire_search_hydrate"),
+    url(r'^crawl_articles/$', offline_crawl_articles, name="offline_crawl_articles"),
 )

@@ -55,6 +55,12 @@ indexes:
   - name: last_need
     direction: desc
 
+- kind: givefood_foodbankarticle
+  properties:
+  - name: foodbank_id
+  - name: published_date
+    direction: desc
+
 - kind: givefood_foodbankchange
   properties:
   - name: foodbank_id

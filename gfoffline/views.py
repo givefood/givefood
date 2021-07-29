@@ -1,10 +1,15 @@
 import urllib, json, logging
+import feedparser
+
+from datetime import datetime
+from time import mktime
 
 from google.appengine.api import urlfetch, memcache
 from google.appengine.ext import deferred
 from django.http import HttpResponse
+from django.db import IntegrityError
 
-from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch
+from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch, FoodbankArticle
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 
 
@@ -79,5 +84,28 @@ def hydrate_search_log(search):
             search.parliamentary_constituency = pc_api_json["result"][0]["parliamentary_constituency"]
 
         search.save()
+
+    return HttpResponse("OK")
+
+
+def offline_crawl_articles(request):
+
+    foodbanks_with_rss = Foodbank.objects.filter(rss_url__isnull=False)
+
+    for foodbank in foodbanks_with_rss:
+        feed = feedparser.parse(foodbank.rss_url)
+        if feed:
+            for item in feed["items"]:
+                try:
+                    new_article = FoodbankArticle(
+                        foodbank = foodbank,
+                        title = item.title,
+                        url = item.link,
+                        published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
+                    )
+                    new_article.save()
+                    logging.info("Saved %s" % (item.link))
+                except IntegrityError:
+                    logging.info("Already got %s" % (item.link))
 
     return HttpResponse("OK")
