@@ -105,7 +105,7 @@
             {% if foodbank.articles %}
                 <h3>Latest News</h3>
                 {% for article in foodbank.articles %}
-                <a href="{{ article.url }}">{{ article.title }}</a><br>
+                  <a href="{{ article.url }}">{{ article.title|title }}</a><br>
                 {% endfor %}<br>
             {% endif %}
 
