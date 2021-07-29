@@ -252,7 +252,7 @@ def proxy(request, item):
     if item == "trusselltrust":
         url = "https://www.trusselltrust.org/get-help/find-a-foodbank/foodbank-search/?foodbank_s=all&callback=REMOVEME"
     if item == "ifan":
-        url = "https://www.google.com/maps/d/u/0/kml?mid=1r8XyrXu-aFXnVaEVgegVquyIt94quP0q&forcekml=1"
+        url = "https://www.google.com/maps/d/u/0/kml?mid=15mnlXFpd8-x0j4O6Ck6U90chPn4bkbWz&forcekml=1"
 
     result = urlfetch.fetch(url)
     if result.status_code == 200:
