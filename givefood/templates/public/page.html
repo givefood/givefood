@@ -8,6 +8,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
   <link rel="canonical" href="{{ CANONICAL_PATH }}">
   <meta name="google-play-app" content="app-id=uk.org.givefood.cordova">
+  <script defer data-domain="givefood.org.uk" src="https://plausible.io/js/plausible.js"></script>
   {% block head %}{% endblock %}
   <title>{% block title %}{% endblock %}</title>
 </head>
@@ -25,7 +26,6 @@
     </footer>
   {% endif %}
   {% block script %}{% endblock %}
-  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1b4b0fd875dd4fbca445ee3a22707fe5"}'></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153866507-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
