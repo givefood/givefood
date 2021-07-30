@@ -101,9 +101,6 @@ def foodbanks(request):
 
     foodbanks = Foodbank.objects.all().order_by(sort)
 
-    # for foodbank in foodbanks:
-    #     deferred.defer(foodbank.save)
-
     template_vars = {
         "sort":sort_string,
         "foodbanks":foodbanks,
