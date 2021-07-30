@@ -93,6 +93,7 @@ def offline_crawl_articles(request):
     foodbanks_with_rss = Foodbank.objects.filter(rss_url__isnull=False)
 
     for foodbank in foodbanks_with_rss:
+        logging.info("Scraping " % (foodbank.name))
         feed = feedparser.parse(foodbank.rss_url)
         if feed:
             for item in feed["items"]:
@@ -104,8 +105,7 @@ def offline_crawl_articles(request):
                         published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
                     )
                     new_article.save()
-                    logging.info("Saved %s" % (item.link))
                 except IntegrityError:
-                    logging.info("Already got %s" % (item.link))
+                    pass
 
     return HttpResponse("OK")
