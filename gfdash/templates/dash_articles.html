@@ -1,0 +1,41 @@
+{% extends "public/page.html" %}
+
+{% block title %}Articles Dashboard - Give Food{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/dash.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h1><a href="/">Give Food</a></h1>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash_index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash_articles' %}" aria-current="page">Articles</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+        <p>All the recent articles we've found published by all the food banks we know of</p>
+        <table class="table is-narrow is-fullwidth">
+            {% for article in articles %}
+                <tr>
+                    <td>{{ article.foodbank_name }}</td>
+                    <td><a href="{{ article.url }}">{{ article.title|title|truncatewords:10 }}</a></td>
+                    <td>{{ article.published_date }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+  </div><br><br>
+
+{% endblock %}

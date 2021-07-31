@@ -7,4 +7,5 @@ urlpatterns = (
     url(r'^most-requested-items/$', dash_most_requested_items, name="dash_most_requested_items"),
     url(r'^trusselltrust/old-data/$', dash_tt_old_data, name="dash_tt_old_data"),
     url(r'^trusselltrust/most-requested-items/$', dash_most_requested_items, name="dash_tt_most_requested_items"),
+    url(r'^articles/$', dash_articles, name="dash_articles"),
 )

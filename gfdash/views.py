@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
 
-from givefood.models import Foodbank, FoodbankChange
+from givefood.models import Foodbank, FoodbankChange, FoodbankArticle
 from givefood.func import group_list
 
 @cache_page(60*10)
@@ -110,3 +110,14 @@ def dash_tt_old_data(request):
         "old":old,
     }
     return render(request, "dash_tt_old_data.html", template_vars)
+
+
+@cache_page(60*10)
+def dash_articles(request):
+
+    articles = FoodbankArticle.objects.all().order_by("-published_date")[:200]
+
+    template_vars = {
+        "articles":articles,
+    }
+    return render(request, "dash_articles.html", template_vars)
