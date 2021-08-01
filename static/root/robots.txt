@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: http://www.givefood.org.uk/sitemap.xml
+Sitemap: https://www.givefood.org.uk/sitemap.xml
