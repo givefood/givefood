@@ -93,7 +93,7 @@ def offline_crawl_articles(request):
     foodbanks_with_rss = Foodbank.objects.filter(rss_url__isnull=False)
 
     for foodbank in foodbanks_with_rss:
-        logging.info("Scraping " % (foodbank.name))
+        logging.info("Scraping %s" % (foodbank.name))
         feed = feedparser.parse(foodbank.rss_url)
         if feed:
             for item in feed["items"]:
