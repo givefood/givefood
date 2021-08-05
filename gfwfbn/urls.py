@@ -6,6 +6,7 @@ urlpatterns = (
     url(r'^tt-old-data/$', RedirectView.as_view(url='/dashboard/trusselltrust/old-data/')),
 
     url(r'^$', public_what_food_banks_need, name="public_what_food_banks_need"),
+    url(r'^getlocation/$', public_get_location, name="public_get_location"),
     url(r'^click/(?P<slug>[-\w]+)/$', public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
 
     url(r'^updates/(?P<action>subscribe|confirm|unsubscribe)/$', public_what_food_banks_need_updates, name="public_what_food_banks_need_updates"),

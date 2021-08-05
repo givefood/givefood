@@ -54,6 +54,13 @@ def public_what_food_banks_need(request):
     return render(request, "wfbn_index.html", template_vars)
 
 
+def public_get_location(request):
+
+    lat_lng = request.META.get("HTTP_X_APPENGINE_CITYLATLONG")
+    redirect_url = "/needs/?lat_lng=%s" % (lat_lng)
+    return redirect(redirect_url)
+
+
 def public_what_food_banks_need_click(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
