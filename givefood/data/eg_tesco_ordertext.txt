@@ -1,0 +1,8 @@
+5	Tesco Semi Skimmed Longlife Milk 6X1l	£4.25	£21.25		 
+16	Creamfields Uht Semi Skimmed Milk 1 Litre	£0.55	£8.80		 
+6	Tesco Pure Sunflower Oil 1L	£1.10	£6.60		 
+16	Tesco Whole Longlife Milk 1L	£0.79	£12.64		 
+6	Tesco Pure Vegetable Oil 1L	£1.10	£6.60		 
+25	Tesco Indian Basmati Rice 1Kg	£1.60	£40.00		 
+25	Tesco Easy Cook Long Grain Rice 1Kg	£1.20	£30.00		 
+16	Grower Harvest Long Grain Rice 1Kg	£0.45	£7.20
