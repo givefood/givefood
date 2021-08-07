@@ -169,61 +169,10 @@ def public_wfbn_constituencies(request):
 @cache_page(60*5)
 def public_wfbn_constituency(request, slug):
 
-    if slug == "none":
-        raise Http404
-
-    foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = slug)
-    locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = slug)
-
-    constituency_foodbanks = []
-
-    for foodbank in foodbanks:
-        constituency_foodbanks.append({
-            "name":foodbank.name,
-            "slug":foodbank.slug,
-            "constituency_name":foodbank.parliamentary_constituency,
-            "mp":foodbank.mp,
-            "mp_party":foodbank.mp_party,
-            "mp_parl_id":foodbank.mp_parl_id,
-            "latt_long":foodbank.latt_long,
-            "needs":foodbank.latest_need(),
-            "gmap_key":get_cred("gmap_key"),
-            "url":"/needs/at/%s/" % (foodbank.slug)
-        })
-
-    for location in locations:
-        constituency_foodbanks.append({
-            "name":location.foodbank_name,
-            "slug":location.foodbank_slug,
-            "constituency_name":location.parliamentary_constituency,
-            "mp":location.mp,
-            "mp_party":location.mp_party,
-            "mp_parl_id":location.mp_parl_id,
-            "latt_long":location.latt_long,
-            "needs":location.latest_need(),
-            "url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
-        })
-
-    #Dedupe
-    constituency_locations = constituency_foodbanks
-    constituency_foodbanks = {v['name']:v for v in constituency_foodbanks}.values()
-
-    if not constituency_foodbanks:
-        raise Http404
-
-    constituency_name = constituency_foodbanks[0].get("constituency_name")
-    mp = constituency_foodbanks[0].get("mp")
-    mp_party = constituency_foodbanks[0].get("mp_party")
-    mp_parl_id = constituency_foodbanks[0].get("mp_parl_id")
+    constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
 
     template_vars = {
-        "constituency_name":constituency_name,
-        "constituency_slug":slugify(constituency_name),
-        "mp":mp,
-        "mp_party":mp_party,
-        "mp_parl_id":mp_parl_id,
-        "constituency_foodbanks":constituency_foodbanks,
-        "constituency_locations":constituency_locations,
+        "constituency":constituency,
     }
 
     return render(request, "wfbn_constituency.html", template_vars)

@@ -736,16 +736,18 @@ class ParliamentaryConstituency(models.Model):
                 "needs":foodbank.latest_need(),
                 "url":foodbank.url,
                 "shopping_list_url":foodbank.shopping_list_url,
+                "gf_url":"/needs/at/%s/" % (foodbank.slug),
             })
 
         for location in locations:
             constituency_foodbanks.append({
-                "name":location.foodbank_name,
-                "slug":location.foodbank_slug,
+                "name":location.name,
+                "slug":location.slug,
                 "lat_lng":location.latt_long,
                 "needs":location.latest_need(),
                 "url":location.foodbank.url,
                 "shopping_list_url":location.foodbank.shopping_list_url,
+                "gf_url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
             })
         
         constituency_foodbanks = {v['name']:v for v in constituency_foodbanks}.values()

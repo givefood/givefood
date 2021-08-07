@@ -6,11 +6,11 @@
   <meta name="twitter:site" content="@GiveFood_org_uk">
   <meta property="og:title" content="Food Banks In {{ constituency_name }}">
   <link rel="manifest" href="/needs/manifest.json">
-  <meta name="description" content="Find out what food banks operate in {{ constituency_name }}, what they are requesting and take action.">
-  <meta property="og:image" content="https://www.givefood.org.uk{% url 'public_wfbn_constituency_mp_photo' constituency_slug 'threefour' %}">
+  <meta name="description" content="Find out what food banks operate in {{ constituency.name }}, what they are requesting and take action.">
+  <meta property="og:image" content="https://www.givefood.org.uk{% url 'public_wfbn_constituency_mp_photo' constituency.slug 'threefour' %}">
 {% endblock %}
 
-{% block title %}{{ constituency_name }} Constituency Food Banks - Give Food{% endblock %}
+{% block title %}{{ constituency.name }} Constituency Food Banks - Give Food{% endblock %}
 
 {% block body %}
 
@@ -22,7 +22,7 @@
             <li><a href="{% url 'public_index' %}">Give Food</a></li>
             <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
             <li><a href="{% url 'public_wfbn_constituencies' %}">Constituencies</a></li>
-            <li class="is-active"><a href="#" aria-current="page">{{ constituency_name }}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{ constituency.name }}</a></li>
           </ul>
         </nav>
         <div class="columns">
@@ -30,20 +30,20 @@
             <div id="fbmap" style="height:500px;"></div>
           </div>
           <div class="column is-half">
-            <h2>{{ constituency_name }} Constituency</h2>
+            <h2>{{ constituency.name }} Constituency</h2>
 
-            <img src="{% url 'public_wfbn_constituency_mp_photo' constituency_slug 'threefour' %}" alt="{{ mp }}" class="mp_photo is-pulled-right">
+            <img src="{% url 'public_wfbn_constituency_mp_photo' constituency.slug 'threefour' %}" alt="{{ mp }}" class="mp_photo is-pulled-right">
 
-            <p><a href="https://www.google.co.uk/search?q={{ constituency_name }} constituency">{{ constituency_name }} constituency</a> is represented by <a href="https://www.google.co.uk/search?q={{ mp }} MP">{{ mp }} MP</a> of the {{ mp_party }} party.
+            <p><a href="https://www.google.co.uk/search?q={{ constituency.name }} constituency">{{ constituency.name }} constituency</a> is represented by <a href="https://www.google.co.uk/search?q={{ constituency.mp }} MP">{{ constituency.mp }} MP</a> of the {{ constituency.mp_party }} party.
             <p>You can write to this MP to politely help them understand that food banks shouldn't exist in our country.</p>
-            <a href="https://members.parliament.uk/member/{{ mp_parl_id }}/contact" class="button is-link">Write</a><br><br>
+            <a href="https://members.parliament.uk/member/{{ constituency.mp_parl_id }}/contact" class="button is-link">Write</a><br><br>
 
             <h3 style="clear:right">Food Banks</h3>
-            <p>The following food banks operate in the {{ constituency_name }} constituency, and what they are requesting to have donated.</p>
+            <p>The following food banks operate in the {{ constituency.name }} constituency, and what they are requesting to have donated.</p>
             <table class="table is-narrow is-fullwidth">
-              {% for foodbank in constituency_foodbanks %}
+              {% for foodbank in constituency.foodbanks %}
                 <tr>
-                  <td class="foodbank_name"><a href="{{ foodbank.url }}">{{ foodbank.name }}</a></td>
+                  <td class="foodbank_name"><a href="{{ foodbank.gf_url }}">{{ foodbank.name }}</a></td>
                   <td>
                     {% include "includes/need_text.html" with need_text=foodbank.needs.change_text %}
                   </td>
@@ -86,8 +86,8 @@ var mapOptions = {
   mapTypeId: google.maps.MapTypeId.ROADMAP,
 };
 map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
-{% for foodbank in constituency_locations %}
-  add_marker({{ foodbank.latt_long }}, "{% url 'public_wfbn_foodbank' foodbank.slug %}")
+{% for foodbank in constituency.foodbanks %}
+  add_marker({{ foodbank.lat_lng }}, "{{ foodbank.gf_url }}")
 {% endfor %}
 google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
   var maxZoom = 15
