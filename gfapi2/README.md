@@ -1,1 +1,1 @@
-https://www.givefood.org.uk/api/2/
+https://www.givefood.org.uk/api/
