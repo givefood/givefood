@@ -733,7 +733,9 @@ class ParliamentaryConstituency(models.Model):
                 "name":foodbank.name,
                 "slug":foodbank.slug,
                 "lat_lng":foodbank.latt_long,
-                "needs":foodbank.latest_need()
+                "needs":foodbank.latest_need(),
+                "url":foodbank.url,
+                "shopping_list_url":foodbank.shopping_list_url,
             })
 
         for location in locations:
@@ -741,7 +743,9 @@ class ParliamentaryConstituency(models.Model):
                 "name":location.foodbank_name,
                 "slug":location.foodbank_slug,
                 "lat_lng":location.latt_long,
-                "needs":location.latest_need()
+                "needs":location.latest_need(),
+                "url":location.foodbank.url,
+                "shopping_list_url":location.foodbank.shopping_list_url,
             })
         
         constituency_foodbanks = {v['name']:v for v in constituency_foodbanks}.values()
