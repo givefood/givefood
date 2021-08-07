@@ -23,13 +23,12 @@ class FoodbankForm(ModelForm):
     class Meta:
         model = Foodbank
         fields = "__all__"
-        exclude = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party", "mp_parl_id")
 
 
 class FoodbankPoliticsForm(ModelForm):
     class Meta:
         model = Foodbank
-        fields = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party", "mp_parl_id")
+        fields = "__all__"
 
 
 class FoodbankLocationForm(ModelForm):
@@ -37,13 +36,13 @@ class FoodbankLocationForm(ModelForm):
         model = FoodbankLocation
         fields = "__all__"
         widgets = {'foodbank': HiddenInput()}
-        exclude = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party", "mp_parl_id")
+        fields = "__all__"
 
 
 class FoodbankLocationPoliticsForm(ModelForm):
     class Meta:
         model = Foodbank
-        fields = ("parliamentary_constituency", "county", "district", "ward", "mp", "mp_party", "mp_parl_id")
+        fields = "__all__"
 
 
 class OrderForm(ModelForm):

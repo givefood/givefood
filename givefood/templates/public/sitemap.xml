@@ -34,7 +34,7 @@
 	{% endfor %}
 	{% for constituency in constituencies %}
 		<url>
-			<loc>https://www.givefood.org.uk{% url 'public_wfbn_constituency' constituency|slugify %}</loc>
+			<loc>https://www.givefood.org.uk{% url 'public_wfbn_constituency' constituency.slug %}</loc>
 		</url>
 	{% endfor %}
 </urlset>

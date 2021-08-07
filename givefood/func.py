@@ -50,24 +50,6 @@ def get_all_locations():
     return all_locations
 
 
-def get_all_constituencies():
-
-    foodbanks = get_all_foodbanks()
-    locations = get_all_locations()
-    constituencies = set()
-
-    for foodbank in foodbanks:
-        if foodbank.parliamentary_constituency:
-            constituencies.add(foodbank.parliamentary_constituency)
-
-    for location in locations:
-        if location.parliamentary_constituency:
-            constituencies.add(location.parliamentary_constituency)
-
-    constituencies = sorted(constituencies)
-
-    return constituencies
-
 def diff_html(a,b):
 
     the_diff = list(difflib.unified_diff(a, b, n=999))
@@ -442,7 +424,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "lat_lng":location.latt_long,
             "address":location.full_address(),
             "postcode":location.postcode,
-            "parliamentary_constituency":location.parliamentary_constituency,
+            "parliamentary_constituency":location.parliamentary_constituency_name,
             "parliamentary_constituency_slug":location.parliamentary_constituency_slug,
             "mp":location.mp,
             "mp_party":location.mp_party,
@@ -466,7 +448,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
             "lat_lng":foodbank.latt_long,
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
-            "parliamentary_constituency":foodbank.parliamentary_constituency,
+            "parliamentary_constituency":foodbank.parliamentary_constituency_name,
             "parliamentary_constituency_slug":foodbank.parliamentary_constituency_slug,
             "mp":foodbank.mp,
             "mp_party":foodbank.mp_party,

@@ -102,7 +102,7 @@ def foodbanks(request):
                     "register_url":foodbank.charity_register_url(),
                 },
                 "politics": {
-                    "parliamentary_constituency":foodbank.parliamentary_constituency,
+                    "parliamentary_constituency":foodbank.parliamentary_constituency_name,
                     "mp":foodbank.mp,
                     "mp_party":foodbank.mp_party,
                     "mp_parl_id":foodbank.mp_parl_id,
@@ -134,7 +134,7 @@ def foodbanks(request):
                         "network": foodbank.network,
                         "email": foodbank.contact_email,
                         "telephone": foodbank.phone_number,
-                        "parliamentary_constituency": foodbank.parliamentary_constituency,
+                        "parliamentary_constituency": foodbank.parliamentary_constituency_name,
                     }
                 }
             )
@@ -166,7 +166,7 @@ def foodbank(request, slug):
                 "lat_lng":location.latt_long,
                 "phone":location.phone_number,
                 "politics": {
-                    "parliamentary_constituency":location.parliamentary_constituency,
+                    "parliamentary_constituency":location.parliamentary_constituency_name,
                     "mp":location.mp,
                     "mp_party":location.mp_party,
                     "mp_parl_id":foodbank.mp_parl_id,
@@ -223,7 +223,7 @@ def foodbank(request, slug):
         },
         "locations": location_list,
         "politics": {
-            "parliamentary_constituency":foodbank.parliamentary_constituency,
+            "parliamentary_constituency":foodbank.parliamentary_constituency_name,
             "mp":foodbank.mp,
             "mp_party":foodbank.mp_party,
             "ward":foodbank.ward,
@@ -311,7 +311,7 @@ def foodbank_search(request):
                 "register_url":foodbank.charity_register_url(),
             },
             "politics": {
-                "parliamentary_constituency":foodbank.parliamentary_constituency,
+                "parliamentary_constituency":foodbank.parliamentary_constituency_name,
                 "mp":foodbank.mp,
                 "mp_party":foodbank.mp_party,
                 "mp_parl_id":foodbank.mp_parl_id,
@@ -359,7 +359,7 @@ def locations(request):
                     },
                 },
                 "politics": {
-                    "parliamentary_constituency":location.parliamentary_constituency,
+                    "parliamentary_constituency":location.parliamentary_constituency_name,
                     "mp":location.mp,
                     "mp_party":location.mp_party,
                     "mp_parl_id":location.mp_parl_id,
@@ -390,7 +390,7 @@ def locations(request):
                         "network": location.foodbank_network,
                         "email": location.email_or_foodbank_email(),
                         "telephone": location.phone_or_foodbank_phone(),
-                        "parliamentary_constituency": location.parliamentary_constituency,
+                        "parliamentary_constituency": location.parliamentary_constituency_name,
                     }
                 }
             )

@@ -35,8 +35,8 @@
             <ul style="column-count:3;column-gap: 20px;">
               {% for constituency in constituencies %}
                 <li>
-                  <a href="{% url "public_wfbn_constituency" constituency|slugify %}">
-                    {{ constituency }}
+                  <a href="{% url "public_wfbn_constituency" constituency.slug %}">
+                    {{ constituency.name }}
                   </a>
                 </li>
               {% endfor %}

@@ -30,14 +30,16 @@ class Foodbank(models.Model):
     charity_number = models.CharField(max_length=50,null=True, blank=True)
     charity_just_foodbank = models.BooleanField(default=False, verbose_name="Charity just foodbank", help_text="Tick this if the charity is purely used for the foodbank, rather than other uses such as a church")
 
-    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
+    parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False)
+    parliamentary_constituency_name = models.CharField(max_length=50, null=True, blank=True, editable=False)
     parliamentary_constituency_slug = models.CharField(max_length=50, null=True, blank=True, editable=False)
-    county = models.CharField(max_length=50, null=True, blank=True)
-    district = models.CharField(max_length=50, null=True, blank=True)
-    ward = models.CharField(max_length=50, null=True, blank=True)
-    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
-    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
-    mp_parl_id = models.IntegerField(verbose_name="MP's ID")
+    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP", editable=False)
+    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party", editable=False)
+    mp_parl_id = models.IntegerField(verbose_name="MP's ID", null=True, blank=True, editable=False)
+
+    county = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    district = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
@@ -203,6 +205,8 @@ class Foodbank(models.Model):
 
     def save(self, *args, **kwargs):
 
+        logging.info("Saving food bank %s" % self.name)
+
         # Slugify name
         self.slug = slugify(self.name)
 
@@ -214,15 +218,22 @@ class Foodbank(models.Model):
 
         # Update politics
         regions = admin_regions_from_postcode(self.postcode)
-        self.parliamentary_constituency = regions.get("parliamentary_constituency", None)
         self.county = regions.get("county", None)
         self.ward = regions.get("ward", None)
         self.district = regions.get("district", None)
-        mp_details = mp_from_parlcon(self.parliamentary_constituency)
-        self.mp = mp_details.get("mp")
-        self.mp_party = mp_details.get("party")
-        self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency)
-        self.mp_parl_id = mpid_from_name(self.mp)
+
+        try:
+            parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
+            logging.info("Got parl_con %s" % parl_con)
+            self.parliamentary_constituency = parl_con
+            self.parliamentary_constituency_name = self.parliamentary_constituency.name
+            self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
+            self.mp = self.parliamentary_constituency.mp
+            self.mp_party = self.parliamentary_constituency.mp_party
+            self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+        except ParliamentaryConstituency.DoesNotExist: 
+            logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
+            self.parliamentary_constituency = None
 
         # Cache number of locations
         self.no_locations = self.get_no_locations()
@@ -257,14 +268,16 @@ class FoodbankLocation(models.Model):
     phone_number = models.CharField(max_length=20, null=True, blank=True, help_text="If different to the main location")
     email = models.EmailField(null=True, blank=True, help_text="If different to the main location")
 
-    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
+    parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False)
+    parliamentary_constituency_name = models.CharField(max_length=50, null=True, blank=True, editable=False)
     parliamentary_constituency_slug = models.CharField(max_length=50, null=True, blank=True, editable=False)
-    county = models.CharField(max_length=50, null=True, blank=True)
-    district = models.CharField(max_length=50, null=True, blank=True)
-    ward = models.CharField(max_length=50, null=True, blank=True)
-    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
-    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
-    mp_parl_id = models.IntegerField(verbose_name="MP's ID")
+    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP", editable=False)
+    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party", editable=False)
+    mp_parl_id = models.IntegerField(verbose_name="MP's ID", null=True, blank=True, editable=False)
+
+    county = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    district = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     def __str__(self):
         return self.name
@@ -301,6 +314,8 @@ class FoodbankLocation(models.Model):
 
     def save(self, *args, **kwargs):
 
+        logging.info("Saving food bank location %s" % self.name)
+
         # Slugify name
         self.slug = slugify(self.name)
 
@@ -317,15 +332,22 @@ class FoodbankLocation(models.Model):
 
         # Update politics
         regions = admin_regions_from_postcode(self.postcode)
-        self.parliamentary_constituency = regions.get("parliamentary_constituency", None)
         self.county = regions.get("county", None)
         self.ward = regions.get("ward", None)
         self.district = regions.get("district", None)
-        mp_details = mp_from_parlcon(self.parliamentary_constituency)
-        self.mp = mp_details.get("mp")
-        self.mp_party = mp_details.get("party")
-        self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency)
-        self.mp_parl_id = mpid_from_name(self.mp)
+
+        try:
+            parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
+            logging.info("Got parl_con %s" % parl_con)
+            self.parliamentary_constituency = parl_con
+            self.parliamentary_constituency_name = self.parliamentary_constituency.name
+            self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
+            self.mp = self.parliamentary_constituency.mp
+            self.mp_party = self.parliamentary_constituency.mp_party
+            self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+        except ParliamentaryConstituency.DoesNotExist: 
+            logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
+            self.parliamentary_constituency = None
 
         super(FoodbankLocation, self).save(*args, **kwargs)
 
@@ -682,7 +704,7 @@ class ParliamentaryConstituency(models.Model):
 
     name = models.CharField(max_length=50, null=True, blank=True)
     slug = models.CharField(max_length=50, editable=False)
-    # country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
+    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
 
     mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
     mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
@@ -702,8 +724,8 @@ class ParliamentaryConstituency(models.Model):
 
     def foodbanks(self):
 
-        foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = self.slug)
-        locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = self.slug)
+        foodbanks = Foodbank.objects.filter(parliamentary_constituency = self)
+        locations = FoodbankLocation.objects.filter(parliamentary_constituency = self)
 
         constituency_foodbanks = []
         for foodbank in foodbanks:
@@ -733,6 +755,16 @@ class ParliamentaryConstituency(models.Model):
     def save(self, *args, **kwargs):
 
         self.slug = slugify(self.name)
+
+        # Resave denormed data
+        foodbanks = Foodbank.objects.filter(parliamentary_constituency = self) 
+        for foodbank in foodbanks:
+            deferred.defer(foodbank.save)
+
+        locations = FoodbankLocation.objects.filter(parliamentary_constituency = self)
+        for location in locations:
+            deferred.defer(location.save)
+        
         super(ParliamentaryConstituency, self).save(*args, **kwargs)
 
 

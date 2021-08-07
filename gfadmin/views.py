@@ -590,9 +590,9 @@ def politics_csv(request):
     writer = csv.writer(response)
     writer.writerow(['constituency', 'mp', 'mp_party', 'mp_parl_id'])
     for foodbank in foodbanks:
-        output.append([foodbank.parliamentary_constituency, foodbank.mp, foodbank.mp_party, foodbank.mp_parl_id])
+        output.append([foodbank.parliamentary_constituency_name, foodbank.mp, foodbank.mp_party, foodbank.mp_parl_id])
     for location in locations:
-        output.append([location.parliamentary_constituency, location.mp, location.mp_party, location.mp_parl_id])
+        output.append([location.parliamentary_constituency_name, location.mp, location.mp_party, location.mp_parl_id])
     writer.writerows(output)
     return response
 

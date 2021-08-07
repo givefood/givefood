@@ -15,7 +15,7 @@ from google.appengine.api import urlfetch
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber
-from givefood.func import get_all_constituencies, get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email
+from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
@@ -157,7 +157,7 @@ def public_wfbn_constituencies(request):
         if parl_con:
             return HttpResponseRedirect(reverse("public_wfbn_constituency", kwargs={"slug":slugify(parl_con)}))
 
-    constituencies = get_all_constituencies()
+    constituencies = ParliamentaryConstituency.objects.all().order_by("name")
 
     template_vars = {
         "constituencies":constituencies,
