@@ -27,7 +27,7 @@
         </nav>
         <div class="columns">
           <div class="column is-two-fifths">
-            <div id="fbmap" style="height:500px;"></div>
+            <div id="parlcon_map" style="height:500px;"></div>
           </div>
           <div class="column is-half">
             <h2>{{ constituency.name }} Constituency</h2>
@@ -64,39 +64,40 @@
 
 <script src="//maps.googleapis.com/maps/api/js?key={{ gmap_key }}"></script>
 <script>
-function add_marker(lat, lng, url) {
-  position = new google.maps.LatLng(lat, lng)
-  var marker = new google.maps.Marker({
-  position: position,
-  map: map,
-  url: url
-});
-  bounds.extend(position);
-  google.maps.event.addListener(marker, "click", function () {
-  location.assign(marker.url);
-});
-}
-
+const parl_con_geojson_url = "/api/2/constituency/{{ constituency.slug }}/?format=geojson"
 var map
-var bounds = new google.maps.LatLngBounds();
+
 function init_map() {
-var mapOptions = {
-  center: new google.maps.LatLng(55,-4),
-  zoom: 6,
-  mapTypeId: google.maps.MapTypeId.ROADMAP,
-};
-map = new google.maps.Map(document.getElementById("fbmap"), mapOptions);
-{% for foodbank in constituency.foodbanks %}
-  add_marker({{ foodbank.lat_lng }}, "{{ foodbank.gf_url }}")
-{% endfor %}
-google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
-  var maxZoom = 15
-  if (this.getZoom() > maxZoom) {
-      this.setZoom(maxZoom);
-  }
-});
-map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
-map.panToBounds(bounds);
+    var bounds = new google.maps.LatLngBounds();
+    map = new google.maps.Map(document.getElementById("parlcon_map"), {
+        center: new google.maps.LatLng(55,-4),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    map.data.loadGeoJson(parl_con_geojson_url);
+
+    google.maps.event.addListener(map.data,'addfeature',function(e){
+      var bounds = new google.maps.LatLngBounds(); 
+      map.data.forEach(function(feature){
+        feature.getGeometry().forEachLatLng(function(latlng){
+          bounds.extend(latlng);
+        });
+      });
+
+      map.fitBounds(bounds);
+    })
+
+    map.data.addListener('click', (event) => {
+        const url = event.feature.getProperty('url');
+        window.location = url
+    });
+
+    map.data.setStyle({
+      fillColor: "#000",
+      strokeWeight: 0,
+    });
+
 }
 
 google.maps.event.addDomListener(window, 'load', init_map);
