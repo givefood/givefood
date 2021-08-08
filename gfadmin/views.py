@@ -567,13 +567,9 @@ def item_form(request, slug = None):
 
 def politics(request):
 
-    foodbanks = get_all_foodbanks()
-    locations = FoodbankLocation.objects.all()
     parlcons = ParliamentaryConstituency.objects.all().order_by("name")
 
     template_vars = {
-        "foodbanks":foodbanks,
-        "locations":locations,
         "parlcons":parlcons,
         "section":"politics",
     }
