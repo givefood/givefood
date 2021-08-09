@@ -12,7 +12,7 @@ from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, centroid
+from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html
 
 
 class Foodbank(models.Model):
@@ -712,14 +712,6 @@ class ParliamentaryConstituency(models.Model):
 
     electorate = models.IntegerField(null=True, blank=True)
     boundary_geojson = models.TextField(null=True, blank=True)
-    latt_long = models.CharField(max_length=50, null=True, blank=True)
-
-    def centre(self):
-        geojson = self.boundary_geojson_dict()
-        points = geojson["geometry"]["coordinates"][0]
-        centre_list = centroid(points)
-        lat_lng = "%s,%s" % (centre_list[1],centre_list[0])
-        return lat_lng
     
     def boundary_geojson_dict(self):
         boundary_geojson = self.boundary_geojson.strip()
@@ -778,9 +770,6 @@ class ParliamentaryConstituency(models.Model):
         locations = FoodbankLocation.objects.filter(parliamentary_constituency = self)
         for location in locations:
             deferred.defer(location.save)
-        
-        if self.boundary_geojson:
-            self.latt_long = self.get_centre()
         
         super(ParliamentaryConstituency, self).save(*args, **kwargs)
 
