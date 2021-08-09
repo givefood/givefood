@@ -596,7 +596,7 @@ def constituency(request, slug):
                         "name": foodbank.get("name"),
                         "slug": foodbank.get("slug"),
                         "needs": foodbank.get("needs").change_text,
-                        "url": "https://www.givefood.org.uk/needs/at/%s/" % (foodbank.get("slug")),
+                        "url": "https://www.givefood.org.uk%s" % (foodbank.get("gf_url")),
                     }
                 }
             )
