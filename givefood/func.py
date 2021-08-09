@@ -498,6 +498,15 @@ def distance_meters(lat1, lon1, lat2, lon2):
     return meters
 
 
+def centroid(points):
+    x_coords = [p[0] for p in points]
+    y_coords = [p[1] for p in points]
+    _len = len(points)
+    centroid_x = sum(x_coords)/_len
+    centroid_y = sum(y_coords)/_len
+    return [centroid_x, centroid_y]
+
+
 def admin_regions_from_postcode(postcode):
     pc_api_url = "https://api.postcodes.io/postcodes/%s" % (urllib.quote(postcode))
     pc_api_result = urlfetch.fetch(pc_api_url)
