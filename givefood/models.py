@@ -704,7 +704,7 @@ class ParliamentaryConstituency(models.Model):
 
     name = models.CharField(max_length=50, null=True, blank=True)
     slug = models.CharField(max_length=50, editable=False)
-    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
+    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, null=True, blank=True)
 
     mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
     mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
