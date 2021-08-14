@@ -26,10 +26,10 @@
           </ul>
         </nav>
         <div class="columns">
-          <div class="column is-two-fifths">
+          <div class="column">
             <div id="parlcon_map" style="height:500px;"></div>
           </div>
-          <div class="column is-half">
+          <div class="column">
             <h2>{{ constituency.name }} Constituency</h2>
 
             <img src="{% url 'public_wfbn_constituency_mp_photo' constituency.slug 'threefour' %}" alt="{{ mp }}" class="mp_photo is-pulled-right">
@@ -54,6 +54,13 @@
             <h3>Anything Wrong Here?</h3>
             <p>We're very keen to get our data right. You can help us by pointing out any mistakes with an email to <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a>, and we'll fix it promptly.</p>
           </div>
+          {% if constituency.mp_twitter_handle %}
+            <div class="column">
+              <div class="twitter-feed">
+                <a class="twitter-timeline" href="https://twitter.com/{{ constituency.mp_twitter_handle }}">Tweets by {{ constituency.mp_twitter_handle }}</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+              </div>
+            </div>
+          {% endif %}
         </div>
     </div>
   </div>
