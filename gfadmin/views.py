@@ -777,6 +777,28 @@ def parlcon_loader_geojson(request):
     return HttpResponse("OK")
 
 
+def parlcon_loader_twitter_handle(request):
+
+    with open('./givefood/data/mp_twitter.csv') as csvfile:
+        readCSV = csv.reader(csvfile, delimiter=',')
+        for row in readCSV:
+
+            logging.info(row)
+
+            parl_con_name = row[3]
+            handle = row[1].replace("@","")
+
+            try:
+                parl_con = ParliamentaryConstituency.objects.get(name=parl_con_name)
+                parl_con.mp_twitter_handle = handle
+                parl_con.save()
+            except ParliamentaryConstituency.DoesNotExist:
+                logging.info("Couldn't find %s" % parl_con_name)
+            
+
+    return HttpResponse("OK")
+
+
 def settings(request):
 
     template_vars = {
