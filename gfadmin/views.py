@@ -762,13 +762,19 @@ def parlcon_loader_geojson(request):
 
     parlcons = ParliamentaryConstituency.objects.all()
 
-    geojson_file = open('./givefood/data/parlcon.geojson', 'r')
-    lines = geojson_file.readlines()
+    files = [
+        "gb",
+        "northernireland",
+    ]
 
-    for line in lines:
-        # logging.info(line)
-        for parlcon in parlcons:
-            if not parlcon.boundary_geojson:
+    for file in files:
+        geojson_file = open('./givefood/data/parlcon/%s.geojson' % (file), 'r')
+        lines = geojson_file.readlines()
+
+        for line in lines:
+            # logging.info(line)
+            for parlcon in parlcons:
+                # if not parlcon.boundary_geojson:
                 if parlcon.name in line:
                     logging.info("Found " + parlcon.name)
                     parlcon.boundary_geojson = line
