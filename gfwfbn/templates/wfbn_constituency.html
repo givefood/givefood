@@ -97,7 +97,9 @@ function init_map() {
 
     map.data.addListener('click', (event) => {
         const url = event.feature.getProperty('url');
-        window.location = url
+        if (url) {
+          window.location = url;
+        };
     });
 
     map.data.setStyle({
