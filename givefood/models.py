@@ -711,7 +711,6 @@ class ParliamentaryConstituency(models.Model):
     mp_parl_id = models.IntegerField(verbose_name="MP's ID")
     mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True)
 
-    electorate = models.IntegerField(null=True, blank=True)
     boundary_geojson = models.TextField(null=True, blank=True)
     
     def boundary_geojson_dict(self):
