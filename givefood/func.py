@@ -540,8 +540,6 @@ def mpid_from_name(name):
     return False
 
 
-def lattlong_from_postcode(postcode):
-    pass
 
 
 def make_url_friendly(url):
