@@ -12,7 +12,7 @@ from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html
+from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details
 
 
 class Foodbank(models.Model):
@@ -709,7 +709,24 @@ class ParliamentaryConstituency(models.Model):
     mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
     mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
     mp_parl_id = models.IntegerField(verbose_name="MP's ID")
-    mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True)
+
+    mp_synopsis = models.TextField(null=True, blank=True, editable=False)
+    mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    mp_website = models.URLField(max_length=250, null=True, blank=True, editable=False)
+
+    # Parlimentary details
+    email_parl = models.EmailField(null=True, blank=True, editable=False)
+    address_parl = models.TextField(null=True, blank=True, editable=False)
+    postcode_parl = models.CharField(max_length=9, null=True, blank=True, editable=False)
+    lat_lng_parl= models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
+    phone_parl = models.CharField(max_length=20, null=True, blank=True, editable=False)
+
+    # Constituency details
+    email_con = models.EmailField(null=True, blank=True, editable=False)
+    address_con = models.TextField(null=True, blank=True, editable=False)
+    postcode_con = models.CharField(max_length=9, null=True, blank=True, editable=False)
+    lat_lng_con = models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
+    phone_con = models.CharField(max_length=20, null=True, blank=True, editable=False)
 
     boundary_geojson = models.TextField(null=True, blank=True)
     
@@ -761,6 +778,31 @@ class ParliamentaryConstituency(models.Model):
     def save(self, *args, **kwargs):
 
         self.slug = slugify(self.name)
+
+        # Get MP contact details
+        contact_details = mp_contact_details(self.mp_parl_id)
+
+        self.website = contact_details.get("website", None)
+        self.mp_twitter_handle = contact_details.get("twitter", None)
+        self.mp_synopsis = contact_details.get("synopsis", None)
+        
+        self.email_parl = contact_details.get("email_parl", None)
+        self.address_parl = contact_details.get("address_parl", None)
+        self.postcode_parl = contact_details.get("postcode_parl", None)
+        self.lat_lng_parl = contact_details.get("lat_lng_parl", None)
+        self.phone_parl = contact_details.get("phone_parl", None)
+
+        self.email_con = contact_details.get("email_con", None)
+        self.address_con = contact_details.get("address_con", None)
+        self.postcode_con = contact_details.get("postcode_con", None)
+        self.lat_lng_con = contact_details.get("lat_lng_con", None)
+        self.phone_con = contact_details.get("phone_con", None)
+
+        # Cleanup phone numbers
+        if self.phone_parl:
+            self.phone_parl = self.phone_parl.replace(" ","")
+        if self.phone_con:
+            self.phone_con = self.phone_con.replace(" ","")
 
         # Resave denormed data
         foodbanks = Foodbank.objects.filter(parliamentary_constituency = self) 

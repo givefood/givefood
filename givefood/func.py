@@ -11,6 +11,7 @@ from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 
 from django.template.defaultfilters import truncatechars
+from django.utils.html import strip_tags
 
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
@@ -540,6 +541,70 @@ def mpid_from_name(name):
     return False
 
 
+def mp_contact_details(mpid):
+
+    logging.info("getting mp contact details %s" % (mpid))
+
+    mp_contact_details = {}
+
+    synopsis_url = "https://members-api.parliament.uk/api/Members/%s/Synopsis" % (mpid)
+    synopsis_json = fetch_json(synopsis_url)
+    mp_contact_details["synopsis"] = strip_tags(synopsis_json["value"])
+
+    contact_url = "https://members-api.parliament.uk/api/Members/%s/Contact" % (mpid)
+    contact_json = fetch_json(contact_url)
+    for contact_method in contact_json["value"]:
+
+        if contact_method["type"] == "Parliamentary":
+            mp_contact_details["email_parl"] = contact_method["email"]
+            address = contact_method["line1"]
+            if contact_method["line2"]:
+                address = address + "\n" + contact_method["line2"]
+            if contact_method["line3"]:
+                address = address + "\n" + contact_method["line3"]
+            if contact_method["line4"]:
+                address = address + "\n" + contact_method["line4"]
+            if contact_method["line5"]:
+                address = address + "\n" + contact_method["line5"]
+            mp_contact_details["address_parl"] = address
+            mp_contact_details["postcode_parl"] = contact_method["postcode"]
+            mp_contact_details["phone_parl"] = contact_method["phone"]
+            mp_contact_details["lat_lng_parl"] = geocode(mp_contact_details["address_parl"] + '\n' + mp_contact_details["postcode_parl"])
+
+        if contact_method["type"] == "Constituency":
+            mp_contact_details["email_con"] = contact_method["email"]
+            address = contact_method["line1"]
+            if contact_method["line2"]:
+                address = address + "\n" + contact_method["line2"]
+            if contact_method["line3"]:
+                address = address + "\n" + contact_method["line3"]
+            if contact_method["line4"]:
+                address = address + "\n" + contact_method["line4"]
+            if contact_method["line5"]:
+                address = address + "\n" + contact_method["line5"]
+            mp_contact_details["address_con"] = address
+            mp_contact_details["postcode_con"] = contact_method["postcode"]
+            mp_contact_details["phone_con"] = contact_method["phone"]
+            if mp_contact_details["address_con"] and mp_contact_details["postcode_con"]:
+                mp_contact_details["lat_lng_con"] = geocode(mp_contact_details["address_con"] + '\n' + mp_contact_details["postcode_con"])
+        
+        if contact_method["type"] == "Website":
+            mp_contact_details["website"] = contact_method["line1"]
+        
+        if contact_method["type"] == "Twitter":
+            mp_contact_details["twitter"] = contact_method["line1"].replace("https://twitter.com/","")
+
+    return mp_contact_details
+
+
+def fetch_json(url):
+
+    url_result = urlfetch.fetch(url)
+    if url_result.status_code == 200:
+        url_result_json = json.loads(url_result.content)
+        return url_result_json
+
+    return False
 
 
 def make_url_friendly(url):
