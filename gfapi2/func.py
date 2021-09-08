@@ -27,11 +27,6 @@ def accceptable_formats(obj_name):
     return valid_formats
 
 
-def constituency_geojson(data):
-
-    return {}
-
-
 def ApiResponse(data, obj_name, format):
 
     valid_formats = accceptable_formats(obj_name)
