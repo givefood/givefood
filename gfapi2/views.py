@@ -575,6 +575,7 @@ def constituency(request, slug):
             "mp": {
                 "name":constituency.mp,
                 "party":constituency.mp_party,
+                "id":constituency.mp_parl_id,
                 "urls": {
                     "html":"https://members.parliament.uk/member/%s/contact" % (constituency.mp_parl_id),
                     "photo":"https://www.givefood.org.uk/needs/in/constituency/%s/mp_photo_threefour.png" % (constituency.slug),
