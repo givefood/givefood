@@ -544,6 +544,38 @@ def need(request, id):
 
 
 @cache_page(60*20)
+def constituencies(request):
+
+    format = request.GET.get("format", DEFAULT_FORMAT)
+
+    constituencies = ParliamentaryConstituency.objects.all()
+
+    response_list = []
+
+    for constituency in constituencies:
+        response_list.append({
+            "name":constituency.name,
+            "slug":constituency.slug,
+            "country":constituency.country,
+            "mp": {
+                "name":constituency.mp,
+                "mp_party":constituency.mp_party,
+                "id":constituency.mp_parl_id,
+                "urls": {
+                    "html":"https://members.parliament.uk/member/%s/contact" % (constituency.mp_parl_id),
+                    "photo":"https://www.givefood.org.uk/needs/in/constituency/%s/mp_photo_threefour.png" % (constituency.slug),
+                }
+            },
+            "urls": {
+                "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (constituency.slug),
+                "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (constituency.slug),
+            }
+        })
+
+    return ApiResponse(response_list, "constituencies", format) 
+
+
+@cache_page(60*20)
 def constituency(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)

@@ -50,4 +50,13 @@ def ApiResponse(data, obj_name, format):
     return response
 
 
-xml_item_name = lambda x: x[:-1]
+def xml_item_name(plural):
+
+    singular = {
+        "foodbanks":"foodbank",
+        "locations":"location",
+        "needs":"need",
+        "constituencies":"constituency",
+    }
+
+    return singular.get(plural)

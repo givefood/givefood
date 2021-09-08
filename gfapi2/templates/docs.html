@@ -35,6 +35,8 @@
             <dd>Latest needs published countrywide</dd>
             <dt class="is-size-5"><a href="#need">need</a></dt>
             <dd>Need requested by a food bank</dd>
+            <dt class="is-size-5"><a href="#constituencies">constituencies</a></dt>
+            <dd>List of all parliamentary constituencies</dd>
             <dt class="is-size-5"><a href="#constituency">constituency</a></dt>
             <dd>Parliamentary constituency</dd>
         </dl>
@@ -318,6 +320,36 @@
 
         </div>
 
+
+        {# constituencies #}
+        <div id="constituencies" class="api_method is-7" data-method-url="/api/2/constituencies/">
+
+            <div class="columns">
+                <div class="column">
+                    <h2>constituencies</h2>
+                    <p>Returns a list of all UK parliamentary constituencies</p>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column">
+                    {% include "method_table/constituencies.html" %}
+                </div>
+                <div class="column">
+                    <table class="table is-fullwidth">
+                        <tr>
+                            <td>format</td>
+                            <td>{% include "api_formats.html" %}</td>
+                        </tr>
+                    </table>
+
+                    {% include "method_fields.html" %}
+
+                    <pre class="result"><code class="language-json"></code></pre>
+                </div>
+            </div>
+
+        </div>
 
         {# constituency #}
         <div id="constituency" class="api_method is-7" data-method-url="/api/2/constituency/:constituency:/">
