@@ -18,63 +18,63 @@ function init() {
     method_links = document.querySelectorAll("#api_methods a")
     method_links.forEach((method_link) => {
         method_link.addEventListener('click', function(event) {
-        method_name = this.innerHTML
-        show_method(method_name)
-        event.preventDefault()
-      })
+            method_name = this.innerHTML;
+            show_method(method_name);
+            event.preventDefault();
+        })
     })
 
-    argument_changers = document.querySelectorAll("select.api_format, select.api_method_argument")
+    argument_changers = document.querySelectorAll("select.api_format, select.api_method_argument");
     argument_changers.forEach((argument_changer) => {
         argument_changer.addEventListener('change', function(event) {
-            get_api_result()
+            get_api_result();
       })
     })
 
-    clipboard_btns = document.querySelectorAll(".clipboard")
+    clipboard_btns = document.querySelectorAll(".clipboard");
     clipboard_btns.forEach((clipboard_btn) => {
         clipboard_btn.addEventListener('click', function(event) {
-            url = document.querySelector(".api_method.active .method_url").value
-            navigator.clipboard.writeText(url)
+            url = document.querySelector(".api_method.active .method_url").value;
+            navigator.clipboard.writeText(url);
       })
     })
 
-    openurl_btns = document.querySelectorAll(".openurl")
+    openurl_btns = document.querySelectorAll(".openurl");
     openurl_btns.forEach((openurl_btn) => {
         openurl_btn.addEventListener('click', function(event) {
-            url = document.querySelector(".api_method.active .method_url").value
-            window.open(url)
+            url = document.querySelector(".api_method.active .method_url").value;
+            window.open(url);
       })
     })
 
     if(window.location.hash) {
-        show_method(window.location.hash.replace("#",""))
+        show_method(window.location.hash.replace("#",""));
     } else {
-        show_method(default_method)
+        show_method(default_method);
     }
 
 }
 
 
 function show_method(method_name) {
-    console.log("Showing method " + method_name)
-    method_name_class = method_name.replace("/","-")
+    console.log("Showing method " + method_name);
+    method_name_class = method_name.replace("/","-");
 
-    const method_panes = document.querySelectorAll(".api_method")
+    const method_panes = document.querySelectorAll(".api_method");
     method_panes.forEach((method_pane) => {
-        method_pane.classList.remove("active")
+        method_pane.classList.remove("active");
     })
-    method_pane = document.querySelector("#" + method_name_class)
-    method_pane.classList.add("active")
+    method_pane = document.querySelector("#" + method_name_class);
+    method_pane.classList.add("active");
 
-    get_api_result()
+    get_api_result();
 
     if (window.location.hash.replace("#","") != method_name){
         if (method_name != default_method) {
-            history.pushState({},"","#" + method_name)
+            history.pushState({},"","#" + method_name);
         } else {
             if (window.location.hash){
-                history.pushState({},"",window.location.pathname)
+                history.pushState({},"",window.location.pathname);
             }
         }
     }
@@ -84,31 +84,31 @@ function show_method(method_name) {
 
 function get_api_result() {
 
-    method_name = document.querySelector(".api_method.active").getAttribute("id")
-    url = document.querySelector("#" + method_name).getAttribute("data-method-url")
+    method_name = document.querySelector(".api_method.active").getAttribute("id");
+    url = document.querySelector("#" + method_name).getAttribute("data-method-url");
 
-    argument_fields = document.querySelector("#" + method_name).querySelectorAll(".api_method_argument")
+    argument_fields = document.querySelector("#" + method_name).querySelectorAll(".api_method_argument");
     argument_fields.forEach((argument_field) => {
-        console.log("Found argument '" + argument_field.name + "' with value '" + argument_field.value + "'")
-        url = url.replace(":" + argument_field.name + ":",argument_field.value)
+        console.log("Found argument '" + argument_field.name + "' with value '" + argument_field.value + "'");
+        url = url.replace(":" + argument_field.name + ":",argument_field.value);
     })
-    format = document.querySelector("#" + method_name).querySelector(".api_format").value
-    console.log("Found format '" + format + "'")
+    format = document.querySelector("#" + method_name).querySelector(".api_format").value;
+    console.log("Found format '" + format + "'");
     if (format != default_format) {
         if (url.includes("?")) {
-            url = url + "&"
+            url = url + "&";
         } else {
-            url = url + "?"
+            url = url + "?";
         }
-        url = url + "format=" + format
+        url = url + "format=" + format;
     }
 
-    full_url = api_domain + url
-    document.querySelector("#" + method_name + " .method_url").value = full_url
+    full_url = api_domain + url;
+    document.querySelector("#" + method_name + " .method_url").value = full_url;
 
-    console.log("Calling API with " + url)
-    method_pane_results = document.querySelector(".api_method.active code")
-    method_pane_results.innerHTML = "Loading..."
+    console.log("Calling API with " + url);
+    method_pane_results = document.querySelector(".api_method.active code");
+    method_pane_results.innerHTML = "Loading...";
     var api_request = new XMLHttpRequest();
     api_request.addEventListener("load", populate_api_result);
     api_request.open("GET", url);
@@ -118,13 +118,15 @@ function get_api_result() {
 
 
 function populate_api_result() {
-    format = document.querySelector(".api_method.active .api_format").value
-    if (format == "geojson") { format = "json" }
-    method_pane_results = document.querySelector(".api_method.active code")
-    method_pane_results.setAttribute("class","")
-    method_pane_results.setAttribute("class","language-" + format)
-    method_pane_results.innerHTML = escaper(this.responseText)
+    format = document.querySelector(".api_method.active .api_format").value;
+    if (format == "geojson") {
+        format = "json";
+    }
+    method_pane_results = document.querySelector(".api_method.active code");
+    method_pane_results.setAttribute("class","");
+    method_pane_results.setAttribute("class","language-" + format);
+    method_pane_results.innerHTML = escaper(this.responseText);
     hljs.highlightBlock(method_pane_results);
 }
 
-document.addEventListener('DOMContentLoaded', (event) => init())
+document.addEventListener('DOMContentLoaded', (event) => init());
