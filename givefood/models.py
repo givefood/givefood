@@ -517,7 +517,7 @@ class OrderLine(models.Model):
 
 class OrderItem(models.Model):
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     slug = models.CharField(max_length=100, editable=False)
     calories = models.PositiveIntegerField(help_text="Per 100g")
     tesco_image_id = models.CharField(max_length=100, null=True, blank=True)
