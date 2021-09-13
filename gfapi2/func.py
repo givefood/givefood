@@ -5,38 +5,50 @@ from xml.dom.minidom import parseString
 from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest
 
 
-def accceptable_formats(obj_name):
+# Sets of formats that can be returned per object name
+STD_FORMATS = [
+    "json",
+    "xml",
+    "yaml",
+]
+STD_FORMATS_GEOJSON = [
+    "json",
+    "xml",
+    "yaml",
+    "geojson",
+]
 
-    # response objects that have geojson available
-    have_geojson = [
-        "foodbanks",
-        "constituency",
-        "locations",
-    ]
-
-    # default formats
-    valid_formats = [
-        "json",
-        "xml",
-        "yaml",
-    ]
-
-    if obj_name in have_geojson:
-        valid_formats.append("geojson")
-
-    return valid_formats
+# The formats allowed per object name
+ALLOWED_FORMATS = {
+    "foodbank": STD_FORMATS,
+    "foodbanks": STD_FORMATS_GEOJSON,
+    "location": STD_FORMATS,
+    "locations": STD_FORMATS_GEOJSON,
+    "need": STD_FORMATS,
+    "needs": STD_FORMATS,
+    "constituency": STD_FORMATS_GEOJSON,
+    "constituencies": STD_FORMATS,
+}
 
 
 def ApiResponse(data, obj_name, format):
 
-    valid_formats = accceptable_formats(obj_name)
-
-    if format not in valid_formats:
+    if format not in ALLOWED_FORMATS.get(obj_name):
         return HttpResponseBadRequest()
 
-    if format == "json" or format == "geojson":
+    json_formats = [
+        "json",
+        "geojson"
+    ]
+    xml_formats = [
+        "xml",
+        "opml",
+        "rss",
+    ]
+
+    if format in json_formats:
         response = JsonResponse(data, safe=False, json_dumps_params={'indent': 2})
-    elif format == "xml":
+    elif format in xml_formats:
         dicttoxml.LOG.setLevel(logging.ERROR)
         xml_str = dicttoxml.dicttoxml(data, attr_type=False, custom_root=obj_name, item_func=xml_item_name)
         xml_dom = parseString(xml_str)
