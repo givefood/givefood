@@ -1,4 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /needs/getlocation/
+
+User-agent: *
+Allow: /
 
 Sitemap: https://www.givefood.org.uk/sitemap.xml
