@@ -32,7 +32,7 @@
           <div class="column">
             <h2>{{ constituency.name }} Constituency</h2>
 
-            <img src="{% url 'public_wfbn_constituency_mp_photo' constituency.slug 'threefour' %}" alt="{{ mp }}" class="mp_photo is-pulled-right">
+            <img src="{% url 'public_wfbn_constituency_mp_photo' constituency.slug 'threefour' %}" alt="{{ constituency.mp }}" class="mp_photo is-pulled-right">
 
             <p><a href="https://www.google.co.uk/search?q={{ constituency.name }} constituency">{{ constituency.name }} constituency</a> is represented by <a href="https://www.google.co.uk/search?q={{ constituency.mp }} MP">{{ constituency.mp }} MP</a> of the {{ constituency.mp_party }} party.</p>
             <p>You can write to this MP to politely help them understand that food banks shouldn't exist in our country.</p>
