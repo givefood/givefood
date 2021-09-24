@@ -15,11 +15,7 @@ const loc_not_uk = "Sorry, we couldn't use that location. Is it inside the Unite
 const search_error = "Sorry, we had a problem finding food banks there. The error was logged. Please try again later."
 
 function init() {
-  var input = address_field;
-  var options = {
-    types: ["geocode"]
-  };
-  autocomplete = new google.maps.places.Autocomplete(input, options);
+  autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
   autocomplete.setComponentRestrictions({'country': ['gb']});
   uml_btn.addEventListener("click", do_geolocation);
   addressform.addEventListener("submit", do_address);
