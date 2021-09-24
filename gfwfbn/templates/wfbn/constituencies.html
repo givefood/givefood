@@ -20,7 +20,7 @@
         <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
           <ul>
             <li><a href="{% url 'public_index' %}">Give Food</a></li>
-            <li><a href="{% url 'public_what_food_banks_need' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
             <li class="is-active"><a href="#" aria-current="page">Constituencies</a></li>
           </ul>
         </nav>
@@ -35,7 +35,7 @@
             <ul style="column-count:3;column-gap: 20px;">
               {% for constituency in constituencies %}
                 <li>
-                  <a href="{% url "public_wfbn_constituency" constituency.slug %}">
+                  <a href="{% url "wfbn:constituency" constituency.slug %}">
                     {{ constituency.name }}
                   </a>
                 </li>

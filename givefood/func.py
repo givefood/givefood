@@ -679,9 +679,10 @@ def post_to_twitter(need):
 def post_to_subscriber(need, subscriber):
 
     subject = "New items requested by %s Food Bank" % (need.foodbank_name)
-    message = """Hello,\n\nWe've found new items requested by %s Food Bank. They are...\n\n%s\n\nYou can find more details at https://www.givefood.org.uk/needs/at/%s/\n\nYou're getting these emails because you subscribed to them at www.givefood.org.uk. To unsubscribe visit http://www.givefood.org.uk/needs/updates/unsubscribe/?key=%s""" % (
+    message = """Hello,\n\nWe've found new items requested by %s Food Bank. They are...\n\n%s\n\nYou can find more details at https://www.givefood.org.uk/needs/at/%s/\n\nYou're getting these emails because you subscribed to them at www.givefood.org.uk. To unsubscribe visit http://www.givefood.org.uk/needs/at/%s/updates/unsubscribe/?key=%s""" % (
         need.foodbank_name,
         need.change_text,
+        need.foodbank_name_slug(),
         need.foodbank_name_slug(),
         subscriber.unsub_key,
     )

@@ -1,0 +1,124 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn2.css">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
+  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:image" content="{% url 'wfbn:foodbank_map' foodbank.slug %}">
+  <link rel="manifest" href="/needs/manifest.json">
+  <meta name="geo.placename" content="{{ foodbank }} Food Bank">
+  <meta name="geo.position" content="{{ foodbank.latt_long }}">
+  <meta property="place:location:latitude" content="{{ foodbank.latt }}">
+  <meta property="place:location:longitude" content="{{ foodbank.long }}">
+  {% if foodbank.is_closed %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endblock %}
+
+{% block title %}Politics - {{ foodbank }} Food Bank - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns body">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="/" class="logo">Give Food</a>
+        </div>
+        
+        {% include 'wfbn/foodbank/includes/search.html' %}
+
+      </div>
+
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'public_index' %}">Home</a></li>
+            <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Politics</a></li>
+        </ul>
+  </nav>
+
+      <h1>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</h1>
+
+      <div class="columns">
+
+          <div class="column is-2">
+            {% include "wfbn/foodbank/includes/menu.html" %}
+          </div>
+
+          <div class="column is-6">
+
+            <p>This food bank is in the <a href="{% url "wfbn:constituency" foodbank.parliamentary_constituency_slug %}">{{ foodbank.parliamentary_constituency_name }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} MP">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party.</p>
+
+            <p>You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.</p>
+            
+          </div>
+
+          <div class="column">
+            <div id="map" class="sidemap"></div>
+          </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="/static/js/wfbn2.js" defer></script>
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
+<script>
+const parl_con_geojson_url = "/api/2/constituency/{{ foodbank.parliamentary_constituency_slug }}/?format=geojson"
+var map
+
+function init_map() {
+    var bounds = new google.maps.LatLngBounds();
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: new google.maps.LatLng(55,-4),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    map.data.loadGeoJson(parl_con_geojson_url);
+
+    google.maps.event.addListener(map.data,'addfeature',function(e){
+      var bounds = new google.maps.LatLngBounds(); 
+      map.data.forEach(function(feature){
+        feature.getGeometry().forEachLatLng(function(latlng){
+          bounds.extend(latlng);
+        });
+      });
+
+      map.fitBounds(bounds);
+    })
+
+    map.data.addListener('click', (event) => {
+        const url = event.feature.getProperty('url');
+        if (url) {
+          window.location = url;
+        };
+    });
+
+    map.data.setStyle({
+      fillColor: "#000",
+      strokeWeight: 0,
+    });
+
+}
+
+google.maps.event.addDomListener(window, 'load', init_map);
+</script>
+
+{% endblock %}
+

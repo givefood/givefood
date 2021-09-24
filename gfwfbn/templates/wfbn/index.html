@@ -30,7 +30,7 @@
     <div class="column {% if where_from != "trusselltrust" %}is-three-quarters{% endif %}">
       {% if not headless %}
         <h1><a href="/">Give Food</a></h1>
-        <p>Find what items food banks near you are requesting to have donated. You can also browse by <a href="{% url 'public_wfbn_constituencies' %}">parliamentary constituency</a>. Share on
+        <p>Find what items food banks near you are requesting to have donated. You can also browse by <a href="{% url 'wfbn:constituencies' %}">parliamentary constituency</a>. Share on
             <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.givefood.org.uk%2Fneeds%2F&via=GiveFood_org_uk&text=Find%20out%20what%20food%20banks%20near%20you%20need">
               <img src="/static/img/twitter.svg" class="socialicon" alt="Post to Twitter">
             </a>
@@ -44,11 +44,11 @@
         <div class="field">
           <div class="control">
             <form id="addressform" action="/needs/" method="GET">
-              <a id="usemylocationbtn" href="{% url 'public_get_location' %}" class="button" title="Use my location" >
+              <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button" title="Use my location" >
                   <img src="/static/img/getlocation.svg" alt="Button to use your location to search for a food bank">
               </a>
               <label id="address_label" for="address_field" class="label">Address (town or postcode)</label>
-              <input id="address_field" type="text" name="address" class="input" placeholder="Town name or postcode" value="{{ address }}">
+              <input id="address_field" type="text" name="address" class="input" placeholder="Town name or postcode" value="{{ address }}" required="required">
               <input type="submit" id="addressgobtn" href="#" class="button is-info" value="Go">
             </form>
           </div>

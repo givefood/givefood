@@ -1,30 +1,39 @@
 from django.conf.urls import include, url
 from django.views.generic import RedirectView
-from views import *
+from gfwfbn.views import *
 
 urlpatterns = (
     url(r'^tt-old-data/$', RedirectView.as_view(url='/dashboard/trusselltrust/old-data/')),
 
-    url(r'^$', public_what_food_banks_need, name="public_what_food_banks_need"),
-    url(r'^getlocation/$', public_get_location, name="public_get_location"),
-    url(r'^click/(?P<slug>[-\w]+)/$', public_what_food_banks_need_click, name="public_what_food_banks_need_click"),
+    url(r'^$', index, name="index"),
+    url(r'^getlocation/$', get_location, name="get_location"),
+    url(r'^click/(?P<slug>[-\w]+)/$', click, name="click"),
+    url(r'^updates/(?P<action>subscribe|confirm|unsubscribe)/$', updates, name="updates"),
 
-    url(r'^updates/(?P<action>subscribe|confirm|unsubscribe)/$', public_what_food_banks_need_updates, name="public_what_food_banks_need_updates"),
+    # Foodbank
+    url(r'^at/(?P<slug>[-\w]+)/$', foodbank, name="foodbank"),
+    url(r'^at/(?P<slug>[-\w]+)/map.png$', foodbank_map, name="foodbank_map"),
+    url(r'^at/(?P<slug>[-\w]+)/news/$', foodbank_news, name="foodbank_news"),
+    url(r'^at/(?P<slug>[-\w]+)/politics/$', foodbank_politics, name="foodbank_politics"),
+    url(r'^at/(?P<slug>[-\w]+)/socialmedia/$', foodbank_socialmedia, name="foodbank_socialmedia"),
+    url(r'^at/(?P<slug>[-\w]+)/nearby/$', foodbank_nearby, name="foodbank_nearby"),
+    url(r'^at/(?P<slug>[-\w]+)/history/$', foodbank_history, name="foodbank_history"),
+    url(r'^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/$', updates, name="updates"),
 
-    url(r'^at/(?P<slug>[-\w]+)/$', public_wfbn_foodbank, name="public_wfbn_foodbank"),
-    url(r'^at/(?P<slug>[-\w]+)/map.png$', public_wfbn_foodbank_map, name="public_wfbn_foodbank_map"),
-    url(r'^at/(?P<slug>[-\w]+)/history/$', public_wfbn_foodbank_history, name="public_wfbn_foodbank_history"),
+    # Edit
+    url(r'^at/(?P<slug>[-\w]+)/edit/$', foodbank_edit, name="foodbank_edit"),
+    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/$', foodbank_edit_form, name="foodbank_edit_form"),
+    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/(?P<locslug>[-\w]+)/$', foodbank_edit_form, name="foodbank_edit_form_location"),
+    url(r'^at/(?P<slug>[-\w]+)/edit/thanks/$', foodbank_edit_thanks, name="foodbank_edit_thanks"),
+    
+    # Locations
+    url(r'^at/(?P<slug>[-\w]+)/locations/$', foodbank_locations, name="foodbank_locations"),
+    url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', foodbank_location, name="foodbank_location"),
+    url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/map.png$', foodbank_location_map, name="foodbank_location_map"),
 
-    url(r'^at/(?P<slug>[-\w]+)/edit/$', public_wfbn_foodbank_edit, name="public_wfbn_foodbank_edit"),
-    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/$', public_wfbn_foodbank_edit_form, name="public_wfbn_foodbank_edit_form"),
-    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/(?P<locslug>[-\w]+)/$', public_wfbn_foodbank_edit_form, name="public_wfbn_foodbank_edit_form_location"),
-    url(r'^at/(?P<slug>[-\w]+)/edit/thanks/$', public_wfbn_foodbank_edit_thanks, name="public_wfbn_foodbank_edit_thanks"),
-
-    url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', public_wfbn_foodbank_location, name="public_wfbn_foodbank_location"),
-    url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/map.png$', public_wfbn_foodbank_location_map, name="public_wfbn_foodbank_location_map"),
-
-    url(r'^in/constituencies/$', public_wfbn_constituencies, name="public_wfbn_constituencies"),
+    # Constituencies 
+    url(r'^in/constituencies/$', constituencies, name="constituencies"),
     url(r'^in/constituency/$', RedirectView.as_view(url="/in/constituencies/")),
-    url(r'^in/constituency/(?P<slug>[-\w]+)/$', public_wfbn_constituency, name="public_wfbn_constituency"),
-    url(r'^in/constituency/(?P<slug>[-\w]+)/mp_photo_(?P<size>full|threefour).png$', public_wfbn_constituency_mp_photo, name="public_wfbn_constituency_mp_photo"),
+    url(r'^in/constituency/(?P<slug>[-\w]+)/$', constituency, name="constituency"),
+    url(r'^in/constituency/(?P<slug>[-\w]+)/mp_photo_(?P<size>full|threefour).png$', constituency_mp_photo, name="constituency_mp_photo"),
 )

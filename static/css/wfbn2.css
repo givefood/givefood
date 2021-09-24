@@ -1,0 +1,103 @@
+.headerimg {
+    padding-top:100px;
+    margin-bottom:15px;
+}
+
+@media screen and (min-width: 769px) {
+    .body {
+        background:#fff;
+        margin-top:-145px;
+        border-radius: 5px;
+        padding: 1.3rem;
+    }
+    .headerimg {
+        padding-top:200px;
+    }
+}
+@media screen and (max-width: 769px) {
+    .search {
+        display:none;
+    }
+    .foodbank-menu {
+        position:relative;
+    }
+    .foodbank-menu li a {
+        display:none;
+    }
+    .foodbank-menu li a.is-active {
+        display:block;
+    }
+    .navbar-burger {
+        position:absolute;
+        top:0;
+        right:0;
+        height:2.25rem;
+        width:2.25rem;
+    }
+    .navbar-burger span {
+        background-color:#fff;
+    }
+}
+
+.logo {
+    display:block;
+    font-size:1.8em;
+    background: url('/static/img/logo.png');
+    background-repeat: no-repeat;
+    background-size: auto 50px;
+    padding:5px 0 5px 60px;
+    font-weight:normal;
+    color:#000;
+}
+.logo:hover {
+    text-decoration: underline;
+}
+
+#address_label {
+    display:none;
+}
+#postcode_field, #address_field {
+    width:220px;
+}
+
+h1 {
+    font-size: 32px;
+    font-family: 'PT Serif', serif;
+    font-weight: bold;
+    margin-bottom: 1.3rem;
+}
+
+.needs {
+    border-left:2px solid #eee;
+    padding:7px 0 7px 15px;
+}
+.cta {
+    margin-bottom: 1.3rem;
+}
+
+.contact-icon {
+    width:16px;
+    display:inline-block;
+    margin:0 3px 0 2px;
+    vertical-align:middle;
+}
+
+.sidemap {
+    height:300px;
+    margin-bottom:10px;
+}
+.mainmap {
+    height:500px;
+}
+address {
+    margin-bottom: 1.5rem;
+}
+.news li {
+    margin-bottom:10px;
+}
+.thediff {
+    padding-left:20px;
+  }
+.nochange span {
+    background:#fff87f;
+}

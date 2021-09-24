@@ -92,7 +92,7 @@ class Foodbank(models.Model):
         return find_foodbanks(self.latt_long, 10, True)
 
     def articles(self):
-        return FoodbankArticle.objects.filter(foodbank = self).order_by("-published_date")[:10]
+        return FoodbankArticle.objects.filter(foodbank = self).order_by("-published_date")[:20]
 
     def country_flag(self):
         if self.country == "Scotland":
@@ -154,6 +154,13 @@ class Foodbank(models.Model):
         if latest_need_text == "Nothing":
             return 0
         return latest_need_text.count('\n')+1
+
+    def has_needs(self):
+        need_text = self.latest_need_text()
+        if need_text == "Nothing" or need_text == "Unknown":
+            return False
+        else:
+            return True
 
     def orders(self):
         return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")

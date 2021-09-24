@@ -77,7 +77,7 @@
       <h3>Links</h3>
       <dl>
         <dt>GF Info</dt>
-        <dd><a href="{% url 'public_wfbn_foodbank' foodbank.slug %}" data-turbolinks="false">{{ foodbank.slug }}</a></dd>
+        <dd><a href="{% url 'wfbn:foodbank' foodbank.slug %}" data-turbolinks="false">{{ foodbank.slug }}</a></dd>
         <dt>Website</dt>
         <dd><a href="{{ foodbank.url }}">{{ foodbank.friendly_url|truncatechars:20 }}</a></dd>
         <dt>Shopping list</dt>

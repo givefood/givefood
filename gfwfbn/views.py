@@ -1,7 +1,7 @@
 import logging
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404, HttpResponseNotFound
 from django.db import IntegrityError
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page
@@ -20,7 +20,7 @@ from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLo
 
 
 @cache_page(60*10)
-def public_what_food_banks_need(request):
+def index(request):
 
     headless = request.GET.get("headless", False)
     where_from = request.GET.get("from", False)
@@ -51,17 +51,17 @@ def public_what_food_banks_need(request):
         "gmap_key":gmap_key,
         "location_results":location_results,
     }
-    return render(request, "wfbn_index.html", template_vars)
+    return render(request, "wfbn/index.html", template_vars)
 
 
-def public_get_location(request):
+def get_location(request):
 
     lat_lng = request.META.get("HTTP_X_APPENGINE_CITYLATLONG")
     redirect_url = "/needs/?lat_lng=%s" % (lat_lng)
     return redirect(redirect_url)
 
 
-def public_what_food_banks_need_click(request, slug):
+def click(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     utm_querystring = "?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs"
@@ -73,21 +73,29 @@ def public_what_food_banks_need_click(request, slug):
 
 
 @cache_page(60*10)
-def public_wfbn_foodbank(request, slug):
+def foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    nearby_locations = find_locations(foodbank.latt_long, 10, True)
+    nearby_locations = find_locations(foodbank.latt_long, 20, True)
+
+    change_text = foodbank.latest_need().change_text
+
+    if change_text == "Unknown" or change_text == "Nothing":
+        template = "noneed"
+    else:
+        template = "withneed"
 
     template_vars = {
+        "section":"foodbank",
         "foodbank":foodbank,
         "nearby_locations":nearby_locations,
     }
 
-    return render(request, "wfbn_foodbank.html", template_vars)
+    return render(request, "wfbn/foodbank/index_%s.html" % (template), template_vars)
 
 
-@cache_page(60*30)
-def public_wfbn_foodbank_map(request, slug):
+@cache_page(60*60)
+def foodbank_map(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     gmap_static_key = get_cred("gmap_static_key")
@@ -104,39 +112,116 @@ def public_wfbn_foodbank_map(request, slug):
     result = urlfetch.fetch(url)
     return HttpResponse(result.content, content_type='image/png')
 
+
+@cache_page(60*30)
+def foodbank_locations(request,slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    if foodbank.no_locations == 0:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "section":"locations",
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/locations.html", template_vars)
+
+
+@cache_page(60*30)
+def foodbank_news(request,slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    # TODO: check if fb has news
+
+    template_vars = {
+        "section":"news",
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/news.html", template_vars)
+
+
 @cache_page(60*10)
-def public_wfbn_foodbank_history(request, slug):
+def foodbank_history(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).order_by("-created")[:25]
 
     template_vars = {
+        "section":"history",
         "foodbank":foodbank,
         "needs":needs,
     }
 
-    return render(request, "wfbn_foodbank_history.html", template_vars)
+    return render(request, "wfbn/foodbank/history.html", template_vars)
+
+
+@cache_page(60*30)
+def foodbank_politics(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    template_vars = {
+        "section":"politics",
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/politics.html", template_vars)
+
+
+@cache_page(60*30)
+def foodbank_socialmedia(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    # TODO: check if fb has social media
+
+    template_vars = {
+        "section":"socialmedia",
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/socialmedia.html", template_vars)
+
+
+@cache_page(60*30)
+def foodbank_nearby(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    nearby_locations = find_locations(foodbank.latt_long, 20, True)
+
+    template_vars = {
+        "section":"nearby",
+        "foodbank":foodbank,
+        "nearby":nearby_locations,
+    }
+
+    return render(request, "wfbn/foodbank/nearby.html", template_vars)
 
 
 @cache_page(60*10)
-def public_wfbn_foodbank_location(request, slug, locslug):
+def foodbank_location(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
 
-    nearby_locations = find_locations(location.latt_long, 10, True)
+    change_text = foodbank.latest_need().change_text
+    if change_text == "Unknown" or change_text == "Nothing":
+        template = "noneed"
+    else:
+        template = "withneed"
 
     template_vars = {
+        "section":"locations",
         "foodbank":foodbank,
         "location":location,
-        "nearby_locations":nearby_locations,
     }
 
-    return render(request, "wfbn_foodbank_location.html", template_vars)
+    return render(request, "wfbn/foodbank/location_%s.html" % (template), template_vars)
 
 
 @cache_page(60*30)
-def public_wfbn_foodbank_location_map(request, slug, locslug):
+def foodbank_location_map(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
@@ -148,14 +233,14 @@ def public_wfbn_foodbank_location_map(request, slug, locslug):
 
 
 @cache_page(60*5)
-def public_wfbn_constituencies(request):
+def constituencies(request):
 
     postcode = request.GET.get("postcode", None)
     if postcode:
         admin_regions = admin_regions_from_postcode(postcode)
         parl_con = admin_regions.get("parliamentary_constituency", None)
         if parl_con:
-            return HttpResponseRedirect(reverse("public_wfbn_constituency", kwargs={"slug":slugify(parl_con)}))
+            return HttpResponseRedirect(reverse("wfbn:constituency", kwargs={"slug":slugify(parl_con)}))
 
     constituencies = ParliamentaryConstituency.objects.all().order_by("name")
 
@@ -163,11 +248,11 @@ def public_wfbn_constituencies(request):
         "constituencies":constituencies,
     }
 
-    return render(request, "wfbn_constituencies.html", template_vars)
+    return render(request, "wfbn/constituencies.html", template_vars)
 
 
 @cache_page(60*5)
-def public_wfbn_constituency(request, slug):
+def constituency(request, slug):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
 
@@ -175,11 +260,11 @@ def public_wfbn_constituency(request, slug):
         "constituency":constituency,
     }
 
-    return render(request, "wfbn_constituency.html", template_vars)
+    return render(request, "wfbn/constituency.html", template_vars)
 
 
 @cache_page(60*30)
-def public_wfbn_constituency_mp_photo(request, slug, size):
+def constituency_mp_photo(request, slug, size):
 
     parl_con = get_object_or_404(ParliamentaryConstituency, slug=slug)
     result = urlfetch.fetch("https://storage.googleapis.com/mp_photos/%s/%s.png" % (size, parl_con.mp_parl_id))
@@ -188,10 +273,11 @@ def public_wfbn_constituency_mp_photo(request, slug, size):
 
 
 @csrf_exempt
-def public_what_food_banks_need_updates(request, action):
+def updates(request, slug, action):
 
     key = request.GET.get("key", None)
     email = request.POST.get("email", None)
+    foodbank = get_object_or_404(Foodbank, slug=slug)
 
     if action == "subscribe":
 
@@ -199,9 +285,6 @@ def public_what_food_banks_need_updates(request, action):
             validate_email(email)
         except forms.ValidationError:
             return HttpResponseForbidden()
-
-        foodbank_slug = request.POST.get("foodbank")
-        foodbank = get_object_or_404(Foodbank, slug=foodbank_slug)
 
         try:
             new_sub = FoodbankSubscriber(
@@ -215,8 +298,9 @@ def public_what_food_banks_need_updates(request, action):
             send_email(
                 email,
                 "Confirm your Give Food subscription",
-                "Someone asked for updates on %s foodbank from Give Food. Please confirm this was you by clicking this link...\n\nhttps://www.givefood.org.uk/needs/updates/confirm/?key=%s" % (
+                "Someone asked for updates on %s foodbank from Give Food. Please confirm this was you by clicking this link...\n\nhttps://www.givefood.org.uk/needs/at/%s/updates/confirm/?key=%s" % (
                     foodbank.name,
+                    foodbank.slug,
                     sub_key,
                 )
             )
@@ -245,24 +329,27 @@ def public_what_food_banks_need_updates(request, action):
 
 
     template_vars = {
+        "section":"details",
+        "foodbank":foodbank,
         "message":message,
     }
-    return render(request, "wfbn_updates.html", template_vars)
+    return render(request, "wfbn/foodbank/updates.html", template_vars)
 
 
 
-def public_wfbn_foodbank_edit(request, slug):
+def foodbank_edit(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
     template_vars = {
+        "section":"edit",
         "foodbank":foodbank,
     }
-    return render(request, "wfbn_foodbank_edit.html", template_vars)
+    return render(request, "wfbn/foodbank/edit/index.html", template_vars)
 
 
 @anonymous_csrf
-def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
+def foodbank_edit_form(request, slug, action, locslug = None):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = None
@@ -276,7 +363,7 @@ def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
                 foodbank_change.foodbank = foodbank
                 foodbank_change.input_method = "user"
                 foodbank_change.save()
-                return redirect("public_wfbn_foodbank_edit_thanks", slug = slug)
+                return redirect("wfbn:foodbank_edit_thanks", slug = slug)
         else:
             form = NeedForm(instance=foodbank.latest_need())
 
@@ -295,7 +382,7 @@ def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
                 "foodbank":foodbank.name,
                 "location":location,
             })
-            return redirect("public_wfbn_foodbank_edit_thanks", slug = slug)
+            return redirect("wfbn:foodbank_edit_thanks", slug = slug)
 
     if action == "contacts":
         heading = "Contact Information"
@@ -305,7 +392,7 @@ def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
             post_to_email(request.POST, {
                 "foodbank":foodbank.name,
             })
-            return redirect("public_wfbn_foodbank_edit_thanks", slug = slug)
+            return redirect("wfbn:foodbank_edit_thanks", slug = slug)
 
     if action == "closed":
         heading = "Closed"
@@ -315,9 +402,10 @@ def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
             post_to_email(request.POST, {
                 "foodbank":foodbank.name,
             }, "CLOSED")
-            return redirect("public_wfbn_foodbank_edit_thanks", slug = slug)
+            return redirect("wfbn:foodbank_edit_thanks", slug = slug)
 
     template_vars = {
+        "section":"edit",
         "foodbank":foodbank,
         "action":action,
         "locslug":locslug,
@@ -325,13 +413,14 @@ def public_wfbn_foodbank_edit_form(request, slug, action, locslug = None):
         "form":form,
         "heading":heading,
     }
-    return render(request, "wfbn_foodbank_edit_form.html", template_vars)
+    return render(request, "wfbn/foodbank/edit/form.html", template_vars)
 
 
-def public_wfbn_foodbank_edit_thanks(request, slug):
+def foodbank_edit_thanks(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     template_vars = {
+        "section":"edit",
         "foodbank":foodbank,
     }
-    return render(request, "wfbn_foodbank_edit_thanks.html", template_vars)
+    return render(request, "wfbn/foodbank/edit/thanks.html", template_vars)

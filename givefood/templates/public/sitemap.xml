@@ -1,40 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-	<url>
-		<loc>https://www.givefood.org.uk/</loc>
-	</url>
-	<url>
-		<loc>https://www.givefood.org.uk/2019/</loc>
-	</url>
-	<url>
-		<loc>https://www.givefood.org.uk/2020/</loc>
-	</url>
-	<url>
-		<loc>https://www.givefood.org.uk/api/</loc>
-	</url>
-	<url>
-		<loc>https://www.givefood.org.uk/needs/</loc>
-	</url>
-	<url>
-		<loc>https://www.givefood.org.uk/dashboard/</loc>
-	</url>
-	<url>
-		<loc>https://www.givefood.org.uk/needs/in/constituencies/</loc>
-	</url>
+	<url><loc>https://www.givefood.org.uk/</loc></url>
+	<url><loc>https://www.givefood.org.uk/2019/</loc></url>
+	<url><loc>https://www.givefood.org.uk/2020/</loc></url>
+	<url><loc>https://www.givefood.org.uk/api/</loc></url>
+	<url><loc>https://www.givefood.org.uk/needs/</loc></url>
+	<url><loc>https://www.givefood.org.uk/dashboard/</loc></url>
+	<url><loc>https://www.givefood.org.uk/needs/in/constituencies/</loc></url>
 	{% for foodbank in foodbanks %}
-		<url>
-			<loc>https://www.givefood.org.uk{% url 'public_wfbn_foodbank' foodbank.slug %}</loc>
-			<lastmod>{{ foodbank.modified|date:"Y-m-d" }}</lastmod>
-		</url>
+		<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank' foodbank.slug %}</loc></url>
+		<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_politics' foodbank.slug %}</loc></url>
+		<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_nearby' foodbank.slug %}</loc></url>
+		{% if foodbank.no_locations != 0 %}
+            <url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_locations' foodbank.slug %}</loc></url>
+        {% endif %}
+        {% if foodbank.rss_url %}
+            <url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_news' foodbank.slug %}</loc></url>
+        {% endif %}
+        {% if foodbank.facebook_page or foodbank.twitter_handle %}
+            <url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}</loc></url>
+        {% endif %}
 	{% endfor %}
 	{% for location in locations %}
-		<url>
-			<loc>https://www.givefood.org.uk/needs/at/{{ location.foodbank_slug }}/{{ location.slug}}/</loc>
-		</url>
+		<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}</loc></url>
 	{% endfor %}
 	{% for constituency in constituencies %}
-		<url>
-			<loc>https://www.givefood.org.uk{% url 'public_wfbn_constituency' constituency.slug %}</loc>
-		</url>
+		<url><loc>https://www.givefood.org.uk{% url 'wfbn:constituency' constituency.slug %}</loc></url>
 	{% endfor %}
 </urlset>

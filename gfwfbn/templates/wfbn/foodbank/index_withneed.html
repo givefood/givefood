@@ -1,0 +1,160 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn2.css">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
+  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:image" content="{% url 'wfbn:foodbank_map' foodbank.slug %}">
+  <link rel="manifest" href="/needs/manifest.json">
+  <meta name="geo.placename" content="{{ foodbank }} Food Bank">
+  <meta name="geo.position" content="{{ foodbank.latt_long }}">
+  <meta property="place:location:latitude" content="{{ foodbank.latt }}">
+  <meta property="place:location:longitude" content="{{ foodbank.long }}">
+  {% if foodbank.is_closed %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endblock %}
+
+{% block title %}{{ foodbank }} Food Bank - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns body">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="/" class="logo">Give Food</a>
+        </div>
+        
+        {% include 'wfbn/foodbank/includes/search.html' %}
+
+      </div>
+
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Home</a></li>
+                <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+                <li class="is-active"><a href="#" aria-current="page">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
+            </ul>
+      </nav>
+
+      <h1>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</h1>
+
+      <div class="columns">
+
+          <div class="column is-2">
+            {% include "wfbn/foodbank/includes/menu.html" %}
+          </div>
+
+          <div class="column">
+
+              <p>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} food bank{% endif %} is currently requesting the following items to be donated:</p>
+              <p class="needs">
+                {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}<br>
+                <em>Found on {{ foodbank.latest_need_date }}</em>
+              </p>
+              
+              <h3 id="subscribe">Subscribe</h3>
+              <p>Enter your email address and we'll update you when {{ foodbank }} food bank needs new items...</p>
+              <form action="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}" method="post">
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address">
+                    </div>
+                    <div class="control">
+                      <button type="submit" class="button is-link">Subscribe</button>
+                    </div>
+                </div>
+              </form>
+              <p class="is-size-7">We'll never use your email address for anything else, and you can unsubscribe at any time.</p>
+
+          </div>
+
+          <div class="column">
+
+            <div class="cta">
+              <a href="{{ foodbank.url }}" class="button is-info">Donate</a>
+              <a href="{% url 'wfbn:foodbank_politics' foodbank.slug %}" class="button is-info">Take Action</a>
+              <a href="#subscribe" class="button is-info">Subscribe</a>
+            </div>
+
+            <div id="map" class="sidemap"></div>
+            <address>
+              {{ foodbank.address|linebreaksbr }}<br>
+              {{ foodbank.postcode }}<br>
+              {{ foodbank.country }}
+            </address>
+
+            <div class="contacts is-size-6">
+              <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
+              {% if foodbank.phone_number %}
+                <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a><br>
+              {% endif %}
+              <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email|truncatechars:40 }}</a>
+
+              {% if foodbank.charity_number %}
+                <br><br>
+                <p>{{ foodbank }} food bank operates under a charity registered in {{ foodbank.country }}, charity number <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>.</p>
+              {% endif %}
+            </div>
+
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="/static/js/wfbn2.js" defer></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
+<script>
+function add_marker(lat, lng, url) {
+  position = new google.maps.LatLng(lat, lng)
+  var marker = new google.maps.Marker({
+  position: position,
+  map: map,
+  url: url
+});
+  bounds.extend(position);
+  google.maps.event.addListener(marker, "click", function () {
+  location.assign(marker.url);
+});
+}
+
+var map
+var bounds = new google.maps.LatLngBounds();
+function init_map() {
+var mapOptions = {
+  center: new google.maps.LatLng(55,-4),
+  zoom: 6,
+  mapTypeId: google.maps.MapTypeId.ROADMAP,
+};
+map = new google.maps.Map(document.getElementById("map"), mapOptions);
+add_marker({{ foodbank.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
+{% for location in foodbank.locations %}
+  add_marker({{ location.latt_long }}, "{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}")
+{% endfor %}
+google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+  var maxZoom = 15
+  if (this.getZoom() > maxZoom) {
+      this.setZoom(maxZoom);
+  }
+});
+map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
+map.panToBounds(bounds);
+}
+
+google.maps.event.addDomListener(window, 'load', init_map);
+</script>
+
+{% endblock %}
+

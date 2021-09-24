@@ -37,7 +37,7 @@ urlpatterns = (
     url(r'^static/img/map-allloc\.png$', RedirectView.as_view(url="/static/img/map.png")),
 
     # Apps
-    url(r'^needs/', include('gfwfbn.urls')),
+    url(r'^needs/', include('gfwfbn.urls', namespace="wfbn", app_name="gfwfbn")),
     url(r'^api/1/', include('gfapi1.urls')),
     url(r'^api/2/', include('gfapi2.urls')),
     url(r'^api/', include('gfapi2.urls')),
