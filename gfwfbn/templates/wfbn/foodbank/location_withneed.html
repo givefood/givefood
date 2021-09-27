@@ -65,7 +65,7 @@
               
               <h3 id="subscribe">Subscribe</h3>
               <p>Enter your email address and we'll update you when {{ foodbank }} food bank needs new items...</p>
-              <form action="{% url 'wfbn:updates' 'subscribe' %}" method="post">
+              <form action="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}" method="post">
                 <div class="field has-addons">
                     <div class="control is-expanded">
                       <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address">
@@ -74,7 +74,6 @@
                       <button type="submit" class="button is-link">Subscribe</button>
                     </div>
                 </div>
-                <input type="hidden" name="foodbank" value="{{ foodbank.slug }}">
               </form>
               <p class="is-size-7">We'll never use your email address for anything else, and you can unsubscribe at any time.</p>
 
