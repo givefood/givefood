@@ -73,6 +73,9 @@ class Foodbank(models.Model):
     def __str__(self):
         return self.name
 
+    def __unicode__(self):
+        return self.name
+
     def friendly_url(self):
         return make_url_friendly(self.url)
 
@@ -287,6 +290,9 @@ class FoodbankLocation(models.Model):
     ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     def __str__(self):
+        return self.name
+    
+    def __unicode__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -780,6 +786,9 @@ class ParliamentaryConstituency(models.Model):
 
 
     def __str__(self):
+        return self.name
+
+    def __unicode__(self):
         return self.name
 
     def save(self, *args, **kwargs):
