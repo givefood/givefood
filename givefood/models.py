@@ -760,7 +760,6 @@ class ParliamentaryConstituency(models.Model):
         constituency_foodbanks = []
         for foodbank in foodbanks:
             constituency_foodbanks.append({
-                "deduper":"foodbank-%s" % foodbank.name,
                 "name":foodbank.name,
                 "slug":foodbank.slug,
                 "lat_lng":foodbank.latt_long,
@@ -772,7 +771,6 @@ class ParliamentaryConstituency(models.Model):
 
         for location in locations:
             constituency_foodbanks.append({
-                "deduper":"location-%s" % location.name,
                 "name":location.name,
                 "slug":location.slug,
                 "lat_lng":location.latt_long,
@@ -781,8 +779,6 @@ class ParliamentaryConstituency(models.Model):
                 "shopping_list_url":location.foodbank.shopping_list_url,
                 "gf_url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
             })
-        
-        constituency_foodbanks = {v['deduper']:v for v in constituency_foodbanks}.values()
 
         return constituency_foodbanks
 
