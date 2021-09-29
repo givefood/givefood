@@ -760,6 +760,7 @@ class ParliamentaryConstituency(models.Model):
         constituency_foodbanks = []
         for foodbank in foodbanks:
             constituency_foodbanks.append({
+                "type":"organisation",
                 "name":foodbank.name,
                 "slug":foodbank.slug,
                 "lat_lng":foodbank.latt_long,
@@ -771,7 +772,9 @@ class ParliamentaryConstituency(models.Model):
 
         for location in locations:
             constituency_foodbanks.append({
+                "type":"location",
                 "name":location.name,
+                "foodbank_name":location.foodbank_name,
                 "slug":location.slug,
                 "lat_lng":location.latt_long,
                 "needs":location.latest_need(),

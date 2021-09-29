@@ -1,3 +1,7 @@
+details summary { 
+    cursor: pointer;
+  }
+  
 .headerimg {
     padding-top:100px;
     margin-bottom:15px;
@@ -86,6 +90,9 @@ h1 {
     height:300px;
     margin-bottom:10px;
 }
+.parlconmap {
+    height:1000px;
+}
 .mainmap {
     height:500px;
 }
@@ -97,7 +104,13 @@ address {
 }
 .thediff {
     padding-left:20px;
-  }
+}
 .nochange span {
     background:#fff87f;
+}
+.table td.foodbank_name {
+    padding-left:0;
+}
+.parent_org {
+    font-size:0.8em;
 }

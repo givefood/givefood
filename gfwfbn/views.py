@@ -232,7 +232,7 @@ def foodbank_location_map(request, slug, locslug):
     return HttpResponse(result.content, content_type='image/png')
 
 
-@cache_page(60*5)
+@cache_page(60*10)
 def constituencies(request):
 
     postcode = request.GET.get("postcode", None)
@@ -248,10 +248,10 @@ def constituencies(request):
         "constituencies":constituencies,
     }
 
-    return render(request, "wfbn/constituencies.html", template_vars)
+    return render(request, "wfbn/constituency/index.html", template_vars)
 
 
-@cache_page(60*5)
+@cache_page(60*10)
 def constituency(request, slug):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
@@ -260,10 +260,10 @@ def constituency(request, slug):
         "constituency":constituency,
     }
 
-    return render(request, "wfbn/constituency.html", template_vars)
+    return render(request, "wfbn/constituency/constituency.html", template_vars)
 
 
-@cache_page(60*30)
+@cache_page(60*60)
 def constituency_mp_photo(request, slug, size):
 
     parl_con = get_object_or_404(ParliamentaryConstituency, slug=slug)
