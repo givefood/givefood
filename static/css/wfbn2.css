@@ -117,3 +117,9 @@ address {
 .parent_org {
     font-size:0.8em;
 }
+.subscribe-tease {
+    margin-bottom:5px;
+}
+.subscribe-hint {
+    margin-top:5px;
+}
