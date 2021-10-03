@@ -19,6 +19,9 @@ details summary {
     }
 }
 @media screen and (max-width: 769px) {
+    .headerimg {
+        display:none;
+    }
     .search {
         display:none;
     }
