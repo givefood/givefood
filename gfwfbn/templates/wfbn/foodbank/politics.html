@@ -57,11 +57,14 @@
 
             <p>This food bank is in the <a href="{% url "wfbn:constituency" foodbank.parliamentary_constituency_slug %}">{{ foodbank.parliamentary_constituency_name }} constituency</a> ({{ foodbank.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} MP">{{ foodbank.mp }} MP</a> of the {{ foodbank.mp_party }} party.</p>
 
-            <p>You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.</p>
+            <p>You can use <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}" id="write_link">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.</p>
             
           </div>
 
           <div class="column">
+            <div class="cta">
+              <a href="https://www.writetothem.com/who?pc={{ foodbank.postcode }}" class="button is-info" id="write_btn">Write</a>
+            </div>
             <div id="map" class="sidemap"></div>
           </div>
 

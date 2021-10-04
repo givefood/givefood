@@ -56,11 +56,11 @@
           <div class="column">
 
             <div class="contacts is-size-6">
-                <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
+                <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
                 {% if foodbank.phone_number %}
-                  <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ location.phone_or_foodbank_phone }}">{{ location.phone_or_foodbank_phone }}</a><br>
+                  <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ location.phone_or_foodbank_phone }}" id="phone_link">{{ location.phone_or_foodbank_phone }}</a><br>
                 {% endif %}
-                <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
+                <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}" id="email_link">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
               </div>
 
           </div>
@@ -68,8 +68,8 @@
           <div class="column is-7">
 
             <div class="cta">
-              <a href="{{ foodbank.url }}" class="button is-info">Donate</a>
-              <a href="{% url 'wfbn:foodbank_politics' foodbank.slug %}" class="button is-info">Take Action</a>
+              <a href="{{ foodbank.url }}" class="button is-info" id="donate_btn">Donate</a>
+              <a href="{% url 'wfbn:foodbank_politics' foodbank.slug %}" class="button is-info" id="takeaction_btn">Take Action</a>
             </div>
 
             <div id="map" class="sidemap"></div>
