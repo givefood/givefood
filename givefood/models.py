@@ -17,9 +17,9 @@ from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_food
 
 class Foodbank(models.Model):
 
-    name = models.CharField(max_length=50)
-    alt_name = models.CharField(max_length=50, null=True, blank=True, help_text="E.g. Welsh version of the name")
-    slug = models.CharField(max_length=50, editable=False)
+    name = models.CharField(max_length=100)
+    alt_name = models.CharField(max_length=100, null=True, blank=True, help_text="E.g. Welsh version of the name")
+    slug = models.CharField(max_length=100, editable=False)
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     delivery_address = models.TextField(null=True, blank=True)
@@ -264,14 +264,14 @@ class Foodbank(models.Model):
 class FoodbankLocation(models.Model):
 
     foodbank = models.ForeignKey(Foodbank)
-    foodbank_name = models.CharField(max_length=50, editable=False)
-    foodbank_slug = models.CharField(max_length=50, editable=False)
+    foodbank_name = models.CharField(max_length=100, editable=False)
+    foodbank_slug = models.CharField(max_length=100, editable=False)
     foodbank_network = models.CharField(max_length=50, editable=False)
     foodbank_phone_number = models.CharField(max_length=20, null=True, blank=True, editable=False)
     foodbank_email = models.EmailField(editable=False)
 
-    name = models.CharField(max_length=50)
-    slug = models.CharField(max_length=50, editable=False)
+    name = models.CharField(max_length=100)
+    slug = models.CharField(max_length=100, editable=False)
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
@@ -372,7 +372,7 @@ class Order(models.Model):
 
     order_id = models.CharField(max_length=50, editable=False)
     foodbank = models.ForeignKey(Foodbank)
-    foodbank_name = models.CharField(max_length=50, editable=False)
+    foodbank_name = models.CharField(max_length=100, editable=False)
     items_text = models.TextField()
     need = models.ForeignKey("FoodbankChange", null=True, blank=True)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
@@ -548,7 +548,7 @@ class FoodbankArticle(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
-    foodbank_name = models.CharField(max_length=50, editable=False, null=True, blank=True)
+    foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
 
     published_date = models.DateTimeField(editable=False)
     title = models.CharField(max_length=250)
@@ -572,7 +572,7 @@ class FoodbankChange(models.Model):
     need_id = models.CharField(max_length=8, editable=False)
 
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
-    foodbank_name = models.CharField(max_length=50, editable=False, null=True, blank=True)
+    foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
 
     distill_id = models.CharField(max_length=250, null=True, blank=True)
     name = models.CharField(max_length=250, null=True, blank=True)
@@ -845,7 +845,7 @@ class FoodbankSubscriber(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_contacted = models.DateTimeField(editable=False, null=True, blank=True)
     foodbank = models.ForeignKey(Foodbank)
-    foodbank_name = models.CharField(max_length=50, editable=False, null=True, blank=True)
+    foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
     email = models.EmailField()
     confirmed = models.BooleanField(default=False)
 
