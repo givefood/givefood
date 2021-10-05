@@ -856,7 +856,9 @@ def subscriptions(request):
 def delete_subscription(request):
 
     email = request.POST.get("email")
-    subscriber = get_object_or_404(FoodbankSubscriber, email = email)
+    foodbank_slug = request.POST.get("foodbank")
+    foodbank = get_object_or_404(Foodbank, slug = foodbank_slug)
+    subscriber = get_object_or_404(FoodbankSubscriber, email = email, foodbank = foodbank)
     subscriber.delete()
 
     return redirect("admin_subscriptions")
