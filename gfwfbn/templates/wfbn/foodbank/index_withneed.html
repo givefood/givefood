@@ -85,12 +85,9 @@
                 <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number }}" id="phone_link">{{ foodbank.phone_number }}</a><br>
               {% endif %}
               <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}" id="email_link">{{ foodbank.contact_email|truncatechars:40 }}</a>
-
-              {% if foodbank.charity_number %}
-                <br><br>
-                <p>{{ foodbank }} food bank operates under a charity registered in {{ foodbank.country }}, charity number <a href="{{ foodbank.charity_register_url }}" id="charity_link">{{ foodbank.charity_number }}</a>.</p>
-              {% endif %}
             </div>
+
+            {% include "wfbn/foodbank/includes/charity.html" %}
 
           </div>
       </div>

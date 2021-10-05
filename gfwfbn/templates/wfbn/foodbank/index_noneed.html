@@ -54,7 +54,6 @@
 
           <div class="column">
 
-
             <div class="contacts is-size-6">
               <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
               {% if foodbank.phone_number %}
@@ -63,9 +62,7 @@
               <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}" id="email_link">{{ foodbank.contact_email|truncatechars:40 }}</a>
             </div>
 
-            {% if foodbank.charity_number %}
-              <br><p>{{ foodbank }} food bank operates under a charity registered in {{ foodbank.country }}, charity number <a href="{{ foodbank.charity_register_url }}" id="charity_link">{{ foodbank.charity_number }}</a>.</p>
-            {% endif %}
+            {% include "wfbn/foodbank/includes/charity.html" %}
 
           </div>
 
