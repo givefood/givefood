@@ -2,9 +2,9 @@ from django.conf.urls import include, url
 from views import *
 
 urlpatterns = (
-    url(r'^precacher/$', offline_precacher, name="offline_precacher"),
-    url(r'^search/cleanup/$', offline_search_cleanup, name="offline_search_cleanup"),
-    url(r'^search/saver/$', offline_search_saver, name="offline_search_saver"),
-    url(r'^search/hydrate/$', offline_fire_search_hydrate, name="offline_fire_search_hydrate"),
-    url(r'^crawl_articles/$', offline_crawl_articles, name="offline_crawl_articles"),
+    url(r'^precacher/$', precacher, name="precacher"),
+    url(r'^search/cleanup/$', search_cleanup, name="search_cleanup"),
+    url(r'^search/saver/$', search_saver, name="search_saver"),
+    url(r'^search/hydrate/$', fire_search_hydrate, name="fire_search_hydrate"),
+    url(r'^crawl_articles/$', crawl_articles, name="crawl_articles"),
 )

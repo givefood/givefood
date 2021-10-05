@@ -13,7 +13,7 @@ from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch, Foodb
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 
 
-def offline_precacher(request):
+def precacher(request):
 
     all_locations = FoodbankLocation.objects.all()
     memcache.add(LOC_MC_KEY, all_locations, 3600)
@@ -24,7 +24,7 @@ def offline_precacher(request):
     return HttpResponse("OK")
 
 
-def offline_search_cleanup(request):
+def search_cleanup(request):
 
     # Remove sample searches
     searches = ApiFoodbankSearch.objects.filter(latt_long = "51.178889,-1.826111")
@@ -44,7 +44,7 @@ def offline_search_cleanup(request):
     return HttpResponse("OK")
 
 
-def offline_search_saver(request):
+def search_saver(request):
 
     searches = ApiFoodbankSearch.objects.all()
     for search in searches:
@@ -53,7 +53,7 @@ def offline_search_saver(request):
     return HttpResponse("OK")
 
 
-def offline_fire_search_hydrate(request):
+def fire_search_hydrate(request):
 
     logging.info("Firing search hydration")
 
@@ -88,7 +88,7 @@ def hydrate_search_log(search):
     return HttpResponse("OK")
 
 
-def offline_crawl_articles(request):
+def crawl_articles(request):
 
     foodbanks_with_rss = Foodbank.objects.filter(rss_url__isnull=False)
 
