@@ -11,12 +11,12 @@ from givefood.models import Foodbank, FoodbankChange, FoodbankArticle
 from givefood.func import group_list
 
 @cache_page(60*10)
-def dash_index(request):
-    return render(request, "dash_index.html")
+def index(request):
+    return render(request, "dash/index.html")
 
 
 @cache_page(60*10)
-def dash_weekly_itemcount(request):
+def weekly_itemcount(request):
 
     week_needs = OrderedDict()
 
@@ -32,11 +32,11 @@ def dash_weekly_itemcount(request):
     template_vars = {
         "week_needs":week_needs,
     }
-    return render(request, "dash_weekly_itemcount.html", template_vars)
+    return render(request, "dash/weekly_itemcount.html", template_vars)
 
 
 @cache_page(60*10)
-def dash_most_requested_items(request):
+def most_requested_items(request):
 
     # Handle allowed day parameters
     default_days = 30
@@ -96,11 +96,11 @@ def dash_most_requested_items(request):
         "trusselltrust":trusselltrust,
     }
 
-    return render(request, "dash_most_requested_items.html", template_vars)
+    return render(request, "dash/most_requested_items.html", template_vars)
 
 
 @cache_page(60*10)
-def dash_tt_old_data(request):
+def tt_old_data(request):
 
     recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
     old = Foodbank.objects.filter(network = "Trussell Trust").order_by("last_need")[:100]
@@ -109,15 +109,15 @@ def dash_tt_old_data(request):
         "recent":recent,
         "old":old,
     }
-    return render(request, "dash_tt_old_data.html", template_vars)
+    return render(request, "dash/tt_old_data.html", template_vars)
 
 
 @cache_page(60*10)
-def dash_articles(request):
+def articles(request):
 
     articles = FoodbankArticle.objects.all().order_by("-published_date")[:200]
 
     template_vars = {
         "articles":articles,
     }
-    return render(request, "dash_articles.html", template_vars)
+    return render(request, "dash/articles.html", template_vars)

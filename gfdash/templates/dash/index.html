@@ -14,7 +14,7 @@
         <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
           <ul>
             <li><a href="{% url 'public_index' %}">Give Food</a></li>
-            <li class="is-active"><a href="{% url 'dash_index' %}" aria-current="page">Dashboards</a></li>
+            <li class="is-active"><a href="{% url 'dash:index' %}" aria-current="page">Dashboards</a></li>
           </ul>
         </nav>
         <div class="columns">
@@ -24,16 +24,16 @@
             
             <h2>General</h2>
             <ul>
-              <li><a href="{% url 'dash_weekly_itemcount' %}">Items requested weekly</a> - Number of items requested by UK food banks per week</li>
-              <li><a href="{% url 'dash_most_requested_items' %}">Most requested items</a> - Most requested items by all food banks we know of</li>
-              <li><a href="{% url 'dash_articles' %}">Articles</a> - All the articles we've found published by all the food banks we know of</li>
+              <li><a href="{% url 'dash:weekly_itemcount' %}">Items requested weekly</a> - Number of items requested by UK food banks per week</li>
+              <li><a href="{% url 'dash:most_requested_items' %}">Most requested items</a> - Most requested items by all food banks we know of</li>
+              <li><a href="{% url 'dash:articles' %}">Articles</a> - All the articles we've found published by all the food banks we know of</li>
             </ul>
 
             <br>
             <h2>Trussell Trust</h2>
             <ul>
-              <li><a href="{% url 'dash_tt_old_data' %}">Trussell Trust - old data</a> - Trussell Trust food banks that haven't updated their shopping lists</li>
-              <li><a href="{% url 'dash_tt_most_requested_items' %}">Trussell Trust - most requested items</a> - Most requested items by Trussell Trust food banks</li>
+              <li><a href="{% url 'dash:tt_old_data' %}">Trussell Trust - old data</a> - Trussell Trust food banks that haven't updated their shopping lists</li>
+              <li><a href="{% url 'dash:tt_most_requested_items' %}">Trussell Trust - most requested items</a> - Most requested items by Trussell Trust food banks</li>
             </ul>
 
             <br><br>

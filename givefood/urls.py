@@ -42,7 +42,7 @@ urlpatterns = (
     url(r'^api/2/', include('gfapi2.urls')),
     url(r'^api/', include('gfapi2.urls')),
     url(r'^admin/', include('gfadmin.urls')),
-    url(r'^dashboard/', include('gfdash.urls')),
+    url(r'^dashboard/', include('gfdash.urls', namespace="dash", app_name="gfdash")),
     url(r'^offline/', include('gfoffline.urls')),
 
     # CSP & Auth
