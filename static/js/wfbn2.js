@@ -26,6 +26,7 @@ function init() {
 
 function record_conversion() {
   gtag('event', 'conversion', {'send_to': 'AW-448372895/rBD8CKOqkPABEJ_B5tUB'});
+  plausible('conversion')
 }
 
 function do_geolocation(event) {
