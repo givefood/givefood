@@ -14,7 +14,7 @@
         </td>
         <td>
           {% if need.foodbank_name %}
-              <a href="{% url 'admin_foodbank' need.foodbank_name_slug %}">
+              <a href="{% url 'admin:foodbank' need.foodbank_name_slug %}">
                 {{ need.foodbank_name }}
               </a>
           {% else %}
@@ -22,7 +22,7 @@
           {% endif %}
         </td>
         <td>
-          <a href="{% url "admin_need" need.need_id %}">
+          <a href="{% url "admin:need" need.need_id %}">
             {{ need.created|timesince }} ago
           </a>
         </td>

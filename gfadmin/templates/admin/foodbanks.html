@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% extends "admin/page.html" %}
 {% load humanize %}
 
 {% block title %}Food Banks - GF Admin{% endblock %}
@@ -41,7 +41,7 @@
         </tr>
         {% for foodbank in foodbanks %}
           <tr>
-            <td><a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
+            <td><a href="{% url "admin:foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
             <td>{{ foodbank.postcode }}</td>
             <td>
               {% if foodbank.charity_number %}

@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% extends "admin/page.html" %}
 {% load humanize %}
 
 {% block title %}Orders - GF Admin{% endblock %}
@@ -40,7 +40,7 @@
         </tr>
         {% for order in orders %}
           <tr>
-            <td><a href="{% url "admin_order" order.order_id %}">{{ order.order_id }}</a></td>
+            <td><a href="{% url "admin:order" order.order_id %}">{{ order.order_id }}</a></td>
             <td>{{ order.foodbank_name }}</td>
             <td>{{ order.country }}</td>
             <td>{{ order.delivery_datetime }}</td>

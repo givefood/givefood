@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% extends "admin/page.html" %}
 {% load humanize %}
 
 {% block title %}Give Food Admin{% endblock %}
@@ -9,34 +9,34 @@
 
     <div class="column">
       <h2>Needs</h2>
-      <a href="{% url "admin_newneed" %}" class="button is-link">New Need</a><br><br>
+      <a href="{% url "admin:newneed" %}" class="button is-link">New Need</a><br><br>
 
       <h3>Unpublished</h3>
-      {% include "includes/needtable.html" with needs=unpublished_needs %}
+      {% include "admin/includes/needtable.html" with needs=unpublished_needs %}
 
       <h3>Published</h3>
-      {% include "includes/needtable.html" with needs=published_needs %}
+      {% include "admin/includes/needtable.html" with needs=published_needs %}
     </div>
 
     <div class="column">
 
       <h2>Orders</h2>
-      <a href="{% url "admin_neworder" %}" class="button is-link">New Order</a><br><br>
+      <a href="{% url "admin:neworder" %}" class="button is-link">New Order</a><br><br>
 
       <h3>Today ({{ today_orders.count }})</h3>
-      {% include "includes/ordertable.html" with orders=today_orders %}
+      {% include "admin/includes/ordertable.html" with orders=today_orders %}
 
       <h3>Upcoming ({{ upcoming_orders.count }})</h3>
-      {% include "includes/ordertable.html" with orders=upcoming_orders %}
+      {% include "admin/includes/ordertable.html" with orders=upcoming_orders %}
 
       <h3>Previous</h3>
-      {% include "includes/ordertable.html" with orders=prev_orders %}
+      {% include "admin/includes/ordertable.html" with orders=prev_orders %}
     </div>
 
     <div class="column">
 
       <h2>Foodbanks</h2>
-      <a href="{% url "admin_newfoodbank" %}" class="button is-link">New Food Bank</a>
+      <a href="{% url "admin:newfoodbank" %}" class="button is-link">New Food Bank</a>
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th></th>
@@ -48,7 +48,7 @@
               {% if foodbank.is_closed %}
                 <span style="color:red">X</span>
               {% endif %}
-              <a href="{% url "admin_foodbank" foodbank.slug %}">{{ foodbank }}</a>
+              <a href="{% url "admin:foodbank" foodbank.slug %}">{{ foodbank }}</a>
             </td>
             <td>{{ foodbank.last_order }}</td>
           </tr>

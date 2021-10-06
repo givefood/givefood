@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% extends "admin/page.html" %}
 {% load humanize %}
 
 {% block title %}Needs - GF Admin{% endblock %}
@@ -36,7 +36,7 @@
               {% if need.input_method == "user" %}🧑{% endif%}
             </td>
             <td>
-              <a href="{% url "admin_need" need.need_id %}">{{ need.need_id }}</a>
+              <a href="{% url "admin:need" need.need_id %}">{{ need.need_id }}</a>
             </td>
             <td>{{ need.foodbank_name }}</td>
             <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>

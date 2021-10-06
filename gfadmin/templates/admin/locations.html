@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% extends "admin/page.html" %}
 {% load humanize %}
 
 {% block title %}Locations - GF Admin{% endblock %}
@@ -34,8 +34,8 @@
         </tr>
         {% for location in locations %}
           <tr>
-            <td><a href="{% url "admin_foodbank" location.foodbank_slug %}">{{ location.foodbank_name }}</a></td>
-            <td><a href="{% url 'admin_fblocation_edit' location.foodbank_slug location.slug %}">{{ location.name }}</a></td>
+            <td><a href="{% url "admin:foodbank" location.foodbank_slug %}">{{ location.foodbank_name }}</a></td>
+            <td><a href="{% url 'admin:fblocation_edit' location.foodbank_slug location.slug %}">{{ location.name }}</a></td>
             <td>{{ location.address }} {{ location.postcode }}</td>
             <td>{{ location.parliamentary_constituency }}</td>
             <td>{{ location.mp }}</td>

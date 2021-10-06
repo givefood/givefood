@@ -46,7 +46,7 @@ def index(request):
         "published_needs":published_needs,
         "section":"home",
     }
-    return render(request, "admin_index.html", template_vars)
+    return render(request, "admin/index.html", template_vars)
 
 
 def searches(request):
@@ -58,7 +58,7 @@ def searches(request):
         "section":"searches",
     }
 
-    return render(request, "searches.html", template_vars)
+    return render(request, "admin/searches.html", template_vars)
 
 
 def searches_csv(request):
@@ -75,12 +75,12 @@ def searches_csv(request):
     return response
 
 
-def search(request):
+def search_results(request):
 
     query = request.GET.get("q")
     foodbank = get_object_or_404(Foodbank, name=query)
 
-    return redirect("admin_foodbank", slug = foodbank.slug)
+    return redirect("foodbank", slug = foodbank.slug)
 
 
 def foodbanks(request):
@@ -106,7 +106,7 @@ def foodbanks(request):
         "foodbanks":foodbanks,
         "section":"foodbanks",
     }
-    return render(request, "foodbanks.html", template_vars)
+    return render(request, "admin/foodbanks.html", template_vars)
 
 
 def foodbanks_csv(request):
@@ -130,7 +130,7 @@ def foodbanks_christmascards(request):
     template_vars = {
         "foodbanks":foodbanks,
     }
-    return render(request, "foodbanks_christmascards.html", template_vars)
+    return render(request, "admin/foodbanks_christmascards.html", template_vars)
 
 
 def orders(request):
@@ -157,7 +157,7 @@ def orders(request):
         "orders":orders,
         "section":"orders",
     }
-    return render(request, "orders.html", template_vars)
+    return render(request, "admin/orders.html", template_vars)
 
 
 def orders_csv(request):
@@ -182,7 +182,7 @@ def needs(request):
         "needs":needs,
         "section":"needs",
     }
-    return render(request, "needs.html", template_vars)
+    return render(request, "admin/needs.html", template_vars)
 
 
 def needs_csv(request):
@@ -206,7 +206,7 @@ def order(request, id):
     template_vars = {
         "order":order,
     }
-    return render(request, "order.html", template_vars)
+    return render(request, "admin/order.html", template_vars)
 
 
 def order_form(request, id = None):
@@ -226,7 +226,7 @@ def order_form(request, id = None):
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
             order = form.save()
-            return redirect("admin_order", id = order.order_id)
+            return redirect("admin:order", id = order.order_id)
     else:
         if foodbank:
             form = OrderForm(instance=order, initial={"foodbank":foodbank})
@@ -245,14 +245,14 @@ def order_form(request, id = None):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 @require_POST
 def order_send_notification(request, id = None):
 
     order = get_object_or_404(Order, order_id = id)
-    email_body = render_to_string("notification_email.txt",{"order":order})
+    email_body = render_to_string("admin/notification_email.txt",{"order":order})
     send_email(
         to = order.foodbank.notification_email,
         cc = "deliveries@givefood.org.uk",
@@ -262,7 +262,7 @@ def order_send_notification(request, id = None):
 
     order.notification_email_sent = datetime.now()
     order.save()
-    redir_url = "%s?donenotification=true" % (reverse("admin_order", kwargs={'id': order.order_id}))
+    redir_url = "%s?donenotification=true" % (reverse("admin:order", kwargs={'id': order.order_id}))
     return redirect(redir_url)
 
 
@@ -270,7 +270,7 @@ def order_delete(request, id):
 
     order = get_object_or_404(Order, order_id = id)
     order.delete()
-    return redirect(reverse("admin_index"))
+    return redirect(reverse("admin:index"))
 
 
 def foodbank(request, slug):
@@ -280,7 +280,7 @@ def foodbank(request, slug):
     template_vars = {
         "foodbank":foodbank,
     }
-    return render(request, "foodbank.html", template_vars)
+    return render(request, "admin/foodbank.html", template_vars)
 
 
 def foodbank_form(request, slug = None):
@@ -296,7 +296,7 @@ def foodbank_form(request, slug = None):
         form = FoodbankForm(request.POST, instance=foodbank)
         if form.is_valid():
             foodbank = form.save()
-            return redirect("admin_foodbank", slug = foodbank.slug)
+            return redirect("admin:foodbank", slug = foodbank.slug)
     else:
         form = FoodbankForm(instance=foodbank)
 
@@ -304,7 +304,7 @@ def foodbank_form(request, slug = None):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 def foodbank_politics_form(request, slug = None):
@@ -319,7 +319,7 @@ def foodbank_politics_form(request, slug = None):
         form = FoodbankPoliticsForm(request.POST, instance=foodbank)
         if form.is_valid():
             foodbank = form.save()
-            return redirect("admin_foodbank", slug = foodbank.slug)
+            return redirect("admin:foodbank", slug = foodbank.slug)
     else:
         form = FoodbankPoliticsForm(instance=foodbank)
 
@@ -327,7 +327,7 @@ def foodbank_politics_form(request, slug = None):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 def fblocation_form(request, slug = None, loc_slug = None):
@@ -347,7 +347,7 @@ def fblocation_form(request, slug = None, loc_slug = None):
         form = FoodbankLocationForm(request.POST, instance=foodbank_location)
         if form.is_valid():
             foodbank_location = form.save()
-            return redirect("admin_foodbank", slug = foodbank_location.foodbank_slug)
+            return redirect("admin:foodbank", slug = foodbank_location.foodbank_slug)
     else:
         form = FoodbankLocationForm(instance=foodbank_location, initial={"foodbank":foodbank})
 
@@ -355,7 +355,7 @@ def fblocation_form(request, slug = None, loc_slug = None):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 def fblocation_politics_edit(request, slug, loc_slug):
@@ -370,7 +370,7 @@ def fblocation_politics_edit(request, slug, loc_slug):
         form = FoodbankLocationPoliticsForm(request.POST, instance=foodbank_location)
         if form.is_valid():
             foodbank_location = form.save()
-            return redirect("admin_foodbank", slug = foodbank_location.foodbank.slug)
+            return redirect("admin:foodbank", slug = foodbank_location.foodbank.slug)
     else:
         form = FoodbankLocationPoliticsForm(instance=foodbank_location)
 
@@ -378,7 +378,7 @@ def fblocation_politics_edit(request, slug, loc_slug):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 @require_POST
@@ -387,7 +387,7 @@ def fblocation_delete(request, slug, loc_slug):
     foodbank_location = get_object_or_404(FoodbankLocation, foodbank_slug = slug, slug = loc_slug)
     foodbank_location.delete()
 
-    return redirect("admin_foodbank", slug = foodbank_location.foodbank_slug)
+    return redirect("admin:foodbank", slug = foodbank_location.foodbank_slug)
 
 
 def need(request, id):
@@ -399,7 +399,7 @@ def need(request, id):
         "need":need,
         "subscribers":subscribers,
     }
-    return render(request, "need.html", template_vars)
+    return render(request, "admin/need.html", template_vars)
 
 
 def need_form(request, id = None):
@@ -420,7 +420,7 @@ def need_form(request, id = None):
         form = NeedForm(request.POST, instance=need)
         if form.is_valid():
             need = form.save()
-            return redirect("admin_need", id = need.need_id)
+            return redirect("admin:need", id = need.need_id)
     else:
         if foodbank:
             form = NeedForm(instance=need, initial={"foodbank":foodbank})
@@ -431,7 +431,7 @@ def need_form(request, id = None):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 @require_POST
@@ -439,7 +439,7 @@ def need_delete(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
     deferred.defer(need.delete)
-    return redirect("admin_index")
+    return redirect("admin:index")
 
 
 @require_POST
@@ -451,7 +451,7 @@ def need_publish(request, id, action):
     if action == "unpublish":
         need.published = False
     need.save()
-    return redirect("admin_index")
+    return redirect("admin:index")
 
 
 @require_POST
@@ -472,7 +472,7 @@ def need_notifications(request, id):
     for subscriber in subscribers:
         deferred.defer(post_to_subscriber, need, subscriber)
 
-    return redirect("admin_index")
+    return redirect("admin:index")
 
 
 def locations(request):
@@ -493,7 +493,7 @@ def locations(request):
         "locations":locations,
         "section":"locations",
     }
-    return render(request, "locations.html", template_vars)
+    return render(request, "admin/locations.html", template_vars)
 
 
 def locations_loader_sa(request):
@@ -538,7 +538,7 @@ def items(request):
         "items":items,
         "section":"items",
     }
-    return render(request, "items.html", template_vars)
+    return render(request, "admin/items.html", template_vars)
 
 
 def item_form(request, slug = None):
@@ -554,7 +554,7 @@ def item_form(request, slug = None):
         form = OrderItemForm(request.POST, instance=item)
         if form.is_valid():
             need = form.save()
-            return redirect("admin_items")
+            return redirect("admin:items")
     else:
         form = OrderItemForm(instance=item)
 
@@ -562,7 +562,7 @@ def item_form(request, slug = None):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 def politics(request):
@@ -573,7 +573,7 @@ def politics(request):
         "parlcons":parlcons,
         "section":"politics",
     }
-    return render(request, "politics.html", template_vars)
+    return render(request, "admin/politics.html", template_vars)
 
 
 def politics_csv(request):
@@ -619,7 +619,7 @@ def map(request):
         "filter":filter,
         "section":"map",
     }
-    return render(request, "map.html", template_vars)
+    return render(request, "admin/map.html", template_vars)
 
 
 def stats(request):
@@ -675,7 +675,7 @@ def stats(request):
         "total_subscriptions":total_subscriptions,
         "section":"stats",
     }
-    return render(request, "stats.html", template_vars)
+    return render(request, "admin/stats.html", template_vars)
 
 
 def test_order_email(request, id):
@@ -685,7 +685,7 @@ def test_order_email(request, id):
     template_vars = {
         "order":order,
     }
-    return render(request, "notification_email.txt", template_vars, content_type='text/plain')
+    return render(request, "admin/notification_email.txt", template_vars, content_type='text/plain')
 
 
 def resave_orders(request):
@@ -710,7 +710,7 @@ def parlcon_form(request, slug = None):
         form = ParliamentaryConstituencyForm(request.POST, instance=parlcon)
         if form.is_valid():
             foodbank = form.save()
-            return redirect("admin_politics")
+            return redirect("admin:politics")
     else:
         form = ParliamentaryConstituencyForm(instance=parlcon)
 
@@ -718,7 +718,7 @@ def parlcon_form(request, slug = None):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 def parlcon_loader(request):
@@ -810,7 +810,7 @@ def settings(request):
     template_vars = {
         "section":"settings",
     }
-    return render(request, "settings.html", template_vars)
+    return render(request, "admin/settings.html", template_vars)
 
 
 def credentials(request):
@@ -821,7 +821,7 @@ def credentials(request):
         "section":"settings",
         "credentials":credentials,
     }
-    return render(request, "credentials.html", template_vars)
+    return render(request, "admin/credentials.html", template_vars)
 
 def credentials_form(request):
 
@@ -829,7 +829,7 @@ def credentials_form(request):
         form = GfCredentialForm(request.POST)
         if form.is_valid():
             need = form.save()
-            return redirect("admin_credentials")
+            return redirect("admin:credentials")
     else:
         form = GfCredentialForm()
         page_title = "New Credential"
@@ -838,7 +838,7 @@ def credentials_form(request):
         "form":form,
         "page_title":page_title,
     }
-    return render(request, "form.html", template_vars)
+    return render(request, "admin/form.html", template_vars)
 
 
 def subscriptions(request):
@@ -849,7 +849,7 @@ def subscriptions(request):
         "section":"settings",
         "subscriptions":subscriptions,
     }
-    return render(request, "subscriptions.html", template_vars)
+    return render(request, "admin/subscriptions.html", template_vars)
 
 
 @require_POST
@@ -861,10 +861,10 @@ def delete_subscription(request):
     subscriber = get_object_or_404(FoodbankSubscriber, email = email, foodbank = foodbank)
     subscriber.delete()
 
-    return redirect("admin_subscriptions")
+    return redirect("admin:subscriptions")
 
 
 def clearcache(request):
 
     memcache.flush_all()
-    return redirect("admin_index")
+    return redirect("admin:index")

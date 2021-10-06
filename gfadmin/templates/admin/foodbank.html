@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% extends "admin/page.html" %}
 {% load humanize %}
 
 {% block title %}{{ foodbank }} - GF Admin{% endblock %}
@@ -15,14 +15,14 @@
         <span class="tag is-danger">Closed</span>
       {% endif %}
 
-      <a href="{% url 'admin_foodbank_edit' foodbank.slug %}" class="button is-link">Edit Food Bank</a><br>
+      <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link">Edit Food Bank</a><br>
 
       {% if not foodbank.orders %}
-        <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
+        <a href="{% url "admin:neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
       {% endif %}
 
       {% if not foodbank.needs %}
-        <a href="{% url "admin_newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
+        <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
       {% endif %}
 
       {% if foodbank.notes %}
@@ -30,7 +30,7 @@
       {% endif %}
 
       <h3>Politics</h3>
-      <a href="{% url 'admin_foodbank_politics_edit' foodbank.slug %}" class="button is-small is-pulled-right">Edit</a>
+      <a href="{% url 'admin:foodbank_politics_edit' foodbank.slug %}" class="button is-small is-pulled-right">Edit</a>
       <dl>
         <dt>Parl. Con.</dt>
         <dd>{{ foodbank.parliamentary_constituency }}</dd>
@@ -140,14 +140,14 @@
       <br>
 
       <h3>Locations</h3>
-      <a href="{% url "admin_fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
+      <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
       <table class="table is-fullwidth locationtable">
         <tr>
           <td>
             Main
           </td>
           <td class="is-size-7">{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
-          <td><a href="{% url 'admin_foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
+          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
         </tr>
         {% if foodbank.delivery_address %}
           <tr>
@@ -155,7 +155,7 @@
               Delivery
             </td>
             <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
-            <td><a href="{% url 'admin_foodbank_edit' foodbank.slug %}#delivery_address" class="button is-small is-pulled-right">Edit</a></td>
+            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#delivery_address" class="button is-small is-pulled-right">Edit</a></td>
           </tr>
         {% endif %}
         {% for location in foodbank.locations %}
@@ -163,8 +163,8 @@
           <td>{{ location.name }}</td>
           <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
           <td>
-            <a href="{% url 'admin_fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
-            <form action="{% url 'admin_fblocation_delete' foodbank.slug location.slug %}" method="post">
+            <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
+            <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post">
               <input type="submit" class="button is-small is-danger is-pulled-right" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
               {% csrf_token %}
             </form>
@@ -176,7 +176,7 @@
 
     {% if foodbank.needs %}
       <div class="column">
-        <a href="{% url "admin_newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
+        <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th></th>
@@ -192,7 +192,7 @@
               </td>
               <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
               <td>
-                <a href="{% url "admin_need" need.need_id %}">
+                <a href="{% url "admin:need" need.need_id %}">
                   {{ need.created|timesince }} ago
                 </a>
               </td>
@@ -204,7 +204,7 @@
 
     {% if foodbank.orders %}
       <div class="column">
-        <a href="{% url "admin_neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
+        <a href="{% url "admin:neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th></th>
@@ -216,7 +216,7 @@
           {% for order in foodbank.orders %}
             <tr>
               <td class="delivery-provider-icon">{% if order.delivery_provider %}<img src="/static/img/delivery_provider/icon/{{ order.delivery_provider|slugify }}.png" width="12">{% endif %}</td>
-              <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
+              <td><a href="{% url 'admin:order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
               <td>{{ order.no_items }}</td>
               <td>£{{ order.natural_cost }}</td>
               <td>{% if order.notification_email_sent %}✉️{% endif %}</td>

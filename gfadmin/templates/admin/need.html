@@ -1,4 +1,4 @@
-{% extends "page.html" %}
+{% extends "admin/page.html" %}
 
 {% block title %}{{ need }} - GF Admin{% endblock %}
 
@@ -9,7 +9,7 @@
   <div class="columns">
 
     <div class="column">
-      <a href="{% url "admin_need_form" need.need_id %}" class="button is-link">Edit</a>
+      <a href="{% url "admin:need_form" need.need_id %}" class="button is-link">Edit</a>
       <dl>
         <dt>Published</dt>
         <dd>
@@ -40,7 +40,7 @@
         <dt>Foodbank</dt>
         <dd>
           {% if need.foodbank %}
-            <a href="{% url 'admin_foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a>
+            <a href="{% url 'admin:foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a>
           {% else %}
             Unknown
           {% endif %}
@@ -53,12 +53,12 @@
 
       <br>
       {% if need.published %}
-        <form action="{% url 'admin_need_publish' need.need_id 'unpublish' %}" method="post">
+        <form action="{% url 'admin:need_publish' need.need_id 'unpublish' %}" method="post">
           <input type="submit" class="button is-warning" value="Unpublish">
           {% csrf_token %}
         </form>
       {% else %}
-        <form action="{% url 'admin_need_publish' need.need_id 'publish' %}" method="post">
+        <form action="{% url 'admin:need_publish' need.need_id 'publish' %}" method="post">
           <input type="submit" class="button is-success" value="Publish">
           {% csrf_token %}
         </form>
@@ -66,7 +66,7 @@
       {% if need.change_text != "Nothing" %}
         {% if need.change_text != "Unknown" %}
           <br>
-          <form action="{% url 'admin_need_notifications' need.need_id %}" method="post">
+          <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
             <input type="submit" class="button is-danger" value="Send notifications">
             {% csrf_token %}
           </form>
@@ -74,7 +74,7 @@
         {% endif %}
       {% endif %}
       <br>
-      <form action="{% url 'admin_need_delete' need.need_id %}" method="post">
+      <form action="{% url 'admin:need_delete' need.need_id %}" method="post">
         <input type="submit" class="button is-danger" value="Delete" onclick="return confirm('Are you sure you want to DELETE?')">
         {% csrf_token %}
       </form>

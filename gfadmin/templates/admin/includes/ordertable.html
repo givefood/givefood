@@ -10,9 +10,9 @@
     {% for order in orders %}
       <tr>
         <td class="delivery-provider-icon">{% if order.delivery_provider %}<img src="/static/img/delivery_provider/icon/{{ order.delivery_provider|slugify }}.png">{% endif %}</td>
-        <td><a href="{% url 'admin_order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
+        <td><a href="{% url 'admin:order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
         <td>
-          <a href="{% url 'admin_foodbank' order.foodbank_name_slug %}">
+          <a href="{% url 'admin:foodbank' order.foodbank_name_slug %}">
             {{ order.foodbank_name }}
           </a>
         </td>
