@@ -252,7 +252,7 @@ def order_form(request, id = None):
 def order_send_notification(request, id = None):
 
     order = get_object_or_404(Order, order_id = id)
-    email_body = render_to_string("admin/notification_email.txt",{"order":order})
+    email_body = render_to_string("notification_email.txt",{"order":order})
     send_email(
         to = order.foodbank.notification_email,
         cc = "deliveries@givefood.org.uk",
@@ -685,7 +685,7 @@ def test_order_email(request, id):
     template_vars = {
         "order":order,
     }
-    return render(request, "admin/notification_email.txt", template_vars, content_type='text/plain')
+    return render(request, "notification_email.txt", template_vars, content_type='text/plain')
 
 
 def resave_orders(request):
