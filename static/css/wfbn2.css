@@ -123,3 +123,6 @@ address {
 .subscribe-hint {
     margin-top:5px;
 }
+details ul {
+    margin-left:1em;
+}
