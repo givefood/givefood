@@ -80,7 +80,7 @@ def search_results(request):
     query = request.GET.get("q")
     foodbank = get_object_or_404(Foodbank, name=query)
 
-    return redirect("foodbank", slug = foodbank.slug)
+    return redirect("admin:foodbank", slug = foodbank.slug)
 
 
 def foodbanks(request):
