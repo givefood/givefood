@@ -28,7 +28,7 @@
         <table class="table is-narrow is-fullwidth">
             {% for article in articles %}
                 <tr>
-                    <td>{{ article.foodbank_name }}</td>
+                    <td><a href="{% url 'wfbn:foodbank' article.foodbank_name_slug %}">{{ article.foodbank_name }}</a></td>
                     <td><a href="{{ article.url }}">{{ article.title|title|truncatewords:10 }}</a></td>
                     <td>{{ article.published_date }}</td>
                 </tr>

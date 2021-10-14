@@ -554,6 +554,9 @@ class FoodbankArticle(models.Model):
     title = models.CharField(max_length=250)
     url = models.CharField(max_length=250, unique=True)
 
+    def foodbank_name_slug(self):
+        return slugify(self.foodbank_name)
+
     def save(self, *args, **kwargs):
 
         if self.foodbank:
