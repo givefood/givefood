@@ -1,0 +1,65 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/wfbn-tt.css">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFood_org_uk">
+  <meta property="og:title" content="What Food Banks Need">
+  <meta property="og:description" content="Use Give Food's tool to find what food banks near you are asking to have donated">
+  <meta name="description" content="Use Give Food's tool to find what food banks near you are requesting to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
+{% endblock %}
+
+{% block title %}What Food Banks Need - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns is-centered">
+    <div class="column is-three-quarters">
+      <div id="intro_btns">
+        <div class="field">
+          <div class="control">
+            <form id="addressform" action="/needs/" method="GET">
+              <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button" title="Use my location" data-no-instant>
+                  <img src="/static/img/getlocation.svg" alt="Button to use your location to search for a food bank">
+              </a>
+              <label id="address_label" for="address_field" class="label">Address (town or postcode)</label>
+              <input id="address_field" type="text" name="address" class="input" placeholder="Town name or postcode" value="{{ address }}" required="required">
+              <input type="submit" id="addressgobtn" href="#" class="button is-info" value="Go">
+            </form>
+          </div>
+        </div>
+      </div>
+      <p id="status"></p>
+      <div id="theresults">
+        <table class="table needs">
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <template id="fb_row">
+    <tr>
+      <td>
+        <a href="#" class="foodbank" target="_top"></a>
+        <div class="distance"><span></span>mi away</div>
+      </td>
+      <td class="need_detail">
+        <div class="fb_needs">
+          <p></p>
+        </div>
+      </td>
+    </tr>
+  </template>
+
+{% endblock %}
+
+{% block script %}
+
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
+  <script src="/static/js/wfbn.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.contentWindow.min.js" defer></script>
+{% endblock %}

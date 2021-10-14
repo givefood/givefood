@@ -54,6 +54,18 @@ def index(request):
     return render(request, "wfbn/index.html", template_vars)
 
 
+@cache_page(60*10)
+def trussell_trust_index(request):
+
+    gmap_key = get_cred("gmap_key")
+
+    template_vars = {
+        "gmap_key":gmap_key,
+        "headless":True,
+    }
+    return render(request, "wfbn/trussell_trust.html", template_vars)
+
+
 def get_location(request):
 
     lat_lng = request.META.get("HTTP_X_APPENGINE_CITYLATLONG")
