@@ -857,10 +857,16 @@ class FoodbankSubscriber(models.Model):
 
     def save(self, *args, **kwargs):
 
+        # Ensure email address is lowercase
+        self.email = self.email.lower()
+
+        # Generate sub and unsub keys
         if not self.sub_key:
             salt = get_cred("salt")
             self.sub_key = hashlib.sha256("sub-%s-%s" % (datetime.now(), salt)).hexdigest()[:16]
             self.unsub_key = hashlib.sha256("unsub-%s-%s" % (datetime.now(), salt)).hexdigest()[:16]
 
+        # Denorm food bank name
         self.foodbank_name = self.foodbank.name
+        
         super(FoodbankSubscriber, self).save(*args, **kwargs)
