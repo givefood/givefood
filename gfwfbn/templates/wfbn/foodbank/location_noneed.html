@@ -8,7 +8,7 @@
   <meta property="og:title" content="{{ location }}, {{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
   <meta property="og:description" content="Find what {{ foodbank }} food bank in {{ location }} is requesting to have donated">
   <meta name="description" content="Find what {{ foodbank }} food bank in {{ location }} is requesting to have donated">
-  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_map' foodbank.slug %}">
+  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_location_map' foodbank.slug location.slug %}">
   <link rel="manifest" href="/needs/manifest.json">
   <meta name="geo.placename" content="{{ location }} - {{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
   <meta name="geo.position" content="{{ location.latt_long }}">
