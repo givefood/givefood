@@ -5,9 +5,9 @@
   <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap" rel="stylesheet">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFood_org_uk">
-  <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
-  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
-  <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:title" content="{{ location }}, {{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
+  <meta property="og:description" content="Find what {{ foodbank }} food bank in {{ location }} is requesting to have donated">
+  <meta name="description" content="Find what {{ foodbank }} food bank in {{ location }} is requesting to have donated">
   <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_map' foodbank.slug %}">
   <link rel="manifest" href="/needs/manifest.json">
   <meta name="geo.placename" content="{{ location }} - {{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
