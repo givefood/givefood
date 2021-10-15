@@ -1,6 +1,5 @@
 const status = document.querySelector("#status");
 const uml_btn = document.querySelector("#usemylocationbtn");
-const addressgo_btn = document.querySelector("#addressgobtn");
 const address_field = document.querySelector("#address_field");
 const results_table = document.querySelector("table");
 const api_url_root = "/api/2/locations/search/";
