@@ -173,6 +173,9 @@ def foodbank_history(request, slug):
 def foodbank_politics(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
+    
+    if not foodbank.parliamentary_constituency:
+        return HttpResponseNotFound()
 
     template_vars = {
         "section":"politics",

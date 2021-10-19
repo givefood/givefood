@@ -9,7 +9,9 @@
 	<url><loc>https://www.givefood.org.uk/needs/in/constituencies/</loc></url>
 	{% for foodbank in foodbanks %}
 		<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank' foodbank.slug %}</loc></url>
-		<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_politics' foodbank.slug %}</loc></url>
+		{% if foodbank.parliamentary_constituency %}
+			<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_politics' foodbank.slug %}</loc></url>
+		{% endif %}
 		<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_nearby' foodbank.slug %}</loc></url>
 		{% if foodbank.no_locations != 0 %}
             <url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_locations' foodbank.slug %}</loc></url>
