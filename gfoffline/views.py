@@ -68,7 +68,7 @@ def hydrate_search_log(search):
 
     logging.info("Hydrating search")
 
-    pc_api_url = "http://postcodes.io/postcodes?lon=%s&lat=%s&radius=10000" % (
+    pc_api_url = "https://postcodes.io/postcodes?lon=%s&lat=%s&radius=10000" % (
         search.long(),
         search.latt(),
     )
