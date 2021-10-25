@@ -94,6 +94,7 @@
 
             {% include "wfbn/foodbank/includes/charity.html" %}
 
+            <h2>Share</h2>
             {% url 'wfbn:foodbank' foodbank.slug as share_url %}
             {% include "wfbn/foodbank/includes/share_btns.html" with share_url=share_url %}
 
