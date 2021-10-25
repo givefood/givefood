@@ -22,33 +22,32 @@ from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLo
 @cache_page(60*10)
 def index(request):
 
-    headless = request.GET.get("headless", False)
-    where_from = request.GET.get("from", False)
     address = request.GET.get("address", "")
-    lattlong = request.GET.get("lat_lng", "")
+    lat_lng = request.GET.get("lat_lng", "")
     
     location_results = []
+    recently_updated = None
 
-    if where_from != "trusselltrust":
+    if address and not lat_lng:
+        lat_lng = geocode(address)
 
-        if address and not lattlong:
-            lattlong = geocode(address)
+    if not lat_lng:
+        recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:5]
 
-        if lattlong:
-            location_results = find_locations(lattlong, 10)
+    if lat_lng:
+        location_results = find_locations(lat_lng, 10)
 
-            for location in location_results:
-                location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
-                location["needs"] = location_need.change_text
+        for location in location_results:
+            location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
+            location["needs"] = location_need.change_text
 
     gmap_key = get_cred("gmap_key")
 
     template_vars = {
-        "headless":headless,
-        "where_from":where_from,
         "address":address,
-        "lattlong":lattlong,
+        "lat_lng":lat_lng,
         "gmap_key":gmap_key,
+        "recently_updated":recently_updated,
         "location_results":location_results,
     }
     return render(request, "wfbn/index.html", template_vars)

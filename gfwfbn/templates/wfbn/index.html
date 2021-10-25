@@ -1,14 +1,11 @@
 {% extends "public/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn.css">
-  {% if where_from == "trusselltrust" %}
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/wfbn-tt.css">
-  {% endif %}
+  <link rel="stylesheet" href="/static/css/wfbn2.css">
   {% if where_from == "cordova" %}
     <link rel="stylesheet" href="/static/css/wfbn-cordova.css">
   {% endif %}
+  <link rel="stylesheet" href="/static/css/share_btns.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFood_org_uk">
   <meta property="og:title" content="What Food Banks Need">
@@ -16,87 +13,107 @@
   <meta name="description" content="Use Give Food's tool to find what food banks near you are requesting to have donated">
   <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
   <link rel="manifest" href="/needs/manifest.json">
-  {% if where_from != "trusselltrust" %}
-    <link rel="preload" href="/api/2/foodbanks/?format=geojson" as="fetch">
-    <link rel="preload" href="/api/2/locations/?format=geojson" as="fetch">
-  {% endif %}
+  <link rel="preload" href="/api/2/foodbanks/?format=geojson" as="fetch">
+  <link rel="preload" href="/api/2/locations/?format=geojson" as="fetch">
 {% endblock %}
 
 {% block title %}What Food Banks Need - Give Food{% endblock %}
 
 {% block body %}
 
-  <div class="columns {% if where_from != "trusselltrust" %}is-centered{% endif %}">
-    <div class="column {% if where_from != "trusselltrust" %}is-three-quarters{% endif %}">
-      {% if not headless %}
-        <h1><a href="/">Give Food</a></h1>
-        <p>Find what items food banks near you are requesting to have donated. You can also browse by <a href="{% url 'wfbn:constituencies' %}">parliamentary constituency</a>. Share on
-            <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.givefood.org.uk%2Fneeds%2F&via=GiveFood_org_uk&text=Find%20out%20what%20food%20banks%20near%20you%20need">
-              <img src="/static/img/twitter.svg" class="socialicon" alt="Post to Twitter">
-            </a>
-          or
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.givefood.org.uk/needs/">
-              <img src="/static/img/facebook.svg" class="socialicon" alt="Post to Facebook">
-            </a>
-        </p>
-      {% endif %}
-      <div id="intro_btns">
-        <div class="field">
-          <div class="control">
-            <form id="addressform" action="/needs/" method="GET">
-              <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button" title="Use my location" data-no-instant>
-                  <img src="/static/img/getlocation.svg" alt="Button to use your location to search for a food bank">
-              </a>
-              <label id="address_label" for="address_field" class="label">Address (town or postcode)</label>
-              <input id="address_field" type="text" name="address" class="input" placeholder="Town name or postcode" value="{{ address }}" required="required">
-              <input type="submit" class="button is-info" value="Go">
-            </form>
-          </div>
+<div class="columns body">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="/" class="logo">Give Food</a>
+        </div>
+
+      </div>
+
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Home</a></li>
+                <li class="is-active"><a href="#" aria-current="page">What Food Banks Need</a></li>
+            </ul>
+      </nav>
+    
+      <div class="columns">
+        <div class="column is-6">
+
+          <p>See what items food banks near you are requesting, find out how to donate them or take political action.</p>
+            
+            {% include "wfbn/foodbank/includes/search_form.html" with is_index=True%}
+
+            <p id="status-msg"></p>
+
+            <div id="index_intro">
+              {% if not location_results %}
+              <ul>
+                  <li><a href="{% url 'wfbn:constituencies' %}">Browse by Parliamentary Constituency</a></li>
+                  <li><a href="{% url 'public_reg_foodbank' %}">Register a Food Bank</a></li>
+                  <li><a href="{% url 'public_index' %}">About Give Food</a></li>
+              </ul>
+              <br>
+              <h2>Recently updated</h2>
+              <ul>
+                  {% for foodbank in recently_updated %}
+                      <li><a href="{% url 'wfbn:foodbank' foodbank.foodbank_name_slug %}">{{ foodbank.foodbank_name }}</a></li>
+                  {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+
+            <p id="status"></p>
+
+            <div id="theresults">
+              
+              <table class="table needs">
+                {% if location_results %}
+                  {% for location in location_results %}
+                    <tr>
+                      <td>
+                        <a href="/needs/click/{{ location.foodbank_slug }}/" class="foodbank" target="_top">{{ location.name }}</a>
+                        <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
+                        {% if where_from != "trusselltrust" %}
+                          {% if location.type == "location" %}
+                            <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
+                          {% endif %}
+                        {% endif %}
+                        <div class="links">
+                          {% if location.phone %}
+                            <a class="phone" href="tel:{{ location.phone }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
+                          {% endif %}
+                          <a class="info" href="/needs/at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
+                        </div>
+                      </td>
+                      <td class="need_detail">
+                        <div class="fb_needs">
+                          {% if location.needs == "Nothing" %}
+                            Nothing right now, thanks
+                          {% elif location.needs == "Unknown" %}
+                            Sorry. We don't know what's needed here, please contact the food bank
+                          {% else %}
+                            {{ location.needs|linebreaks }}
+                          {% endif %}
+                        </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                {% endif %}
+              </table>
+            </div>
+
+            <h2>Share</h2>
+            {% url 'wfbn:index' as share_url %}
+            {% include "wfbn/foodbank/includes/share_btns.html" with share_url=share_url %}
+
+        </div>
+        <div class="column is-6">
+            <div id="map" class="sidemap full-uk-map"></div>
         </div>
       </div>
-      <p id="status"></p>
-      <div id="theresults">
-        
-        <table class="table needs">
-          {% if location_results %}
-            {% for location in location_results %}
-              <tr>
-                <td>
-                  <a href="/needs/click/{{ location.foodbank_slug }}/" class="foodbank" target="_top">{{ location.name }}</a>
-                  <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
-                  {% if where_from != "trusselltrust" %}
-                    {% if location.type == "location" %}
-                      <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
-                    {% endif %}
-                  {% endif %}
-                  <div class="links">
-                    {% if location.phone %}
-                      <a class="phone" href="tel:{{ location.phone }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
-                    {% endif %}
-                    <a class="info" href="/needs/at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
-                  </div>
-                </td>
-                <td class="need_detail">
-                  <div class="fb_needs">
-                    {% if location.needs == "Nothing" %}
-                      Nothing right now, thanks
-                    {% elif location.needs == "Unknown" %}
-                      Sorry. We don't know what's needed here, please contact the food bank
-                    {% else %}
-                      {{ location.needs|linebreaks }}
-                    {% endif %}
-                  </div>
-                </td>
-              </tr>
-            {% endfor %}
-          {% endif %}
-        </table>
-      </div>
-      {% if where_from != "trusselltrust" %}
-        <div id="map-container">
-          <div id="map-main"></div>
-        </div>
-      {% endif %}
 
     </div>
   </div>
@@ -128,11 +145,13 @@
 
 {% block script %}
 
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
-  <script src="/static/js/wfbn.js" defer></script>
-  {% if where_from == "trusselltrust" %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.contentWindow.min.js" defer></script>
-  {% else %}
-    <script src="/static/js/wfbn_map.js" defer></script>
+  {% if lat_lng %}
+    <script>
+      initial_lat_lng = "{{ lat_lng }}";
+    </script>
   {% endif %}
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
+  <script src="/static/js/wfbn_map.js" defer></script>
+  <script src="/static/js/wfbn2.js" defer></script>
+
 {% endblock %}

@@ -2,12 +2,33 @@ const address_field = document.querySelector("#address_field");
 const burger_menu = document.querySelector(".navbar-burger");
 const menu_items = document.querySelectorAll(".foodbank-menu li a");
 const uml_btn = document.querySelector("#usemylocationbtn");
-const convert_ids = ["donate_btn", "takeaction_btn", "website_link", "phone_link", "email_link", "charity_link", "write_btn"]
+const addressform = document.querySelector("#addressform");
+const convert_ids = ["donate_btn", "takeaction_btn", "website_link", "phone_link", "email_link", "charity_link", "write_btn"];
+const status_msg = document.querySelector("#status-msg");
+const results_table = document.querySelector("table");
+const index_intro = document.querySelector("#index_intro")
+const api_url_root = "/api/2/locations/search/";
+
+const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
+const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
+const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Try a postcode or address.";
+const no_addr_text = "Did you forget to enter an address?";
+const nothing_needed_text = "Nothing right now, thanks";
+const need_unknown_text = "Sorry. We don't know what's needed here, please contact the food bank";
+const loc_not_uk = "Sorry, we couldn't use that location. Is it inside the United Kingdom?";
+const search_error = "Sorry, we had a problem finding food banks there. The error was logged. Please try again later."
 
 function init() {
     autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
     autocomplete.setComponentRestrictions({'country': ['gb']});
-    uml_btn.addEventListener("click", do_geolocation);
+    if (uml_btn.hasAttribute("data-isindex")) {
+      uml_btn.addEventListener("click", do_geolocation);
+    } else {
+      uml_btn.addEventListener("click", do_geolocation_redirect);
+    }
+    if (addressform.hasAttribute("data-isindex")) {
+      addressform.addEventListener("submit", do_address);
+    }
     if (burger_menu) {
       burger_menu.addEventListener('click',function(){
           for (const menu_item of menu_items) {
@@ -29,18 +50,166 @@ function record_conversion() {
   plausible('conversion')
 }
 
-function do_geolocation(event) {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function(position){
-            lat  = position.coords.latitude;
-            lng = position.coords.longitude;
-            address_field.value = "";
-            window.location = "/needs/?lat_lng=" + lat + "," + lng;
-        }
-      );
-    }
-    event.preventDefault();
+function do_geolocation_redirect(event) {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(position){
+          lat  = position.coords.latitude;
+          lng = position.coords.longitude;
+          address_field.value = "";
+          window.location = "/needs/?lat_lng=" + lat + "," + lng;
+      }
+    );
   }
+  event.preventDefault();
+}
+
+function do_geolocation(event) {
+  clear_results();
+  if (!navigator.geolocation) {
+    status_msg.textContent = no_loc_apology_text;
+    uml_btn.style.display = "none";
+  } else {
+    status_msg.innerHTML = requesting_loc_html;
+    navigator.geolocation.getCurrentPosition(
+      do_lattlong,
+      function() {
+        status_msg.textContent = no_loc_apology_text;
+      }
+    );
+  }
+  event.preventDefault();
+}
+
+function do_address(event) {
+  clear_results();
+  address = address_field.value;
+  if (address == "") {
+    status_msg.textContent = no_addr_text;
+  } else {
+    querystring = "?address=" + address;
+    api_url = api_url_root + querystring;
+    api_request(api_url);
+    address_on_map(address)
+    record_search(querystring);
+    history.pushState({address: address}, "address", querystring)
+  }
+  event.preventDefault();
+}
+
+function do_lattlong(position) {
+  lat  = position.coords.latitude;
+  lng = position.coords.longitude;
+  address_field.value = ""
+  querystring = "?lat_lng=" + lat + "," + lng;
+  api_url = api_url_root + querystring;
+  api_request(api_url);
+  move_map(lat,lng)
+  record_search(querystring);
+  history.pushState({latlng: lat + "," + lng}, "latlng", querystring)
+}
+
+function address_on_map(address) {
+  geocoder = new google.maps.Geocoder();
+  geocoder.geocode({address:address}, function(results, status) {
+    move_map(results[0].geometry.location.lat(),results[0].geometry.location.lng());
+  })
+}
+
+function move_map(lat,lng) {
+  map_main.panTo(new google.maps.LatLng(lat,lng));
+  map_main.setZoom(12);
+}
+
+function record_search(querystring) {
+  gtag('config', 'UA-153866507-1', {
+    'page_title' : 'What Food Banks Need',
+    'page_path': '/needs/' + querystring
+  });
+}
+
+function api_request(url) {
+  status_msg.innerHTML = working_html;
+  var fb_req = new XMLHttpRequest();
+  fb_req.addEventListener("load", api_response);
+  fb_req.responseType = "json";
+  fb_req.open("GET", url);
+  fb_req.send();
+}
+
+function clear_results() {
+  while (results_table.firstChild) {
+    results_table.removeChild(results_table.firstChild);
+  }
+  index_intro.style.display = "none";
+}
+
+function add_click_recorders() {
+  document.querySelector("a.foodbank").addEventListener("click", record_click);
+}
+
+function record_click() {
+  gtag('event', 'conversion', {'send_to': 'AW-448372895/rBD8CKOqkPABEJ_B5tUB'});
+  plausible('conversion');
+}
+
+function api_response() {
+
+  if (this.status != 200) {
+    if (this.status == 400) {
+      status_msg.innerHTML = loc_not_uk;
+    } else {
+      status_msg.innerHTML = search_error;
+    }
+    return false;
+  }
+
+  template = document.querySelector("#fb_row");
+
+  for (i in this.response) {
+
+    loctn = this.response[i];
+
+    url = loctn.urls.html;
+    fb_name = loctn.name;
+    distance = loctn.distance_mi;
+    slug = loctn.foodbank.slug;
+    number_needs = loctn.needs.number;
+    org_type = loctn.type;
+    parent_org = loctn.foodbank.name;
+    parent_org_slug = loctn.foodbank.slug;
+    phone = loctn.phone;
+    needs = loctn.needs.needs;
+    needs_html = needs.replace(/\n/g, "<br>");
+
+    currentrow = document.importNode(template.content, true);
+    currentrow.querySelector("a.foodbank").href = "/needs/click/" + slug + "/";
+    currentrow.querySelector("a.foodbank").textContent = fb_name;
+    if (org_type == "location" && currentrow.querySelector(".parent_org")) {
+      currentrow.querySelector(".parent_org span").innerHTML = "Part of"
+      currentrow.querySelector(".parent_org a").innerHTML = parent_org;
+      currentrow.querySelector(".parent_org a").href = "/needs/at/" + parent_org_slug + "/";
+    }
+    currentrow.querySelector(".distance span").textContent = distance;
+    if (number_needs > 0 && needs != "Nothing" && needs != "Unknown") {
+      if (number_needs > 1) {item_text = "items"} else {item_text = "item"};
+      currentrow.querySelector(".fb_needs p").innerHTML = needs_html;
+    } else if (needs == "Unknown") {
+      currentrow.querySelector(".fb_needs").innerHTML = need_unknown_text;
+    } else {
+      currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
+    }
+    if (currentrow.querySelector(".links")) {
+      currentrow.querySelector(".links .phone").href = "tel:" + phone;
+      currentrow.querySelector(".links .info").href = url.replace("https://www.givefood.org.uk","");
+    }
+    if (!phone) {
+      currentrow.querySelector(".links .phone").remove();
+    }
+    results_table.appendChild(currentrow);
+  }
+  add_click_recorders();
+  status_msg.innerHTML = "";
+}
 
 init();
