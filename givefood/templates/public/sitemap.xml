@@ -25,6 +25,9 @@
 	{% endfor %}
 	{% for location in locations %}
 		<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}</loc></url>
+		{% if location.parliamentary_constituency %}
+			<url><loc>https://www.givefood.org.uk{% url 'wfbn:foodbank_location_politics' location.foodbank_slug location.slug %}</loc></url>
+		{% endif %}
 	{% endfor %}
 	{% for constituency in constituencies %}
 		<url><loc>https://www.givefood.org.uk{% url 'wfbn:constituency' constituency.slug %}</loc></url>

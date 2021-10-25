@@ -70,7 +70,7 @@
 
             <div class="cta">
               <a href="{{ foodbank.url }}" class="button is-info" id="donate_btn">Donate</a>
-              <a href="{% url 'wfbn:foodbank_politics' foodbank.slug %}" class="button is-info" id="takeaction_btn">Take Action</a>
+              <a href="{% url 'wfbn:foodbank_location_politics' foodbank.slug location.slug %}" class="button is-info" id="takeaction_btn">Take Action</a>
               <a href="#subscribe" class="button is-info">Subscribe</a>
             </div>
 

@@ -31,6 +31,7 @@ urlpatterns = (
     url(r'^at/(?P<slug>[-\w]+)/locations/$', foodbank_locations, name="foodbank_locations"),
     url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', foodbank_location, name="foodbank_location"),
     url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/map.png$', foodbank_location_map, name="foodbank_location_map"),
+    url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/politics/$', foodbank_location_politics, name="foodbank_location_politics"),
 
     # Constituencies 
     url(r'^in/constituencies/$', constituencies, name="constituencies"),

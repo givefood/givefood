@@ -19,7 +19,7 @@
   {% endif %}
 {% endblock %}
 
-{% block title %}{{ location.name }} - {{ foodbank.name }} Food Bank - Give Food{% endblock %}
+{% block title %}Politics - {{ location.name }} - {{ foodbank.name }} Food Bank - Give Food{% endblock %}
 
 {% block body %}
 
@@ -41,11 +41,12 @@
             <li><a href="{% url 'public_index' %}">Home</a></li>
             <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
-            <li class="is-active"><a href="#" aria-current="page">{{ location }}</a></li>
+            <li><a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location }}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Politics</a></li>
         </ul>
-      </nav>
+  </nav>
 
-      <h1>{{ location }} - {{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</h1>
+  <h1>{{ location }} - {{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</h1>
 
       <div class="columns">
 
@@ -53,32 +54,22 @@
             {% include "wfbn/foodbank/includes/menu.html" %}
           </div>
 
+          <div class="column is-6">
+
+            <p>This food bank location is in the <a href="{% url "wfbn:constituency" location.parliamentary_constituency_slug %}">{{ location.parliamentary_constituency_name }} constituency</a> ({{ location.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} MP">{{ location.mp }} MP</a> of the {{ location.mp_party }} party.</p>
+
+            <p>You can use <a href="https://www.writetothem.com/who?pc={{ location.postcode }}" id="write_link">WriteToThem</a> to politely help local &amp; national politicians understand that food banks shouldn't exist in our country.</p>
+            
+          </div>
+
           <div class="column">
-
-            <div class="contacts is-size-6">
-                <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
-                {% if foodbank.phone_number %}
-                  <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ location.phone_or_foodbank_phone }}" id="phone_link">{{ location.phone_or_foodbank_phone }}</a><br>
-                {% endif %}
-                <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}" id="email_link">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
-              </div>
-
-          </div>
-
-          <div class="column is-7">
-
             <div class="cta">
-              <a href="{{ foodbank.url }}" class="button is-info" id="donate_btn">Donate</a>
-              <a href="{% url 'wfbn:foodbank_location_politics' foodbank.slug location.slug %}" class="button is-info" id="takeaction_btn">Take Action</a>
+              <a href="https://www.writetothem.com/who?pc={{ location.postcode }}" class="button is-info" id="write_btn">Write</a>
             </div>
-
             <div id="map" class="sidemap"></div>
-            <address>
-              {{ location.address|linebreaksbr }}<br>
-              {{ foodbank.postcode }}
-            </address>
-
           </div>
+
+
       </div>
 
     </div>
@@ -89,39 +80,45 @@
 {% block script %}
 
 <script src="/static/js/wfbn2.js" defer></script>
+
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 <script>
-function add_marker(lat, lng, url) {
-  position = new google.maps.LatLng(lat, lng)
-  var marker = new google.maps.Marker({
-  position: position,
-  map: map,
-  url: url
-});
-  bounds.extend(position);
-  google.maps.event.addListener(marker, "click", function () {
-  location.assign(marker.url);
-});
-}
-
+const parl_con_geojson_url = "/api/2/constituency/{{ location.parliamentary_constituency_slug }}/?format=geojson"
 var map
-var bounds = new google.maps.LatLngBounds();
+
 function init_map() {
-var mapOptions = {
-  center: new google.maps.LatLng(55,-4),
-  zoom: 6,
-  mapTypeId: google.maps.MapTypeId.ROADMAP,
-};
-map = new google.maps.Map(document.getElementById("map"), mapOptions);
-add_marker({{ location.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
-google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
-  var maxZoom = 15
-  if (this.getZoom() > maxZoom) {
-      this.setZoom(maxZoom);
-  }
-});
-map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
-map.panToBounds(bounds);
+    var bounds = new google.maps.LatLngBounds();
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: new google.maps.LatLng(55,-4),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    map.data.loadGeoJson(parl_con_geojson_url);
+
+    google.maps.event.addListener(map.data,'addfeature',function(e){
+      var bounds = new google.maps.LatLngBounds(); 
+      map.data.forEach(function(feature){
+        feature.getGeometry().forEachLatLng(function(latlng){
+          bounds.extend(latlng);
+        });
+      });
+
+      map.fitBounds(bounds);
+    })
+
+    map.data.addListener('click', (event) => {
+        const url = event.feature.getProperty('url');
+        if (url) {
+          window.location = url;
+        };
+    });
+
+    map.data.setStyle({
+      fillColor: "#000",
+      strokeWeight: 1,
+    });
+
 }
 
 google.maps.event.addDomListener(window, 'load', init_map);

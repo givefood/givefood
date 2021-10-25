@@ -248,6 +248,24 @@ def foodbank_location_map(request, slug, locslug):
 
 
 @cache_page(60*10)
+def foodbank_location_politics(request, slug, locslug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
+
+    if not location.parliamentary_constituency:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "section":"locations",
+        "foodbank":foodbank,
+        "location":location,
+    }
+
+    return render(request, "wfbn/foodbank/location_politics.html", template_vars)
+
+
+@cache_page(60*10)
 def constituencies(request):
 
     postcode = request.GET.get("postcode", None)
