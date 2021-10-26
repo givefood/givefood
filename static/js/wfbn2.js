@@ -7,6 +7,9 @@ const convert_ids = ["donate_btn", "takeaction_btn", "website_link", "phone_link
 const status_msg = document.querySelector("#status-msg");
 const results_table = document.querySelector("table");
 const index_intro = document.querySelector("#index_intro")
+const modal = document.querySelector(".modal");
+const modal_close = document.querySelector(".modal-close");
+
 const api_url_root = "/api/2/locations/search/";
 
 const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
@@ -17,6 +20,7 @@ const nothing_needed_text = "Nothing right now, thanks";
 const need_unknown_text = "Sorry. We don't know what's needed here, please contact the food bank";
 const loc_not_uk = "Sorry, we couldn't use that location. Is it inside the United Kingdom?";
 const search_error = "Sorry, we had a problem finding food banks there. The error was logged. Please try again later."
+
 
 function init() {
     autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
@@ -37,12 +41,20 @@ function init() {
           burger_menu.style.display = 'none';
       })
     };
+    if (modal_close) {
+      modal_close.addEventListener("click", function(){
+        modal.classList.remove("is-active")
+      })
+    }
     convert_ids.forEach(function(the_id) {
       the_element = document.querySelector("#" + the_id)
       if (the_element) {
         the_element.addEventListener("click", record_conversion)
       }
-    })
+    });
+    document.querySelectorAll(".subscribe-btn").forEach(subscribe_btn => 
+      subscribe_btn.addEventListener("click", show_subscribe_modal)
+    );
 }
 
 function record_conversion() {
@@ -194,10 +206,14 @@ function api_response() {
     if (number_needs > 0 && needs != "Nothing" && needs != "Unknown") {
       if (number_needs > 1) {item_text = "items"} else {item_text = "item"};
       currentrow.querySelector(".fb_needs p").innerHTML = needs_html;
+      currentrow.querySelector(".subscribe-btn").setAttribute("data-foodbankname",fb_name)
+      currentrow.querySelector(".subscribe-btn").addEventListener("click", show_subscribe_modal)
     } else if (needs == "Unknown") {
       currentrow.querySelector(".fb_needs").innerHTML = need_unknown_text;
+      currentrow.querySelector(".subscribe-btn").remove()
     } else {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
+      currentrow.querySelector(".subscribe-btn").remove()
     }
     if (currentrow.querySelector(".links")) {
       currentrow.querySelector(".links .phone").href = "tel:" + phone;
@@ -212,4 +228,37 @@ function api_response() {
   status_msg.innerHTML = "";
 }
 
+function show_subscribe_modal() {
+  fb_name = this.getAttribute("data-foodbankname")
+  modal.querySelector("form").setAttribute("action","/needs/at/" + slugify(fb_name) + "/updates/subscribe/")
+  modal.querySelector(".foodbank-name").innerHTML = fb_name
+  modal.classList.add("is-active")
+}
+
+function slugify(str) {
+  str = str.replace(/^\s+|\s+$/g, ''); // trim
+  str = str.toLowerCase();
+
+  // remove accents, swap ñ for n, etc
+  var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+  var to   = "aaaaeeeeiiiioooouuuunc------";
+  for (var i=0, l=from.length ; i<l ; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+  }
+
+  str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+      .replace(/\s+/g, '-') // collapse whitespace and replace by -
+      .replace(/-+/g, '-'); // collapse dashes
+
+  return str;
+}
+
 init();
+
+
+document.addEventListener("keydown", function(event) {
+  const key = event.key;
+  if (key === "Escape") {
+    modal.classList.remove("is-active")
+  }
+});

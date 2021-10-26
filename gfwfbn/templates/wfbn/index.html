@@ -86,6 +86,10 @@
                           {% endif %}
                           <a class="info" href="/needs/at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
                         </div>
+                        {% if location.needs != "Nothing" and location.needs != "Unknown" %}
+                          <a class="subscribe-btn button is-link is-small" data-foodbankname="{{ location.foodbank_name }}">Subscribe</button>
+                        {% endif %}
+                        
                       </td>
                       <td class="need_detail">
                         <div class="fb_needs">
@@ -127,6 +131,7 @@
           <a class="phone" href="" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
           <a class="info" href="" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
         </div>
+        <button class="subscribe-btn button is-link is-small">Subscribe</button>
       </td>
       <td class="need_detail">
         <div class="fb_needs">
@@ -135,6 +140,27 @@
       </td>
     </tr>
   </template>
+
+  <div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <p id="subscribe" class="subscribe-tease">Get notified when <span class="foodbank-name"></span> food bank needs new items...</p>
+        <form action="" method="post">
+            <div class="field has-addons">
+              <div class="control is-expanded">
+                  <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address" required="required">
+              </div>
+              <div class="control">
+                  <button type="submit" class="button is-link" id="subscribe_btn">Subscribe</button>
+              </div>
+            </div>
+        </form>
+        <p class="is-size-7 subscribe-hint">We'll never use your email address for anything else, and you can unsubscribe at any time.</p>
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
 
 {% endblock %}
 

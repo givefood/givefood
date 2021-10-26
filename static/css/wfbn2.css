@@ -111,6 +111,9 @@ p.needs {
 #theresults {
     margin-top:-10px;
 }
+.subscribe-btn {
+    margin-top:10px;
+}
 
 .sidemap {
     height:300px;
@@ -144,7 +147,7 @@ address {
     margin-bottom:5px;
 }
 .subscribe-hint {
-    margin-top:5px;
+    margin:5px 0 0 0;
 }
 details ul {
     margin-left:1.1em;
