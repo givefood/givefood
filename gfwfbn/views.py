@@ -32,7 +32,7 @@ def index(request):
         lat_lng = geocode(address)
 
     if not lat_lng:
-        recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:5]
+        recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
 
     if lat_lng:
         location_results = find_locations(lat_lng, 10)
