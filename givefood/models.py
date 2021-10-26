@@ -858,6 +858,9 @@ class FoodbankSubscriber(models.Model):
     class Meta:
        unique_together = ('email', 'foodbank',)
 
+    def foodbank_slug(self):
+        return slugify(self.foodbank_name)
+
     def save(self, *args, **kwargs):
 
         # Ensure email address is lowercase

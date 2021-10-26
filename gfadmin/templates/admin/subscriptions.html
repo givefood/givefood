@@ -21,7 +21,7 @@
         {% for subscription in subscriptions %}
           <tr>
             <td>{{ subscription.email }}</td>
-            <td>{{ subscription.foodbank_name }}</td>
+            <td><a href="{% url 'admin:foodbank' subscription.foodbank_slug %}">{{ subscription.foodbank_name }}</a></td>
             <td>{{ subscription.created }}</td>
             <td>{% if subscription.confirmed %}Y{% else %}N{% endif %}</td>
             <td>
