@@ -46,6 +46,9 @@ h1 {
 .extra-form-button {
   margin-top:10px;
 }
+table {
+  contain:strict; 
+}
 th {
   position:sticky;
   top:0;
