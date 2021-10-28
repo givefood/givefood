@@ -11,6 +11,7 @@ const modal = document.querySelector(".modal");
 const modal_close = document.querySelector(".modal-close");
 
 const api_url_root = "/api/2/locations/search/";
+const ip_geolocation_url = "/needs/getlocation/"
 
 const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
 const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
@@ -79,14 +80,13 @@ function do_geolocation_redirect(event) {
 function do_geolocation(event) {
   clear_results();
   if (!navigator.geolocation) {
-    status_msg.textContent = no_loc_apology_text;
-    uml_btn.style.display = "none";
+    window.location = ip_geolocation_url
   } else {
     status_msg.innerHTML = requesting_loc_html;
     navigator.geolocation.getCurrentPosition(
       do_lattlong,
       function() {
-        status_msg.textContent = no_loc_apology_text;
+        window.location = ip_geolocation_url
       }
     );
   }
