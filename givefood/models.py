@@ -40,6 +40,8 @@ class Foodbank(models.Model):
     county = models.CharField(max_length=50, null=True, blank=True, editable=False)
     district = models.CharField(max_length=50, null=True, blank=True, editable=False)
     ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    lsoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    msoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
@@ -231,6 +233,8 @@ class Foodbank(models.Model):
         self.county = regions.get("county", None)
         self.ward = regions.get("ward", None)
         self.district = regions.get("district", None)
+        self.lsoa = regions.get("lsoa", None)
+        self.msoa = regions.get("msoa", None)
 
         try:
             parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
@@ -288,6 +292,8 @@ class FoodbankLocation(models.Model):
     county = models.CharField(max_length=50, null=True, blank=True, editable=False)
     district = models.CharField(max_length=50, null=True, blank=True, editable=False)
     ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    lsoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    msoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     def __str__(self):
         return self.name
@@ -348,6 +354,8 @@ class FoodbankLocation(models.Model):
         self.county = regions.get("county", None)
         self.ward = regions.get("ward", None)
         self.district = regions.get("district", None)
+        self.lsoa = regions.get("lsoa", None)
+        self.msoa = regions.get("msoa", None)
 
         try:
             parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
