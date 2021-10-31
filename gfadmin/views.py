@@ -101,6 +101,9 @@ def foodbanks(request):
 
     foodbanks = Foodbank.objects.all().order_by(sort)
 
+    # for foodbank in foodbanks:
+    #     deferred.defer(foodbank.save)
+
     template_vars = {
         "sort":sort_string,
         "foodbanks":foodbanks,
@@ -487,6 +490,9 @@ def locations(request):
         return HttpResponseForbidden()
 
     locations = FoodbankLocation.objects.all().order_by(sort)
+
+    # for location in locations:
+    #     deferred.defer(location.save)
 
     template_vars = {
         "sort":sort,
