@@ -1,0 +1,45 @@
+{% extends "public/page.html" %}
+
+{% block title %}Beauty Bank Needs - Give Food{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/dash.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h1><a href="/">Give Food</a></h1>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Beauty Bank Needs</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+        <table class="table is-narrow is-fullwidth">
+            <tr>
+                <th>Foodbank</th>
+                <th>Needs</th>
+                <th>Found</th>
+            </tr>
+            {% for bbneed in bbneeds %}
+                <tr>
+                    <td><a href="{% url 'wfbn:foodbank' bbneed.foodbank_name_slug %}">{{ bbneed.foodbank_name }}</a></td>
+                    <td>{{ bbneed.change_text|linebreaksbr }}</td>
+                    <td>{{ bbneed.created|timesince }} ago</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+  </div><br><br>
+
+{% endblock %}

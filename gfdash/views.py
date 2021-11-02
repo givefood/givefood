@@ -121,3 +121,37 @@ def articles(request):
         "articles":articles,
     }
     return render(request, "dash/articles.html", template_vars)
+
+
+def beautybanks(request):
+
+    products = [
+        "Soap",
+        "Shampoo",
+        "Shower Gel",
+        "Toothpaste",
+        "Toothbrush",
+        "Tooth brush",
+        "Deodorant",
+        "Razor",
+        "Shaving Gel",
+        "Shaving Foam",
+        "Conditioner",
+        "Sanitary Pad",
+        "Sanitary Towel"
+        "Tampons",
+        "Toiletries",
+        "Toiletry",
+    ]
+
+    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:200]
+    bbneeds = []
+
+    for need in needs:
+        if any(product in need.change_text for product in products):
+            bbneeds.append(need)
+
+    template_vars = {
+        "bbneeds":bbneeds,
+    }
+    return render(request, "dash/beautybanks.html", template_vars)
