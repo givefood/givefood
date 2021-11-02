@@ -24,7 +24,7 @@ html.webp .headerimg {
 .container {
   padding:10px;
 }
-a {
+a, .breadcrumb a {
   color:#007BC7;
 }
 sub {
