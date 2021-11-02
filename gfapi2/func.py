@@ -20,7 +20,7 @@ STD_FORMATS_GEOJSON = [
 
 # The formats allowed per object name
 ALLOWED_FORMATS = {
-    "foodbank": STD_FORMATS,
+    "foodbank": STD_FORMATS_GEOJSON,
     "foodbanks": STD_FORMATS_GEOJSON,
     "location": STD_FORMATS,
     "locations": STD_FORMATS_GEOJSON,
