@@ -139,7 +139,7 @@ def beautybanks(request):
         "Conditioner",
         "Sanitary Pad",
         "Sanitary Towel"
-        "Tampons",
+        "Tampon",
         "Toiletries",
         "Toiletry",
     ]
