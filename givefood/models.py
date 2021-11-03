@@ -173,6 +173,12 @@ class Foodbank(models.Model):
     def no_orders(self):
         return len(self.orders())
 
+    def subscribers(self):
+        return FoodbankSubscriber.objects.filter(foodbank = self)
+
+    def no_subscribers(self):
+        return len(self.subscribers())
+
     def get_no_locations(self):
         return len(self.locations())
 
