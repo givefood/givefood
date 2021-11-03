@@ -337,7 +337,7 @@ def updates(request, slug, action):
                 )
             )
 
-            message = "Thanks, but we're not quite done yet. Check your email for a link to click to confirm your subscription - you might have to look in your spam folder though."
+            message = "Thanks, but we're not quite done yet.\n\nWe've sent an email to %s with a link to click to confirm your subscription. You might have to look in your spam folder though." % (email)
 
         except IntegrityError:
 
