@@ -206,7 +206,7 @@ function api_response() {
     if (number_needs > 0 && needs != "Nothing" && needs != "Unknown") {
       if (number_needs > 1) {item_text = "items"} else {item_text = "item"};
       currentrow.querySelector(".fb_needs p").innerHTML = needs_html;
-      currentrow.querySelector(".subscribe-btn").setAttribute("data-foodbankname",fb_name)
+      currentrow.querySelector(".subscribe-btn").setAttribute("data-foodbankname",parent_org)
       currentrow.querySelector(".subscribe-btn").addEventListener("click", show_subscribe_modal)
     } else if (needs == "Unknown") {
       currentrow.querySelector(".fb_needs").innerHTML = need_unknown_text;
