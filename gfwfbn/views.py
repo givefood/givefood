@@ -157,7 +157,7 @@ def foodbank_news(request,slug):
 def foodbank_history(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).order_by("-created")[:25]
+    needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).order_by("-created")[:10]
 
     template_vars = {
         "section":"history",
