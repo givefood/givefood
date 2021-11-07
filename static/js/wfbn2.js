@@ -233,6 +233,7 @@ function show_subscribe_modal() {
   modal.querySelector("form").setAttribute("action","/needs/at/" + slugify(fb_name) + "/updates/subscribe/")
   modal.querySelector(".foodbank-name").innerHTML = fb_name
   modal.classList.add("is-active")
+  record_conversion()
 }
 
 function slugify(str) {
