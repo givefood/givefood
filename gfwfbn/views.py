@@ -24,6 +24,7 @@ def index(request):
 
     address = request.GET.get("address", "")
     lat_lng = request.GET.get("lat_lng", "")
+    where_from = request.GET.get("from","")
     
     location_results = []
     recently_updated = None
@@ -44,6 +45,7 @@ def index(request):
     gmap_key = get_cred("gmap_key")
 
     template_vars = {
+        "where_from":where_from,
         "address":address,
         "lat_lng":lat_lng,
         "gmap_key":gmap_key,
