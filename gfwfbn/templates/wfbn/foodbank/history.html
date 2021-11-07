@@ -58,7 +58,7 @@
             <p>What {{ foodbank }} food bank has requested over time. <ins>Green</ins> is for new items, <del>red</del> are ones that have been removed.</p>
             <table>
               {% for need in needs %}
-                <tr>
+                <tr id="need-{{ need.need_id }}">
                   <td>
                     {{ need.created }}<br>
                     <span class="is-size-7">{{ need.created|timesince}} ago</span>
