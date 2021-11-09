@@ -105,7 +105,7 @@ var mapOptions = {
 };
 map = new google.maps.Map(document.getElementById("map"), mapOptions);
 {% for location in nearby %}
-  add_marker({{ location.lat_lng }}, "{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}")
+  add_marker({{ location.lat_lng }}, "{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}")
 {% endfor %}
 google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
   var maxZoom = 15
