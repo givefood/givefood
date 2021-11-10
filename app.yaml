@@ -2,7 +2,7 @@ runtime: python27
 api_version: 1
 threadsafe: true
 default_expiration: "30m"
-instance_class: F4
+instance_class: F1
 
 handlers:
 
