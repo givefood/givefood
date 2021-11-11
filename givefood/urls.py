@@ -36,6 +36,11 @@ urlpatterns = (
     url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^static/img/map-allloc\.png$', RedirectView.as_view(url="/static/img/map.png")),
 
+    # Old Food Bank Redirects
+    # https://github.com/givefood/givefood/issues/187
+    url(r'^needs/at/angus/$', RedirectView.as_view(url='/needs/at/dundee-angus/')),
+    url(r'^needs/at/lifeshare/$', RedirectView.as_view(url='/needs/at/lifeshare-manchester/')),
+
     # Apps
     url(r'^needs/', include('gfwfbn.urls', namespace="wfbn", app_name="gfwfbn")),
     url(r'^api/1/', include('gfapi1.urls')),
