@@ -39,6 +39,7 @@ urlpatterns = (
     # Old Food Bank Redirects
     # https://github.com/givefood/givefood/issues/187
     url(r'^needs/at/angus/$', RedirectView.as_view(url='/needs/at/dundee-angus/')),
+    url(r'^needs/at/dundee/$', RedirectView.as_view(url='/needs/at/dundee-angus/')),
     url(r'^needs/at/lifeshare/$', RedirectView.as_view(url='/needs/at/lifeshare-manchester/')),
 
     # Apps
