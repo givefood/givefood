@@ -740,6 +740,7 @@ class ParliamentaryConstituency(models.Model):
     mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
     mp_parl_id = models.IntegerField(verbose_name="MP's ID")
 
+    mp_display_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="MP Display Name", editable=False)
     mp_synopsis = models.TextField(null=True, blank=True, editable=False)
     mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True, editable=False)
     mp_website = models.URLField(max_length=250, null=True, blank=True, editable=False)
@@ -815,6 +816,8 @@ class ParliamentaryConstituency(models.Model):
 
         # Get MP contact details
         contact_details = mp_contact_details(self.mp_parl_id)
+
+        self.mp_display_name = contact_details.get("display_name", None)
 
         self.website = contact_details.get("website", None)
         self.mp_twitter_handle = contact_details.get("twitter", None)

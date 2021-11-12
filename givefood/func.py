@@ -549,6 +549,10 @@ def mp_contact_details(mpid):
 
     mp_contact_details = {}
 
+    member_url = "https://members-api.parliament.uk/api/Members/%s/" % (mpid)
+    member_json = fetch_json(member_url)
+    mp_contact_details["display_name"] = member_json["value"]["nameDisplayAs"]
+
     synopsis_url = "https://members-api.parliament.uk/api/Members/%s/Synopsis" % (mpid)
     synopsis_json = fetch_json(synopsis_url)
     mp_contact_details["synopsis"] = strip_tags(synopsis_json["value"])
