@@ -1,0 +1,45 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn2.css">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block title %}404 - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns body">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="/" class="logo">Give Food</a>
+        </div>
+    
+
+      </div>
+
+      <h1>404 - Page Not Found</h1>
+
+      <div class="columns">
+
+          <div class="column">
+
+            <p>Sorry, something has gone wrong there and we can't find that page. This error has been logged and we'll look into it.</p>
+
+            <ul>
+                <li><a href="/">Homepage</a></li>
+                <li><a href="/needs/">Find what food banks need</a></li>
+                <li>Email us at <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></li>
+            </ul>
+           
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
