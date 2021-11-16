@@ -334,7 +334,6 @@ def clean_foodbank_need_text(text):
         "Wish list",
         "Most needed food parcel items",
         "Our urgently needed items",
-        "Food Items",
         "Current Pantry Items Needed",
         "Items we urgently need",
         "Most needed items",
