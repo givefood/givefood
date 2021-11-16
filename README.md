@@ -7,7 +7,7 @@ The source of https://www.givefood.org.uk. A Google App Engine app written in Py
 |-----------|-------------------------------------|----------------------------------------|
 | gfadmin   | Admin tool                          | https://www.givefood.org.uk/admin/     |
 | gfapi1    | Deprecated first version of our API | https://www.givefood.org.uk/api/1/     |
-| gfap2     | Current API                         | https://www.givefood.org.uk/api/       |
+| gfapi2     | Current API                         | https://www.givefood.org.uk/api/       |
 | gfdash    | Data dashboards                     | https://www.givefood.org.uk/dashboard/ |
 | gfoffline | Offline tasks                       |                                        |
 | gfwfbn    | What food banks need tool           | https://www.givefood.org.uk/needs/     |
