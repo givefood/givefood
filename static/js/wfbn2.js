@@ -131,6 +131,18 @@ function address_on_map(address) {
 function move_map(lat,lng) {
   map_main.panTo(new google.maps.LatLng(lat,lng));
   map_main.setZoom(12);
+  var marker = new google.maps.Marker({
+    position: {"lat": lat, "lng": lng},
+    map: map_main,
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 6,
+      fillOpacity: 1,
+      strokeWeight: 2,
+      fillColor: '#5384ED',
+      strokeColor: '#ffffff',
+    },
+  });
 }
 
 function record_search(querystring) {
