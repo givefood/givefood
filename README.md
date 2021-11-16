@@ -2,6 +2,17 @@
 
 The source of https://www.givefood.org.uk. A Google App Engine app written in Python, using Django and [Djangae](https://github.com/potatolondon/djangae).
 
+## Structure 
+| App Name  | Description                         | URL                                    |
+|-----------|-------------------------------------|----------------------------------------|
+| gfadmin   | Admin tool                          | https://www.givefood.org.uk/admin/     |
+| gfapi1    | Deprecated first version of our API | https://www.givefood.org.uk/api/1/     |
+| gfapi2     | Current API                         | https://www.givefood.org.uk/api/       |
+| gfdash    | Data dashboards                     | https://www.givefood.org.uk/dashboard/ |
+| gfoffline | Offline tasks                       |                                        |
+| gfwfbn    | What food banks need tool           | https://www.givefood.org.uk/needs/     |
+| givefood  | Public app                          | https://www.givefood.org.uk            |
+
 ## About Us
 
 We maintain the the largest publically available database of food banks and what they are requesting to have donated in the UK. We currently cover over 2400 locations.
