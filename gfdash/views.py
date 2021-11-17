@@ -60,7 +60,7 @@ def most_requested_items(request):
         recent_foodbanks = Foodbank.objects.filter(last_need__gt = day_threshold).order_by("-last_need")
 
     # Keywords we use in need text that we'll exclude
-    invalid_text = ["Nothing", "Unknown"]
+    invalid_text = ["Nothing", "Unknown", "Facebook"]
 
     # Loop the foodbanks
     for recent_foodbank in recent_foodbanks:

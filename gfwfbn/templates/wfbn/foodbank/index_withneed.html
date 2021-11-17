@@ -59,13 +59,20 @@
               <p class="tag is-danger is-large">This food bank is closed</p>
             {% endif %}
 
-              <p>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} food bank{% endif %} is currently requesting the following items to be donated:</p>
-              <p class="needs">
-                {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}<br>
-                <em>Found on {{ foodbank.latest_need_date }}</em>
-              </p>
-              
-              {% include 'wfbn/foodbank/includes/subscribe.html' %}
+              {% if foodbank.latest_need.change_text == "Facebook" %}
+                <p>You can find out what {{ foodbank }} food bank is requesting to have donated on their Facebook page:</p>
+                <div id="fb-root"></div>
+                <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v8.0"></script>
+                <div class="fb-page" data-href="https://www.facebook.com/{{ foodbank.facebook_page }}/" data-tabs="timeline" data-width="500" data-height="1000" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/{{ foodbank.facebook_page }}/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/{{ foodbank.facebook_page }}/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></blockquote></div>
+              {% else %}
+                <p>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} food bank{% endif %} is currently requesting the following items to be donated:</p>
+                <p class="needs">
+                  {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}<br>
+                  <em>Found on {{ foodbank.latest_need_date }}</em>
+                </p>
+                
+                {% include 'wfbn/foodbank/includes/subscribe.html' %}
+              {% endif %}
 
           </div>
 
@@ -74,7 +81,9 @@
             <div class="cta">
               <a href="{{ foodbank.url }}" class="button is-info" id="donate_btn">Donate</a>
               <a href="{% url 'wfbn:foodbank_politics' foodbank.slug %}" class="button is-info" id="takeaction_btn">Take Action</a>
-              <a href="#subscribe" class="button is-info">Subscribe</a>
+              {% if foodbank.latest_need.change_text != "Facebook" %}
+                <a href="#subscribe" class="button is-info">Subscribe</a>
+              {% endif %}
             </div>
 
             <div id="map" class="sidemap"></div>

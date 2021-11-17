@@ -86,7 +86,7 @@
                           {% endif %}
                           <a class="info" href="/needs/at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
                         </div>
-                        {% if location.needs != "Nothing" and location.needs != "Unknown" %}
+                        {% if location.needs != "Nothing" and location.needs != "Unknown" and location.needs != "Facebook" %}
                           <a class="subscribe-btn button is-link is-small" data-foodbankname="{{ location.foodbank_name }}">Subscribe</button>
                         {% endif %}
                         
@@ -97,6 +97,8 @@
                             Nothing right now, thanks
                           {% elif location.needs == "Unknown" %}
                             Sorry. We don't know what's needed here, please contact the food bank
+                          {% elif location.needs == "Facebook" %}
+                            Check the food bank's Facebook page for what they need
                           {% else %}
                             {{ location.needs|linebreaks }}
                           {% endif %}

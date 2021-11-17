@@ -18,6 +18,7 @@ const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> R
 const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Try a postcode or address.";
 const no_addr_text = "Did you forget to enter an address?";
 const nothing_needed_text = "Nothing right now, thanks";
+const check_facebook_text = "Check the food bank's Facebook page for what they need";
 const need_unknown_text = "Sorry. We don't know what's needed here, please contact the food bank";
 const loc_not_uk = "Sorry, we couldn't use that location. Is it inside the United Kingdom?";
 const search_error = "Sorry, we had a problem finding food banks there. The error was logged. Please try again later."
@@ -215,13 +216,16 @@ function api_response() {
       currentrow.querySelector(".parent_org a").href = "/needs/at/" + parent_org_slug + "/";
     }
     currentrow.querySelector(".distance span").textContent = distance;
-    if (number_needs > 0 && needs != "Nothing" && needs != "Unknown") {
+    if (number_needs > 0 && needs != "Nothing" && needs != "Unknown" && needs != "Facebook") {
       if (number_needs > 1) {item_text = "items"} else {item_text = "item"};
       currentrow.querySelector(".fb_needs p").innerHTML = needs_html;
       currentrow.querySelector(".subscribe-btn").setAttribute("data-foodbankname",parent_org)
       currentrow.querySelector(".subscribe-btn").addEventListener("click", show_subscribe_modal)
     } else if (needs == "Unknown") {
       currentrow.querySelector(".fb_needs").innerHTML = need_unknown_text;
+      currentrow.querySelector(".subscribe-btn").remove()
+    } else if (needs == "Facebook") {
+      currentrow.querySelector(".fb_needs").innerHTML = check_facebook_text;
       currentrow.querySelector(".subscribe-btn").remove()
     } else {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
