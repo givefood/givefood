@@ -14,7 +14,7 @@ from django import forms
 from google.appengine.api import urlfetch
 from session_csrf import anonymous_csrf
 
-from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber
+from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
 from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
@@ -103,6 +103,39 @@ def foodbank(request, slug):
     }
 
     return render(request, "wfbn/foodbank/index_%s.html" % (template), template_vars)
+
+
+@cache_page(60*60)
+def foodbank_rss(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).order_by("-created")[:10]
+    news = FoodbankArticle.objects.filter(foodbank = foodbank).order_by("-published_date")[:10]
+
+    items = []
+    for need in needs:
+        items.append({
+            "title":"%s new items requested" % (need.no_items()),
+            "url":"https://www.givefood.org.uk/needs/at/%s/history/#need-%s" % (foodbank.slug, need.need_id),
+            "date":need.created,
+            "description":need.clean_change_text()
+        })
+    for newsitem in news:
+        items.append({
+            "title":newsitem.title,
+            "url":newsitem.url,
+            "date":newsitem.created,
+        })
+
+    items = sorted(items, key=lambda d: d['date'], reverse=True) 
+
+    template_vars = {
+        "foodbank":foodbank,
+        "items":items,
+    }
+
+    return render(request, "wfbn/foodbank/rss.xml", template_vars, content_type='text/xml')
 
 
 @cache_page(60*60)

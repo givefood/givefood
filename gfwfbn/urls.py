@@ -13,6 +13,7 @@ urlpatterns = (
 
     # Foodbank
     url(r'^at/(?P<slug>[-\w]+)/$', foodbank, name="foodbank"),
+    url(r'^at/(?P<slug>[-\w]+)/rss.xml$', foodbank_rss, name="foodbank_rss"),
     url(r'^at/(?P<slug>[-\w]+)/map.png$', foodbank_map, name="foodbank_map"),
     url(r'^at/(?P<slug>[-\w]+)/news/$', foodbank_news, name="foodbank_news"),
     url(r'^at/(?P<slug>[-\w]+)/politics/$', foodbank_politics, name="foodbank_politics"),

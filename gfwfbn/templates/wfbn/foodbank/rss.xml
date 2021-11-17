@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+        <channel>
+                <title>{{ foodbank }} Food Banks</title>
+                <description>News &amp; item requests from {{ foodbank }} food bank</description>
+                <link>https://www.givefood.org.uk{% url 'wfbn:foodbank' foodbank.slug %}</link>
+                <lastBuildDate>{% now "D, d M Y H:i:s O" %}</lastBuildDate>
+                {% for item in items %}
+                    <item>
+                            <title>{{ item.title }}</title>
+                            <link>{{ item.url }}</link>
+                            <guid isPermaLink="true">{{ item.url }}</guid>
+                            <pubDate>{{ item.date|date:"D, d M Y H:i:s O" }}</pubDate>
+                            {% if item.description %}
+                                <description>{{ item.description }}</description>
+                            {% endif %}
+                    </item>
+                {% endfor %}
+
+        </channel>
+</rss>
