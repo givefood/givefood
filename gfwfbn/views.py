@@ -89,7 +89,6 @@ def click(request, slug):
 def foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    nearby_locations = find_locations(foodbank.latt_long, 20, True)
 
     change_text = foodbank.latest_need().change_text
 
@@ -101,7 +100,6 @@ def foodbank(request, slug):
     template_vars = {
         "section":"foodbank",
         "foodbank":foodbank,
-        "nearby_locations":nearby_locations,
     }
 
     return render(request, "wfbn/foodbank/index_%s.html" % (template), template_vars)
