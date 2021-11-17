@@ -4,6 +4,7 @@
   <link rel="stylesheet" href="/static/css/wfbn2.css">
   <link rel="stylesheet" href="/static/css/share_btns.css">
   <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="RSS feed for {{ foodbank }} food bank" href="{% url 'wfbn:foodbank_rss' foodbank.slug %}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFood_org_uk">
   <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
