@@ -116,7 +116,7 @@ def foodbank_rss(request, slug):
     items = []
     for need in needs:
         items.append({
-            "title":"%s new items requested" % (need.no_items()),
+            "title":"%s items requested" % (need.no_items()),
             "url":"https://www.givefood.org.uk/needs/at/%s/history/#need-%s" % (foodbank.slug, need.need_id),
             "date":need.created,
             "description":need.clean_change_text()
