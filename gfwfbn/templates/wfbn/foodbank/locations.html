@@ -62,16 +62,14 @@
             <h3><a href="{% url 'wfbn:foodbank' foodbank.slug %}">Main</a></h3>
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
-              {{ foodbank.postcode }}<br>
-              {{ foodbank.country }}
+              {{ foodbank.postcode }}
             </address>
 
             {% for location in foodbank.locations %}
                 <h3><a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location.name }}</a></h3>
                 <address>
                     {{ location.address|linebreaksbr }}<br>
-                    {{ location.postcode }}<br>
-                    {{ location.country }}
+                    {{ location.postcode }}
                   </address>
             {% endfor %}
 
