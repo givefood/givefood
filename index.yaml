@@ -129,3 +129,9 @@ indexes:
   - name: order_id
   - name: weight
     direction: desc
+
+- kind: givefood_parliamentaryconstituency
+  properties:
+  - name: name
+  - name: country
+  - name: slug

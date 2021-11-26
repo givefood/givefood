@@ -307,7 +307,7 @@ def constituencies(request):
         if parl_con:
             return HttpResponseRedirect(reverse("wfbn:constituency", kwargs={"slug":slugify(parl_con)}))
 
-    constituencies = ParliamentaryConstituency.objects.all().order_by("name")
+    constituencies = ParliamentaryConstituency.objects.all().order_by("name").only("name","slug","country")
 
     template_vars = {
         "constituencies":constituencies,
