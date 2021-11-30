@@ -45,7 +45,7 @@ urlpatterns = (
     # Apps
     url(r'^needs/', include('gfwfbn.urls', namespace="wfbn", app_name="gfwfbn")),
     url(r'^api/1/', include('gfapi1.urls')),
-    url(r'^api/2/', include('gfapi2.urls')),
+    url(r'^api/2/', include('gfapi2.urls', namespace="api2", app_name="api2")),
     url(r'^api/', include('gfapi2.urls')),
     url(r'^admin/', include('gfadmin.urls', namespace="admin", app_name="gfadmin")),
     url(r'^dashboard/', include('gfdash.urls', namespace="dash", app_name="gfdash")),
