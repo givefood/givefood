@@ -66,6 +66,7 @@ def xml_item_name(plural):
 
     singular = {
         "foodbanks":"foodbank",
+        "nearby_foodbanks":"foodbank",
         "locations":"location",
         "needs":"need",
         "constituencies":"constituency",
