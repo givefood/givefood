@@ -429,7 +429,7 @@ def locations(request):
                         "coordinates": [float(location.latt_long.split(",")[1]), float(location.latt_long.split(",")[0])]
                     },
                     "properties": {
-                        "name": location.name,
+                        "name": location.full_name(),
                         "slug": location.slug,
                         "address": location.full_address(),
                         "url": "https://www.givefood.org.uk/needs/at/%s/%s/" % (location.foodbank_slug, location.slug),
