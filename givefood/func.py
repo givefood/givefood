@@ -89,6 +89,28 @@ def geocode(address):
     return lattlong
 
 
+def oc_geocode(address):
+
+    logging.info("Opencage Geocode %s" % (address))
+
+    oc_geocode_key = get_cred("oc_geocode_key")
+
+    address_api_url = "https://api.opencagedata.com/geocode/v1/json?q=%s&key=%s" % (urllib.quote(address.encode('utf8')), oc_geocode_key)
+    logging.info(address_api_url)
+    address_api_result = urlfetch.fetch(address_api_url)
+    if address_api_result.status_code == 200:
+        try:
+            address_result_json = json.loads(address_api_result.content)
+            lattlong = "%s,%s" % (
+                address_result_json["results"][0]["geometry"]["lat"],
+                address_result_json["results"][0]["geometry"]["lng"]
+            )
+        except:
+            lattlong = "0,0"
+        logging.info("Got %s" % lattlong)
+    return lattlong
+
+
 def parse_tesco_order_text(order_text):
 
     # 10	Tesco Sliced Carrots In Water 300G	£0.30	£3.00

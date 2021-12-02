@@ -3,6 +3,7 @@ from views import *
 
 urlpatterns = (
     url(r'^precacher/$', precacher, name="precacher"),
+    url(r'^oc_geocode/$', fire_oc_geocode, name="fire_oc_geocode"),
     url(r'^search/cleanup/$', search_cleanup, name="search_cleanup"),
     url(r'^search/saver/$', search_saver, name="search_saver"),
     url(r'^search/hydrate/$', fire_search_hydrate, name="fire_search_hydrate"),

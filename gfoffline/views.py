@@ -11,6 +11,7 @@ from django.db import IntegrityError
 
 from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch, FoodbankArticle
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
+from givefood.func import oc_geocode
 
 
 def precacher(request):
@@ -22,6 +23,25 @@ def precacher(request):
     memcache.add(FB_MC_KEY, all_foodbanks, 3600)
 
     return HttpResponse("OK")
+
+
+def fire_oc_geocode(request):
+
+    foodbanks = Foodbank.objects.all()
+    for foodbank in foodbanks:
+        deferred.defer(do_oc_geocode, foodbank)
+
+    locations = FoodbankLocation.objects.all()
+    for location in locations:
+        deferred.defer(do_oc_geocode, location)
+
+    return HttpResponse("OK")
+
+
+def do_oc_geocode(foodbank):
+
+    foodbank.latt_long = oc_geocode(foodbank.full_address())
+    foodbank.save()
 
 
 def search_cleanup(request):
