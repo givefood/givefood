@@ -16,9 +16,7 @@ const search_error = "Sorry, we had a problem finding food banks there. The erro
 function init() {
   autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
   autocomplete.setComponentRestrictions({'country': ['gb']});
-  uml_btn.addEventListener("click", do_geolocation);
   addressform.addEventListener("submit", do_address);
-  add_click_recorders();
   preload_image("/static/img/loading.gif");
   preload_image("/static/img/phone.svg");
   preload_image("/static/img/info.svg");
@@ -149,7 +147,9 @@ function api_response() {
       currentrow.querySelector(".links .info").href = url;
     }
     if (!phone) {
-      currentrow.querySelector(".links .phone").remove();
+      if (currentrow.querySelector(".links .phone")) {
+        currentrow.querySelector(".links .phone").remove();
+      }
     }
     results_table.appendChild(currentrow);
   }
