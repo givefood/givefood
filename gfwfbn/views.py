@@ -363,7 +363,7 @@ def updates(request, slug, action):
             send_email(
                 email,
                 "Confirm your Give Food subscription",
-                "Someone asked for updates on %s food bank from Give Food. Please confirm this was you by clicking this link...\n\nhttps://www.givefood.org.uk/needs/at/%s/updates/confirm/?key=%s" % (
+                "Someone asked for updates on %s food bank from Give Food. If this was you then please click the link below, if it wasn't then please ignore this email.\n\nhttps://www.givefood.org.uk/needs/at/%s/updates/confirm/?key=%s" % (
                     foodbank.name,
                     foodbank.slug,
                     sub_key,
