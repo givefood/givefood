@@ -18,8 +18,6 @@ function init() {
   autocomplete.setComponentRestrictions({'country': ['gb']});
   addressform.addEventListener("submit", do_address);
   preload_image("/static/img/loading.gif");
-  preload_image("/static/img/phone.svg");
-  preload_image("/static/img/info.svg");
 }
 
 function do_geolocation(event) {
