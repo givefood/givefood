@@ -97,6 +97,12 @@ indexes:
   - name: foodbank_id
   - name: name
 
+- kind: givefood_foodbanksubscriber
+  properties:
+  - name: confirmed
+  - name: created
+    direction: desc
+
 - kind: givefood_gfcredential
   properties:
   - name: cred_name

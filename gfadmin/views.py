@@ -853,10 +853,16 @@ def credentials_form(request):
 
 def subscriptions(request):
 
-    subscriptions = FoodbankSubscriber.objects.all().order_by("-created")
+    filter = request.GET.get("filter", "all")
+
+    if filter == "all":
+        subscriptions = FoodbankSubscriber.objects.all().order_by("-created")
+    else:
+        subscriptions = FoodbankSubscriber.objects.filter(confirmed = False).order_by("-created")
 
     template_vars = {
         "section":"settings",
+        "filter":filter,
         "subscriptions":subscriptions,
     }
     return render(request, "admin/subscriptions.html", template_vars)

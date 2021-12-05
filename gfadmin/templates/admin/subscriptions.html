@@ -10,6 +10,17 @@
 
     <div class="column">
 
+      <div class="field is-pulled-right">
+        <div class="control">
+          <div class="select is-small">
+            <select onchange="javascript:window.location.href=this.value">
+              <option value="?filter=all"{% if filter == "all" %} selected{% endif %}>All</option>
+              <option value="?filter=unconfirmed"{% if filter == "unconfirmed" %} selected{% endif %}>Unconfirmed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Email</th>
