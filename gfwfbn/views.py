@@ -387,7 +387,7 @@ def updates(request, slug, action):
 
             send_email(
                 sub.email,
-                "Thank you for confirming your subscription to %s food bank" % (sub.foodbank.name),
+                "Thank you for confirming your subscription to %s Food Bank" % (sub.foodbank.name),
                 "We'll send you a list of items being requested here whenever the food bank updates them.\n\nYou can find more details about the food bank at: https://www.givefood.org.uk/needs/at/%s/\nSee other nearby food banks at: https://www.givefood.org.uk/needs/at/%s/nearby/\nTake political action: https://www.givefood.org.uk/needs/at/%s/politics/" % (
                     sub.foodbank.slug,
                     sub.foodbank.slug,
