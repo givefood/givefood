@@ -380,8 +380,20 @@ def updates(request, slug, action):
     if action == "confirm":
 
         sub = get_object_or_404(FoodbankSubscriber, sub_key=key)
-        sub.confirmed = True
-        sub.save()
+
+        if not sub.confirmed:
+            sub.confirmed = True
+            sub.save()
+
+            send_email(
+                sub.email,
+                "Thank you for confirming your subscription to %s food bank" % (sub.foodbank.name),
+                "We'll send you a list of items being requested here whenever the food bank updates them.\n\nYou can find more details about the food bank at: https://www.givefood.org.uk/needs/at/%s/\nSee other nearby food banks at: https://www.givefood.org.uk/needs/at/%s/nearby/\nTake political action: https://www.givefood.org.uk/needs/at/%s/politics/" % (
+                    sub.foodbank.slug,
+                    sub.foodbank.slug,
+                    sub.foodbank.slug,
+                )
+            )
 
         message = "Great! Thank you for confirming your subscription."
 
