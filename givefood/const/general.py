@@ -42,4 +42,5 @@ ITEMS_MC_KEY = "all_items"
 
 RICK_ASTLEY = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
-API_DOMAIN = "https://www.givefood.org.uk"
+SITE_DOMAIN = "https://www.givefood.org.uk"
+API_DOMAIN = SITE_DOMAIN

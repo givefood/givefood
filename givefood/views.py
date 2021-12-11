@@ -21,7 +21,7 @@ from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation, P
 from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, admin_regions_from_postcode, find_foodbanks, find_locations, geocode, find_locations, get_cred
 from givefood.func import send_email
-from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT
+from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
@@ -194,6 +194,7 @@ def public_sitemap(request):
     locations = get_all_locations()
 
     template_vars = {
+        "domain":SITE_DOMAIN,
         "foodbanks":foodbanks,
         "constituencies":constituencies,
         "locations":locations,
