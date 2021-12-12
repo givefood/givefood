@@ -19,7 +19,7 @@ from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_locations, admin_regions_from_postcode, find_foodbanks, find_locations, geocode, find_locations, get_cred
+from givefood.func import get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_open_foodbanks, get_all_locations, admin_regions_from_postcode, find_foodbanks, find_locations, geocode, find_locations, get_cred
 from givefood.func import send_email
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
@@ -189,7 +189,7 @@ def public_gen_annual_report(request, year):
 @cache_page(60*60)
 def public_sitemap(request):
 
-    foodbanks = get_all_foodbanks()
+    foodbanks = get_all_open_foodbanks()
     constituencies = ParliamentaryConstituency.objects.all()
     locations = get_all_locations()
 
