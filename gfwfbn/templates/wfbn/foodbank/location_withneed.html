@@ -56,6 +56,10 @@
 
           <div class="column">
 
+            {% if foodbank.is_closed %}
+              <p class="tag is-danger is-large">This food bank is closed</p>
+            {% endif %}
+
             {% if foodbank.latest_need.change_text == "Facebook" %}
               <p>You can find out what {{ foodbank }} food bank is requesting to have donated on their Facebook page:</p>
               <div id="fb-root"></div>
