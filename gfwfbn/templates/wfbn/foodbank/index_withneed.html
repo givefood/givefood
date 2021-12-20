@@ -122,7 +122,7 @@
 {% block script %}
 
 <script src="/static/js/wfbn2.js" defer></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 <script>
 function add_marker(lat, lng, url) {
   position = new google.maps.LatLng(lat, lng)
