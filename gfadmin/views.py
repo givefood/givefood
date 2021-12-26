@@ -63,14 +63,14 @@ def searches(request):
 
 def searches_csv(request):
 
-    searches = ApiFoodbankSearch.objects.all().order_by("-created")[:20000]
+    searches = ApiFoodbankSearch.objects.all().order_by("-created")[:50000]
 
     output = []
-    response = HttpResponse (content_type='text/csv')
+    response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)
     writer.writerow(['created', 'query_type', 'query', 'nearest_foodbank', 'latt', 'long'])
     for search in searches:
-        output.append([search.created, search.query_type, search.query, search.nearest_foodbank, search.latt(), search.long()])
+        output.append([search.created, search.query_type, unicode(search.query).encode("utf-8"), search.nearest_foodbank, search.latt(), search.long()])
     writer.writerows(output)
     return response
 
