@@ -83,7 +83,7 @@
           <div class="column">
 
             <div class="cta">
-              <a href="{{ foodbank.url }}" class="button is-info" id="donate_btn">Donate</a>
+              <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" class="button is-info" id="donate_btn">Donate</a>
               <a href="{% url 'wfbn:foodbank_politics' foodbank.slug %}" class="button is-info" id="takeaction_btn">Take Action</a>
               {% if foodbank.latest_need.change_text != "Facebook" %}
                 <a href="#subscribe" class="button is-info">Subscribe</a>
