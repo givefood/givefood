@@ -436,6 +436,9 @@ def locations(request):
                         "network": location.foodbank_network,
                         "email": location.email_or_foodbank_email(),
                         "telephone": location.phone_or_foodbank_phone(),
+                        "foodbank": location.foodbank_name,
+                        "foodbank_slug": location.foodbank_slug,
+                        "foodbank_url": "https://www.givefood.org.uk/needs/at/%s/" % (location.foodbank_slug),
                         "parliamentary_constituency": location.parliamentary_constituency_name,
                     }
                 }
