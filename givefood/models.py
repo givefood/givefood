@@ -301,6 +301,9 @@ class FoodbankLocation(models.Model):
     lsoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
     msoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
+    class Meta:
+       unique_together = ('foodbank', 'name',)
+
     def __str__(self):
         return self.name
     
