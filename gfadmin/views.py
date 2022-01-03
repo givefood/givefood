@@ -197,7 +197,7 @@ def needs_csv(request):
     writer = csv.writer(response)
     writer.writerow(['id', 'created', 'foodbank', 'needs', 'input_method'])
     for need in needs:
-        output.append([need.need_id, need.created, need.foodbank_name, smart_str(need.change_text), need.input_method()])
+        output.append([need.need_id, need.created, need.foodbank_name, smart_str(need.change_text), need.input_method])
     writer.writerows(output)
     return response
 
