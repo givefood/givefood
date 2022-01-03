@@ -2,7 +2,6 @@
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn2.css">
-  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@700&display=swap" rel="stylesheet">
   <link rel="alternate" type="application/json" href="{% url 'api2:constituency' constituency.slug %}">
   <link rel="alternate" type="application/xml" href="{% url 'api2:constituency' constituency.slug %}?format=xml">
   <link rel="alternate" type="application/yaml" href="{% url 'api2:constituency' constituency.slug %}?format=yaml">
