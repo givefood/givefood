@@ -2,6 +2,7 @@
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn2.css">
+  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
   <link rel="alternate" type="application/json" href="{% url 'api2:foodbank' foodbank.slug %}">
   <link rel="alternate" type="application/xml" href="{% url 'api2:foodbank' foodbank.slug %}?format=xml">
   <link rel="alternate" type="application/yaml" href="{% url 'api2:foodbank' foodbank.slug %}?format=yaml">
