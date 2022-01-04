@@ -1,0 +1,175 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}2021 Give Food Annual Report{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/static/css/wfbn2.css">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@GiveFoodCharity">
+<meta property="og:title" content="Give Food 2021 Annual Report">
+<meta property="og:description" content="Find out what we've been done in 2021">
+<meta name="description" content="Find out what we've been done in 2021">
+<meta property="og:image" content="https://www.givefood.org.uk/static/img/ar/2021/sharing.png">
+{% endblock %}
+
+{% block body %}
+
+<div class="columns">
+
+    <div class="column is-4">
+      <a href="/" class="logo">Give Food</a>
+    </div>
+
+  </div>
+
+  <div class="columns">
+    <div class="column is-one-third intro">
+
+        <h1>2021 Annual Report</h1>
+        <p>We're a UK charity that supports food banks around the country. We do this by using technology to identify what is needed at food banks, distributing this information and also making our own deliveries.</p>
+        <p>We run the largest and most complete public database of UK food banks and scrape their websites for what they are requesting in real time.</p>
+
+        <div class="sticky-toc content">
+            <ul class="is-size-6">
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#aim-review">Aim Review</a></li>
+                <li><a href="#review-redesign">UX Review &amp; Redesign</a></li>
+                <li><a href="#data-code">Data &amp; Code</a></li>
+                <li><a href="#charity-reporting">Charity Reporting</a></li>
+                <li><a href="#aims-2022">Aims for 2022</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="column is-half content">
+
+        <h2 id="summary">Summary</h2>
+
+        <p>It's been a much quieter year for the charity in 2021 and we've used this time to take stock of the extremely rapid growth and uncertainty experienced in 2020.</p>
+
+        <ul>
+            <li>Around 7 million people viewed our food bank need data</li>
+            <li>Completely rewrote of key parts of our tooling</li>
+            <li>10x conversion rate improvement from UX review and redesign of most of our website</li>
+            <li>Delivered 15.8 tonnes of food &amp; supplies containing 14.3 million calories, enough for around 22,000 meals</li>
+        </ul>
+
+        <h2 id="aim-review">Aim Review</h2>
+
+        <p>In in the <a href="/2020/">2020 annual report</a> we set ourselves the following aims:</p>
+
+        <ul>
+            <li>Release more data, including dashboards</li>
+            <li>Improve data &amp; code quality with audits and rewrites</li>
+            <li>Find methods of finding &amp; communicating with food banks that aren't internet-savvy</li>
+            <li>Reach out to more independent food banks</li>
+            <li>Create a tool to allow users to better contact their local and national political representatives about the food bank cause</li>
+        </ul>
+
+        <h3>Release more data, including dashboards</h3>
+
+        <p>✅ In 2021 we built <a href="/dashboards/">dashboards</a> to aggregate and display our data for consumption by interested parties.</p>
+        <p>Our dashboards are unique to aggregating data to create leading indicators of food demand at food banks and are used by multiple organisations. We also worked with the knowledgeable members of the Talk-GB OpenStreetMap mailing list to ensure our data was able to be correctly licensed for reuse.</p>
+
+
+        <h3>Improve data & code quality with audits and rewrites</h3>
+
+        <p>✅ This is the biggest area of improvement this year with significant improvements made across the board drastically improving the quality of our data and code.</p>
+        <p>First to be rewritten was the political data. Previously administrative district, ward, <abbr title="Lower Layer Super Output Areas ">LSOA</abbr>, <abbr title="Middle Layer Super Output Areas ">MSOA</abbr> and parliamentary constituency was an after-thought included as a curiosity, but as our understanding of food banks grew it was clear a rewrite was needed, which we did in August.</p>
+        <p>This has allowed us to build and expose far higher quality political mapping to users via the website and API, plus analyse where users are looking to donate to more accurately.</p>
+
+        <figure>
+            <img src="/static/img/ar/2021/constituency-change.png" alt="Before and after redesigns of parliamentary constituency maps">
+            <figcaption>Old mapping data (left), alongside the new reworked system with more data (right)</figcaption>
+        </figure>
+
+        <p>We've also undertaken two time consuming complete manual audits of our data during the year and refined our automated monitoring of food bank network data.</p>
+
+
+        <h3>Find methods of finding &amp; communicating with food banks that aren't internet-savvy</h3>
+
+        <p>❌ Again we've not managed to do this task, and it's increasingly unclear how we would be able to. As such we're currently unable to index food banks that don't have some form of digital presence.</p>
+
+
+        <h3>Reach out to more independent food banks</h3>
+
+        <p>✅ In addition to refining how we catalogue networked food banks, we've successfully continued to seek out food banks that aren't part of the Trussell Trust or IFAN. We've found 851 independent food bank locations, which is up from 833 in 2020.</p>
+        <p>Keeping track of popup and rapidly changing food bank locations during the pandemic has continued to be more of a challenge than we anticipated.</p>
+
+
+        <h3>Create a tool to allow users to better contact their local and national political representatives about the food bank cause</h3>
+
+        <p>❌ Although all the components and data are now in place, we haven't done this and will rollover the aim to next year.</p>
+
+
+        <h2 id="review-redesign">UX Review &amp; Redesign</h2>
+
+        <p>As our website traffic grew threefold over the year we realised that the public-facing pages were not suitable for the audience that was using them.</p>
+
+        <p>Previously the pages were modelled on our internal dashboards with a lot of information crammed into single pages optimised for use on a desktop computer. These were (unconsciously) designed for 30-something year old computing professionals, on modern computers, accessing them via fast broadband connections.  </p>
+            
+        <p>As we were unable to do any in-person user testing we relied on tooling such as Google Ads, Google Analytics, Plausible and Microsoft Clarity to understand who our users were, the tech they were using to access the content and what they did with it.</p>
+
+        <ul>
+            <li>Nearly half our users are over the age of 55</li>
+            <li>70% of users accessed our content via a mobile device</li>
+            <li>Around half of mobile users were using a device older than about two or three years old</li>
+        </ul>
+
+        <p>This data, when combined with heatmaps and user journey recordings from Microsoft Clarity, clearly showed that our pages did not meet the needs of the users.</p>
+
+        <figure>
+            <img src="/static/img/ar/2021/clarity-heatmap.png" alt="Heatmap of website usage" style="width:350px;">
+            <figcaption>Heatmap showing how users interact with our landing page</figcaption>
+        </figure>
+
+        <p>We embarked on a complete revamp of these pages with the aim of simplifying them to be mobile-friendly, faster, and more quickly understood.</p>
+
+        <figure>
+            <img src="/static/img/ar/2021/design-sketches.jpg" alt="Website design sketches">
+            <figcaption>First design sketches</figcaption>
+        </figure>
+
+        <p>Pages now build and load over twice as fast, have clearer calls to action, surface more data and result in 10x the conversion rate. We'll be tweaking this throughout next year and taking another pass at optimising it.</p>
+
+        <figure>
+            <img src="/static/img/ar/2021/website.png" alt="Give Food website" class="no-corner">
+            <figcaption>Completed website, showing <a href="/needs/in/constituency/north-east-somerset/">constituency</a> &amp; <a href="/needs/at/sid-valley/">food bank</a> pages</figcaption>
+        </figure>
+
+        <h2 id="data-code">Data &amp; Code</h2>
+
+        <p>We continue to maintain the UK's largest and most complete database of food banks covering 2422 locations (up from 2329 last year).</p>
+        <p>We checked food bank websites for what they need just over 3m times in 2021 (up from 2.82m times in 2020, and 2.11m in 2019) and found over 46,000 items being requested.</p>
+        <p>In February we added the ability for users to subscribe to a food bank's requests via email.</p>
+            
+        <figure>
+            <img src="/static/img/ar/2021/search-heatmap.png" alt="Map of where users searched for food banks">
+            <figcaption>Where people searched for food banks, and their needs, using our tool in 2021</figcaption>
+        </figure>
+
+        <h2 id="charity-reporting">Charity Reporting</h2>
+
+        <p>2021 was the first year we were able to publish our charity accounts. This happened in June and is <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/accounts-and-annual-returns">available on the Charity Commission website</a>.</p>
+
+        <h2 id="aims-2022">Aims for 2022</h2>
+
+        <ul>
+            <li>Create a tool to allow users to better contact their local and national political representatives about the food bank cause</li>
+            <li>Monitor food bank surplus as well as need</li>
+            <li>Faster complete data audits throughout the year</li>
+            <li>Continue to publish more dashboards &amp; data</li>
+        </ul>
+
+        <br><br><br><br>
+
+    </div>
+
+  </div>
+
+
+
+
+
+{% endblock %}
