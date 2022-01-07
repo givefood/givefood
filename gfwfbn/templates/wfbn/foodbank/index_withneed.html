@@ -22,6 +22,9 @@
   {% if foodbank.is_closed %}
     <meta name="robots" content="noindex">
   {% endif %}
+  <script type="application/ld+json">
+    {{ foodbank.schema_org_str|safe }}
+  </script>
 {% endblock %}
 
 {% block title %}{{ foodbank }} Food Bank - Give Food{% endblock %}

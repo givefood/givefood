@@ -12,6 +12,7 @@ from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
+from const.general import TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA
 from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details
 
 
@@ -77,6 +78,59 @@ class Foodbank(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def schema_org(self):
+
+        needs = self.latest_need_text()
+        seeks = []
+
+        if needs != "Nothing" and needs != "Unknown" and needs != "Facebook":
+            need_list = needs.splitlines()
+            for need in need_list:
+                seeks.append({
+                    "itemOffered": {
+                        "@type":"Product",
+                        "name":need,
+                    }
+                })
+
+        member_of = {}
+        if self.network != "Independent":
+            if self.network == "Trussell Trust":
+                member_of = TRUSSELL_TRUST_SCHEMA
+            if self.network == "IFAN":
+                member_of = IFAN_SCHEMA
+
+        schema_dict = {
+            "@context": "https://schema.org",
+            "@type": "NGO",
+            "name": "%s Food Bank" % (self.name),
+            "alternateName": self.alt_name,
+            "url": self.url,
+            "email": self.contact_email,
+            "telephone": self.phone_number,
+            "address": {
+                "@type": "PostalAddress",
+                "postalCode": self.postcode,
+                "addressCountry": self.country,
+                "streetAddress": self.address,
+            },
+            "location": {
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": self.latt(),
+                    "longitude": self.long(),
+                },
+            },
+            "identifier":self.charity_number,
+            "memberOf":member_of,
+        }
+        if seeks:
+            schema_dict["seeks"] = seeks
+        return schema_dict
+
+    def schema_org_str(self):
+        return json.dumps(self.schema_org(), indent=4, sort_keys=True)
 
     def friendly_url(self):
         return make_url_friendly(self.url)
