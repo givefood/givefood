@@ -79,7 +79,7 @@ class Foodbank(models.Model):
     def __unicode__(self):
         return self.name
 
-    def schema_org(self, as_parent = False):
+    def schema_org(self, as_sub_property = False):
 
         needs = self.latest_need_text()
         seeks = []
@@ -124,7 +124,7 @@ class Foodbank(models.Model):
             "identifier":self.charity_number,
             "memberOf":member_of,
         }
-        if not as_parent:
+        if not as_sub_property:
             schema_dict["@context"] = "https://schema.org"
             if seeks:
                 schema_dict["seeks"] = seeks
@@ -368,7 +368,7 @@ class FoodbankLocation(models.Model):
     def get_absolute_url(self):
         return "/admin/foodbank/%s/location/%s/edit/" % (self.foodbank.slug, self.slug)
 
-    def schema_org(self):
+    def schema_org(self, as_sub_property = False):
 
         needs = self.foodbank.latest_need_text()
         seeks = []
@@ -412,10 +412,12 @@ class FoodbankLocation(models.Model):
             },
             "identifier":self.foodbank.charity_number,
             "memberOf":member_of,
-            "parentOrganization":self.foodbank.schema_org(as_parent = True)
+            "parentOrganization":self.foodbank.schema_org(as_sub_property = True)
         }
-        if seeks:
-            schema_dict["seeks"] = seeks
+        if not as_sub_property:
+            schema_dict["@context"] = "https://schema.org"
+            if seeks:
+                schema_dict["seeks"] = seeks
         return schema_dict
 
     def schema_org_str(self):
@@ -877,6 +879,28 @@ class ParliamentaryConstituency(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def schema_org(self):
+
+        contains_place = []
+
+        for foodbank in self.foodbank_obj():
+            contains_place.append(foodbank.schema_org(as_sub_property = True))
+        
+        for location in self.location_obj():
+            contains_place.append(location.schema_org(as_sub_property = True))
+
+        schema_dict = {
+            "@type": "AdministrativeArea",
+            "name": self.name,
+            "containsPlace": contains_place,
+            "sameAs": "https://en.wikipedia.org/wiki/%s_(UK_Parliament_constituency)" % (self.name.replace(" ","_")),
+        }
+
+        return schema_dict
+
+    def schema_org_str(self):
+        return json.dumps(self.schema_org(), indent=4, sort_keys=True)
     
     def boundary_geojson_dict(self):
         boundary_geojson = self.boundary_geojson.strip()
@@ -887,10 +911,17 @@ class ParliamentaryConstituency(models.Model):
             boundary_geojson = boundary_geojson
         return json.loads(boundary_geojson)
 
+
+    def foodbank_obj(self):
+        return Foodbank.objects.filter(parliamentary_constituency = self)
+
+    def location_obj(self):
+        return FoodbankLocation.objects.filter(parliamentary_constituency = self)
+
     def foodbanks(self):
 
-        foodbanks = Foodbank.objects.filter(parliamentary_constituency = self)
-        locations = FoodbankLocation.objects.filter(parliamentary_constituency = self)
+        foodbanks = self.foodbank_obj()
+        locations = self.location_obj()
 
         constituency_foodbanks = []
         for foodbank in foodbanks:
