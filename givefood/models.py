@@ -79,7 +79,7 @@ class Foodbank(models.Model):
     def __unicode__(self):
         return self.name
 
-    def schema_org(self):
+    def schema_org(self, as_parent = False):
 
         needs = self.latest_need_text()
         seeks = []
@@ -102,7 +102,6 @@ class Foodbank(models.Model):
                 member_of = IFAN_SCHEMA
 
         schema_dict = {
-            "@context": "https://schema.org",
             "@type": "NGO",
             "name": "%s Food Bank" % (self.name),
             "alternateName": self.alt_name,
@@ -125,8 +124,10 @@ class Foodbank(models.Model):
             "identifier":self.charity_number,
             "memberOf":member_of,
         }
-        if seeks:
-            schema_dict["seeks"] = seeks
+        if not as_parent:
+            schema_dict["@context"] = "https://schema.org"
+            if seeks:
+                schema_dict["seeks"] = seeks
         return schema_dict
 
     def schema_org_str(self):
@@ -366,6 +367,59 @@ class FoodbankLocation(models.Model):
 
     def get_absolute_url(self):
         return "/admin/foodbank/%s/location/%s/edit/" % (self.foodbank.slug, self.slug)
+
+    def schema_org(self):
+
+        needs = self.foodbank.latest_need_text()
+        seeks = []
+
+        if needs != "Nothing" and needs != "Unknown" and needs != "Facebook":
+            need_list = needs.splitlines()
+            for need in need_list:
+                seeks.append({
+                    "itemOffered": {
+                        "@type":"Product",
+                        "name":need,
+                    }
+                })
+
+        member_of = {}
+        if self.foodbank_network != "Independent":
+            if self.foodbank_network == "Trussell Trust":
+                member_of = TRUSSELL_TRUST_SCHEMA
+            if self.foodbank_network == "IFAN":
+                member_of = IFAN_SCHEMA
+
+        schema_dict = {
+            "@context": "https://schema.org",
+            "@type": "NGO",
+            "name": "%s Food Bank" % (self.full_name()),
+            "url": self.foodbank.url,
+            "email": self.email_or_foodbank_email(),
+            "telephone": self.phone_or_foodbank_phone(),
+            "address": {
+                "@type": "PostalAddress",
+                "postalCode": self.postcode,
+                "addressCountry": self.foodbank.country,
+                "streetAddress": self.address,
+            },
+            "location": {
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": self.latt(),
+                    "longitude": self.long(),
+                },
+            },
+            "identifier":self.foodbank.charity_number,
+            "memberOf":member_of,
+            "parentOrganization":self.foodbank.schema_org(as_parent = True)
+        }
+        if seeks:
+            schema_dict["seeks"] = seeks
+        return schema_dict
+
+    def schema_org_str(self):
+        return json.dumps(self.schema_org(), indent=4, sort_keys=True)
 
     def full_name(self):
         return "%s, %s" % (self.name, self.foodbank_name)

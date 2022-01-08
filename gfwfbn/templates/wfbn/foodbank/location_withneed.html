@@ -18,6 +18,9 @@
   {% if foodbank.is_closed %}
     <meta name="robots" content="noindex">
   {% endif %}
+  <script type="application/ld+json">
+    {{ location.schema_org_str|safe }}
+  </script>
 {% endblock %}
 
 {% block title %}{{ location.name }} - {{ foodbank.name }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %} - Give Food{% endblock %}
