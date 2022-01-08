@@ -871,6 +871,12 @@ class ParliamentaryConstituency(models.Model):
     phone_con = models.CharField(max_length=20, null=True, blank=True, editable=False)
 
     boundary_geojson = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
     
     def boundary_geojson_dict(self):
         boundary_geojson = self.boundary_geojson.strip()
