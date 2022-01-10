@@ -29,34 +29,36 @@ FOODBANK_NETWORK_CHOICES = tuple((network, network) for network in FOODBANK_NETW
 
 
 TRUSSELL_TRUST_SCHEMA = {
-    "@type":"NGO",
-    "name":"Trussell Trust",
-    "url":"https://www.trusselltrust.org",
-    "email":"enquiries@trusselltrust.org",
-    "telephone":"01722580180",
+    "@type": "NGO",
+    "name": "Trussell Trust",
+    "url": "https://www.trusselltrust.org",
+    "email": "enquiries@trusselltrust.org",
+    "telephone": "01722580180",
     "address": {
         "@type": "PostalAddress",
         "addressLocality": "Salisbury",
         "postalCode": "SP2 7HL",
         "streetAddress": "Unit 9 Ashfield Trading Estate, Ashfield Road"
     },
-    "identifier":"1110522",
-    "duns":"346282481",
+    "identifier": "1110522",
+    "duns": "346282481",
+    "sameAs":"https://en.wikipedia.org/wiki/The_Trussell_Trust",
 }
 IFAN_SCHEMA = {
-    "@type":"NGO",
-    "name":"IFAN",
-    "url":"https://www.foodaidnetwork.org.uk",
-    "email":"admin@foodaidnetwork.org.uk",
-    "telephone":"07535389775",
+    "@type": "NGO",
+    "name": "IFAN",
+    "url": "https://www.foodaidnetwork.org.uk",
+    "email": "admin@foodaidnetwork.org.uk",
+    "telephone": "07535389775",
     "address": {
         "@type": "PostalAddress",
         "addressLocality": "London",
         "postalCode": "WC2H 9JQ",
         "streetAddress": "71-75 Shelton Street"
     },
-    "identifier":"1180382",
-    "duns":"224810933",
+    "identifier": "1180382",
+    "duns": "224810933",
+    "sameAs": "https://en.wikipedia.org/wiki/Independent_Food_Aid_Network",
 }
 
 PACKAGING_WEIGHT_PC = 1.18
