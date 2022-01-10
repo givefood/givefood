@@ -121,8 +121,8 @@ class Foodbank(models.Model):
                     "longitude": self.long(),
                 },
             },
-            "identifier":self.charity_number,
-            "memberOf":member_of,
+            "identifier": self.charity_number,
+            "memberOf": member_of,
         }
         if not as_sub_property:
             schema_dict["@context"] = "https://schema.org"
