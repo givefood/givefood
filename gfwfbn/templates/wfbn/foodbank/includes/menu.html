@@ -14,7 +14,9 @@
             <li><a  {% if section == 'socialmedia' %}class="is-active" {% endif %}  href="{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}">Social Media</a></li>
         {% endif %}
         <li><a {% if section == 'nearby' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_nearby' foodbank.slug %}">Nearby</a></li>
-        <li><a {% if section == 'history' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_history' foodbank.slug %}">History</a></li>
+        {% if not foodbank.need_irrelevant %}
+            <li><a {% if section == 'history' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_history' foodbank.slug %}">History</a></li>
+        {% endif %}
         <li><a {% if section == 'edit' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_edit' foodbank.slug %}">Edit</a></li>
     </ul>
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">

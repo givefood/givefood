@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import hashlib, unicodedata, logging, json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from google.appengine.api import memcache
 from google.appengine.ext import deferred
@@ -191,6 +191,10 @@ class Foodbank(models.Model):
             return latest_need.change_text
         else:
             return "Nothing"
+    
+    def need_irrelevant(self):
+        cut_off = datetime.now() - timedelta(days=180)
+        return self.last_need.replace(tzinfo=None) < cut_off
 
     def latest_need_id(self):
 
