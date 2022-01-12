@@ -24,7 +24,7 @@ class Foodbank(models.Model):
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     delivery_address = models.TextField(null=True, blank=True)
-    latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
+    latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
     network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
