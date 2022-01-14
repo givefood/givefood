@@ -2,4 +2,4 @@ queue:
 - name: default
   rate: 3/s
 - name: socialpost
-  rate: 10/h
+  rate: 6/h
