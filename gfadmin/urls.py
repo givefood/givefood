@@ -47,6 +47,7 @@ urlpatterns = (
     url(r'^parlcon/new/$', parlcon_form, name="parlcon_form"),
     url(r'^parlcon/loader/$', parlcon_loader, name="parlcon_loader"),
     url(r'^parlcon/loader/geojson/$', parlcon_loader_geojson, name="parlcon_loader_geojson"),
+    url(r'^parlcon/loader/centre/$', parlcon_loader_centre, name="parlcon_loader_centre"),
     url(r'^parlcon/loader/twitter/$', parlcon_loader_twitter_handle, name="parlcon_loader_twitter_handle"),
     url(r'^parlcon/(?P<slug>[-\w]+)/edit/$', parlcon_form, name="parlcon_form"),
 

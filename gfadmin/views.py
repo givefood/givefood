@@ -793,6 +793,30 @@ def parlcon_loader_geojson(request):
     return HttpResponse("OK")
 
 
+def parlcon_loader_centre(request):
+
+    parlcons = ParliamentaryConstituency.objects.all()
+
+    with open('./givefood/data/parlcon/centres.csv') as csvfile:
+        readCSV = csv.reader(csvfile, delimiter=',')
+        for row in readCSV:
+            parl_con_name = row[0]
+
+            try:
+                parl_con = ParliamentaryConstituency.objects.get(name=parl_con_name)
+                if not parl_con.centroid:
+                    logging.info("Got %s" % parl_con_name)
+                    parl_con.centroid = row[1]
+                    parl_con.save()
+                    logging.info("Saved %s" % parl_con_name)
+                else:
+                    logging.info("Already got %s" % parl_con_name)
+            except ParliamentaryConstituency.DoesNotExist:
+                logging.info("Couldn't find %s" % parl_con_name)
+
+    return HttpResponse("OK")
+
+
 def parlcon_loader_twitter_handle(request):
 
     with open('./givefood/data/mp_twitter.csv') as csvfile:

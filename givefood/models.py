@@ -861,6 +861,8 @@ class ParliamentaryConstituency(models.Model):
     mp_synopsis = models.TextField(null=True, blank=True, editable=False)
     mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True, editable=False)
     mp_website = models.URLField(max_length=250, null=True, blank=True, editable=False)
+    
+    centroid = models.CharField(max_length=50)
 
     # Parlimentary details
     email_parl = models.EmailField(null=True, blank=True, editable=False)
