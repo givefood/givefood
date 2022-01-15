@@ -614,7 +614,7 @@ def mp_contact_details(mpid):
             mp_contact_details["postcode_con"] = contact_method["postcode"]
             mp_contact_details["phone_con"] = contact_method["phone"]
             if mp_contact_details["address_con"] and mp_contact_details["postcode_con"]:
-                mp_contact_details["lat_lng_con"] = geocode(mp_contact_details["address_con"] + '\n' + mp_contact_details["postcode_con"])
+                mp_contact_details["lat_lng_con"] = geocode("%s\n%s" % (mp_contact_details["address_con"], mp_contact_details["postcode_con"]))
         
         if contact_method["type"] == "Website":
             mp_contact_details["website"] = contact_method["line1"]
