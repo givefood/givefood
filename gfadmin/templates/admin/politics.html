@@ -20,6 +20,7 @@
           <th>MP Party</th>
           <th>MP Parliament ID</th>
           <th>Twitter</th>
+          <th>Centroid</th>
           <th>GeoJSON?</th>
           <th></th>
         </tr>
@@ -31,6 +32,7 @@
             <td>{{ parlcon.mp_party }}</td>
             <td>{{ parlcon.mp_parl_id }}</td>
             <td>{{ parlcon.mp_twitter_handle }}</td>
+            <td>{{ parlcon.centroid }}</td>
             <td>{% if parlcon.boundary_geojson %}🗺️{% endif %}</td>
             <td>
               <a href="{% url 'admin:parlcon_form' parlcon.slug %}" class="button is-small">Edit</a>
