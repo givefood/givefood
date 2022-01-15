@@ -13,7 +13,7 @@ from google.appengine.api import urlfetch
 from django.template.defaultfilters import truncatechars
 from django.utils.html import strip_tags
 
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -49,6 +49,17 @@ def get_all_locations():
         all_locations = FoodbankLocation.objects.all()
         memcache.add(LOC_MC_KEY, all_locations, 3600)
     return all_locations
+
+
+def get_all_constituencies():
+
+    from models import ParliamentaryConstituency
+
+    all_parlcon = memcache.get(PARLCON_MC_KEY)
+    if all_parlcon is None:
+        all_parlcon = ParliamentaryConstituency.objects.defer("boundary_geojson")
+        memcache.add(PARLCON_MC_KEY, all_parlcon, 3600)
+    return all_parlcon
 
 
 def diff_html(a,b):
@@ -505,8 +516,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
 
 def find_parlcons(lattlong, quantity = 10, skip_first = False):
 
-    from models import ParliamentaryConstituency
-    parlcons = ParliamentaryConstituency.objects.all()
+    parlcons = get_all_constituencies()
 
     latt = float(lattlong.split(",")[0])
     long = float(lattlong.split(",")[1])
