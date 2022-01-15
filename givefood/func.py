@@ -596,7 +596,8 @@ def mp_contact_details(mpid):
             mp_contact_details["address_parl"] = address
             mp_contact_details["postcode_parl"] = contact_method["postcode"]
             mp_contact_details["phone_parl"] = contact_method["phone"]
-            mp_contact_details["lat_lng_parl"] = geocode(mp_contact_details["address_parl"] + '\n' + mp_contact_details["postcode_parl"])
+            if mp_contact_details["address_parl"] and mp_contact_details["postcode_parl"]:
+                mp_contact_details["lat_lng_parl"] = geocode("%s\n%s" % (mp_contact_details["address_parl"], mp_contact_details["postcode_parl"]))
 
         if contact_method["type"] == "Constituency":
             mp_contact_details["email_con"] = contact_method["email"]
