@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError
 
 from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
 from const.general import TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA
-from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details
+from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details, find_parlcons
 
 
 class Foodbank(models.Model):
@@ -885,6 +885,15 @@ class ParliamentaryConstituency(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def nearby(self):
+        return find_parlcons(self.centroid, 5, True)
+
+    def latt(self):
+        return float(self.centroid.split(",")[0])
+
+    def long(self):
+        return float(self.centroid.split(",")[1])
 
     def schema_org(self):
 

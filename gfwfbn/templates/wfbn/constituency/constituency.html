@@ -78,6 +78,13 @@
 
           <div class="column is-4">
             <div id="map" class="sidemap"></div>
+            <br>
+            <h2>Nearby Constituencies</h2>
+            <ul>
+              {% for nearby_constituency in constituency.nearby %}
+                <li><a href="{% url 'wfbn:constituency' nearby_constituency.slug %}">{{ nearby_constituency }}</a></li>
+              {% endfor %}
+            </ul>
           </div>
       </div>
 

@@ -503,6 +503,29 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
     return sorted_searchable_locations[first_item:quantity]
 
 
+def find_parlcons(lattlong, quantity = 10, skip_first = False):
+
+    from models import ParliamentaryConstituency
+    parlcons = ParliamentaryConstituency.objects.all()
+
+    latt = float(lattlong.split(",")[0])
+    long = float(lattlong.split(",")[1])
+
+    for parlcon in parlcons:
+        parlcon.distance_m = distance_meters(parlcon.latt(), parlcon.long(), latt, long)
+        parlcon.distance_mi = miles(parlcon.distance_m)
+
+    sorted_parlcons = sorted(parlcons, key=operator.attrgetter('distance_m'))
+
+    if skip_first:
+        first_item = 1
+        quantity = quantity + 1
+    else:
+        first_item = 0
+
+    return sorted_parlcons[first_item:quantity]
+
+
 def miles(meters):
     return meters*0.000621371192
 
