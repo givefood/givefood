@@ -57,7 +57,7 @@ def get_all_constituencies():
 
     all_parlcon = memcache.get(PARLCON_MC_KEY)
     if all_parlcon is None:
-        all_parlcon = ParliamentaryConstituency.objects.defer("boundary_geojson")
+        all_parlcon = ParliamentaryConstituency.objects.defer("boundary_geojson").order_by("name")
         memcache.add(PARLCON_MC_KEY, all_parlcon, 3600)
     return all_parlcon
 
