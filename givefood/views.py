@@ -25,7 +25,7 @@ from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAG
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
-@cache_page(60*20)
+@cache_page(60*120)
 def public_index(request):
 
     total_weight = 0
@@ -91,12 +91,12 @@ def public_reg_foodbank(request):
     return render(request, "public/register_foodbank.html", template_vars)
 
 
-@cache_page(60*10)
+@cache_page(60*120)
 def public_api(request):
     return render(request, "public/api.html")
 
 
-@cache_page(60*10)
+@cache_page(60*120)
 def public_annual_report(request, year):
     article_template = "public/ar/%s.html" % (year)
     return render(request, article_template)
@@ -186,7 +186,7 @@ def public_gen_annual_report(request, year):
     return render(request, "public/annual_report.html", template_vars)
 
 
-@cache_page(60*60)
+@cache_page(60*120)
 def public_sitemap(request):
 
     foodbanks = get_all_open_foodbanks()
@@ -202,12 +202,12 @@ def public_sitemap(request):
     return render(request, "public/sitemap.xml", template_vars, content_type='text/xml')
 
 
-@cache_page(60*10)
+@cache_page(60*120)
 def public_privacy(request):
     return render(request, "public/privacy.html")
 
 
-@cache_page(60*60)
+@cache_page(60*120)
 def public_product_image(request):
 
     delivery_provider = request.GET.get("delivery_provider")
