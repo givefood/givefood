@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404, HttpResponseNotFound
 from django.db import IntegrityError
 from django.template import RequestContext
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page, cache_control
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -332,7 +332,7 @@ def constituency(request, slug):
     return render(request, "wfbn/constituency/constituency.html", template_vars)
 
 
-@cache_page(60*60)
+@cache_control(public=True, max_age=60*60*2)
 def constituency_mp_photo(request, slug, size):
 
     parl_con = get_object_or_404(ParliamentaryConstituency, slug=slug)
