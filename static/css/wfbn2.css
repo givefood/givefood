@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'PT Serif';
     font-style: normal;
-    font-weight: 400;
+    font-weight: 700;
     font-display: swap;
     src: local(''),
     url('/static/fonts/pt-serif-v12-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
