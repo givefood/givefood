@@ -38,5 +38,4 @@ urlpatterns = (
     url(r'^in/constituencies/$', constituencies, name="constituencies"),
     url(r'^in/constituency/$', RedirectView.as_view(url="/in/constituencies/")),
     url(r'^in/constituency/(?P<slug>[-\w]+)/$', constituency, name="constituency"),
-    url(r'^in/constituency/(?P<slug>[-\w]+)/mp_photo_(?P<size>full|threefour).png$', constituency_mp_photo, name="constituency_mp_photo"),
 )

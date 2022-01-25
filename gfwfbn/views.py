@@ -332,15 +332,6 @@ def constituency(request, slug):
     return render(request, "wfbn/constituency/constituency.html", template_vars)
 
 
-@cache_control(public=True, max_age=60*60*2)
-def constituency_mp_photo(request, slug, size):
-
-    parl_con = get_object_or_404(ParliamentaryConstituency, slug=slug)
-    result = urlfetch.fetch("https://storage.googleapis.com/mp_photos/%s/%s.png" % (size, parl_con.mp_parl_id))
-
-    return HttpResponse(result.content, content_type='image/png')
-
-
 @csrf_exempt
 def updates(request, slug, action):
 
