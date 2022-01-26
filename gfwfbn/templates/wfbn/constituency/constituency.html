@@ -18,7 +18,7 @@
   </script>
 {% endblock %}
 
-{% block title %}{{ constituency }} - Give Food{% endblock %}
+{% block title %}Food banks in {{ constituency }} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -44,7 +44,7 @@
             </ul>
       </nav>
 
-      <h1>{{ constituency }}</h1>
+      <h1>Food banks in {{ constituency }}</h1>
 
       <div class="columns">
 
@@ -57,8 +57,7 @@
             <p>You can write to this MP to politely help them understand that food banks shouldn't exist in our country.</p>
             <a href="https://members.parliament.uk/member/{{ constituency.mp_parl_id }}/contact" class="button is-link">Write</a><br><br>
 
-            <h3>Food Banks</h3>
-            <p>The following food banks operate in the {{ constituency.name }} constituency, and what they are requesting to have donated.</p>
+            <p>The following food banks operate in the {{ constituency.name }} constituency. Here is what they are requesting to have donated.</p>
             <table class="table is-narrow is-fullwidth">
               {% for foodbank in constituency.foodbanks %}
                 <tr>
