@@ -344,6 +344,8 @@ class FoodbankLocation(models.Model):
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
+    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
+
     phone_number = models.CharField(max_length=20, null=True, blank=True, help_text="If different to the main location")
     email = models.EmailField(null=True, blank=True, help_text="If different to the main location")
 
@@ -404,7 +406,7 @@ class FoodbankLocation(models.Model):
             "address": {
                 "@type": "PostalAddress",
                 "postalCode": self.postcode,
-                "addressCountry": self.foodbank.country,
+                "addressCountry": self.country,
                 "streetAddress": self.address,
             },
             "location": {
@@ -474,6 +476,7 @@ class FoodbankLocation(models.Model):
 
         # Update politics
         regions = admin_regions_from_postcode(self.postcode)
+        self.country = regions.get("country", None)
         self.county = regions.get("county", None)
         self.ward = regions.get("ward", None)
         self.district = regions.get("district", None)
