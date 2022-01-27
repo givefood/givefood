@@ -344,7 +344,7 @@ class FoodbankLocation(models.Model):
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latt,Long")
-    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
+    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
 
     phone_number = models.CharField(max_length=20, null=True, blank=True, help_text="If different to the main location")
     email = models.EmailField(null=True, blank=True, help_text="If different to the main location")
