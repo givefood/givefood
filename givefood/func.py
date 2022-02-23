@@ -769,7 +769,7 @@ def post_to_email(post, extra = {}, header = None):
     send_email("mail@givefood.org.uk", "Food Bank Data Amendment", body_str)
 
 
-def send_email(to, subject, body, cc = None):
+def send_email(to, subject, body, cc=None, cc_name=None, reply_to=None, reply_to_name=None):
 
     api_url = "https://inject.socketlabs.com/api/v1/email"
     api_server = get_cred("socketlabs_server")
@@ -790,9 +790,13 @@ def send_email(to, subject, body, cc = None):
                         "emailAddress": cc,
                     }
                 ],
+                "ReplyTo": {
+                    "emailAddress": reply_to,
+                    "friendlyName": reply_to_name,
+                },
                 "From": {
                     "emailAddress": "mail@givefood.org.uk",
-                    "friendlyName": "Give Food"
+                    "friendlyName": "Give Food",
                 },
                 "Subject": subject,
                 "TextBody": body,
