@@ -168,3 +168,12 @@ details ul {
     column-count:2;
     column-gap:10px;
 }
+textarea[name='address'] {
+    height:200px !important;
+}
+textarea[name='body'] {
+    height:500px !important;
+}
+.mp_photo {
+    width:200px;
+}

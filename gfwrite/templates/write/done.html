@@ -1,0 +1,74 @@
+{% extends "public/page.html" %}
+{% load bulma_tags %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn2.css">
+  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFoodCharity">
+  <meta property="og:title" content="Constituencies">
+  <meta name="description" content="Find what food banks in your MP's constituency are requesting to have donated and take action.">
+  <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
+{% endblock %}
+
+{% block title %}Email Sent - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns body">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="/" class="logo">Give Food</a>
+        </div>
+
+        {% include 'wfbn/foodbank/includes/search.html' %}
+
+      </div>
+
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Home</a></li>
+                <li><a href="{% url 'write:index' %}">Write to your MP</a></li>
+                <li><a href="{% url 'write:constituency' constituency.slug %}">{{ constituency }}</a></li>
+            </ul>
+      </nav>
+
+      <h1>Email Sent</h1>
+
+      <div class="columns">
+
+          <div class="column is-6">
+
+            <p>Thank you, that email has been sent. Hopefully you'll get a response from your MP shortly.</p>
+
+            <p>In the meantime, perhaps you'd like to view the food banks in the <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency.name }} constituency</a> and see how you could help them? Alternatively, you can get notified when individual food banks request items by pressing subscribe here...</p>
+            <ul>
+              {% for foodbank in constituency.foodbank_obj %}
+                <li>
+                  <a href="{% url 'wfbn:foodbank' foodbank.slug %}" style="display:inline-block;width:200px;">{{ foodbank }}</a>
+                  <form action="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}" method="post" style="display:inline-block;margin-bottom:20px;">
+                      <input maxlength="254" name="email" type="hidden" value="{{ email }}">
+                      <button type="submit" class="button is-link is-small">Subscribe</button>
+                  </form>
+                </li>
+              {% endfor %}
+            </ul>
+            
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
+<script src="/static/js/wfbn2.js" defer></script>
+
+{% endblock %}
+

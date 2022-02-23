@@ -1,0 +1,129 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn2.css">
+  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFoodCharity">
+  <meta property="og:title" content="Write to your MP">
+  <meta name="description" content="Ask your MP what they are doing about food banks in your constituency">
+  <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
+{% endblock %}
+
+{% block title %}Write to your MP - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns body">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="/" class="logo">Give Food</a>
+        </div>
+
+        {% include 'wfbn/foodbank/includes/search.html' %}
+
+      </div>
+
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Home</a></li>
+                <li><a href="{% url 'write:index' %}">Write to your MP</a></li>
+            </ul>
+      </nav>
+
+      <h1>Write to your MP</h1>
+
+      <div class="columns">
+
+          <div class="column">
+
+            <p>Use our tool to send an email to your MP about the UK's increasing reliance on emergency food supplies from food banks.</p>
+            <p>We'll take a few quick details off you, starting with your postcode here, and then send the email on your behalf...</p>
+
+            <form id="postcodeform" action="" method="get">
+              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="Postcode">
+              <input type="submit" class="button is-info" value="Go">
+            </form>
+
+          </div>
+
+          <div class="column is-6">
+            <div id="map" class="sidemap full-uk-map"></div>
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="/static/js/wfbn2.js" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
+<script>
+
+const parl_con_geojson_url = "/static/geojson/parlcon.json"
+
+
+var map
+var bounds = new google.maps.LatLngBounds();
+
+function init_map() {
+  var mapOptions = {
+    center: new google.maps.LatLng(55,-4),
+    zoom: 6,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+  };
+  map = new google.maps.Map(document.getElementById("map"), mapOptions);
+  map.data.loadGeoJson(parl_con_geojson_url);
+  google.maps.event.addListener(map.data,'addfeature',function(e){
+    var bounds = new google.maps.LatLngBounds(); 
+    map.data.forEach(function(feature){
+      feature.getGeometry().forEachLatLng(function(latlng){
+        bounds.extend(latlng);
+      });
+    });
+
+    map.fitBounds(bounds);
+  })
+  map.data.addListener('click', (event) => {
+        const name = event.feature.getProperty('pcon19nm');
+        const slug = slugify(name)
+        window.location = '/write/to/'+ slug +'/';
+    });
+
+    map.data.setStyle({
+      fillColor: "#000",
+      strokeWeight: 1,
+    });
+}
+
+
+google.maps.event.addDomListener(window, 'load', init_map);
+
+
+function slugify(str) {
+    str = str.replace(/^\s+|\s+$/g, ''); // trim
+    str = str.toLowerCase();
+  
+    // remove accents, swap ñ for n, etc
+    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    var to   = "aaaaeeeeiiiioooouuuunc------";
+    for (var i=0, l=from.length ; i<l ; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+    }
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+    return str;
+}
+</script>
+
+{% endblock %}
+

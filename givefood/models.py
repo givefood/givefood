@@ -1060,3 +1060,23 @@ class FoodbankSubscriber(models.Model):
         self.foodbank_name = self.foodbank.name
         
         super(FoodbankSubscriber, self).save(*args, **kwargs)
+
+
+class ConstituencySubscriber(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    last_contacted = models.DateTimeField(editable=False, null=True, blank=True)
+    email = models.EmailField()
+    name = models.CharField(max_length=100, null=True, blank=True)
+    parliamentary_constituency = models.ForeignKey(ParliamentaryConstituency)
+    parliamentary_constituency_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+
+        # Ensure email address is lowercase
+        self.email = self.email.lower()
+
+        # Denorm food bank name
+        self.parliamentary_constituency_name = self.parliamentary_constituency.name
+        
+        super(ConstituencySubscriber, self).save(*args, **kwargs)

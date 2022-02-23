@@ -1,0 +1,23 @@
+{{ address }}
+{% now "jS F Y" %}
+
+Dear {{ constituency.mp_display_name }},
+
+My name is {{ name }} and I am a constituent of {{ constituency }}. I am writing to you today because I am concerned about the increasing number of people being forced to use food banks in our constituency. 
+
+Food banks in your {{ constituency }} constituency include {% for foodbank in foodbanks %}{% if not forloop.first %}{% if not forloop.last %},{% endif %} {% endif %}{% if not forloop.first %}{% if forloop.last %}and {% endif %}{% endif %}{{ foodbank.name }} Food Bank{% endfor %}.
+
+There was a 71% increase in emergency food parcels provided by food banks in the UK’s largest food bank network, the Trussell Trust, between 2015/16 and 2019/20.
+
+People are driven to using emergency food supplies from charities because of a lack of income, benefit delays & cuts, and inadequate support during challenging life experiences.
+
+I'd be interested in hearing what you are doing to support our local food banks, especially preventing my fellow constituents from having to use them in the first place.
+
+I look forward to hearing from you.  
+
+Yours faithfully,  
+{{ name }}
+
+
+
+Email is sent via Give Food, a registered charity in England & Wales 1188192

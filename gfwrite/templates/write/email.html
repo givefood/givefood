@@ -1,0 +1,77 @@
+{% extends "public/page.html" %}
+{% load bulma_tags %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn2.css">
+  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFoodCharity">
+  <meta property="og:title" content="Constituencies">
+  <meta name="description" content="Find what food banks in your MP's constituency are requesting to have donated and take action.">
+  <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
+{% endblock %}
+
+{% block title %}Write your email - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns body">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="/" class="logo">Give Food</a>
+        </div>
+
+        {% include 'wfbn/foodbank/includes/search.html' %}
+
+      </div>
+
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Home</a></li>
+                <li><a href="{% url 'write:index' %}">Write to your MP</a></li>
+                <li><a href="{% url 'write:constituency' constituency.slug %}">{{ constituency }}</a></li>
+            </ul>
+      </nav>
+
+      <h1>{{ constituency }}</h1>
+
+      <div class="columns">
+
+          <div class="column is-4">
+
+            <div class="content">
+                <ul>
+                    <li>Be polite</li>
+                    <li>Feel free to edit the subject &amp; email body</li>
+                    <li>We'll send this on your behalf, but your MP will be able to reply to you directly</li>
+                </ul>
+            </div>
+
+          </div>
+
+          <div class="column is-6">
+
+            <form method="post" action="{% url 'write:send' constituency.slug %}">
+                {{ form|bulma }}
+                <input type="submit" class="button is-link" value="Send Email">
+                {% csrf_token %}
+              </form>
+            
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
+<script src="/static/js/wfbn2.js" defer></script>
+
+{% endblock %}
+

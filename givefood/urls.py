@@ -50,6 +50,7 @@ urlpatterns = (
     url(r'^admin/', include('gfadmin.urls', namespace="admin", app_name="gfadmin")),
     url(r'^dashboard/', include('gfdash.urls', namespace="dash", app_name="gfdash")),
     url(r'^offline/', include('gfoffline.urls', namespace="offline", app_name="gfoffline")),
+    url(r'^write/', include('gfwrite.urls', namespace="write", app_name="gfwrite")),
 
     # CSP & Auth
     url(r'^csp/', include('cspreports.urls')),

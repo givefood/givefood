@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'gfwfbn',
     'gfdash',
     'gfoffline',
+    'gfwrite',
 )
 
 MIDDLEWARE_CLASSES = (
