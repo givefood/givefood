@@ -862,13 +862,13 @@ class ParliamentaryConstituency(models.Model):
 
     mp_display_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="MP Display Name", editable=False)
     mp_synopsis = models.TextField(null=True, blank=True, editable=False)
-    mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True)
     mp_website = models.URLField(max_length=250, null=True, blank=True, editable=False)
     
     centroid = models.CharField(max_length=50)
 
     # Parlimentary details
-    email_parl = models.EmailField(null=True, blank=True, editable=False)
+    email_parl = models.EmailField(null=True, blank=True)
     address_parl = models.TextField(null=True, blank=True, editable=False)
     postcode_parl = models.CharField(max_length=9, null=True, blank=True, editable=False)
     lat_lng_parl= models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
@@ -989,7 +989,8 @@ class ParliamentaryConstituency(models.Model):
         self.mp_twitter_handle = contact_details.get("twitter", None)
         self.mp_synopsis = contact_details.get("synopsis", None)
         
-        self.email_parl = contact_details.get("email_parl", None)
+        if not self.email_parl:
+            self.email_parl = contact_details.get("email_parl", None)
         self.address_parl = contact_details.get("address_parl", None)
         self.postcode_parl = contact_details.get("postcode_parl", None)
         self.lat_lng_parl = contact_details.get("lat_lng_parl", None)
