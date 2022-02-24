@@ -71,3 +71,9 @@ td.delivery-provider-icon img {
   border:0;
   height:1000px;
 }
+.settings {
+  font-size:1.1em;
+}
+.settings li {
+  margin-bottom:5px;
+}
