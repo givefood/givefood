@@ -862,7 +862,7 @@ def credentials_form(request):
     if request.POST:
         form = GfCredentialForm(request.POST)
         if form.is_valid():
-            need = form.save()
+            cred = form.save()
             return redirect("admin:credentials")
     else:
         form = GfCredentialForm()
