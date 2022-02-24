@@ -351,6 +351,7 @@ def item_class_count(all_items, item_class_items):
 def clean_foodbank_need_text(text):
 
     to_clean = [
+        "Urgently Needed Food Items",
         "Urgently needed food items",
         "Urgently needed items",
         "This week, we would particularly appreciate donations of:",
