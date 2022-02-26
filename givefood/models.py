@@ -510,6 +510,7 @@ class Order(models.Model):
     items_text = models.TextField()
     need = models.ForeignKey("FoodbankChange", null=True, blank=True)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
+    order_group = models.ForeignKey("OrderGroup", null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -674,6 +675,26 @@ class OrderItem(models.Model):
 
         self.slug = slugify(self.name)
         super(OrderItem, self).save(*args, **kwargs)
+
+
+class OrderGroup(models.Model):
+
+    name = models.CharField(max_length=100)
+    slug = models.CharField(max_length=100, editable=False)
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def orders(self):
+        return Order.objects.filter(order_group = self).order_by("-delivery_datetime")
+
+    def save(self, *args, **kwargs):
+
+        self.slug = slugify(self.name)
+        super(OrderGroup, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
 
 class FoodbankArticle(models.Model):

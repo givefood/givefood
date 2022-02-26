@@ -1,5 +1,6 @@
 from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
+from givefood.models import OrderGroup
 
 from models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential
 from const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
@@ -69,6 +70,13 @@ class OrderItemForm(ModelForm):
     class Meta:
         model = OrderItem
         fields = "__all__"
+
+
+class OrderGroupForm(ModelForm):
+    class Meta:
+        model = OrderGroup
+        fields = "__all__"
+
 
 class NeedForm(ModelForm):
     foodbank = ModelChoiceField(queryset=Foodbank.objects.filter().order_by('name'), required=False)

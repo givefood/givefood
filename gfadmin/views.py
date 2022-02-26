@@ -18,8 +18,8 @@ from django.utils.encoding import smart_str
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations, get_cred, post_to_facebook, post_to_twitter, post_to_subscriber, send_email
-from givefood.models import Foodbank, Order, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential, FoodbankSubscriber
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm
+from givefood.models import Foodbank, Order, OrderGroup, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential, FoodbankSubscriber
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm
 
 
 def index(request):
@@ -847,6 +847,53 @@ def settings(request):
     return render(request, "admin/settings.html", template_vars)
 
 
+def order_groups(request):
+
+    order_groups = OrderGroup.objects.all().order_by("-created")
+
+    template_vars = {
+        "section":"settings",
+        "order_groups":order_groups,
+    }
+    return render(request, "admin/order_groups.html", template_vars)
+
+
+def order_group(request, slug):
+
+    order_group = get_object_or_404(OrderGroup, slug = slug)
+
+    template_vars = {
+        "section":"settings",
+        "order_group":order_group,
+    }
+    return render(request, "admin/order_group.html", template_vars)
+
+
+def order_group_form(request, slug=None):
+
+    if slug:
+        item = get_object_or_404(OrderGroup, slug = slug)
+        page_title = "Edit Order Group"
+    else:
+        item = None
+        page_title = "New Order Group"
+
+    if request.POST:
+        form = OrderGroupForm(request.POST, instance=item)
+        if form.is_valid():
+            order_group = form.save()
+            return redirect("admin:order_groups")
+    else:
+        form = OrderGroupForm(instance=item)
+        page_title = "New Order Group"
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
 def credentials(request):
 
     credentials = GfCredential.objects.all().order_by("-created")
@@ -856,6 +903,7 @@ def credentials(request):
         "credentials":credentials,
     }
     return render(request, "admin/credentials.html", template_vars)
+
 
 def credentials_form(request):
 

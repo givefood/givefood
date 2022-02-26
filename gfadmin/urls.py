@@ -55,6 +55,10 @@ urlpatterns = (
     url(r'^politics/csv/$', politics_csv, name="politics_csv"),
 
     url(r'^settings/$', settings, name="settings"),
+    url(r'^order-groups/$', order_groups, name="order_groups"),
+    url(r'^order-group/(?P<slug>[-\w]+)/$', order_group, name="order_group"),
+    url(r'^order-group/(?P<slug>[-\w]+)/edit/$', order_group_form, name="order_group_edit"),
+    url(r'^order-groups/new/$', order_group_form, name="order_group_new"),
     url(r'^credentials/$', credentials, name="credentials"),
     url(r'^credentials/new/$', credentials_form, name="credential_new"),
     url(r'^searches/$', searches, name="searches"),
