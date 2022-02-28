@@ -5,7 +5,7 @@ Dear {{ constituency.mp_display_name }},
 
 My name is {{ name }} and I am a constituent of {{ constituency }}. I am writing to you today because I am concerned about the increasing number of people being forced to use food banks in our constituency. 
 
-Food banks in our {{ constituency }} constituency include {% for foodbank in foodbanks %}{% if not forloop.first %}{% if not forloop.last %},{% endif %} {% endif %}{% if not forloop.first %}{% if forloop.last %}and {% endif %}{% endif %}{{ foodbank.name }} Food Bank{% endfor %}.
+Food banks in our {{ constituency }} constituency include {% for foodbank in foodbanks %}{% if not forloop.first %}{% if not forloop.last %},{% endif %} {% endif %}{% if not forloop.first %}{% if forloop.last %}and {% endif %}{% endif %}{{ foodbank }} Food Bank{% endfor %}.
 
 There was a 71% increase in emergency food parcels provided by food banks in the UK’s largest food bank network, the Trussell Trust, between 2015/16 and 2019/20.
 

@@ -62,13 +62,12 @@ def email(request, slug):
             from_field = "%s <%s>" % (name, email)
             subject = "Food Banks in %s" % (constituency.name)
 
-            foodbanks = constituency.foodbanks()
+            foodbanks = constituency.foodbank_names()
             body = render_to_string("write/email.txt", {
                 "address":request.POST.get("address"),
                 "name":request.POST.get("name"),
                 "constituency":constituency,
-                "foodbanks":foodbanks,
-                "number_foodbanks":len(foodbanks),
+                "foodbanks":foodbanks
             })
 
             form = EmailForm(initial={

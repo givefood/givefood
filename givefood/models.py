@@ -990,6 +990,16 @@ class ParliamentaryConstituency(models.Model):
 
         return constituency_foodbanks
 
+    def foodbank_names(self):
+
+        foodbanks = self.foodbanks()
+        foodbank_names = set()
+
+        for foodbank in foodbanks:
+            foodbank_names.add(foodbank.get("name"))
+
+        return foodbank_names
+
 
     def __str__(self):
         return self.name
