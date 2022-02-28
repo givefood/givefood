@@ -11,6 +11,19 @@
 
     <div class="column">
 
+      <dl>
+        <dt>Orders</dt>
+        <dd>{{ no_orders }}</dd>
+        <dt>Items</dt>
+        <dd>{{ items|intcomma }}</dd>
+        <dt>Weight</dt>
+        <dd>{{ weight|intcomma }}kg</dd>
+        <dt>Calories</dt>
+        <dd>{{ calories|intcomma }}</dd>
+        <dt>Cost</dt>
+        <dd>£{{ cost|intcomma }}</dd>
+      </dl>
+
       <table class="table is-fullwidth is-hoverable">
         <tr>
             <th>ID</th>
@@ -22,7 +35,7 @@
             <th>Cost</th>
             <th>Created</th>
         </tr>
-        {% for order in order_group.orders %}
+        {% for order in orders %}
           <tr>
             <td><a href="{% url "admin:order" order.order_id %}">{{ order.order_id }}</a></td>
             <td>{{ order.foodbank_name }}</td>

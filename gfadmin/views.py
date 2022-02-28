@@ -862,9 +862,30 @@ def order_group(request, slug):
 
     order_group = get_object_or_404(OrderGroup, slug = slug)
 
+    orders = order_group.orders()
+
+    no_orders = 0
+    items = 0
+    weight = 0
+    calories = 0
+    cost = 0
+
+    for order in orders:
+        no_orders += 1
+        items += order.no_items
+        weight += order.weight_kg_pkg()
+        calories += order.calories
+        cost += order.cost
+
     template_vars = {
         "section":"settings",
         "order_group":order_group,
+        "orders":orders,
+        "no_orders":no_orders,
+        "items":items,
+        "weight":weight,
+        "calories":calories,
+        "cost":cost/100,
     }
     return render(request, "admin/order_group.html", template_vars)
 
