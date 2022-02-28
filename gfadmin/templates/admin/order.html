@@ -33,6 +33,10 @@
         <dd>{{ order.calories|intcomma }}</dd>
         <dt>Cost</dt>
         <dd>£{{ order.natural_cost }}</dd>
+        {% if order.order_group %}
+          <dt>Order group</dt>
+          <dd><a href="{% url 'admin:order_group' order.order_group.slug %}">{{ order.order_group }}</a></dd>
+        {% endif %}
         {% if order.source_url %}
           <dt>Source URL</dt>
           <dd><a href="{{ order.source_url }}">{{ order.source_url|truncatechars:35 }}</a></dd>
