@@ -207,6 +207,18 @@ def get_weight(text):
     if text[-13:] == " 300g (195g*)":
       weight = 300
 
+    # 560g (360g*)
+    if text[-13:] == " 560g (360g*)":
+      weight = 560
+
+    # 290g (156g*)
+    if text[-13:] == " 290g (156g*)":
+      weight = 290
+
+    # 400g (280g*)
+    if text[-13:] == " 400g (280g*)":
+      weight = 400
+
     # 120g (90g*)
     if text[-12:] == " 120g (90g*)":
       weight = 120
