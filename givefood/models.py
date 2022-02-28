@@ -686,7 +686,7 @@ class OrderGroup(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def orders(self):
-        return Order.objects.filter(order_group = self).order_by("-delivery_datetime")
+        return Order.objects.filter(order_group = self).order_by("delivery_datetime")
 
     def save(self, *args, **kwargs):
 

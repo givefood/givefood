@@ -134,7 +134,6 @@ indexes:
   properties:
   - name: order_group_id
   - name: delivery_datetime
-    direction: desc
 
 - kind: givefood_orderline
   properties:
