@@ -56,7 +56,7 @@
 
             {% if constituency.email_parl %}
 
-              <p>To write to {{ constituency.mp }} about food banks we'll need a few more details to create your email to send.</p>
+              <p>To write to {{ constituency.mp }} we'll need a few more details to create the email for you to view and send.</p>
 
               <form method="post" action="{% url 'write:email' constituency.slug %}">
                 {{ form|bulma }}
