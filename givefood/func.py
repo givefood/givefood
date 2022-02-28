@@ -195,6 +195,10 @@ def get_weight(text):
 
     weight = 0
 
+    # 120g (90g*)
+    if text[-12:] == " 120g (90g*)":
+      weight = 120
+
     # 4x400g
     if text[-7:] == " 4x400g":
       weight = 1600
