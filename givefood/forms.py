@@ -64,6 +64,8 @@ class OrderForm(ModelForm):
                     foodbank=kwargs['initial']['foodbank']
                 ).order_by('-created')
                 self.fields['need'].queryset = queryset
+        if self["foodbank"].value():
+            self.fields['need'].queryset =FoodbankChange.objects.filter(foodbank=self["foodbank"].value()).order_by('-created')
 
 
 class OrderItemForm(ModelForm):
