@@ -82,8 +82,6 @@ def diff_html(a,b):
 
 def geocode(address):
 
-    logging.info("Geocode %s" % (address))
-
     gmap_geocode_key = get_cred("gmap_geocode_key")
 
     address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=%s" % (gmap_geocode_key, urllib.quote(address.encode('utf8')))
@@ -102,12 +100,9 @@ def geocode(address):
 
 def oc_geocode(address):
 
-    logging.info("Opencage Geocode %s" % (address))
-
     oc_geocode_key = get_cred("oc_geocode_key")
 
     address_api_url = "https://api.opencagedata.com/geocode/v1/json?q=%s&key=%s" % (urllib.quote(address.encode('utf8')), oc_geocode_key)
-    logging.info(address_api_url)
     address_api_result = urlfetch.fetch(address_api_url)
     if address_api_result.status_code == 200:
         try:
@@ -118,7 +113,6 @@ def oc_geocode(address):
             )
         except:
             lattlong = "0,0"
-        logging.info("Got %s" % lattlong)
     return lattlong
 
 
@@ -157,9 +151,6 @@ def parse_sainsburys_order_text(order_text):
     order_items = order_text.splitlines()
     for order_item_line in order_items:
         order_item_line_bits = re.split(r'( x | - Total Price )', order_item_line)
-
-        logging.info(order_item_line)
-        logging.info("Got bits %s, %s, %s" % (order_item_line_bits[0], order_item_line_bits[1], order_item_line_bits[2]))
 
         order_lines.append({
             "quantity":int(order_item_line_bits[0]),
@@ -616,22 +607,17 @@ def mp_from_parlcon(parliamentary_constituency):
 
 def mpid_from_name(name):
 
-    logging.info("getting mp name %s" % (name))
-
     if name:
         mpid_url = "https://members-api.parliament.uk/api/Members/Search?Name=%s&House=Commons&IsCurrentMember=true&skip=0&take=20" % (urllib.quote(name))
         mpid_api_result = urlfetch.fetch(mpid_url)
         if mpid_api_result.status_code == 200:
             mpid_api_json = json.loads(mpid_api_result.content)
             if mpid_api_json["totalResults"] != 0:
-                logging.info("getting got id %s" % (mpid_api_json["items"][0]["value"]["id"]))
                 return mpid_api_json["items"][0]["value"]["id"]
     return False
 
 
 def mp_contact_details(mpid):
-
-    logging.info("getting mp contact details %s" % (mpid))
 
     mp_contact_details = {}
 
@@ -719,8 +705,6 @@ def get_cred(cred_name):
 
 def post_to_facebook(need):
 
-    logging.info("Posting need %s to facebook" % (need.need_id))
-
     from google.appengine.api import urlfetch
     urlfetch.set_default_fetch_deadline(60)
 
@@ -733,14 +717,10 @@ def post_to_facebook(need):
     graph = facebook.GraphAPI(access_token=get_cred("facebook_wfbn"), version="2.12")
     graph.put_object(parent_object = 'whatfoodbanksneed', connection_name = 'feed', message = fb_post_text, link = fb_post_link)
 
-    logging.info("Posted to facebook: %s" % (fb_post_text))
-
     return True
 
 
 def post_to_twitter(need):
-
-    logging.info("Posting need %s to twitter" % (need.need_id))
 
     api = twitter.Api(
         consumer_key = get_cred("twitter_consumer_key"),
@@ -762,8 +742,6 @@ def post_to_twitter(need):
     )
 
     api.PostUpdate(tweet, latitude = need.foodbank.latt(), longitude = need.foodbank.long())
-
-    logging.info("Posted to twitter: %s" % (tweet))
 
     return True
 
@@ -836,7 +814,6 @@ def send_email(to, subject, body, cc=None, cc_name=None, reply_to=None, reply_to
     }
 
     api_body = json.dumps(api_call_body)
-    logging.info(api_body)
 
     result = urlfetch.fetch(api_url, payload=api_body, method=urlfetch.POST, headers={'Content-Type': 'application/json'})
 
