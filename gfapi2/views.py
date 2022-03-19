@@ -373,7 +373,7 @@ def foodbank_search(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_control(public=True, max_age=3600)
+@cache_control(public=True, max_age=7200)
 def locations(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
