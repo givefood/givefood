@@ -8,6 +8,7 @@
 	<url><loc>{{ domain }}/api/docs/</loc></url>
 	<url><loc>{{ domain }}/needs/</loc></url>
 	<url><loc>{{ domain }}/dashboard/</loc></url>
+	<url><loc>{{ domain }}/write/</loc></url>
 	<url><loc>{{ domain }}/needs/in/constituencies/</loc></url>
 	{% for foodbank in foodbanks %}
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank' foodbank.slug %}</loc></url>
