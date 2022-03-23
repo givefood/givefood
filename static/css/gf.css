@@ -161,3 +161,6 @@ footer {
   position:sticky;
   top:10px;
 }
+#ot-sdk-btn-floating {
+  display:none;
+}
