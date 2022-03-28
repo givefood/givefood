@@ -1,4 +1,5 @@
 import logging
+import requests
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404, HttpResponseNotFound
@@ -152,8 +153,8 @@ def foodbank_map(request, slug):
 
     url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=400x400&maptype=roadmap&format=png&visual_refresh=true&key=%s&markers=%s" % (foodbank.latt_long, gmap_static_key, markers)
 
-    return HttpResponse(result.raw, content_type='image/png')
     request = requests.get(url)
+    return HttpResponse(request.content, content_type='image/png')
 
 
 @cache_page(60*30)
@@ -279,7 +280,7 @@ def foodbank_location_map(request, slug, locslug):
 
     request = requests.get("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.latt_long, gmap_static_key))
 
-    return HttpResponse(request.raw, content_type='image/png')
+    return HttpResponse(request.content, content_type='image/png')
 
 
 @cache_page(60*30)
