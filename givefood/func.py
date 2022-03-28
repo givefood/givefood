@@ -424,9 +424,6 @@ def clean_foodbank_need_text(text):
 
 def is_uk(lat_lng):
 
-    logging.debug("is_uk")
-    logging.debug(lat_lng)
-
     lat = float(lat_lng.split(",")[0])
     lng = float(lat_lng.split(",")[1])
 
