@@ -152,8 +152,8 @@ def foodbank_map(request, slug):
 
     url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=400x400&maptype=roadmap&format=png&visual_refresh=true&key=%s&markers=%s" % (foodbank.latt_long, gmap_static_key, markers)
 
-    request = request.get(url)
     return HttpResponse(result.raw, content_type='image/png')
+    request = requests.get(url)
 
 
 @cache_page(60*30)
