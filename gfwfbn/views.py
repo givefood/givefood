@@ -6,12 +6,11 @@ from django.db import IntegrityError
 from django.template import RequestContext
 from django.views.decorators.cache import cache_page, cache_control
 from django.template.defaultfilters import slugify
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django import forms
 
-from google.appengine.api import urlfetch
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
@@ -153,8 +152,8 @@ def foodbank_map(request, slug):
 
     url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=400x400&maptype=roadmap&format=png&visual_refresh=true&key=%s&markers=%s" % (foodbank.latt_long, gmap_static_key, markers)
 
-    result = urlfetch.fetch(url)
-    return HttpResponse(result.content, content_type='image/png')
+    request = request.get(url)
+    return HttpResponse(result.raw, content_type='image/png')
 
 
 @cache_page(60*30)
@@ -278,9 +277,9 @@ def foodbank_location_map(request, slug, locslug):
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
     gmap_static_key = get_cred("gmap_static_key")
 
-    result = urlfetch.fetch("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.latt_long, gmap_static_key))
+    request = requests.get("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.latt_long, gmap_static_key))
 
-    return HttpResponse(result.content, content_type='image/png')
+    return HttpResponse(request.raw, content_type='image/png')
 
 
 @cache_page(60*30)

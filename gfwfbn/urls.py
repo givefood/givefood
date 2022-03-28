@@ -2,6 +2,8 @@ from django.conf.urls import include, url
 from django.views.generic import RedirectView
 from gfwfbn.views import *
 
+app_name = 'gfwfbn'
+
 urlpatterns = (
     url(r'^tt-old-data/$', RedirectView.as_view(url='/dashboard/trusselltrust/old-data/')),
 

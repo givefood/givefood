@@ -4,10 +4,9 @@ import feedparser
 from datetime import datetime
 from time import mktime
 
-from google.appengine.api import urlfetch, memcache
-from google.appengine.ext import deferred
 from django.http import HttpResponse
 from django.db import IntegrityError
+from django.core.cache import cache
 
 from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch, FoodbankArticle
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
@@ -17,25 +16,27 @@ from givefood.func import oc_geocode
 def precacher(request):
 
     all_locations = FoodbankLocation.objects.all()
-    memcache.add(LOC_MC_KEY, all_locations, 3600)
+    cache.set(LOC_MC_KEY, all_locations, 3600)
 
     all_foodbanks = Foodbank.objects.all()
-    memcache.add(FB_MC_KEY, all_foodbanks, 3600)
+    cache.set(FB_MC_KEY, all_foodbanks, 3600)
 
     return HttpResponse("OK")
 
 
 def fire_oc_geocode(request):
 
-    foodbanks = Foodbank.objects.all()
-    for foodbank in foodbanks:
-        deferred.defer(do_oc_geocode, foodbank)
+    pass
 
-    locations = FoodbankLocation.objects.all()
-    for location in locations:
-        deferred.defer(do_oc_geocode, location)
+#     foodbanks = Foodbank.objects.all()
+#     for foodbank in foodbanks:
+#         deferred.defer(do_oc_geocode, foodbank)
 
-    return HttpResponse("OK")
+#     locations = FoodbankLocation.objects.all()
+#     for location in locations:
+#         deferred.defer(do_oc_geocode, location)
+
+#     return HttpResponse("OK")
 
 
 def do_oc_geocode(foodbank):
@@ -49,37 +50,38 @@ def search_cleanup(request):
     # Remove sample searches
     searches = ApiFoodbankSearch.objects.filter(latt_long = "51.178889,-1.826111")
     for search in searches:
-        deferred.defer(search.delete)
+        search.delete()
 
     # Remove null island searches
     searches = ApiFoodbankSearch.objects.filter(latt_long = "0,0")
     for search in searches:
-        deferred.defer(search.delete)
+        search.delete()
 
     # Remove searches that didn't find a food bank within 50000m (50km)
     searches = ApiFoodbankSearch.objects.filter(nearest_foodbank__gt = 50000)
     for search in searches:
-        deferred.defer(search.delete)
+        search.delete()
     
     return HttpResponse("OK")
 
 
 def search_saver(request):
+    pass
 
-    searches = ApiFoodbankSearch.objects.all()
-    for search in searches:
-        deferred.defer(search.save)
+    # searches = ApiFoodbankSearch.objects.all()
+    # for search in searches:
+    #     deferred.defer(search.save)
 
-    return HttpResponse("OK")
+    # return HttpResponse("OK")
 
 
 def fire_search_hydrate(request):
 
     logging.info("Firing search hydration")
 
-    searches = ApiFoodbankSearch.objects.filter(admin_district__isnull = True)[:10000]
+    searches = ApiFoodbankSearch.objects.filter(admin_district__isnull = True)[:200]
     for search in searches:
-        deferred.defer(hydrate_search_log, search)
+        hydrate_search_log(search)
     
     return HttpResponse("OK")
 
@@ -92,9 +94,9 @@ def hydrate_search_log(search):
         search.long(),
         search.latt(),
     )
-    pc_api_result = urlfetch.fetch(pc_api_url)
-    if pc_api_result.status_code == 200:
-        pc_api_json = json.loads(pc_api_result.content)
+    pc_api_result = requests.get(pc_api_url)
+    if request.status_code == 200:
+        pc_api_json = request.json()
 
         if pc_api_json["result"]:
             search.admin_district = pc_api_json["result"][0]["admin_district"]

@@ -1,5 +1,0 @@
-nose
-python-dateutil
-python-twitter
-requests-toolbelt
-# pkg_resources

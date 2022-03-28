@@ -1,9 +1,7 @@
 from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
-from givefood.models import OrderGroup
-
-from models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential
-from const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
+from givefood.models import OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential
+from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
 class FoodbankRegistrationForm(forms.Form):

@@ -4,16 +4,13 @@
 import hashlib, unicodedata, logging, json
 from datetime import datetime, timedelta
 
-from google.appengine.api import memcache
-from google.appengine.ext import deferred
-
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
+from django.core.cache import cache
 
-from const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY
-from const.general import TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA
-from func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details, find_parlcons
+from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA
+from givefood.func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details, find_parlcons
 
 
 class Foodbank(models.Model):
@@ -31,7 +28,7 @@ class Foodbank(models.Model):
     charity_number = models.CharField(max_length=50,null=True, blank=True)
     charity_just_foodbank = models.BooleanField(default=False, verbose_name="Charity just foodbank", help_text="Tick this if the charity is purely used for the foodbank, rather than other uses such as a church")
 
-    parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False)
+    parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False, on_delete=models.DO_NOTHING)
     parliamentary_constituency_name = models.CharField(max_length=50, null=True, blank=True, editable=False)
     parliamentary_constituency_slug = models.CharField(max_length=50, null=True, blank=True, editable=False)
     mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP", editable=False)
@@ -279,6 +276,9 @@ class Foodbank(models.Model):
             return "https://www.bankuet.co.uk/%s/?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" % (self.bankuet_slug)
         else:
             return None
+    
+    class Meta:
+        app_label = 'givefood'
 
     def save(self, *args, **kwargs):
 
@@ -327,12 +327,12 @@ class Foodbank(models.Model):
         super(Foodbank, self).save(*args, **kwargs)
 
         # Delete the now stale memcache entry
-        memcache.delete(FB_MC_KEY)
+        cache.delete(FB_MC_KEY)
 
 
 class FoodbankLocation(models.Model):
 
-    foodbank = models.ForeignKey(Foodbank)
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
     foodbank_name = models.CharField(max_length=100, editable=False)
     foodbank_slug = models.CharField(max_length=100, editable=False)
     foodbank_network = models.CharField(max_length=50, editable=False)
@@ -349,7 +349,7 @@ class FoodbankLocation(models.Model):
     phone_number = models.CharField(max_length=20, null=True, blank=True, help_text="If different to the main location")
     email = models.EmailField(null=True, blank=True, help_text="If different to the main location")
 
-    parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False)
+    parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False, on_delete=models.DO_NOTHING)
     parliamentary_constituency_name = models.CharField(max_length=50, null=True, blank=True, editable=False)
     parliamentary_constituency_slug = models.CharField(max_length=50, null=True, blank=True, editable=False)
     mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP", editable=False)
@@ -364,6 +364,7 @@ class FoodbankLocation(models.Model):
 
     class Meta:
        unique_together = ('foodbank', 'name',)
+       app_label = 'givefood'
 
     def __str__(self):
         return self.name
@@ -505,12 +506,12 @@ class FoodbankLocation(models.Model):
 class Order(models.Model):
 
     order_id = models.CharField(max_length=50, editable=False)
-    foodbank = models.ForeignKey(Foodbank)
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
     foodbank_name = models.CharField(max_length=100, editable=False)
     items_text = models.TextField()
-    need = models.ForeignKey("FoodbankChange", null=True, blank=True)
+    need = models.ForeignKey("FoodbankChange", null=True, blank=True, on_delete=models.DO_NOTHING)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
-    order_group = models.ForeignKey("OrderGroup", null=True, blank=True)
+    order_group = models.ForeignKey("OrderGroup", null=True, blank=True, on_delete=models.DO_NOTHING)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
@@ -533,6 +534,7 @@ class Order(models.Model):
 
     class Meta:
        unique_together = ('foodbank', 'delivery_date',)
+       app_label = 'givefood'
 
     def __str__(self):
         return self.order_id
@@ -648,8 +650,8 @@ class Order(models.Model):
 
 class OrderLine(models.Model):
 
-    foodbank = models.ForeignKey(Foodbank)
-    order = models.ForeignKey(Order)
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
+    order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
 
     name = models.CharField(max_length=100)
     quantity = models.PositiveIntegerField()
@@ -661,6 +663,9 @@ class OrderLine(models.Model):
 
     def weight_kg(self):
         return self.weight/1000
+
+    class Meta:
+        app_label = 'givefood'
 
 
 class OrderItem(models.Model):
@@ -675,6 +680,9 @@ class OrderItem(models.Model):
 
         self.slug = slugify(self.name)
         super(OrderItem, self).save(*args, **kwargs)
+
+    class Meta:
+        app_label = 'givefood'
 
 
 class OrderGroup(models.Model):
@@ -696,13 +704,15 @@ class OrderGroup(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        app_label = 'givefood'
 
 class FoodbankArticle(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
-    foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
+    foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.DO_NOTHING)
     foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
 
     published_date = models.DateTimeField(editable=False)
@@ -719,6 +729,9 @@ class FoodbankArticle(models.Model):
 
         super(FoodbankArticle, self).save(*args, **kwargs)
 
+    class Meta:
+        app_label = 'givefood'
+
 
 
 class FoodbankChange(models.Model):
@@ -729,7 +742,7 @@ class FoodbankChange(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
     need_id = models.CharField(max_length=8, editable=False)
 
-    foodbank = models.ForeignKey(Foodbank, null=True, blank=True)
+    foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.DO_NOTHING)
     foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
 
     distill_id = models.CharField(max_length=250, null=True, blank=True)
@@ -816,13 +829,18 @@ class FoodbankChange(models.Model):
         self.change_text = clean_foodbank_need_text(self.change_text)
 
         if not self.need_id:
-            need_id = hashlib.sha256("%s%s" % (self.uri, datetime.now())).hexdigest()[:8]
+            str_to_hash = "%s%s" % (self.uri, datetime.now())
+            str_to_hash = str_to_hash.encode('utf-8')
+            need_id = hashlib.sha256(str_to_hash).hexdigest()[:8]
             self.need_id = need_id
 
         super(FoodbankChange, self).save(*args, **kwargs)
 
         if self.foodbank:
-            deferred.defer(self.foodbank.save)
+            self.foodbank.save()
+    
+    class Meta:
+        app_label = 'givefood'
 
 
 class ApiFoodbankSearch(models.Model):
@@ -869,6 +887,9 @@ class ApiFoodbankSearch(models.Model):
                 self.latt_long = geocode(self.query)
 
         super(ApiFoodbankSearch, self).save(*args, **kwargs)
+    
+    class Meta:
+        app_label = 'givefood'
 
 
 class ParliamentaryConstituency(models.Model):
@@ -1042,13 +1063,16 @@ class ParliamentaryConstituency(models.Model):
         # Resave denormed data
         foodbanks = Foodbank.objects.filter(parliamentary_constituency = self) 
         for foodbank in foodbanks:
-            deferred.defer(foodbank.save)
+            foodbank.save()
 
         locations = FoodbankLocation.objects.filter(parliamentary_constituency = self)
         for location in locations:
-            deferred.defer(location.save)
+            location.save()
         
         super(ParliamentaryConstituency, self).save(*args, **kwargs)
+
+    class Meta:
+        app_label = 'givefood'
 
 
 class GfCredential(models.Model):
@@ -1057,12 +1081,15 @@ class GfCredential(models.Model):
     cred_name = models.CharField(max_length=50)
     cred_value = models.CharField(max_length=255)
 
+    class Meta:
+        app_label = 'givefood'
+
 
 class FoodbankSubscriber(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     last_contacted = models.DateTimeField(editable=False, null=True, blank=True)
-    foodbank = models.ForeignKey(Foodbank)
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
     foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
     email = models.EmailField()
     confirmed = models.BooleanField(default=False)
@@ -1071,7 +1098,8 @@ class FoodbankSubscriber(models.Model):
     unsub_key = models.CharField(max_length=16, editable=False)
 
     class Meta:
-       unique_together = ('email', 'foodbank',)
+        unique_together = ('email', 'foodbank',)
+        app_label = 'givefood'
 
     def foodbank_slug(self):
         return slugify(self.foodbank_name)
@@ -1084,8 +1112,15 @@ class FoodbankSubscriber(models.Model):
         # Generate sub and unsub keys
         if not self.sub_key:
             salt = get_cred("salt")
-            self.sub_key = hashlib.sha256("sub-%s-%s" % (datetime.now(), salt)).hexdigest()[:16]
-            self.unsub_key = hashlib.sha256("unsub-%s-%s" % (datetime.now(), salt)).hexdigest()[:16]
+
+            sub_key_str = "sub-%s-%s" % (datetime.now(), salt)
+            sub_key_str = sub_key_str.encode('utf-8')
+
+            unsub_key_str = "unsub-%s-%s" % (datetime.now(), salt)
+            unsub_key_str = unsub_key_str.encode('utf-8')
+
+            self.sub_key = hashlib.sha256(sub_key_str).hexdigest()[:16]
+            self.unsub_key = hashlib.sha256(unsub_key_str).hexdigest()[:16]
 
         # Denorm food bank name
         self.foodbank_name = self.foodbank.name
@@ -1099,7 +1134,7 @@ class ConstituencySubscriber(models.Model):
     last_contacted = models.DateTimeField(editable=False, null=True, blank=True)
     email = models.EmailField()
     name = models.CharField(max_length=100, null=True, blank=True)
-    parliamentary_constituency = models.ForeignKey(ParliamentaryConstituency)
+    parliamentary_constituency = models.ForeignKey(ParliamentaryConstituency, on_delete=models.DO_NOTHING)
     parliamentary_constituency_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
 
     def save(self, *args, **kwargs):
@@ -1111,3 +1146,6 @@ class ConstituencySubscriber(models.Model):
         self.parliamentary_constituency_name = self.parliamentary_constituency.name
         
         super(ConstituencySubscriber, self).save(*args, **kwargs)
+
+    class Meta:
+        app_label = 'givefood'

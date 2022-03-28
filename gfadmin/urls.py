@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
-from views import *
+from gfadmin.views import *
+
+app_name = "gfadmin"
 
 urlpatterns = (
 

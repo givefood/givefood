@@ -1,73 +1,54 @@
-runtime: python27
-api_version: 1
-threadsafe: true
+runtime: python38
 default_expiration: "2h"
-instance_class: F2
 
 handlers:
 
-- url: /_ah/(mapreduce|queue|warmup|start|stop).*
-  script: givefood.wsgi.application
-  login: admin
-
-- url: /_ah/internalupload.*
-  script: givefood.wsgi.application
-
-- url: /static/img/map-allloc.png
-  script: givefood.wsgi.application
-
 - url: /static
-  static_dir: static/
+  static_dir: givefood/static
   http_headers:
     Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
 
+- url: /_ah/(mapreduce|queue|warmup|start|stop).*
+  script: auto
+  login: admin
+
+- url: /_ah/internalupload.*
+  script: auto
+
+- url: /static/img/map-allloc.png
+  script: auto
+
 - url: /favicon.ico
-  static_files: static/img/favicon.ico
-  upload: static/img/favicon.ico
+  static_files: givefood/static/img/favicon.ico
+  upload: givefood/static/img/favicon.ico
 
 - url: /needs/manifest.json
   static_files: static/wfbn_manifest.json
-  upload: static/wfbn_manifest.json
+  upload: givefood/static/wfbn_manifest.json
 
 - url: /robots.txt
   static_files: static/root/robots.txt
-  upload: static/root/robots.txt
+  upload: givefood/static/root/robots.txt
 
 - url: /security.txt
   static_files: static/root/security.txt
-  upload: static/root/security.txt
+  upload: givefood/static/root/security.txt
 
 - url: /humans.txt
   static_files: static/root/humans.txt
-  upload: static/root/humans.txt
+  upload: givefood/static/root/humans.txt
 
 - url: /offline.*
-  script: givefood.wsgi.application
+  script: auto
   login: admin
 
 - url: /admin.*
-  script: givefood.wsgi.application
+  script: auto
   login: admin
 
 - url: /generate-(2019|2020|2021)/$
-  script: givefood.wsgi.application
+  script: auto
   login: admin
 
 - url: /.*
-  script: givefood.wsgi.application
-
-skip_files:
-  - ^manage\.py$
-  - ^README\.md$
-  - ^install_deps$
-  - ^requirements/.*\.txt$
-  - ^sitepackages/dev.*
-  - ^.*\.(egg|dist)-info/.*$
-  - ^elecprod/data/$
-
-  # Defaults.
-  - ^(.*/)?#.*#$
-  - ^(.*/)?.*~$
-  - ^(.*/)?.*\.py[co]$
-  - ^(.*/)?.*/RCS/.*$
-  - ^(.*/)?\..*$
+  script: auto

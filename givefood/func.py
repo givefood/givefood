@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, logging, operator, json, urllib, difflib
+import re, logging, operator, json, urllib, difflib, requests
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
 
 import facebook, twitter
 
-from google.appengine.api import memcache
-from google.appengine.api import urlfetch
-
 from django.template.defaultfilters import truncatechars
 from django.utils.html import strip_tags
+from django.core.cache import cache
 
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
@@ -20,12 +18,12 @@ from givefood.const.parlcon_party import parlcon_party
 
 def get_all_foodbanks():
 
-    from models import Foodbank
+    from givefood.models import Foodbank
 
-    all_foodbanks = memcache.get(FB_MC_KEY)
+    all_foodbanks = cache.get(FB_MC_KEY)
     if all_foodbanks is None:
         all_foodbanks = Foodbank.objects.all()
-        memcache.add(FB_MC_KEY, all_foodbanks, 3600)
+        cache.set(FB_MC_KEY, all_foodbanks, 3600)
     return all_foodbanks
 
 
@@ -42,23 +40,23 @@ def get_all_open_foodbanks():
 
 def get_all_locations():
 
-    from models import FoodbankLocation
+    from givefood.models import FoodbankLocation
 
-    all_locations = memcache.get(LOC_MC_KEY)
+    all_locations = cache.get(LOC_MC_KEY)
     if all_locations is None:
         all_locations = FoodbankLocation.objects.all()
-        memcache.add(LOC_MC_KEY, all_locations, 3600)
+        cache.set(LOC_MC_KEY, all_locations, 3600)
     return all_locations
 
 
 def get_all_constituencies():
 
-    from models import ParliamentaryConstituency
+    from givefood.models import ParliamentaryConstituency
 
-    all_parlcon = memcache.get(PARLCON_MC_KEY)
+    all_parlcon = cache.get(PARLCON_MC_KEY)
     if all_parlcon is None:
         all_parlcon = ParliamentaryConstituency.objects.defer("boundary_geojson").order_by("name")
-        memcache.add(PARLCON_MC_KEY, all_parlcon, 3600)
+        cache.set(PARLCON_MC_KEY, all_parlcon, 3600)
     return all_parlcon
 
 
@@ -84,11 +82,12 @@ def geocode(address):
 
     gmap_geocode_key = get_cred("gmap_geocode_key")
 
-    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=%s" % (gmap_geocode_key, urllib.quote(address.encode('utf8')))
-    address_api_result = urlfetch.fetch(address_api_url)
-    if address_api_result.status_code == 200:
+    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?key=%s&address=%s" % (gmap_geocode_key, address.encode('utf8'))
+    request = requests.get(address_api_url)
+
+    if request.status_code == 200:
         try:
-            address_result_json = json.loads(address_api_result.content)
+            address_result_json = request.json()
             lattlong = "%s,%s" % (
                 address_result_json["results"][0]["geometry"]["location"]["lat"],
                 address_result_json["results"][0]["geometry"]["location"]["lng"]
@@ -103,10 +102,10 @@ def oc_geocode(address):
     oc_geocode_key = get_cred("oc_geocode_key")
 
     address_api_url = "https://api.opencagedata.com/geocode/v1/json?q=%s&key=%s" % (urllib.quote(address.encode('utf8')), oc_geocode_key)
-    address_api_result = urlfetch.fetch(address_api_url)
-    if address_api_result.status_code == 200:
+    request = requests.get(address_api_url)
+    if request.status_code == 200:
         try:
-            address_result_json = json.loads(address_api_result.content)
+            address_result_json = request.json()
             lattlong = "%s,%s" % (
                 address_result_json["results"][0]["geometry"]["lat"],
                 address_result_json["results"][0]["geometry"]["lng"]
@@ -327,12 +326,12 @@ def get_weight(text):
 
 def get_all_items():
 
-    from models import OrderItem
+    from givefood.models import OrderItem
 
-    all_items = memcache.get(ITEMS_MC_KEY)
+    all_items = cache.get(ITEMS_MC_KEY)
     if all_items is None:
         all_items = OrderItem.objects.all()
-        memcache.add(ITEMS_MC_KEY, all_items, 3600)
+        cache.set(ITEMS_MC_KEY, all_items, 3600)
     return all_items
 
 
@@ -424,6 +423,9 @@ def clean_foodbank_need_text(text):
 
 
 def is_uk(lat_lng):
+
+    logging.debug("is_uk")
+    logging.debug(lat_lng)
 
     lat = float(lat_lng.split(",")[0])
     lng = float(lat_lng.split(",")[1])
@@ -579,10 +581,10 @@ def distance_meters(lat1, lon1, lat2, lon2):
 
 
 def admin_regions_from_postcode(postcode):
-    pc_api_url = "https://api.postcodes.io/postcodes/%s" % (urllib.quote(postcode))
-    pc_api_result = urlfetch.fetch(pc_api_url)
-    if pc_api_result.status_code == 200:
-        pc_api_json = json.loads(pc_api_result.content)
+    pc_api_url = "https://api.postcodes.io/postcodes/%s" % (urllib.parse.quote(postcode))
+    request = requests.get(pc_api_url)
+    if request.status_code == 200:
+        pc_api_json = request.json()
 
         return {
             "county":pc_api_json["result"]["admin_county"],
@@ -609,9 +611,9 @@ def mpid_from_name(name):
 
     if name:
         mpid_url = "https://members-api.parliament.uk/api/Members/Search?Name=%s&House=Commons&IsCurrentMember=true&skip=0&take=20" % (urllib.quote(name))
-        mpid_api_result = urlfetch.fetch(mpid_url)
-        if mpid_api_result.status_code == 200:
-            mpid_api_json = json.loads(mpid_api_result.content)
+        request = request.get(mpid_url)
+        if request.status_code == 200:
+            mpid_api_json = request.json()
             if mpid_api_json["totalResults"] != 0:
                 return mpid_api_json["items"][0]["value"]["id"]
     return False
@@ -678,9 +680,9 @@ def mp_contact_details(mpid):
 
 def fetch_json(url):
 
-    url_result = urlfetch.fetch(url)
-    if url_result.status_code == 200:
-        url_result_json = json.loads(url_result.content)
+    request = requests.get(url)
+    if request.status_code == 200:
+        url_result_json = request.json()
         return url_result_json
 
     return False
@@ -694,7 +696,7 @@ def make_url_friendly(url):
 
 def get_cred(cred_name):
 
-    from models import GfCredential
+    from givefood.models import GfCredential
 
     try:
         credential = GfCredential.objects.filter(cred_name = cred_name).latest("created")
@@ -704,9 +706,6 @@ def get_cred(cred_name):
 
 
 def post_to_facebook(need):
-
-    from google.appengine.api import urlfetch
-    urlfetch.set_default_fetch_deadline(60)
 
     fb_post_text = "%s food bank is requesting the donation of:\n\n%s" % (
         need.foodbank_name,
@@ -813,9 +812,8 @@ def send_email(to, subject, body, cc=None, cc_name=None, reply_to=None, reply_to
         ],
     }
 
-    api_body = json.dumps(api_call_body)
 
-    result = urlfetch.fetch(api_url, payload=api_body, method=urlfetch.POST, headers={'Content-Type': 'application/json'})
+    result = requests.post(api_url, json=api_call_body)
 
   
 def group_list(lst):

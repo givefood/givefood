@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
-from views import *
+from gfapi2.views import *
+
+app_name = "gfapi2"
 
 urlpatterns = (
     url(r'^$', index, name="index"),

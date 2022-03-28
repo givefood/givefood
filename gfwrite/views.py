@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import slugify
 from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect, HttpResponseNotFound
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from givefood.func import admin_regions_from_postcode, send_email
 from givefood.models import ConstituencySubscriber, ParliamentaryConstituency

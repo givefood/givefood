@@ -2,6 +2,8 @@ from django.conf.urls import include, url
 from django.views.generic import RedirectView
 from gfwrite.views import *
 
+app_name = "gfwrite"
+
 urlpatterns = (
 
     url(r'^$', index, name="index"),

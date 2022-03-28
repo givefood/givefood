@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from views import *
+from gfapi1.views import *
 from givefood.views import public_api
 
 urlpatterns = (

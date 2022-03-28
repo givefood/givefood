@@ -235,7 +235,7 @@ def foodbank(request, slug):
             },
             "need": {
                 "id":foodbank.latest_need_id(),
-                "needs":foodbank.latest_need().clean_change_text(),
+                "needs":foodbank.latest_need().change_text,
                 "created":foodbank.latest_need_date(),
                 "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need_id()),
             },
@@ -341,7 +341,7 @@ def foodbank_search(request):
             "distance_m":int(foodbank.distance_m),
             "distance_mi":round(foodbank.distance_mi,2),
             "needs": {
-                "needs":foodbank.latest_need().clean_change_text(),
+                "needs":foodbank.latest_need().change_text,
                 "found":foodbank.latest_need().created,
                 "number":foodbank.latest_need().no_items(),
             },
@@ -513,7 +513,7 @@ def location_search(request):
                 }
             },
             "needs": {
-                "needs":location_need.clean_change_text(),
+                "needs":location_need.change_text,
                 "number":location_need.no_items(),
                 "found":location_need.created,
             },
@@ -561,7 +561,7 @@ def needs(request):
                 }
 
             },
-            "needs":need.clean_change_text(),
+            "needs":need.change_text,
             "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
         })
 
@@ -585,7 +585,7 @@ def need(request, id):
                 "html":"https://www.givefood.org.uk/needs/at/%s/" % (need.foodbank_name_slug()),
             }
         },
-        "needs":need.clean_change_text(),
+        "needs":need.change_text,
         "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
     }
 
@@ -639,7 +639,7 @@ def constituency(request, slug):
                     "name":foodbank.get("name"),
                     "slug":foodbank.get("slug"),
                     "lat_lng":foodbank.get("lat_lng"),
-                    "needs":foodbank.get("needs").clean_change_text(),
+                    "needs":foodbank.get("needs").change_text,
                     "urls": {
                         "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.get("slug")),
                         "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.get("slug")),

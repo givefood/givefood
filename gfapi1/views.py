@@ -1,13 +1,12 @@
 import json, urllib
 
-from google.appengine.api import urlfetch
 import unicodecsv as csv
 
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse
 from django.utils.timesince import timesince
 from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from givefood.func import find_foodbanks, get_all_foodbanks, geocode
 from givefood.models import ApiFoodbankSearch, Foodbank, FoodbankChange

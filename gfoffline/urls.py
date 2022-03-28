@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
-from views import *
+from gfoffline.views import *
+
+app_name = "gfoffline"
 
 urlpatterns = (
     url(r'^precacher/$', precacher, name="precacher"),

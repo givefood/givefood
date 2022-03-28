@@ -3,14 +3,13 @@ import operator
 from collections import OrderedDict
 import json
 import logging
-
-from google.appengine.api import urlfetch
+import requests
 
 from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect, render
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseForbidden
@@ -255,10 +254,10 @@ def proxy(request, item):
     if item == "ifan":
         url = "https://www.google.com/maps/d/u/0/kml?mid=15mnlXFpd8-x0j4O6Ck6U90chPn4bkbWz&forcekml=1"
 
-    result = urlfetch.fetch(url)
-    if result.status_code == 200:
+    request = requests.get(url)
+    if request.status_code == 200:
 
-        content = result.content
+        content = request.text
 
         if item == "trusselltrust":
             content = content.replace("REMOVEME(","")

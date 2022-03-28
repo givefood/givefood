@@ -1,7 +1,8 @@
+import logging
+
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
-from django.contrib.staticfiles.views import serve
 from django.views.generic import RedirectView
 
 import givefood.views
@@ -10,10 +11,7 @@ from givefood.const.general import RICK_ASTLEY
 import session_csrf
 session_csrf.monkeypatch()
 
-from django.contrib import admin
-admin.autodiscover()
-
-urlpatterns = (
+urlpatterns = [
     url(r'^_ah/', include('djangae.urls')),
 
     # PUBLIC
@@ -43,19 +41,16 @@ urlpatterns = (
     url(r'^needs/at/lifeshare/$', RedirectView.as_view(url='/needs/at/lifeshare-manchester/')),
 
     # Apps
-    url(r'^needs/', include('gfwfbn.urls', namespace="wfbn", app_name="gfwfbn")),
+    url(r'^needs/', include('gfwfbn.urls', namespace="wfbn")),
     url(r'^api/1/', include('gfapi1.urls')),
-    url(r'^api/2/', include('gfapi2.urls', namespace="api2", app_name="api2")),
+    url(r'^api/2/', include('gfapi2.urls', namespace="api2")),
     url(r'^api/', include('gfapi2.urls')),
-    url(r'^admin/', include('gfadmin.urls', namespace="admin", app_name="gfadmin")),
-    url(r'^dashboard/', include('gfdash.urls', namespace="dash", app_name="gfdash")),
-    url(r'^offline/', include('gfoffline.urls', namespace="offline", app_name="gfoffline")),
-    url(r'^write/', include('gfwrite.urls', namespace="write", app_name="gfwrite")),
+    url(r'^admin/', include('gfadmin.urls', namespace="admin")),
+    url(r'^dashboard/', include('gfdash.urls', namespace="dash")),
+    url(r'^offline/', include('gfoffline.urls', namespace="offline")),
+    url(r'^write/', include('gfwrite.urls', namespace="write")),
 
     # CSP & Auth
     url(r'^csp/', include('cspreports.urls')),
-    url(r'^auth/', include('djangae.contrib.gauth.urls')),
-)
-
-if settings.DEBUG:
-    urlpatterns += tuple(static(settings.STATIC_URL, view=serve, show_indexes=True))
+    url(r'^auth/', include('djangae.contrib.googleauth.urls')),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

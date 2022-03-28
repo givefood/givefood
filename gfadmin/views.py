@@ -4,17 +4,16 @@ from datetime import datetime, timedelta
 
 from djangae.environment import is_production_environment
 
-from google.appengine.api import urlfetch, memcache
-from google.appengine.ext import deferred
-
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
+from django.core.cache import cache
+
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations, get_cred, post_to_facebook, post_to_twitter, post_to_subscriber, send_email
@@ -442,7 +441,7 @@ def need_form(request, id = None):
 def need_delete(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
-    deferred.defer(need.delete)
+    need.delete()
     return redirect("admin:index")
 
 
@@ -464,8 +463,8 @@ def need_notifications(request, id):
     need = get_object_or_404(FoodbankChange, need_id = id)
 
     # Defer the postings
-    deferred.defer(post_to_facebook, need, _queue="socialpost")
-    deferred.defer(post_to_twitter, need, _queue="socialpost")
+    post_to_facebook(need)
+    post_to_twitter(need)
 
     # Update tweet time
     need.tweet_sent = datetime.now()
@@ -474,7 +473,7 @@ def need_notifications(request, id):
     # Email subscriptions
     subscribers = FoodbankSubscriber.objects.filter(foodbank = need.foodbank, confirmed = True)
     for subscriber in subscribers:
-        deferred.defer(post_to_subscriber, need, subscriber)
+        post_to_subscriber(need, subscriber)
 
     return redirect("admin:index")
 
@@ -975,5 +974,5 @@ def delete_subscription(request):
 
 def clearcache(request):
 
-    memcache.flush_all()
+    cache.clear()
     return redirect("admin:index")
