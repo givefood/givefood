@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'djangae.contrib.googleauth.middleware.LocalIAPLoginMiddleware',
     'djangae.contrib.googleauth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'csp.middleware.CSPMiddleware',
 ]
 
