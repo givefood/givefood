@@ -23,19 +23,19 @@ handlers:
   upload: givefood/static/img/favicon.ico
 
 - url: /needs/manifest.json
-  static_files: static/wfbn_manifest.json
+  static_files: givefood/static/wfbn_manifest.json
   upload: givefood/static/wfbn_manifest.json
 
 - url: /robots.txt
-  static_files: static/root/robots.txt
+  static_files: givefood/static/root/robots.txt
   upload: givefood/static/root/robots.txt
 
 - url: /security.txt
-  static_files: static/root/security.txt
+  static_files: givefood/static/root/security.txt
   upload: givefood/static/root/security.txt
 
 - url: /humans.txt
-  static_files: static/root/humans.txt
+  static_files: givefood/static/root/humans.txt
   upload: givefood/static/root/humans.txt
 
 - url: /offline.*
