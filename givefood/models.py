@@ -65,11 +65,6 @@ class Foodbank(models.Model):
 
     no_locations = models.IntegerField(editable=False, default=0)
 
-    class Search:
-         fields = [
-             "name",
-         ]
-
     def __str__(self):
         return self.name
 
@@ -754,11 +749,6 @@ class FoodbankChange(models.Model):
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
 
     input_method = models.CharField(max_length=10)
-
-    class Search:
-         fields = [
-             "change_text",
-         ]
 
     def clean(self):
         if self.foodbank == None and self.published == True:
