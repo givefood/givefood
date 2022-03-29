@@ -1,5 +1,6 @@
 import urllib, json, logging
 import feedparser
+import requests
 
 from datetime import datetime
 from time import mktime
@@ -94,7 +95,7 @@ def hydrate_search_log(search):
         search.long(),
         search.latt(),
     )
-    pc_api_result = requests.get(pc_api_url)
+    request = requests.get(pc_api_url)
     if request.status_code == 200:
         pc_api_json = request.json()
 
