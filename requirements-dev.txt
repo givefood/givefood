@@ -1,4 +1,4 @@
 gcloud-storage-emulator==0.5.0
 gcloud-tasks-emulator==0.5.1
-ipython==7.28.0
+ipython==8.2.0
 appengine-python-standard>=0.3.1
