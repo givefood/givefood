@@ -10,7 +10,7 @@ python-dateutil
 python-twitter
 requests-toolbelt
 requests
-django-bulma==0.5.6
+django-bulma==0.8.3
 unicodecsv
 python-twitter
 dicttoxml
