@@ -43,9 +43,9 @@
           <div class="column is-4">
 
             {% if postcode %}
-                <p>Your postcode <em>{{ postcode|upper }}</em> is in {{ constituency }} constituency, and your MP is {{ constituency.mp }}.</p>
+                <p>Your postcode <em>{{ postcode|upper }}</em> is in <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> constituency, and your MP is {{ constituency.mp }}.</p>
             {% else %}
-                <p>The MP for {{ constituency }} is {{ constituency.mp }}.</p>
+                <p>The MP for <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> is {{ constituency.mp }}.</p>
             {% endif %}
 
             <img src="/static/img/mp_photo/{{ constituency.mp_parl_id }}.jpg" alt="{{ constituency.mp }}" class="mp_photo">
