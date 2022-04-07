@@ -1,6 +1,6 @@
 <img width="217" alt="Give Food" src="https://user-images.githubusercontent.com/763913/120896619-51472b00-c61a-11eb-950d-fd3a0411c928.png">
 
-The source of https://www.givefood.org.uk. A Google App Engine app written in Python, using Django and [Djangae](https://github.com/potatolondon/djangae).
+The source of https://www.givefood.org.uk. A Google App Engine app written in Python, using Django and [Djangae](https://gitlab.com/potato-oss/djangae/djangae).
 
 ## Structure 
 | App Name  | Description                         | URL                                    |
