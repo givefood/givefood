@@ -55,7 +55,7 @@ def ApiResponse(data, obj_name, format):
         xml_str = xml_dom.toprettyxml()
         response = HttpResponse(xml_str, content_type="text/xml")
     elif format == "yaml":
-        yaml_str = yaml.safe_dump(data, encoding='utf-8', allow_unicode=True, default_flow_style=False)
+        yaml_str = yaml.dump(data, encoding='utf-8', allow_unicode=True, default_flow_style=False)
         response = HttpResponse(yaml_str, content_type="text/yaml")
     
     response["Access-Control-Allow-Origin"] = "*"
