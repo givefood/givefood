@@ -941,6 +941,7 @@ class ParliamentaryConstituency(models.Model):
             contains_place.append(location.schema_org(as_sub_property = True))
 
         schema_dict = {
+            "@context": "https://schema.org",
             "@type": "AdministrativeArea",
             "name": self.name,
             "containsPlace": contains_place,
