@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
         <channel>
-                <description>News &amp; item requests from {{ foodbank }} food bank</description>
                 <title>{{ foodbank }} Food Bank</title>
+                <description>News &amp; donation requests from {{ foodbank }} food bank</description>
                 <link>https://www.givefood.org.uk{% url 'wfbn:foodbank' foodbank.slug %}</link>
                 <lastBuildDate>{% now "D, d M Y H:i:s O" %}</lastBuildDate>
                 {% for item in items %}
