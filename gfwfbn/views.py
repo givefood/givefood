@@ -125,7 +125,7 @@ def foodbank_rss(request, slug):
         items.append({
             "title":newsitem.title,
             "url":newsitem.url,
-            "date":newsitem.created,
+            "date":newsitem.published_date,
         })
 
     items = sorted(items, key=lambda d: d['date'], reverse=True) 
