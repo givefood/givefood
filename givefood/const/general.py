@@ -71,6 +71,7 @@ CHECK_COUNT_PER_DAY = {
 PAGE_SIZE_PER_COUNT = 1444997 #Bytes
 
 FB_MC_KEY = "all_foodbanks"
+FB_OPEN_MC_KEY = "all_open_foodbanks"
 LOC_MC_KEY = "all_locations"
 ITEMS_MC_KEY = "all_items"
 PARLCON_MC_KEY = "all_parlcon"

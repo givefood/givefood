@@ -11,7 +11,7 @@ from django.template.defaultfilters import truncatechars
 from django.utils.html import strip_tags
 from django.core.cache import cache
 
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -29,13 +29,13 @@ def get_all_foodbanks():
 
 def get_all_open_foodbanks():
 
-    foodbanks = get_all_foodbanks()
-    foodbanks = list(foodbanks)
-    for foodbank in foodbanks:
-        if foodbank.is_closed:
-            foodbanks.remove(foodbank)
+    from givefood.models import Foodbank
 
-    return foodbanks
+    all_open_foodbanks = cache.get(FB_OPEN_MC_KEY)
+    if all_open_foodbanks is None:
+        all_open_foodbanks = Foodbank.objects.filter(is_closed = False)
+        cache.set(FB_OPEN_MC_KEY, all_open_foodbanks, 3600)
+    return all_open_foodbanks
 
 
 def get_all_locations():
