@@ -56,7 +56,7 @@
 
           <div class="column is-6">
 
-            <p>This food bank location is in the <a href="{% url "wfbn:constituency" location.parliamentary_constituency_slug %}">{{ location.parliamentary_constituency_name }} constituency</a> ({{ location.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp }} MP">{{ location.mp }} MP</a> of the {{ location.mp_party }} party.</p>
+            <p>This food bank location is in the <a href="{% url "wfbn:constituency" location.parliamentary_constituency_slug %}">{{ location.parliamentary_constituency_name }} constituency</a> ({{ location.ward }} ward), and is represented by <a href="https://www.google.co.uk/search?q={{ foodbank.mp|urlencode }}%20MP">{{ location.mp }} MP</a> of the {{ location.mp_party }} party.</p>
 
             <p>You can use <a href="{% url 'write:constituency' location.parliamentary_constituency_slug %}" id="write_link">our tool</a> to politely help your MP understand that food banks shouldn't exist in our country.</p>
             <p><a href="{% url 'write:constituency' location.parliamentary_constituency_slug %}" class="button is-link" id="write_btn">Write</a></p>

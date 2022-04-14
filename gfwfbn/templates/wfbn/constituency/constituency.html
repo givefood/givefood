@@ -53,7 +53,7 @@
           </div>
 
           <div class="column is-6">
-            <p>{{ constituency.name }} constituency is represented by <a href="https://www.google.co.uk/search?q={{ constituency.mp }} MP">{{ constituency.mp }} MP</a> of the {{ constituency.mp_party }} party.</p>
+            <p>{{ constituency.name }} constituency is represented by <a href="https://www.google.co.uk/search?q={{ constituency.mp|urlencode }}%20MP">{{ constituency.mp }} MP</a> of the {{ constituency.mp_party }} party.</p>
             <p>You can write to this MP to politely help them understand that food banks shouldn't exist in our country.</p>
             <a href="{% url 'write:constituency' constituency.slug %}" class="button is-link">Write</a><br><br>
 
