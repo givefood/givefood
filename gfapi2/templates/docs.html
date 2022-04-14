@@ -144,7 +144,7 @@
                             <td>search</td>
                             <td>
                             <span class="select">
-                                <select class="control api_method_argument" id="search_argument" name="search">
+                                <select class="control api_method_argument" name="search">
                                 {% for search in eg_searches %}
                                     <option value="?{{ search.type }}={{ search.query }}">{{ search.query }}</option>
                                 {% endfor %}
@@ -220,7 +220,7 @@
                             <td>search</td>
                             <td>
                             <span class="select">
-                                <select class="control api_method_argument" id="search_argument" name="search">
+                                <select class="control api_method_argument" name="search">
                                 {% for search in eg_searches %}
                                     <option value="?{{ search.type }}={{ search.query }}">{{ search.query }}</option>
                                 {% endfor %}
