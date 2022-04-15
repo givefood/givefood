@@ -95,7 +95,7 @@ class Foodbank(models.Model):
 
         schema_dict = {
             "@type": "NGO",
-            "name": "%s Food Bank" % (self.name),
+            "name": self.full_name(),
             "alternateName": self.alt_name,
             "url": self.url,
             "email": self.contact_email,
@@ -124,6 +124,12 @@ class Foodbank(models.Model):
 
     def schema_org_str(self):
         return json.dumps(self.schema_org(), indent=4, sort_keys=True)
+
+    def full_name(self):
+        if self.name == "Salvation Army":
+            return self.name
+        else:
+            return "%s Food Bank" % (self.name)
 
     def friendly_url(self):
         return make_url_friendly(self.url)
@@ -395,7 +401,7 @@ class FoodbankLocation(models.Model):
         schema_dict = {
             "@context": "https://schema.org",
             "@type": "NGO",
-            "name": "%s Food Bank" % (self.full_name()),
+            "name": self.full_name(),
             "url": self.foodbank.url,
             "email": self.email_or_foodbank_email(),
             "telephone": self.phone_or_foodbank_phone(),
@@ -426,7 +432,7 @@ class FoodbankLocation(models.Model):
         return json.dumps(self.schema_org(), indent=4, sort_keys=True)
 
     def full_name(self):
-        return "%s, %s" % (self.name, self.foodbank_name)
+        return "%s, %s" % (self.name, self.foodbank.full_name())
         
     def phone_or_foodbank_phone(self):
         if self.phone_number:

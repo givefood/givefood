@@ -41,12 +41,12 @@
         <ul>
             <li><a href="{% url 'public_index' %}">Home</a></li>
             <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
-            <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
+            <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
             <li class="is-active"><a href="#" aria-current="page">Edit</a></li>
         </ul>
   </nav>
 
-      <h1>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</h1>
+      <h1>{{ foodbank.full_name }}</h1>
 
       <div class="columns">
 
@@ -58,7 +58,7 @@
 
             {% if action == "needs" %}
 
-                <p>Sorry if we've got what <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> is requesting to have donated wrong. Usually we crawl your website to find this. Let's fix it.</p>
+                <p>Sorry if we've got what <em>{{ foodbank.full_name }}</em> is requesting to have donated wrong. Usually we crawl your website to find this. Let's fix it.</p>
                 <p>Here is what we think is the shopping list, which we last updated <em>{{ foodbank.latest_need.created }} ({{ foodbank.latest_need.created|timesince }} ago</em>). We found this by {% if foodbank.latest_need.input_method == "typed" %}inputting it manually{% endif %}{% if foodbank.latest_need.input_method == "scrape" %}automatically scraping it from the food bank's website{% endif %}{% if foodbank.latest_need.input_method == "user" %}someone filling out this form{% endif %}.</p>
 
                 <div class="needs">
@@ -77,7 +77,7 @@
 
             {% if action == "locations" %}
 
-                <p>Sorry if we've got a location of <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> wrong. You can amend it below.</p>
+                <p>Sorry if we've got a location of <em>{{ foodbank.full_name }}</em> wrong. You can amend it below.</p>
 
                 <div class="columns">
                     <div class="column is-one-third">
@@ -118,7 +118,7 @@
 
             {% if action == "contacts" %}
 
-                <p>Sorry if we've got some of the details of <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> wrong. You can use the form below to fix it...</p>
+                <p>Sorry if we've got some of the details of <em>{{ foodbank.full_name }}</em> wrong. You can use the form below to fix it...</p>
 
                 <form method="post" action="">
                     {{ form|bulma }}
@@ -131,7 +131,7 @@
 
             {% if action == "closed" %}
 
-              <p>Is <em>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</em> closed? Tell us by clicking the button below.</p>
+              <p>Is <em>{{ foodbank.full_name }}</em> closed? Tell us by clicking the button below.</p>
 
               <form method="post" action="">
                 <input type="submit" class="button is-danger" value="Yes, it is closed">

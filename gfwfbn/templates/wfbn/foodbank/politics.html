@@ -5,12 +5,12 @@
   <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
-  <meta property="og:title" content="{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}">
-  <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
-  <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
+  <meta property="og:title" content="{{ foodbank.full_name }}">
+  <meta property="og:description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
+  <meta name="description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
   <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_map' foodbank.slug %}">
   <link rel="manifest" href="/needs/manifest.json">
-  <meta name="geo.placename" content="{{ foodbank }} Food Bank">
+  <meta name="geo.placename" content="{{ foodbank.full_name }}">
   <meta name="geo.position" content="{{ foodbank.latt_long }}">
   <meta property="place:location:latitude" content="{{ foodbank.latt }}">
   <meta property="place:location:longitude" content="{{ foodbank.long }}">
@@ -19,7 +19,7 @@
   {% endif %}
 {% endblock %}
 
-{% block title %}Politics - {{ foodbank }} Food Bank - Give Food{% endblock %}
+{% block title %}Politics - {{ foodbank.full_name }} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -40,12 +40,12 @@
         <ul>
             <li><a href="{% url 'public_index' %}">Home</a></li>
             <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
-            <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</a></li>
+            <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
             <li class="is-active"><a href="#" aria-current="page">Politics</a></li>
         </ul>
   </nav>
 
-      <h1>{{ foodbank }}{% if not foodbank.name == "Salvation Army" %} Food Bank{% endif %}</h1>
+      <h1>{{ foodbank.full_name }}</h1>
 
       <div class="columns">
 
