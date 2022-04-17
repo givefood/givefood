@@ -43,8 +43,14 @@
             <p>Use our tool to send an email to your MP about the UK's increasing reliance on emergency food supplies from food banks.</p>
             <p>We'll take a few quick details off you, starting with your postcode here, and then send the email on your behalf...</p>
 
+            {% if postcode %}
+              <div class="notification is-warning">
+                Sorry, we couldn't recognise this postcode. Could you try again?
+              </div>
+            {% endif %}
+
             <form id="postcodeform" action="" method="get">
-              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="Postcode">
+              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="Postcode" value="{% if postcode %}{{ postcode }}{% endif %}">
               <input type="submit" class="button is-info" value="Go">
             </form>
 

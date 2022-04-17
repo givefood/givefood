@@ -315,6 +315,7 @@ def constituencies(request):
 
     template_vars = {
         "constituencies":constituencies,
+        "postcode":postcode,
     }
 
     return render(request, "wfbn/constituency/index.html", template_vars)

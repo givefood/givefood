@@ -44,8 +44,14 @@
 
             <p>Find which food banks operate in your parliamentary constituency, then donate or take action.</p>
 
+            {% if postcode %}
+              <div class="notification is-warning">
+                Sorry, we couldn't recognise this postcode. Could you try again?
+              </div>
+            {% endif %}
+
             <form id="postcodeform" action="{% url 'wfbn:constituencies' %}" method="get">
-              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="Search by postcode">
+              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="Search by postcode" value="{% if postcode %}{{ postcode }}{% endif %}">
               <input type="submit" class="button is-info" value="Go">
             </form>
 

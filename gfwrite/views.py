@@ -21,7 +21,9 @@ def index(request):
             )
             return HttpResponseRedirect(parl_con_url)
 
-    template_vars = {}
+    template_vars = {
+        "postcode":postcode,
+    }
     return render(request, "write/index.html", template_vars)
 
 
