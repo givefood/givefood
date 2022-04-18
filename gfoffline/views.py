@@ -2,14 +2,14 @@ import urllib, json, logging
 import feedparser
 import requests
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import mktime
 
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.core.cache import cache
 
-from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch, FoodbankArticle
+from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch, FoodbankArticle, FoodbankSubscriber
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.func import oc_geocode
 
@@ -130,5 +130,18 @@ def crawl_articles(request):
                     new_article.save()
                 except IntegrityError:
                     pass
+
+    return HttpResponse("OK")
+
+
+def cleanup_subs(request):
+
+    unconfirmed_subscribers = FoodbankSubscriber.objects.filter(
+        confirmed = False,
+        created__lte = datetime.now()-timedelta(days=28),
+    )
+
+    for unconfirmed_subscriber in unconfirmed_subscribers:
+        unconfirmed_subscriber.delete()
 
     return HttpResponse("OK")

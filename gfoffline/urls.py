@@ -10,4 +10,5 @@ urlpatterns = (
     url(r'^search/saver/$', search_saver, name="search_saver"),
     url(r'^search/hydrate/$', fire_search_hydrate, name="fire_search_hydrate"),
     url(r'^crawl_articles/$', crawl_articles, name="crawl_articles"),
+    url(r'^cleanup_subs/$', cleanup_subs, name="cleanup_subs"),
 )
