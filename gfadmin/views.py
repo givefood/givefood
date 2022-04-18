@@ -462,7 +462,7 @@ def need_notifications(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
 
-    # Defer the postings
+    # Social media
     post_to_facebook(need)
     post_to_twitter(need)
 
