@@ -64,12 +64,28 @@ class Foodbank(models.Model):
     last_need = models.DateTimeField(editable=False, null=True)
 
     no_locations = models.IntegerField(editable=False, default=0)
+    days_between_needs = models.IntegerField(editable=False, default=0)
 
     def __str__(self):
         return self.name
 
     def __unicode__(self):
         return self.name
+
+    def days_between_needs_text(self):
+        if self.days_between_needs == 0:
+            return False
+        if self.days_between_needs > 90:
+            return "few months"
+        if self.days_between_needs > 60:
+            return "couple of months"
+        if self.days_between_needs > 30:
+            return "month or so"
+        if self.days_between_needs > 14:
+            return "couple of weeks"
+        if self.days_between_needs > 7:
+            return "week or so"
+        return "week"
 
     def schema_org(self, as_sub_property = False):
 

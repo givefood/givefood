@@ -19,3 +19,7 @@ cron:
 - description: cleanup unconfirmed subscriptions
   url: /offline/cleanup_subs/
   schedule: every 12 hours
+
+- description: calculate days between needs per food bank
+  url: /offline/days_between_needs/
+  schedule: every 24 hours

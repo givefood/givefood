@@ -1,4 +1,4 @@
-<p id="subscribe" class="subscribe-tease">Get notified when {{ foodbank.full_name }} requests items...</p>
+<p id="subscribe" class="subscribe-tease">Get an email when {{ foodbank.full_name }} needs items. {% if foodbank.days_between_needs_text %}This is around every {{ foodbank.days_between_needs_text }}.{% endif %}</p>
 <form action="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}" method="post">
     <div class="field has-addons">
         <div class="control is-expanded">

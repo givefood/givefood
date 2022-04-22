@@ -2,16 +2,16 @@ import urllib, json, logging
 import feedparser
 import requests
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from time import mktime
 
 from django.http import HttpResponse
 from django.db import IntegrityError
 from django.core.cache import cache
 
-from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch, FoodbankArticle, FoodbankSubscriber
+from givefood.models import Foodbank, FoodbankLocation, ApiFoodbankSearch, FoodbankArticle, FoodbankSubscriber, FoodbankChange
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import oc_geocode
+from givefood.func import oc_geocode, get_all_open_foodbanks
 
 
 def precacher(request):
@@ -143,5 +143,27 @@ def cleanup_subs(request):
 
     for unconfirmed_subscriber in unconfirmed_subscribers:
         unconfirmed_subscriber.delete()
+
+    return HttpResponse("OK")
+
+
+def days_between_needs(request):
+
+    number_of_needs = 5
+    foodbanks = get_all_open_foodbanks()
+
+    for foodbank in foodbanks:
+
+        days_between_needs = 0
+
+        needs = FoodbankChange.objects.filter(foodbank = foodbank).order_by("-created")[:number_of_needs]
+        if len(needs) == number_of_needs:
+            last_need_date = needs[number_of_needs-1].created
+            days_since_earliest_sample_need = (last_need_date - datetime.now(timezone.utc)).days
+            days_between_needs = int(-days_since_earliest_sample_need / number_of_needs)
+
+        foodbank.days_between_needs = days_between_needs
+        foodbank.save()
+
 
     return HttpResponse("OK")

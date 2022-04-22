@@ -11,4 +11,5 @@ urlpatterns = (
     url(r'^search/hydrate/$', fire_search_hydrate, name="fire_search_hydrate"),
     url(r'^crawl_articles/$', crawl_articles, name="crawl_articles"),
     url(r'^cleanup_subs/$', cleanup_subs, name="cleanup_subs"),
+    url(r'^days_between_needs/$', days_between_needs, name="days_between_needs"),
 )
