@@ -251,6 +251,18 @@ def foodbank_nearby(request, slug):
 
 
 @cache_page(60*30)
+def foodbank_subscribe(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    template_vars = {
+        "section":"subscribe",
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/subscribe.html", template_vars)
+
+@cache_page(60*30)
 def foodbank_location(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)

@@ -22,6 +22,7 @@ urlpatterns = (
     url(r'^at/(?P<slug>[-\w]+)/socialmedia/$', foodbank_socialmedia, name="foodbank_socialmedia"),
     url(r'^at/(?P<slug>[-\w]+)/nearby/$', foodbank_nearby, name="foodbank_nearby"),
     url(r'^at/(?P<slug>[-\w]+)/history/$', foodbank_history, name="foodbank_history"),
+    url(r'^at/(?P<slug>[-\w]+)/subscribe/$', foodbank_subscribe, name="foodbank_subscribe"),
     url(r'^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/$', updates, name="updates"),
 
     # Edit
