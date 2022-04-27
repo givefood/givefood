@@ -21,6 +21,9 @@ html.no-js #map-container {
   font-size:1.2em;
   line-height:1;
 }
+.subscribe {
+  font-size:0.7em;
+}
 .needs {
   width:100%;
 }

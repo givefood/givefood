@@ -126,6 +126,7 @@ function api_response() {
     currentrow = document.importNode(template.content, true);
     currentrow.querySelector("a.foodbank").href = "/needs/click/" + slug + "/";
     currentrow.querySelector("a.foodbank").textContent = fb_name;
+    currentrow.querySelector("a.subscribe").href = "/needs/at/" + slug + "/subscribe/";
     if (org_type == "location" && currentrow.querySelector(".parent_org")) {
       currentrow.querySelector(".parent_org span").innerHTML = "Part of"
       currentrow.querySelector(".parent_org a").innerHTML = parent_org;
@@ -137,8 +138,10 @@ function api_response() {
       currentrow.querySelector(".fb_needs p").innerHTML = needs_html;
     } else if (needs == "Unknown") {
       currentrow.querySelector(".fb_needs").innerHTML = need_unknown_text;
+      currentrow.querySelector("a.subscribe").remove();
     } else {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
+      currentrow.querySelector("a.subscribe").remove();
     }
     if (currentrow.querySelector(".links")) {
       currentrow.querySelector(".links .phone").href = "tel:" + phone;
