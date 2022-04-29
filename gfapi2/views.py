@@ -67,7 +67,7 @@ def docs(request):
     return render(request, "docs.html", template_vars)
 
 
-@cache_control(public=True, max_age=7200)
+@cache_control(public=True, max_age=14400)
 def foodbanks(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -147,7 +147,7 @@ def foodbanks(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_page(60*120)
+@cache_page(60*240)
 def foodbank(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -373,7 +373,7 @@ def foodbank_search(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_control(public=True, max_age=7200)
+@cache_control(public=True, max_age=14400)
 def locations(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)

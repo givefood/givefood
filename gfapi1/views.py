@@ -13,7 +13,7 @@ from givefood.models import ApiFoodbankSearch, Foodbank, FoodbankChange
 from givefood.const.general import API_DOMAIN
 
 
-@cache_page(60*120)
+@cache_page(60*240)
 def api_foodbanks(request):
 
     allowed_formats = [
@@ -172,7 +172,7 @@ def api_foodbank_search(request):
     return JsonResponse(response_list, safe=False)
 
 
-@cache_page(60*120)
+@cache_page(60*240)
 def api_foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
