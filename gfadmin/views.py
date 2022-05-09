@@ -2,18 +2,14 @@ import csv
 import logging
 from datetime import datetime, timedelta
 
-from djangae.environment import is_production_environment
-
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden
 from django.urls import reverse
-from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
-
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations, get_cred, post_to_facebook, post_to_twitter, post_to_subscriber, send_email
