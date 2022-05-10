@@ -254,7 +254,11 @@ def proxy(request, item):
     if item == "ifan":
         url = "https://www.google.com/maps/d/u/0/kml?mid=15mnlXFpd8-x0j4O6Ck6U90chPn4bkbWz&forcekml=1"
 
-    request = requests.get(url)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+    }
+
+    request = requests.get(url, headers=headers)
     if request.status_code == 200:
 
         content = request.text
