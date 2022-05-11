@@ -11,5 +11,6 @@ urlpatterns = (
     url(r'^trusselltrust/most-requested-items/$', most_requested_items, name="tt_most_requested_items"),
     url(r'^articles/$', articles, name="articles"),
     url(r'^beautybanks/$', beautybanks, name="beautybanks"),
+    url(r'^excess/$', excess, name="excess"),
 
 )

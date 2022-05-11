@@ -1,0 +1,47 @@
+{% extends "public/page.html" %}
+
+{% block title %}Excess - Give Food{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/dash.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h1><a href="/">Give Food</a></h1>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Excess</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+        <table class="table is-narrow is-fullwidth">
+            <tr>
+                <th>Foodbank</th>
+                <th>Excess</th>
+                <th>Found</th>
+            </tr>
+            {% for excess in excesses %}
+                {% if excess.excess_change_text %}
+                    <tr>
+                        <td><a href="{% url 'wfbn:foodbank' excess.foodbank_name_slug %}">{{ excess.foodbank_name }}</a></td>
+                        <td>{{ excess.excess_change_text|linebreaksbr }}</td>
+                        <td>{{ excess.created|timesince }} ago</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+
+  </div><br><br>
+
+{% endblock %}

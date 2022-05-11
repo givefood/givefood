@@ -155,3 +155,11 @@ def beautybanks(request):
         "bbneeds":bbneeds,
     }
     return render(request, "dash/beautybanks.html", template_vars)
+
+
+def excess(request):
+    excesses = FoodbankChange.objects.filter(published = True).order_by("-created")[:200]
+    template_vars = {
+        "excesses":excesses,
+    }
+    return render(request, "dash/excess.html", template_vars)
