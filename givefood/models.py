@@ -765,8 +765,12 @@ class FoodbankChange(models.Model):
     distill_id = models.CharField(max_length=250, null=True, blank=True)
     name = models.CharField(max_length=250, null=True, blank=True)
     uri = models.CharField(max_length=250, null=True, blank=True)
+
     change_text = models.TextField(verbose_name="Shopping List")
     change_text_original = models.TextField(null=True, blank=True)
+
+    excess_change_text = models.TextField(verbose_name="Excess", null=True, blank=True)
+
     published = models.BooleanField(default=False)
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
 

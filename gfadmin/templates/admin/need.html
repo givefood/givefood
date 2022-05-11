@@ -4,13 +4,13 @@
 
 {% block body %}
 
-  <h2>{{ need.need_id }}</h2>
 
-  <div class="columns">
+  <div class="columns" style="margin-top:20px;">
 
     <div class="column">
-      <a href="{% url "admin:need_form" need.need_id %}" class="button is-link">Edit</a>
       <dl>
+        <dt>ID</dt>
+        <dd>{{ need.need_id }}</dd>
         <dt>Published</dt>
         <dd>
           {% if need.published %}
@@ -52,6 +52,8 @@
       </dl>
 
       <br>
+      <a href="{% url "admin:need_form" need.need_id %}" class="button is-link">Edit</a>
+      <br><br>
       {% if need.published %}
         <form action="{% url 'admin:need_publish' need.need_id 'unpublish' %}" method="post">
           <input type="submit" class="button is-warning" value="Unpublish">
@@ -83,6 +85,7 @@
 
     <div class="column">
       
+      <h2>Shopping List</h2>
       <div class="box">
         <p>{{ need.change_text|linebreaksbr }}</p>
       </div>
@@ -107,6 +110,21 @@
       {% endif %}
 
     </div>
+
+    {% if need.excess_change_text %}
+
+      <div class="column">
+        
+        <h2>Excess</h2>
+        <div class="box">
+          <p>{{ need.excess_change_text|linebreaksbr }}</p>
+        </div>
+
+      </div>
+
+    {% endif %}
+
+
 
     {% if need.uri %}
       <div class="column">
