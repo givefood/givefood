@@ -602,7 +602,9 @@ class Order(models.Model):
         super(Order, self).save(*args, **kwargs)
 
         # Delete all the existing orderlines
-        OrderLine.objects.filter(order = self).delete()
+        order_lines = OrderLine.objects.filter(order = self)
+        for order_line in order_lines:
+            order_line.delete()
 
         if self.delivery_provider == "Tesco" or self.delivery_provider == "Costco" or self.delivery_provider == "Pedal Me":
             order_lines = parse_tesco_order_text(self.items_text)
