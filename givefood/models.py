@@ -573,12 +573,19 @@ class Order(models.Model):
 
     def delete(self, *args, **kwargs):
 
-        OrderLine.objects.filter(order = self).delete()
+        # Delete all the existing orderlines
+        order_lines = OrderLine.objects.filter(order = self)
+        for order_line in order_lines:
+            order_line.delete()
         super(Order, self).delete(*args, **kwargs)
 
     def save(self, *args, **kwargs):
         # Generate ID
-        self.order_id = "gf-%s-%s-%s" % (self.foodbank.slug,slugify(self.delivery_provider),str(self.delivery_date))
+        self.order_id = "gf-%s-%s-%s" % (
+            self.foodbank.slug,
+            slugify(self.delivery_provider),
+            str(self.delivery_date)
+        )
 
         # Store delivery_datetime
         self.delivery_datetime = datetime(
@@ -595,7 +602,7 @@ class Order(models.Model):
         self.no_lines = 0
         self.no_items = 0
 
-        #denorm foodbank name & country
+        # Denorm foodbank name & country
         self.foodbank_name = self.foodbank.name
         self.country = self.foodbank.country
 
@@ -606,12 +613,13 @@ class Order(models.Model):
         for order_line in order_lines:
             order_line.delete()
 
+        # Parse the order text
         if self.delivery_provider == "Tesco" or self.delivery_provider == "Costco" or self.delivery_provider == "Pedal Me":
             order_lines = parse_tesco_order_text(self.items_text)
         elif self.delivery_provider == "Sainsbury's":
             order_lines = parse_sainsburys_order_text(self.items_text)
 
-
+        # Order aggregated stats
         order_weight = 0
         order_calories = 0
         order_cost = 0
@@ -651,6 +659,7 @@ class Order(models.Model):
             )
             new_order_line.save()
 
+        # Order aggregated stats
         self.weight = order_weight
         self.calories = order_calories
         self.cost = order_cost
