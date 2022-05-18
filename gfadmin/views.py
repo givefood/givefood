@@ -1,5 +1,6 @@
 import csv
 import logging
+import requests
 from datetime import datetime, timedelta
 
 from django.shortcuts import render, get_object_or_404
@@ -972,3 +973,13 @@ def clearcache(request):
 
     cache.clear()
     return redirect("admin:index")
+
+
+def proxy(request):
+
+    url = request.GET.get("url")
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+    }
+    request = requests.get(url, headers=headers)
+    return HttpResponse(request.text)

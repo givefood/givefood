@@ -72,6 +72,8 @@ urlpatterns = (
     url(r'^subscription/delete/$', delete_subscription, name="delete_subscription"),
     url(r'^clearcache/$', clearcache, name="clearcache"),
 
+    url(r'^proxy/$', proxy, name="proxy"),
+
     url(r'^test_order_email/(?P<id>[-\w]+)/$', test_order_email, name="test_order_email"),
     url(r'^resaver/orders/$', resave_orders, name="resave_orders"),
 )
