@@ -13,6 +13,14 @@ document.addEventListener("turbolinks:load", function() {
       );
   }
 
+  function food_titleCase(str) {
+    str = titleCase(str);
+    str = str.replace(/Uht/g,"UHT");
+    str = str.replace(/Bbq/g,"BBQ");
+    str = str.replace(/Spf/g,"SPF");
+    return str
+  }
+
   function csvToLines(str) {
     return str.replace(/, /g, "\n");
   }
@@ -39,6 +47,7 @@ document.addEventListener("turbolinks:load", function() {
   const address_field = document.querySelector("#id_address");
   const postcode_field = document.querySelector("#id_postcode");
   const change_text_field = document.querySelector("#id_change_text");
+  const excess_change_text = document.querySelector("#id_excess_change_text");
   const fb_name_field = document.querySelector(".form-new-food-bank #id_name");
 
   const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?key=" + gmap_geocode_key + "&address="
@@ -108,14 +117,12 @@ document.addEventListener("turbolinks:load", function() {
 
     insertAfter(csvline_btn, change_text_field);
     insertAfter(findreplace_btn, change_text_field);
-    insertAfter(titlecase_btn, change_text_field);
+    insertAfter(titlecase_btn, excess_change_text);
 
     titlecase_btn = document.querySelector("#titlecase_btn");
     titlecase_btn.addEventListener("click", function(event) {
-      change_text_field.value = titleCase(change_text_field.value);
-      change_text_field.value = change_text_field.value.replace(/Uht/g,"UHT");
-      change_text_field.value = change_text_field.value.replace(/Bbq/g,"BBQ");
-      change_text_field.value = change_text_field.value.replace(/Spf/g,"SPF");
+      change_text_field.value = food_titleCase(change_text_field.value)
+      excess_change_text.value = food_titleCase(excess_change_text.value)
       event.preventDefault();
     });
 
