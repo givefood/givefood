@@ -56,9 +56,26 @@
   <div class="columns is-centered">
 
       <div class="column is-one-quarter">
-        <p>Email us at...<br>
+
+        <h3>Email</h3>
+        <p>
           <a href="mailto:mail@givefood.org.uk" class="is-size-5">mail@givefood.org.uk</a>
         </p>
+        <div id="donate-button-container" style="margin-top:10px;">
+          <div id="donate-button"></div>
+          <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js"></script>
+          <script>
+            PayPal.Donation.Button({
+            env:'production',
+            hosted_button_id:'HTLMD3EP2S98J',
+            image: {
+            src:'https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif',
+            alt:'Donate with PayPal button',
+            title:'PayPal - The safer, easier way to pay online!',
+            }
+            }).render('#donate-button');
+          </script>
+        </div>          
       </div>
 
       <div class="column is-one-quarter">
