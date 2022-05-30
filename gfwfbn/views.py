@@ -19,7 +19,7 @@ from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, 
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
-@cache_page(60*60*1)
+@cache_page(60*30)
 def index(request):
 
     address = request.GET.get("address", "")
