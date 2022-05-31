@@ -9,7 +9,7 @@ class FoodbankRegistrationForm(forms.Form):
     address = forms.CharField(widget=forms.Textarea, help_text="Please include your postcode")
     country = forms.ChoiceField(choices=COUNTRIES_CHOICES)
     network = forms.ChoiceField(choices=FOODBANK_NETWORK_CHOICES)
-    email = forms.EmailField()
+    email = forms.EmailField(help_text="A public email address, as this will be published")
     phone_number = forms.CharField(help_text="A public phone number, as this will be published")
     charity_number = forms.CharField(help_text="Optional. E.g. 1188192 or SC041954", required=False)
     website = forms.URLField(help_text="E.g. http://www.sidvalleyfoodbank.org.uk")
