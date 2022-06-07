@@ -315,6 +315,9 @@ def get_weight(text):
     if text[-13:] == " 300g (180g*)":
         weight = 300
 
+    if text[-15:] == " 1.13L (2 pint)":
+        weight = 1130
+
     ## PIES
     if text == "Tesco Mince Pies 6 Pack":
       weight = 324
