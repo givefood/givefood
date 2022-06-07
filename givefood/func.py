@@ -419,9 +419,19 @@ def clean_foodbank_need_text(text):
         "Urgently needed food & toiletry items",
     ]
 
+    # Clean out rubbish strings
     for string_to_clean in to_clean:
         text = text.replace(string_to_clean,"")
+
+    # Remove whitespace
     text = text.strip()
+
+    # Remove whitespace on each line
+    text_list = text.splitlines()
+    for line_number, line in enumerate(text_list):
+        text_list[line_number] = text_list[line_number].strip()
+    text = '\n'.join(text_list)
+
     return text
 
 
