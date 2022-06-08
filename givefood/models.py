@@ -854,7 +854,8 @@ class FoodbankChange(models.Model):
             self.foodbank_name = self.foodbank.name
 
         self.change_text = clean_foodbank_need_text(self.change_text)
-        self.excess_change_text = clean_foodbank_need_text(self.excess_change_text)
+        if self.excess_change_text:
+            self.excess_change_text = clean_foodbank_need_text(self.excess_change_text)
 
         if not self.need_id:
             str_to_hash = "%s%s" % (self.uri, datetime.now())
