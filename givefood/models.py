@@ -9,7 +9,7 @@ from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 from django.core.cache import cache
 
-from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA
+from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES
 from givefood.func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details, find_parlcons
 
 
@@ -785,7 +785,7 @@ class FoodbankChange(models.Model):
     published = models.BooleanField(default=False)
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
 
-    input_method = models.CharField(max_length=10)
+    input_method = models.CharField(max_length=10, choices=NEED_INPUT_TYPES_CHOICES)
 
     def clean(self):
         if self.foodbank == None and self.published == True:

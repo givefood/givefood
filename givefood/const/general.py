@@ -20,6 +20,13 @@ DELIVERY_PROVIDERS = [
 ]
 DELIVERY_PROVIDER_CHOICES = tuple((delivery_provider, delivery_provider) for delivery_provider in DELIVERY_PROVIDERS)
 
+NEED_INPUT_TYPES = [
+    "scrape",
+    "user",
+    "typed",
+]
+NEED_INPUT_TYPES_CHOICES = tuple((input_type, input_type) for input_type in NEED_INPUT_TYPES)
+
 FOODBANK_NETWORKS = [
     "Trussell Trust",
     "IFAN",
