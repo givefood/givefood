@@ -52,11 +52,11 @@
           <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
         {% endif %}
       </dl>
+      <br>
 
       {% if need.change_text != "Nothing" %}
         {% if need.change_text != "Unknown" %}
           {% if need.published %}
-            <br>
             <h2>Notifications</h2>
             <p>
               {% if need.tweet_sent %}
@@ -123,8 +123,6 @@
       </div>
 
     {% endif %}
-
-
 
     {% if need.uri %}
       <div class="column">
