@@ -5,9 +5,10 @@
 {% block body %}
 
 
-  <div class="columns" style="margin-top:20px;">
+  <div class="columns">
 
     <div class="column">
+      <a href="{% url "admin:need_form" need.need_id %}" class="button is-link is-pulled-right">Edit</a>
       <dl>
         <dt>ID</dt>
         <dd>{{ need.need_id }}</dd>
@@ -27,21 +28,13 @@
           {{ need.input_method|title }}
         </dd>
         <dt>Created</dt>
-        <dd>{{ need.created }} ({{ need.created|timesince }} ago)</dd>
+        <dd><time datetime="{{ need.created|date:'c' }}" title="{{ need.created }}">{{ need.created|timesince }} ago</time></dd>
         <dt>Modified</dt>
-        <dd>{{ need.modified }} ({{ need.modified|timesince }} ago)</dd>
-        <dt>Notifications Sent</dt>
-        <dd>
-          {% if need.tweet_sent %}
-            {{ need.tweet_sent }}
-          {% else %}
-            Never
-          {% endif %}
-        </dd>
+        <dd><time datetime="{{ need.modified|date:'c' }}" title="{{ need.modified }}">{{ need.modified|timesince }} ago</time></dd>
         <dt>Last Need</dt>
         <dd>
           {% if need.diff_from_last %}
-            {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)
+            <time datetime="{{ need.last_need_date|date:'c' }}" title="{{ need.last_need_date }}">{{ need.last_need_date|timesince }} ago</time>
           {% else %}
             Never
           {% endif %}
@@ -60,28 +53,19 @@
         {% endif %}
       </dl>
 
-      <br>
-      <a href="{% url "admin:need_form" need.need_id %}" class="button is-link">Edit</a>
-      <br><br>
-      {% if need.published %}
-        <form action="{% url 'admin:need_publish' need.need_id 'unpublish' %}" method="post">
-          <input type="submit" class="button is-warning" value="Unpublish">
-          {% csrf_token %}
-        </form>
-      {% else %}
-        <form action="{% url 'admin:need_publish' need.need_id 'publish' %}" method="post">
-          <input type="submit" class="button is-success" value="Publish">
-          {% csrf_token %}
-        </form>
-      {% endif %}
       {% if need.change_text != "Nothing" %}
         {% if need.change_text != "Unknown" %}
-          <br>
-          <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
-            <input type="submit" class="button is-danger" value="Send notifications">
-            {% csrf_token %}
-          </form>
-          <p>{{ subscribers|length }} subscribers</p>
+          {% if need.published %}
+            <br><br>
+            <h2>Notifications</h2>
+            <p>Sent: {% if need.tweet_sent %}<time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>{% else %} Never{% endif %}
+            </p>
+            <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
+              <input type="submit" class="button is-danger" value="Send notifications">
+              {% csrf_token %}
+            </form>
+            <p>{{ subscribers|length }} subscribers</p>
+          {% endif %}
         {% endif %}
       {% endif %}
 
