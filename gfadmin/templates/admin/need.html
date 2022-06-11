@@ -12,6 +12,14 @@
       <dl>
         <dt>ID</dt>
         <dd>{{ need.need_id }}</dd>
+        <dt>Food Bank</dt>
+        <dd>
+          {% if need.foodbank %}
+            <a href="{% url 'admin:foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a>
+          {% else %}
+            Unknown
+          {% endif %}
+        </dd>
         <dt>Published</dt>
         <dd>
           {% if need.published %}
@@ -31,20 +39,12 @@
         <dd><time datetime="{{ need.created|date:'c' }}" title="{{ need.created }}">{{ need.created|timesince }} ago</time></dd>
         <dt>Modified</dt>
         <dd><time datetime="{{ need.modified|date:'c' }}" title="{{ need.modified }}">{{ need.modified|timesince }} ago</time></dd>
-        <dt>Last Need</dt>
+        <dt>Prev. Need</dt>
         <dd>
           {% if need.diff_from_last %}
             <time datetime="{{ need.last_need_date|date:'c' }}" title="{{ need.last_need_date }}">{{ need.last_need_date|timesince }} ago</time>
           {% else %}
             Never
-          {% endif %}
-        </dd>
-        <dt>Food Bank</dt>
-        <dd>
-          {% if need.foodbank %}
-            <a href="{% url 'admin:foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a>
-          {% else %}
-            Unknown
           {% endif %}
         </dd>
         {% if need.uri %}
