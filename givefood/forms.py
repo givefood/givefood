@@ -35,7 +35,6 @@ class FoodbankLocationForm(ModelForm):
         model = FoodbankLocation
         fields = "__all__"
         widgets = {'foodbank': HiddenInput()}
-        fields = "__all__"
 
 
 class FoodbankLocationPoliticsForm(ModelForm):
