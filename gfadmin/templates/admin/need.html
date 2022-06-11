@@ -56,7 +56,7 @@
       {% if need.change_text != "Nothing" %}
         {% if need.change_text != "Unknown" %}
           {% if need.published %}
-            <br><br>
+            <br>
             <h2>Notifications</h2>
             <p>Sent: {% if need.tweet_sent %}<time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>{% else %} Never{% endif %}
             </p>
