@@ -102,19 +102,14 @@
       </dl>
       <br>
 
-      <h3>Email</h3>
+      <h3>Contacts</h3>
       <dl>
-        <dt>Contact</dt>
+        <dt>Email</dt>
         <dd><a href="mailto:{{ foodbank.contact_email|truncatechars:20 }}">{{ foodbank.contact_email }}</a></dd>
         {% if foodbank.delivery_email %}
-          <dt>Delivery</dt>
+          <dt>Delivery Email</dt>
           <dd><a href="mailto:{{ foodbank.notification_email|truncatechars:20 }}">{{ foodbank.notification_email }}</a></dd>
         {% endif %}
-      </dl>
-      <br>
-
-      <h3>Phone</h3>
-      <dl>
         {% if foodbank.phone_number %}
           <dt>Phone</dt>
           <dd><a href="call:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
