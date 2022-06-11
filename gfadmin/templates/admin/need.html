@@ -58,13 +58,14 @@
           {% if need.published %}
             <br>
             <h2>Notifications</h2>
-            <p>Sent: {% if need.tweet_sent %}<time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>{% else %} Never{% endif %}
+            <p>
+              {% if need.tweet_sent %}Sent <time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>{% else %}Not Sent{% endif %}. 
+              {{ number_subscribers }} subscriber{{ number_subscribers|pluralize }}
             </p>
             <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
               <input type="submit" class="button is-warning" value="Send Notifications">
               {% csrf_token %}
             </form>
-            <p>{{ subscribers|length }} subscribers</p>
           {% endif %}
         {% endif %}
       {% endif %}
