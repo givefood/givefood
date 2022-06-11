@@ -55,6 +55,8 @@
         <dt>Modified</dt>
         <dd>{{ order.modified }}</dd>
       </dl>
+      
+      <br>
 
       {% if order.need %}
         <h2>Need <a href="{% url "admin:need" order.need.need_id %}">{{ order.need.need_id }}</a></h2>
@@ -69,8 +71,14 @@
         </dl>
       {% endif %}
 
-      <h2>Notification Email</h2>
-      <p>Sent: {{ order.notification_email_sent }}</p>
+      <h2>Notification</h2>
+      <p>
+        {% if order.notification_email_sent %}
+          <span style="color:green">✓</span> Sent <time datetime="{{ order.notification_email_sent|date:'c' }}" title="{{ order.notification_email_sent }}">{{ order.notification_email_sent|timesince }} ago</time>
+        {% else %}
+          <span style="color:red">x</span> Not Sent
+        {% endif %}
+      </p>
       <form action="{% url 'admin:order_send_notification' order.order_id %}" method="post">
         <input type="submit" class="button is-warning" value="Send Notification">
         {% csrf_token %}
