@@ -167,7 +167,7 @@ CSP_REPORT_ONLY = True
 CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com", "syndication.twitter.com")
 # Inline styles are unsafe, but Django error pages use them. We later remove
 # `unsafe-inline` in settings_live.py
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "*.gstatic.com", "cdnjs.cloudflare.com", "platform.twitter.com", "ton.twimg.com", "cdn.jsdelivr.net")
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "*.gstatic.com", "cdnjs.cloudflare.com", "platform.twitter.com", "ton.twimg.com", "cdn.jsdelivr.net", "*.foodbank.org.uk")
 CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com", "maps.googleapis.com")
 CSP_FRAME_SRC = ("'self'", "*")
 CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "instant.page", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com", "cdnjs.cloudflare.com", "www.gstatic.com", "www.googletagmanager.com", "maps.googleapis.com", "connect.facebook.net","platform.twitter.com", "cdn.syndication.twimg.com", "syndication.twitter.com", "www.googleadservices.com", "googleads.g.doubleclick.net", "plausible.io", "*.clarity.ms", "c.bing.com", "*.cookiepro.com", "www.paypalobjects.com")
