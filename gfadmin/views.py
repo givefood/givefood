@@ -599,35 +599,6 @@ def politics_csv(request):
     return response
 
 
-def map(request):
-
-    filter = request.GET.get("filter", "all")
-
-    all_foodbanks = get_all_foodbanks()
-
-    if filter == "all":
-        foodbanks = all_foodbanks
-    elif filter == "active":
-        foodbanks = set()
-        all_orders = Order.objects.all()
-        for order in all_orders:
-            foodbanks.add(order.foodbank)
-    else:
-        foodbank = get_object_or_404(Foodbank, slug=filter)
-        foodbanks = []
-        foodbanks.append(foodbank)
-        for location in foodbank.locations():
-            foodbanks.append(location)
-
-    template_vars = {
-        "foodbanks":foodbanks,
-        "all_foodbanks":all_foodbanks,
-        "filter":filter,
-        "section":"map",
-    }
-    return render(request, "admin/map.html", template_vars)
-
-
 def stats(request):
 
     all_foodbanks = get_all_foodbanks()
