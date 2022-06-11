@@ -19,6 +19,13 @@
             <span style="color:red">x</span>
           {% endif %}
         </dd>
+        <dt>Input Method</dt>
+        <dd>
+          {% if need.input_method == "typed" %}⌨️{% endif%}
+          {% if need.input_method == "scrape" %}🤖{% endif%}
+          {% if need.input_method == "user" %}🧑{% endif%}
+          {{ need.input_method|title }}
+        </dd>
         <dt>Created</dt>
         <dd>{{ need.created }} ({{ need.created|timesince }} ago)</dd>
         <dt>Modified</dt>
@@ -31,13 +38,19 @@
             Never
           {% endif %}
         </dd>
-        <dt>ID</dt>
-        <dd>{{ need.need_id }}</dd>
+        <dt>Last Need</dt>
+        <dd>
+          {% if need.diff_from_last %}
+            {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)
+          {% else %}
+            Never
+          {% endif %}
+        </dd>
         {% if need.distill_id %}
           <dt>Distill ID</dt>
           <dd>{{ need.distill_id }}</dd>
         {% endif %}
-        <dt>Foodbank</dt>
+        <dt>Food Bank</dt>
         <dd>
           {% if need.foodbank %}
             <a href="{% url 'admin:foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a>
@@ -75,7 +88,8 @@
           <p>{{ subscribers|length }} subscribers</p>
         {% endif %}
       {% endif %}
-      <br>
+
+      <h2>Danger Zone</h2>
       <form action="{% url 'admin:need_delete' need.need_id %}" method="post">
         <input type="submit" class="button is-danger" value="Delete" onclick="return confirm('Are you sure you want to DELETE?')">
         {% csrf_token %}
