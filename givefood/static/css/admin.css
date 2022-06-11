@@ -9,7 +9,7 @@ h1 {
 }
 .main {
   padding:0 10px;
-  margin-bottom:20px;
+  margin:15px 0;
 }
 th {
   text-align:left;
@@ -20,6 +20,9 @@ dt {
 }
 h2 {
   margin-top:20px;
+}
+h2:first-of-type {
+  margin-top:0;
 }
 #fbmap {
   width:1500px;
