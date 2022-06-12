@@ -6,8 +6,6 @@
 
 {% block body %}
 
-  <h2>Order {{ order.order_id }}</h2>
-
   <div class="columns">
 
     <div class="column is-two-fifths">
@@ -55,7 +53,7 @@
         <dt>Modified</dt>
         <dd>{{ order.modified }}</dd>
       </dl>
-      
+
       <br>
 
       {% if order.need %}
