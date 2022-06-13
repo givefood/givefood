@@ -1,0 +1,68 @@
+{% extends "emails/page.html" %}
+{% load humanize %}
+
+{% block body %}
+    <p>Hello {{ order.foodbank|safe }} Food Bank,</p>
+
+    <p>Give Food are sending you an internet shopping delivery via {{ order.delivery_provider|safe }}. The delivery information is below. In the meantime, if you have any suggestions for how we can improve our deliveries do contact us via the following...</p>
+
+    <p>
+        Web: <a href="https://www.givefood.org.uk">https://www.givefood.org.uk</a><br>
+        Twitter: <a href="https://twitter.com/GiveFoodCharity">https://twitter.com/GiveFoodCharity</a><br>
+        Facebook: <a href="https://www.facebook.com/GiveFoodOrgUK">https://www.facebook.com/GiveFoodOrgUK</a><br>
+        Email: <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a>
+    </p>
+
+    <p><em>Jason & Stacey</em></p><br><br>
+
+
+    <p><strong>Your Information</strong></p>
+
+    <p>
+        We're automatically monitoring your shopping list for changes at:<br>
+        <a href="{{ order.foodbank.shopping_list_url }}">{{ order.foodbank.shopping_list_url }}</a>
+    </p>
+
+    {% if order.source_url %}
+        <p>
+            We also used the information provided here to help with picking items for the order:<br>
+            <a href="{{ order.source_url }}">{{ order.source_url }}</a>
+        </p>
+    {% endif %}
+
+    <p>
+        The details we have for your food bank are over here:<br>
+        <a href="https://www.givefood.org.uk/needs/at/{{ order.foodbank.slug }}/">https://www.givefood.org.uk/needs/at/{{ order.foodbank.slug }}/</a>
+    </p>
+
+    <p>
+        If we've got anything wrong you can update your address(es), shopping list, or contact information here:<br>
+        <a href="https://www.givefood.org.uk/needs/at/{{ order.foodbank.slug }}/edit/">https://www.givefood.org.uk/needs/at/{{ order.foodbank.slug }}/edit/</a>
+    </p>
+
+    <br><br>
+
+    <p><strong>Delivery Details</strong></p>
+
+    <p>Our order ID: {{ order.order_id }}<br>
+    {{ order.delivery_provider|safe }} order ID: {{ order.delivery_provider_id }}</p>
+
+    <p>The delivery is scheduled for {{ order.delivery_date|date:"l" }}, {{ order.delivery_date }} between {{ order.delivery_hour }}:00 and {{ order.delivery_hour_end }}:00.</p>
+
+    <p>It contains {{ order.no_items }} items, weighs about {{ order.weight_kg_pkg|floatformat:"0" }} kg, and contains {{ order.calories|intcomma }} calories. We've given {{ order.delivery_provider|safe }} your phone number {% if order.foodbank.delivery_phone_number %}{{ order.foodbank.delivery_phone_number }}{% else %}{{ order.foodbank.phone_number }}{% endif %}.</p>
+
+    <p>To:<br>
+    {{ order.foodbank|safe }} Food Bank<br>
+    {% if order.foodbank.delivery_address %}
+        {{ order.foodbank.delivery_address|safe|linebreaksbr }}
+    {% else %}
+        {{ order.foodbank.address|safe|linebreaksbr }}<br>
+        {{ order.foodbank.postcode }}
+    {% endif %}</p>
+
+    <p>Items:<br>
+    {% for line in order.lines %}{{ line.quantity }}x {{ line.name|safe }}<br>
+    {% endfor %}</p>
+    
+    
+{% endblock %}

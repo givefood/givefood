@@ -1,0 +1,16 @@
+{% extends "emails/page.html" %}
+{% load humanize %}
+
+{% block body %}
+
+    <p>We've found a new list of items requested by <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/">{{ need.foodbank.name }} Food Bank</a>. They are...</p>
+
+    {{ need.change_text|linebreaks }}
+        
+    <p>You can find more details at <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/">https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/</a></p>
+        
+    <br><br>
+    <p>You're getting these emails because you subscribed to them at www.givefood.org.uk. You can unsubscribe <a href="http://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/updates/unsubscribe/?key={{ subscriber.unsub_key }}">here</a>.</p>
+    
+    
+{% endblock %}

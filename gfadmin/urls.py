@@ -12,6 +12,7 @@ urlpatterns = (
     url(r'^order/(?P<id>[-\w]+)/edit/$', order_form, name="order_edit"),
     url(r'^order/(?P<id>[-\w]+)/sendnotification/$', order_send_notification, name="order_send_notification"),
     url(r'^order/(?P<id>[-\w]+)/delete/$', order_delete, name="order_delete"),
+    url(r'^order/(?P<id>[-\w]+)/email/$', order_email, name="order_email"),
 
     url(r'^foodbanks/$', foodbanks, name="foodbanks"),
     url(r'^foodbanks/christmascards/$', foodbanks_christmascards, name="foodbanks_christmascards"),
@@ -73,6 +74,5 @@ urlpatterns = (
 
     url(r'^proxy/$', proxy, name="proxy"),
 
-    url(r'^test_order_email/(?P<id>[-\w]+)/$', test_order_email, name="test_order_email"),
     url(r'^resaver/orders/$', resave_orders, name="resave_orders"),
 )

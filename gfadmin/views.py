@@ -251,12 +251,16 @@ def order_form(request, id = None):
 def order_send_notification(request, id = None):
 
     order = get_object_or_404(Order, order_id = id)
-    email_body = render_to_string("notification_email.txt",{"order":order})
+
+    text_body = render_to_string("emails/order.txt",{"order":order})
+    html_body = render_to_string("emails/order.html",{"order":order})
+
     send_email(
         to = order.foodbank.notification_email,
         cc = "deliveries@givefood.org.uk",
         subject = "Food donation from Give Food (%s)" % (order.order_id),
-        body = email_body,
+        body = text_body,
+        html_body = html_body,
     )
 
     order.notification_email_sent = datetime.now()
@@ -655,14 +659,22 @@ def stats(request):
     return render(request, "admin/stats.html", template_vars)
 
 
-def test_order_email(request, id):
+def order_email(request, id):
 
     order = get_object_or_404(Order, order_id = id)
+    format = request.GET.get("format")
+
+    if format == "html":
+        extension = "html"
+        content_type = "text/html"
+    else:
+        extension = "txt"
+        content_type = "text/plain"
 
     template_vars = {
         "order":order,
     }
-    return render(request, "notification_email.txt", template_vars, content_type='text/plain')
+    return render(request, "emails/order/notification.%s" % (extension), template_vars, content_type = content_type)
 
 
 def resave_orders(request):

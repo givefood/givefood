@@ -8,6 +8,7 @@ from collections import OrderedDict
 import facebook, twitter
 
 from django.template.defaultfilters import truncatechars
+from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.cache import cache
 
@@ -760,15 +761,28 @@ def post_to_twitter(need):
 def post_to_subscriber(need, subscriber):
 
     subject = "Items requested by %s Food Bank" % (need.foodbank_name)
-    message = """Hello,\n\nWe've found a new list of items requested by %s Food Bank. They are...\n\n%s\n\nYou can find more details at https://www.givefood.org.uk/needs/at/%s/\n\nYou're getting these emails because you subscribed to them at www.givefood.org.uk. To unsubscribe visit http://www.givefood.org.uk/needs/at/%s/updates/unsubscribe/?key=%s""" % (
-        need.foodbank_name,
-        need.change_text,
-        need.foodbank_name_slug(),
-        need.foodbank_name_slug(),
-        subscriber.unsub_key,
+
+    text_body = render_to_string(
+        "wfbn/emails/notification.txt",
+        {
+            "need":need,
+            "subscriber":subscriber,
+        }
+    )
+    html_body = render_to_string(
+        "wfbn/emails/notification.html",
+        {
+            "need":need,
+            "subscriber":subscriber,
+        }
     )
 
-    send_email(subscriber.email, subject, message)
+    send_email(
+        to = subscriber.email,
+        subject = subject,
+        body = text_body,
+        html_body = html_body,
+    )
 
 
 def post_to_email(post, extra = {}, header = None):
@@ -788,7 +802,7 @@ def post_to_email(post, extra = {}, header = None):
     send_email("mail@givefood.org.uk", "Food Bank Data Amendment", body_str)
 
 
-def send_email(to, subject, body, cc=None, cc_name=None, reply_to=None, reply_to_name=None):
+def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None):
 
     api_url = "https://inject.socketlabs.com/api/v1/email"
     api_server = get_cred("socketlabs_server")
@@ -819,6 +833,7 @@ def send_email(to, subject, body, cc=None, cc_name=None, reply_to=None, reply_to
                 },
                 "Subject": subject,
                 "TextBody": body,
+                "HtmlBody": html_body,
             },
         ],
     }
