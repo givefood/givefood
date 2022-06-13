@@ -378,6 +378,7 @@ def clean_foodbank_need_text(text):
     to_clean = [
         "Urgently Needed Food Items",
         "Urgently needed food items",
+        "Currently Needed Items",
         "Urgently needed items",
         "This week, we would particularly appreciate donations of:",
         "Items required this week",
