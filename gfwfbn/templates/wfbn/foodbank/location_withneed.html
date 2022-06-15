@@ -71,8 +71,11 @@
             {% else %}
               <p>{{ foodbank.full_name }} is currently requesting the following items to be donated:</p>
               <p class="needs">
-                {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}<br>
+                {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
               </p>
+              {% if foodbank.latest_need.excess_change_text %}
+                <p>{{ foodbank.full_name }} currently doesn't need anymore of these items: {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+              {% endif %}
               
               {% include 'wfbn/foodbank/includes/subscribe.html' %}
             {% endif %}
