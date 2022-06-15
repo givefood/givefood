@@ -1,4 +1,4 @@
-We've found a new list of items requested by {{ need.foodbank.name }} Food Bank. They are...\n\n
+We've found a new list of items requested by {{ need.foodbank.name }} Food Bank. They are...
 
 {{ need.change_text }}
 
