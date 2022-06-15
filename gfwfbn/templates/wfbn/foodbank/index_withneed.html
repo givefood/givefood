@@ -75,7 +75,6 @@
                 <p>{{ foodbank.full_name }} is currently requesting the following items to be donated:</p>
                 <p class="needs">
                   {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}<br>
-                  <em>Found on {{ foodbank.latest_need_date }}</em>
                 </p>
                 
                 {% include 'wfbn/foodbank/includes/subscribe.html' %}
