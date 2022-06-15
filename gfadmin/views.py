@@ -479,6 +479,23 @@ def need_notifications(request, id):
     return redirect("admin:index")
 
 
+def need_email(request, id):
+
+    need = get_object_or_404(FoodbankChange, need_id = id)
+    format = request.GET.get("format")
+
+    if format == "html":
+        extension = "html"
+        content_type = "text/html"
+    else:
+        extension = "txt"
+        content_type = "text/plain"
+
+    template_vars = {
+        "need":need,
+    }
+    return render(request, "wfbn/emails/notification.%s" % (extension), template_vars, content_type = content_type)
+
 def locations(request):
 
     sort_options = [

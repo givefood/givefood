@@ -43,6 +43,7 @@ urlpatterns = (
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/delete/$', need_delete, name="need_delete"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/(?P<action>publish|unpublish)/$', need_publish, name="need_publish"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/notifications/$', need_notifications, name="need_notifications"),
+    url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/email/$', need_email, name="need_email"),
 
     url(r'^locations/$', locations, name="locations"),
     url(r'^locations/loader/sa/$', locations_loader_sa, name="locations_loader_sa"),
