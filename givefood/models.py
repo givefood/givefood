@@ -812,6 +812,9 @@ class FoodbankChange(models.Model):
     def change_list(self):
         return self.change_text.split("\n")
 
+    def excess_list(self):
+        return self.excess_change_text.split("\n")
+
     def clean_change_text(self):
         if self.change_text:
             return unicodedata.normalize('NFKD', self.change_text).encode('ascii', 'ignore')
