@@ -674,7 +674,7 @@ def order_email(request, id):
     template_vars = {
         "order":order,
     }
-    return render(request, "emails/order/notification.%s" % (extension), template_vars, content_type = content_type)
+    return render(request, "emails/order.%s" % (extension), template_vars, content_type = content_type)
 
 
 def resave_orders(request):
