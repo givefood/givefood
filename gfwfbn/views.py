@@ -262,6 +262,20 @@ def foodbank_subscribe(request, slug):
 
     return render(request, "wfbn/foodbank/subscribe.html", template_vars)
 
+
+@cache_page(60*60*4)
+def foodbank_subscribe_sample(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    template_vars = {
+        "need":foodbank.latest_need(),
+        "is_sample":True,
+    }
+
+    return render(request, "wfbn/emails/notification.html", template_vars)
+
+
 @cache_page(60*60*2)
 def foodbank_location(request, slug, locslug):
 

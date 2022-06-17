@@ -60,9 +60,16 @@
             {% include "wfbn/foodbank/includes/menu.html" %}
           </div>
 
-          <div class="column is-half">
+          <div class="column is-4">
 
             {% include 'wfbn/foodbank/includes/subscribe.html' %}
+
+          </div>
+
+          <div class="column is-6">
+
+            <p>Here is what the email you'll get looks like...</p>
+            <iframe src="{% url 'wfbn:foodbank_subscribe_sample' foodbank.slug %}" id="subscription_example"></iframe>
 
           </div>
 

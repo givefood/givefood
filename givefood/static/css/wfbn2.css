@@ -177,3 +177,7 @@ textarea[name='body'] {
 .mp_photo {
     width:200px;
 }
+#subscription_example {
+    width:100%;
+    height:500px;
+}
