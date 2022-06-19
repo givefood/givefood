@@ -103,7 +103,9 @@ p.needs {
 .cta {
     margin-bottom: 1.3rem;
 }
-
+.contacts {
+    white-space: nowrap;
+}
 .contact-icon {
     width:16px;
     display:inline-block;
