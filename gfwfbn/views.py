@@ -151,7 +151,7 @@ def foodbank_map(request, slug):
     if foodbank.name == "Salvation Army":
         markers = "&zoom=15"
 
-    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=400x400&maptype=roadmap&format=png&visual_refresh=true&key=%s&markers=%s" % (foodbank.latt_long, gmap_static_key, markers)
+    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=800x600&maptype=roadmap&format=png&visual_refresh=true&key=%s&markers=%s" % (foodbank.latt_long, gmap_static_key, markers)
 
     request = requests.get(url)
     return HttpResponse(request.content, content_type='image/png')
@@ -304,7 +304,7 @@ def foodbank_location_map(request, slug, locslug):
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
     gmap_static_key = get_cred("gmap_static_key")
 
-    request = requests.get("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=300x300&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.latt_long, gmap_static_key))
+    request = requests.get("https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=800x600&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.latt_long, gmap_static_key))
 
     return HttpResponse(request.content, content_type='image/png')
 
