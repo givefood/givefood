@@ -41,7 +41,7 @@
             <td>{{ order.foodbank_name }}</td>
             <td>{{ order.delivery_datetime }}</td>
             <td>{{ order.no_items }}</td>
-            <td>{{ order.weight_kg_pkg|intcomma }}</td>
+            <td>{{ order.weight_kg_pkg|intcomma|floatformat:2 }}</td>
             <td>{{ order.calories|intcomma }}</td>
             <td>£{{ order.natural_cost }}</td>
             <td>{{ order.created }}</td>

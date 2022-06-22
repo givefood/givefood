@@ -24,9 +24,9 @@
         <dt>Lines</dt>
         <dd>{{ order.no_lines }}</dd>
         <dt>Weight</dt>
-        <dd>{{ order.weight_kg|intcomma }} kg</dd>
+        <dd>{{ order.weight_kg|intcomma|floatformat:2 }} kg</dd>
         <dt>Total weight (pkging)</dt>
-        <dd>{{ order.weight_kg_pkg|intcomma }} kg</dd>
+        <dd>{{ order.weight_kg_pkg|intcomma|floatformat:2 }} kg</dd>
         <dt>Calories</dt>
         <dd>{{ order.calories|intcomma }}</dd>
         <dt>Cost</dt>
