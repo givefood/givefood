@@ -56,22 +56,20 @@
 
       {% if need.change_text != "Nothing" %}
         {% if need.change_text != "Unknown" %}
-          {% if need.published %}
-            <h2>Notifications</h2>
-            <p>
-              {% if need.tweet_sent %}
-                <span style="color:green">✓</span> Sent <time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>
-              {% else %}
-                <span style="color:red">x</span> Not Sent
-              {% endif %}
-              <br> 
-              {{ number_subscribers }} Subscriber{{ number_subscribers|pluralize }}
-            </p>
-            <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
-              <input type="submit" class="button is-warning" value="Send Notifications">
-              {% csrf_token %}
-            </form>
-          {% endif %}
+          <h2>Notifications</h2>
+          <p>
+            {% if need.tweet_sent %}
+              <span style="color:green">✓</span> Sent <time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>
+            {% else %}
+              <span style="color:red">x</span> Not Sent
+            {% endif %}
+            <br> 
+            {{ number_subscribers }} Subscriber{{ number_subscribers|pluralize }}
+          </p>
+          <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
+            <input type="submit" class="button is-warning" value="Send Notifications">
+            {% csrf_token %}
+          </form>
         {% endif %}
       {% endif %}
 
