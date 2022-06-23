@@ -1,0 +1,69 @@
+{% extends "public/page.html" %}
+
+{% block title %}Items requested by UK food banks per week per year - Give Food{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/dash.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h1><a href="/">Give Food</a></h1>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash:tt_most_requested_items' %}" aria-current="page">Items requested by UK food banks per week per year</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+        <div id="chart" style="height:500px"></div>
+            
+        <table class="table is-striped is-narrow is-fullwidth">
+            <tr>
+                <th>year-week</th>
+                <th>Number of items requested</th>
+            </tr>
+            {% for week in week_needs.items reversed %}
+                <tr>
+                    <td>{{ week.0 }}</td>
+                    <td>{{ week.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+  </div><br><br>
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script>
+    google.charts.load('current', {'packages':['bar']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Week', {% for year in years %}'{{ year }}', {% endfor %}],
+        {% for week in week_year_needs.items %}
+            ['{{ week.0 }}', {% for year in week.1.items %}{{ year.1 }},{% endfor %}],
+        {% endfor %}
+      ]);
+
+      var options = {
+        bars: 'verticle',
+      };
+
+      var chart = new google.charts.Bar(document.getElementById('chart'));
+
+      chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+  </script>
+
+{% endblock %}

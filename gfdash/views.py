@@ -36,6 +36,42 @@ def weekly_itemcount(request):
 
 
 @cache_page(60*10)
+def weekly_itemcount_year(request):
+
+    week_needs = OrderedDict()
+    week_year_needs = OrderedDict()
+
+    start_date = date(2020,1,1)
+    start_year = start_date.year
+    current_year = date.today().year
+    years = range(start_year, current_year+1)
+    weeks = range(1,54)
+
+    needs = FoodbankChange.objects.filter(created__gt = start_date).order_by("created")
+
+    for need in needs:
+        week_number = need.created.isocalendar()[1]
+        year = need.created.year
+        week_key = "%s-%s" % (year, week_number)
+        week_needs[week_key] = week_needs.get(week_key, 0) + need.no_items()
+
+    for week in weeks:
+        years_in_week = {}
+        for year in years:
+            week_key = "%s-%s" % (year, week)
+            years_in_week[year] = week_needs.get(week_key, 0)
+        week_year_needs[week] = years_in_week
+        
+
+    template_vars = {
+        "weeks":weeks,
+        "years":years,
+        "week_year_needs":week_year_needs,
+        "week_needs":week_needs,
+    }
+    return render(request, "dash/weekly_itemcount_year.html", template_vars)
+
+@cache_page(60*10)
 def most_requested_items(request):
 
     # Handle allowed day parameters

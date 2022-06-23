@@ -6,6 +6,7 @@ app_name = "gfdash"
 urlpatterns = (
     url(r'^$', index, name="index"),
     url(r'^items-requested-weekly/$', weekly_itemcount, name="weekly_itemcount"),
+    url(r'^items-requested-weekly/by-year/$', weekly_itemcount_year, name="weekly_itemcount_year"),
     url(r'^most-requested-items/$', most_requested_items, name="most_requested_items"),
     url(r'^trusselltrust/old-data/$', tt_old_data, name="tt_old_data"),
     url(r'^trusselltrust/most-requested-items/$', most_requested_items, name="tt_most_requested_items"),
