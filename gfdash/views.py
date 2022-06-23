@@ -10,12 +10,12 @@ from django.views.decorators.cache import cache_page
 from givefood.models import Foodbank, FoodbankChange, FoodbankArticle
 from givefood.func import group_list
 
-@cache_page(60*10)
+@cache_page(60*60*2)
 def index(request):
     return render(request, "dash/index.html")
 
 
-@cache_page(60*10)
+@cache_page(60*60*4)
 def weekly_itemcount(request):
 
     week_needs = OrderedDict()
@@ -35,7 +35,7 @@ def weekly_itemcount(request):
     return render(request, "dash/weekly_itemcount.html", template_vars)
 
 
-@cache_page(60*10)
+@cache_page(60*60*4)
 def weekly_itemcount_year(request):
 
     week_needs = OrderedDict()
@@ -71,7 +71,7 @@ def weekly_itemcount_year(request):
     }
     return render(request, "dash/weekly_itemcount_year.html", template_vars)
 
-@cache_page(60*10)
+@cache_page(60*60*4)
 def most_requested_items(request):
 
     # Handle allowed day parameters
@@ -135,7 +135,7 @@ def most_requested_items(request):
     return render(request, "dash/most_requested_items.html", template_vars)
 
 
-@cache_page(60*10)
+@cache_page(60*60*2)
 def tt_old_data(request):
 
     recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
@@ -148,7 +148,7 @@ def tt_old_data(request):
     return render(request, "dash/tt_old_data.html", template_vars)
 
 
-@cache_page(60*10)
+@cache_page(60*60*1)
 def articles(request):
 
     articles = FoodbankArticle.objects.all().order_by("-published_date")[:200]
@@ -159,6 +159,7 @@ def articles(request):
     return render(request, "dash/articles.html", template_vars)
 
 
+@cache_page(60*60*1)
 def beautybanks(request):
 
     products = [
@@ -193,6 +194,7 @@ def beautybanks(request):
     return render(request, "dash/beautybanks.html", template_vars)
 
 
+@cache_page(60*60*1)
 def excess(request):
     excesses = FoodbankChange.objects.filter(published = True).order_by("-created")[:200]
     template_vars = {
