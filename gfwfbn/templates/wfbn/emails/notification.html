@@ -6,6 +6,10 @@
     <p>We've found a new list of items requested by <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">{{ need.foodbank.name }} Food Bank</a>. They are...</p>
 
     {{ need.change_text|linebreaks }}
+
+    {% if need.excess_change_text %}
+        <p>{{ need.foodbank.full_name }} currently doesn't need anymore of these items: {% for item in need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+    {% endif %}
         
     <p>You can find more details at <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/</a></p>
 
