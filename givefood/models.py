@@ -355,6 +355,7 @@ class FoodbankLocation(models.Model):
     foodbank_network = models.CharField(max_length=50, editable=False)
     foodbank_phone_number = models.CharField(max_length=20, null=True, blank=True, editable=False)
     foodbank_email = models.EmailField(editable=False)
+    is_closed = models.BooleanField(default=False)
 
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, editable=False)
@@ -487,6 +488,7 @@ class FoodbankLocation(models.Model):
         self.foodbank_network = self.foodbank.network
         self.foodbank_phone_number = self.foodbank.phone_number
         self.foodbank_email = self.foodbank.contact_email
+        self.is_closed = self.foodbank.is_closed
 
         # Cleanup phone number
         if self.phone_number:

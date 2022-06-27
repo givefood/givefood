@@ -35,6 +35,7 @@ class FoodbankLocationForm(ModelForm):
         model = FoodbankLocation
         fields = "__all__"
         widgets = {'foodbank': HiddenInput()}
+        exclude = ('is_closed',)
 
 
 class FoodbankLocationPoliticsForm(ModelForm):
