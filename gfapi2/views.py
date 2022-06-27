@@ -1,3 +1,4 @@
+import datetime
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseBadRequest
@@ -88,7 +89,7 @@ def foodbanks(request):
                 "country":foodbank.country,
                 "lat_lng":foodbank.latt_long,
                 "network":foodbank.network,
-                "created":foodbank.created,
+                "created":datetime.datetime.fromtimestamp(foodbank.created.timestamp()),
                 "urls": {
                     "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
                     "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
@@ -207,7 +208,7 @@ def foodbank(request, slug):
             "closed":foodbank.is_closed,
             "lat_lng":foodbank.latt_long,
             "network":foodbank.network,
-            "created":foodbank.created,
+            "created":datetime.datetime.fromtimestamp(foodbank.created.timestamp()),
             "urls": {
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
                 "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
@@ -234,7 +235,7 @@ def foodbank(request, slug):
             "need": {
                 "id":foodbank.latest_need_id(),
                 "needs":foodbank.latest_need().change_text,
-                "created":foodbank.latest_need_date(),
+                "created":datetime.datetime.fromtimestamp(foodbank.latest_need().created.timestamp()),
                 "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need_id()),
             },
             "nearby_foodbanks": nearby_foodbank_list,
@@ -340,7 +341,7 @@ def foodbank_search(request):
             "distance_mi":round(foodbank.distance_mi,2),
             "needs": {
                 "needs":foodbank.latest_need().change_text,
-                "found":foodbank.latest_need().created,
+                "found":datetime.datetime.fromtimestamp(foodbank.latest_need().created.timestamp()),
                 "number":foodbank.latest_need().no_items(),
             },
             "urls": {
@@ -513,7 +514,7 @@ def location_search(request):
             "needs": {
                 "needs":location_need.change_text,
                 "number":location_need.no_items(),
-                "found":location_need.created,
+                "found":datetime.datetime.fromtimestamp(location_need.created.timestamp()),
             },
             "address":location.get("address"),
             "postcode":location.get("postcode"),
@@ -549,7 +550,7 @@ def needs(request):
     for need in needs:
         response_list.append({
             "id":need.need_id,
-            "found":need.created,
+            "found":datetime.datetime.fromtimestamp(need.created.timestamp()),
             "foodbank": {
                 "name":need.foodbank_name,
                 "slug":str(need.foodbank_name_slug()),
@@ -574,7 +575,7 @@ def need(request, id):
 
     response_dict = {
         "id":need.need_id,
-        "found":need.created,
+        "found":datetime.datetime.fromtimestamp(need.created.timestamp()),
         "foodbank": {
             "name":need.foodbank_name,
             "slug":str(need.foodbank_name_slug()),
