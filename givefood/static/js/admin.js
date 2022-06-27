@@ -50,7 +50,7 @@ document.addEventListener("turbolinks:load", function() {
   const excess_change_text = document.querySelector("#id_excess_change_text");
   const fb_name_field = document.querySelector(".form-new-food-bank #id_name");
 
-  const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?key=" + gmap_geocode_key + "&address="
+  const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=" + gmap_geocode_key + "&address="
   const map_url = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&key=" + gmap_static_key + "&scale=2&center="
 
   // Check FB slug
