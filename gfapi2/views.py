@@ -1,10 +1,9 @@
 import logging
 
 from django.shortcuts import get_object_or_404, render
-from django.template import RequestContext
 from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import slugify
-from django.views.decorators.cache import cache_page, cache_control
+from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
