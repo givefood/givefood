@@ -327,6 +327,7 @@ def foodbank_search(request):
     response_list = []
 
     for foodbank in foodbanks:
+        latest_need = foodbank.latest_need()
         response_list.append({
             "name":foodbank.name,
             "alt_name":foodbank.alt_name,
@@ -340,9 +341,10 @@ def foodbank_search(request):
             "distance_m":int(foodbank.distance_m),
             "distance_mi":round(foodbank.distance_mi,2),
             "needs": {
-                "needs":foodbank.latest_need().change_text,
-                "found":datetime.datetime.fromtimestamp(foodbank.latest_need().created.timestamp()),
-                "number":foodbank.latest_need().no_items(),
+                "id":latest_need.need_id,
+                "needs":latest_need.change_text,
+                "found":datetime.datetime.fromtimestamp(latest_need.created.timestamp()),
+                "number":latest_need.no_items(),
             },
             "urls": {
                 "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
@@ -512,6 +514,7 @@ def location_search(request):
                 }
             },
             "needs": {
+                "id":location_need.need_id,
                 "needs":location_need.change_text,
                 "number":location_need.no_items(),
                 "found":datetime.datetime.fromtimestamp(location_need.created.timestamp()),
