@@ -743,14 +743,8 @@ def post_to_twitter(need):
         access_token_secret = get_cred("twitter_access_token_secret"),
     )
 
-    if need.foodbank.twitter_handle:
-        fb_twitter_handle = " @%s" % (need.foodbank.twitter_handle)
-    else:
-        fb_twitter_handle = ""
-
-    tweet = "%s food bank%s is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/?utm_source=twitter&utm_medium=wfbn&utm_campaign=needs" % (
+    tweet = "%s food bank is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/?utm_source=twitter&utm_medium=wfbn&utm_campaign=needs" % (
         need.foodbank_name,
-        fb_twitter_handle,
         truncatechars(need.change_text, 150),
         need.foodbank_name_slug()
     )
