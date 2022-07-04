@@ -86,6 +86,7 @@ def foodbanks(request):
         "last_order",
         "last_need",
         "created",
+        "modified",
     ]
     sort = request.GET.get("sort", "name")
     if sort not in sort_options:
