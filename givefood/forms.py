@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
 from givefood.models import OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential
@@ -23,6 +25,14 @@ class FoodbankForm(ModelForm):
         model = Foodbank
         fields = "__all__"
 
+    def save(self, commit=True): 
+        foodbank = super().save(commit=False)
+        foodbank.edited = datetime.now()
+        
+        if commit:
+            foodbank.save()
+        return foodbank
+
 
 class FoodbankPoliticsForm(ModelForm):
     class Meta:
@@ -36,6 +46,14 @@ class FoodbankLocationForm(ModelForm):
         fields = "__all__"
         widgets = {'foodbank': HiddenInput()}
         exclude = ('is_closed',)
+
+    def save(self, commit=True): 
+        location = super().save(commit=False)
+        location.edited = datetime.now()
+        
+        if commit:
+            location.save()
+        return location
 
 
 class FoodbankLocationPoliticsForm(ModelForm):

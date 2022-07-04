@@ -18,6 +18,7 @@
               <option value="?sort=foodbank_name"{% if sort == "foodbank_name" %} selected{% endif %}>Food Bank</option>
               <option value="?sort=name"{% if sort == "name" %} selected{% endif %}>Name</option>
               <option value="?sort=parliamentary_constituency"{% if sort == "parliamentary_constituency" %} selected{% endif %}>Parliamentary Constituency</option>
+              <option value="?sort=edited"{% if sort == "edited" %} selected{% endif %}>Edited</option>
             </select>
           </div>
         </div>
@@ -33,6 +34,7 @@
           <th>MP&nbsp;ID</th>
           <th>Network</th>
           <th>Country</th>
+          <th>Edited</th>
         </tr>
         {% for location in locations %}
           <tr>
@@ -44,6 +46,7 @@
             <td>{{ location.mp_parl_id }}</td>
             <td>{{ location.foodbank_network }}</td>
             <td>{{ location.country }}</td>
+            <td>{{ location.edited }}</td>
           </tr>
         {% endfor %}
       </table>

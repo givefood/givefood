@@ -20,6 +20,7 @@
               <option value="?sort=last_need"{% if sort == "last_need" %} selected{% endif %}>Last Need</option>
               <option value="?sort=created"{% if sort == "created" %} selected{% endif %}>Created</option>
               <option value="?sort=modified"{% if sort == "modified" %} selected{% endif %}>Modified</option>
+              <option value="?sort=edited"{% if sort == "edited" %} selected{% endif %}>Edited</option>
             </select>
           </div>
         </div>
@@ -39,6 +40,7 @@
           <th>Links</th>
           <th>Created</th>
           <th>Modified</th>
+          <th>Edited</th>
         </tr>
         {% for foodbank in foodbanks %}
           <tr>
@@ -72,6 +74,7 @@
               {% endif %}
             <td>{{ foodbank.created }}</td>
             <td>{{ foodbank.modified }}</td>
+            <td>{{ foodbank.edited }}</td>
           </tr>
         {% endfor %}
       </table>

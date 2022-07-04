@@ -58,6 +58,7 @@ class Foodbank(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
+    edited = models.DateTimeField(editable=False, null=True)
 
     last_order = models.DateField(editable=False, null=True)
     last_social_media_check = models.DateTimeField(editable=False, null=True)
@@ -379,6 +380,8 @@ class FoodbankLocation(models.Model):
     ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
     lsoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
     msoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
+
+    edited = models.DateTimeField(editable=False, null=True)
 
     class Meta:
        unique_together = ('foodbank', 'name',)
