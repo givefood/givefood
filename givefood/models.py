@@ -478,6 +478,12 @@ class FoodbankLocation(models.Model):
     def long(self):
         return float(self.latt_long.split(",")[1])
 
+    def delete(self, *args, **kwargs):
+
+        super(FoodbankLocation, self).delete(*args, **kwargs)
+        # Resave the parent food bank, to update location count
+        self.foodbank.save()
+
     def save(self, *args, **kwargs):
 
         logging.info("Saving food bank location %s" % self.name)
