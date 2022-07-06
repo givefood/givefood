@@ -2,7 +2,7 @@
 <form action="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}" method="post">
     <div class="field has-addons">
         <div class="control is-expanded">
-            <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address" required="required">
+            <input class="input" id="email" maxlength="254" name="email" type="email" placeholder="Email address" required="required" autocomplete="email">
         </div>
         <div class="control">
             <button type="submit" class="button is-link" id="subscribe_btn">Subscribe</button>
