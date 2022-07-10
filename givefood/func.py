@@ -429,6 +429,9 @@ def clean_foodbank_need_text(text):
     # Remove whitespace
     text = text.strip()
 
+    # Remove empty lines
+    text = "".join([s for s in text.strip().splitlines(True) if s.strip()])
+
     # Remove whitespace on each line
     text_list = text.splitlines()
     for line_number, line in enumerate(text_list):
