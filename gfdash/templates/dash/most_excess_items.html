@@ -1,0 +1,51 @@
+{% extends "public/page.html" %}
+
+{% block title %}Most Excess Items - Give Food{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/dash.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h1><a href="/">Give Food</a></h1>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash:most_excess_items' %}" aria-current="page">Most Excess Items</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+        <p class="is-pulled-left">Found {{ number_items }} excess items from {{ number_foodbanks }} food bank organisations in the last {{ days }} days.</p>
+        <div class="field is-pulled-right">
+            <div class="control">
+              <div class="select is-small">
+                <select onchange="javascript:window.location.href=this.value">
+                    {% for allowed_day in allowed_days %}
+                        <option value="?days={{ allowed_day }}"{% if allowed_day == days %} selected{% endif %}>{{ allowed_day }} days</option>
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        <table class="table is-striped is-narrow is-fullwidth">
+            {% for item in items_sorted %}
+                <tr>
+                    <td>{{ item.0 }}</td>
+                    <td>{{ item.1 }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+  </div><br><br>
+
+{% endblock %}

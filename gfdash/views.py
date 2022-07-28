@@ -135,6 +135,57 @@ def most_requested_items(request):
     return render(request, "dash/most_requested_items.html", template_vars)
 
 
+@cache_page(60*60*4)
+def most_excess_items(request):
+
+    # Handle allowed day parameters
+    default_days = 30
+    allowed_days = [7, 30, 60, 90,]
+    days = int(request.GET.get("days", default_days))
+    if days not in allowed_days:
+        return HttpResponseForbidden()
+    day_threshold = datetime.now() - timedelta(days=days)
+
+    # Empty vars we'll use
+    items = []
+    number_foodbanks = 0
+    number_items = 0
+
+    recent_foodbanks = Foodbank.objects.filter(last_need__gt = day_threshold).order_by("-last_need")
+
+    # Loop the foodbanks
+    for recent_foodbank in recent_foodbanks:
+
+        # Find need text
+        excess_text = recent_foodbank.latest_need().excess_change_text
+
+        # Make list of items in this need
+        if excess_text:
+            excess_items = excess_text.splitlines()
+
+            # Put the items of the last request from the food bank into the list
+            items.extend(excess_items)
+
+            # Increment the food bank count
+            number_foodbanks += 1
+
+    # Group the items by the item text
+    items_freq = group_list(items)
+    number_items = len(items_freq)
+
+    # Sort the items by their frequency count
+    items_sorted = sorted(items_freq, reverse=True, key=lambda x: x[1])
+
+    template_vars = {
+        "items_sorted": items_sorted,
+        "allowed_days": allowed_days,
+        "days": days,
+        "number_foodbanks": number_foodbanks,
+        "number_items": number_items,
+    }
+
+    return render(request, "dash/most_excess_items.html", template_vars)
+
 @cache_page(60*60*2)
 def tt_old_data(request):
 
