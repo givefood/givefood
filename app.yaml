@@ -2,6 +2,10 @@ runtime: python38
 default_expiration: "4h"
 instance_class: F2
 
+automatic_scaling:
+  min_pending_latency: 500ms
+  max_instances: 2
+
 handlers:
 
 - url: /static
