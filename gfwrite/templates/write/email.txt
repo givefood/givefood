@@ -9,7 +9,7 @@ Food banks in our {{ constituency }} constituency include {% for foodbank in foo
 
 There was a 71% increase in emergency food parcels provided by food banks in the UK’s largest food bank network, the Trussell Trust, between 2015/16 and 2019/20.
 
-People are driven to using emergency food supplies from charities because of a lack of income, benefit delays & cuts, and inadequate support during challenging life experiences.
+People are driven to using emergency food supplies from charities because of the cost of living increasing, a lack of income, benefit delays & cuts, and inadequate support during challenging life experiences.
 
 I'd be interested in hearing what you are doing to support our local food banks, especially preventing my fellow constituents from having to use them in the first place.
 
