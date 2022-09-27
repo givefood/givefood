@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^needs/at/lifeshare/$', RedirectView.as_view(url='/needs/at/lifeshare-manchester/')),
     url(r'^needs/at/galashiels/$', RedirectView.as_view(url='/needs/at/galashiels-and-area/')),
     url(r'^needs/at/bristol-north/$', RedirectView.as_view(url='/needs/at/north-bristol-south-gloucestershire/')),
+    url(r'^needs/at/feed/$', RedirectView.as_view(url='/needs/at/st-albans-and-district/feed/')),
 
     # Apps
     url(r'^needs/', include('gfwfbn.urls', namespace="wfbn")),
