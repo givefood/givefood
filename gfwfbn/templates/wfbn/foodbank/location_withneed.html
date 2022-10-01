@@ -91,7 +91,7 @@
                 id="takeaction_btn">Take Action</a>
               {% endif %}
               {% if foodbank.latest_need.change_text != "Facebook" %}
-                <a href="#subscribe" class="button is-info">Subscribe</a>
+                <a href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}" class="button is-info">Subscribe</a>
               {% endif %}
             </div>
 
