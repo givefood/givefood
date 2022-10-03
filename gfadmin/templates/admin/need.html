@@ -39,14 +39,16 @@
         <dd><time datetime="{{ need.created|date:'c' }}" title="{{ need.created }}">{{ need.created|timesince }} ago</time></dd>
         <dt>Modified</dt>
         <dd><time datetime="{{ need.modified|date:'c' }}" title="{{ need.modified }}">{{ need.modified|timesince }} ago</time></dd>
-        <dt>Prev. Need</dt>
-        <dd>
-          {% if need.diff_from_last %}
-            <time datetime="{{ need.last_need_date|date:'c' }}" title="{{ need.last_need_date }}">{{ need.last_need_date|timesince }} ago</time>
-          {% else %}
-            Never
-          {% endif %}
-        </dd>
+        {% if need.foodbank %}
+          <dt>Prev. Need</dt>
+          <dd>
+            {% if need.diff_from_last %}
+              <time datetime="{{ need.last_need_date|date:'c' }}" title="{{ need.last_need_date }}">{{ need.last_need_date|timesince }} ago</time>
+            {% else %}
+              Never
+            {% endif %}
+          </dd>
+        {% endif %}
         {% if need.uri %}
           <dt>URL</dt>
           <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
@@ -54,22 +56,24 @@
       </dl>
       <br>
 
-      {% if need.change_text != "Nothing" %}
-        {% if need.change_text != "Unknown" %}
-          <h2>Notifications</h2>
-          <p>
-            {% if need.tweet_sent %}
-              <span style="color:green">✓</span> Sent <time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>
-            {% else %}
-              <span style="color:red">x</span> Not Sent
-            {% endif %}
-            <br> 
-            {{ number_subscribers }} Subscriber{{ number_subscribers|pluralize }}
-          </p>
-          <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
-            <input type="submit" class="button is-warning" value="Send Notifications">
-            {% csrf_token %}
-          </form>
+      {% if need.foodbank %}
+        {% if need.change_text != "Nothing" %}
+          {% if need.change_text != "Unknown" %}
+            <h2>Notifications</h2>
+            <p>
+              {% if need.tweet_sent %}
+                <span style="color:green">✓</span> Sent <time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>
+              {% else %}
+                <span style="color:red">x</span> Not Sent
+              {% endif %}
+              <br> 
+              {{ number_subscribers }} Subscriber{{ number_subscribers|pluralize }}
+            </p>
+            <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
+              <input type="submit" class="button is-warning" value="Send Notifications">
+              {% csrf_token %}
+            </form>
+          {% endif %}
         {% endif %}
       {% endif %}
 
