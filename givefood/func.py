@@ -782,6 +782,7 @@ def post_to_subscriber(need, subscriber):
         subject = subject,
         body = text_body,
         html_body = html_body,
+        is_broadcast = True,
     )
 
 
@@ -802,44 +803,36 @@ def post_to_email(post, extra = {}, header = None):
     send_email("mail@givefood.org.uk", "Food Bank Data Amendment", body_str)
 
 
-def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None):
+def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False):
 
-    api_url = "https://inject.socketlabs.com/api/v1/email"
-    api_server = get_cred("socketlabs_server")
-    api_key = get_cred("socketlabs_key")
+    api_url = "https://api.postmarkapp.com/email"
+    server_token = get_cred("postmark_server_token")
 
-    api_call_body = {
-        "serverId": api_server,
-        "APIKey": api_key,
-        "Messages": [
-            {
-                "To": [
-                    {
-                        "emailAddress": to,
-                    }
-                ],
-                "CC": [
-                    {
-                        "emailAddress": cc,
-                    }
-                ],
-                "ReplyTo": {
-                    "emailAddress": reply_to,
-                    "friendlyName": reply_to_name,
-                },
-                "From": {
-                    "emailAddress": "mail@givefood.org.uk",
-                    "friendlyName": "Give Food",
-                },
-                "Subject": subject,
-                "TextBody": body,
-                "HtmlBody": html_body,
-            },
-        ],
+    request_headers = {
+        "X-Postmark-Server-Token": server_token,
     }
 
+    if is_broadcast:
+        message_stream = "broadcast"
+    else:
+        message_stream = "outbound"
 
-    result = requests.post(api_url, json=api_call_body)
+    request_body = {
+        "From": "mail@givefood.org.uk",
+        "To": to,
+        "Subject": subject,
+        "TextBody": body,
+        "HtmlBody": html_body,
+        "ReplyTo": reply_to,
+        "MessageStream": message_stream
+      }
+
+
+    result = requests.post(
+        api_url,
+        headers = request_headers,
+        json = request_body,
+    )
 
   
 def group_list(lst):
