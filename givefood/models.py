@@ -556,7 +556,8 @@ class Order(models.Model):
 
     weight = models.PositiveIntegerField(editable=False)
     calories = models.PositiveIntegerField(editable=False)
-    cost = models.PositiveIntegerField(editable=False) #pence
+    cost = models.PositiveIntegerField(editable=False) # Pence, the cost when ordered
+    actual_cost = models.PositiveIntegerField(null=True, blank=True, verbose_name="Delivered cost", help_text="In pence") # Pence, the cost when delivered
     no_lines = models.PositiveIntegerField(editable=False)
     no_items = models.PositiveIntegerField(editable=False)
 
@@ -575,6 +576,12 @@ class Order(models.Model):
 
     def natural_cost(self):
         return float(self.cost/100)
+    
+    def natural_actual_cost(self):
+        if self.actual_cost:
+            return float(self.actual_cost/100)
+        else:
+            return None
 
     def weight_kg(self):
         return self.weight/1000

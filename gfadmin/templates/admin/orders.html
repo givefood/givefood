@@ -36,6 +36,7 @@
           <th>Weight (kg)</th>
           <th>Calories</th>
           <th>Cost</th>
+          <th>Delivered Cost</th>
           <th>Created</th>
         </tr>
         {% for order in orders %}
@@ -48,6 +49,7 @@
             <td>{{ order.weight_kg_pkg|intcomma }}</td>
             <td>{{ order.calories|intcomma }}</td>
             <td>£{{ order.natural_cost }}</td>
+            <td>{% if order.actual_cost %}£{{ order.natural_actual_cost }}{% endif %}</td>
             <td>{{ order.created }}</td>
           </tr>
         {% endfor %}

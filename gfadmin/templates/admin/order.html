@@ -29,8 +29,14 @@
         <dd>{{ order.weight_kg_pkg|intcomma|floatformat:2 }} kg</dd>
         <dt>Calories</dt>
         <dd>{{ order.calories|intcomma }}</dd>
+
         <dt>Cost</dt>
         <dd>£{{ order.natural_cost }}</dd>
+        {% if order.actual_cost %}
+          <dt>Delivered cost</dt>
+          <dd>£{{ order.natural_actual_cost }}</dd>
+        {% endif %}
+
         {% if order.order_group %}
           <dt>Order group</dt>
           <dd><a href="{% url 'admin:order_group' order.order_group.slug %}">{{ order.order_group }}</a></dd>
