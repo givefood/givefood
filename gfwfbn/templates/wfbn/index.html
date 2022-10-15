@@ -75,12 +75,12 @@
                     <tr>
                       <td>
                         <a href="/needs/click/{{ location.foodbank_slug }}/" class="foodbank" target="_top">{{ location.name }}</a>
-                        <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
                         {% if where_from != "trusselltrust" %}
                           {% if location.type == "location" %}
                             <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
                           {% endif %}
                         {% endif %}
+                        <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
                         <div class="links">
                           {% if location.phone %}
                             <a class="phone" href="tel:{{ location.phone }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
