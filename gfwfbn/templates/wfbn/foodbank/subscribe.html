@@ -27,7 +27,7 @@
   </script>
 {% endblock %}
 
-{% block title %}{{ foodbank.full_name }} - Give Food{% endblock %}
+{% block title %}Get Updates - {{ foodbank.full_name }} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -48,7 +48,8 @@
             <ul>
                 <li><a href="{% url 'public_index' %}">Home</a></li>
                 <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
-                <li class="is-active"><a href="#" aria-current="page">{{ foodbank.full_name }}</a></li>
+                <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Get Updates</a></li>
             </ul>
       </nav>
 
