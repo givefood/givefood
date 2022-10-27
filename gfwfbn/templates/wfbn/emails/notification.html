@@ -13,7 +13,7 @@
         
     <p>You can find more details at <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/</a></p>
 
-    <p>You're getting these emails because you subscribed to them at <a href="https://www.givefood.org.uk/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">givefood.org.uk</a>. You can unsubscribe by clicking here: <a href="http://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/updates/unsubscribe/?key={{ subscriber.unsub_key }}">here</a>.</p>
+    <p>You're getting these emails because you subscribed to them at <a href="https://www.givefood.org.uk/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">givefood.org.uk</a>. You can unsubscribe by <a href="http://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/updates/unsubscribe/?key={{ subscriber.unsub_key }}">clicking here</a>.</p>
     
     
 {% endblock %}
