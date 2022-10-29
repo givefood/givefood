@@ -114,8 +114,8 @@ add_marker({{ foodbank.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
 {% endfor %}
 google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
   var maxZoom = 15
-  if (this.getZoom() > maxZoom) {
-      this.setZoom(maxZoom);
+  if (map.getZoom() > maxZoom) {
+    map.setZoom(maxZoom);
   }
 });
 map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});

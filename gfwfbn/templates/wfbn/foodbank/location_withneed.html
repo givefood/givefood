@@ -153,8 +153,8 @@ map = new google.maps.Map(document.getElementById("map"), mapOptions);
 add_marker({{ location.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
 google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
   var maxZoom = 15
-  if (this.getZoom() > maxZoom) {
-      this.setZoom(maxZoom);
+  if (map.getZoom() > maxZoom) {
+    map.setZoom(maxZoom);
   }
 });
 map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
