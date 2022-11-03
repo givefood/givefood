@@ -972,6 +972,45 @@ def clearcache(request):
     return redirect("admin:index")
 
 
+def email_tester(request):
+
+    foodbanks = Foodbank.objects.all().order_by("-modified")[:10]
+    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
+
+    template_vars = {
+        "foodbanks":foodbanks,
+        "needs":needs,
+    }
+
+    return render(request, "admin/email_tester.html", template_vars)
+
+
+def email_tester_test(request):
+
+    email = request.GET.get("email", "confirm.html")
+
+    foodbank = Foodbank.objects.all().latest("modified")
+    need = FoodbankChange.objects.filter(published = True).latest("created")
+
+    template_file = "wfbn/emails/%s" % (email)
+
+    template_vars = {
+        "foodbank":foodbank,
+        "need":need,
+        "sub_key":"SUBKEY123456789",
+        "subscriber":{
+            "unsub_key":"UNSUBKEY123456789",
+        }
+    }
+
+    rendered_template = render_to_string(template_file, template_vars)
+    
+    if email[-4:] == ".txt":
+        rendered_template = "<pre>%s</pre>" % (rendered_template)
+    
+    return HttpResponse(rendered_template)
+
+
 def proxy(request):
 
     url = request.GET.get("url")

@@ -1,0 +1,34 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Email Tester - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Email Tester</h2>
+
+  <div class="columns">
+
+    <div class="column is-one-quarter">
+
+        <nav id="email" class="menu">
+            <ul class="menu-list">
+              <li><a href="{% url 'admin:email_tester_test' %}?email=confirm.html" target="tester" class="is-active">Confirm HTML</a></li>
+              <li><a href="{% url 'admin:email_tester_test' %}?email=confirm.txt" target="tester">Confirm Text</a></li>
+              <li><a href="{% url 'admin:email_tester_test' %}?email=confirmed.html" target="tester">Confirmed HTML</a></li>
+              <li><a href="{% url 'admin:email_tester_test' %}?email=confirmed.txt" target="tester">Confirmed Text</a></li>
+              <li><a href="{% url 'admin:email_tester_test' %}?email=notification.html" target="tester">Notification HTML</a></li>
+              <li><a href="{% url 'admin:email_tester_test' %}?email=notification.txt" target="tester">Notification Text</a></li>
+            </ul>
+        </nav>
+
+    </div>
+
+    <div class="column">
+        <iframe id="tester" name="tester" style="width:100%;height:800px;" src="{% url 'admin:email_tester_test' %}?email=confirm.html"></iframe>
+    </div>
+
+  </div>
+
+  <script src="/static/js/email-tester.js" defer></script>
+
+{% endblock %}

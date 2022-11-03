@@ -1,0 +1,5 @@
+Please link the button below to confirm your email address and get updates from {{ foodbank.name }} food bank.
+
+https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/updates/confirm/?key={{ sub_key }}
+
+If you're not expecting this email then please ignore it.

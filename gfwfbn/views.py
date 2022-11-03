@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, Http404, HttpResponseNotFound
 from django.db import IntegrityError
 from django.template import RequestContext
+from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page, cache_control
 from django.template.defaultfilters import slugify
 from django.urls import reverse
@@ -380,17 +381,21 @@ def updates(request, slug, action):
                 email = email,
             )
             new_sub.save()
-            sub_key = new_sub.sub_key
+
+            template_vars = {
+                "foodbank":foodbank,
+                "sub_key":new_sub.sub_key,
+            }
+
+            text_body = render_to_string("wfbn/emails/confirm.txt", template_vars)
+            html_body = render_to_string("wfbn/emails/confirm.html", template_vars)
 
 
             send_email(
-                email,
-                "Confirm your Give Food subscription",
-                "Someone asked for updates on %s food bank from Give Food. If this was you then please click the link below, if it wasn't then please ignore this email.\n\nhttps://www.givefood.org.uk/needs/at/%s/updates/confirm/?key=%s" % (
-                    foodbank.name,
-                    foodbank.slug,
-                    sub_key,
-                )
+                to = email,
+                subject = "Confirm your Give Food subscription",
+                body = text_body,
+                html_body = html_body,
             )
 
             message = "Thanks, but we're not quite done yet.\n\nWe've sent an email to %s with a link to click to confirm your subscription. You might have to look in your spam folder though." % (email)
@@ -408,14 +413,18 @@ def updates(request, slug, action):
             sub.confirmed = True
             sub.save()
 
+            template_vars = {
+                "foodbank":sub.foodbank,
+            }
+
+            text_body = render_to_string("wfbn/emails/confirmed.txt", template_vars)
+            html_body = render_to_string("wfbn/emails/confirmed.html", template_vars)
+
             send_email(
-                sub.email,
-                "Thank you for confirming your subscription to %s Food Bank" % (sub.foodbank.name),
-                "We'll send you a list of items being requested here whenever the food bank updates them.\n\nYou can find more details about the food bank at: https://www.givefood.org.uk/needs/at/%s/\nSee other nearby food banks at: https://www.givefood.org.uk/needs/at/%s/nearby/\nTake political action: https://www.givefood.org.uk/needs/at/%s/politics/" % (
-                    sub.foodbank.slug,
-                    sub.foodbank.slug,
-                    sub.foodbank.slug,
-                )
+                to = sub.email,
+                subject = "Thank you for confirming your subscription to %s Food Bank" % (foodbank.name),
+                body = text_body,
+                html_body = html_body,
             )
 
         message = "Great! Thank you for confirming your subscription."

@@ -72,6 +72,8 @@ urlpatterns = (
     url(r'^subscriptions/$', subscriptions, name="subscriptions"),
     url(r'^subscription/delete/$', delete_subscription, name="delete_subscription"),
     url(r'^clearcache/$', clearcache, name="clearcache"),
+    url(r'^emailtester/$', email_tester, name="email_tester"),
+    url(r'^emailtester/test/$', email_tester_test, name="email_tester_test"),
 
     url(r'^proxy/$', proxy, name="proxy"),
 

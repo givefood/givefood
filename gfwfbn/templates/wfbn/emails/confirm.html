@@ -1,0 +1,30 @@
+{% extends "emails/page.html" %}
+
+{% block body %}
+
+    <p>Please click the button below to confirm your email address and get updates from {{ foodbank.name }} food bank.</p>
+
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+        <tbody>
+            <tr>
+            <td align="left">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+                <tbody>
+                    <tr>
+                    <td> <a href="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/updates/confirm/?key={{ sub_key }}" target="_blank">Confirm my email address</a> </td>
+                    </tr>
+                </tbody>
+                </table>
+            </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p>If you're not expecting this email then please ignore it.</p>
+    
+    
+{% endblock %}
