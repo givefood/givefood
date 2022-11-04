@@ -825,6 +825,7 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
     request_body = {
         "From": "mail@givefood.org.uk",
         "To": to,
+        "Cc": cc,
         "Subject": subject,
         "TextBody": body,
         "HtmlBody": html_body,
