@@ -46,7 +46,7 @@
             <td>{{ order.country }}</td>
             <td>{{ order.delivery_datetime }}</td>
             <td>{{ order.no_items }}</td>
-            <td>{{ order.weight_kg_pkg|intcomma }}</td>
+            <td>{{ order.weight_kg_pkg|intcomma|floatformat:3 }}</td>
             <td>{{ order.calories|intcomma }}</td>
             <td>£{{ order.natural_cost }}</td>
             <td>{% if order.actual_cost %}£{{ order.natural_actual_cost }}{% endif %}</td>
