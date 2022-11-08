@@ -433,6 +433,7 @@ def need_form(request, id = None):
     template_vars = {
         "form":form,
         "page_title":page_title,
+        "need":need,
     }
     return render(request, "admin/form.html", template_vars)
 
