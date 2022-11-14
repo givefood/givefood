@@ -30,6 +30,7 @@
         <tr>
           <th>ID</th>
           <th>Foodbank</th>
+          <th>Del. Prov. ID</th>
           <th>Country</th>
           <th>Delivery</th>
           <th>Items</th>
@@ -42,7 +43,8 @@
         {% for order in orders %}
           <tr>
             <td><a href="{% url "admin:order" order.order_id %}">{{ order.order_id }}</a></td>
-            <td>{{ order.foodbank_name }}</td>
+            <td><a href="{% url "admin:foodbank" order.foodbank_name_slug %}">{{ order.foodbank_name }}</a></td>
+            <td>{{ order.delivery_provider_id }}</td>
             <td>{{ order.country }}</td>
             <td>{{ order.delivery_datetime }}</td>
             <td>{{ order.no_items }}</td>
