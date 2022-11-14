@@ -265,6 +265,10 @@ def get_weight(text):
     #5x32g
     if text[-6:] == " 5x32g":
         weight = 160
+    
+    #12x25g
+    if text[-7:] == " 12x25g":
+        weight = 300
 
     # Kilogram
     if text[-2:] == "Kg":
