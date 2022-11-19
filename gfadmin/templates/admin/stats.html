@@ -14,18 +14,18 @@
       <h3>Foodbanks</h3>
       <dl>
         <dt>Foodbanks</dt>
-        <dd>{{ total_foodbanks }}</dd>
+        <dd>{{ total_foodbanks|intcomma }}</dd>
         <dt>Active Foodbanks</dt>
-        <dd>{{ total_active_foodbanks }}</dd>
+        <dd>{{ total_active_foodbanks|intcomma }}</dd>
         <dt>Locations</dt>
-        <dd>{{ total_locations }}</dd>
+        <dd>{{ total_locations|intcomma }}</dd>
       </dl>
       <br>
 
       <h3>Needs</h3>
       <dl>
         <dt>Needs</dt>
-        <dd>{{ total_needs }}</dd>
+        <dd>{{ total_needs|intcomma }}</dd>
         <dt>Need lines</dt>
         <dd>{{ total_need_items|intcomma }}</dd>
       </dl>
@@ -34,7 +34,7 @@
       <h3>Deliveries</h3>
       <dl>
         <dt>Orders</dt>
-        <dd>{{ total_orders }}</dd>
+        <dd>{{ total_orders|intcomma }}</dd>
         <dt>Items</dt>
         <dd>{{ total_items|intcomma }}</dd>
         <dt>Weight</dt>
@@ -51,7 +51,7 @@
       <h3>Subscriptions</h3>
       <dl>
         <dt>Subscriptions</dt>
-        <dd>{{ total_subscriptions }}</dd>
+        <dd>{{ total_subscriptions|intcomma }}</dd>
       </dl>
 
     </div>
