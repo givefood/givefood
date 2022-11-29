@@ -7,7 +7,11 @@ class NeedForm(forms.ModelForm):
 
     class Meta:
         model = FoodbankChange
-        fields = ("change_text",)
+        fields = ("change_text","excess_change_text",)
+        help_texts = {
+            "change_text": "Items you need donated. Use a new line for each.",
+            "excess_change_text": "Items that you have too many of. Again, use a new line for each.",
+        }
 
 
 class FoodbankLocationForm(forms.ModelForm):

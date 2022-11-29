@@ -798,7 +798,7 @@ class FoodbankChange(models.Model):
     change_text = models.TextField(verbose_name="Shopping List")
     change_text_original = models.TextField(null=True, blank=True)
 
-    excess_change_text = models.TextField(verbose_name="Excess", null=True, blank=True)
+    excess_change_text = models.TextField(verbose_name="Excess Items", null=True, blank=True)
 
     published = models.BooleanField(default=False)
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
