@@ -49,7 +49,7 @@
               </div>
             {% endif %}
 
-            <form id="postcodeform" action="" method="get">
+            <form id="postcodeform" action="{% url 'write:index' %}" method="get">
               <input id="postcode_field" type="text" name="postcode" class="input" placeholder="Postcode" value="{% if postcode %}{{ postcode }}{% endif %}">
               <input type="submit" class="button is-info" value="Go">
             </form>
