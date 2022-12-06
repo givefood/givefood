@@ -107,9 +107,9 @@ function api_response() {
 
   template = document.querySelector("#fb_row");
 
-  for (i in this.response) {
+  for (loctnidx in this.response) {
 
-    loctn = this.response[i];
+    loctn = this.response[loctnidx];
 
     url = loctn.urls.html;
     fb_name = loctn.name;
