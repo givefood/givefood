@@ -83,6 +83,9 @@ details summary {
 #postcode_field, #address_field {
     width:220px;
 }
+#postcode_field {
+    text-transform:uppercase;
+}
 
 h1 {
     font-size: 28px;
