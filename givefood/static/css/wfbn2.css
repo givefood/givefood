@@ -181,6 +181,7 @@ textarea[name='body'] {
 }
 .mp_photo {
     width:200px;
+    border-radius:3px;
 }
 #subscription_example {
     width:100%;
