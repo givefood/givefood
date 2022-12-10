@@ -54,12 +54,11 @@
           <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
         {% endif %}
       </dl>
-      <br>
 
       {% if need.foodbank %}
         {% if need.change_text != "Nothing" %}
           {% if need.change_text != "Unknown" %}
-            <h2>Notifications</h2>
+            <h3>Notifications</h3>
             <p>
               {% if need.tweet_sent %}
                 <span style="color:green">✓</span> Sent <time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>
@@ -77,7 +76,7 @@
         {% endif %}
       {% endif %}
 
-      <h2>Danger Zone</h2>
+      <h3>⚠️ Danger Zone</h3>
       <form action="{% url 'admin:need_delete' need.need_id %}" method="post">
         <input type="submit" class="button is-danger" value="Delete" onclick="return confirm('Are you sure you want to DELETE?')">
         {% csrf_token %}

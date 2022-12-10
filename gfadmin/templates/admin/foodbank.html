@@ -54,7 +54,6 @@
         <dt>Country</dt>
         <dd>{{ foodbank.country }}</dd>
       </dl>
-      <br>
 
       <h3>Stats</h3>
       <dl>
@@ -71,7 +70,6 @@
         <dt>Total cost</dt>
         <dd>£{{ foodbank.total_cost|intcomma }}</dd>
       </dl>
-      <br>
 
       <h3>Links</h3>
       <dl>
@@ -100,7 +98,6 @@
         <dt>Network</dt>
         <dd>{{ foodbank.network }}</dd>
       </dl>
-      <br>
 
       <h3>Contacts</h3>
       <dl>
@@ -123,7 +120,6 @@
           <dd><a href="call:{{ foodbank.delivery_phone_number }}">{{ foodbank.delivery_phone_number }}</a></dd>
         {% endif %}
       </dl>
-      <br>
 
       <dl>
         <dt>Created</dt>
@@ -133,7 +129,6 @@
         <dt>Edited</dt>
         <dd>{{ foodbank.edited }}</dd>
       </dl>
-      <br>
 
       <h3>Locations</h3>
       <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
