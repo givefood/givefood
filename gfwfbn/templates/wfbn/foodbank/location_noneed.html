@@ -75,13 +75,7 @@
 
           <div class="column is-7">
 
-            <div class="cta">
-              <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" class="button is-info" id="donate_btn">Donate</a>
-              {% if location.parliamentary_constituency_name %}
-                <a href="{% url 'wfbn:foodbank_location_politics' foodbank.slug location.slug %}" class="button is-info" 
-                id="takeaction_btn">Take Action</a>
-              {% endif %}
-            </div>
+            {% include "wfbn/foodbank/includes/ctas.html" %}
 
             <div id="map" class="sidemap"></div>
             <address>

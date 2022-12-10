@@ -87,15 +87,7 @@
 
           <div class="column">
 
-            <div class="cta">
-              <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" class="button is-info" id="donate_btn">Donate</a>
-              {% if foodbank.parliamentary_constituency_name %}
-                <a href="{% url 'wfbn:foodbank_politics' foodbank.slug %}" class="button is-info" id="takeaction_btn">Take Action</a>
-              {% endif %}
-              {% if foodbank.latest_need.change_text != "Facebook" %}
-                <a href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}" class="button is-info">Get Updates</a>
-              {% endif %}
-            </div>
+            {% include "wfbn/foodbank/includes/ctas.html" %}
 
             <div id="map" class="sidemap"></div>
             <address>

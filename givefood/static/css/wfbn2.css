@@ -106,6 +106,13 @@ p.needs {
 .cta {
     margin-bottom: 1.3rem;
 }
+.cta p {
+    margin-bottom:10px;
+}
+.cta a {
+    vertical-align: middle;
+    margin-right:5px;
+}
 .contacts {
     white-space: nowrap;
 }

@@ -1,0 +1,29 @@
+<div class="cta">
+
+    <p>
+        <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" class="button is-info is-medium" id="donate_btn">Donate</a> 
+        Food, money or your time
+    </p>
+
+    {% if foodbank.bankuet_slug %}
+        <p>
+            <a href="{{ foodbank.bankuet_url }}" class="button is-info is-small" id="bankuet_btn">Bankuet</a>
+        Donate using Bankuet
+        </p>
+    {% endif %}
+
+    {% if foodbank.parliamentary_constituency_name %}
+        <p>
+            <a href="{% if location %}{% url 'wfbn:foodbank_location_politics' foodbank.slug location.slug %}{% else %}{% url 'wfbn:foodbank_politics' foodbank.slug %}{% endif %}" class="button is-info is-small" id="takeaction_btn">Take Action</a>
+        Email your MP
+        </p>
+    {% endif %}
+
+    {% if foodbank.latest_need.change_text != "Facebook" and foodbank.latest_need.change_text != "Nothing" and foodbank.latest_need.change_text != "Unknown" %}
+        <p>
+            <a href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}" class="button is-info is-small" id="updates_btn">Get Updates</a>
+        We can email when new items are needed
+        </p>
+    {% endif %}
+
+</div>
