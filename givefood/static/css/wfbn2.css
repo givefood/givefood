@@ -86,6 +86,9 @@ details summary {
 #postcode_field {
     text-transform:uppercase;
 }
+#postcode_field::placeholder {
+    text-transform:capitalize;
+}
 
 h1 {
     font-size: 28px;
