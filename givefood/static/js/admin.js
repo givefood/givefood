@@ -81,7 +81,7 @@ document.addEventListener("turbolinks:load", function() {
   // LATTLONG
   if (lattlong_field) {
     var get_lattlong_btn = document.createElement('div');
-    get_lattlong_btn.innerHTML = "<a href='#' id='get_lattlong_btn' class='extra-form-button button is-info'>Get LattLong</a>";
+    get_lattlong_btn.innerHTML = "<a href='#' id='get_lattlong_btn' class='extra-form-button button is-info'>Get Lat/Lng</a>";
     insertAfter(get_lattlong_btn, lattlong_field);
     lattlong_btn = document.querySelector("#get_lattlong_btn");
     lattlong_btn.addEventListener("click", function(event) {
