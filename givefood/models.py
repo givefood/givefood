@@ -909,7 +909,7 @@ class ApiFoodbankSearch(models.Model):
     parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
 
     def wfbn_url(self):
-        if self.query_type == "latt_long":
+        if self.query_type == "lattlong":
             query_type == "lat_lng"
         else:
             query_type = "address"
