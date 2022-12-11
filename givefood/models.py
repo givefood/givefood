@@ -910,7 +910,7 @@ class ApiFoodbankSearch(models.Model):
 
     def wfbn_url(self):
         if self.query_type == "lattlong":
-            query_type == "lat_lng"
+            query_type = "lat_lng"
         else:
             query_type = "address"
 
