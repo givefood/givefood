@@ -13,12 +13,25 @@
         <ul class="settings">
             <li>🥫 <a href="{% url 'admin:items' %}">Items</a></li>
             <li>🏷️ <a href="{% url 'admin:order_groups' %}">Order Groups</a></li>
-            <li>✉️ <a href="{% url 'admin:subscriptions' %}">Subscriptions</a></li>
             <li>📧 <a href="{% url 'admin:email_tester' %}">Email Tester</a></li>
-            <li>🔢 <a href="{% url 'admin:stats' %}">Stats</a></li>
-            <li>🔍 <a href="{% url 'admin:searches' %}">Searches</a>
-            <li>🔑 <a href="{% url 'admin:credentials' %}">Credentials</a>
-            <li>🎒 <a href="{% url 'admin:clearcache' %}">Clear Cache</a>
+        </ul>
+
+        <h3>Stats</h3>
+        <ul class="settings">
+          <li>✍️ <a href="{% url 'admin:edit_stats' %}">Edit Stats</a></li>
+          <li>🔢 <a href="{% url 'admin:order_stats' %}">Order Stats</a></li>
+        </ul>
+
+        <h3>User Data</h3>
+        <ul class="settings">
+          <li>🔍 <a href="{% url 'admin:searches' %}">Searches</a>
+          <li>✉️ <a href="{% url 'admin:subscriptions' %}">Subscriptions</a></li>
+        </ul>
+
+        <h3>⚠️ DANGER ZONE</h3>
+        <ul class="settings">
+          <li>🔑 <a href="{% url 'admin:credentials' %}">Credentials</a>
+          <li>🎒 <a href="{% url 'admin:clearcache' %}">Clear Cache</a>
         </ul>
 
     </div>

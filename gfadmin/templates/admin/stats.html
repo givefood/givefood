@@ -1,57 +1,21 @@
 {% extends "admin/page.html" %}
 {% load humanize %}
 
-{% block title %}Stats - GF Admin{% endblock %}
+{% block title %}{{ title }} Stats - GF Admin{% endblock %}
 
 {% block body %}
 
-  <h2>Stats</h2>
+  <h2>{{ title }} Stats</h2>
 
   <div class="columns">
 
     <div class="column">
 
-      <h3>Foodbanks</h3>
       <dl>
-        <dt>Foodbanks</dt>
-        <dd>{{ total_foodbanks|intcomma }}</dd>
-        <dt>Active Foodbanks</dt>
-        <dd>{{ total_active_foodbanks|intcomma }}</dd>
-        <dt>Locations</dt>
-        <dd>{{ total_locations|intcomma }}</dd>
-      </dl>
-      <br>
-
-      <h3>Needs</h3>
-      <dl>
-        <dt>Needs</dt>
-        <dd>{{ total_needs|intcomma }}</dd>
-        <dt>Need lines</dt>
-        <dd>{{ total_need_items|intcomma }}</dd>
-      </dl>
-      <br>
-
-      <h3>Deliveries</h3>
-      <dl>
-        <dt>Orders</dt>
-        <dd>{{ total_orders|intcomma }}</dd>
-        <dt>Items</dt>
-        <dd>{{ total_items|intcomma }}</dd>
-        <dt>Weight</dt>
-        <dd>{{ total_weight|intcomma }} kg</dd>
-        <dt>Weight (inc. pkging)</dt>
-        <dd>{{ total_weight_pkg|intcomma }} kg</dd>
-        <dt>Calories</dt>
-        <dd>{{ total_calories|intcomma }}</dd>
-        <dt>Cost</dt>
-        <dd>£{{ total_cost|intcomma }}</dd>
-      </dl>
-      <br>
-
-      <h3>Subscriptions</h3>
-      <dl>
-        <dt>Subscriptions</dt>
-        <dd>{{ total_subscriptions|intcomma }}</dd>
+        {% for key, value in stats.items %}
+          <dt>{{ key }}</dt>
+          <dd>{{ value|intcomma  }}</dd>
+        {% endfor %}
       </dl>
 
     </div>

@@ -617,21 +617,35 @@ def politics_csv(request):
     writer.writerows(output)
     return response
 
-
-def stats(request):
+def edit_stats(request):
 
     all_foodbanks = get_all_foodbanks()
     total_foodbanks = len(all_foodbanks)
-    active_foodbanks = set()
 
-    needs = FoodbankChange.objects.all()
-    total_needs = len(needs)
-    total_need_items = 0
-    for need in needs:
-        total_need_items = total_need_items + need.no_items()
+    edited_foodbanks = 0
+    for foodbank in all_foodbanks:
+        if foodbank.edited:
+            edited_foodbanks = edited_foodbanks + 1
 
     locations = get_all_locations()
     total_locations = len(locations) + total_foodbanks
+
+    stats = {
+        "total_foodbanks":total_foodbanks,
+        "total_locations":total_locations,
+        "edited_foodbanks":edited_foodbanks,
+    }
+
+    template_vars = {
+        "stats":stats,
+        "title":"Edit",
+        "section":"stats",
+    }
+
+    return render(request, "admin/stats.html", template_vars)
+
+
+def order_stats(request):
 
     total_weight = 0
     total_calories = 0
@@ -645,32 +659,26 @@ def stats(request):
         total_calories = total_calories + order.calories
         total_items = total_items + order.no_items
         total_cost = total_cost + order.cost
-        active_foodbanks.add(order.foodbank_name)
 
     total_weight = total_weight / 1000
     total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
     total_cost = float(total_cost) / 100
 
-    total_active_foodbanks = len(active_foodbanks)
-
-    subscriptions = FoodbankSubscriber.objects.filter(confirmed = True)
-    total_subscriptions = len(subscriptions)
-
-    template_vars = {
-        "total_foodbanks":total_foodbanks,
-        "total_active_foodbanks":total_active_foodbanks,
+    stats = {
         "total_weight":total_weight,
         "total_calories":total_calories,
         "total_items":total_items,
         "total_orders":total_orders,
         "total_cost":total_cost,
-        "total_needs":total_needs,
-        "total_need_items":total_need_items,
         "total_weight_pkg":total_weight_pkg,
-        "total_locations":total_locations,
-        "total_subscriptions":total_subscriptions,
+    }
+
+    template_vars = {
+        "stats":stats,
+        "title":"Order",
         "section":"stats",
     }
+
     return render(request, "admin/stats.html", template_vars)
 
 
