@@ -88,6 +88,7 @@ def foodbanks(request):
         "created",
         "modified",
         "edited",
+        "no_locations",
     ]
     sort = request.GET.get("sort", "name")
     if sort not in sort_options:
@@ -617,6 +618,7 @@ def politics_csv(request):
     writer.writerows(output)
     return response
 
+
 def edit_stats(request):
 
     all_foodbanks = get_all_foodbanks()
@@ -630,10 +632,19 @@ def edit_stats(request):
     locations = get_all_locations()
     total_locations = len(locations) + total_foodbanks
 
+    percentage_edited = (edited_foodbanks / total_foodbanks) * 100
+    percentage_edited = round(percentage_edited, 2)
+
+    newest_edit = Foodbank.objects.all().order_by("-edited")[:1][0].edited
+    oldest_edit = Foodbank.objects.all().order_by("edited")[:1][0].edited
+
     stats = {
         "total_foodbanks":total_foodbanks,
         "total_locations":total_locations,
         "edited_foodbanks":edited_foodbanks,
+        "percentage_edited":percentage_edited,
+        "newest_edit":newest_edit,
+        "oldest_edit":oldest_edit,
     }
 
     template_vars = {
@@ -662,6 +673,8 @@ def order_stats(request):
 
     total_weight = total_weight / 1000
     total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
+    total_weight_pkg = round(total_weight_pkg, 2)
+
     total_cost = float(total_cost) / 100
 
     stats = {
