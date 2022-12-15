@@ -14,7 +14,13 @@
       <dl>
         {% for key, value in stats.items %}
           <dt>{{ key }}</dt>
-          <dd>{{ value|intcomma  }}</dd>
+          <dd>
+            {% if value.year %}
+              {{ value  }}
+            {% else %}
+              {{ value|intcomma }}
+            {% endif %}
+          </dd>
         {% endfor %}
       </dl>
 
