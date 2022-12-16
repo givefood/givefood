@@ -44,76 +44,76 @@
 
           <p>Find a food bank near you, see what they need and how you can help by donating, volunteering or writing to your MP.</p>
             
-            {% include "wfbn/foodbank/includes/search_form.html" with is_index=True%}
+          {% include "wfbn/foodbank/includes/search_form.html" with is_index=True%}
 
-            <p id="status-msg"></p>
+          <p id="status-msg"></p>
 
-            <div id="index_intro">
-              {% if not location_results %}
-              <ul>
-                  <li><a href="{% url 'wfbn:constituencies' %}">Browse by Parliamentary Constituency</a></li>
-                  <li><a href="{% url 'public_reg_foodbank' %}">Register a Food Bank</a></li>
-                  <li><a href="{% url 'public_index' %}">About Give Food</a></li>
-              </ul>
-              <br>
-              <h2>Recently updated</h2>
-              <ul class="recently-updated">
-                  {% for foodbank in recently_updated %}
-                      <li><a href="{% url 'wfbn:foodbank' foodbank.foodbank_name_slug %}">{{ foodbank.foodbank_name }}</a></li>
-                  {% endfor %}
-              </ul>
+          <div id="index_intro">
+            {% if not location_results %}
+            <ul>
+                <li><a href="{% url 'wfbn:constituencies' %}">Browse by Parliamentary Constituency</a></li>
+                <li><a href="{% url 'public_reg_foodbank' %}">Register a Food Bank</a></li>
+                <li><a href="{% url 'public_index' %}">About Give Food</a></li>
+            </ul>
+            <br>
+            <h2>Recently updated</h2>
+            <ul class="recently-updated">
+                {% for foodbank in recently_updated %}
+                    <li><a href="{% url 'wfbn:foodbank' foodbank.foodbank_name_slug %}">{{ foodbank.foodbank_name }}</a></li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          <p id="status"></p>
+
+          <div id="theresults">
+            
+            <table class="table needs">
+              {% if location_results %}
+                {% for location in location_results %}
+                  <tr>
+                    <td>
+                      <a href="/needs/click/{{ location.foodbank_slug }}/" class="foodbank" target="_top">{{ location.name }}</a>
+                      {% if where_from != "trusselltrust" %}
+                        {% if location.type == "location" %}
+                          <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
+                        {% endif %}
+                      {% endif %}
+                      <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
+                      <div class="links">
+                        {% if location.phone %}
+                          <a class="phone" href="tel:{{ location.phone }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
+                        {% endif %}
+                        <a class="info" href="/needs/at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
+                      </div>
+                      {% if location.needs != "Nothing" and location.needs != "Unknown" and location.needs != "Facebook" %}
+                        <a class="subscribe-btn button is-link is-small" data-foodbankname="{{ location.foodbank_name }}">Get Updates</button>
+                      {% endif %}
+                      
+                    </td>
+                    <td class="need_detail">
+                      <div class="fb_needs">
+                        {% if location.needs == "Nothing" %}
+                          Nothing right now, thanks
+                        {% elif location.needs == "Unknown" %}
+                          Sorry. We don't know what's needed here, please contact the food bank
+                        {% elif location.needs == "Facebook" %}
+                          Check the food bank's Facebook page for what they need
+                        {% else %}
+                          {{ location.needs|linebreaks }}
+                        {% endif %}
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
               {% endif %}
-            </div>
+            </table>
+          </div>
 
-            <p id="status"></p>
-
-            <div id="theresults">
-              
-              <table class="table needs">
-                {% if location_results %}
-                  {% for location in location_results %}
-                    <tr>
-                      <td>
-                        <a href="/needs/click/{{ location.foodbank_slug }}/" class="foodbank" target="_top">{{ location.name }}</a>
-                        {% if where_from != "trusselltrust" %}
-                          {% if location.type == "location" %}
-                            <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
-                          {% endif %}
-                        {% endif %}
-                        <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
-                        <div class="links">
-                          {% if location.phone %}
-                            <a class="phone" href="tel:{{ location.phone }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
-                          {% endif %}
-                          <a class="info" href="/needs/at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
-                        </div>
-                        {% if location.needs != "Nothing" and location.needs != "Unknown" and location.needs != "Facebook" %}
-                          <a class="subscribe-btn button is-link is-small" data-foodbankname="{{ location.foodbank_name }}">Get Updates</button>
-                        {% endif %}
-                        
-                      </td>
-                      <td class="need_detail">
-                        <div class="fb_needs">
-                          {% if location.needs == "Nothing" %}
-                            Nothing right now, thanks
-                          {% elif location.needs == "Unknown" %}
-                            Sorry. We don't know what's needed here, please contact the food bank
-                          {% elif location.needs == "Facebook" %}
-                            Check the food bank's Facebook page for what they need
-                          {% else %}
-                            {{ location.needs|linebreaks }}
-                          {% endif %}
-                        </div>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                {% endif %}
-              </table>
-            </div>
-
-            <h2>Share</h2>
-            {% url 'wfbn:index' as share_url %}
-            {% include "wfbn/foodbank/includes/share_btns.html" with share_url=share_url %}
+          <h2>Share</h2>
+          {% url 'wfbn:index' as share_url %}
+          {% include "wfbn/foodbank/includes/share_btns.html" with share_url=share_url %}
 
         </div>
         <div class="column is-6">
