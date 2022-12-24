@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.cache import cache
 
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -48,6 +48,17 @@ def get_all_locations():
         all_locations = FoodbankLocation.objects.all()
         cache.set(LOC_MC_KEY, all_locations, 3600)
     return all_locations
+
+
+def get_all_open_locations():
+
+    from givefood.models import FoodbankLocation
+
+    all_open_locations = cache.get(LOC_OPEN_MC_KEY)
+    if all_open_locations is None:
+        all_open_locations = FoodbankLocation.objects.filter(is_closed = False)
+        cache.set(LOC_OPEN_MC_KEY, all_open_locations, 3600)
+    return all_open_locations
 
 
 def get_all_constituencies():
@@ -492,7 +503,7 @@ def find_foodbanks(lattlong, quantity = 10, skip_first = False):
 
 def find_locations(lattlong, quantity = 10, skip_first = False):
 
-    locations = get_all_locations()
+    locations = get_all_open_locations()
     foodbanks = get_all_open_foodbanks()
 
     latt = float(lattlong.split(",")[0])
