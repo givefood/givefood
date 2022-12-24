@@ -1024,10 +1024,10 @@ class ParliamentaryConstituency(models.Model):
 
 
     def foodbank_obj(self):
-        return Foodbank.objects.filter(parliamentary_constituency = self)
+        return Foodbank.objects.filter(parliamentary_constituency = self, is_closed = False)
 
     def location_obj(self):
-        return FoodbankLocation.objects.filter(parliamentary_constituency = self)
+        return FoodbankLocation.objects.filter(parliamentary_constituency = self, is_closed = False)
 
     def foodbanks(self):
 
