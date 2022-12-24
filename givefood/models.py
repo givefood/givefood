@@ -344,7 +344,7 @@ class Foodbank(models.Model):
 
         super(Foodbank, self).save(*args, **kwargs)
 
-        # Delete the now stale memcache entry
+        # Delete the now stale cache entry
         cache.delete(FB_MC_KEY)
 
 
