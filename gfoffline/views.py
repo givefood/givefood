@@ -128,7 +128,7 @@ def crawl_articles(request):
                         published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
                     )
                     new_article.save()
-                except IntegrityError:
+                except:
                     pass
 
     return HttpResponse("OK")
