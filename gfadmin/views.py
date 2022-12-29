@@ -694,6 +694,23 @@ def order_stats(request):
 
     return render(request, "admin/stats.html", template_vars)
 
+def subscriber_stats(request):
+
+    subscribers = FoodbankSubscriber.objects.filter(confirmed = True)
+    subscribers = len(subscribers)
+
+    stats = {
+        "subscribers":subscribers,
+    }
+
+    template_vars = {
+        "stats":stats,
+        "title":"Subscriber",
+        "section":"stats",
+    }
+
+    return render(request, "admin/stats.html", template_vars)
+
 
 def order_email(request, id):
 
