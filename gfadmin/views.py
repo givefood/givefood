@@ -996,15 +996,7 @@ def clearcache(request):
 
 def email_tester(request):
 
-    foodbanks = Foodbank.objects.all().order_by("-modified")[:10]
-    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
-
-    template_vars = {
-        "foodbanks":foodbanks,
-        "needs":needs,
-    }
-
-    return render(request, "admin/email_tester.html", template_vars)
+    return render(request, "admin/email_tester.html")
 
 
 def email_tester_test(request):
