@@ -7,7 +7,7 @@ from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, is_uk
+from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_foodbanks, geocode, find_locations, is_uk
 
 DEFAULT_FORMAT = "json"
 
@@ -71,7 +71,7 @@ def foodbanks(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
 
-    foodbanks = get_all_foodbanks()
+    foodbanks = get_all_open_foodbanks()
     response_list = []
 
     if format != "geojson":
@@ -381,7 +381,7 @@ def locations(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
 
-    locations = get_all_locations()
+    locations = get_all_open_locations()
     response_list = []
 
     if format != "geojson":
