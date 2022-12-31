@@ -20,7 +20,7 @@
 
     {% if need %}
       <div class="column">
-        <iframe class="need_preview" src="{% url 'admin:proxy' %}?url={{ need.foodbank.shopping_list_url|urlencode }}"></iframe>
+        <iframe class="need_preview" src="{% url 'admin:proxy' %}?url={{ need.uri|urlencode }}"></iframe>
       </div>
     {% endif %}
 
