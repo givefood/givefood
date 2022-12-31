@@ -71,9 +71,20 @@ def public_reg_foodbank(request):
 
     if request.POST:
         form = FoodbankRegistrationForm(request.POST)
-        if form.is_valid():
+
+        # Validate turnstile
+        turnstile_secret = get_cred("turnstile_secret")
+        turnstile_response = request.POST.get("cf-turnstile-response")
+        turnstile_fields = {
+            "secret":turnstile_secret,
+            "response":turnstile_response,
+        }
+
+        turnstile_result = requests.post("https://challenges.cloudflare.com/turnstile/v0/siteverify", turnstile_fields)
+        turnstile_is_valid = turnstile_result.json()["success"]
+
+        if form.is_valid() and turnstile_is_valid:
             email_body = render_to_string("public/registration_email.txt",{"form":request.POST.items()})
-            logging.info(email_body)
             send_email(
                 to = "mail@givefood.org.uk",
                 subject = "New Food Bank Registration - %s" % (request.POST.get("name")),
