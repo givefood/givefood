@@ -16,7 +16,7 @@ urlpatterns = [
 
     # PUBLIC
     url(r'^$', givefood.views.public_index, name="public_index"),
-    url(r'^(?P<year>(2019|2020|2021))/$', givefood.views.public_annual_report, name="public_annual_report"),
+    url(r'^(?P<year>(2019|2020|2021|2022))/$', givefood.views.public_annual_report, name="public_annual_report"),
     url(r'^register-foodbank/$', givefood.views.public_reg_foodbank, name="public_reg_foodbank"),
     url(r'^sitemap.xml$', givefood.views.public_sitemap, name="public_sitemap"),
     url(r'^privacy/$', givefood.views.public_privacy, name="public_privacy"),

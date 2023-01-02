@@ -4,6 +4,7 @@
 	<url><loc>{{ domain }}/2019/</loc></url>
 	<url><loc>{{ domain }}/2020/</loc></url>
 	<url><loc>{{ domain }}/2021/</loc></url>
+	<url><loc>{{ domain }}/2022/</loc></url>
 	<url><loc>{{ domain }}/api/</loc></url>
 	<url><loc>{{ domain }}/api/docs/</loc></url>
 	<url><loc>{{ domain }}/needs/</loc></url>

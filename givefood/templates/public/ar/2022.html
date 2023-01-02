@@ -1,0 +1,133 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}2022 Give Food Annual Report{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/css/wfbn2.css">
+    <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@GiveFoodCharity">
+    <meta property="og:title" content="Give Food 2022 Annual Report">
+    <meta property="og:description" content="Find out what we've been done in 2022">
+    <meta name="description" content="Find out what we've been done in 2022">
+    <meta property="og:image" content="https://www.givefood.org.uk/static/img/ar/2021/sharing.png">
+{% endblock %}
+
+{% block body %}
+
+<div class="columns">
+
+    <div class="column is-4">
+      <a href="/" class="logo">Give Food</a>
+    </div>
+
+  </div>
+
+  <div class="columns">
+    <div class="column is-one-third intro">
+
+        <h1>2022 Annual Report</h1>
+        <p>We're a UK charity that supports food banks around the country. We do this by using technology to identify what is needed at food banks, distributing this information and also making our own deliveries.</p>
+        <p>We run the largest and most complete public database of UK food banks and scrape their websites for what they are requesting in real time.</p>
+
+        <div class="sticky-toc content">
+            <ul class="is-size-6">
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#aim-review">Aim Review</a></li>
+                <li><a href="#data-code">Data &amp; Code</a></li>
+                <li><a href="#charity-reporting">Charity Reporting</a></li>
+                <li><a href="#aims-2023">Aims for 2023</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="column is-half content">
+
+        <h2 id="summary">Summary</h2>
+
+        <ul>
+            <li>Around 4 million people viewed our food bank need data</li>
+            <li>Our data was used as part of studies of food poverty by multiple universities, political parties and by the NHS</li>
+            <li>Built a tool that allows users to write an email to their MP describing food poverty in their constituency</li>
+            <li>Made 7.6 tonnes of our own deliveries, containing around 17,000 items and 5.5m calories. Half of this was done in November and December</li>
+        </ul>
+
+        <h2 id="aim-review">Aim Review</h2>
+
+        <p>In the <a href="/2021/">2021 annual report</a> we set ourselves the following aims:</p>
+
+        <ul>
+            <li>Create a tool to allow users to better contact their local and national political representatives about the food bank cause</li>
+            <li>Monitor food bank surplus as well as need</li>
+            <li>Faster complete data audits throughout the year</li>
+            <li>Continue to publish dashboards &amp; data</li>
+        </ul>
+
+        <h3>Create a tool to allow users to better contact their local and national political representatives about the food bank cause</h3>
+
+        <p>✅ We built and deployed a tool to allow constituents to find out what food banks exist in their constituency, who the member of parliament representing them is and then customise a personalised letter to send via email.</p>
+        <p>Built with help from employees of MPs and feedback from users we've repeatedly tweaked the letter template to reflect circumstances that affect food banks, the political climate and constituent views.</p>
+
+        <div class="three-image-stack">
+            <figure>
+                <img src="/static/img/ar/2022/constituency1.png" alt="Constituency page">
+                <figcaption>Constituency page</figcaption>
+            </figure>
+            <figure>
+                <img src="/static/img/ar/2022/constituency2.png" alt="Form for user to input details">
+                <figcaption>Taking a constituent's information</figcaption>
+            </figure>
+            <figure>
+                <img src="/static/img/ar/2022/constituency3.png" alt="Form letter generator">
+                <figcaption>Customised and personalised letter for the user to have sent</figcaption>
+            </figure>
+        </div>
+
+        <h3>Monitor food bank surplus as well as need</h3>
+
+        <p>✅ We now monitor the excess at food banks along with the items they are looking to have donated. This information is distributed on our website, via our API and also on email updates.</p>
+
+        <h3>Faster complete data audits throughout the year</h3>
+
+        <p>✅ We've spent around twice as long this year auditing our data - a part time person is now dedicated to this task.</p>
+
+        <h3>Continue to publish dashboards &amp; data</h3>
+
+        <p>✅ We published a few new dashboards this year:</p>
+
+        <ul>
+            <li>Real time <a href="/dashboard/excess/">lists of excess items</a> declared</li>
+            <li>A <a href="/dashboard/items-requested-weekly/by-year/">year-by-year view of the weekly number of items requested</a></li>
+            <li>The <a href="/dashboard/most-excess-items/">items most in excess</a></li>
+        </ul>
+
+
+        <h2 id="data-code">Data &amp; Code</h2>
+
+        <p>We continue to maintain the UK's largest and most complete database of food banks covering 2620 locations (up from 2422 last year, and 2329 in 2020).</p>
+        <p>Our software checked food bank websites for what they needed around three million times in 2022, and found around 47,000 items requested. Our API responded to around five million requests for data in 2022.</p>
+        <p>Our email subscription tool now sends thousands of emails a month to people who want updates on what their local food bank needs.</p>
+
+        <h2 id="charity-reporting">Charity Reporting</h2>
+
+        <p>2022 was the second year we published our accounts. This happened in June and is <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/accounts-and-annual-returns">available on the Charity Commission website</a>.</p>
+
+        <h2 id="aims-2023">Aims for 2023</h2>
+
+        <ul>
+            <li>Continue our winter food drive, supporting food banks during this difficult period</li>
+            <li>Rebrand of the charity. Refresh the website. Rewrite underlying tech</li>
+        </ul>
+
+        <br><br><br><br>
+
+    </div>
+
+  </div>
+
+
+
+
+
+{% endblock %}
