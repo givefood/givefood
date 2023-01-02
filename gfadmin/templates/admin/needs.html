@@ -18,6 +18,7 @@
           <th>ID</th>
           <th>Foodbank</th>
           <th>Need</th>
+          <th>Excess</th>
           <th>Created</th>
           <th>Modified</th>
         </tr>
@@ -40,6 +41,7 @@
             </td>
             <td>{{ need.foodbank_name }}</td>
             <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
+            <td class="is-size-7">{{ need.excess_change_text|linebreaksbr }}</td>
             <td>{{ need.created }}</td>
             <td>{{ need.modified }}</td>
           </tr>
