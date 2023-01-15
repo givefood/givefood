@@ -291,11 +291,11 @@ def get_weight(text):
 
     # Grams
     if text[-1:] == "G":
-      weight = float(text[-4:].replace("G",""))
+      weight = float(remove_letters(text[-4:].replace("G","")))
 
     # Grams
     if text[-1:] == "g" and not weight:
-      weight = float(text[-4:].replace("g",""))
+      weight = float(remove_letters(text[-4:].replace("g","")))
 
     # 6x1L
     if text[-5:] == " 6x1L":
@@ -596,6 +596,12 @@ def find_parlcons(lattlong, quantity = 10, skip_first = False):
         first_item = 0
 
     return sorted_parlcons[first_item:quantity]
+
+
+def remove_letters(the_string):
+
+    the_string = re.sub(r'[a-z]+', '', the_string, re.I) 
+    return the_string
 
 
 def miles(meters):
