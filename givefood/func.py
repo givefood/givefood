@@ -440,6 +440,8 @@ def clean_foodbank_need_text(text):
         "We are currently shortest of: (Please)",
         "Urgently needed food & toiletry items",
         "Urgently Required",
+        "We're running low on",
+        "We are short of",
     ]
 
     # Clean out rubbish strings
