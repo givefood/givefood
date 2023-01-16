@@ -14,8 +14,8 @@ from django.core.cache import cache
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations, get_cred, post_to_facebook, post_to_twitter, post_to_subscriber, send_email
-from givefood.models import Foodbank, Order, OrderGroup, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential, FoodbankSubscriber
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm
+from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderLine, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm
 
 
 def index(request):
@@ -939,6 +939,42 @@ def order_group_form(request, slug=None):
     else:
         form = OrderGroupForm(instance=item)
         page_title = "New Order Group"
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def foodbank_groups(request):
+
+    foodbank_groups = FoodbankGroup.objects.all().order_by("name")
+
+    template_vars = {
+        "section":"settings",
+        "foodbank_groups":foodbank_groups,
+    }
+    return render(request, "admin/foodbank_groups.html", template_vars)
+
+
+def foodbank_group_form(request, slug=None):
+
+    if slug:
+        item = get_object_or_404(FoodbankGroup, slug = slug)
+        page_title = "Edit Foodbank Group"
+    else:
+        item = None
+        page_title = "New Foodbank Group"
+
+    if request.POST:
+        form = FoodbankGroupForm(request.POST, instance=item)
+        if form.is_valid():
+            foodbank_group = form.save()
+            return redirect("admin:foodbank_groups")
+    else:
+        form = FoodbankGroupForm(instance=item)
+        page_title = "New Foodbank Group"
 
     template_vars = {
         "form":form,

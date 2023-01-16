@@ -63,6 +63,11 @@ urlpatterns = (
     url(r'^order-group/(?P<slug>[-\w]+)/$', order_group, name="order_group"),
     url(r'^order-group/(?P<slug>[-\w]+)/edit/$', order_group_form, name="order_group_edit"),
     url(r'^order-groups/new/$', order_group_form, name="order_group_new"),
+
+    url(r'^foodbank-groups/$', foodbank_groups, name="foodbank_groups"),
+    url(r'^foodbank-group/(?P<slug>[-\w]+)/edit/$', foodbank_group_form, name="foodbank_group_edit"),
+    url(r'^foodbank-groups/new/$', foodbank_group_form, name="foodbank_group_new"),
+
     url(r'^credentials/$', credentials, name="credentials"),
     url(r'^credentials/new/$', credentials_form, name="credential_new"),
     url(r'^searches/$', searches, name="searches"),

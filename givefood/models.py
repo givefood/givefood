@@ -45,6 +45,10 @@ class Foodbank(models.Model):
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
     bankuet_slug = models.CharField(max_length=50, null=True, blank=True)
 
+    foodbank_group = models.ForeignKey("FoodbankGroup", null=True, blank=True, on_delete=models.DO_NOTHING)
+    foodbank_group_name = models.CharField(max_length=100, null=True, blank=True, editable=False)
+    foodbank_group_slug = models.CharField(max_length=100, null=True, blank=True, editable=False)
+
     contact_email = models.EmailField()
     notification_email = models.EmailField(null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
@@ -318,6 +322,13 @@ class Foodbank(models.Model):
         self.district = regions.get("district", None)
         self.lsoa = regions.get("lsoa", None)
         self.msoa = regions.get("msoa", None)
+
+        if self.foodbank_group:
+            self.foodbank_group_name = self.foodbank_group.name
+            self.foodbank_group_slug = self.foodbank_group.slug
+        else:
+            self.foodbank_group_name = None
+            self.foodbank_group_slug = None
 
         try:
             parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
@@ -753,6 +764,7 @@ class OrderGroup(models.Model):
     class Meta:
         app_label = 'givefood'
 
+
 class FoodbankArticle(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
@@ -778,6 +790,25 @@ class FoodbankArticle(models.Model):
     class Meta:
         app_label = 'givefood'
 
+
+class FoodbankGroup(models.Model):
+
+    name = models.CharField(max_length=100, null=True, blank=True)
+    slug = models.CharField(max_length=100, editable=False)
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    def save(self, *args, **kwargs):
+
+        self.slug = slugify(self.name)
+        super(FoodbankGroup, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        app_label = 'givefood'
 
 
 class FoodbankChange(models.Model):

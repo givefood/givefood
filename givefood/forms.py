@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
-from givefood.models import OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential
+from givefood.models import OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup
 from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
@@ -37,6 +37,12 @@ class FoodbankForm(ModelForm):
 class FoodbankPoliticsForm(ModelForm):
     class Meta:
         model = Foodbank
+        fields = "__all__"
+
+
+class FoodbankGroupForm(ModelForm):
+    class Meta:
+        model = FoodbankGroup
         fields = "__all__"
 
 
