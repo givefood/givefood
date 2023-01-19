@@ -252,8 +252,8 @@ def order_send_notification(request, id = None):
 
     order = get_object_or_404(Order, order_id = id)
 
-    text_body = render_to_string("emails/order.txt",{"order":order})
-    html_body = render_to_string("emails/order.html",{"order":order})
+    text_body = render_to_string("admin/emails/order.txt",{"order":order})
+    html_body = render_to_string("admin/emails/order.html",{"order":order})
 
     send_email(
         to = order.foodbank.notification_email,
@@ -308,6 +308,25 @@ def foodbank_form(request, slug = None):
         "page_title":page_title,
     }
     return render(request, "admin/form.html", template_vars)
+
+
+@require_POST
+def foodbank_rfi(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    send_email(
+        to = foodbank.contact_email,
+        subject = "%s listing on Give Food" % (foodbank.full_name()),
+        cc = "mail@givefood.org.uk",
+        body = render_to_string("admin/emails/rfi.txt",{"foodbank":foodbank}),
+        html_body = render_to_string("admin/emails/rfi.html",{"foodbank":foodbank}),
+    )
+
+    foodbank.last_rfi = datetime.now()
+    foodbank.save()
+
+    return redirect("admin:foodbank", slug = foodbank.slug)
 
 
 def foodbank_politics_form(request, slug = None):
@@ -1058,12 +1077,17 @@ def email_tester_test(request):
 
     foodbank = Foodbank.objects.all().latest("modified")
     need = FoodbankChange.objects.filter(published = True).latest("created")
+    order = Order.objects.all().latest("created")
 
-    template_file = "wfbn/emails/%s" % (email)
+    if email[0:3] == "rfi" or email[0:5] == "order":
+        template_file = "admin/emails/%s" % (email)
+    else:
+        template_file = "wfbn/emails/%s" % (email)
 
     template_vars = {
         "foodbank":foodbank,
         "need":need,
+        "order":order,
         "sub_key":"SUBKEY123456789",
         "subscriber":{
             "unsub_key":"UNSUBKEY123456789",

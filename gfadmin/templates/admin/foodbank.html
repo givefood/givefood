@@ -172,6 +172,13 @@
         {% endfor %}
       </table>
 
+      <h3>⚠️ Danger Zone</h3>
+
+      <form action="{% url 'admin:foodbank_rfi' foodbank.slug %}" method="post">
+        <input type="submit" class="button is-danger" value="Send RFI" onclick="return confirm('Send RFI to {{ foodbank.name}}?')">
+        {% csrf_token %}
+      </form>
+
     </div>
 
     {% if foodbank.needs %}
