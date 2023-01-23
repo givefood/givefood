@@ -154,26 +154,46 @@ def parse_tesco_order_text(order_text):
 
 def parse_sainsburys_order_text(order_text):
 
-    # 50 x Hubbard's Foodstore Chicken Curry 392g - Total Price £29.50
-    # 25 x Hubbard's Foodstore Strawberry Jam 454g - Total Price £7.00
-
     order_lines = []
+    sub_line = 1
 
     order_items = order_text.splitlines()
     for order_item_line in order_items:
-        order_item_line_bits = re.split(r'( x | - Total Price )', order_item_line)
+        if sub_line == 1:
+            item_name = order_item_line
+        if sub_line == 5:
+            item_quantity = order_item_line
+        if sub_line == 7:
+            item_cost = int(order_item_line.replace("£","").replace(".",""))
+        if sub_line == 9:
+            order_lines.append({
+                "quantity":int(item_quantity),
+                "name":item_name,
+                "item_cost":item_cost,
+                "weight":get_weight(item_name),
+                "calories":get_calories(
+                    item_name,
+                    get_weight(item_name),
+                    int(item_quantity)
+                ),
+            })
+        if sub_line == 10:
+            sub_line = 0
 
-        order_lines.append({
-            "quantity":int(order_item_line_bits[0]),
-            "name":order_item_line_bits[2],
-            "item_cost":int(float(order_item_line_bits[4].replace(u"\xA3","").replace(".",""))),
-            "weight":get_weight(order_item_line_bits[2]),
-            "calories":get_calories(
-                order_item_line_bits[2],
-                get_weight(order_item_line_bits[2]),
-                int(order_item_line_bits[0])
-            ),
-        })
+        sub_line = sub_line + 1
+        # order_item_line_bits = re.split(r'( x | - Total Price )', order_item_line)
+
+        # order_lines.append({
+        #     "quantity":int(order_item_line_bits[0]),
+        #     "name":order_item_line_bits[2],
+        #     "item_cost":int(float(order_item_line_bits[4].replace(u"\xA3","").replace(".",""))),
+        #     "weight":get_weight(order_item_line_bits[2]),
+        #     "calories":get_calories(
+        #         order_item_line_bits[2],
+        #         get_weight(order_item_line_bits[2]),
+        #         int(order_item_line_bits[0])
+        #     ),
+        # })
 
     return order_lines
 
