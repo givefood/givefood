@@ -298,14 +298,25 @@ def foodbank_search(request):
     lat_lng = request.GET.get("lat_lng")
     address = request.GET.get("address")
 
+    # Check we either have lat_lng or address
     if not lat_lng and not address:
         return HttpResponseBadRequest()
 
+    if lat_lng:
+        # Check comma in lat_lng
+        if "," not in lat_lng:
+            return HttpResponseBadRequest()
+        # Check lat_lng is contains only numbers
+        if not lat_lng.replace(",","").replace("-","").replace(".","").isdigit():
+            return HttpResponseBadRequest()
+
+    # Attempt geocoding if we have an address    
     if address and not lat_lng:
         lat_lng = geocode(address)
 
+    # Check lat_lng is in the UK
     if not is_uk(lat_lng):
-        return HttpResponseBadRequest() 
+        return HttpResponseBadRequest()
 
     foodbanks = find_foodbanks(lat_lng, 10)
     response_list = []
