@@ -393,6 +393,7 @@ class FoodbankLocation(models.Model):
     lsoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
     msoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
+    modified = models.DateTimeField(auto_now=True, editable=False)
     edited = models.DateTimeField(editable=False, null=True)
 
     class Meta:
