@@ -34,7 +34,9 @@ Our order ID: {{ order.order_id }}
 
 The delivery is scheduled for {{ order.delivery_date|date:"l" }}, {{ order.delivery_date }} between {{ order.delivery_hour }}:00 and {{ order.delivery_hour_end }}:00.
 
-It contains {{ order.no_items }} items, weighs about {{ order.weight_kg_pkg|floatformat:"0" }} kg, and contains {{ order.calories|intcomma }} calories. We've given {{ order.delivery_provider|safe }} your phone number {% if order.foodbank.delivery_phone_number %}{{ order.foodbank.delivery_phone_number }}{% else %}{{ order.foodbank.phone_number }}{% endif %}.
+It contains {{ order.no_items }} items, weighs about {{ order.weight_kg_pkg|floatformat:"0" }} kg, and contains {{ order.calories|intcomma }} calories - although this may vary based on availability.
+
+We've given {{ order.delivery_provider|safe }} your phone number {% if order.foodbank.delivery_phone_number %}{{ order.foodbank.delivery_phone_number }}{% else %}{{ order.foodbank.phone_number }}{% endif %}.
 
 To:
 {{ order.foodbank|safe }} Food Bank
