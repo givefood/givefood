@@ -94,7 +94,7 @@ def geocode(address):
 
     gmap_geocode_key = get_cred("gmap_geocode_key")
 
-    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&address=%s" % (gmap_geocode_key, address.encode('utf8'))
+    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&address=%s" % (gmap_geocode_key, requests.utils.quote(address))
     request = requests.get(address_api_url)
 
     if request.status_code == 200:
