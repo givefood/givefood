@@ -100,13 +100,13 @@ def geocode(address):
     if request.status_code == 200:
         try:
             address_result_json = request.json()
-            lattlong = "%s,%s" % (
+            lat_lng = "%s,%s" % (
                 address_result_json["results"][0]["geometry"]["location"]["lat"],
                 address_result_json["results"][0]["geometry"]["location"]["lng"]
             )
         except:
-            lattlong = "0,0"
-    return lattlong
+            lat_lng = "0,0"
+    return lat_lng
 
 
 def oc_geocode(address):
