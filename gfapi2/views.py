@@ -12,7 +12,7 @@ from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_f
 DEFAULT_FORMAT = "json"
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def index(request):
 
     template_vars = {}
@@ -20,7 +20,7 @@ def index(request):
     return render(request, "index.html", template_vars)
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def docs(request):
 
     api_formats = ["JSON","XML","YAML"]
@@ -66,7 +66,7 @@ def docs(request):
     return render(request, "docs.html", template_vars)
 
 
-@cache_page(60*60*8)
+@cache_page(60*60*12)
 def foodbanks(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -146,7 +146,7 @@ def foodbanks(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_page(60*60*8)
+@cache_page(60*60*12)
 def foodbank(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -291,7 +291,7 @@ def foodbank(request, slug):
     return ApiResponse(response_dict, "foodbank", format)
 
 
-@cache_page(60*60*8)
+@cache_page(60*60*12)
 def foodbank_search(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -387,7 +387,7 @@ def foodbank_search(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_page(60*60*8)
+@cache_page(60*60*12)
 def locations(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -466,7 +466,7 @@ def locations(request):
     return ApiResponse(response_list, "locations", format)
 
 
-@cache_page(60*60*8)
+@cache_page(60*60*12)
 def location_search(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -555,7 +555,7 @@ def location_search(request):
     return ApiResponse(response_list, "locations", format)
 
 
-@cache_page(60*30)
+@cache_page(60*60*2)
 def needs(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -585,7 +585,7 @@ def needs(request):
     return ApiResponse(response_list, "needs", format)
 
 
-@cache_page(60*60*4)
+@cache_page(60*60*12)
 def need(request, id):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -610,7 +610,7 @@ def need(request, id):
     return ApiResponse(response_dict, "need", format)
 
 
-@cache_page(60*60*8)
+@cache_page(60*60*12)
 def constituencies(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -642,7 +642,7 @@ def constituencies(request):
     return ApiResponse(response_list, "constituencies", format) 
 
 
-@cache_page(60*60*8)
+@cache_page(60*60*12)
 def constituency(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)

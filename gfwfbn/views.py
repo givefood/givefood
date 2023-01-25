@@ -20,7 +20,7 @@ from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, 
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
-@cache_page(60*30)
+@cache_page(60*60*2)
 def index(request):
 
     address = request.GET.get("address", "")
@@ -106,7 +106,7 @@ def foodbank(request, slug):
     return render(request, "wfbn/foodbank/index_%s.html" % (template), template_vars)
 
 
-@cache_page(60*60*5)
+@cache_page(60*60*12)
 def foodbank_rss(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -139,7 +139,7 @@ def foodbank_rss(request, slug):
     return render(request, "wfbn/foodbank/rss.xml", template_vars, content_type='text/xml')
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def foodbank_map(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -173,7 +173,7 @@ def foodbank_locations(request,slug):
     return render(request, "wfbn/foodbank/locations.html", template_vars)
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def foodbank_news(request,slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -187,7 +187,7 @@ def foodbank_news(request,slug):
     return render(request, "wfbn/foodbank/news.html", template_vars)
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def foodbank_history(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -206,7 +206,7 @@ def foodbank_history(request, slug):
     return render(request, "wfbn/foodbank/history.html", template_vars)
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def foodbank_politics(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -222,7 +222,7 @@ def foodbank_politics(request, slug):
     return render(request, "wfbn/foodbank/politics.html", template_vars)
 
 
-@cache_page(60*60*4)
+@cache_page(60*60*12)
 def foodbank_socialmedia(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -236,7 +236,7 @@ def foodbank_socialmedia(request, slug):
     return render(request, "wfbn/foodbank/socialmedia.html", template_vars)
 
 
-@cache_page(60*60*4)
+@cache_page(60*60*12)
 def foodbank_nearby(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -251,7 +251,7 @@ def foodbank_nearby(request, slug):
     return render(request, "wfbn/foodbank/nearby.html", template_vars)
 
 
-@cache_page(60*60*4)
+@cache_page(60*60*12)
 def foodbank_subscribe(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -264,7 +264,7 @@ def foodbank_subscribe(request, slug):
     return render(request, "wfbn/foodbank/subscribe.html", template_vars)
 
 
-@cache_page(60*60*4)
+@cache_page(60*60*12)
 def foodbank_subscribe_sample(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -298,7 +298,7 @@ def foodbank_location(request, slug, locslug):
     return render(request, "wfbn/foodbank/location_%s.html" % (template), template_vars)
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def foodbank_location_map(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -311,7 +311,7 @@ def foodbank_location_map(request, slug, locslug):
     return HttpResponse(request.content, content_type='image/png')
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def foodbank_location_politics(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -329,7 +329,7 @@ def foodbank_location_politics(request, slug, locslug):
     return render(request, "wfbn/foodbank/location_politics.html", template_vars)
 
 
-@cache_page(60*60*8)
+@cache_page(60*60*12)
 def constituencies(request):
 
     postcode = request.GET.get("postcode", None)
@@ -349,7 +349,7 @@ def constituencies(request):
     return render(request, "wfbn/constituency/index.html", template_vars)
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def constituency(request, slug):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)

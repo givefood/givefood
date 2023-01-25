@@ -1,5 +1,5 @@
 runtime: python38
-default_expiration: "4h"
+default_expiration: "12h"
 instance_class: F2
 
 handlers:
