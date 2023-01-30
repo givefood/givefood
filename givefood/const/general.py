@@ -88,3 +88,25 @@ RICK_ASTLEY = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 SITE_DOMAIN = "https://www.givefood.org.uk"
 API_DOMAIN = SITE_DOMAIN
+
+
+OLD_FOODBANK_SLUGS = {
+    "angus":"dundee-angus",
+    "dundee":"dundee-angus",
+    "lifeshare":"lifeshare-manchester",
+    "galashiels":"galashiels-and-area",
+    "bristol-north":"north-bristol-south-gloucestershire",
+    "feed":"st-albans-and-district",
+    "hillingdon/hayes-st-anselm":"st-anselm",
+    "b30":"b30-south-birmingham",
+}
+
+FOODBANK_SUBPAGES = [
+    "locations",
+    "news",
+    "politics",
+    "social-media",
+    "nearby",
+    "history",
+    "subscribe",
+]

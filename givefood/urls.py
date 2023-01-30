@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.views.generic import RedirectView
 
 import givefood.views
-from givefood.const.general import RICK_ASTLEY
+from givefood.const.general import RICK_ASTLEY, OLD_FOODBANK_SLUGS, FOODBANK_SUBPAGES
 
 import session_csrf
 session_csrf.monkeypatch()
@@ -33,19 +33,17 @@ urlpatterns = [
     # Old URL redirects
     url(r'^what-food-banks-need/$', RedirectView.as_view(url='/needs/')),
     url(r'^static/img/map-allloc\.png$', RedirectView.as_view(url="/static/img/map.png")),
+]
 
-    # Old Food Bank Redirects
-    # https://github.com/givefood/givefood/issues/187
-    url(r'^needs/at/angus/$', RedirectView.as_view(url='/needs/at/dundee-angus/')),
-    url(r'^needs/at/dundee/$', RedirectView.as_view(url='/needs/at/dundee-angus/')),
-    url(r'^needs/at/lifeshare/$', RedirectView.as_view(url='/needs/at/lifeshare-manchester/')),
-    url(r'^needs/at/galashiels/$', RedirectView.as_view(url='/needs/at/galashiels-and-area/')),
-    url(r'^needs/at/bristol-north/$', RedirectView.as_view(url='/needs/at/north-bristol-south-gloucestershire/')),
-    url(r'^needs/at/feed/$', RedirectView.as_view(url='/needs/at/st-albans-and-district/feed/')),
-    url(r'^needs/at/hillingdon/hayes-st-anselm/$', RedirectView.as_view(url='/needs/at/st-anselm/')),
-    url(r'^needs/at/b30/$', RedirectView.as_view(url='/needs/at/b30-south-birmingham/')),
+# Old Food Bank Redirects
+for old_slug, new_slug in OLD_FOODBANK_SLUGS.items():
+    urlpatterns.append(url(r'^needs/at/%s/$' % (old_slug), RedirectView.as_view(url='/needs/at/%s/' % new_slug)))
+    for subpage in FOODBANK_SUBPAGES:
+        urlpatterns.append(url(r'^needs/at/%s/%s/$' % (old_slug, subpage), RedirectView.as_view(url='/needs/at/%s/%s/' % (new_slug, subpage))))
 
-    # Apps
+
+# Apps
+urlpatterns += [
     url(r'^needs/', include('gfwfbn.urls', namespace="wfbn")),
     url(r'^api/1/', include('gfapi1.urls')),
     url(r'^api/2/', include('gfapi2.urls', namespace="api2")),
@@ -55,7 +53,4 @@ urlpatterns = [
     url(r'^offline/', include('gfoffline.urls', namespace="offline")),
     url(r'^write/', include('gfwrite.urls', namespace="write")),
 
-    # CSP & Auth
-    url(r'^csp/', include('cspreports.urls')),
-    url(r'^auth/', include('djangae.contrib.googleauth.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
