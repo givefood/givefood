@@ -68,10 +68,12 @@
               <br> 
               {{ number_subscribers }} Subscriber{{ number_subscribers|pluralize }}
             </p>
-            <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
-              <input type="submit" class="button is-warning" value="Send Notifications">
-              {% csrf_token %}
-            </form>
+            {% if need.published %}
+              <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
+                <input type="submit" class="button is-warning" value="Send Notifications">
+                {% csrf_token %}
+              </form>
+            {% endif %}
           {% endif %}
         {% endif %}
       {% endif %}
