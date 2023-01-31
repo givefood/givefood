@@ -61,9 +61,13 @@
         {{ order.foodbank.postcode }}
     {% endif %}</p>
 
-    <p>Items:<br>
-    {% for line in order.lines %}{{ line.quantity }}x {{ line.name|safe }}<br>
-    {% endfor %}</p>
+    <table>
+        <tr><th></th><th>Qty</th><th>Kg</th></tr>
+        {% for line in order.lines %}
+            <tr><td>{{ line.name|safe }}</td><td>{{ line.quantity }}</td><td>{{ line.weight_kg|floatformat:2 }}</td></tr>
+        {% endfor %}
+    </table>
+
     
     
 {% endblock %}
