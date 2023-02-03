@@ -85,9 +85,13 @@ def search_results(request):
     for foodbank in all_foodbanks:
         if query.lower() in foodbank.name.lower():
             foodbanks.append(foodbank)
+        if query.lower() in foodbank.address.lower():
+            foodbanks.append(foodbank)
     
     for location in all_locations:
         if query.lower() in location.name.lower():
+            locations.append(location)
+        if query.lower() in location.address.lower():
             locations.append(location)
 
     for constituency in all_constituencies:
