@@ -98,6 +98,9 @@ def search_results(request):
         if query.lower() in constituency.name.lower():
             constituencies.append(constituency)
 
+    if not constituencies and not locations and len(foodbanks) == 1:
+        return redirect(reverse("admin:foodbank", args=(foodbanks[0].slug,)))
+
     template_vars = {
         "query":query,
         "foodbanks":foodbanks,
