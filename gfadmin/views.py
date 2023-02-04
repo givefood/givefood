@@ -1080,6 +1080,22 @@ def subscriptions(request):
     return render(request, "admin/subscriptions.html", template_vars)
 
 
+def subscriptions_csv(request):
+    
+    subscriptions = FoodbankSubscriber.objects.all().order_by("-created")
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="subscriptions.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["Email", "Foodbank","Created"])
+
+    for subscription in subscriptions:
+        writer.writerow([subscription.email, subscription.foodbank_name, subscription.created.date()])
+
+    return response
+
+
 @require_POST
 def delete_subscription(request):
 

@@ -77,6 +77,7 @@ urlpatterns = (
     url(r'^search/$', search_results, name="search_results"),
 
     url(r'^subscriptions/$', subscriptions, name="subscriptions"),
+    url(r'^subscriptions/csv/$', subscriptions_csv, name="subscriptions_csv"),
     url(r'^subscription/delete/$', delete_subscription, name="delete_subscription"),
 
     url(r'^clearcache/$', clearcache, name="clearcache"),
