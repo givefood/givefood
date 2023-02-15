@@ -14,7 +14,7 @@ cron:
 
 - description: crawl fb articles
   url: /offline/crawl_articles/
-  schedule: every 2 hours
+  schedule: every 12 hours
 
 - description: cleanup unconfirmed subscriptions
   url: /offline/cleanup_subs/
