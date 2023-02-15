@@ -456,6 +456,9 @@ def clean_foodbank_need_text(text):
     for string_to_clean in to_clean:
         text = text.replace(string_to_clean,"")
 
+    # Remove double spaces
+    text = text.replace("  "," ")
+    
     # Remove whitespace
     text = text.strip()
 
