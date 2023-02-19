@@ -123,6 +123,7 @@ function do_lattlong(position) {
 }
 
 function address_on_map(address) {
+  address = address + ",UK"
   geocoder = new google.maps.Geocoder();
   geocoder.geocode({address:address}, function(results, status) {
     move_map(results[0].geometry.location.lat(),results[0].geometry.location.lng());
