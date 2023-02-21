@@ -207,22 +207,6 @@ def foodbank_history(request, slug):
 
 
 @cache_page(60*60*12)
-def foodbank_politics(request, slug):
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-    
-    if not foodbank.parliamentary_constituency:
-        return HttpResponseNotFound()
-
-    template_vars = {
-        "section":"politics",
-        "foodbank":foodbank,
-    }
-
-    return render(request, "wfbn/foodbank/politics.html", template_vars)
-
-
-@cache_page(60*60*12)
 def foodbank_socialmedia(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -309,24 +293,6 @@ def foodbank_location_map(request, slug, locslug):
     request = requests.get(url)
 
     return HttpResponse(request.content, content_type='image/png')
-
-
-@cache_page(60*60*12)
-def foodbank_location_politics(request, slug, locslug):
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-    location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
-
-    if not location.parliamentary_constituency:
-        return HttpResponseNotFound()
-
-    template_vars = {
-        "section":"locations",
-        "foodbank":foodbank,
-        "location":location,
-    }
-
-    return render(request, "wfbn/foodbank/location_politics.html", template_vars)
 
 
 @cache_page(60*60*12)

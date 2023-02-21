@@ -18,7 +18,6 @@ urlpatterns = (
     url(r'^at/(?P<slug>[-\w]+)/rss.xml$', foodbank_rss, name="foodbank_rss"),
     url(r'^at/(?P<slug>[-\w]+)/map.png$', foodbank_map, name="foodbank_map"),
     url(r'^at/(?P<slug>[-\w]+)/news/$', foodbank_news, name="foodbank_news"),
-    url(r'^at/(?P<slug>[-\w]+)/politics/$', foodbank_politics, name="foodbank_politics"),
     url(r'^at/(?P<slug>[-\w]+)/socialmedia/$', foodbank_socialmedia, name="foodbank_socialmedia"),
     url(r'^at/(?P<slug>[-\w]+)/nearby/$', foodbank_nearby, name="foodbank_nearby"),
     url(r'^at/(?P<slug>[-\w]+)/history/$', foodbank_history, name="foodbank_history"),
@@ -36,7 +35,6 @@ urlpatterns = (
     url(r'^at/(?P<slug>[-\w]+)/locations/$', foodbank_locations, name="foodbank_locations"),
     url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/$', foodbank_location, name="foodbank_location"),
     url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/map.png$', foodbank_location_map, name="foodbank_location_map"),
-    url(r'^at/(?P<slug>[-\w]+)/(?P<locslug>[-\w]+)/politics/$', foodbank_location_politics, name="foodbank_location_politics"),
 
     # Constituencies 
     url(r'^in/constituencies/$', constituencies, name="constituencies"),

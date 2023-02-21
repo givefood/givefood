@@ -7,9 +7,6 @@
         {% if foodbank.rss_url %}
             <li><a {% if section == 'news' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_news' foodbank.slug %}">News</a></li>
         {% endif %}
-        {% if foodbank.parliamentary_constituency %}
-            <li><a {% if section == 'politics' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_politics' foodbank.slug %}">Politics</a></li>
-        {% endif %}
         {% if foodbank.facebook_page or foodbank.twitter_handle %}
             <li><a  {% if section == 'socialmedia' %}class="is-active" {% endif %}  href="{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}">Social Media</a></li>
         {% endif %}

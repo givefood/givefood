@@ -14,9 +14,6 @@
 	{% for foodbank in foodbanks %}
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank' foodbank.slug %}</loc></url>
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_nearby' foodbank.slug %}</loc></url>
-		{% if foodbank.parliamentary_constituency_name %}
-			<url><loc>{{ domain }}{% url 'wfbn:foodbank_politics' foodbank.slug %}</loc></url>
-		{% endif %}
 		{% if foodbank.no_locations != 0 %}
             <url><loc>{{ domain }}{% url 'wfbn:foodbank_locations' foodbank.slug %}</loc></url>
         {% endif %}
@@ -29,9 +26,6 @@
 	{% endfor %}
 	{% for location in locations %}
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}</loc></url>
-		{% if location.parliamentary_constituency_name %}
-			<url><loc>{{ domain }}{% url 'wfbn:foodbank_location_politics' location.foodbank_slug location.slug %}</loc></url>
-		{% endif %}
 	{% endfor %}
 	{% for constituency in constituencies %}
 		<url><loc>{{ domain }}{% url 'wfbn:constituency' constituency.slug %}</loc></url>
