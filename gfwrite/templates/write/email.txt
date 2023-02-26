@@ -7,7 +7,7 @@ My name is {{ name }} and I am a constituent of {{ constituency }}. I am writing
 
 Food banks in our {{ constituency }} constituency include {% for foodbank in foodbanks %}{% if not forloop.first %}{% if not forloop.last %},{% endif %} {% endif %}{% if not forloop.first %}{% if forloop.last %}and {% endif %}{% endif %}{{ foodbank }} Food Bank{% endfor %}.
 
-There was a 71% increase in emergency food parcels provided by food banks in the UK’s largest food bank network, the Trussell Trust, between 2015/16 and 2019/20.
+There was a 74% increase in emergency food parcels provided by food banks in the UK’s largest food bank network, the Trussell Trust, in the last five years.
 
 People are driven to using emergency food supplies from charities because of the cost of living increasing, a lack of income, benefit delays & cuts, and inadequate support during challenging life experiences.
 
