@@ -68,8 +68,10 @@
                 {% if foodbank.phone_number %}
                   <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ location.phone_or_foodbank_phone }}" id="phone_link">{{ location.phone_or_foodbank_phone }}</a><br>
                 {% endif %}
-                <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}" id="email_link">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
+                <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}" id="email_link">{{ location.email_or_foodbank_email|truncatechars:40 }}</a><br>
               </div>
+
+              {% include "wfbn/foodbank/includes/charity.html" %}
 
           </div>
 
