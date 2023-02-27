@@ -1,24 +1,18 @@
 from datetime import date
-import operator
-from collections import OrderedDict
 import json
-import logging
 import requests
 
-from django.shortcuts import get_object_or_404
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.http import HttpResponse, Http404, HttpResponseRedirect, HttpResponseForbidden
-from django.template.defaultfilters import slugify
+from django.http import HttpResponse, HttpResponseForbidden
 from session_csrf import anonymous_csrf
 
-from givefood.models import Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency
+from givefood.models import Foodbank, Order, FoodbankChange
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_all_constituencies, get_image, item_class_count, clean_foodbank_need_text, get_all_foodbanks, get_all_open_foodbanks, get_all_locations, get_all_open_locations, admin_regions_from_postcode, find_foodbanks, find_locations, geocode, find_locations, get_cred
+from givefood.func import get_all_constituencies, get_image, item_class_count, get_all_foodbanks, get_all_open_foodbanks, get_all_locations, get_all_open_locations, get_cred
 from givefood.func import send_email
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
