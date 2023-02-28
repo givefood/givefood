@@ -3,7 +3,7 @@
     {% if not foodbank.name == "Salvation Army" %}
         <p>{{ foodbank.full_name }} {% if foodbank.charity_just_foodbank %}is{% else %}operates under{% endif %} a charity registered in {{ foodbank.country }} <a href="{{ foodbank.charity_register_url }}" id="charity_link">{{ foodbank.charity_number }}</a>.</p>
     {% else %}
-        <p>The Salvation Army is a registered charity in England &amp; Wales <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/214779/charity-overview">214779</a>, and Scotland <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC009359">SC009359</a>.</p>
+        <p>The Salvation Army is a registered charity in England &amp; Wales <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/214779/charity-overview">214779</a> &amp; <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/215174/charity-overview">215174</a>, and Scotland <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC009359">SC009359</a> &amp; <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC037691">SC037691</a>.</p>
     {% endif %}
 {% else %}
 <br>
