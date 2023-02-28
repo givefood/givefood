@@ -1233,3 +1233,24 @@ class ConstituencySubscriber(models.Model):
 
     class Meta:
         app_label = 'givefood'
+
+
+class Place(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+    checked = models.DateTimeField(null=True, blank=True)
+
+    gbpnid = models.IntegerField(unique=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
+    latt_long = models.CharField(max_length=100, null=True, blank=True)
+    histcounty = models.CharField(max_length=100, null=True, blank=True)
+    adcounty = models.CharField(max_length=100, null=True, blank=True)
+    district = models.CharField(max_length=100, null=True, blank=True)
+    uniauth = models.CharField(max_length=100, null=True, blank=True)
+    police = models.CharField(max_length=100, null=True, blank=True)
+    region = models.CharField(max_length=100, null=True, blank=True)
+    type = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        app_label = 'givefood'

@@ -35,6 +35,7 @@ SECURE_REDIRECT_EXEMPT = [
     # Django compares these to request.path.lstrip("/"), hence the lack of preceding /
     r"^_ah/",
     r"^offline/",
+    r"^admin/places/loader",
 ]
 
 # CSP Configuration

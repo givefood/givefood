@@ -56,6 +56,9 @@ urlpatterns = (
     url(r'^parlcon/loader/twitter/$', parlcon_loader_twitter_handle, name="parlcon_loader_twitter_handle"),
     url(r'^parlcon/(?P<slug>[-\w]+)/edit/$', parlcon_form, name="parlcon_form"),
 
+    url(r'^places/$', places, name="places"),
+    url(r'^places/loader/$', places_loader, name="places_loader"),
+
     url(r'^politics/$', politics, name="politics"),
     url(r'^politics/csv/$', politics_csv, name="politics_csv"),
 

@@ -1,0 +1,35 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Places - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Places</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>LatLng</th>
+          <th>HistCounty</th>
+          <th>AdCounty</th>
+        </tr>
+        {% for place in places %}
+          <tr>
+            <td>{{ place.name }}</td>
+            <td>{{ place.latt_long }}</td>
+            <td>{{ place.histcounty }}</td>
+            <td>{{ place.adcounty }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

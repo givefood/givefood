@@ -11,6 +11,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
+from django.db import IntegrityError
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations, post_to_facebook, post_to_twitter, post_to_subscriber, send_email, get_all_constituencies
@@ -922,6 +923,33 @@ def parlcon_loader_twitter_handle(request):
     return HttpResponse("OK")
 
 
+def places_loader(request):
+
+    with open('./givefood/data/places.csv') as csvfile:
+        readCSV = csv.reader(csvfile, delimiter=',')
+
+        for row in readCSV:
+
+            try:
+                new_place = Place(
+                    gbpnid = row[0],
+                    name = row[1],
+                    latt_long = "%s,%s" % (row[2], row[3]),
+                    histcounty = row[4],
+                    adcounty = row[5],
+                    district = row[6],
+                    uniauth = row[7],
+                    police = row[8],
+                    region = row[9],
+                    type = row[10],
+                )
+                new_place.save()
+            except IntegrityError:
+                pass
+
+    return HttpResponse("OK")
+
+
 def settings(request):
 
     template_vars = {
@@ -1106,6 +1134,17 @@ def delete_subscription(request):
     subscriber.delete()
 
     return redirect("admin:subscriptions")
+
+
+def places(request):
+    
+    places = Place.objects.all().order_by("name")[:1000]
+
+    template_vars = {
+        "section":"settings",
+        "places":places,
+    }
+    return render(request, "admin/places.html", template_vars)
 
 
 def clearcache(request):
