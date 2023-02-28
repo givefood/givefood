@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	{% for foodbank in foodbanks %}
+		<url><loc>{{ foodbank.url }}</loc></url>
+        {% if foodbank.shopping_list_url != foodbank.url %}
+		    <url><loc>{{ foodbank.shopping_list_url }}</loc></url>
+        {% endif %}
+        {% if foodbank.rss_url %}
+            <url><loc>{{ foodbank.rss_url }}</loc></url>
+        {% endif %}
+	{% endfor %}
+</urlset>

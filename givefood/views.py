@@ -207,6 +207,18 @@ def public_sitemap(request):
 
 
 @cache_page(60*60*12)
+def public_sitemap_external(request):
+
+    foodbanks = get_all_open_foodbanks()
+
+    template_vars = {
+        "domain":SITE_DOMAIN,
+        "foodbanks":foodbanks,
+    }
+    return render(request, "public/sitemap_external.xml", template_vars, content_type='text/xml')
+
+
+@cache_page(60*60*12)
 def public_privacy(request):
     return render(request, "public/privacy.html")
 
