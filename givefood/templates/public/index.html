@@ -83,9 +83,7 @@
       </div>
 
       <div class="column is-one-quarter">
-        <div id="fb-root"></div>
-        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v7.0"></script>
-        <div class="fb-page" data-href="https://www.facebook.com/GiveFoodOrgUK" data-show-posts="true" data-width="" data-height="800" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/GiveFoodOrgUK" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/GiveFoodOrgUK">Give Food</a></blockquote></div>
+        {% include 'wfbn/includes/facebook_embed.html' with page_name='GiveFoodOrgUK' %}
       </div>
   </div>
 
