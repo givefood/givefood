@@ -17,6 +17,7 @@
           <th>LatLng</th>
           <th>HistCounty</th>
           <th>AdCounty</th>
+          <th>Checked</th>
         </tr>
         {% for place in places %}
           <tr>
@@ -24,6 +25,7 @@
             <td>{{ place.latt_long }}</td>
             <td>{{ place.histcounty }}</td>
             <td>{{ place.adcounty }}</td>
+            <td>{{ place.checked }}</td>
           </tr>
         {% endfor %}
       </table>

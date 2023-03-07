@@ -1,0 +1,79 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Finder - Give Food Admin{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/css/finder.css">
+{% endblock %}
+
+{% block body %}
+
+  <div class="columns finder">
+
+    <div class="column">
+
+        <form action="{% url 'admin:finder_check' %}" method="post">
+            <input type="hidden" name="place" value="{{ place.gbpnid }}">
+            <input type="submit" value="Checked" class="button is-link">
+        </form>
+        <form action="{% url 'admin:finder' %}">
+            <a href="{% url 'admin:finder' %}" class="button is-warning">Skip</a>
+        </form>
+
+        <dl>
+            <dt>Name</dt>
+            <dd><strong>{{ place.name }}</strong></dd>
+            <dt>Hist. County</dt>
+            <dd>{{ place.histcounty }}&nbsp;</dd>
+            <dt>Ad. County</dt>
+            <dd>{{ place.adcounty }}&nbsp;</dd>
+            <dt>District</dt>
+            <dd>{{ place.district }}&nbsp;</dd>
+            <dt>Uni. Auth.</dt>
+            <dd>{{ place.uniauth }}&nbsp;</dd>
+            <dt>Region</dt>
+            <dd>{{ place.region }}&nbsp;</dd>
+            <dt>Type</dt>
+            <dd>{{ place.type }}&nbsp;</dd>
+            <dt>Lat/Lng</dt>
+            <dd><a href="https://www.google.com/maps/search/{{ place.latt_long }}" target="_blank">{{ place.latt_long }}</a>&nbsp;</dd>
+        </dl>
+        
+    </div>
+
+    <div class="column">
+        <div id="map" class="findermap"></div>
+    </div>
+
+    <div class="column">
+        <ul id="results">
+            {% for result in search_results %}
+                <li data-lat="{{ result.geometry.location.lat }}" data-lng="{{ result.geometry.location.lng }}" data-name="{{ result.name }}">
+                    <strong>{{ result.name }}</strong><br>
+                    {{ result.formatted_address }}<br>
+                    {{ result.distance|floatformat:1 }}km<br>
+                    {% if result.matched_foodbank %}
+                        <span class="tag is-warning is-light">Matched Postcode</span> to <a href="{% url 'admin:foodbank' result.matched_foodbank.slug %}">{{ result.matched_foodbank.name }}</a><br>
+                    {% endif %}
+                    <div class="actions">
+                        <a href="{% url 'admin:newfoodbank' %}?name={{ result.name }}&address={{ result.formatted_address }}&postcode={{ result.postcode }}" class="button is-small" target="_blank">Add</a>
+                        <a href="https://www.google.co.uk/search?q={{ result.name }}, {{ result.postcode }}" class="button is-small" target="_blank">Search</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        initial_lat_lng = "{{ place.latt_long }}";
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
+    <script src="/static/js/finder.js"></script>
+{% endblock %}

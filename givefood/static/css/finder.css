@@ -1,0 +1,14 @@
+.finder form {
+    margin-bottom:10px;
+}
+.finder li {
+    border-bottom:1px solid #ddd;
+    padding:10px 0;
+}
+.finder .actions {
+    margin-top:5px;
+}
+.finder #map {
+    width:100%;
+    height:800px;
+}

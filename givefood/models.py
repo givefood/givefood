@@ -1252,5 +1252,11 @@ class Place(models.Model):
     region = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=100, null=True, blank=True)
 
+    def lat(self):
+        return float(self.latt_long.split(",")[0])
+    
+    def lng(self):
+        return float(self.latt_long.split(",")[1])
+
     class Meta:
         app_label = 'givefood'

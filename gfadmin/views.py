@@ -1,6 +1,8 @@
 import csv
 import logging
+import re
 import requests
+import random
 from datetime import datetime, timedelta
 
 from django.shortcuts import render, get_object_or_404
@@ -14,7 +16,7 @@ from django.core.cache import cache
 from django.db import IntegrityError
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.func import get_all_foodbanks, get_all_locations, post_to_facebook, post_to_twitter, post_to_subscriber, send_email, get_all_constituencies
+from givefood.func import get_all_foodbanks, get_all_locations, get_all_open_foodbanks, post_to_facebook, post_to_twitter, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
 from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm
 
@@ -334,7 +336,16 @@ def foodbank_form(request, slug = None):
             foodbank = form.save()
             return redirect("admin:foodbank", slug = foodbank.slug)
     else:
-        form = FoodbankForm(instance=foodbank)
+        if foodbank:
+            form = FoodbankForm(instance=foodbank)
+        else:
+            form = FoodbankForm(
+                initial={
+                    "name": request.GET.get("name", None),
+                    "address": request.GET.get("address", None),
+                    "postcode": request.GET.get("postcode", None),
+                }
+            )        
 
     template_vars = {
         "form":form,
@@ -950,6 +961,64 @@ def places_loader(request):
     return HttpResponse("OK")
 
 
+def finder(request):
+
+    placeids = open('./givefood/data/placeids.txt').read().splitlines()
+    random_placeid = int(random.choice(placeids))
+    
+    # DELETE ME
+    # random_placeid = 42935
+
+    place = Place.objects.get(gbpnid = random_placeid)
+
+    foodbank_names = []
+    for foodbank in get_all_open_foodbanks():
+        foodbank_names.append(foodbank.name.lower())
+        
+    search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food bank&location=%s&radius=5000&region=uk&key=%s" % (place.latt_long, get_cred("gmap_places_key"))
+    response = requests.get(search_url)
+    if response.status_code == 200:
+        search_results = response.json()["results"]
+
+    for result in search_results:
+        result["distance"] = distance_meters(place.lat(), place.lng(), result["geometry"]["location"]["lat"], result["geometry"]["location"]["lng"])/1000
+
+        try:
+            result["postcode"] = re.findall("[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][ABD-HJLNP-UW-Z]{2}", result["formatted_address"])[0]
+        except IndexError:
+            result["postcode"] = None
+
+        try:
+            matched_foodbank = Foodbank.objects.get(postcode=result["postcode"])
+        except Foodbank.DoesNotExist:
+            try:
+                matched_location = FoodbankLocation.objects.get(postcode=result["postcode"])
+                matched_foodbank = matched_location.foodbank
+            except FoodbankLocation.DoesNotExist:
+                matched_foodbank = None
+
+        result["matched_foodbank"] = matched_foodbank
+
+    template_vars = {
+        "section":"finder",
+        'gmap_static_key':get_cred("gmap_static_key"),
+        "place":place,
+        "search_url":search_url,
+        "search_results":search_results,
+    }
+    return render(request, "admin/finder.html", template_vars)
+
+
+@require_POST
+def finder_check(request):
+
+    place = Place.objects.get(gbpnid = request.POST["place"])
+    place.checked = datetime.now()
+    place.save()
+
+    return redirect("admin:finder")
+
+
 def settings(request):
 
     template_vars = {
@@ -1138,7 +1207,7 @@ def delete_subscription(request):
 
 def places(request):
     
-    places = Place.objects.all().order_by("name")[:1000]
+    places = Place.objects.all().order_by("-checked")[:1000]
 
     template_vars = {
         "section":"settings",

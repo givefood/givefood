@@ -59,6 +59,9 @@ urlpatterns = (
     url(r'^places/$', places, name="places"),
     url(r'^places/loader/$', places_loader, name="places_loader"),
 
+    url(r'^finder/$', finder, name="finder"),
+    url(r'^finder/check/$', finder_check, name="finder_check"),
+
     url(r'^politics/$', politics, name="politics"),
     url(r'^politics/csv/$', politics_csv, name="politics_csv"),
 
