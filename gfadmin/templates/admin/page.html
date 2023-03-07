@@ -25,7 +25,7 @@
       <a class="navbar-item{% if section == "locations" %} is-active{% endif %}" href="{% url 'admin:locations' %}">Locations</a>
       <a class="navbar-item{% if section == "needs" %} is-active{% endif %}" href="{% url 'admin:needs' %}">Needs</a>
       <a class="navbar-item{% if section == "orders" %} is-active{% endif %}" href="{% url 'admin:orders' %}">Orders</a>
-      <a class="navbar-item{% if section == "orders" %} is-active{% endif %}" href="{% url 'admin:finder' %}">Finder</a>
+      <a class="navbar-item{% if section == "finder" %} is-active{% endif %}" href="{% url 'admin:finder' %}" data-turbolinks="false">Finder</a>
       <a class="navbar-item{% if section == "settings" %} is-active{% endif %}" href="{% url 'admin:settings' %}">Settings</a>
 
       <div class="navbar-end">
