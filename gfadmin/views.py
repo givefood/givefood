@@ -970,10 +970,6 @@ def finder(request):
     # random_placeid = 42935
 
     place = Place.objects.get(gbpnid = random_placeid)
-
-    foodbank_names = []
-    for foodbank in get_all_open_foodbanks():
-        foodbank_names.append(foodbank.name.lower())
         
     search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food bank&location=%s&radius=5000&region=uk&key=%s" % (place.latt_long, get_cred("gmap_places_key"))
     response = requests.get(search_url)
