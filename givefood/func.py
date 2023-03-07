@@ -213,6 +213,23 @@ def get_weight(text):
     if text[-13:] == " 400g (184g*)":
       weight = 400
 
+    # 400g (240g*)
+    if text[-13:] == " 400g (240g*)":
+      weight = 400
+
+    # 380g (230g*)
+    if text[-13:] == " 380g (230g*)":
+      weight = 380
+    
+    # 400g (265g*)
+    if text[-13:] == " 400g (265g*)":
+      weight = 400
+
+    # 155g (93g*)
+    if text[-12:] == " 155g (93g*)":
+      weight = 155
+      
+
     # 198g (157g*)
     if text[-13:] == " 198g (157g*)":
       weight = 198
@@ -345,6 +362,14 @@ def get_weight(text):
 
     if text[-15:] == " 1.13L (2 pint)":
         weight = 1130
+
+    # 325g (260g*)
+    if text[-13:] == " 325g (260g*)":
+      weight = 325
+
+    # 400g (220g*)
+    if text[-13:] == " 400g (220g*)":
+      weight = 400
 
     ## PIES
     if text == "Tesco Mince Pies 6 Pack":
