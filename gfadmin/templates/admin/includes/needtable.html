@@ -4,6 +4,7 @@
       <th></th>
       <th>Foodbank</th>
       <th>When</th>
+      <th></th>
     </tr>
     {% for need in needs %}
       <tr>
@@ -25,6 +26,14 @@
           <a href="{% url "admin:need" need.need_id %}">
             {{ need.created|timesince }} ago
           </a>
+        </td>
+        <td>
+          {% if not need.published %}
+            <form action="{% url 'admin:need_delete' need.need_id %}" method="post">
+              <button type="submit" class="delete is-small" onclick="return confirm('Are you sure you want to delete {{ need.foodbank_name }} need?')" style="margin-top:3px;"></button>
+              {% csrf_token %}
+            </form>
+          {% endif %}
         </td>
       </tr>
     {% endfor %}
