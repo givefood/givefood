@@ -14,5 +14,6 @@ urlpatterns = (
     url(r'^articles/$', articles, name="articles"),
     url(r'^beautybanks/$', beautybanks, name="beautybanks"),
     url(r'^excess/$', excess, name="excess"),
+    url(r'^foodbanks-found/$', foodbanks_found, name="foodbanks_found"),
 
 )

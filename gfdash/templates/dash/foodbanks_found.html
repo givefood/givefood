@@ -1,0 +1,70 @@
+{% extends "public/page.html" %}
+
+{% block title %}Food Banks Found - Give Food{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/dash.css">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h1><a href="/">Give Food</a></h1>
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash:foodbanks_found' %}" aria-current="page">Food Banks Found</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+      <div id="chart" style="height:500px"></div>
+
+      <table class="table is-striped is-narrow is-fullwidth">
+          <tr>
+              <th>year-month</th>
+              <th>Food Bank Organisations</th>
+          </tr>
+          {% for month in created_months.items reversed %}
+              <tr>
+                  <td>{{ month.0 }}</td>
+                  <td>{{ month.1 }}</td>
+              </tr>
+          {% endfor %}
+      </table>
+    </div>
+
+  </div><br><br>
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script>
+    google.charts.load('current', {'packages':['bar']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Month', "Food Bank Organisations"],
+        {% for month in created_months.items %}
+            ['{{ month.0 }}', {{ month.1 }}],
+        {% endfor %}
+      ]);
+
+      var options = {
+        bars: 'verticle',
+        legend:{position:'none'},
+      };
+
+      var chart = new google.charts.Bar(document.getElementById('chart'));
+
+      chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+  </script>
+
+{% endblock %}

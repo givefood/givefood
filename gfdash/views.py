@@ -8,7 +8,7 @@ from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankArticle
-from givefood.func import group_list
+from givefood.func import group_list, get_all_foodbanks
 
 @cache_page(60*60*10)
 def index(request):
@@ -252,3 +252,21 @@ def excess(request):
         "excesses":excesses,
     }
     return render(request, "dash/excess.html", template_vars)
+
+
+@cache_page(60*60*10)
+def foodbanks_found(request):
+    
+    foodbanks = get_all_foodbanks()
+    created_dates = [foodbank.created for foodbank in foodbanks]
+    created_dates.sort()
+    created_months = {}
+
+    for created_date in created_dates:
+        created_months[created_date.strftime("%Y-%m")] = created_dates.index(created_date) + 1
+
+    template_vars = {
+        "created_months":created_months,
+    }
+
+    return render(request, "dash/foodbanks_found.html", template_vars)
