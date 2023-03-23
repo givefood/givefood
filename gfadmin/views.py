@@ -90,6 +90,8 @@ def search_results(request):
             foodbanks.append(foodbank)
         if query.lower() in foodbank.address.lower():
             foodbanks.append(foodbank)
+        if query.lower() in foodbank.postcode.lower():
+            foodbanks.append(foodbank)
     
     for location in all_locations:
         if query.lower() in location.name.lower():
