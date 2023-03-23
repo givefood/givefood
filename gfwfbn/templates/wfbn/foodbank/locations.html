@@ -59,18 +59,28 @@
 
           <div class="column">
 
-            <h3><a href="{% url 'wfbn:foodbank' foodbank.slug %}">Main</a></h3>
+            <h3>
+              <a href="{% url 'wfbn:foodbank' foodbank.slug %}">
+                {% if foodbank.address_is_administrative %}
+                  Administration
+                {% else %}
+                  Main
+                {% endif %}
+              </a>
+            </h3>
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
               {{ foodbank.postcode }}
             </address>
 
             {% for location in foodbank.locations %}
-                <h3><a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location.name }}</a></h3>
+                <h3>
+                  <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location.name }}</a>
+                </h3>
                 <address>
-                    {{ location.address|linebreaksbr }}<br>
-                    {{ location.postcode }}
-                  </address>
+                  {{ location.address|linebreaksbr }}<br>
+                  {{ location.postcode }}
+                </address>
             {% endfor %}
 
           </div>
