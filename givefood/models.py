@@ -58,6 +58,7 @@ class Foodbank(models.Model):
     url = models.URLField(max_length=200, verbose_name="URL")
     shopping_list_url = models.URLField(max_length=200, verbose_name="Shopping list URL")
     rss_url = models.URLField(max_length=200, verbose_name="RSS feed URL", null=True, blank=True)
+    address_is_administrative = models.BooleanField(default=False)
     is_closed = models.BooleanField(default=False)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
