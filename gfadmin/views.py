@@ -167,6 +167,16 @@ def foodbanks_christmascards(request):
     return render(request, "admin/foodbanks_christmascards.html", template_vars)
 
 
+def foodbanks_delivery_addresses(request):
+
+    foodbanks = Foodbank.objects.all().order_by("name")
+
+    template_vars = {
+        "foodbanks":foodbanks,
+    }
+    return render(request, "admin/foodbanks_deliveryaddresses.html", template_vars)
+
+
 def orders(request):
 
     sort_options = [

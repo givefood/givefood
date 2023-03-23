@@ -1,0 +1,31 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Foodbanks - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Foodbank Delivery Addresses</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Name</th>
+          <th>Delivery Address</th>
+        </tr>
+        {% for foodbank in foodbanks %}
+          <tr>
+            <td><a href="{% url "admin:foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
+            <td>{{ foodbank.delivery_address|linebreaksbr }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}
