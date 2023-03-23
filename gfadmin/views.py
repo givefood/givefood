@@ -183,6 +183,27 @@ def foodbanks_delivery_addresses(request):
     return render(request, "admin/foodbanks_deliveryaddresses.html", template_vars)
 
 
+def foodbanks_dupe_postcodes(request):
+
+    foodbanks = get_all_foodbanks()
+    locations = get_all_locations()
+
+    postcodes = []
+
+    for foodbank in foodbanks:
+        postcodes.append(foodbank.postcode)
+    
+    for location in locations:
+        postcodes.append(location.postcode)
+
+    dupes = set([x for x in postcodes if postcodes.count(x) > 1])
+
+    template_vars = {
+        "dupes":dupes,
+    }
+    return render(request, "admin/foodbanks_dupe_postcodes.html", template_vars)
+
+
 def orders(request):
 
     sort_options = [

@@ -1,0 +1,23 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Foodbanks - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Foodbank Dupe Postcodes</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <ul>
+        {% for dupe in dupes %}
+            <li><a href="{% url 'admin:search_results' %}?q={{ dupe }}">{{ dupe }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+
+  </div>
+
+{% endblock %}
