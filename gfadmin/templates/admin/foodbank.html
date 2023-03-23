@@ -155,7 +155,7 @@
               Delivery
             </td>
             <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
-            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#delivery_address" class="button is-small is-pulled-right">Edit</a></td>
+            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-small is-pulled-right">Edit</a></td>
           </tr>
         {% endif %}
         {% for location in foodbank.locations %}
