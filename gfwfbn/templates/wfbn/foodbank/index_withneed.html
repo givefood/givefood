@@ -88,11 +88,21 @@
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
             <div id="map" class="sidemap"></div>
+            {% if foodbank.address_is_administrative%}
+              <h3>Administrative address</h3>
+            {% endif %}
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
               {{ foodbank.postcode }}<br>
               {{ foodbank.country }}
             </address>
+
+            {% if foodbank.delivery_address %}
+              <h3>Delivery address</h3>
+              <address>
+                {{ foodbank.delivery_address|linebreaksbr }}
+              </address>
+            {% endif %}
 
             <div class="contacts is-size-6">
               <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url }}?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>

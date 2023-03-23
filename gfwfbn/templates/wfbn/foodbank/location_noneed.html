@@ -85,6 +85,13 @@
               {{ location.postcode }}
             </address>
 
+            {% if foodbank.delivery_address %}
+              <h3>Delivery address</h3>
+              <address>
+                {{ foodbank.delivery_address|linebreaksbr }}
+              </address>
+            {% endif %}
+
           </div>
       </div>
 
