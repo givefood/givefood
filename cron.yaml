@@ -12,14 +12,14 @@ cron:
   url: /offline/search/hydrate/
   schedule: every 6 hours
 
-- description: crawl fb articles
+- description: crawl foodbank articles
   url: /offline/crawl_articles/
   schedule: every 12 hours
 
 - description: cleanup unconfirmed subscriptions
   url: /offline/cleanup_subs/
-  schedule: every 12 hours
+  schedule: every 24 hours
 
 - description: calculate days between needs per food bank
   url: /offline/days_between_needs/
-  schedule: every 24 hours
+  schedule: every 48 hours
