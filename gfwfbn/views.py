@@ -83,7 +83,9 @@ def click(request, slug):
         foodbank.shopping_list_url,
         utm_querystring,
     )
-    return redirect(redirect_url)
+    response = redirect(redirect_url)
+    response["X-Robots-Tag"] = "noindex"
+    return response
 
 
 @cache_page(60*60*2)
