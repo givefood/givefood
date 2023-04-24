@@ -6,5 +6,7 @@ We've found a new list of items requested by {{ need.foodbank.name }} Food Bank.
 
 You can find more details at https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/
 
+🗺️ See other nearby food banks https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/nearby/
+🗳️ Explain to your MP that food banks shouldn't exist by taking political action https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/politics/
 
 You're getting these emails because you subscribed to them at www.givefood.org.uk. To unsubscribe visit http://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/updates/unsubscribe/?key={{ subscriber.unsub_key }}
