@@ -146,7 +146,7 @@ def foodbanks(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_page(60*60*12)
+@cache_page(60*60*24)
 def foodbank(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
