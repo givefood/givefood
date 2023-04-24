@@ -563,6 +563,30 @@ def need_publish(request, id, action):
 def need_notifications(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
+    
+    foodbank = need.foodbank
+    foodbank_slug = need.foodbank.slug
+    parliamentary_constituency = foodbank.parliamentary_constituency
+
+    # Make list of affected URLs
+    urls = [
+        reverse("wfbn:index"),
+        reverse("wfbn:foodbank", kwargs={"slug":foodbank_slug}),
+        reverse("wfbn:foodbank_history", kwargs={"slug":foodbank_slug}),
+        reverse("api_foodbank", kwargs={"slug":foodbank_slug}),
+        reverse("api2:foodbank", kwargs={"slug":foodbank_slug}),
+        reverse("wfbn:constituency", kwargs={"slug":parliamentary_constituency.slug}),
+    ]
+    for location in foodbank.locations():
+        urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":foodbank_slug, "locslug":location.slug}))
+
+    # Purge remote cache
+    url_params = "&url=".join(urls)
+    remote_cache_purge_url = "http://www.givefood.org.uk/purgecache/?url=%s" % (url_params)
+    request = requests.get(remote_cache_purge_url)
+
+    # Purge local cache
+    cache.clear()
 
     # Social media
     post_to_facebook(need)
@@ -573,7 +597,7 @@ def need_notifications(request, id):
     need.save()
 
     # Email subscriptions
-    subscribers = FoodbankSubscriber.objects.filter(foodbank = need.foodbank, confirmed = True)
+    subscribers = FoodbankSubscriber.objects.filter(foodbank = foodbank, confirmed = True)
     for subscriber in subscribers:
         post_to_subscriber(need, subscriber)
 
