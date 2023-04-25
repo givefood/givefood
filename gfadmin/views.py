@@ -575,6 +575,8 @@ def need_notifications(request, id):
         reverse("wfbn:foodbank_history", kwargs={"slug":foodbank_slug}),
         reverse("api_foodbank", kwargs={"slug":foodbank_slug}),
         reverse("api2:foodbank", kwargs={"slug":foodbank_slug}),
+        "%s?format=xml" % (reverse("api2:foodbank", kwargs={"slug":foodbank_slug})),
+        "%s?format=yaml" % (reverse("api2:foodbank", kwargs={"slug":foodbank_slug})),
         reverse("wfbn:constituency", kwargs={"slug":parliamentary_constituency.slug}),
     ]
     for location in foodbank.locations():
