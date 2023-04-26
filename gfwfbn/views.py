@@ -20,7 +20,7 @@ from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, 
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def index(request):
 
     address = request.GET.get("address", "")
@@ -56,7 +56,7 @@ def index(request):
     return render(request, "wfbn/index.html", template_vars)
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*12)
 def trussell_trust_index(request):
 
     gmap_key = get_cred("gmap_key")
@@ -88,7 +88,7 @@ def click(request, slug):
     return response
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*6)
 def foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -160,7 +160,7 @@ def foodbank_map(request, slug):
     return HttpResponse(request.content, content_type='image/png')
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*6)
 def foodbank_locations(request,slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -263,7 +263,7 @@ def foodbank_subscribe_sample(request, slug):
     return render(request, "wfbn/emails/notification.html", template_vars)
 
 
-@cache_page(60*60*2)
+@cache_page(60*60*6)
 def foodbank_location(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
