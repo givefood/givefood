@@ -3,5 +3,6 @@ Disallow: /needs/getlocation/
 
 User-agent: *
 Allow: /
+crawl-delay: 1
 
 Sitemap: https://www.givefood.org.uk/sitemap.xml
