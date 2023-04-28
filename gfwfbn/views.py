@@ -141,7 +141,7 @@ def foodbank_rss(request, slug):
     return render(request, "wfbn/foodbank/rss.xml", template_vars, content_type='text/xml')
 
 
-@cache_page(60*60*12)
+@cache_page(60*60*48)
 def foodbank_map(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -284,7 +284,7 @@ def foodbank_location(request, slug, locslug):
     return render(request, "wfbn/foodbank/location_%s.html" % (template), template_vars)
 
 
-@cache_page(60*60*12)
+@cache_page(60*60*48)
 def foodbank_location_map(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
