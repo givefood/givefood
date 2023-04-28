@@ -99,6 +99,7 @@ OLD_FOODBANK_SLUGS = {
     "feed":"st-albans-and-district",
     "hillingdon/hayes-st-anselm":"st-anselm",
     "b30":"b30-south-birmingham",
+    "kingfisher":"north-solihull",
 }
 
 FOODBANK_SUBPAGES = [
