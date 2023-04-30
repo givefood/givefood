@@ -24,6 +24,7 @@ urlpatterns = (
     url(r'^orders/csv/$', orders_csv, name="orders_csv"),
 
     url(r'^needs/$', needs, name="needs"),
+    url(r'^needs/deleteall/$', needs_deleteall, name="needs_deleteall"),
     url(r'^needs/csv/$', needs_csv, name="needs_csv"),
 
     url(r'^items/$', items, name="items"),

@@ -256,6 +256,12 @@ def needs(request):
     return render(request, "admin/needs.html", template_vars)
 
 
+def needs_deleteall(request):
+
+    needs = FoodbankChange.objects.filter(published=False).delete()
+    return redirect(reverse("admin:index"))
+
+
 def needs_csv(request):
 
     needs = FoodbankChange.objects.all().order_by("-created")

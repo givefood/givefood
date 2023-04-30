@@ -11,6 +11,10 @@
 
       <h2>Needs</h2>
 
+      <form action="{% url 'admin:needs_deleteall' %}">
+        <input type="submit" value="Delete All" class="button is-small is-pulled-right" onclick="return confirm('Are you sure you want to DELETE ALL unpublished needs?')">
+      </form>
+
       <h3>Unpublished</h3>
       {% include "admin/includes/needtable.html" with needs=unpublished_needs %}
 
