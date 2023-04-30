@@ -72,6 +72,15 @@ def get_all_constituencies():
     return all_parlcon
 
 
+def decache(urls):
+    url_params = "&url=".join(urls)
+    remote_cache_purge_url = "http://www.givefood.org.uk/purgecache/?url=%s" % (url_params)
+    request = requests.get(remote_cache_purge_url)
+    cache.clear()
+    logging.warn(urls)
+    return True
+
+
 def diff_html(a,b):
 
     the_diff = list(difflib.unified_diff(a, b, n=999))

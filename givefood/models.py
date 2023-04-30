@@ -8,9 +8,10 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 from django.core.cache import cache
+from django.urls import reverse
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES
-from givefood.func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details, find_parlcons
+from givefood.func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details, find_parlcons, decache
 
 
 class Foodbank(models.Model):
@@ -357,8 +358,22 @@ class Foodbank(models.Model):
 
         super(Foodbank, self).save(*args, **kwargs)
 
-        # Delete the now stale cache entry
-        cache.delete(FB_MC_KEY)
+        # Decache
+        urls = [
+            reverse("wfbn:index"),
+            reverse("wfbn:foodbank", kwargs={"slug":self.slug}),
+            reverse("wfbn:foodbank_history", kwargs={"slug":self.slug}),
+            reverse("wfbn:foodbank_rss", kwargs={"slug":self.slug}),
+            reverse("api_foodbank", kwargs={"slug":self.slug}),
+            reverse("api2:foodbank", kwargs={"slug":self.slug}),
+            "%s?format=xml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
+            "%s?format=yaml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
+            reverse("wfbn:constituency", kwargs={"slug":self.parliamentary_constituency.slug}),
+        ]
+        for location in self.locations():
+            urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
+        
+        decache(urls)
 
 
 class FoodbankLocation(models.Model):
@@ -495,7 +510,7 @@ class FoodbankLocation(models.Model):
     def delete(self, *args, **kwargs):
 
         super(FoodbankLocation, self).delete(*args, **kwargs)
-        # Resave the parent food bank, to update location count
+        # Resave the parent food bank
         self.foodbank.save()
 
     def save(self, *args, **kwargs):
@@ -541,7 +556,7 @@ class FoodbankLocation(models.Model):
 
         super(FoodbankLocation, self).save(*args, **kwargs)
 
-        # Resave the parent food bank, to update location count
+        # Resave the parent food bank
         self.foodbank.save()
 
 
