@@ -4,14 +4,6 @@ cron:
 #   url: /offline/precacher/
 #   schedule: every 10 minutes
 
-- description: search cleanup
-  url: /offline/search/cleanup/
-  schedule: every 6 hours
-
-- description: search hydrate
-  url: /offline/search/hydrate/
-  schedule: every 6 hours
-
 - description: crawl foodbank articles
   url: /offline/crawl_articles/
   schedule: every 12 hours

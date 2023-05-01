@@ -942,55 +942,6 @@ class FoodbankChange(models.Model):
         app_label = 'givefood'
 
 
-class ApiFoodbankSearch(models.Model):
-
-    created = models.DateTimeField(auto_now_add=True, editable=False)
-    modified = models.DateTimeField(auto_now=True, editable=False)
-    query_type = models.CharField(max_length=8)
-    query = models.CharField(max_length=255)
-    nearest_foodbank = models.IntegerField()
-    latt_long = models.CharField(max_length=50, verbose_name="Latt,Long", null=True, blank=True)
-
-    admin_district = models.CharField(max_length=50, null=True, blank=True)
-    admin_ward = models.CharField(max_length=50, null=True, blank=True)
-    lsoa = models.CharField(max_length=50, null=True, blank=True)
-    msoa = models.CharField(max_length=50, null=True, blank=True)
-    parliamentary_constituency = models.CharField(max_length=50, null=True, blank=True)
-
-    def wfbn_url(self):
-        if self.query_type == "lattlong":
-            query_type = "lat_lng"
-        else:
-            query_type = "address"
-
-        return "https://www.givefood.org.uk/needs/?%s=%s" % (query_type, self.query)
-
-    def latt(self):
-        if self.latt_long:
-            return float(self.latt_long.split(",")[0])
-        else:
-            return
-
-    def long(self):
-        if self.latt_long:
-            return float(self.latt_long.split(",")[1])
-        else:
-            return
-
-    def save(self, *args, **kwargs):
-
-        if not self.latt_long:
-            if self.query_type == "lattlong":
-                self.latt_long = self.query
-            else:
-                self.latt_long = geocode(self.query)
-
-        super(ApiFoodbankSearch, self).save(*args, **kwargs)
-    
-    class Meta:
-        app_label = 'givefood'
-
-
 class ParliamentaryConstituency(models.Model):
 
     name = models.CharField(max_length=50, null=True, blank=True)

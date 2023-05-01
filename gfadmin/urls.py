@@ -80,8 +80,6 @@ urlpatterns = (
 
     url(r'^credentials/$', credentials, name="credentials"),
     url(r'^credentials/new/$', credentials_form, name="credential_new"),
-    url(r'^searches/$', searches, name="searches"),
-    url(r'^searches/csv/$', searches_csv, name="searches_csv"),
 
     url(r'^search/$', search_results, name="search_results"),
 

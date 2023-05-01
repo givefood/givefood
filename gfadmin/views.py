@@ -17,7 +17,7 @@ from django.db import IntegrityError
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations, get_all_open_foodbanks, post_to_facebook, post_to_twitter, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
-from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ApiFoodbankSearch, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place
+from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm
 
 
@@ -46,32 +46,6 @@ def index(request):
         "section":"home",
     }
     return render(request, "admin/index.html", template_vars)
-
-
-def searches(request):
-
-    searches = ApiFoodbankSearch.objects.all().order_by("-created")[:1000]
-
-    template_vars = {
-        "searches":searches,
-        "section":"searches",
-    }
-
-    return render(request, "admin/searches.html", template_vars)
-
-
-def searches_csv(request):
-
-    searches = ApiFoodbankSearch.objects.all().order_by("-created")[:50000]
-
-    output = []
-    response = HttpResponse(content_type='text/csv')
-    writer = csv.writer(response)
-    writer.writerow(['created', 'query_type', 'query', 'nearest_foodbank', 'latt', 'long'])
-    for search in searches:
-        output.append([search.created, search.query_type, unicode(search.query).encode("utf-8"), search.nearest_foodbank, search.latt(), search.long()])
-    writer.writerows(output)
-    return response
 
 
 def search_results(request):

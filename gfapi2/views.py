@@ -5,7 +5,7 @@ from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import slugify
 from django.views.decorators.cache import cache_page
 
-from givefood.models import Foodbank, ApiFoodbankSearch, FoodbankChange, ParliamentaryConstituency, FoodbankChange
+from givefood.models import Foodbank, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
 from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_foodbanks, geocode, find_locations, is_uk
 
@@ -321,23 +321,6 @@ def foodbank_search(request):
     foodbanks = find_foodbanks(lat_lng, 10)
     response_list = []
 
-    if address:
-        query_type = "address"
-        query = address
-    else:
-        query_type = "lattlong"
-        query = lat_lng
-
-    api_hit = ApiFoodbankSearch(
-        query_type = query_type,
-        query = query,
-        nearest_foodbank = foodbanks[0].distance_m,
-        latt_long = lat_lng,
-    )
-    api_hit.save()
-
-    response_list = []
-
     for foodbank in foodbanks:
         latest_need = foodbank.latest_need()
         response_list.append({
@@ -483,21 +466,6 @@ def location_search(request):
         return HttpResponseBadRequest() 
 
     locations = find_locations(lat_lng, 10)
-
-    if address:
-        query_type = "address"
-        query = address
-    else:
-        query_type = "lattlong"
-        query = lat_lng
-
-    api_hit = ApiFoodbankSearch(
-        query_type = query_type,
-        query = query,
-        nearest_foodbank = locations[0].get("distance_m"),
-        latt_long = lat_lng,
-    )
-    api_hit.save()
 
     response_list = []
     for location in locations:

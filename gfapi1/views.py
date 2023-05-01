@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
 from givefood.func import find_foodbanks, get_all_foodbanks, geocode
-from givefood.models import ApiFoodbankSearch, Foodbank, FoodbankChange
+from givefood.models import Foodbank, FoodbankChange
 from givefood.const.general import API_DOMAIN
 
 
@@ -124,21 +124,6 @@ def api_foodbank_search(request):
 
     foodbanks = find_foodbanks(latt_long, 10)
     response_list = []
-
-    if address:
-        query_type = "address"
-        query = address
-    else:
-        query_type = "lattlong"
-        query = latt_long
-
-    api_hit = ApiFoodbankSearch(
-        query_type = query_type,
-        query = query,
-        nearest_foodbank = foodbanks[0].distance_m,
-        latt_long = latt_long,
-    )
-    api_hit.save()
 
     for foodbank in foodbanks:
         response_list.append({
