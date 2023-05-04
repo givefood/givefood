@@ -368,7 +368,11 @@ class Foodbank(models.Model):
             reverse("api2:foodbank", kwargs={"slug":self.slug}),
             "%s?format=xml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
             "%s?format=yaml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
-            reverse("wfbn:constituency", kwargs={"slug":self.parliamentary_constituency.slug}),
+            reverse("wfbn:constituency", kwargs={"slug":self.parliamentary_constituency_slug}),
+            reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug}),
+            "%s?format=xml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
+            "%s?format=yaml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
+            "%s?format=geojson" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
         ]
         for location in self.locations():
             urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
