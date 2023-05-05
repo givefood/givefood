@@ -11,7 +11,7 @@ from django.core.cache import cache
 from django.urls import reverse
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, FB_MC_KEY, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES
-from givefood.func import parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details, find_parlcons, decache
+from givefood.func import parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, mp_from_parlcon, geocode, make_url_friendly, find_foodbanks, mpid_from_name, get_cred, diff_html, mp_contact_details, find_parlcons, decache
 
 
 class Foodbank(models.Model):
@@ -668,7 +668,10 @@ class Order(models.Model):
         if self.delivery_provider == "Tesco" or self.delivery_provider == "Costco" or self.delivery_provider == "Pedal Me":
             order_lines = parse_tesco_order_text(self.items_text)
         elif self.delivery_provider == "Sainsbury's":
-            order_lines = parse_sainsburys_order_text(self.items_text)
+            if self.delivery_date < date(2023, 1, 23):
+                order_lines = parse_old_sainsburys_order_text(self.items_text)
+            else:
+                order_lines = parse_sainsburys_order_text(self.items_text)
 
         # Order aggregated stats
         order_weight = 0
