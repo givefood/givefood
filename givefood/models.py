@@ -812,6 +812,9 @@ class FoodbankArticle(models.Model):
 
         super(FoodbankArticle, self).save(*args, **kwargs)
 
+    def __str__(self):
+        return "%s - %s" % (self.title, self.foodbank_name)
+    
     class Meta:
         app_label = 'givefood'
 
@@ -1161,6 +1164,9 @@ class FoodbankSubscriber(models.Model):
 
     def foodbank_slug(self):
         return slugify(self.foodbank_name)
+    
+    def __str__(self):
+        return "%s - %s" % (self.email, self.foodbank_name)
 
     def save(self, *args, **kwargs):
 
@@ -1225,6 +1231,9 @@ class Place(models.Model):
     police = models.CharField(max_length=100, null=True, blank=True)
     region = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return "%s - %s" % (self.gbpnid, self.name)
 
     def lat(self):
         return float(self.latt_long.split(",")[0])
