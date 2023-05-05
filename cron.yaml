@@ -15,3 +15,7 @@ cron:
 - description: calculate days between needs per food bank
   url: /offline/days_between_needs/
   schedule: every 48 hours
+
+# - description: resaver
+#   url: /offline/resaver/
+#   schedule: every 48 hours

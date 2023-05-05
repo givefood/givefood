@@ -1,13 +1,11 @@
-import urllib, json, logging
-import feedparser
-import requests
+import logging, feedparser
 
 from datetime import datetime, timedelta, timezone
 from time import mktime
 
 from django.http import HttpResponse
-from django.db import IntegrityError
 from django.core.cache import cache
+from django.apps import apps
 
 from givefood.models import Foodbank, FoodbankLocation, FoodbankArticle, FoodbankSubscriber, FoodbankChange
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
@@ -100,5 +98,34 @@ def days_between_needs(request):
         foodbank.days_between_needs = days_between_needs
         foodbank.save()
 
+
+    return HttpResponse("OK")
+
+
+def resaver(request):
+
+    models = [
+        "ParliamentaryConstituency",
+        "FoodbankGroup",
+        "Foodbank",
+        "FoodbankLocation", 
+        "FoodbankChange",
+        "OrderGroup",
+        "OrderItem",
+        "Order",
+        # "OrderLine",
+        "FoodbankArticle",
+        "GfCredential",
+        "FoodbankSubscriber",
+        "ConstituencySubscriber",
+        "Place",
+    ]
+
+    for model in models:
+        model_class = apps.get_model("givefood", model)
+        instances = model_class.objects.all()
+        for instance in instances:
+            logging.info("Resaving %s %s" % (model, instance))
+            instance.save()
 
     return HttpResponse("OK")
