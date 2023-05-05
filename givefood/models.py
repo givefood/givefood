@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import hashlib, unicodedata, logging, json
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from django.db import models
 from django.template.defaultfilters import slugify
