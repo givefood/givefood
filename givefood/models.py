@@ -723,7 +723,7 @@ class Order(models.Model):
         super(Order, self).save(*args, **kwargs)
 
         # Update last order date on foodbank
-        self.foodbank.last_order = self.delivery_datetime
+        self.foodbank.last_order = Order.objects.filter(foodbank = self.foodbank).order_by("-delivery_date")[0].delivery_date
         self.foodbank.save()
 
     def lines(self):
