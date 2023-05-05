@@ -386,7 +386,7 @@ class FoodbankLocation(models.Model):
     foodbank_name = models.CharField(max_length=100, editable=False)
     foodbank_slug = models.CharField(max_length=100, editable=False)
     foodbank_network = models.CharField(max_length=50, editable=False)
-    foodbank_phone_number = models.CharField(max_length=20, null=True, blank=True, editable=False)
+    foodbank_phone_number = models.CharField(max_length=50, null=True, blank=True, editable=False)
     foodbank_email = models.EmailField(editable=False)
     is_closed = models.BooleanField(default=False)
 
@@ -397,7 +397,7 @@ class FoodbankLocation(models.Model):
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
 
-    phone_number = models.CharField(max_length=20, null=True, blank=True, help_text="If different to the main location")
+    phone_number = models.CharField(max_length=50, null=True, blank=True, help_text="If different to the main location")
     email = models.EmailField(null=True, blank=True, help_text="If different to the main location")
 
     parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False, on_delete=models.DO_NOTHING)
@@ -566,7 +566,7 @@ class FoodbankLocation(models.Model):
 
 class Order(models.Model):
 
-    order_id = models.CharField(max_length=50, editable=False)
+    order_id = models.CharField(max_length=100, editable=False)
     foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
     foodbank_name = models.CharField(max_length=100, editable=False)
     items_text = models.TextField()
@@ -974,14 +974,14 @@ class ParliamentaryConstituency(models.Model):
     address_parl = models.TextField(null=True, blank=True, editable=False)
     postcode_parl = models.CharField(max_length=9, null=True, blank=True, editable=False)
     lat_lng_parl= models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
-    phone_parl = models.CharField(max_length=20, null=True, blank=True, editable=False)
+    phone_parl = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     # Constituency details
     email_con = models.EmailField(null=True, blank=True, editable=False)
     address_con = models.TextField(null=True, blank=True, editable=False)
     postcode_con = models.CharField(max_length=9, null=True, blank=True, editable=False)
     lat_lng_con = models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
-    phone_con = models.CharField(max_length=20, null=True, blank=True, editable=False)
+    phone_con = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     boundary_geojson = models.TextField(null=True, blank=True)
 
