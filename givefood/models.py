@@ -595,7 +595,7 @@ class Order(models.Model):
     no_items = models.PositiveIntegerField(editable=False)
 
     class Meta:
-       unique_together = ('foodbank', 'delivery_date',)
+       unique_together = ('foodbank', 'delivery_date', 'delivery_provider')
        app_label = 'givefood'
 
     def __str__(self):
