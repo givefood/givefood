@@ -708,16 +708,8 @@ def edit_stats(request):
     all_foodbanks = get_all_foodbanks()
     total_foodbanks = len(all_foodbanks)
 
-    edited_foodbanks = 0
-    for foodbank in all_foodbanks:
-        if foodbank.edited:
-            edited_foodbanks = edited_foodbanks + 1
-
     locations = get_all_locations()
     total_locations = len(locations) + total_foodbanks
-
-    percentage_edited = (edited_foodbanks / total_foodbanks) * 100
-    percentage_edited = round(percentage_edited, 2)
 
     newest_edit = Foodbank.objects.all().order_by("-edited")[:1][0].edited
     oldest_edit = Foodbank.objects.all().order_by("edited")[:1][0].edited
@@ -725,8 +717,6 @@ def edit_stats(request):
     stats = {
         "total_foodbanks":total_foodbanks,
         "total_locations":total_locations,
-        "edited_foodbanks":edited_foodbanks,
-        "percentage_edited":percentage_edited,
         "newest_edit":newest_edit,
         "oldest_edit":oldest_edit,
     }
