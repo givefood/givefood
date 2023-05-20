@@ -550,7 +550,7 @@ def need_notifications(request, id):
 
     # Social media
     post_to_facebook(need)
-    post_to_twitter(need)
+    # post_to_twitter(need)
 
     # Update tweet time
     need.tweet_sent = datetime.now()
