@@ -197,6 +197,13 @@ class Foodbank(models.Model):
             if self.country == "Wales" or self.country == "England":
                 return "https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=%s&subid=0" % (self.charity_number)
 
+    def network_url(self):
+        if self.network == "Trussell Trust":
+            return "https://www.trusselltrust.org"
+        if self.network == "IFAN":
+            return "https://www.foodaidnetwork.org.uk"
+        return False
+    
     def needs(self):
         return FoodbankChange.objects.filter(foodbank = self).order_by("-created")
 
