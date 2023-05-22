@@ -179,7 +179,8 @@ def foodbank_locations(request,slug):
 def foodbank_news(request,slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    # TODO: check if fb has news
+    if not foodbank.rss_url:
+        return HttpResponseNotFound()
 
     template_vars = {
         "section":"news",
