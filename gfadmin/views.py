@@ -16,7 +16,7 @@ from django.core.cache import cache
 from django.db import IntegrityError
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.func import get_all_foodbanks, get_all_locations, get_all_open_foodbanks, post_to_facebook, post_to_twitter, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
+from givefood.func import get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
 from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm
 
@@ -545,12 +545,6 @@ def need_notifications(request, id):
     need = get_object_or_404(FoodbankChange, need_id = id)
     
     foodbank = need.foodbank
-    foodbank_slug = need.foodbank.slug
-    parliamentary_constituency = foodbank.parliamentary_constituency
-
-    # Social media
-    post_to_facebook(need)
-    # post_to_twitter(need)
 
     # Update tweet time
     need.tweet_sent = datetime.now()

@@ -822,40 +822,6 @@ def get_cred(cred_name):
         return None
 
 
-def post_to_facebook(need):
-
-    fb_post_text = "%s food bank is requesting the donation of:\n\n%s" % (
-        need.foodbank_name,
-        need.change_text,
-    )
-    fb_post_link = "https://www.givefood.org.uk/needs/at/%s/?utm_source=facebook&utm_medium=wfbn&utm_campaign=needs" % (need.foodbank_name_slug())
-
-    graph = facebook.GraphAPI(access_token=get_cred("facebook_wfbn"), version="2.12")
-    graph.put_object(parent_object = 'whatfoodbanksneed', connection_name = 'feed', message = fb_post_text, link = fb_post_link)
-
-    return True
-
-
-def post_to_twitter(need):
-
-    api = twitter.Api(
-        consumer_key = get_cred("twitter_consumer_key"),
-        consumer_secret = get_cred("twitter_consumer_secret"),
-        access_token_key = get_cred("twitter_access_token_key"),
-        access_token_secret = get_cred("twitter_access_token_secret"),
-    )
-
-    tweet = "%s food bank is requesting the donation of:\n\n%s https://www.givefood.org.uk/needs/at/%s/?utm_source=twitter&utm_medium=wfbn&utm_campaign=needs" % (
-        need.foodbank_name,
-        truncatechars(need.change_text, 150),
-        need.foodbank_name_slug()
-    )
-
-    api.PostUpdate(tweet, latitude = need.foodbank.latt(), longitude = need.foodbank.long())
-
-    return True
-
-
 
 def post_to_subscriber(need, subscriber):
 
