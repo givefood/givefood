@@ -105,7 +105,7 @@
               <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}" id="email_link">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
             </div>
 
-            {% include "wfbn/foodbank/includes/charity.html" %}
+            {% include "wfbn/foodbank/includes/charitynetwork.html" %}
 
             <h2>Share</h2>
             {% url 'wfbn:foodbank_location' foodbank.slug location.slug as share_url %}
