@@ -98,9 +98,12 @@ DATASTORE_INDEX_YAML = os.path.join(
 
 DATABASES = {
     'default': {
-        'ENGINE': 'gcloudc.db.backends.datastore',
-        'PROJECT': project_id(default='givefood'),
-        'INDEXES_FILE': DATASTORE_INDEX_YAML,
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'givefood',
+        'USER': 'postgres',
+        'PASSWORD': "R{A.|j%;vlYq#rU'",
+        'HOST': '34.105.240.252',
+        'PORT': '5432',
     }
 }
 
