@@ -4,6 +4,7 @@ from pathlib import Path
 from djangae.contrib.secrets import get
 from djangae.environment import project_id
 from djangae.settings_base import *  # noqa
+from givefood.func import get_secret
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -16,7 +17,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 SECRET_KEY = get().secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -101,8 +102,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'givefood',
         'USER': 'postgres',
-        'PASSWORD': "R{A.|j%;vlYq#rU'",
-        'HOST': '34.105.240.252',
+        'PASSWORD': get_secret("postgres_pw"),
+        'HOST': get_secret("postgres_host"),
         'PORT': '5432',
     }
 }

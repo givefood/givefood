@@ -5,12 +5,11 @@ import re, logging, operator, json, urllib, difflib, requests
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
 
-import facebook, twitter
-
-from django.template.defaultfilters import truncatechars
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.cache import cache
+
+from google.cloud import secretmanager
 
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY
 from givefood.const.parlcon_mp import parlcon_mp
@@ -905,3 +904,10 @@ def group_list(lst):
       
     res =  [(el, lst.count(el)) for el in lst]
     return list(OrderedDict(res).items())
+
+
+def get_secret(secret_id, version_id="latest"):
+    client = secretmanager.SecretManagerServiceClient()
+    name = f"projects/givefood/secrets/{secret_id}/versions/{version_id}"
+    response = client.access_secret_version(name=name)
+    return response.payload.data.decode('UTF-8')
