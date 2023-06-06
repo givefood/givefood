@@ -762,13 +762,11 @@ def order_stats(request):
 
     return render(request, "admin/stats.html", template_vars)
 
+
 def subscriber_stats(request):
 
-    subscribers = FoodbankSubscriber.objects.filter(confirmed = True)
-    subscribers = len(subscribers)
-
     stats = {
-        "subscribers":subscribers,
+        "subscribers":FoodbankSubscriber.objects.filter(confirmed = True).count(),
     }
 
     template_vars = {
