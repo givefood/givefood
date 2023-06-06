@@ -778,6 +778,22 @@ def subscriber_stats(request):
     return render(request, "admin/stats.html", template_vars)
 
 
+def finder_stats(request):
+
+    stats = {
+        "places":Place.objects.count(),
+        "checked_places":Place.objects.filter(checked__isnull=False).count(),
+    }
+
+    template_vars = {
+        "stats":stats,
+        "title":"Finder",
+        "section":"stats",
+    }
+
+    return render(request, "admin/stats.html", template_vars)
+
+
 def order_email(request, id):
 
     order = get_object_or_404(Order, order_id = id)
