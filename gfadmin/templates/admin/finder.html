@@ -62,7 +62,7 @@
                     {% endif %}
                     <div class="actions">
                         <a href="{% url 'admin:newfoodbank' %}?name={{ result.name }}&address={{ result.formatted_address }}&postcode={{ result.postcode }}" class="button is-small" target="_blank">Add</a>
-                        <a href="https://www.google.co.uk/search?q={{ result.name }}, {{ result.postcode }}" class="button is-small" target="_blank">Search</a>
+                        <a href="https://www.google.co.uk/search?q={{ result.name|urlencode }}, {{ result.postcode|urlencode }}" class="button is-small" target="_blank">Search</a>
                     </div>
                 </li>
             {% endfor %}
