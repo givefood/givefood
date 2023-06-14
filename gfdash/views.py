@@ -140,7 +140,7 @@ def most_excess_items(request):
 
     # Handle allowed day parameters
     default_days = 30
-    allowed_days = [7, 30, 60, 90,]
+    allowed_days = [7, 30, 60, 90, 120, 365]
     days = int(request.GET.get("days", default_days))
     if days not in allowed_days:
         return HttpResponseForbidden()
