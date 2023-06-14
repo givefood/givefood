@@ -288,3 +288,14 @@ def foodbank_locations_found(request):
     }
 
     return render(request, "dash/foodbanks_found.html", template_vars)
+
+@cache_page(60*60*10)
+def bean_pasta_index(request):
+
+    months = FoodbankChange.objects.raw("select 1 as id, count(*) as count, to_char(created, 'YYYY-MM') as the_month from givefood_foodbankchange where published = True and (change_text ~* 'beans' or change_text ~* 'pasta') group by the_month order by the_month")
+
+    template_vars = {
+        "months":months,
+    }
+
+    return render(request, "dash/bean_pasta_index.html", template_vars)

@@ -15,5 +15,6 @@ urlpatterns = (
     url(r'^beautybanks/$', beautybanks, name="beautybanks"),
     url(r'^excess/$', excess, name="excess"),
     url(r'^foodbanks-found/$', foodbanks_found, name="foodbanks_found"),
+    url(r'^bean-pasta-index/$', bean_pasta_index, name="bean_pasta_index"),
 
 )
