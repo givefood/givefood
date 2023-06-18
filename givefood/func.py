@@ -76,7 +76,6 @@ def decache(urls):
     remote_cache_purge_url = "http://www.givefood.org.uk/purgecache/?url=%s" % (url_params)
     request = requests.get(remote_cache_purge_url)
     cache.clear()
-    logging.warn(urls)
     return True
 
 
