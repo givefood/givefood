@@ -10,7 +10,16 @@
     {% if need.excess_change_text %}
         <p>{{ need.foodbank.full_name }} currently doesn't need anymore of these items: {% for item in need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
     {% endif %}
-        
+
+    {% if need.foodbank.articles_month %}
+        <b>News from {{ need.foodbank.name }} Food Bank</b><br>
+        {% for article in need.foodbank.articles_month %}
+            <a href="{{ article.url }}">{{ article.title }}</a><br><span class="articledate">{{ article.published_date }}</span>
+            <br>
+        {% endfor %}
+        <br>
+    {% endif %}
+
     <p>You can find more details at <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/</a></p>
 
     <p>

@@ -308,6 +308,9 @@ class Foodbank(models.Model):
             return "https://www.bankuet.co.uk/%s/?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" % (self.bankuet_slug)
         else:
             return None
+        
+    def articles_month(self):
+        return FoodbankArticle.objects.filter(foodbank = self, created__gte = datetime.now() - timedelta(days=28)).order_by("-created")
     
     class Meta:
         app_label = 'givefood'
