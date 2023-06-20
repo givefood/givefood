@@ -1,12 +1,12 @@
 <div class="field">
-    <div class="control">
-      <form id="addressform" action="/needs/" method="GET"{% if is_index %} data-isindex{% endif %}>
-        <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button" title="Use my location" data-no-instant{% if is_index %} data-isindex{% endif %}>
-            <img src="/static/img/getlocation.svg" alt="Button to use your location to search for a food bank">
-        </a>
-        <label id="address_label" for="address_field" class="label">Address (town or postcode)</label>
-        <input id="address_field" type="text" name="address" class="input" placeholder="Town name or postcode" value="{{ address }}" required>
-        <input type="submit" class="button is-info" value="Go">
-      </form>
-    </div>
+  <div class="control">
+    <form id="addressform" action="/needs/" method="GET"{% if is_index %} data-isindex{% endif %}>
+      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button" title="Use my location" data-no-instant{% if is_index %} data-isindex{% endif %}>
+          <img src="/static/img/getlocation.svg" alt="Button to use your location to search for a food bank">
+      </a>
+      <label id="address_label" for="address_field" class="label">Address (town or postcode)</label>
+      <input id="address_field" type="text" name="address" class="input" placeholder="Town name or postcode" value="{{ address }}" required>
+      <input type="submit" class="button is-info" value="Go">
+    </form>
   </div>
+</div>
