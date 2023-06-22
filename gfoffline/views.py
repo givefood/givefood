@@ -50,18 +50,22 @@ def crawl_articles(request):
 
     for foodbank in foodbanks_with_rss:
         logging.info("Scraping %s" % (foodbank.name))
-        feed = feedparser.parse(foodbank.rss_url)
-        if feed:
-            for item in feed["items"]:
-                article = FoodbankArticle.objects.filter(url=item.link).first()
-                if not article:
-                    new_article = FoodbankArticle(
-                        foodbank = foodbank,
-                        title = item.title[0:250],
-                        url = item.link,
-                        published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
-                    )
-                    new_article.save()
+        try:
+            feed = feedparser.parse(foodbank.rss_url)
+            if feed:
+                for item in feed["items"]:
+                    if item.title != "":
+                        article = FoodbankArticle.objects.filter(url=item.link).first()
+                        if not article:
+                            new_article = FoodbankArticle(
+                                foodbank = foodbank,
+                                title = item.title[0:250],
+                                url = item.link,
+                                published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
+                            )
+                            new_article.save()
+        except:
+            pass
 
     return HttpResponse("OK")
 
