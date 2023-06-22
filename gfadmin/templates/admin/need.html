@@ -77,6 +77,12 @@
           {% endif %}
         {% endif %}
       {% endif %}
+      
+      <h3>Notification Preview</h3>
+      <ul>
+        <li><a href="{% url 'admin:need_email' need.need_id %}?format=html" data-turbolinks="false">HTML</a></li>
+        <li><a href="{% url 'admin:need_email' need.need_id %}?format=txt" data-turbolinks="false">TXT</a></li>
+      </ul>
 
       <h3>⚠️ Danger Zone</h3>
       <form action="{% url 'admin:need_delete' need.need_id %}" method="post">
