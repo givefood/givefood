@@ -40,6 +40,9 @@
     <div class="main">
       {% block body %}{% endblock %}
     </div>
+    <footer class="footer">
+      v{{ version }}
+    </footer>
     <datalist id="foodbank_names">
       {% for foodbank in all_foodbanks %}<option value="{{ foodbank }}">{% endfor %}
     </datalist>
