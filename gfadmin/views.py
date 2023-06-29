@@ -109,14 +109,10 @@ def foodbanks(request):
     if sort not in sort_options:
         return HttpResponseForbidden()
 
-    sort_string = sort
-    if sort != "name":
-        sort = "-%s" % (sort)
-
     foodbanks = Foodbank.objects.all().order_by(sort)
 
     template_vars = {
-        "sort":sort_string,
+        "sort":sort,
         "foodbanks":foodbanks,
         "section":"foodbanks",
     }

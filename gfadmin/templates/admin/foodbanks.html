@@ -13,7 +13,7 @@
 
       <div class="field is-pulled-right">
         <div class="control">
-          <div class="select is-small">
+          <div class="select">
             <select onchange="javascript:window.location.href=this.value">
               <option value="?sort=name"{% if sort == "name" %} selected{% endif %}>Alphabetical</option>
               <option value="?sort=last_order"{% if sort == "last_order" %} selected{% endif %}>Last Order</option>
@@ -31,14 +31,11 @@
         <tr>
           <th>Name</th>
           <th>Postcode</th>
-          <th>Charity No.</th>
-          <th>Country</th>
-          <th>Last Order</th>
-          <th>Last Need</th>
+          <th>Closed</th>
           <th>Locations</th>
           <th>Network</th>
-          <th>Closed</th>
-          <th>Links</th>
+          <th>Last Order</th>
+          <th>Last Need</th>
           <th>Created</th>
           <th>Modified</th>
           <th>Edited</th>
@@ -48,34 +45,34 @@
             <td><a href="{% url "admin:foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
             <td>{{ foodbank.postcode }}</td>
             <td>
-              {% if foodbank.charity_number %}
-                <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>
-              {% endif %}
-            </td>
-            <td>{% if foodbank.country_flag %}{{ foodbank.country_flag }} {% endif %}{{ foodbank.country }}</td>
-            <td>{{ foodbank.last_order }}</td>
-            <td>{{ foodbank.last_need }}</td>
-            <td>{{ foodbank.no_locations }}</td>
-            <td>{{ foodbank.network }}</td>
-            <td>
               {% if foodbank.is_closed %}
                 <span style="color:red">X</span>
               {% endif %}
             </td>
+            <td>{{ foodbank.no_locations }}</td>
+            <td>{{ foodbank.network }}</td>
             <td>
-              {% if foodbank.facebook_page %}
-                <a href="https://www.facebook.com/{{ foodbank.facebook_page }}">
-                  <img src="/static/img/facebook.png" width="16">
-                </a>
+              {{ foodbank.last_order }}
+              {% if foodbank.last_order %}
+                <br><span class="is-size-7">{{ foodbank.last_order|timesince }} ago</span>
               {% endif %}
-              {% if foodbank.twitter_handle %}
-                <a href="https://www.twitter.com/{{ foodbank.twitter_handle }}">
-                  <img src="/static/img/twitter.png" width="16">
-                </a>
-              {% endif %}
-            <td>{{ foodbank.created }}</td>
-            <td>{{ foodbank.modified }}</td>
-            <td>{{ foodbank.edited }}</td>
+            </td>
+            <td>
+              {{ foodbank.last_need }}<br>
+              <span class="is-size-7">{{ foodbank.last_need|timesince }} ago</span>
+            </td>
+            <td>
+              {{ foodbank.created }}<br>
+              <span class="is-size-7">{{ foodbank.created|timesince }} ago</span>
+            </td>
+            <td>
+              {{ foodbank.modified }}<br>
+              <span class="is-size-7">{{ foodbank.modified|timesince }} ago</span>
+            </td>
+            <td>
+              {{ foodbank.edited }}<br>
+              <span class="is-size-7">{{ foodbank.edited|timesince }} ago</span>
+            </td>
           </tr>
         {% endfor %}
       </table>
