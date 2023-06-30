@@ -310,7 +310,7 @@ class Foodbank(models.Model):
             return None
         
     def articles_month(self):
-        return FoodbankArticle.objects.filter(foodbank = self, created__gte = datetime.now() - timedelta(days=28)).order_by("-created")
+        return FoodbankArticle.objects.filter(foodbank = self, published_date__gte = datetime.now() - timedelta(days=28)).order_by("-published_date")
     
     class Meta:
         app_label = 'givefood'
