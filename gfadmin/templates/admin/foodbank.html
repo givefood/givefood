@@ -209,6 +209,20 @@
       </div>
     {% endif %}
 
+    {% if foodbank.articles %}
+      <div class="column">
+        <h3>Articles</h3>
+        <ul class="articles">
+          {% for article in foodbank.articles %}
+            <li>
+              <a href="{{ article.url }}">{{ article.title }}</a><br>
+              <span class="is-size-7">{{ article.published_date|timesince }} ago</span>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
     {% if foodbank.orders %}
       <div class="column">
         <a href="{% url "admin:neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>

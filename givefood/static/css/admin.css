@@ -67,6 +67,9 @@ th {
 .locationtable td {
   padding:5px 5px 5px 0;
 }
+.articles li {
+  margin-bottom:10px;
+}
 table td.delivery-provider-icon {
   padding:.5em 0;
 }
