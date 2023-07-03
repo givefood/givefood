@@ -105,7 +105,7 @@ def foodbanks(request):
         "edited",
         "no_locations",
     ]
-    sort = request.GET.get("sort", "name")
+    sort = request.GET.get("sort", "edited")
     if sort not in sort_options:
         return HttpResponseForbidden()
 
