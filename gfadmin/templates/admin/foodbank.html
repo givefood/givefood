@@ -25,10 +25,6 @@
         <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Need</a>
       {% endif %}
 
-      {% if not foodbank.locations %}
-        <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link" style="margin-top:10px">New Location</a>
-      {% endif %}
-
       {% if foodbank.notes %}
         <p class="box" style="margin-top:20px;">{{ foodbank.notes|linebreaksbr }}</p>
       {% endif %}
@@ -152,42 +148,40 @@
 
     </div>
 
-    {% if foodbank.locations %}
-      <div class="column">
-        <h3>Locations</h3>
-        <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
-        <table class="table is-fullwidth locationtable">
+    <div class="column">
+      <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
+      <h3>Locations</h3>
+      <table class="table is-fullwidth locationtable">
+        <tr>
+          <td>
+            Main
+          </td>
+          <td class="is-size-7">{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
+          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
+        </tr>
+        {% if foodbank.delivery_address %}
           <tr>
             <td>
-              Main
+              Delivery
             </td>
-            <td class="is-size-7">{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
-            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
+            <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
+            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-small is-pulled-right">Edit</a></td>
           </tr>
-          {% if foodbank.delivery_address %}
-            <tr>
-              <td>
-                Delivery
-              </td>
-              <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
-              <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-small is-pulled-right">Edit</a></td>
-            </tr>
-          {% endif %}
-          {% for location in foodbank.locations %}
-          <tr>
-            <td>{{ location.name }}</td>
-            <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
-            <td>
-              <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
-              <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post">
-                <input type="submit" class="button is-small is-danger is-pulled-right" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
-                {% csrf_token %}
-              </form>
-            </td>
-          {% endfor %}
-        </table>
-      </div>
-    {% endif %}
+        {% endif %}
+        {% for location in foodbank.locations %}
+        <tr>
+          <td>{{ location.name }}</td>
+          <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
+          <td>
+            <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
+            <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post">
+              <input type="submit" class="button is-small is-danger is-pulled-right" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
+              {% csrf_token %}
+            </form>
+          </td>
+        {% endfor %}
+      </table>
+    </div>
 
     {% if foodbank.needs %}
       <div class="column">
@@ -219,7 +213,7 @@
 
     {% if foodbank.articles %}
       <div class="column">
-        <h3>Articles</h3>
+        <h3 style="margin-top:0">Articles</h3>
         <ul class="articles">
           {% for article in foodbank.articles %}
             <li>
