@@ -18,58 +18,20 @@
       <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link">Edit Food Bank</a><br>
 
       {% if not foodbank.orders %}
-        <a href="{% url "admin:neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
+        <a href="{% url "admin:neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Order</a>
       {% endif %}
 
       {% if not foodbank.needs %}
-        <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
+        <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Need</a>
+      {% endif %}
+
+      {% if not foodbank.locations %}
+        <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link" style="margin-top:10px">New Location</a>
       {% endif %}
 
       {% if foodbank.notes %}
         <p class="box" style="margin-top:20px;">{{ foodbank.notes|linebreaksbr }}</p>
       {% endif %}
-
-      <h3>Politics</h3>
-      <dl>
-        <dt>Parl. Con.</dt>
-        <dd>{{ foodbank.parliamentary_constituency }}</dd>
-        {% if foodbank.county %}
-          <dt>County</dt>
-          <dd>{{ foodbank.county }}</dd>
-        {% endif %}
-        {% if foodbank.district %}
-          <dt>District</dt>
-          <dd>{{ foodbank.district }}</dd>
-        {% endif %}
-        {% if foodbank.ward %}
-          <dt>Ward</dt>
-          <dd>{{ foodbank.ward }}</dd>
-        {% endif %}
-        <dt>MP</dt>
-        <dd>{{ foodbank.mp }}</dd>
-        <dt>MP Party</dt>
-        <dd>{{ foodbank.mp_party }}</dd>
-        <dt>MP ID</dt>
-        <dd>{{ foodbank.mp_parl_id }}</dd>
-        <dt>Country</dt>
-        <dd>{{ foodbank.country }}</dd>
-      </dl>
-
-      <h3>Stats</h3>
-      <dl>
-        <dt>Subscribers</dt>
-        <dd>{{ foodbank.no_subscribers }}</dd>
-        <dt>Orders</dt>
-        <dd>{{ foodbank.no_orders }}</dd>
-        <dt>Total weight</dt>
-        <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
-        <dt>Total weight (pkging)</dt>
-        <dd>{{ foodbank.total_weight_kg_pkg|intcomma }} kg</dd>
-        <dt>Total items</dt>
-        <dd>{{ foodbank.total_items|intcomma }}</dd>
-        <dt>Total cost</dt>
-        <dd>£{{ foodbank.total_cost|intcomma }}</dd>
-      </dl>
 
       <h3>Links</h3>
       <dl>
@@ -125,6 +87,48 @@
         {% endif %}
       </dl>
 
+      <h3>Politics</h3>
+      <dl>
+        <dt>Parl. Con.</dt>
+        <dd>{{ foodbank.parliamentary_constituency }}</dd>
+        {% if foodbank.county %}
+          <dt>County</dt>
+          <dd>{{ foodbank.county }}</dd>
+        {% endif %}
+        {% if foodbank.district %}
+          <dt>District</dt>
+          <dd>{{ foodbank.district }}</dd>
+        {% endif %}
+        {% if foodbank.ward %}
+          <dt>Ward</dt>
+          <dd>{{ foodbank.ward }}</dd>
+        {% endif %}
+        <dt>MP</dt>
+        <dd>{{ foodbank.mp }}</dd>
+        <dt>MP Party</dt>
+        <dd>{{ foodbank.mp_party }}</dd>
+        <dt>MP ID</dt>
+        <dd>{{ foodbank.mp_parl_id }}</dd>
+        <dt>Country</dt>
+        <dd>{{ foodbank.country }}</dd>
+      </dl>
+
+      <h3>Stats</h3>
+      <dl>
+        <dt>Subscribers</dt>
+        <dd>{{ foodbank.no_subscribers }}</dd>
+        <dt>Orders</dt>
+        <dd>{{ foodbank.no_orders }}</dd>
+        <dt>Total weight</dt>
+        <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
+        <dt>Total weight (pkging)</dt>
+        <dd>{{ foodbank.total_weight_kg_pkg|intcomma }} kg</dd>
+        <dt>Total items</dt>
+        <dd>{{ foodbank.total_items|intcomma }}</dd>
+        <dt>Total cost</dt>
+        <dd>£{{ foodbank.total_cost|intcomma }}</dd>
+      </dl>
+
       <h3>Dates</h3>
       <dl>
         <dt>Created</dt>
@@ -139,39 +143,6 @@
         <dd>{{ foodbank.last_rfi }}</dd>
       </dl>
 
-      <h3>Locations</h3>
-      <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
-      <table class="table is-fullwidth locationtable">
-        <tr>
-          <td>
-            Main
-          </td>
-          <td class="is-size-7">{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
-          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
-        </tr>
-        {% if foodbank.delivery_address %}
-          <tr>
-            <td>
-              Delivery
-            </td>
-            <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
-            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-small is-pulled-right">Edit</a></td>
-          </tr>
-        {% endif %}
-        {% for location in foodbank.locations %}
-        <tr>
-          <td>{{ location.name }}</td>
-          <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
-          <td>
-            <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
-            <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post">
-              <input type="submit" class="button is-small is-danger is-pulled-right" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
-              {% csrf_token %}
-            </form>
-          </td>
-        {% endfor %}
-      </table>
-
       <h3>⚠️ Danger Zone</h3>
 
       <form action="{% url 'admin:foodbank_rfi' foodbank.slug %}" method="post">
@@ -180,6 +151,43 @@
       </form>
 
     </div>
+
+    {% if foodbank.locations %}
+      <div class="column">
+        <h3>Locations</h3>
+        <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
+        <table class="table is-fullwidth locationtable">
+          <tr>
+            <td>
+              Main
+            </td>
+            <td class="is-size-7">{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
+            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
+          </tr>
+          {% if foodbank.delivery_address %}
+            <tr>
+              <td>
+                Delivery
+              </td>
+              <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
+              <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-small is-pulled-right">Edit</a></td>
+            </tr>
+          {% endif %}
+          {% for location in foodbank.locations %}
+          <tr>
+            <td>{{ location.name }}</td>
+            <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
+            <td>
+              <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
+              <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post">
+                <input type="submit" class="button is-small is-danger is-pulled-right" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
+                {% csrf_token %}
+              </form>
+            </td>
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
 
     {% if foodbank.needs %}
       <div class="column">
