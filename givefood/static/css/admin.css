@@ -18,6 +18,11 @@ dt {
   float:left;
   width:150px;
 }
+dd {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 h2 {
   margin-top:20px;
 }
