@@ -23,7 +23,7 @@ from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsFo
 
 def index(request):
 
-    foodbanks = Foodbank.objects.filter(last_order__isnull=False).order_by("-last_order")[:20]
+    foodbanks = Foodbank.objects.filter(last_order__isnull=False).order_by("-edited")[:30]
 
     today = datetime.today()
     today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_hour")
