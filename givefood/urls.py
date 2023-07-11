@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^sitemap.xml$', givefood.views.public_sitemap, name="public_sitemap"),
     url(r'^sitemap_external.xml$', givefood.views.public_sitemap_external, name="public_sitemap_external"),
     url(r'^privacy/$', givefood.views.public_privacy, name="public_privacy"),
+    url(r'^about-us/$', givefood.views.public_about_us, name="public_about_us"),
 
     # KINDA PUBLIC
     url(r'^generate-(?P<year>(2019|2020|2021))/$', givefood.views.public_gen_annual_report, name="public_gen_annual_report"),

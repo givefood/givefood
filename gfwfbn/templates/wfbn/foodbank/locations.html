@@ -1,8 +1,7 @@
-{% extends "public/page.html" %}
+{% extends "public/2/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn2.css">
-  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+  <link rel="stylesheet" href="/static/2/css/wfbn.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="{{ foodbank.full_name }}">
@@ -23,16 +22,14 @@
 
 {% block body %}
 
-  <div class="columns body">
+  <div class="columns">
     <div class="column">
 
       <div class="columns">
 
         <div class="column is-4">
-          <a href="/" class="logo">Give Food</a>
+          <a href="/" class="logo"><img src="/static/2/img/logo.svg" alt="Give Food"></a>
         </div>
-        
-        {% include 'wfbn/foodbank/includes/search.html' %}
 
       </div>
 

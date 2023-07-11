@@ -1,7 +1,3 @@
-.headerimg {
-    padding-top:100px;
-    margin-bottom:15px;
-}
 .api_method {
     display:none;
 }
@@ -9,6 +5,7 @@
     display:block;
 }
 .api_method h2 {
+    margin-top:1rem;
     border:0;
     font-family:monospace;
 }

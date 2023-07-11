@@ -1,8 +1,7 @@
-{% extends "public/page.html" %}
+{% extends "public/2/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn2.css">
-  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+  <link rel="stylesheet" href="/static/2/css/wfbn.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="Write to your MP">
@@ -14,25 +13,16 @@
 
 {% block body %}
 
-  <div class="columns body">
+  <div class="columns">
     <div class="column">
 
       <div class="columns">
 
         <div class="column is-4">
-          <a href="/" class="logo">Give Food</a>
+          <a href="/" class="logo"><img src="/static/2/img/logo.svg" alt="Give Food"></a>
         </div>
 
-        {% include 'wfbn/foodbank/includes/search.html' %}
-
       </div>
-
-      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
-            <ul>
-                <li><a href="{% url 'public_index' %}">Home</a></li>
-                <li class="is-active"><a href="#" aria-current="page">Write to your MP</a></li>
-            </ul>
-      </nav>
 
       <h1>Write to your MP</h1>
 
@@ -57,7 +47,7 @@
           </div>
 
           <div class="column is-6">
-            <div id="map" class="sidemap full-uk-map"></div>
+            <div id="map"></div>
           </div>
       </div>
 
@@ -68,7 +58,6 @@
 
 {% block script %}
 
-<script src="/static/js/wfbn2.js" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 <script>
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<!--
+
+👋 Generated {% now "r" %}
+🤓 By {{ instance_id }} @ {{ version }}
+
+============================================
+|  ,dP""8a "888888b,  d8b    "888b  ,888"  |
+|  88b   "  888  d88 dPY8b    88Y8b,8888   |
+|  `"Y8888a 888ad8P'dPaaY8b   88 Y88P888   |
+|  a    Y88 888    dP    Y8b  88  YP 888   |
+|  `"8ad8P'a888a  a88a;*a888aa88a   a888a  |
+|                                          |
+|                 ;*;;;;*;;;*;;;*,,        |
+|         _,,-''':::';*;;;*;;;*;;*d;,      |
+|      .-'      ::::::::::';*;;*;dII;      |
+|    .' ,<<<,.  :::::::::::::::ffffff`.    |
+|   / ,<<<<<<<<,::::::::::::::::fffffI,\   |
+|  .,<<<<<<<<<<I;:::::::::::::::ffffKIP",  |
+|  |<<<<<<<<<<dP;,?>;,::::::::::fffKKIP |  |
+|  ``<<<<<<<dP;;;;;\>>>>>;,::::fffKKIPf '  |
+|   \ `mYMMV?;;;;;;;\>>>>>>>>>,YIIPP"` /   |
+|    `. "":;;;;;;;;;i>>>>>>>>>>>>>,  ,'    |
+|      `-._``":;;;sP'`"?>>>>>>>  _.-       |
+|            -...._______....-             |
+|                                          |
+============================================
+
+-->
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FFB000">
+  <link rel="stylesheet" href="/static/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/2/css/gf.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
+  <link rel="canonical" href="{{ canonical_path }}">
+  <script defer data-domain="givefood.org.uk" data-api="/psb/api/event" src="/psb/js/script.outbound-links.js"></script>
+  {% block head %}{% endblock %}
+  <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+  <div class="container {% block container_attr %}{% endblock %}">
+    {% block body %}{% endblock %}
+  </div>
+  {% if not headless %}
+    <footer class="footer">
+      <div class="content has-text-centered">
+        <p><a href="{% url 'public_index' %}">Give Food</a> is a registered charity in England &amp; Wales <a rel="self" href="https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=1188192&subid=0">1188192</a></p>
+        <p>ICO Data Protection Registration <a href="https://ico.org.uk/ESDWebPages/Entry/ZB528540">ZB528540</a></p>
+        <p><a href="{% url 'public_privacy' %}">Privacy Policy</a></p>
+      </div>
+    </footer>
+  {% endif %}
+  {% block script %}{% endblock %}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153866507-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-153866507-1');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-448372895"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-448372895');
+  </script>
+  <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);    })(window, document, "clarity", "script", "8vjlgi67ll");</script>
+</body>
+</html>

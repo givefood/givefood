@@ -1,4 +1,4 @@
-{% extends "public/page.html" %}
+{% extends "public/2/page.html" %}
 
 {% block title %}Food Banks Found - Give Food{% endblock %}
 
@@ -10,7 +10,7 @@
 
     <div class="columns">
         <div class="column">
-            <h1><a href="/">Give Food</a></h1>
+          <a href="/" class="logo"><img src="/static/2/img/logo.svg" alt="Give Food"></a>
             <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'public_index' %}">Give Food</a></li>
@@ -24,6 +24,7 @@
   <div class="columns">
 
     <div class="column">
+      <h1>Food Banks Found</h1>
       <div id="chart" style="height:500px"></div>
 
       <table class="table is-striped is-narrow is-fullwidth">

@@ -1,59 +1,53 @@
-{% extends "public/page.html" %}
+{% extends "public/2/page.html" %}
 {% load bulma_tags %}
-
-{% block head %}
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@GiveFoodCharity">
-{% endblock %}
 
 {% block title %}Register a Food Bank - Give Food{% endblock %}
 
 {% block body %}
 
   <div class="columns is-centered">
-    <div class="column is-half">
-      <h1><a href="/">Give Food</a></h1>
-      <div class="content">
+    <div class="column is-half content">
+      <a href="/" class="logo"><img src="/static/2/img/logo.svg" alt="Give Food"></a>
 
-        <h2>Register a Food Bank</h2>
+      <h1>Register a Food Bank</h1>
 
-        {% if done %}
+      {% if done %}
 
-          <p>Thanks! We'll try and get back to you within a couple days.</p>
+        <p>Thanks! We'll try and get back to you within a couple days.</p>
 
-        {% else %}
+      {% else %}
 
-          <p>Please use this form to submit the details of a food bank to be included in our database.</p>
-          <p>This will allow users to see what you are requesting to have donated in our <a href="/needs/">tool</a>, as well as places our data has is used - including hundreds of regional and national newspaper websites, various apps &amp; Trussell Trust.</p>
+        <p>Please use this form to submit the details of a food bank to be included in our database.</p>
+        <p>This will allow users to see what you are requesting to have donated in our <a href="/needs/">tool</a>, as well as places our data has is used - including hundreds of regional and national newspaper websites, various apps &amp; Trussell Trust.</p>
 
-          <p>The UK-based food bank must meet at least <em>two</em> of the following criteria:</p>
+        <p>The UK-based food bank must meet at least <em>two</em> of the following criteria:</p>
 
-          <ul>
-            <li>Be a charity registered with Charity Commission for England and Wales, Office of the Scottish Charity Regulator, or Charity Commission for Northern Ireland. We also consider charities registered in Isle Of Man, Jersey, and Guernsey.</li>
-            <li>Show that food recipients are referred to them by agencies such as a local authority, schools, Citizens Advice Bureau, Jobcentre, GPs, probation service or the police.</li>
-            <li>Have a published strategy for supporting the food recipient so as they do not become reliant on the foodbank in the long term.</li>
-            <li>Be a member of Trussell Trust or IFAN.</li>
-          </ul>
+        <ul>
+          <li>Be a charity registered with Charity Commission for England and Wales, Office of the Scottish Charity Regulator, or Charity Commission for Northern Ireland. We also consider charities registered in Isle Of Man, Jersey, and Guernsey.</li>
+          <li>Show that food recipients are referred to them by agencies such as a local authority, schools, Citizens Advice Bureau, Jobcentre, GPs, probation service or the police.</li>
+          <li>Have a published strategy for supporting the food recipient so as they do not become reliant on the foodbank in the long term.</li>
+          <li>Be a member of Trussell Trust or IFAN.</li>
+        </ul>
 
-          <p>In order to use our service fully and for us to automatically discover what donations the food bank is requesting we will need a website address containing your shopping list.</p>
+        <p>In order to use our service fully and for us to automatically discover what donations the food bank is requesting we will need a website address containing your shopping list.</p>
 
-          <p>We hope to get back to you in a couple of days, but sometimes it can take a little longer.</p>
+        <p>We hope to get back to you in a couple of days, but sometimes it can take a little longer.</p>
 
-          <form method="post" action="">
-            {{ form|bulma }}
+        <form method="post" action="">
+          {{ form|bulma }}
 
-            <label class="label">Check you're a human</label>
-            <div class="control">
-              <div class="cf-turnstile" data-sitekey="0x4AAAAAAABxtIRWlPcEGwhj"></div><br>
-            </div>
-            <input type="submit" class="button is-link">
-            {% csrf_token %}
-          </form>
+          <label class="label">Check you're a human</label>
+          <div class="control">
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAAABxtIRWlPcEGwhj"></div><br>
+          </div>
+          <input type="submit" class="button is-link">
+          {% csrf_token %}
+        </form>
 
-          <p></p>
+        <p></p>
 
-        {% endif %}
-      </div>
+      {% endif %}
+
     </div>
   </div>
 

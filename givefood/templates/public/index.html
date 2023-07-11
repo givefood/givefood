@@ -1,48 +1,110 @@
-{% extends "public/page.html" %}
+{% extends "public/2/page.html" %}
 {% load humanize %}
 
 {% block title %}Give Food{% endblock %}
 
 {% block head %}
-  <meta name="description" content="We're a UK charity that aims to help local organisations address the immediate and critical need created by food insecurity">
+  <link rel="stylesheet" href="/static/2/css/hp.css">
+  <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
 {% endblock %}
 
 {% block body %}
 
+  </div>
+  <div class="container map">
+
   <div class="columns is-centered">
-    <div class="column is-three-quarters">
-      <h1><a href="/">Give Food</a></h1>
+    <div class="column is-two-thirds">
+      <h1><img src="/static/2/img/logo.svg" alt="Give Food"></h1>
     </div>
   </div>
 
   <div class="columns is-centered">
 
-      <section class="column is-one-third donate-to-foodbanks">
-        <div class="card">
-          <div class="card-content">
-            <h2>Donate to Food Banks</h2>
-            <p>Find out what food banks near you, from {{ total_locations }} around the UK, are requesting at...<br><a href="/needs/" class="is-size-5">givefood.org.uk/needs</a></p>
-            <p>You can also find out <a href="/needs/in/constituencies/">what food banks operate in your MP's constituency</a>, and contact them.</p>
-            <p>🤓 Techies! There is an <a href="/api/">API</a> to access our data.</p>
-          </div>
-        </div>
-      </section>
+    <div class="column is-one-third">
+      <p>We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.</p>
 
-      <section class="column is-one-quarter for-food-banks">
-        <h2>For Food Banks</h2>
-        <h3>Data</h3>
-        <p>We aim to index the needs of all UK food banks, covering networked and independent organisations. If you're not included you can <a href="/register-foodbank/">register here</a>.</p>
-        <h3>Food &amp; Supplies</h3>
-        <p>We're able to help support food banks with food deliveries and non-food item such as toiletries. Addtionally we've previously supplied cardboard boxes, disposable gloves and face masks.</p>
-      </section>
+      <div class="find-foodbank">
+        <p>Find out if there is a food bank nearby that you can help...</p>
+        <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-is-homepage="true">Use my location</a>
+        <form id="addressform" action="/needs/" method="GET" data-is-homepage="true">
+          <label id="address_label" for="address_field" class="label">Postcode or town</label>
+          <input id="address_field" type="text" name="address" class="input" placeholder="e.g. EX4 6PX or Sheffield" required>
+          <input type="submit" class="button is-light is-info" value="Go">
+        </form>
+        <nav>
+          <ul>
+            <li><a href="/register-foodbank/">Register a Food Bank</a></li>
+            <li><a href="/write/">Write To Your MP</a></li>
+            <li><a href="/dashboard/">Dashboards</a></li>
+            <li><a href="/api/">API</a></li>
+            <li><a href="/about-us/">About Us</a></li>
+          </ul>
+        </nav>
 
-      <section class="column is-one-quarter about-us">
-        <h2>About Us</h2>
-        <p>Whilst we believe that food banks should not exist in our country, we aim to help local organisations address the immediate and critical needs created by food insecurity.</p>
-        <p>We've supplied over 800 UK food banks around {{ total_weight|floatformat:1 }} tonnes of precisely needed food and supplies.</p>
-        <p>Millions of people every month view our realtime food bank need data, and we became a <a href="https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=1188192&subid=0">registered charity</a> in 2020.</p>
-      </section>
+      </div>
+      
+    </div>
 
+    <div class="column is-one-third"></div>
+
+  </div>
+
+</div>
+
+<div class="logos-container">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <h2>We've worked with</h2>
+      </div>
+    </div>
+
+    <div class="columns logos">
+      <div class="column">
+        <img src="/static/2/img/thetimes.png" style="width:170px" alt="The Times">
+      </div>
+      <div class="column">
+        <img src="/static/2/img/nhs.svg" style="height:45px" alt="NHS">
+      </div>
+      <div class="column">
+        <img src="/static/2/img/scottishgov.svg" style="width:190px" alt="Scottish Government">
+      </div>
+      <div class="column">
+        <img src="/static/2/img/cdrc.png" style="height:70px" alt="Consumer Data Research Centre">
+      </div>
+      <div class="column">
+        <img src="/static/2/img/trusselltrust.svg" style="height:80px" alt="Trussell Trust">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container how-help-container">
+
+  <div class="columns">
+    <div class="column how-help">
+      <h2>How we can help</h2>
+    </div>
+  </div>
+
+  <div class="columns how-help-cat">
+    <div class="column">
+      <h3>Public</h3>
+      <p><a href="/needs/">Use our tool</a> to find your local food banks, then donate, volunteer or take political action.</p>
+    </div>
+    <div class="column">
+      <h3>Food banks</h3>
+      <p><a href="/register-foodbank/">Register a food bank</a> to be included in our database and allow users to find you and what you need.</p>
+    </div>
+    <div class="column">
+      <h3>Media</h3>
+      <p>Journalists, particularly data journalists, can use our data for stories around food poverty. See our <a href="/api/">API</a>, or get in touch.</p>
+    </div>
+    <div class="column">
+      <h3>Researchers</h3>
+      <p>We can provide our data in bulk, plus advice on how to interpret it, for academic or governmental research. Have a look at our <a href="/api/">API</a>, or email us.</p>
+    </div>
   </div>
 
   <div class="columns is-centered">
@@ -61,7 +123,7 @@
         <p>
           <a href="mailto:mail@givefood.org.uk" class="is-size-5">mail@givefood.org.uk</a>
         </p>
-        <div id="donate-button-container" style="margin-top:10px;">
+        <div id="donate-button-container">
           <div id="donate-button"></div>
           <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js"></script>
           <script>
@@ -87,31 +149,13 @@
       </div>
   </div>
 
-  <div class="columns is-centered" id="quotes">
-    <div class="column is-two-fifths">
 
-      <div class="box">
-        <blockquote>"All our most needed items brought to our doorstep. Thank you so much for your commitment & generosity"</blockquote>
-        <footer>— <a href="https://cambridgecity.foodbank.org.uk/">Cambridge City Foodbank</a></footer>
-      </div>
+{% endblock %}
 
-      <div class="box">
-        <blockquote>"This is a really clever way of giving to foodbanks exactly what they need at that point in time"</blockquote>
-        <footer>— <a href="https://stalbansdistrict.foodbank.org.uk/">St Albans &amp; District Foodbank</a></footer>
-      </div>
 
-      <div class="box">
-        <blockquote>"Just the food we need at the time we need it most - it will make such a difference"</blockquote>
-        <footer>— <a href="https://bognorregis.foodbank.org.uk/">Bognor Regis Foodbank</a></footer>
-      </div>
+{% block script %}
 
-      <div class="box">
-        <blockquote>"You are mind readers"</blockquote>
-        <footer>— <a href="https://oldham.foodbank.org.uk/">Oldham Foodbank</a></footer>
-      </div>
-
-    </div>
-  </div>
-
+  <script src="/static/2/js/wfbn.js" defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 
 {% endblock %}

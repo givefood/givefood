@@ -1,7 +1,6 @@
-{% extends "public/page.html" %}
+{% extends "public/2/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/dash.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="Dashboards">
@@ -15,17 +14,14 @@
 
   <div class="columns">
     <div class="column">
-        <h1><a href="/">Give Food</a></h1>
-        <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
-          <ul>
-            <li><a href="{% url 'public_index' %}">Give Food</a></li>
-            <li class="is-active"><a href="{% url 'dash:index' %}" aria-current="page">Dashboards</a></li>
-          </ul>
-        </nav>
-        <div class="columns">
-          <div class="column">
+        <div class="columns is-centered">
+          <div class="column is-three-quarters">
 
-            <p>Dashboard views of Give Food data. You may also enjoy our <a href="/api/">API</a>.</p>
+            <a href="/" class="logo"><img src="/static/2/img/logo.svg" alt="Give Food"></a>
+
+            <h1>Dashboards</h1>
+
+            <p>You may also enjoy our <a href="/api/">API</a> or <a href="https://github.com/givefood/data">data respository</a></p>
             
             <h2>General</h2>
             <ul>

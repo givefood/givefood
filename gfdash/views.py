@@ -10,12 +10,12 @@ from django.views.decorators.cache import cache_page
 from givefood.models import Foodbank, FoodbankChange, FoodbankArticle
 from givefood.func import group_list, get_all_foodbanks
 
-@cache_page(60*60*10)
+#@cache_page(60*60*10)
 def index(request):
     return render(request, "dash/index.html")
 
 
-@cache_page(60*60*10)
+#@cache_page(60*60*10)
 def weekly_itemcount(request):
 
     week_needs = OrderedDict()
@@ -35,7 +35,7 @@ def weekly_itemcount(request):
     return render(request, "dash/weekly_itemcount.html", template_vars)
 
 
-@cache_page(60*60*10)
+#@cache_page(60*60*10)
 def weekly_itemcount_year(request):
 
     week_needs = OrderedDict()
@@ -71,7 +71,7 @@ def weekly_itemcount_year(request):
     }
     return render(request, "dash/weekly_itemcount_year.html", template_vars)
 
-@cache_page(60*60*10)
+#@cache_page(60*60*10)
 def most_requested_items(request):
 
     # Handle allowed day parameters
@@ -135,7 +135,7 @@ def most_requested_items(request):
     return render(request, "dash/most_requested_items.html", template_vars)
 
 
-@cache_page(60*60*10)
+##@cache_page(60*60*10)
 def most_excess_items(request):
 
     # Handle allowed day parameters
@@ -186,7 +186,7 @@ def most_excess_items(request):
 
     return render(request, "dash/most_excess_items.html", template_vars)
 
-@cache_page(60*60*4)
+#@cache_page(60*60*4)
 def tt_old_data(request):
 
     recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
@@ -199,7 +199,7 @@ def tt_old_data(request):
     return render(request, "dash/tt_old_data.html", template_vars)
 
 
-@cache_page(60*60*4)
+#@cache_page(60*60*4)
 def articles(request):
 
     articles = FoodbankArticle.objects.all().order_by("-published_date")[:200]
@@ -210,7 +210,7 @@ def articles(request):
     return render(request, "dash/articles.html", template_vars)
 
 
-@cache_page(60*60*4)
+#@cache_page(60*60*4)
 def beautybanks(request):
 
     products = [
@@ -245,7 +245,7 @@ def beautybanks(request):
     return render(request, "dash/beautybanks.html", template_vars)
 
 
-@cache_page(60*60*4)
+#@cache_page(60*60*4)
 def excess(request):
     excesses = FoodbankChange.objects.filter(published = True).order_by("-created")[:200]
     template_vars = {
@@ -254,7 +254,7 @@ def excess(request):
     return render(request, "dash/excess.html", template_vars)
 
 
-@cache_page(60*60*10)
+#@cache_page(60*60*10)
 def foodbanks_found(request):
     
     foodbanks = get_all_foodbanks()
@@ -272,7 +272,7 @@ def foodbanks_found(request):
     return render(request, "dash/foodbanks_found.html", template_vars)
 
 
-@cache_page(60*60*10)
+#@cache_page(60*60*10)
 def foodbank_locations_found(request):
     
     foodbanks = get_all_foodbanks()
@@ -289,7 +289,7 @@ def foodbank_locations_found(request):
 
     return render(request, "dash/foodbanks_found.html", template_vars)
 
-@cache_page(60*60*10)
+#@cache_page(60*60*10)
 def bean_pasta_index(request):
 
     months = FoodbankChange.objects.raw("select 1 as id, count(*) as count, to_char(created, 'YYYY-MM') as the_month from givefood_foodbankchange where published = True and (change_text ~* 'beans' or change_text ~* 'pasta') group by the_month order by the_month")

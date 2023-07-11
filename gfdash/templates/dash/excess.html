@@ -1,22 +1,18 @@
-{% extends "public/page.html" %}
+{% extends "public/2/page.html" %}
 
 {% block title %}Excess - Give Food{% endblock %}
-
-{% block head %}
-  <link rel="stylesheet" href="/static/css/dash.css">
-{% endblock %}
 
 {% block body %}
 
     <div class="columns">
         <div class="column">
-            <h1><a href="/">Give Food</a></h1>
+            <a href="/" class="logo"><img src="/static/2/img/logo.svg" alt="Give Food"></a>
             <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
-            <ul>
-                <li><a href="{% url 'public_index' %}">Give Food</a></li>
-                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
-                <li class="is-active"><a href="#" aria-current="page">Excess</a></li>
-            </ul>
+                <ul>
+                    <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                    <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                    <li class="is-active"><a href="#" aria-current="page">Excess</a></li>
+                </ul>
             </nav>
         </div>
     </div>
@@ -24,6 +20,7 @@
   <div class="columns">
 
     <div class="column">
+        <h1>Excess</h1>
         <table class="table is-narrow is-fullwidth">
             <tr>
                 <th>Foodbank</th>

@@ -1,29 +1,26 @@
-{% extends "public/page.html" %}
+{% extends "public/2/page.html" %}
 
 {% block title %}{% if trusselltrust %}Trussell Trust {% endif %}Most Requested Items - Give Food{% endblock %}
-
-{% block head %}
-  <link rel="stylesheet" href="/static/css/dash.css">
-{% endblock %}
 
 {% block body %}
 
     <div class="columns">
         <div class="column">
-            <h1><a href="/">Give Food</a></h1>
-            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <a href="/" class="logo"><img src="/static/2/img/logo.svg" alt="Give Food"></a>
+          <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'public_index' %}">Give Food</a></li>
                 <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
                 <li class="is-active"><a href="{% url 'dash:tt_most_requested_items' %}" aria-current="page">{% if trusselltrust %}Trussell Trust {% endif %}Most Requested Items</a></li>
             </ul>
-            </nav>
+          </nav>
         </div>
     </div>
 
   <div class="columns">
 
     <div class="column">
+        <h1>{% if trusselltrust %}Trussell Trust {% endif %}Most Requested Items</h1>
         <p class="is-pulled-left">Found {{ number_items }} items from {{ number_foodbanks }} food bank organisations in the last {{ days }} days.</p>
         <div class="field is-pulled-right">
             <div class="control">

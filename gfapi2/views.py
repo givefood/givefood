@@ -12,15 +12,12 @@ from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_f
 DEFAULT_FORMAT = "json"
 
 
-@cache_page(60*60*12)
+# @cache_page(60*60*12)
 def index(request):
-
-    template_vars = {}
-
-    return render(request, "index.html", template_vars)
+    return render(request, "index.html")
 
 
-@cache_page(60*60*12)
+# @cache_page(60*60*12)
 def docs(request):
 
     api_formats = ["JSON","XML","YAML"]

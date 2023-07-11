@@ -1,5 +1,4 @@
-{% extends "public/page.html" %}
-{% load humanize %}
+{% extends "public/2/page.html" %}
 
 {% block title %}Give Food API{% endblock %}
 
@@ -15,11 +14,16 @@
 
 {% block body %}
 
-  <h1><a href="/">Give Food</a></h1>
+  <div class="columns">
+    <div class="column is-4">
+        <a href="/" class="logo"><img src="/static/2/img/logo.svg" alt="Give Food"></a>
+        <h1>API</h1>
+    </div>
+  </div>
+
 
   <div class="columns">
     <div class="column is-one-third intro content">
-      <h2>API</h2>
       <div class="notification is-danger">
         <p>This API has been deprecated. It'll continue to work, but it's recommended that you <a href="/api/">use the v2 instead</a>.</p>
       </div>
