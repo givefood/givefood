@@ -100,6 +100,7 @@ OLD_FOODBANK_SLUGS = {
     "hillingdon/hayes-st-anselm":"st-anselm",
     "b30":"b30-south-birmingham",
     "kingfisher":"north-solihull",
+    "bethnal-green":"bow/bethnal-green",
 }
 
 FOODBANK_SUBPAGES = [
