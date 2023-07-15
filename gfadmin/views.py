@@ -13,7 +13,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
-from django.db import IntegrityError
+from django.db import IntegrityError, connection
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
@@ -789,6 +789,25 @@ def finder_stats(request):
 
     return render(request, "admin/stats.html", template_vars)
 
+
+def need_stats(request):
+
+    cursor = connection.cursor()
+    cursor.execute("SELECT sum(length(regexp_replace(change_text, E'[^\\n]', '', 'g'))) from givefood_foodbankchange")
+    need_lines = cursor.fetchone()[0]
+
+    stats = {
+        "needs":FoodbankChange.objects.count(),
+        "need_lines":need_lines,
+    }
+
+    template_vars = {
+        "stats":stats,
+        "title":"Need",
+        "section":"stats",
+    }
+
+    return render(request, "admin/stats.html", template_vars)
 
 def order_email(request, id):
 

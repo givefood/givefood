@@ -95,6 +95,7 @@ urlpatterns = (
     url(r'^stats/editing/$', edit_stats, name="edit_stats"),
     url(r'^stats/subscribers/$', subscriber_stats, name="subscriber_stats"),
     url(r'^stats/finder/$', finder_stats, name="finder_stats"),
+    url(r'^stats/needs/$', need_stats, name="need_stats"),
 
     url(r'^proxy/$', proxy, name="proxy"),
 
