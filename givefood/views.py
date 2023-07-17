@@ -18,7 +18,7 @@ from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAG
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
-# @cache_page(60*60*12)
+@cache_page(60*60*12)
 def public_index(request):
     gmap_key = get_cred("gmap_key")
     template_vars = {
