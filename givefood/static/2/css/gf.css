@@ -5,6 +5,9 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+.container {
+    padding:0 10px;
+}
 a, .breadcrumb a {
     color:#007BC7;
 }
