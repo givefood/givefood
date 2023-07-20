@@ -14,6 +14,7 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
 from django.db import IntegrityError, connection
+from django.db.models import Sum
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
@@ -722,18 +723,11 @@ def edit_stats(request):
 
 def order_stats(request):
 
-    total_weight = 0
-    total_calories = 0
-    total_items = 0
-    total_cost = 0
-
-    all_orders = Order.objects.all()
-    total_orders = len(all_orders)
-    for order in all_orders:
-        total_weight = total_weight + order.weight
-        total_calories = total_calories + order.calories
-        total_items = total_items + order.no_items
-        total_cost = total_cost + order.cost
+    total_weight = Order.objects.aggregate(Sum("weight"))["weight__sum"]
+    total_calories = Order.objects.aggregate(Sum("calories"))["calories__sum"]
+    total_items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
+    total_cost = Order.objects.aggregate(Sum("cost"))["cost__sum"]
+    total_orders = Order.objects.all().count()
 
     total_weight = total_weight / 1000
     total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
