@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'PT Serif';
+    src: url('/static/fonts/pt-serif-v12-latin-700.woff2') format('woff2'),
+            url('/static/fonts/pt-serif-v12-latin-700.woff') format('woff');
+    font-weight: 700;
+}
 body {
     background:#fff;
     color:rgb(61, 61, 61);
