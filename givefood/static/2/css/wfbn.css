@@ -77,3 +77,13 @@ p.needs {
 .table td.foodbank_name {
     padding-left:0;
 }
+textarea[name='address'] {
+    height:200px !important;
+}
+textarea[name='body'] {
+    height:500px !important;
+}
+.mp_photo {
+    width:200px;
+    border-radius:3px;
+}
