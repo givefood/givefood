@@ -756,7 +756,8 @@ def order_stats(request):
 def subscriber_stats(request):
 
     stats = {
-        "subscribers":FoodbankSubscriber.objects.filter(confirmed = True).count(),
+        "confirmed":FoodbankSubscriber.objects.filter(confirmed = True).count(),
+        "unconfirmed":FoodbankSubscriber.objects.filter(confirmed = False).count(),
     }
 
     template_vars = {
