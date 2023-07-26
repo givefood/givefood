@@ -350,6 +350,8 @@ def updates(request, slug, action):
         if not turnstile_is_valid:
             return HttpResponseRedirect("%s?turnstilefail=true&email=%s" % (reverse("wfbn:foodbank_subscribe", kwargs={"slug":foodbank.slug}), email))
 
+        # TODO - check subscriber dupe here, rather than inside the try
+
         try:
             new_sub = FoodbankSubscriber(
                 foodbank = foodbank,
