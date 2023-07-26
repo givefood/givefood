@@ -16,7 +16,7 @@ from django import forms
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email, get_all_constituencies
+from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email, get_all_constituencies, validate_turnstile
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
@@ -239,10 +239,14 @@ def foodbank_nearby(request, slug):
 def foodbank_subscribe(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
+    email = request.GET.get("email", None)
+    turnstilefail = request.GET.get("email", None)
 
     template_vars = {
         "section":"subscribe",
         "foodbank":foodbank,
+        "email":email,
+        "turnstilefail":turnstilefail,
     }
 
     return render(request, "wfbn/foodbank/subscribe.html", template_vars)
@@ -340,6 +344,11 @@ def updates(request, slug, action):
             validate_email(email)
         except forms.ValidationError:
             return HttpResponseForbidden()
+        
+        turnstile_is_valid = validate_turnstile(request.POST.get("cf-turnstile-response"))
+
+        if not turnstile_is_valid:
+            return HttpResponseRedirect("%s?turnstilefail=true&email=%s" % (reverse("wfbn:foodbank_subscribe", kwargs={"slug":foodbank.slug}), email))
 
         try:
             new_sub = FoodbankSubscriber(

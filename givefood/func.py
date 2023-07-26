@@ -97,6 +97,17 @@ def diff_html(a,b):
     return '\n'.join(the_diff) 
 
 
+def validate_turnstile(turnstile_response):
+
+    turnstile_secret = get_cred("turnstile_secret")
+    turnstile_fields = {
+        "secret":turnstile_secret,
+        "response":turnstile_response,
+    }
+
+    turnstile_result = requests.post("https://challenges.cloudflare.com/turnstile/v0/siteverify", turnstile_fields)
+    return turnstile_result.json()["success"]
+
 def geocode(address):
 
     gmap_geocode_key = get_cred("gmap_geocode_key")
