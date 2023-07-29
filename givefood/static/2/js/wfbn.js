@@ -27,11 +27,13 @@ const search_error = "Sorry, we had a problem finding food banks there. The erro
 function init() {
     autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
     autocomplete.setComponentRestrictions({'country': ['gb']});
-    if (uml_btn.hasAttribute("data-is-homepage")) {
-      uml_btn.addEventListener("click", do_geolocation_redirect);
-    } else {
-      uml_btn.addEventListener("click", do_geolocation);
-      addressform.addEventListener("submit", do_address);
+    if (uml_btn) {
+      if (uml_btn.hasAttribute("data-is-homepage")) {
+        uml_btn.addEventListener("click", do_geolocation_redirect);
+      } else {
+        uml_btn.addEventListener("click", do_geolocation);
+        addressform.addEventListener("submit", do_address);
+      }
     }
     if (burger_menu) {
       burger_menu.addEventListener('click',function(){
