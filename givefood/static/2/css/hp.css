@@ -12,9 +12,17 @@ h1 {
     height:50px;
     width:200px;
 }
+@media screen and (min-width: 769px) {
+    .map {
+        background-image: url('/static/2/img/map.svg');
+        background-repeat: no-repeat;
+        background-position: right 100px top 50px;
+        background-size: 500px 500px;
+    }
+}
 @media screen and (min-width: 1200px) {
     .map {
-        background:top right no-repeat url('/static/2/img/map.svg');
+        background-position: right 200px top 50px;
     }
 }
 .logos-container {
