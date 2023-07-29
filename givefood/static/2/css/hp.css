@@ -19,7 +19,7 @@ h1 {
 }
 @media screen and (min-width: 769px) {
     .map {
-        background-image: url('/static/2/img/map.svg');
+        background-image: url('/static/img/map.svg');
         background-repeat: no-repeat;
         background-position: right 100px top 50px;
         background-size: 500px 500px;
