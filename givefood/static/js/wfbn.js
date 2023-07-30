@@ -27,12 +27,16 @@ const search_error = "Sorry, we had a problem finding food banks there. The erro
 function init() {
     autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
     autocomplete.setComponentRestrictions({'country': ['gb']});
-    if (uml_btn) {
-      if (uml_btn.hasAttribute("data-is-homepage")) {
-        uml_btn.addEventListener("click", do_geolocation_redirect);
-      } else {
-        uml_btn.addEventListener("click", do_geolocation);
-        addressform.addEventListener("submit", do_address);
+    if (addressform) {
+      console.log("addressform")
+      addressform.addEventListener("submit", do_address);
+      if (uml_btn) {
+        console.log("uml_btn")
+        if (uml_btn.hasAttribute("data-is-homepage")) {
+          uml_btn.addEventListener("click", do_geolocation_redirect);
+        } else {
+          uml_btn.addEventListener("click", do_geolocation);
+        }
       }
     }
     if (burger_menu) {
@@ -54,9 +58,6 @@ function init() {
         the_element.addEventListener("click", record_conversion)
       }
     });
-    document.querySelectorAll(".subscribe-btn").forEach(subscribe_btn => 
-      subscribe_btn.addEventListener("click", show_subscribe_modal)
-    );
 }
 
 function record_conversion() {
@@ -131,20 +132,22 @@ function address_on_map(address) {
 }
 
 function move_map(lat,lng) {
-  map_main.panTo(new google.maps.LatLng(lat,lng));
-  map_main.setZoom(12);
-  var marker = new google.maps.Marker({
-    position: {"lat": lat, "lng": lng},
-    map: map_main,
-    icon: {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 6,
-      fillOpacity: 1,
-      strokeWeight: 2,
-      fillColor: '#5384ED',
-      strokeColor: '#ffffff',
-    },
-  });
+  if (typeof map_main !== 'undefined') {
+    map_main.panTo(new google.maps.LatLng(lat,lng));
+    map_main.setZoom(12);
+    var marker = new google.maps.Marker({
+      position: {"lat": lat, "lng": lng},
+      map: map_main,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 6,
+        fillOpacity: 1,
+        strokeWeight: 2,
+        fillColor: '#5384ED',
+        strokeColor: '#ffffff',
+      },
+    });
+  }
 }
 
 function record_search(querystring) {
@@ -155,7 +158,9 @@ function record_search(querystring) {
 }
 
 function api_request(url) {
-  status_msg.innerHTML = working_html;
+  if (status_msg) {
+    status_msg.innerHTML = working_html;
+  }
   var fb_req = new XMLHttpRequest();
   fb_req.addEventListener("load", api_response);
   fb_req.responseType = "json";
@@ -167,7 +172,9 @@ function clear_results() {
   while (results_table.firstChild) {
     results_table.removeChild(results_table.firstChild);
   }
-  index_intro.style.display = "none";
+  if (index_intro) {
+    index_intro.style.display = "none";
+  }
 }
 
 function add_click_recorders() {
@@ -220,17 +227,16 @@ function api_response() {
     if (number_needs > 0 && needs != "Nothing" && needs != "Unknown" && needs != "Facebook") {
       if (number_needs > 1) {item_text = "items"} else {item_text = "item"};
       currentrow.querySelector(".fb_needs p").innerHTML = needs_html;
-      currentrow.querySelector(".subscribe-btn").setAttribute("data-foodbankname",parent_org)
-      currentrow.querySelector(".subscribe-btn").addEventListener("click", show_subscribe_modal)
+      currentrow.querySelector(".subscribe").href = "/needs/at/" + parent_org_slug + "/subscribe/";
     } else if (needs == "Unknown") {
       currentrow.querySelector(".fb_needs").innerHTML = need_unknown_text;
-      currentrow.querySelector(".subscribe-btn").remove()
+      currentrow.querySelector(".subscribe").remove()
     } else if (needs == "Facebook") {
       currentrow.querySelector(".fb_needs").innerHTML = check_facebook_text;
-      currentrow.querySelector(".subscribe-btn").remove()
+      currentrow.querySelector(".subscribe").remove()
     } else {
       currentrow.querySelector(".fb_needs").innerHTML = nothing_needed_text;
-      currentrow.querySelector(".subscribe-btn").remove()
+      currentrow.querySelector(".subscribe").remove()
     }
     if (currentrow.querySelector(".links")) {
       currentrow.querySelector(".links .phone").href = "tel:" + phone;
