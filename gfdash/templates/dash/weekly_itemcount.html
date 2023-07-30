@@ -2,15 +2,11 @@
 
 {% block title %}Items requested by UK food banks per week - Give Food{% endblock %}
 
-{% block head %}
-  <link rel="stylesheet" href="/static/css/dash.css">
-{% endblock %}
-
 {% block body %}
 
     <div class="columns">
         <div class="column">
-            <h1><a href="/">Give Food</a></h1>
+            <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
             <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'public_index' %}">Give Food</a></li>
@@ -24,6 +20,9 @@
   <div class="columns">
 
     <div class="column">
+
+        <h1>Items requested by UK food banks per week</h1>
+        
         <div id="chart" style="height:500px"></div>
             
         <table class="table is-striped is-narrow is-fullwidth">

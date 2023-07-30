@@ -2,22 +2,18 @@
 
 {% block title %}Most Excess Items - Give Food{% endblock %}
 
-{% block head %}
-  <link rel="stylesheet" href="/static/css/dash.css">
-{% endblock %}
-
 {% block body %}
 
     <div class="columns">
         <div class="column">
-            <h1><a href="/">Give Food</a></h1>
-            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+          <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'public_index' %}">Give Food</a></li>
                 <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
                 <li class="is-active"><a href="{% url 'dash:most_excess_items' %}" aria-current="page">Most Excess Items</a></li>
             </ul>
-            </nav>
+          </nav>
         </div>
     </div>
 

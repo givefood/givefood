@@ -1,0 +1,74 @@
+.find-foodbank {
+    margin-top:1rem;
+}
+#postcode_field, #address_field {
+    width:220px;
+}
+nav {
+    margin:1rem 0 2rem 0;
+}
+@media screen and (min-width: 1200px) {
+    nav {
+        margin:2rem 0 4rem 0;
+    }
+}
+h1 {
+    margin:30px 0;
+    height:50px;
+    width:200px;
+}
+@media screen and (min-width: 769px) {
+    .map {
+        background-image: url('/static/img/map.svg');
+        background-repeat: no-repeat;
+        background-position: right 100px top 50px;
+        background-size: 500px 500px;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .map {
+        background-position: right 200px top 50px;
+    }
+}
+.logos-container {
+    background:#D8EDFE;
+}
+.logos-container h2 {
+    text-align:center;
+    font-size:20px;
+    padding:1rem 0 0 0;
+    border-bottom:1px solid #b4daf9;
+}
+.logos {
+    padding-bottom:2rem;
+    margin:0 2rem !important;
+    background:#D8EDFE;
+}
+.logos div {
+    margin:auto;
+    text-align:center;
+}
+.how-help-container {
+    padding:4rem 0 0 0;
+}
+.how-help h2 {
+    text-align:center;
+    font-size:20px;
+    border-bottom:1px solid lightgrey;
+    padding-bottom:0;
+}
+.how-help-cat {
+    padding-bottom:2rem;
+}
+.how-help-cat h3 {
+    font-weight:bold;
+}
+.annualreportteaser {
+    margin:30px 0;
+    padding:20px;
+    background:#FAFAFA;
+    border-radius:3px;
+}
+#donate-button-container {
+    margin-top:10px;
+}

@@ -1,5 +1,4 @@
 {% extends "public/page.html" %}
-{% load humanize %}
 
 {% block title %}Give Food API{% endblock %}
 
@@ -15,11 +14,16 @@
 
 {% block body %}
 
-  <h1><a href="/">Give Food</a></h1>
+  <div class="columns">
+    <div class="column is-4">
+        <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+        <h1>API</h1>
+    </div>
+  </div>
+
 
   <div class="columns">
     <div class="column is-one-third intro content">
-      <h2>API</h2>
       <div class="notification is-danger">
         <p>This API has been deprecated. It'll continue to work, but it's recommended that you <a href="/api/">use the v2 instead</a>.</p>
       </div>
@@ -30,7 +34,7 @@
         <li>If you display a food bank and their need also use their URL to link to them</li>
         <li>Credit us with a link to our homepage if you republish</li>
       </ul>
-      <p>Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, food manufacturers, hundreds of national &amp; local news websites, apps &amp; the Trussell Trust.</p>
+      <p>Our data is used by governments, trade associations, councils, universities, supermarkets, political parties, the NHS, food manufacturers, hundreds of national &amp; local news websites, apps &amp; the Trussell Trust.</p>
       <p>Please contact us at <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a> if you're going to launch something using our data. We'll be more than happy to help with any technical questions &amp; optimisations, PR and to ensure that we're all helping food banks as effectively as possible.</p>
     </div>
     <div class="column is-two-thirds">

@@ -2,8 +2,7 @@
 {% load bulma_tags %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn2.css">
-  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+  <link rel="stylesheet" href="/static/css/wfbn.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="Constituencies">
@@ -15,16 +14,14 @@
 
 {% block body %}
 
-  <div class="columns body">
+  <div class="columns">
     <div class="column">
 
       <div class="columns">
 
         <div class="column is-4">
-          <a href="/" class="logo">Give Food</a>
+          <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
         </div>
-
-        {% include 'wfbn/foodbank/includes/search.html' %}
 
       </div>
 
@@ -68,7 +65,7 @@
 {% block script %}
 
 <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
-<script src="/static/js/wfbn2.js" defer></script>
+<script src="/static/js/wfbn.js" defer></script>
 
 {% endblock %}
 

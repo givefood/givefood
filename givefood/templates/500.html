@@ -1,33 +1,28 @@
 {% extends "public/page.html" %}
 
-{% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn2.css">
-  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
-{% endblock %}
-
 {% block title %}500 - Give Food{% endblock %}
 
 {% block body %}
 
-  <div class="columns body">
+  <div class="columns">
     <div class="column">
 
       <div class="columns">
 
         <div class="column is-4">
-          <a href="/" class="logo">Give Food</a>
+          <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
         </div>
     
 
       </div>
 
-      <h1>500 - Server Error</h1>
+      <h1>500 - Internal Server Error</h1>
 
       <div class="columns">
 
           <div class="column">
 
-            <p>Sorry, something has gone wrong there. This error has been logged and we'll look into it.</p>
+            <p>Sorry, something has gone wrong there and we can't serve that page. This error has been logged and we'll look into it.</p>
 
             <ul>
                 <li><a href="/">Homepage</a></li>

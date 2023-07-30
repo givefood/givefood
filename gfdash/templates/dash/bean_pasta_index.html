@@ -2,15 +2,11 @@
 
 {% block title %}Beans &amp; Pasta Index - Give Food{% endblock %}
 
-{% block head %}
-  <link rel="stylesheet" href="/static/css/dash.css">
-{% endblock %}
-
 {% block body %}
 
     <div class="columns">
         <div class="column">
-            <h1><a href="/">Give Food</a></h1>
+          <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
             <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'public_index' %}">Give Food</a></li>
@@ -24,6 +20,7 @@
   <div class="columns">
 
     <div class="column">
+      <h1>Beans &amp; Pasta Index</h1>
       <p style="max-width:800px;">Food banks often have baked beans or pasta in abundance, so those items being requested suggests a food bank's supplies are under pressure. Graph shows the number of times we've found food banks requesting beans or pasta to be donated by month.</p><br><br>
       <div id="chart" style="height:500px"></div>
 

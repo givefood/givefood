@@ -20,42 +20,15 @@ from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, M
 
 @cache_page(60*60*12)
 def public_index(request):
-
-    total_weight = 0
-    total_calories = 0
-    total_items = 0
-
-    orders = Order.objects.all()
-    active_foodbanks = set()
-    foodbanks = get_all_foodbanks()
-    locations = get_all_locations()
-
-    TOTAL_PPE_WEIGHT = 2.715
-
-    for order in orders:
-        total_weight = total_weight + order.weight
-        total_calories = total_calories + order.calories
-        total_items = total_items + order.no_items
-        active_foodbanks.add(order.foodbank_name)
-
-    total_weight = float(total_weight) / 1000000
-    total_weight = (total_weight * PACKAGING_WEIGHT_PC) + TOTAL_PPE_WEIGHT
-    total_calories = float(total_calories) / 1000000
-
-    no_active_foodbanks = len(active_foodbanks)
-    total_locations = len(locations) + len(foodbanks)
-    for foodbank in foodbanks:
-        if foodbank.delivery_address:
-            total_locations += 1
-
+    gmap_key = get_cred("gmap_key")
     template_vars = {
-        "no_active_foodbanks":no_active_foodbanks,
-        "total_locations":total_locations,
-        "total_weight":total_weight,
-        "total_calories":total_calories,
-        "total_items":total_items,
+        "gmap_key":gmap_key,
     }
     return render(request, "public/index.html", template_vars)
+
+
+def public_about_us(request):
+    return render(request, "public/about_us.html")
 
 
 @anonymous_csrf

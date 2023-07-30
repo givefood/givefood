@@ -1,5 +1,5 @@
 body {
-  padding:2px 0 0 2px;
+  padding:10px;
   font-family:'Source Sans Pro',arial,sans-serif;
   font-size: 21px;
   font-stretch: 100%;
@@ -11,7 +11,4 @@ body {
 }
 .container {
   max-width:100%;
-}
-.headerimg {
-  display:none;
 }

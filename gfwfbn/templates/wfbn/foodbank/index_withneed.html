@@ -1,8 +1,7 @@
 {% extends "public/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn2.css">
-  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+  <link rel="stylesheet" href="/static/css/wfbn.css">
   <link rel="stylesheet" href="/static/css/share_btns.css">
   <link rel="alternate" type="application/rss+xml" title="RSS feed for {{ foodbank.full_name }}" href="{% url 'wfbn:foodbank_rss' foodbank.slug %}">
   <link rel="alternate" type="application/json" href="{% url 'api2:foodbank' foodbank.slug %}">
@@ -31,17 +30,13 @@
 
 {% block body %}
 
-  <div class="columns body">
+  <div class="columns">
     <div class="column">
 
       <div class="columns">
-
         <div class="column is-4">
-          <a href="/" class="logo">Give Food</a>
+          <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
         </div>
-        
-        {% include 'wfbn/foodbank/includes/search.html' %}
-
       </div>
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
@@ -75,7 +70,7 @@
                   {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
                 </p>
                 {% if foodbank.latest_need.excess_change_text %}
-                  <p>{{ foodbank.full_name }} currently doesn't need anymore of these items: {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+                  <p>They don't need anymore {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
                 {% endif %}
                 
                 {% include 'wfbn/foodbank/includes/subscribe.html' %}
@@ -91,6 +86,7 @@
             {% if foodbank.address_is_administrative%}
               <h3>Administrative address</h3>
             {% endif %}
+            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small">Directions</a>
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
               {{ foodbank.postcode }}<br>
@@ -114,7 +110,6 @@
 
             {% include "wfbn/foodbank/includes/charitynetwork.html" %}
 
-            <h2>Share</h2>
             {% url 'wfbn:foodbank' foodbank.slug as share_url %}
             {% include "wfbn/foodbank/includes/share_btns.html" with share_url=share_url %}
 
@@ -128,7 +123,7 @@
 
 {% block script %}
 
-<script src="/static/js/wfbn2.js" defer></script>
+<script src="/static/js/wfbn.js" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 <script>
 function add_marker(lat, lng, url) {

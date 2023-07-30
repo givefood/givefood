@@ -1,11 +1,7 @@
-h1 {
-  font-size:1.8em;
-  background: url('/static/img/logo.png');
-  background-repeat: no-repeat;
-  background-size: auto 50px;
-  padding:5px 0 6px 60px;
-  margin:0 0 20px 0;
-  font-weight:normal;
+.logo {
+  height:40px;
+  margin:10px 20px 10px 0;
+  max-height:unset !important;
 }
 .main {
   padding:0 10px;

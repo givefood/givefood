@@ -250,7 +250,7 @@ class Foodbank(models.Model):
 
     def has_needs(self):
         need_text = self.latest_need_text()
-        if need_text == "Nothing" or need_text == "Unknown":
+        if need_text == "Nothing" or need_text == "Unknown" or need_text == "Facebook":
             return False
         else:
             return True

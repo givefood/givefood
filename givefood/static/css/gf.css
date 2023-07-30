@@ -1,163 +1,78 @@
+@font-face {
+    font-family: 'PT Serif';
+    src: url('/static/fonts/pt-serif-v12-latin-700.woff2') format('woff2'),
+            url('/static/fonts/pt-serif-v12-latin-700.woff') format('woff');
+    font-weight: 700;
+}
 body {
-  font-size:0.95em;
-  background:#fff;
-  color:#212121;
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-}
-.headerimg {
-  background-repeat: no-repeat;
-  padding-top:200px;
-  margin-bottom:30px;
-  background-size: cover;
-}
-html.no-webp .headerimg {
-  background-image: url('/static/img/header.jpg');
-}
-html.no-js .headerimg {
-  background-image: url('/static/img/header.jpg');
-}
-html.webp .headerimg {
-  background-image: url('/static/img/header.webp');
+    background:#fff;
+    color:rgb(61, 61, 61);
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 .container {
-  padding:10px;
+    padding:0 10px;
 }
 a, .breadcrumb a {
-  color:#007BC7;
+    color:#007BC7;
 }
-sub {
-  display:inline-block;
+.logo img {
+    margin:30px 0 20px 0;
+    height:50px;
+    width:200px;
 }
-p {
-  margin-bottom:20px;
-}
-dt {
-  float:left;
-  width:150px;
-}
-h1 a, .content h1 a {
-  display:block;
-  font-size:1.8em;
-  background: url('/static/img/logo.png');
-  background-repeat: no-repeat;
-  background-size: auto 50px;
-  padding:5px 0 6px 60px;
-  margin:0 0 20px 0;
-  font-weight:normal;
-}
-h1 span {
-  display:inline-block;
-  font-size:0.7em;
-  padding-left:5px;
-}
-h1 a {
-  color:#212121;
-}
-h1 a:hover {
-  text-decoration:underline;
+h1 {
+    font-size: 26px !important;
+    font-family: 'PT Serif', serif;
+    font-weight: bold;
+    margin-bottom: 1.3rem;
 }
 h2, .content h2 {
-  font-size:1.3em;
-  font-weight:normal;
-  margin:0 0 10px 0;
-  border-bottom:2px solid #eee;
-  max-width:100%;
-}
+    font-size: 18px;
+    font-weight:normal;
+    margin:0 0 10px 0;
+    border-bottom:2px solid #eee;
+    max-width:100%;
+  }
 .content h2 {
-  padding-top:10px;
+    padding-top:10px;
 }
 h3, .content h3 {
-  font-size:1em;
-  font-weight:bold;
+    font-size:1em;
+    font-weight:bold;
+    margin:0 0 10px 0;
 }
-
-@media screen and (min-width: 769px) {
-  .for-food-banks, .about-us {
-    margin-top:24px;
-  }
+p {
+    margin-bottom:20px;
 }
-
-#process {
-  padding:60px 0;
+#usemylocationbtn {
+    margin:0 0 10px 0;
+    padding:5px 10px 5px 42px;
+    background:#E4EFF9 url("/static/img/getlocation.svg") no-repeat 8px center;
 }
-#process .arrow {
-  float:right;
-  font-weight:bold;
-}
-.process-step h3 {
-  font-weight:normal;
-  padding-bottom:10px;
-}
-.process-step .box {
-  height:140px;
-  overflow:hidden;
-  margin-bottom:10px;
-}
-.diff {
-  font-family:"Courier New", Courier, monospace;
-  font-weight:bold;
+.pac-container:after{
+    display:none !important;
 }
 ins {
-  background:#b7fdcb;
-  text-decoration:none;
+    background:#b7fdcb;
+    text-decoration:none;
 }
 del {
-  background:#ff9494;
-}
-blockquote {
-  font-style:italic;
-}
-#quotes {
-  margin:30px 0 30px 0;
-}
-.annualreportteaser {
-  margin:30px 0 30px 0;
-  padding:20px;
-  background:#FAFAFA;
-}
-.coronavirus {
-  padding:20px;
-  background:#fafccc;
-}
-.intro h2 {
-  border:0;
+    background:#ff9494;
 }
 .arproducts img {
-  width:100px;
-  float:left;
-}
-.arproducts span {
-  font-size:1.2em;
-  font-weight:bold;
-}
-.arproducts .box {
-  overflow:hidden;
-  zoom:0;
-}
-.rice img {
-  padding-bottom:54px;
-}
-#armap {
-  height:800px;
-}
-#methods {
-  margin-bottom:50px;
-}
-.content figure {
-  margin:0 0 10px 0;
-}
-.content img {
-  border-radius:6px;
-}
-.content img.no-corner {
-  border-radius:0;
-}
+    width:100px;
+    float:left;
+  }
+  .arproducts span {
+    font-size:1.2em;
+    font-weight:bold;
+  }
+  .arproducts .box {
+    overflow:hidden;
+    zoom:0;
+  }
 footer {
-  font-size:0.9em;
-}
-.sticky-toc {
-  position:sticky;
-  top:10px;
+    margin-top:3rem;
 }

@@ -18,7 +18,7 @@
     <nav class="navbar is-light" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="{% url 'admin:index' %}">
-          <h1>Give Food Admin</h1>
+          <img src="/static/img/logo.svg" alt="Give Food" class="logo">
         </a>
       </div>
       <a class="navbar-item{% if section == "foodbanks" %} is-active{% endif %}" href="{% url 'admin:foodbanks' %}">Food Banks</a>
