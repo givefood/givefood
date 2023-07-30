@@ -28,10 +28,8 @@ function init() {
     autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
     autocomplete.setComponentRestrictions({'country': ['gb']});
     if (addressform) {
-      console.log("addressform")
       addressform.addEventListener("submit", do_address);
       if (uml_btn) {
-        console.log("uml_btn")
         if (uml_btn.hasAttribute("data-is-homepage")) {
           uml_btn.addEventListener("click", function(event){
             event.preventDefault();
