@@ -1,7 +1,7 @@
-{% extends "public/2/page.html" %}
+{% extends "public/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/2/css/wfbn.css">
+  <link rel="stylesheet" href="/static/css/wfbn.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="{{ foodbank.full_name }}">
@@ -73,7 +73,7 @@
 
 {% block script %}
 
-<script src="/static/2/js/wfbn.js" defer></script>
+<script src="/static//js/wfbn.js" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 
 {% endblock %}

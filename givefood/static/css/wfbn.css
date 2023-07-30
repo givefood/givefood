@@ -1,92 +1,113 @@
-.headerimg {
-  padding-top:100px;
-  margin-bottom:15px;
+.logo img {
+    margin:2rem 0 0 0;
 }
-#status {
-  margin-top:10px;
-}
-#theresults {
-  margin-top:-10px;
+@media screen and (max-width: 769px) {
+    .breadcrumb {
+        margin:-1em 0 0.3em 0 !important;
+    }
+    .foodbank-menu {
+        position:relative;
+    }
+    .foodbank-menu li a {
+        display:none;
+    }
+    .foodbank-menu li a.is-active {
+        display:block;
+    }
+    .navbar-burger {
+        position:absolute;
+        top:0;
+        right:0;
+        height:2.25rem;
+        width:2.25rem;
+    }
+    .navbar-burger span {
+        background-color:#fff;
+    }
 }
 #postcode_field, #address_field {
-  width:220px;
+    width:220px;
 }
-html.no-js #map-container {
-  display:none;
+#addressform {
+    margin-bottom:1rem;
 }
-.table tr:last-child td {
-  border:0;
-}
-.foodbank {
-  font-size:1.2em;
-  line-height:1;
-}
-.subscribe {
-  margin-top:10px;
-}
-.needs {
-  width:100%;
+.recently-updated {
+    column-count:2;
+    column-gap:10px;
+    margin-bottom:2rem;
 }
 .needs td {
-  padding:0.75em 0.75em 0.75em 0;
+    padding:0.75em 0.75em 0.75em 0;
 }
-.distance, .updated, .parent_org {
-  font-size:0.8em;
-}
-.need_detail {
-  width:80%;
-}
-.fb_needs p {
-  margin-bottom:5px;
+.distance, .parent_org {
+    font-size:0.8em;
 }
 .links img {
-  margin:13px 7px 0 0;
-  width:20px;
+    margin:13px 7px 0 0;
+    width:20px;
 }
-.mp_photo {
-  width:260px;
-  margin:0 0 20px 20px;
-  border-radius:3px;
-  max-width:40%;
+.news li {
+    margin-bottom:10px;
 }
-.table td.foodbank_name {
-  padding-left:0;
+#theresults {
+    margin-top:-10px;
 }
-.contact-icon {
-  width:14px;
-  display:inline-block;
-  padding:2px 2px 0 0;
+.subscribe-btn {
+    margin-top:10px;
 }
-#map-container {
-  position: relative;
-  background:#AADAFF;
+#map {
+    height:1000px;
 }
-#map-main {
-  width:100%;
-  height:800px;
+.sidemap {
+    height:300px !important;
+    margin-bottom:10px;
 }
-#map-main {
-  border-radius:4px;
+.mainmap {
+    height:600px !important;
 }
 address {
-  font-style:normal;
+    margin-bottom:10px;
 }
-.socialicon {
-  width:16px;
-  height:16px;
+.contact-icon {
+    width:16px;
+    display:inline-block;
+    margin:0 2px 0 2px;
+    vertical-align:middle;
 }
-#address_label {
-  display:none;
+p.needs {
+    border-left:2px solid #eee;
+    padding:7px 0 7px 15px;
 }
-.thediff {
-  padding-left:20px;
+.cta {
+    margin-bottom: 1.3rem;
 }
-.nochange span {
-  background:#fff87f;
+.cta p {
+    margin-bottom:10px;
 }
-.echoneed {
-  background:#f7f7f7;
+.cta a {
+    vertical-align: middle;
+    margin-right:5px;
 }
-.echoneed p {
-  margin-bottom:0;
+#subscription_example {
+    width:100%;
+    height:500px;
+}
+#postcode_field {
+    text-transform:uppercase;
+}
+#postcode_field::placeholder {
+    text-transform:capitalize;
+}
+.table td.foodbank_name {
+    padding-left:0;
+}
+textarea[name='address'] {
+    height:200px !important;
+}
+textarea[name='body'] {
+    height:500px !important;
+}
+.mp_photo {
+    width:200px;
+    border-radius:3px;
 }

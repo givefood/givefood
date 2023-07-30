@@ -1,4 +1,4 @@
-{% extends "public/2/page.html" %}
+{% extends "public/page.html" %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css">
@@ -21,9 +21,9 @@
       <div id="intro_btns">
         <div class="field">
           <div class="control">
-            <form id="addressform" action="/needs/" method="GET">
-              <label id="address_label" for="address_field" class="label">Address (town or postcode)</label>
-              <input id="address_field" type="text" name="address" class="input" placeholder="Town name or postcode" value="{{ address }}" required="required">
+            <form id="addressform" action="/needs/trusselltrust/" method="GET">
+              <label id="address_label" for="address_field" class="label">Postcode or town</label>
+              <input id="address_field" type="text" name="address" class="input" placeholder="e.g. EX4 6PX or Sheffield" required>
               <input type="submit" class="button is-info" value="Go">
             </form>
           </div>
@@ -56,7 +56,6 @@
 {% endblock %}
 
 {% block script %}
-
   <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
   <script src="/static/js/wfbn.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.contentWindow.min.js" defer></script>

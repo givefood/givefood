@@ -1,7 +1,7 @@
-{% extends "public/2/page.html" %}
+{% extends "public/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/2/css/wfbn.css">
+  <link rel="stylesheet" href="/static/css/wfbn.css">
   <link rel="stylesheet" href="/static/css/share_btns.css">
   <link rel="alternate" type="application/rss+xml" title="RSS feed for {{ foodbank.full_name }}" href="{% url 'wfbn:foodbank_rss' foodbank.slug %}">
   <link rel="alternate" type="application/json" href="{% url 'api2:foodbank' foodbank.slug %}">

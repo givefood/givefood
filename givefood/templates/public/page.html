@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-GB" class="no-js">
+<html lang="en-GB">
 <!--
 
 👋 Generated {% now "r" %}
@@ -33,6 +33,8 @@
   <meta name="theme-color" content="#FFB000">
   <link rel="stylesheet" href="/static/css/bulma.min.css">
   <link rel="stylesheet" href="/static/css/gf.css">
+  <link rel="preload" href="/static/fonts/pt-serif-v12-latin-700.woff2" as="font" type="font/woff2">
+  <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
   <link rel="canonical" href="{{ canonical_path }}">
   <script defer data-domain="givefood.org.uk" data-api="/psb/api/event" src="/psb/js/script.outbound-links.js"></script>
@@ -40,7 +42,6 @@
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-  <div class="headerimg"></div>
   <div class="container {% block container_attr %}{% endblock %}">
     {% block body %}{% endblock %}
   </div>
@@ -69,6 +70,5 @@
     gtag('config', 'AW-448372895');
   </script>
   <script>    (function(c,l,a,r,i,t,y){        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);    })(window, document, "clarity", "script", "8vjlgi67ll");</script>
-  <script src="/static/js/modernizer.js" defer></script>
 </body>
 </html>

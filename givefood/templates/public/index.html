@@ -1,10 +1,10 @@
-{% extends "public/2/page.html" %}
+{% extends "public/page.html" %}
 {% load humanize %}
 
 {% block title %}Give Food{% endblock %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/2/css/hp.css">
+  <link rel="stylesheet" href="/static/css/hp.css">
   <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
 {% endblock %}
 
@@ -158,7 +158,7 @@
 
 {% block script %}
 
-  <script src="/static//2/js/wfbn.js" defer></script>
+  <script src="/static///js/wfbn.js" defer></script>
   <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 
 {% endblock %}
