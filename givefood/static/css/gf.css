@@ -48,8 +48,22 @@ p {
 }
 #usemylocationbtn {
     margin:0 0 10px 0;
-    padding:5px 10px 5px 42px;
-    background:#E4EFF9 url("/static/img/getlocation.svg") no-repeat 8px center;
+    padding:5px 10px 5px 5px;
+    
+}
+#usemylocationbtn:before {
+    width:25px;
+    height:25px;
+    margin-right:7px;
+    background: url("/static/img/getlocation.svg");
+    background-size: cover;
+    content: '';
+}
+.working:before {
+    animation-name: spin;
+    animation-duration: 3000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear; 
 }
 .pac-container:after{
     display:none !important;
@@ -75,4 +89,12 @@ del {
   }
 footer {
     margin-top:3rem;
+}
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
 }

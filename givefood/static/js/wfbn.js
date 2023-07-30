@@ -33,9 +33,15 @@ function init() {
       if (uml_btn) {
         console.log("uml_btn")
         if (uml_btn.hasAttribute("data-is-homepage")) {
-          uml_btn.addEventListener("click", do_geolocation_redirect);
+          uml_btn.addEventListener("click", function(event){
+            event.preventDefault();
+            uml_click(true);
+          });
         } else {
-          uml_btn.addEventListener("click", do_geolocation);
+          uml_btn.addEventListener("click", function(event){
+            event.preventDefault();
+            uml_click(true);
+          });
         }
       }
     }
@@ -63,6 +69,15 @@ function init() {
 function record_conversion() {
   gtag('event', 'conversion', {'send_to': 'AW-448372895/rBD8CKOqkPABEJ_B5tUB'});
   plausible('conversion')
+}
+
+function uml_click(redirect) {
+  uml_btn.classList.add("working")
+  if (redirect) {
+    do_geolocation_redirect()
+  } else {
+    do_geolocation()
+  }
 }
 
 function do_geolocation_redirect(event) {
