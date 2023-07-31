@@ -21,7 +21,7 @@ def weekly_itemcount(request):
     week_needs = OrderedDict()
 
     start_date = date(2020,1,1)
-    needs = FoodbankChange.objects.filter(created__gt = start_date).order_by("created")
+    needs = FoodbankChange.objects.filter(created__gt = start_date, published=True).order_by("created")
 
     for need in needs:
         week_number = need.created.isocalendar()[1]
@@ -47,7 +47,7 @@ def weekly_itemcount_year(request):
     years = range(start_year, current_year+1)
     weeks = range(1,54)
 
-    needs = FoodbankChange.objects.filter(created__gt = start_date).order_by("created")
+    needs = FoodbankChange.objects.filter(created__gt = start_date, published=True).order_by("created")
 
     for need in needs:
         week_number = need.created.isocalendar()[1]
