@@ -19,11 +19,17 @@ a, .breadcrumb a {
 }
 .logo img {
     margin:30px 0 20px 0;
-    height:50px;
-    width:200px;
+    width:148px;
+    height:37px;
+}
+@media screen and (min-width: 769px) {
+    .logo img {
+        width:200px;
+        height:50px;
+    }
 }
 h1 {
-    font-size: 26px !important;
+    font-size: 24px !important;
     font-family: 'PT Serif', serif;
     font-weight: bold;
     margin-bottom: 1.3rem;
