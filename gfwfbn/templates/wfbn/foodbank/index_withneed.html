@@ -85,8 +85,9 @@
             <div id="map" class="sidemap"></div>
             {% if foodbank.address_is_administrative%}
               <h3>Administrative address</h3>
+            {% else %}
+              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small">Directions</a>
             {% endif %}
-            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small">Directions</a>
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
               {{ foodbank.postcode }}<br>
