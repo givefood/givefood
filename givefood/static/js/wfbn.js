@@ -38,7 +38,7 @@ function init() {
         } else {
           uml_btn.addEventListener("click", function(event){
             event.preventDefault();
-            uml_click(true);
+            uml_click(false);
           });
         }
       }
@@ -78,7 +78,7 @@ function uml_click(redirect) {
   }
 }
 
-function do_geolocation_redirect(event) {
+function do_geolocation_redirect() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function(position){
@@ -89,10 +89,9 @@ function do_geolocation_redirect(event) {
       }
     );
   }
-  event.preventDefault();
 }
 
-function do_geolocation(event) {
+function do_geolocation() {
   clear_results();
   if (!navigator.geolocation) {
     window.location = ip_geolocation_url
@@ -105,7 +104,6 @@ function do_geolocation(event) {
       }
     );
   }
-  event.preventDefault();
 }
 
 function do_address(event) {
