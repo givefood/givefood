@@ -2,15 +2,17 @@
 	"name" : "What Food Banks Need",
 	"short_name" : "What Food Banks Need",
 	"description" : "Find what UK food banks near you requesting to have donated",
-	"start_url" : "https://www.givefood.org.uk/needs/?pwa",
+	"start_url" : "https://www.givefood.org.uk/needs/",
 	"scope" : "/needs/",
 	"display" : "minimal-ui",
 	"lang" : "en-UK",
 	"icons": [
 		{
-			"src": "/static/img/logo.png",
-			"type": "image/png",
-			"sizes": "256x256"
+			"src": "/static/img/favicon.svg",
+			"type": "image/svg",
+			"sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+			"type": "image/svg+xml",
+			"purpose": "any"
 		}
 	],
 	"screenshots": [
