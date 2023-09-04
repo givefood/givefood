@@ -217,7 +217,7 @@
         <ul class="articles">
           {% for article in foodbank.articles %}
             <li>
-              <a href="{{ article.url }}">{{ article.title|title }}</a><br>
+              <a href="{{ article.url }}">{{ article.title_captialised }}</a><br>
               <span class="is-size-7">{{ article.published_date|timesince }} ago</span>
             </li>
           {% endfor %}

@@ -3,6 +3,7 @@
 
 import hashlib, unicodedata, logging, json
 from datetime import date, datetime, timedelta
+from string import capwords
 
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -814,6 +815,9 @@ class FoodbankArticle(models.Model):
     published_date = models.DateTimeField(editable=False)
     title = models.CharField(max_length=250)
     url = models.CharField(max_length=250, unique=True)
+
+    def title_captialised(self):
+        return capwords(self.title).replace("Uk","UK")
 
     def foodbank_name_slug(self):
         return slugify(self.foodbank_name)

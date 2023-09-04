@@ -14,7 +14,7 @@
     {% if need.foodbank.articles_month %}
         <b>News from {{ need.foodbank.name }} Food Bank</b><br>
         {% for article in need.foodbank.articles_month %}
-            <a href="{{ article.url }}">{{ article.title|title }}</a><br><span class="articledate">{{ article.published_date }}</span>
+            <a href="{{ article.url }}">{{ article.title_captialised }}</a><br><span class="articledate">{{ article.published_date }}</span>
             <br>
         {% endfor %}
         <br>
