@@ -260,6 +260,7 @@ function api_response() {
   }
   add_click_recorders();
   status_msg.innerHTML = "";
+  uml_btn.classList.remove("working")
 }
 
 function show_subscribe_modal() {
