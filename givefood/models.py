@@ -264,7 +264,7 @@ class Foodbank(models.Model):
     def subscribers(self):
         return FoodbankSubscriber.objects.filter(foodbank = self)
 
-    def no_subscribers(self):
+    def number_subscribers(self):
         return FoodbankSubscriber.objects.filter(foodbank = self).count()
 
     def get_no_locations(self):
