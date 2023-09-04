@@ -1,4 +1,4 @@
-import logging, feedparser
+import logging
 
 from datetime import datetime, timedelta, timezone
 from time import mktime
@@ -7,9 +7,9 @@ from django.http import HttpResponse
 from django.core.cache import cache
 from django.apps import apps
 
-from givefood.models import Foodbank, FoodbankLocation, FoodbankArticle, FoodbankSubscriber, FoodbankChange
+from givefood.models import Foodbank, FoodbankLocation, FoodbankSubscriber, FoodbankChange
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import oc_geocode, get_all_open_foodbanks
+from givefood.func import oc_geocode, get_all_open_foodbanks, foodbank_article_crawl
 
 
 def precacher(request):
@@ -49,23 +49,8 @@ def crawl_articles(request):
     foodbanks_with_rss = Foodbank.objects.filter(rss_url__isnull=False)
 
     for foodbank in foodbanks_with_rss:
-        logging.info("Scraping %s" % (foodbank.name))
-        try:
-            feed = feedparser.parse(foodbank.rss_url)
-            if feed:
-                for item in feed["items"]:
-                    if item.title != "":
-                        article = FoodbankArticle.objects.filter(url=item.link).first()
-                        if not article:
-                            new_article = FoodbankArticle(
-                                foodbank = foodbank,
-                                title = item.title[0:250],
-                                url = item.link,
-                                published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
-                            )
-                            new_article.save()
-        except:
-            pass
+        foodbank_article_crawl(foodbank)
+
 
     return HttpResponse("OK")
 

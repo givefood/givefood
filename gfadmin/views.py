@@ -17,7 +17,7 @@ from django.db import IntegrityError, connection
 from django.db.models import Sum
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.func import get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
+from givefood.func import foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
 from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm
 
@@ -542,6 +542,9 @@ def need_notifications(request, id):
     need = get_object_or_404(FoodbankChange, need_id = id)
     
     foodbank = need.foodbank
+
+    # Check for foodbank articles
+    foodbank_article_crawl(foodbank)
 
     # Update tweet time
     need.tweet_sent = datetime.now()

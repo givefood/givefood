@@ -71,6 +71,7 @@ class Foodbank(models.Model):
     last_social_media_check = models.DateTimeField(editable=False, null=True)
     last_need = models.DateTimeField(editable=False, null=True)
     last_rfi = models.DateTimeField(editable=False, null=True)
+    last_crawl = models.DateTimeField(editable=False, null=True)
 
     no_locations = models.IntegerField(editable=False, default=0)
     days_between_needs = models.IntegerField(editable=False, default=0)

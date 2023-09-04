@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, logging, operator, json, urllib, difflib, requests
+import re, logging, operator, urllib, difflib, requests, feedparser
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
+from datetime import datetime
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -144,6 +145,35 @@ def oc_geocode(address):
         except:
             lattlong = "0,0"
     return lattlong
+
+
+def foodbank_article_crawl(foodbank):
+
+    from givefood.models import FoodbankArticle
+
+    logging.info("Scraping %s" % (foodbank.name))
+    try:
+        feed = feedparser.parse(foodbank.rss_url)
+        if feed:
+            for item in feed["items"]:
+                if item.title != "":
+                    article = FoodbankArticle.objects.filter(url=item.link).first()
+                    if not article:
+                        new_article = FoodbankArticle(
+                            foodbank = foodbank,
+                            title = item.title[0:250],
+                            url = item.link,
+                            published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
+                        )
+                        new_article.save()
+    except:
+        pass
+
+    # Update last crawl date
+    foodbank.last_crawl = datetime.now()
+    foodbank.save()
+
+    return True
 
 
 def parse_tesco_order_text(order_text):
