@@ -5,11 +5,39 @@
 
 {% block body %}
 
-  <h2>{{ foodbank }}</h2>
+  <h1>{{ foodbank }}</h1>
 
-  <div class="columns">
+  <div class="tabs is-boxed">
+    <ul>
+      <li class="is-active">
+        <a data-tab="generallocations">
+          <span>General &amp; Locations</span>
+        </a>
+      </li>
+      <li>
+        <a data-tab="needsorders">
+          <span>Needs &amp; Orders</span>
+        </a>
+      </li>
+      {% if foodbank.articles %}
+        <li>
+          <a data-tab="articles">
+            <span>Articles</span>
+          </a>
+        </li>
+      {% endif %}
+      <li>
+        <a data-tab="socialmedia">
+          <span>Social Media</span>
+        </a>
+      </li>
+    </ul>
+  </div>
 
-    <div class="column">
+  <div class="columns sections">
+
+    {# General #}
+    <div class="column generallocations">
 
       {% if foodbank.is_closed %}
         <span class="tag is-danger">Closed</span>
@@ -150,7 +178,8 @@
 
     </div>
 
-    <div class="column">
+    {# Locations #}
+    <div class="column generallocations">
       <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
       <h3>Locations</h3>
       <table class="table is-fullwidth locationtable">
@@ -158,7 +187,7 @@
           <td>
             Main
           </td>
-          <td class="is-size-7">{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
+          <td>{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</td>
           <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
         </tr>
         {% if foodbank.delivery_address %}
@@ -166,14 +195,14 @@
             <td>
               Delivery
             </td>
-            <td class="is-size-7">{{ foodbank.delivery_address|linebreaksbr }}</td>
+            <td>{{ foodbank.delivery_address|linebreaksbr }}</td>
             <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-small is-pulled-right">Edit</a></td>
           </tr>
         {% endif %}
         {% for location in foodbank.locations %}
         <tr>
           <td>{{ location.name }}</td>
-          <td class="is-size-7">{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
+          <td>{{ location.address|linebreaksbr }}<br>{{ location.postcode }}</td>
           <td>
             <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
             <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post">
@@ -185,8 +214,9 @@
       </table>
     </div>
 
+    {# Needs #}
     {% if foodbank.needs %}
-      <div class="column">
+      <div class="column needsorders is-hidden">
         <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
@@ -201,7 +231,7 @@
                 {% if need.input_method == "scrape" %}🤖{% endif%}
                 {% if need.input_method == "user" %}🧑{% endif%}
               </td>
-              <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
+              <td>{{ need.change_text|linebreaksbr }}</td>
               <td>
                 <a href="{% url "admin:need" need.need_id %}">
                   {{ need.created|timesince }} ago
@@ -213,22 +243,9 @@
       </div>
     {% endif %}
 
-    {% if foodbank.articles %}
-      <div class="column">
-        <h3 style="margin-top:0">Articles</h3>
-        <ul class="articles">
-          {% for article in foodbank.articles %}
-            <li>
-              <a href="{{ article.url }}">{{ article.title_captialised }}</a><br>
-              <span class="is-size-7">{{ article.published_date|timesince }} ago</span>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
-
+    {# Orders #}
     {% if foodbank.orders %}
-      <div class="column">
+      <div class="column needsorders is-hidden">
         <a href="{% url "admin:neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
@@ -251,15 +268,33 @@
       </div>
     {% endif %}
 
+    {# Articles #}
+    {% if foodbank.articles %}
+      <div class="column articles is-hidden">
+        <table class="table is-fullwidth is-hoverable">
+          {% for article in foodbank.articles %}
+            <tr>
+              <td>
+                <a href="{{ article.url }}">{{ article.title_captialised }}</a>
+              </td>
+              <td>
+                <span">{{ article.published_date|timesince }} ago</span>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+    {% endif %}
+
+    {# Social Media #}
     {% if foodbank.facebook_page %}
-      <div class="column">
+      <div class="column socialmedia is-hidden">
         {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
       </div>
     {% endif %}
 
     {% if foodbank.twitter_handle %}
-      <div class="column">
-        <h2><a href="https://twitter.com/{{ foodbank.twitter_handle }}">Twitter</a></h2>
+      <div class="column socialmedia is-hidden">
         <div class="twitter-feed">
           <a class="twitter-timeline" href="https://twitter.com/{{ foodbank.twitter_handle }}">Tweets by {{ foodbank.twitter_handle }}</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
@@ -268,4 +303,9 @@
 
   </div>
 
+{% endblock %}
+
+
+{% block script %}
+  <script src="/static/js/admin_foodbank.js" defer></script>
 {% endblock %}

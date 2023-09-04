@@ -12,7 +12,7 @@ th {
 }
 dt {
   float:left;
-  width:150px;
+  width:200px;
 }
 dd {
   text-overflow: ellipsis;
@@ -41,8 +41,8 @@ h3 {
   min-width:50px;
 }
 h1 {
-  margin:0;
-  padding:8px 8px 8px 60px;
+  margin:10px 0;
+  padding:0;
   font-size:1.5em;
 }
 #id_delivery_date {
