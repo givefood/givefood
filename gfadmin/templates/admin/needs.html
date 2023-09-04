@@ -39,7 +39,9 @@
             <td>
               <a href="{% url "admin:need" need.need_id %}">{{ need.need_id }}</a>
             </td>
-            <td>{{ need.foodbank_name }}</td>
+            <td>
+              <a href="{% url "admin:foodbank" need.foodbank_name_slug %}">{{ need.foodbank_name }}</a>
+            </td>
             <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
             <td class="is-size-7">{{ need.excess_change_text|linebreaksbr }}</td>
             <td>{{ need.created }}</td>
