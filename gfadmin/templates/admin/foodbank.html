@@ -220,23 +220,35 @@
         <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
-            <th></th>
+            <th>Published?</th>
+            <th>Input</th>
+            <th>ID</th>
             <th>Need</th>
-            <th>When</th>
+            <th>Excess</th>
+            <th>Created</th>
+            <th>Modified</th>
           </tr>
           {% for need in foodbank.needs %}
             <tr>
+              <td>
+                {% if need.published %}
+                  <span style="color:green">✓</span>
+                {% else %}
+                  <span style="color:red">x</span>
+                {% endif %}
+              </td>
               <td>
                 {% if need.input_method == "typed" %}⌨️{% endif%}
                 {% if need.input_method == "scrape" %}🤖{% endif%}
                 {% if need.input_method == "user" %}🧑{% endif%}
               </td>
-              <td>{{ need.change_text|linebreaksbr }}</td>
               <td>
-                <a href="{% url "admin:need" need.need_id %}">
-                  {{ need.created|timesince }} ago
-                </a>
+                <a href="{% url "admin:need" need.need_id %}">{{ need.need_id }}</a>
               </td>
+              <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
+              <td class="is-size-7">{{ need.excess_change_text|linebreaksbr }}</td>
+              <td>{{ need.created }}</td>
+              <td>{{ need.modified }}</td>
             </tr>
           {% endfor %}
         </table>
