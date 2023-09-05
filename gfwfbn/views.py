@@ -23,6 +23,10 @@ from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLo
 @cache_page(60*60*48)
 def index(request):
 
+    # Handle old misspelt URL
+    if request.GET.get("lattlong", None):
+        return redirect("%s?lat_lng=%s" % (reverse("wfbn:index"), request.GET.get("lattlong")))
+
     address = request.GET.get("address", "")
     lat_lng = request.GET.get("lat_lng", "")
     where_from = request.GET.get("from","")
