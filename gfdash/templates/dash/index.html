@@ -25,17 +25,22 @@
 
       <p>You may also enjoy our <a href="/api/">API</a> or <a href="https://github.com/givefood/data">data repository</a></p>
       
-      <h2>General</h2>
+      <h2>Items Requested</h2>
       <ul>
         <li><a href="{% url 'dash:weekly_itemcount' %}">Items requested weekly</a> - Number of items requested by UK food banks per week</li>
         <li><a href="{% url 'dash:weekly_itemcount_year' %}">Items requested weekly per year</a> - Number of items requested by UK food banks per week per year</li>
         <li><a href="{% url 'dash:most_requested_items' %}">Most requested items</a> - Most requested items by all food banks we know of</li>
         <li><a href="{% url 'dash:excess' %}">Excess</a> - Most recent food banks declaring excess items</li>
         <li><a href="{% url 'dash:most_excess_items' %}">Most excess items</a> - Most excess items by all food banks we know of</li>
-        <li><a href="{% url 'dash:articles' %}">Articles</a> - All the articles we've found published by all the food banks we know of</li>
         <li><a href="{% url 'dash:beautybanks' %}">Beauty Bank items</a> - Foodbanks that we've seen request items that are supplied by <a href="https://www.beautybanks.org.uk/">Beauty Banks</a></li>
-        <li><a href="{% url 'dash:foodbanks_found' %}">Food banks found</a> - Number of food bank organisations we've found over time</li>
         <li><a href="{% url 'dash:bean_pasta_index' %}">Beans &amp; Pasta Index</a> - using common items as a sign of food bank supply stress</li>
+      </ul>
+
+      <br>
+      <h2>Food Banks</h2>
+      <ul>
+        <li><a href="{% url 'dash:foodbanks_found' %}">Food banks found</a> - Number of food bank organisations we've found over time</li>
+        <li><a href="{% url 'dash:articles' %}">Articles</a> - All the articles we've found published by all the food banks we know of</li>
       </ul>
 
       <br>
@@ -45,7 +50,15 @@
         <li><a href="{% url 'dash:tt_most_requested_items' %}">Trussell Trust - most requested items</a> - Most requested items by Trussell Trust food banks</li>
       </ul>
 
-      <br><br>
+      <br>
+      <h2>Our Deliveries</h2>
+      <p>Deliveries to food banks from Give Food per month by...</p>
+      <ul>
+        <li><a href="{% url 'dash:deliveries' 'count' %}">Number of deliveries</a></li>
+        <li><a href="{% url 'dash:deliveries' 'items' %}">Number of items</a></li>
+        <li><a href="{% url 'dash:deliveries' 'weight' %}">Weight</a></li>
+        <li><a href="{% url 'dash:deliveries' 'calories' %}">Calories</a></li>
+      </ul>
 
     </div>
   </div>

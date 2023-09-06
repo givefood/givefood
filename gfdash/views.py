@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
 
-from givefood.models import Foodbank, FoodbankChange, FoodbankArticle
+from givefood.models import Foodbank, FoodbankChange, FoodbankArticle, Order
 from givefood.func import group_list, get_all_foodbanks
 
 @cache_page(60*60*10)
@@ -299,3 +299,33 @@ def bean_pasta_index(request):
     }
 
     return render(request, "dash/bean_pasta_index.html", template_vars)
+
+
+@cache_page(60*60*10)
+def deliveries(request, metric):
+
+    if metric == "count":
+        metric_text = "Number of deliveries"
+        metric_sql = "count(*)"
+    elif metric == "items":
+        metric_text = "Items"
+        metric_sql = "sum(no_items)"
+    elif metric == "weight":
+        metric_text = "Weight kg"
+        metric_sql = "sum(weight)/1000"
+    elif metric == "calories":
+        metric_text = "Calories"
+        metric_sql = "sum(calories)"
+
+    sql = "select 1 as id, %s as count, to_char(delivery_datetime, 'YYYY-MM') as the_month from givefood_order group by the_month order by the_month" % (metric_sql)
+
+    months = Order.objects.raw(sql)
+
+    template_vars = {
+        "sql":sql,
+        "metric":metric,
+        "metric_text":metric_text,
+        "months":months,
+    }
+
+    return render(request, "dash/deliveries.html", template_vars)
