@@ -2,15 +2,16 @@
 
 {% block title %}Food Banks Found - Give Food{% endblock %}
 
-{% block head %}
-  <link rel="stylesheet" href="/static/css/dash.css">
-{% endblock %}
-
 {% block body %}
 
     <div class="columns">
-        <div class="column">
+      <div class="column">
           <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+      </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
             <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'public_index' %}">Give Food</a></li>
