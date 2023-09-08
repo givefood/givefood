@@ -65,6 +65,11 @@ def public_api(request):
 
 
 @cache_page(60*60*12)
+def public_annual_report_index(request):
+    return render(request, "public/ar/index.html")
+
+
+@cache_page(60*60*12)
 def public_annual_report(request, year):
     article_template = "public/ar/%s.html" % (year)
     return render(request, article_template)
