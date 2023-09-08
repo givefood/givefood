@@ -82,7 +82,7 @@
                     <div class="column is-one-third">
                         <aside class="menu">
                             <ul class="menu-list">
-                                <li><a {% if not locslug %}class="is-active"{% endif %} href="{% url 'wfbn:foodbank_edit_form' foodbank.slug action %}">Main Location</a></li>
+                                <li><a {% if not locslug %}class="is-active"{% endif %} href="{% url 'wfbn:foodbank_edit_form' foodbank.slug action %}">Main &amp; Delivery</a></li>
                                 {% for location in foodbank.locations %}
                                     <li><a {% if locslug == location.slug %}class="is-active"{% endif %} href="{% url 'wfbn:foodbank_edit_form_location' foodbank.slug action location.slug %}">{{ location.name }}</a></li>
                                 {% endfor %}

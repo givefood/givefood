@@ -18,7 +18,10 @@ class FoodbankLocationForm(forms.ModelForm):
 
     class Meta:
         model = Foodbank
-        fields = ("address","postcode","country")
+        fields = ("address","postcode","country", "delivery_address")
+        help_texts = {
+            "delivery_address": "Optional. If you have a different address for deliveries, please enter it here.",
+        }
 
 
 class LocationLocationForm(forms.ModelForm):
