@@ -210,7 +210,7 @@ def articles(request):
     return render(request, "dash/articles.html", template_vars)
 
 
-@cache_page(60*60*4)
+@cache_page(60*60*0.5)
 def beautybanks(request):
 
     products = [
