@@ -171,7 +171,7 @@ def foodbank_article_crawl(foodbank):
 
     # Update last crawl date
     foodbank.last_crawl = datetime.now()
-    foodbank.save()
+    foodbank.save(do_decache=False, do_geoupdate=False)
 
     return True
 
