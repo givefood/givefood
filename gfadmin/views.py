@@ -542,7 +542,8 @@ def need_notifications(request, id):
     foodbank = need.foodbank
 
     # Check for foodbank articles
-    foodbank_article_crawl(foodbank)
+    if foodbank.rss_url:
+        foodbank_article_crawl(foodbank)
 
     # Update tweet time
     need.tweet_sent = datetime.now()
