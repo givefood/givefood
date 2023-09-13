@@ -5,6 +5,7 @@ import re, logging, operator, urllib, difflib, requests, feedparser
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
 from datetime import datetime
+from time import mktime
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -152,22 +153,22 @@ def foodbank_article_crawl(foodbank):
     from givefood.models import FoodbankArticle
 
     logging.info("Scraping %s" % (foodbank.name))
-    try:
-        feed = feedparser.parse(foodbank.rss_url)
-        if feed:
-            for item in feed["items"]:
-                if item.title != "":
-                    article = FoodbankArticle.objects.filter(url=item.link).first()
-                    if not article:
-                        new_article = FoodbankArticle(
-                            foodbank = foodbank,
-                            title = item.title[0:250],
-                            url = item.link,
-                            published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
-                        )
-                        new_article.save()
-    except:
-        pass
+
+    feed = feedparser.parse(foodbank.rss_url)
+    if feed:
+        for item in feed["items"]:
+            if item.title != "":
+                article = FoodbankArticle.objects.filter(url=item.link).first()
+                logging.info("Found %s" % (item.title))
+                if not article:
+                    logging.info("Adding %s" % (item.title))
+                    new_article = FoodbankArticle(
+                        foodbank = foodbank,
+                        title = item.title[0:250],
+                        url = item.link,
+                        published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
+                    )
+                    new_article.save()
 
     # Update last crawl date
     foodbank.last_crawl = datetime.now()

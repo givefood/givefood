@@ -1,7 +1,6 @@
 import logging
 
 from datetime import datetime, timedelta, timezone
-from time import mktime
 
 from django.http import HttpResponse
 from django.core.cache import cache
