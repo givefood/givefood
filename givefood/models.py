@@ -317,7 +317,7 @@ class Foodbank(models.Model):
     class Meta:
         app_label = 'givefood'
 
-    def save(self, *args, **kwargs):
+    def save(self, do_decache=True, do_geoupdate=True, *args, **kwargs):
 
         logging.info("Saving food bank %s" % self.name)
 
@@ -330,33 +330,34 @@ class Foodbank(models.Model):
         if self.secondary_phone_number:
             self.secondary_phone_number = self.secondary_phone_number.replace(" ","")
 
-        # Update politics
-        regions = admin_regions_from_postcode(self.postcode)
-        self.county = regions.get("county", None)
-        self.ward = regions.get("ward", None)
-        self.district = regions.get("district", None)
-        self.lsoa = regions.get("lsoa", None)
-        self.msoa = regions.get("msoa", None)
+        if do_geoupdate:
+            # Update politics
+            regions = admin_regions_from_postcode(self.postcode)
+            self.county = regions.get("county", None)
+            self.ward = regions.get("ward", None)
+            self.district = regions.get("district", None)
+            self.lsoa = regions.get("lsoa", None)
+            self.msoa = regions.get("msoa", None)
 
-        if self.foodbank_group:
-            self.foodbank_group_name = self.foodbank_group.name
-            self.foodbank_group_slug = self.foodbank_group.slug
-        else:
-            self.foodbank_group_name = None
-            self.foodbank_group_slug = None
+            if self.foodbank_group:
+                self.foodbank_group_name = self.foodbank_group.name
+                self.foodbank_group_slug = self.foodbank_group.slug
+            else:
+                self.foodbank_group_name = None
+                self.foodbank_group_slug = None
 
-        try:
-            parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
-            logging.info("Got parl_con %s" % parl_con)
-            self.parliamentary_constituency = parl_con
-            self.parliamentary_constituency_name = self.parliamentary_constituency.name
-            self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
-            self.mp = self.parliamentary_constituency.mp
-            self.mp_party = self.parliamentary_constituency.mp_party
-            self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
-        except ParliamentaryConstituency.DoesNotExist: 
-            logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
-            self.parliamentary_constituency = None
+            try:
+                parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
+                logging.info("Got parl_con %s" % parl_con)
+                self.parliamentary_constituency = parl_con
+                self.parliamentary_constituency_name = self.parliamentary_constituency.name
+                self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
+                self.mp = self.parliamentary_constituency.mp
+                self.mp_party = self.parliamentary_constituency.mp_party
+                self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+            except ParliamentaryConstituency.DoesNotExist: 
+                logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
+                self.parliamentary_constituency = None
 
         # Cache number of locations
         self.no_locations = self.get_no_locations()
@@ -370,29 +371,30 @@ class Foodbank(models.Model):
 
         super(Foodbank, self).save(*args, **kwargs)
 
-        # Decache
-        urls = [
-            reverse("wfbn:index"),
-            reverse("wfbn:foodbank", kwargs={"slug":self.slug}),
-            reverse("wfbn:foodbank_history", kwargs={"slug":self.slug}),
-            reverse("wfbn:foodbank_rss", kwargs={"slug":self.slug}),
-            reverse("wfbn:foodbank_locations", kwargs={"slug":self.slug}),
-            reverse("wfbn:foodbank_socialmedia", kwargs={"slug":self.slug}),
-            reverse("wfbn:foodbank_nearby", kwargs={"slug":self.slug}),
-            reverse("api_foodbank", kwargs={"slug":self.slug}),
-            reverse("api2:foodbank", kwargs={"slug":self.slug}),
-            "%s?format=xml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
-            "%s?format=yaml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
-            reverse("wfbn:constituency", kwargs={"slug":self.parliamentary_constituency_slug}),
-            reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug}),
-            "%s?format=xml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
-            "%s?format=yaml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
-            "%s?format=geojson" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
-        ]
-        for location in self.locations():
-            urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
-        
-        decache(urls)
+        if do_decache:
+            # Decache
+            urls = [
+                reverse("wfbn:index"),
+                reverse("wfbn:foodbank", kwargs={"slug":self.slug}),
+                reverse("wfbn:foodbank_history", kwargs={"slug":self.slug}),
+                reverse("wfbn:foodbank_rss", kwargs={"slug":self.slug}),
+                reverse("wfbn:foodbank_locations", kwargs={"slug":self.slug}),
+                reverse("wfbn:foodbank_socialmedia", kwargs={"slug":self.slug}),
+                reverse("wfbn:foodbank_nearby", kwargs={"slug":self.slug}),
+                reverse("api_foodbank", kwargs={"slug":self.slug}),
+                reverse("api2:foodbank", kwargs={"slug":self.slug}),
+                "%s?format=xml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
+                "%s?format=yaml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
+                reverse("wfbn:constituency", kwargs={"slug":self.parliamentary_constituency_slug}),
+                reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug}),
+                "%s?format=xml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
+                "%s?format=yaml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
+                "%s?format=geojson" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
+            ]
+            for location in self.locations():
+                urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
+            
+            decache(urls)
 
 
 class FoodbankLocation(models.Model):
