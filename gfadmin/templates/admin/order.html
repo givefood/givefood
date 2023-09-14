@@ -54,6 +54,10 @@
             </a>
           </dd>
         {% endif %}
+        {% if order.delivery_provider_id %}
+          <dt>Del. Prov. ID</dt>
+          <dd>{{ order.delivery_provider_id }} </dd>
+        {% endif %}
         <dt>Created</dt>
         <dd>{{ order.created }}</dd>
         <dt>Modified</dt>
