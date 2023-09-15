@@ -93,7 +93,7 @@ p.needs {
     text-transform:uppercase;
 }
 #postcode_field::placeholder {
-    text-transform:capitalize;
+    text-transform:none;
 }
 .table td.foodbank_name {
     padding-left:0;
