@@ -189,8 +189,8 @@ def most_excess_items(request):
 @cache_page(60*60*4)
 def tt_old_data(request):
 
-    recent = Foodbank.objects.filter(network = "Trussell Trust").order_by("-last_need")[:100]
-    old = Foodbank.objects.filter(network = "Trussell Trust").order_by("last_need")[:100]
+    recent = Foodbank.objects.filter(network = "Trussell Trust", is_closed = False).order_by("-last_need")[:100]
+    old = Foodbank.objects.filter(network = "Trussell Trust", is_closed = False).order_by("last_need")[:100]
 
     template_vars = {
         "recent":recent,
