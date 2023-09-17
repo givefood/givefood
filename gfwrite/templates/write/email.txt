@@ -1,4 +1,4 @@
-{{ address }}
+{% if with_header %}{% include "write/email_header.txt" %}{% endif %}{{ address }}
 {% now "jS F Y" %}
 
 Dear {{ constituency.mp_display_name }},

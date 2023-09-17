@@ -67,9 +67,10 @@ def email(request, slug):
             foodbanks = constituency.foodbank_names()
             body = render_to_string("write/email.txt", {
                 "address":request.POST.get("address"),
-                "name":request.POST.get("name"),
+                "name":name,
+                "email":email,
                 "constituency":constituency,
-                "foodbanks":foodbanks
+                "foodbanks":foodbanks,
             })
 
             form = EmailForm(initial={
@@ -104,10 +105,16 @@ def send(request, slug):
     if request.POST:
         form = EmailForm(request.POST)
         if form.is_valid():
+            body_header = render_to_string("write/email_header.txt", {
+                "name": form.data["from_name"],
+                "email": form.data["from_email"],
+                "with_header":True,
+            })
+            body = "%s%s" % (body_header, form.data["body"])
             send_email(
                 to = constituency.email_parl,
                 subject = form.data["subject"],
-                body = form.data["body"],
+                body = body,
                 cc = form.data["from_email"],
                 cc_name = form.data["from_name"],
                 reply_to = form.data["from_email"],
