@@ -3,7 +3,7 @@
 
 Dear {{ constituency.mp_display_name }},
 
-My name is {{ name }} and I am a constituent of {{ constituency }}. I am writing to you today because I am concerned about the increasing number of people being forced to use food banks in our constituency. 
+My name is {{ name }} and I am a constituent of {{ constituency }}. I am writing to you today because I am concerned about the increasing number of people being forced to use food banks in our country. 
 
 Food banks in our {{ constituency }} constituency include {% for foodbank in foodbanks %}{% if not forloop.first %}{% if not forloop.last %},{% endif %} {% endif %}{% if not forloop.first %}{% if forloop.last %}and {% endif %}{% endif %}{{ foodbank }} Food Bank{% endfor %}.
 
