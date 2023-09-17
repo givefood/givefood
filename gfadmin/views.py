@@ -99,12 +99,19 @@ def foodbanks(request):
 
     sort_options = [
         "name",
+        "-name",
         "last_order",
+        "-last_order",
         "last_need",
+        "-last_need",
         "created",
+        "-created",
         "modified",
+        "-modified",
         "edited",
+        "-edited",
         "no_locations",
+        "-no_locations",
     ]
     sort = request.GET.get("sort", "edited")
     if sort not in sort_options:
@@ -114,6 +121,7 @@ def foodbanks(request):
 
     template_vars = {
         "sort":sort,
+        "sort_options":sort_options,
         "foodbanks":foodbanks,
         "section":"foodbanks",
     }

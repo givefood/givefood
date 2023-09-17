@@ -15,13 +15,9 @@
         <div class="control">
           <div class="select">
             <select onchange="javascript:window.location.href=this.value">
-              <option value="?sort=name"{% if sort == "name" %} selected{% endif %}>Alphabetical</option>
-              <option value="?sort=last_order"{% if sort == "last_order" %} selected{% endif %}>Last Order</option>
-              <option value="?sort=last_need"{% if sort == "last_need" %} selected{% endif %}>Last Need</option>
-              <option value="?sort=created"{% if sort == "created" %} selected{% endif %}>Created</option>
-              <option value="?sort=modified"{% if sort == "modified" %} selected{% endif %}>Modified</option>
-              <option value="?sort=edited"{% if sort == "edited" %} selected{% endif %}>Edited</option>
-              <option value="?sort=no_locations"{% if sort == "no_locations" %} selected{% endif %}>Locations</option>
+              {% for sort_option in sort_options %}
+                <option value="?sort={{ sort_option }}"{% if sort == sort_option %} selected{% endif %}>{{ sort_option|title }}</option>
+              {% endfor %}
             </select>
           </div>
         </div>
