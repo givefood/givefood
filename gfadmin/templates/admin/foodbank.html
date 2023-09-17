@@ -26,11 +26,13 @@
           </a>
         </li>
       {% endif %}
-      <li>
-        <a data-tab="socialmedia">
-          <span>Social Media</span>
-        </a>
-      </li>
+      {% if foodbank.facebook_page or foodbank.twitter_handle %}
+        <li>
+          <a data-tab="socialmedia">
+            <span>Social Media</span>
+          </a>
+        </li>
+      {% endif %}
     </ul>
   </div>
 
