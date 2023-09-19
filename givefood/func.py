@@ -449,6 +449,14 @@ def get_weight(text):
     if text[-13:] == " 400g (220g*)":
       weight = 400
 
+    # 415g (250g Drained)
+    if text[-20:] == " 415g (250g Drained)":
+      weight = 415
+
+    # 150g (140g*)
+    if text[-13:] == " 150g (140g*)":
+      weight = 415
+      
     ## PIES
     if text == "Tesco Mince Pies 6 Pack":
       weight = 324
