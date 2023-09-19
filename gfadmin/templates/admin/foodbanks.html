@@ -15,8 +15,8 @@
         <div class="control">
           <div class="select">
             <select onchange="javascript:window.location.href=this.value">
-              {% for sort_option in sort_options %}
-                <option value="?sort={{ sort_option }}"{% if sort == sort_option %} selected{% endif %}>{{ sort_option|title }}</option>
+              {% for sort_option in display_sort_options.items %}
+                <option value="?sort={{ display_sort_options.0 }}"{% if sort == sort_option.0 %} selected{% endif %}>{{ sort_option.1 }}</option>
               {% endfor %}
             </select>
           </div>

@@ -116,12 +116,16 @@ def foodbanks(request):
     sort = request.GET.get("sort", "edited")
     if sort not in sort_options:
         return HttpResponseForbidden()
+    
+    display_sort_options = {}
+    for sort_option in sort_options:
+        display_sort_options[sort_option] = sort_option.replace("_", " ").title()
 
     foodbanks = Foodbank.objects.all().order_by(sort)
 
     template_vars = {
         "sort":sort,
-        "sort_options":sort_options,
+        "display_sort_options":display_sort_options,
         "foodbanks":foodbanks,
         "section":"foodbanks",
     }
