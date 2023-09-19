@@ -1,6 +1,6 @@
 runtime: python38
 default_expiration: "1d"
-instance_class: F1
+instance_class: F4
 
 handlers:
 
