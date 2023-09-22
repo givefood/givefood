@@ -31,7 +31,7 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <form action="{% url 'admin:search_results' %}" method="get">
-            <input name="q" class="input" type="text" placeholder="Search everything..." list="foodbank_names" value="{{ query }}">
+            <input name="q" class="input" type="text" placeholder="Search everything..." value="{{ query }}">
           </form>
         </div>
       </div>
@@ -43,9 +43,6 @@
     <footer class="footer">
       v{{ version }}
     </footer>
-    <datalist id="foodbank_names">
-      {% for foodbank in all_foodbanks %}<option value="{{ foodbank }}">{% endfor %}
-    </datalist>
 
     <script>
       const gmap_key = "{{ gmap_key }}";

@@ -75,7 +75,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                "gfadmin.context_processors.all_foodbanks",
                 "gfadmin.context_processors.gmap_keys",
                 "givefood.context_processors.context",
             ],

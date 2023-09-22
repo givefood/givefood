@@ -1,10 +1,4 @@
-from givefood.func import get_all_foodbanks, get_cred
-
-def all_foodbanks(request):
-
-    return {
-        'all_foodbanks':get_all_foodbanks(),
-    }
+from givefood.func import get_cred
 
 def gmap_keys(request):
 
