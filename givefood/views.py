@@ -27,6 +27,10 @@ def public_index(request):
     return render(request, "public/index.html", template_vars)
 
 
+def public_donate(request):
+    return render(request, "public/donate.html")
+
+
 def public_about_us(request):
     return render(request, "public/about_us.html")
 

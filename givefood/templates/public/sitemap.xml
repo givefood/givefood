@@ -12,6 +12,7 @@
 	<url><loc>{{ domain }}/dashboard/</loc></url>
 	<url><loc>{{ domain }}/write/</loc></url>
 	<url><loc>{{ domain }}/needs/in/constituencies/</loc></url>
+	<url><loc>{{ domain }}/donate/</loc></url>
 	{% for foodbank in foodbanks %}
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank' foodbank.slug %}</loc></url>
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_nearby' foodbank.slug %}</loc></url>
