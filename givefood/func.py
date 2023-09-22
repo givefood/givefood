@@ -966,3 +966,16 @@ def get_secret(secret_id, version_id="latest"):
     name = f"projects/givefood/secrets/{secret_id}/versions/{version_id}"
     response = client.access_secret_version(name=name)
     return response.payload.data.decode('UTF-8')
+
+
+def filter_change_text(change_text, filter_list):
+
+    change_text_list = change_text.splitlines()
+    filtered_change_text_list = set()
+
+    for change_text_list_item in change_text_list:
+        for filter in filter_list:
+            if filter in change_text_list_item:
+                filtered_change_text_list.add(change_text_list_item)
+
+    return "\n".join(filtered_change_text_list)

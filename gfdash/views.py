@@ -1,14 +1,17 @@
-import logging
+import json
 
 from datetime import datetime, timedelta, date
 from collections import OrderedDict
+from operator import or_
+from functools import reduce
 
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
+from django.db.models import Q
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankArticle, Order
-from givefood.func import group_list, get_all_foodbanks
+from givefood.func import group_list, get_all_foodbanks, filter_change_text
 
 @cache_page(60*60*10)
 def index(request):
@@ -210,7 +213,7 @@ def articles(request):
     return render(request, "dash/articles.html", template_vars)
 
 
-@cache_page(60*60*0.5)
+@cache_page(60)
 def beautybanks(request):
 
     products = [
@@ -226,21 +229,56 @@ def beautybanks(request):
         "Shaving Foam",
         "Conditioner",
         "Sanitary Pad",
-        "Sanitary Towel"
+        "Sanitary Towel",
         "Tampon",
         "Toiletries",
         "Toiletry",
     ]
 
-    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:200]
-    bbneeds = []
+    london_postcode_file = open("./givefood/data/london_postcodes.txt", "r")
+    london_postcode_data = london_postcode_file.read()
+    london_postcodes = london_postcode_data.splitlines()
 
-    for need in needs:
-        if any(product in need.change_text for product in products):
-            bbneeds.append(need)
+    london_query = reduce(or_, (Q(postcode__startswith=london_postcode) for london_postcode in london_postcodes))
+    london_foodbanks = Foodbank.objects.filter(london_query)
+
+    all_needs_query = reduce(or_, (Q(change_text__contains=product) for product in products))
+    all_needs = FoodbankChange.objects.filter(all_needs_query).filter(published = True).order_by("-created")[:100]
+
+    all_needs_query = reduce(or_, (Q(change_text__contains=product) for product in products))
+    time_since = datetime.today() - timedelta(days=28)
+    time_since_needs = FoodbankChange.objects.filter(all_needs_query).filter(published = True).filter(created__gt = time_since).order_by("-created")
+
+    london_needs_query = reduce(or_, (Q(foodbank=london_foodbank) for london_foodbank in london_foodbanks))
+    london_needs = FoodbankChange.objects.filter(all_needs_query).filter(london_needs_query).filter(published = True).order_by("-created")[:100]
+
+    for need in all_needs:
+        need.filtered_change_text = filter_change_text(need.change_text, products)
+
+    for need in london_needs:
+        need.filtered_change_text = filter_change_text(need.change_text, products)
+    
+    for need in time_since_needs:
+        need.filtered_change_text = filter_change_text(need.change_text, products)
+
+    time_since_json = []
+    for need in time_since_needs:
+        time_since_json.append({
+            "foodbank":need.foodbank.name,
+            "slug":need.foodbank.slug,
+            "lat":need.foodbank.latt(),
+            "lng":need.foodbank.long(),
+            "change_text":need.filtered_change_text,
+        })
+    time_since_json = json.dumps(time_since_json)
 
     template_vars = {
-        "bbneeds":bbneeds,
+        "time_since_json":time_since_json,
+        "all_needs":all_needs,
+        "london_needs":london_needs,
+        "london_foodbanks":london_foodbanks,
+        "london_postcodes":london_postcodes,
+        "products":products,
     }
     return render(request, "dash/beautybanks.html", template_vars)
 

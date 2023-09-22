@@ -22,26 +22,136 @@
         </div>
     </div>
 
-  <div class="columns">
+    <div class="columns">
+        <div class="column">
+            <h1>Beauty Banks Needs</h1>
+            <div class="tabs is-boxed">
+                <ul>
+                  <li class="is-active">
+                        <a data-tab="map">
+                          <span>Map</span>
+                        </a>
+                  </li>
+                  <li>
+                    <a data-tab="everywhere">
+                      <span>Everywhere</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-tab="london">
+                      <span>London</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a data-tab="settings">
+                      <span>Settings</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+        </div>
+    </div>
 
-    <div class="column">
-        <h1>Beauty Bank Needs</h1>
-        <table class="table is-narrow is-fullwidth">
-            <tr>
-                <th>Foodbank</th>
-                <th>Needs</th>
-                <th>Found</th>
-            </tr>
-            {% for bbneed in bbneeds %}
+    <div class="columns sections">
+
+        <div class="column map">
+            <p>Food banks requesting a Beauty Banks item in the last 28 days</p>
+            <div id="the-map" style="width:700px;height:1000px;"></div>
+        </div>
+
+        <div class="column everywhere  is-hidden">
+            <table class="table is-narrow is-fullwidth">
                 <tr>
-                    <td><a href="{% url 'wfbn:foodbank' bbneed.foodbank_name_slug %}">{{ bbneed.foodbank_name }}</a></td>
-                    <td>{{ bbneed.change_text|linebreaksbr }}</td>
-                    <td>{{ bbneed.created|timesince }} ago</td>
+                    <th>Foodbank</th>
+                    <th>Needs</th>
+                    <th>Found</th>
                 </tr>
-            {% endfor %}
-        </table>
+                {% for need in all_needs %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'wfbn:foodbank' need.foodbank_name_slug %}">{{ need.foodbank_name }}</a><br>
+                            <span class="is-size-7">{{ need.foodbank.postcode|linebreaksbr }}</span>
+                        </td>
+                        <td>{{ need.filtered_change_text|linebreaksbr }}</td>
+                        <td>{{ need.created|timesince }} ago</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="column london is-hidden">
+            <table class="table is-narrow is-fullwidth">
+                <tr>
+                    <th>Foodbank</th>
+                    <th>Needs</th>
+                    <th>Found</th>
+                </tr>
+                {% for need in london_needs %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'wfbn:foodbank' need.foodbank_name_slug %}">{{ need.foodbank_name }}</a><br>
+                            <span class="is-size-7">{{ need.foodbank.postcode|linebreaksbr }}</span>
+                        </td>
+                        <td>{{ need.filtered_change_text|linebreaksbr }}</td>
+                        <td>{{ need.created|timesince }} ago</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="column settings is-hidden">
+            <h2>Products</h2>
+            <p>List of strings of text we're looking for a foodbank's need...</p>
+            <p>{% for product in products %}{{ product }}, {% endfor %}</p>
+            <br>
+
+            <h2>London Postcode Areas</h2>
+            <p>List of postcodes we're using to filter as a London location...</p>
+            <p>{% for london_postcode in london_postcodes %}{{ london_postcode }}, {% endfor %}</p>
+        </div>
     </div>
 
   </div><br><br>
+
+{% endblock %}
+
+
+{% block script %}
+    <script src="/static/js/tabber.js" defer></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}"></script>
+    <script>
+
+        const foodbanks = {{ time_since_json|safe }}
+        console.log(foodbanks)
+
+        var map_main
+
+        function init_map() {
+            map_main = new google.maps.Map(document.getElementById("the-map"), {
+                center: new google.maps.LatLng(55,-4),
+                zoom: 6,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            });
+
+            for (let i = 0; i < foodbanks.length; i++) {
+                const foodbank = foodbanks[i];
+
+                marker = new google.maps.Marker({
+                    position: { lat: foodbank.lat, lng: foodbank.lng },
+                    map: map_main,
+                    title: foodbank.foodbank,
+                });
+                marker['infowindow'] = new google.maps.InfoWindow({
+                    content: '<strong><a href="/needs/at/' + foodbank.slug + '">' + foodbank.foodbank + '</a></strong><br><br>' + foodbank.change_text.replaceAll("\n", "<br>")
+                });
+                google.maps.event.addListener(marker, 'click', function() {
+                    this['infowindow'].open(map_main, this);
+                });
+            }
+        }
+
+        google.maps.event.addDomListener(window, 'load', init_map);
+    </script>
 
 {% endblock %}
