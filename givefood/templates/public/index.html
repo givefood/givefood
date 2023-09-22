@@ -32,13 +32,10 @@
           <input id="address_field" type="text" name="address" class="input" placeholder="e.g. EX4 6PX or Sheffield" required>
           <input type="submit" class="button is-light is-info" value="Go">
         </form>
-        <nav>
+        <nav class="primary">
           <ul>
-            <li><a href="/register-foodbank/">Register a Food Bank</a></li>
             <li><a href="/write/">Write To Your MP</a></li>
-            <li><a href="/dashboard/">Dashboards</a></li>
-            <li><a href="/api/">API</a></li>
-            <li><a href="/annual-reports/">Annual Reports</a></li>
+            <li><a href="/donate/">Donate</a></li>
             <li><a href="/about-us/">About Us</a></li>
           </ul>
         </nav>
@@ -123,25 +120,19 @@
 
       <div class="column is-one-quarter">
 
+        <nav class="secondary">
+          <ul>
+            <li><a href="/register-foodbank/">Register a Food Bank</a></li>
+            <li><a href="/dashboard/">Dashboards</a></li>
+            <li><a href="/api/">API</a></li>
+            <li><a href="/annual-reports/">Annual Reports</a></li>
+          </ul>
+        </nav>
+
         <h3>Email</h3>
         <p>
           <a href="mailto:mail@givefood.org.uk" class="is-size-5">mail@givefood.org.uk</a>
-        </p>
-        <div id="donate-button-container">
-          <div id="donate-button"></div>
-          <script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js"></script>
-          <script>
-            PayPal.Donation.Button({
-            env:'production',
-            hosted_button_id:'HTLMD3EP2S98J',
-            image: {
-            src:'https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif',
-            alt:'Donate with PayPal button',
-            title:'PayPal - The safer, easier way to pay online!',
-            }
-            }).render('#donate-button');
-          </script>
-        </div>          
+        </p>        
       </div>
 
       <div class="column is-one-quarter">
