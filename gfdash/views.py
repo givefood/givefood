@@ -243,14 +243,14 @@ def beautybanks(request):
     london_foodbanks = Foodbank.objects.filter(london_query)
 
     all_needs_query = reduce(or_, (Q(change_text__contains=product) for product in products))
-    all_needs = FoodbankChange.objects.filter(all_needs_query).filter(published = True).order_by("-created")[:100]
+    all_needs = FoodbankChange.objects.filter(all_needs_query).filter(published = True).order_by("-created")[:50]
 
     all_needs_query = reduce(or_, (Q(change_text__contains=product) for product in products))
     time_since = datetime.today() - timedelta(days=28)
     time_since_needs = FoodbankChange.objects.filter(all_needs_query).filter(published = True).filter(created__gt = time_since).order_by("-created")
 
     london_needs_query = reduce(or_, (Q(foodbank=london_foodbank) for london_foodbank in london_foodbanks))
-    london_needs = FoodbankChange.objects.filter(all_needs_query).filter(london_needs_query).filter(published = True).order_by("-created")[:100]
+    london_needs = FoodbankChange.objects.filter(all_needs_query).filter(london_needs_query).filter(published = True).order_by("-created")[:50]
 
     for need in all_needs:
         need.filtered_change_text = filter_change_text(need.change_text, products)
