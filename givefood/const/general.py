@@ -101,6 +101,7 @@ OLD_FOODBANK_SLUGS = {
     "b30":"b30-south-birmingham",
     "kingfisher":"north-solihull",
     "bethnal-green":"bow/bethnal-green",
+    "swansea/st-thomas-church":"st-thomas",
 }
 
 FOODBANK_SUBPAGES = [
