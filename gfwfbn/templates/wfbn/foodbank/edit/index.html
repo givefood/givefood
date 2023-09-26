@@ -13,9 +13,7 @@
   <meta name="geo.position" content="{{ foodbank.latt_long }}">
   <meta property="place:location:latitude" content="{{ foodbank.latt }}">
   <meta property="place:location:longitude" content="{{ foodbank.long }}">
-  {% if foodbank.is_closed %}
-    <meta name="robots" content="noindex">
-  {% endif %}
+  <meta name="robots" content="noindex">
 {% endblock %}
 
 {% block title %}Edit - {{ foodbank.full_name }} - Give Food{% endblock %}
