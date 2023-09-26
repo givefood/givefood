@@ -1009,13 +1009,7 @@ def places_loader(request):
 
 def finder(request):
 
-    placeids = open('./givefood/data/placeids.txt').read().splitlines()
-    random_placeid = int(random.choice(placeids))
-    
-    # DELETE ME
-    # random_placeid = 42935
-
-    place = Place.objects.get(gbpnid = random_placeid)
+    place = Place.objects.filter(checked__isnull=True).order_by('?').first()
         
     search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food bank&location=%s&radius=5000&region=uk&key=%s" % (place.latt_long, get_cred("gmap_places_key"))
     response = requests.get(search_url)
