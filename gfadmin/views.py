@@ -720,10 +720,10 @@ def edit_stats(request):
     oldest_edit = Foodbank.objects.all().order_by("edited")[:1][0].edited
 
     stats = {
-        "total_foodbanks":total_foodbanks,
-        "total_locations":total_locations,
-        "newest_edit":newest_edit,
-        "oldest_edit":oldest_edit,
+        "Total Food Banks":total_foodbanks,
+        "Total Locations":total_locations,
+        "Newest Edit":newest_edit,
+        "Oldest Edit":oldest_edit,
     }
 
     template_vars = {
@@ -750,12 +750,12 @@ def order_stats(request):
     total_cost = float(total_cost) / 100
 
     stats = {
-        "total_weight":total_weight,
-        "total_calories":total_calories,
-        "total_items":total_items,
-        "total_orders":total_orders,
-        "total_cost":total_cost,
-        "total_weight_pkg":total_weight_pkg,
+        "Total Weight":total_weight,
+        "Total Calories":total_calories,
+        "Total Items":total_items,
+        "Total Orders":total_orders,
+        "Total Cost":total_cost,
+        "Total Weight (inc. packaging)":total_weight_pkg,
     }
 
     template_vars = {
@@ -770,8 +770,8 @@ def order_stats(request):
 def subscriber_stats(request):
 
     stats = {
-        "confirmed":FoodbankSubscriber.objects.filter(confirmed = True).count(),
-        "unconfirmed":FoodbankSubscriber.objects.filter(confirmed = False).count(),
+        "Confirmed":FoodbankSubscriber.objects.filter(confirmed = True).count(),
+        "Unconfirmed":FoodbankSubscriber.objects.filter(confirmed = False).count(),
     }
 
     template_vars = {
@@ -786,8 +786,8 @@ def subscriber_stats(request):
 def finder_stats(request):
 
     stats = {
-        "places":Place.objects.count(),
-        "checked_places":Place.objects.filter(checked__isnull=False).count(),
+        "Places":Place.objects.count(),
+        "Checked Places":Place.objects.filter(checked__isnull=False).count(),
     }
 
     template_vars = {
@@ -808,9 +808,9 @@ def need_stats(request):
     excess_items = cursor.fetchone()[0]
 
     stats = {
-        "needs":FoodbankChange.objects.count(),
-        "need_items":need_items,
-        "excess_items":excess_items,
+        "Needs":FoodbankChange.objects.count(),
+        "Need Items":need_items,
+        "Excess Items":excess_items,
     }
 
     template_vars = {
