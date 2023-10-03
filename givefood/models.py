@@ -966,7 +966,7 @@ class FoodbankChange(models.Model):
         super(FoodbankChange, self).save(*args, **kwargs)
 
         if self.foodbank and self.published:
-            self.foodbank.save()
+            self.foodbank.save(do_geoupdate=False)
     
     class Meta:
         app_label = 'givefood'
