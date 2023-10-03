@@ -23,6 +23,7 @@ class Foodbank(models.Model):
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
     delivery_address = models.TextField(null=True, blank=True)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
     network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES, null=True, blank=True)
@@ -422,6 +423,7 @@ class FoodbankLocation(models.Model):
     address = models.TextField()
     postcode = models.CharField(max_length=9)
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
 
     phone_number = models.CharField(max_length=50, null=True, blank=True, help_text="If different to the main location")

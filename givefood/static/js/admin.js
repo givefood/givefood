@@ -43,7 +43,9 @@ document.addEventListener("turbolinks:load", function() {
     return str;
   }
 
+  const name_field = document.querySelector("#id_name");
   const lattlong_field = document.querySelector("#id_latt_long");
+  const place_id_field = document.querySelector("#id_place_id");
   const address_field = document.querySelector("#id_address");
   const postcode_field = document.querySelector("#id_postcode");
   const change_text_field = document.querySelector("#id_change_text");
@@ -81,21 +83,23 @@ document.addEventListener("turbolinks:load", function() {
   // LATTLONG
   if (lattlong_field) {
     var get_lattlong_btn = document.createElement('div');
-    get_lattlong_btn.innerHTML = "<a href='#' id='get_lattlong_btn' class='extra-form-button button is-info'>Get Lat/Lng</a>";
+    get_lattlong_btn.innerHTML = "<a href='#' id='get_lattlong_btn' class='extra-form-button button is-info'>Get Lat/Lng &amp; Place ID</a>";
     insertAfter(get_lattlong_btn, lattlong_field);
     lattlong_btn = document.querySelector("#get_lattlong_btn");
     lattlong_btn.addEventListener("click", function(event) {
-      address = address_field.value.replace(/\n/g,", ") + ", " + postcode_field.value;
+      address = name_field.value + " Food Bank, " +address_field.value.replace(/\n/g,", ") + ", " + postcode_field.value;
       url = geolocation_url + encodeURIComponent(address);
       var gl_req = new XMLHttpRequest();
       gl_req.addEventListener("load", function(){
         latt = this.response.results[0].geometry.location.lat
         long = this.response.results[0].geometry.location.lng
+        place_id = this.response.results[0].place_id
         latt_long = latt + "," + long
         lattlong_field.value = latt_long
+        place_id_field.value = place_id
         map_img = document.createElement('img');
         map_img.src = map_url + latt_long
-        insertAfter(map_img, get_lattlong_btn);
+        insertAfter(map_img, place_id_field);
       });
       gl_req.responseType = "json";
       gl_req.open("GET", url);
