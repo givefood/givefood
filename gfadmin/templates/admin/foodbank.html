@@ -33,6 +33,11 @@
           </a>
         </li>
       {% endif %}
+      <li>
+        <a data-tab="subscribers">
+          <span>Subscribers</span>
+        </a>
+      </li>
     </ul>
   </div>
 
@@ -314,6 +319,24 @@
         </div>
       </div>
     {% endif %}
+
+    {# Subscribers #}
+    <div class="column subscribers is-hidden">
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Email</th>
+          <th>Created</th>
+          <th>Confirmed</th>
+        </tr>
+        {% for subscription in foodbank.subscribers %}
+          <tr>
+            <td>{{ subscription.email }}</td>
+            <td>{{ subscription.created }}</td>
+            <td>{% if subscription.confirmed %}Y{% else %}N{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
 
   </div>
 
