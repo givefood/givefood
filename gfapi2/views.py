@@ -63,7 +63,7 @@ def docs(request):
     return render(request, "docs.html", template_vars)
 
 
-@cache_page(60*60*6)
+@cache_page(60*60*48)
 def foodbanks(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -367,7 +367,7 @@ def foodbank_search(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_page(60*60*6)
+@cache_page(60*60*48)
 def locations(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)

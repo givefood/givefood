@@ -13,7 +13,7 @@ from givefood.models import Foodbank, FoodbankChange
 from givefood.const.general import API_DOMAIN
 
 
-@cache_page(60*60*12)
+@cache_page(60*60*48)
 def api_foodbanks(request):
 
     allowed_formats = [
