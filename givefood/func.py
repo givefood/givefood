@@ -564,6 +564,7 @@ def clean_foodbank_need_text(text):
         "You can donate",
         "Always needed",
         "Current Food Needed:",
+        "OUR SHOPPING LIST",
     ]
 
     # Clean out rubbish strings
