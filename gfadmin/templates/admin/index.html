@@ -12,7 +12,10 @@
       <h2>Needs</h2>
 
       {% if unpublished_needs %}
-        <form action="{% url 'admin:needs_deleteall' %}">
+        <form action="{% url 'admin:needs_deleteall' %}" method="post">
+          {% for need in unpublished_needs %}
+            <input type="hidden" name="need" value="{{ need.id }}">
+          {% endfor %}
           <input type="submit" value="Delete All" class="button is-small is-pulled-right" onclick="return confirm('Are you sure you want to DELETE ALL unpublished needs?')">
         </form>
       {% endif %}

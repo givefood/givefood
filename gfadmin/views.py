@@ -238,10 +238,12 @@ def needs(request):
     }
     return render(request, "admin/needs.html", template_vars)
 
-
+@require_POST
 def needs_deleteall(request):
 
-    needs = FoodbankChange.objects.filter(published=False).delete()
+    need_ids = request.POST.getlist("need")
+    needs = FoodbankChange.objects.filter(id__in = need_ids)
+    needs.delete()
     return redirect(reverse("admin:index"))
 
 
