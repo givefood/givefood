@@ -1,4 +1,5 @@
 const address_field = document.querySelector("#address_field");
+const lat_lng_field = document.querySelector("#lat_lng_field");
 const burger_menu = document.querySelector(".navbar-burger");
 const menu_items = document.querySelectorAll(".foodbank-menu li a");
 const uml_btn = document.querySelector("#usemylocationbtn");
@@ -27,6 +28,9 @@ const search_error = "Sorry, we had a problem finding food banks there. The erro
 function init() {
     autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
     autocomplete.setComponentRestrictions({'country': ['gb']});
+    autocomplete.addListener("place_changed", () => {
+      lat_lng_field.value = autocomplete.getPlace().geometry.location.lat() + "," + autocomplete.getPlace().geometry.location.lng();
+    })
     if (addressform) {
       addressform.addEventListener("submit", do_address);
       if (uml_btn) {
