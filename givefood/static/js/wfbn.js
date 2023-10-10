@@ -263,7 +263,9 @@ function api_response() {
     results_table.appendChild(currentrow);
   }
   add_click_recorders();
-  status_msg.innerHTML = "";
+  if (status_msg) {
+    status_msg.innerHTML = "";
+  }
   uml_btn.classList.remove("working")
 }
 
