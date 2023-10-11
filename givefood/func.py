@@ -902,6 +902,8 @@ def post_to_subscriber(need, subscriber):
         "🫘",
         "🫛",
         "🥄",
+        "🥣",
+        "🥧",
     ]
     emoji = random.choice(possible_emoji)
 
