@@ -975,12 +975,13 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
         "MessageStream": message_stream
       }
 
-
     result = requests.post(
         api_url,
         headers = request_headers,
         json = request_body,
     )
+
+    return True
 
   
 def group_list(lst):
