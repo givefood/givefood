@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re, logging, operator, urllib, difflib, requests, feedparser
+import re, logging, operator, urllib, difflib, requests, feedparser, random
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
 from datetime import datetime
@@ -883,7 +883,26 @@ def get_cred(cred_name):
 
 def post_to_subscriber(need, subscriber):
 
-    subject = "%s needs %s items" % (need.foodbank.full_name(), need.no_items())
+    possible_emoji = [
+        "🍝",
+        "🍲",
+        "🍛",
+        "🥫",
+        "🌽",
+        "🥕",
+        "🥔",
+        "🍚",
+        "🍽️",
+        "🍴",
+        "🥘",
+        "🍅",
+        "🫘",
+        "🫛",
+        "🥄",
+    ]
+    emoji = random.choice(possible_emoji)
+
+    subject = "%s %s needs %s items" % (emoji, need.foodbank.full_name(), need.no_items())
 
     text_body = render_to_string(
         "wfbn/emails/notification.txt",
