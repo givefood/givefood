@@ -883,7 +883,7 @@ def get_cred(cred_name):
 
 def post_to_subscriber(need, subscriber):
 
-    subject = "Items requested by %s Food Bank" % (need.foodbank_name)
+    subject = "%s needs %s items" % (need.foodbank.full_name(), need.no_items())
 
     text_body = render_to_string(
         "wfbn/emails/notification.txt",
