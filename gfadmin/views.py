@@ -2,7 +2,6 @@ import csv
 import logging
 import re
 import requests
-import random
 from datetime import datetime, timedelta
 
 from django.shortcuts import render, get_object_or_404

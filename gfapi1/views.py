@@ -1,5 +1,3 @@
-import json, urllib
-
 import unicodecsv as csv
 
 from django.http import HttpResponseBadRequest, JsonResponse, HttpResponse

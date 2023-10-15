@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
 from gfapi2.views import *
 
 app_name = "gfapi2"
