@@ -9,7 +9,7 @@ nav.primary {
 }
 @media screen and (min-width: 1200px) {
     nav.primary {
-        margin:2rem 0 4rem 0;
+        margin:2rem 0 6rem 0;
     }
 }
 nav.secondary {
