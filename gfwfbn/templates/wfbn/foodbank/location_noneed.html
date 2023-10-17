@@ -82,6 +82,9 @@
               {{ location.address|linebreaksbr }}<br>
               {{ location.postcode }}
             </address>
+            <div class="pluscode">
+              <img src="/static/img/pluscode.svg" alt="Plus Code" class="contact-icon"> <a href="https://www.google.co.uk/maps/place/{{ location.plus_code_global|urlencode }}/">{{ location.plus_code_global }}</a>
+            </div>
 
             {% if foodbank.delivery_address %}
               <h3>Delivery address</h3>
