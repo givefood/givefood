@@ -108,3 +108,6 @@ textarea[name='body'] {
     width:200px;
     border-radius:3px;
 }
+.locations address {
+    margin-bottom:20px;
+}
