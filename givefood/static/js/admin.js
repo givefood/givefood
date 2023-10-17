@@ -87,7 +87,7 @@ document.addEventListener("turbolinks:load", function() {
     insertAfter(get_lattlong_btn, lattlong_field);
     lattlong_btn = document.querySelector("#get_lattlong_btn");
     lattlong_btn.addEventListener("click", function(event) {
-      address = name_field.value + " Food Bank, " +address_field.value.replace(/\n/g,", ") + ", " + postcode_field.value;
+      address = address_field.value.replace(/\n/g,", ") + ", " + postcode_field.value;
       url = geolocation_url + encodeURIComponent(address);
       var gl_req = new XMLHttpRequest();
       gl_req.addEventListener("load", function(){
