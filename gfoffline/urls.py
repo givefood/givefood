@@ -10,4 +10,5 @@ urlpatterns = (
     url(r'^cleanup_subs/$', cleanup_subs, name="cleanup_subs"),
     url(r'^days_between_needs/$', days_between_needs, name="days_between_needs"),
     url(r'^resaver/$', resaver, name="resaver"),
+    url(r'^pluscodes/$', pluscodes, name="pluscodes"),
 )

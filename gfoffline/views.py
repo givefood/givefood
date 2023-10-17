@@ -8,7 +8,7 @@ from django.apps import apps
 
 from givefood.models import Foodbank, FoodbankLocation, FoodbankSubscriber, FoodbankChange
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import oc_geocode, get_all_open_foodbanks, foodbank_article_crawl
+from givefood.func import oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, pluscode
 
 
 def precacher(request):
@@ -114,5 +114,24 @@ def resaver(request):
         for instance in instances:
             logging.info("Resaving %s %s" % (model, instance))
             instance.save()
+
+    return HttpResponse("OK")
+
+
+def pluscodes(request):
+
+    foodbanks = Foodbank.objects.filter(plus_code_global__isnull=True)
+    for foodbank in foodbanks:
+        pluscodes = pluscode(foodbank.latt_long)
+        foodbank.plus_code_compound = pluscodes["compound"]
+        foodbank.plus_code_global = pluscodes["global"]
+        foodbank.save(do_decache=False, do_geoupdate=False)
+
+    locations = FoodbankLocation.objects.filter(plus_code_global__isnull=True)
+    for location in locations:
+        pluscodes = pluscode(location.latt_long)
+        location.plus_code_compound = pluscodes["compound"]
+        location.plus_code_global = pluscodes["global"]
+        location.save(do_geoupdate=False)
 
     return HttpResponse("OK")
