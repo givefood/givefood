@@ -557,7 +557,7 @@ class FoodbankLocation(models.Model):
         # Resave the parent food bank
         self.foodbank.save()
 
-    def save(self, *args, **kwargs):
+    def save(self, do_geoupdate=True, *args, **kwargs):
 
         logging.info("Saving food bank location %s" % self.name)
 
@@ -576,31 +576,32 @@ class FoodbankLocation(models.Model):
         if self.phone_number:
             self.phone_number = self.phone_number.replace(" ","")
 
-        # Update politics
-        regions = admin_regions_from_postcode(self.postcode)
-        self.country = regions.get("country", None)
-        self.county = regions.get("county", None)
-        self.ward = regions.get("ward", None)
-        self.district = regions.get("district", None)
-        self.lsoa = regions.get("lsoa", None)
-        self.msoa = regions.get("msoa", None)
+        if do_geoupdate:
+            # Update politics
+            regions = admin_regions_from_postcode(self.postcode)
+            self.country = regions.get("country", None)
+            self.county = regions.get("county", None)
+            self.ward = regions.get("ward", None)
+            self.district = regions.get("district", None)
+            self.lsoa = regions.get("lsoa", None)
+            self.msoa = regions.get("msoa", None)
 
-        try:
-            parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
-            logging.info("Got parl_con %s" % parl_con)
-            self.parliamentary_constituency = parl_con
-            self.parliamentary_constituency_name = self.parliamentary_constituency.name
-            self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
-            self.mp = self.parliamentary_constituency.mp
-            self.mp_party = self.parliamentary_constituency.mp_party
-            self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
-        except ParliamentaryConstituency.DoesNotExist: 
-            logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
-            self.parliamentary_constituency = None
+            try:
+                parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
+                logging.info("Got parl_con %s" % parl_con)
+                self.parliamentary_constituency = parl_con
+                self.parliamentary_constituency_name = self.parliamentary_constituency.name
+                self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
+                self.mp = self.parliamentary_constituency.mp
+                self.mp_party = self.parliamentary_constituency.mp_party
+                self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+            except ParliamentaryConstituency.DoesNotExist: 
+                logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
+                self.parliamentary_constituency = None
 
-        pluscodes = pluscode(self.latt_long)
-        self.plus_code_compound = pluscodes["compound"]
-        self.plus_code_global = pluscodes["global"]
+            pluscodes = pluscode(self.latt_long)
+            self.plus_code_compound = pluscodes["compound"]
+            self.plus_code_global = pluscodes["global"]
 
         super(FoodbankLocation, self).save(*args, **kwargs)
 
