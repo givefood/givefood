@@ -595,7 +595,7 @@ def constituencies(request):
                 "id":constituency.mp_parl_id,
                 "urls": {
                     "html":"https://members.parliament.uk/member/%s/contact" % (constituency.mp_parl_id),
-                    "photo":"https://www.givefood.org.uk/static/img/mp_photo/%s.jpg" % (constituency.mp_parl_id),
+                    "photo":"https://www.givefood.org.uk/static/img/mp/%s.jpg" % (constituency.mp_parl_id),
                 }
             },
             "urls": {
@@ -643,7 +643,7 @@ def constituency(request, slug):
                 "id":constituency.mp_parl_id,
                 "urls": {
                     "html":"https://members.parliament.uk/member/%s/contact" % (constituency.mp_parl_id),
-                    "photo":"https://www.givefood.org.uk/static/img/mp_photo/%s.jpg" % (constituency.mp_parl_id),
+                    "photo":"https://www.givefood.org.uk/static/img/mp/%s.jpg" % (constituency.mp_parl_id),
                 }
             },
             "foodbanks":foodbank_list,
