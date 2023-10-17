@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES
-from givefood.func import parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache
+from givefood.func import parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, pluscode
 
 
 class Foodbank(models.Model):
@@ -21,8 +21,12 @@ class Foodbank(models.Model):
     slug = models.CharField(max_length=100, editable=False)
     address = models.TextField()
     postcode = models.CharField(max_length=9)
+
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
+    plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
+    plus_code_global = models.CharField(max_length=200, verbose_name="Plus Code (Global)", null=True, blank=True, editable=False)
+
     delivery_address = models.TextField(null=True, blank=True)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
     network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES, null=True, blank=True)
@@ -359,6 +363,10 @@ class Foodbank(models.Model):
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
 
+            pluscodes = pluscode(self.latt_long)
+            self.plus_code_compound = pluscodes["compound"]
+            self.plus_code_global = pluscodes["global"]
+
         # Cache number of locations
         self.no_locations = self.get_no_locations()
 
@@ -421,8 +429,12 @@ class FoodbankLocation(models.Model):
     slug = models.CharField(max_length=100, editable=False)
     address = models.TextField()
     postcode = models.CharField(max_length=9)
+    
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
+    plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
+    plus_code_global = models.CharField(max_length=200, verbose_name="Plus Code (Global)", null=True, blank=True, editable=False)
+
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
 
     phone_number = models.CharField(max_length=50, null=True, blank=True, help_text="If different to the main location")
@@ -585,6 +597,10 @@ class FoodbankLocation(models.Model):
         except ParliamentaryConstituency.DoesNotExist: 
             logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
             self.parliamentary_constituency = None
+
+        pluscodes = pluscode(self.latt_long)
+        self.plus_code_compound = pluscodes["compound"]
+        self.plus_code_global = pluscodes["global"]
 
         super(FoodbankLocation, self).save(*args, **kwargs)
 

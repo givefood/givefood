@@ -778,6 +778,20 @@ def admin_regions_from_postcode(postcode):
         return {}
 
 
+def pluscode(lat_lng):
+
+    pc_api_url = "https://plus.codes/api?address=%s&ekey=%s" % (urllib.parse.quote(lat_lng), get_cred("gmap_geocode_key"))
+    request = requests.get(pc_api_url)
+    if request.status_code == 200:
+        pc_api_json = request.json()
+        return {
+            "global":pc_api_json["plus_code"]["global_code"],
+            "compound":"%s %s" % (pc_api_json["plus_code"]["local_code"], pc_api_json["plus_code"]["locality"]["local_address"]),
+        }
+    else:
+        return {}
+
+
 def mp_from_parlcon(parliamentary_constituency):
 
     return {
