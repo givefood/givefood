@@ -717,12 +717,20 @@ def edit_stats(request):
     locations = get_all_locations()
     total_locations = len(locations) + total_foodbanks
 
+    delivery_locations = 0
+    for foodbank in all_foodbanks:
+        if foodbank.delivery_address:
+            delivery_locations += 1
+    
+    total_location_incdel = total_locations + delivery_locations
+
     newest_edit = Foodbank.objects.all().order_by("-edited")[:1][0].edited
     oldest_edit = Foodbank.objects.all().order_by("edited")[:1][0].edited
 
     stats = {
         "Total Food Banks":total_foodbanks,
         "Total Locations":total_locations,
+        "Headline Total Locations":total_location_incdel,
         "Newest Edit":newest_edit,
         "Oldest Edit":oldest_edit,
     }
