@@ -461,8 +461,11 @@ def foodbank_edit_form(request, slug, action, locslug = None):
         heading = "Locations"
 
         if locslug:
-            location = get_object_or_404(FoodbankLocation, foodbank = foodbank, slug = locslug)
-            form = LocationLocationForm(instance=location)
+            if locslug == "new":
+                form = FoodbankLocationForm()
+            else:
+                location = get_object_or_404(FoodbankLocation, foodbank = foodbank, slug = locslug)
+                form = LocationLocationForm(instance=location)
         else:
             location = None
             form = FoodbankLocationForm(instance=foodbank)

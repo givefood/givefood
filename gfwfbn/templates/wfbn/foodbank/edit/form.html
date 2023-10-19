@@ -74,7 +74,11 @@
 
             {% if action == "locations" %}
 
-                <p>Sorry if we've got a location of <em>{{ foodbank.full_name }}</em> wrong. You can amend it below.</p>
+                {% if locslug == "new" %}
+                  <p>Add a new location for <em>{{ foodbank.full_name }}</em>.</p>
+                {% else %}
+                  <p>Sorry if we've got a location of <em>{{ foodbank.full_name }}</em> wrong. You can amend it below.</p>
+                {% endif %}
 
                 <div class="columns">
                     <div class="column is-one-third">
@@ -85,7 +89,9 @@
                                     <li><a {% if locslug == location.slug %}class="is-active"{% endif %} href="{% url 'wfbn:foodbank_edit_form_location' foodbank.slug action location.slug %}">{{ location.name }}</a></li>
                                 {% endfor %}
                             </ul>
-                          </aside>
+                            <br>
+                            <a class="button{% if locslug == 'new' %} is-link{% endif %}" href="{% url 'wfbn:foodbank_edit_form_location' foodbank.slug action 'new' %}">New Location</a>
+                        </aside>
                     </div>
 
                     <div class="column is-two-thirds">
