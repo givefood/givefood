@@ -14,10 +14,15 @@
 
 {% block body %}
 
-  <div class="columns">
-    <div class="column is-4">
-        <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
-        <h1>API</h1>
+  <div class="columns is-centered">
+    <div class="column">
+      <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+  </div>
+
+  <div class="columns is-centered">
+    <div class="column">
+      <h1 style="margin-bottom:0;">API</h1>
     </div>
   </div>
 
@@ -25,7 +30,7 @@
   <div class="columns">
     <div class="column is-one-third intro content">
       <div class="notification is-danger">
-        <p>This API has been deprecated. It'll continue to work, but it's recommended that you <a href="/api/">use the v2 instead</a>.</p>
+        <p style="margin-bottom:0;">This API has been deprecated. It'll continue to work, but it's recommended that you <a href="/api/">use the v2 instead</a>.</p>
       </div>
       <p>Get access to our data over HTTPS in JSON.</p>
       <ul>
@@ -39,7 +44,7 @@
     </div>
     <div class="column is-two-thirds">
 
-      <nav>
+      <nav style="margin-bottom:20px;">
         <ul id="methods">
           <li><a href="#all-food-banks">All Food Banks</a> - list of all food bank organisations</li>
           <li><a href="#food-bank-search">Food Bank Search</a> - search by location or lattlong, returns needs</li>
