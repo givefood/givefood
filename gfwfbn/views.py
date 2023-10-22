@@ -61,6 +61,35 @@ def index(request):
 
 
 @cache_page(60*60*48)
+def rss(request):
+
+    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
+    news = FoodbankArticle.objects.all().order_by("-published_date")[:10]
+
+    items = []
+    for need in needs:
+        items.append({
+            "title":"%s items requested at %s" % (need.no_items(), need.foodbank.full_name()),
+            "url":"https://www.givefood.org.uk/needs/at/%s/history/#need-%s" % (need.foodbank.slug, need.need_id),
+            "date":need.created,
+            "description":need.clean_change_text()
+        })
+    for newsitem in news:
+        items.append({
+            "title":newsitem.title,
+            "url":newsitem.url,
+            "date":newsitem.published_date,
+        })
+
+    items = sorted(items, key=lambda d: d['date'], reverse=True) 
+
+    template_vars = {
+        "items":items,
+    }
+
+    return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
+
+@cache_page(60*60*48)
 def trussell_trust_index(request):
 
     gmap_key = get_cred("gmap_key")
@@ -142,7 +171,7 @@ def foodbank_rss(request, slug):
         "items":items,
     }
 
-    return render(request, "wfbn/foodbank/rss.xml", template_vars, content_type='text/xml')
+    return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
 
 
 @cache_page(60*60*48)

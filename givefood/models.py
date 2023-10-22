@@ -381,6 +381,7 @@ class Foodbank(models.Model):
         if do_decache:
             urls = [
                 reverse("wfbn:index"),
+                reverse("wfbn:rss"),
                 reverse("wfbn:foodbank", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_history", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_rss", kwargs={"slug":self.slug}),

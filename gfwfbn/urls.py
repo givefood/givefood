@@ -8,6 +8,7 @@ urlpatterns = (
     url(r'^tt-old-data/$', RedirectView.as_view(url='/dashboard/trusselltrust/old-data/')),
 
     url(r'^$', index, name="index"),
+    url(r'^rss.xml$', rss, name="rss"),
     url(r'^trusselltrust/$', trussell_trust_index, name="trussell_trust_index"),
     url(r'^getlocation/$', get_location, name="get_location"),
     url(r'^click/(?P<slug>[-\w]+)/$', click, name="click"),

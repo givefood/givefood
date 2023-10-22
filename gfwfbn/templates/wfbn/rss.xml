@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
         <channel>
-                <title>{{ foodbank.full_name }}</title>
-                <description>News &amp; donation requests from {{ foodbank.full_name }}</description>
-                <link>https://www.givefood.org.uk{% url 'wfbn:foodbank' foodbank.slug %}</link>
+                <title>{% if foodbank %}{{ foodbank.full_name }}{% else %}Give Food{% endif %}</title>
+                <description>News &amp; donation requests from {% if foodbank %}{{ foodbank.full_name }}{% else %}UK food banks{% endif %}</description>
+                <link>https://www.givefood.org.uk{% if foodbank %}{% url 'wfbn:foodbank' foodbank.slug %}{% endif %}</link>
                 <lastBuildDate>{% now "D, d M Y H:i:s O" %}</lastBuildDate>
                 {% for item in items %}
                     <item>
