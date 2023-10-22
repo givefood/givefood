@@ -335,7 +335,6 @@ class Foodbank(models.Model):
             self.secondary_phone_number = self.secondary_phone_number.replace(" ","")
 
         if do_geoupdate:
-            # Update politics
             regions = admin_regions_from_postcode(self.postcode)
             self.county = regions.get("county", None)
             self.ward = regions.get("ward", None)
@@ -380,7 +379,6 @@ class Foodbank(models.Model):
         super(Foodbank, self).save(*args, **kwargs)
 
         if do_decache:
-            # Decache
             urls = [
                 reverse("wfbn:index"),
                 reverse("wfbn:foodbank", kwargs={"slug":self.slug}),

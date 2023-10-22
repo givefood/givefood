@@ -50,7 +50,6 @@ def crawl_articles(request):
     for foodbank in foodbanks_with_rss:
         foodbank_article_crawl(foodbank)
 
-
     return HttpResponse("OK")
 
 
