@@ -102,6 +102,7 @@ OLD_FOODBANK_SLUGS = {
     "kingfisher":"north-solihull",
     "bethnal-green":"bow/bethnal-green",
     "swansea/st-thomas-church":"st-thomas",
+    "skye":"skye-lochalsh",
 }
 
 FOODBANK_SUBPAGES = [
