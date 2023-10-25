@@ -14,6 +14,7 @@ from django.core.validators import validate_email
 from django import forms
 
 from session_csrf import anonymous_csrf
+from requests.models import PreparedRequest
 
 from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
 from givefood.func import get_all_foodbanks, get_all_locations, find_foodbanks, geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email, get_all_constituencies, validate_turnstile
@@ -111,12 +112,11 @@ def get_location(request):
 def click(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    utm_querystring = "?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs"
-    redirect_url = "%s%s" % (
-        foodbank.shopping_list_url,
-        utm_querystring,
-    )
-    response = redirect(redirect_url)
+
+    added_params = {"ref":"givefood.org.uk"}
+    req = PreparedRequest()
+    req.prepare_url(foodbank.shopping_list_url, added_params)
+    response = redirect(req.url)
     response["X-Robots-Tag"] = "noindex"
     return response
 
