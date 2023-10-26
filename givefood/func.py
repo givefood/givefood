@@ -181,9 +181,9 @@ def foodbank_article_crawl(foodbank):
     # Update last crawl date
     foodbank.last_crawl = datetime.now()
     if found_new_article:
-        foodbank.save(do_decache=False, do_geoupdate=False)
-    else:
         foodbank.save(do_decache=True, do_geoupdate=False)
+    else:
+        foodbank.save(do_decache=False, do_geoupdate=False)
 
     return True
 
