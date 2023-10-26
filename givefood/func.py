@@ -78,7 +78,7 @@ def decache(urls):
     
     # We can only uncache 30 URLs at a time
     urls = urls[:30]
-    
+
     url_params = "&url=".join(urls)
     remote_cache_purge_url = "http://www.givefood.org.uk/purgecache/?url=%s" % (url_params)
     request = requests.get(remote_cache_purge_url)
@@ -159,6 +159,8 @@ def foodbank_article_crawl(foodbank):
 
     logging.info("Scraping %s" % (foodbank.name))
 
+    found_new_article = False
+
     feed = feedparser.parse(foodbank.rss_url)
     if feed:
         for item in feed["items"]:
@@ -174,10 +176,14 @@ def foodbank_article_crawl(foodbank):
                         published_date = datetime.fromtimestamp(mktime(item.published_parsed)),
                     )
                     new_article.save()
+                    found_new_article = True
 
     # Update last crawl date
     foodbank.last_crawl = datetime.now()
-    foodbank.save(do_decache=False, do_geoupdate=False)
+    if found_new_article:
+        foodbank.save(do_decache=False, do_geoupdate=False)
+    else:
+        foodbank.save(do_decache=True, do_geoupdate=False)
 
     return True
 
