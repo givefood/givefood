@@ -90,6 +90,7 @@ def rss(request):
 
     return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
 
+
 @cache_page(60*60*48)
 def trussell_trust_index(request):
 
@@ -115,7 +116,7 @@ def click(request, slug):
 
     added_params = {"ref":"givefood.org.uk"}
     req = PreparedRequest()
-    req.prepare_url(foodbank.shopping_list_url, added_params)
+    req.prepare_url(foodbank.url, added_params)
     response = redirect(req.url)
     response["X-Robots-Tag"] = "noindex"
     return response
