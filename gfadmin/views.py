@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import csv
 import logging
 import re
@@ -790,6 +791,24 @@ def subscriber_stats(request):
     }
 
     return render(request, "admin/stats.html", template_vars)
+
+
+def subscriber_graph(request):
+
+    week_subs = OrderedDict()
+
+    subs = FoodbankSubscriber.objects.filter(confirmed = True).order_by("created")
+
+    for sub in subs:
+        week_number = sub.created.isocalendar()[1]
+        year = sub.created.year
+        week_key = "%s-%s" % (year, week_number)
+        week_subs[week_key] = week_subs.get(week_key, 0) + 1
+
+    template_vars = {
+        "week_subs":week_subs,
+    }
+    return render(request, "admin/sub_graph.html", template_vars)
 
 
 def finder_stats(request):
