@@ -408,9 +408,12 @@ class Foodbank(models.Model):
                 "%s?format=yaml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
                 "%s?format=geojson" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
             ]
+            
+            decache(urls)
+
+            urls = []
             for location in self.locations():
                 urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
-            
             decache(urls)
 
 
