@@ -408,7 +408,6 @@ class Foodbank(models.Model):
                 "%s?format=yaml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
                 "%s?format=geojson" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
             ]
-            
             decache(urls)
 
             urls = []
