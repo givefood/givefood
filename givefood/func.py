@@ -75,6 +75,10 @@ def get_all_constituencies():
 
 
 def decache(urls):
+    
+    # We can only uncache 30 URLs at a time
+    urls = urls[:30]
+    
     url_params = "&url=".join(urls)
     remote_cache_purge_url = "http://www.givefood.org.uk/purgecache/?url=%s" % (url_params)
     request = requests.get(remote_cache_purge_url)
