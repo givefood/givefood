@@ -156,7 +156,7 @@ class Foodbank(models.Model):
         return json.dumps(self.schema_org(), indent=4, sort_keys=True)
 
     def full_name(self):
-        if self.name == "Salvation Army":
+        if self.name == "Salvation Army" or self.name == "Oxford Food Hub":
             return self.name
         else:
             return "%s Food Bank" % (self.name)
