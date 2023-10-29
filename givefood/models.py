@@ -311,7 +311,7 @@ class Foodbank(models.Model):
 
     def bankuet_url(self):
         if self.bankuet_slug:
-            return "https://www.bankuet.co.uk/%s/?utm_source=givefood_org_uk&utm_medium=search&utm_campaign=needs" % (self.bankuet_slug)
+            return "https://www.bankuet.co.uk/%s/?ref=givefood.org.uk" % (self.bankuet_slug)
         else:
             return None
         
