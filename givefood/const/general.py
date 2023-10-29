@@ -114,3 +114,9 @@ FOODBANK_SUBPAGES = [
     "history",
     "subscribe",
 ]
+
+DONT_APPEND_FOOD_BANK = [
+    "Salvation Army",
+    "Oxford Food Hub",
+    "Staffordshire Food and Furniture Bank",
+]
