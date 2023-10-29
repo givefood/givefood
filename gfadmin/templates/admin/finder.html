@@ -58,7 +58,9 @@
                     {{ result.formatted_address }}<br>
                     {{ result.distance|floatformat:1 }}km<br>
                     {% if result.matched_foodbank %}
-                        <span class="tag is-warning is-light">Matched Postcode</span> to <a href="{% url 'admin:foodbank' result.matched_foodbank.slug %}">{{ result.matched_foodbank.name }}</a><br>
+                        <span class="tag is-warning is-light">Matched Postcode</span> <a href="{% url 'admin:foodbank' result.matched_foodbank.slug %}">{{ result.matched_foodbank.name }}</a><br>
+                    {% else %}
+                        <span class="tag is-light">Closest</span> {{ result.closest_foodbank.name }}, {{ result.closest_foodbank.distance_km|floatformat:1 }}km
                     {% endif %}
                     <div class="actions">
                         <a href="{% url 'admin:newfoodbank' %}?name={{ result.name }}&address={{ result.formatted_address }}&postcode={{ result.postcode }}" class="button is-small" target="_blank">Add</a>

@@ -17,7 +17,7 @@ from django.db import IntegrityError, connection
 from django.db.models import Sum
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
-from givefood.func import foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
+from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
 from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm
 
@@ -1058,8 +1058,11 @@ def finder(request):
             try:
                 matched_location = FoodbankLocation.objects.get(postcode=result["postcode"])
                 matched_foodbank = matched_location.foodbank
+                result["closest_foodbank"] = None
             except FoodbankLocation.DoesNotExist:
                 matched_foodbank = None
+                closest_foodbank = find_locations("%s,%s" % (result["geometry"]["location"]["lat"], result["geometry"]["location"]["lng"]),1)[0]
+                result["closest_foodbank"] = closest_foodbank
 
         result["matched_foodbank"] = matched_foodbank
 
