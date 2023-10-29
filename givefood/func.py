@@ -708,6 +708,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
 
     for searchable_location in searchable_locations:
         searchable_location["distance_m"] = distance_meters(searchable_location.get("lat"), searchable_location.get("lng"), latt, long)
+        searchable_location["distance_km"] = searchable_location["distance_m"] / 1000
         searchable_location["distance_mi"] = miles(searchable_location.get("distance_m"))
 
     sorted_searchable_locations = sorted(searchable_locations, key=lambda k: k['distance_m'])
