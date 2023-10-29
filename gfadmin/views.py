@@ -353,7 +353,7 @@ def foodbank_form(request, slug = None):
 
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
-        page_title = "Edit %s Food Bank" % (foodbank.name)
+        page_title = "Edit %s" % (foodbank.full_name())
     else:
         foodbank = None
         page_title = "New Food Bank"
