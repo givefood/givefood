@@ -383,6 +383,15 @@ def foodbank_form(request, slug = None):
 
 
 @require_POST
+def foodbank_crawl(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    if foodbank.rss_url:
+        foodbank_article_crawl(foodbank)
+    return redirect("admin:foodbank", slug = foodbank.slug)
+    
+
+@require_POST
 def foodbank_rfi(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
