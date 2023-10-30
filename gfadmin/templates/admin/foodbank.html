@@ -72,6 +72,10 @@
         <dd><a href="{{ foodbank.url }}">{{ foodbank.friendly_url }}</a></dd>
         <dt>Shopping list</dt>
         <dd><a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url }}</a></dd>
+        {% if foodbank.rss_url %}
+          <dt>RSS</dt>
+          <dd><a href="{{ foodbank.rss_url }}">RSS</a></dd>
+        {% endif %}
         {% if foodbank.facebook_page %}
           <dt>Facebook</dt>
           <dd><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></dd>
