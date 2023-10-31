@@ -559,7 +559,7 @@ class FoodbankLocation(models.Model):
         # Resave the parent food bank
         self.foodbank.save()
 
-    def save(self, do_geoupdate=True, *args, **kwargs):
+    def save(self, do_geoupdate=True, do_foodbank_resave=True, *args, **kwargs):
 
         logging.info("Saving food bank location %s" % self.name)
 
@@ -608,7 +608,8 @@ class FoodbankLocation(models.Model):
         super(FoodbankLocation, self).save(*args, **kwargs)
 
         # Resave the parent food bank
-        self.foodbank.save(do_geoupdate=False)
+        if do_foodbank_resave:
+            self.foodbank.save(do_geoupdate=False)
 
 
 class Order(models.Model):
