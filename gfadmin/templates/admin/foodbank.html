@@ -176,13 +176,15 @@
         <dd>{{ foodbank.last_need }}</dd>
         <dt>Last RFI</dt>
         <dd>{{ foodbank.last_rfi }}</dd>
-        <dt>Last Crawl</dt>
-        <dd>
-          {{ foodbank.last_crawl }}
-          <form action="{% url 'admin:foodbank_crawl' foodbank.slug %}" method="post">
-            <input type="submit" value="Force Crawl" class="button is-info is-small">
-          </form>
-        </dd>
+        {% if foodbank.rss_url %}
+          <dt>Last Crawl</dt>
+          <dd>
+            {{ foodbank.last_crawl }}
+            <form action="{% url 'admin:foodbank_crawl' foodbank.slug %}" method="post">
+              <input type="submit" value="Force Crawl" class="button is-info is-small">
+            </form>
+          </dd>
+        {% endif %}
       </dl>
 
       <h3>⚠️ Danger Zone</h3>
