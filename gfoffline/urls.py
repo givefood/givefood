@@ -11,4 +11,5 @@ urlpatterns = (
     url(r'^days_between_needs/$', days_between_needs, name="days_between_needs"),
     url(r'^resaver/$', resaver, name="resaver"),
     url(r'^pluscodes/$', pluscodes, name="pluscodes"),
+    url(r'^place_ids/$', place_ids, name="place_ids"),
 )

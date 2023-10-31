@@ -117,6 +117,7 @@ def validate_turnstile(turnstile_response):
     turnstile_result = requests.post("https://challenges.cloudflare.com/turnstile/v0/siteverify", turnstile_fields)
     return turnstile_result.json()["success"]
 
+
 def geocode(address):
 
     gmap_geocode_key = get_cred("gmap_geocode_key")
@@ -135,6 +136,21 @@ def geocode(address):
         except:
             lat_lng = "0,0"
     return lat_lng
+
+
+def get_place_id(address):
+    
+    gmap_geocode_key = get_cred("gmap_geocode_key")
+
+    address = "%s,UK" % (address)
+    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&address=%s" % (gmap_geocode_key, requests.utils.quote(address))
+    request = requests.get(address_api_url)
+
+    if request.status_code == 200:
+        address_result_json = request.json()
+        place_id = address_result_json["results"][0]["place_id"]
+
+    return place_id
 
 
 def oc_geocode(address):
