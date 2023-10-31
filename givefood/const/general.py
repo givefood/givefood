@@ -103,6 +103,7 @@ OLD_FOODBANK_SLUGS = {
     "bethnal-green":"bow/bethnal-green",
     "swansea/st-thomas-church":"st-thomas",
     "skye":"skye-lochalsh",
+    "cromer-district":"north-norfolk",
 }
 
 FOODBANK_SUBPAGES = [
