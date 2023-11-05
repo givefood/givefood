@@ -5,7 +5,7 @@ var map_main
 
 function init_map() {
     map_main = new google.maps.Map(document.getElementById("map"), {
-        center: new google.maps.LatLng(55,-4),
+        center: new google.maps.LatLng(55.4,-4),
         zoom: 6,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
