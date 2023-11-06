@@ -114,7 +114,15 @@
             <td>{{ line.name }}</td>
             <td>{{ line.quantity }}</td>
             <td>{{ line.weight|intcomma }}g</td>
-            <td>{{ line.calories|intcomma }}</td>
+            <td>
+              {{ line.calories|intcomma }}
+              {% if line.calories == 0 %}
+                <form action="{% url 'admin:item_new' %}" method="post" style="display:inline" target="_blank">
+                  <input type="hidden" name="name" value="{{ line.name }}">
+                  <input type="submit" class="button is-small" value="Add">
+                </form>
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </table>
