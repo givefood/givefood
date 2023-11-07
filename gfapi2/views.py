@@ -520,7 +520,7 @@ def location_search(request):
     return ApiResponse(response_list, "locations", format)
 
 
-@cache_page(60*60*2)
+@cache_page(60*30)
 def needs(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
