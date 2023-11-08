@@ -600,6 +600,7 @@ def clean_foodbank_need_text(text):
         "Current needed items",
         "MOST NEEDED (please avoid donating out of date items)",
         "Less urgent items",
+        "Shortages this week",
     ]
 
     # Clean out rubbish strings
