@@ -6,11 +6,12 @@ from datetime import date, datetime, timedelta
 from string import capwords
 
 from django.db import models
+from django.core.validators import RegexValidator
 from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 
-from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK
+from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX
 from givefood.func import parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, pluscode
 
 
@@ -20,7 +21,13 @@ class Foodbank(models.Model):
     alt_name = models.CharField(max_length=100, null=True, blank=True, help_text="E.g. Welsh version of the name")
     slug = models.CharField(max_length=100, editable=False)
     address = models.TextField()
-    postcode = models.CharField(max_length=9)
+    postcode = models.CharField(max_length=9, validators=[
+        RegexValidator(
+            regex = POSTCODE_REGEX,
+            message = "Not a valid postcode",
+            code = "invalid_postcode",
+        ),
+    ])
 
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
@@ -430,7 +437,13 @@ class FoodbankLocation(models.Model):
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, editable=False)
     address = models.TextField()
-    postcode = models.CharField(max_length=9)
+    postcode = models.CharField(max_length=9, validators=[
+        RegexValidator(
+            regex = POSTCODE_REGEX,
+            message = "Not a valid postcode",
+            code = "invalid_postcode",
+        ),
+    ])
     
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
