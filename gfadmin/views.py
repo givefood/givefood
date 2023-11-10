@@ -676,7 +676,9 @@ def item_form(request, slug = None):
     if request.POST:
         form = OrderItemForm(request.POST, instance=item)
         if form.is_valid():
-            need = form.save()
+            item = form.save()
+            for order in item.orders():
+                order.save()
             return redirect("admin:items")
     else:
         form = OrderItemForm(instance=item)

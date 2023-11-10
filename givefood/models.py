@@ -806,6 +806,14 @@ class OrderItem(models.Model):
     tesco_image_id = models.CharField(max_length=100, null=True, blank=True)
     sainsburys_image_id = models.CharField(max_length=100, null=True, blank=True)
 
+    def orders(self):
+        order_lines = OrderLine.objects.filter(name = self.name)
+        orders = []
+        for order_line in order_lines:
+            orders.append(order_line.order)
+        orders = list(set(orders))
+        return orders
+
     def save(self, *args, **kwargs):
 
         self.slug = slugify(self.name)
