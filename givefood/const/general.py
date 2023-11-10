@@ -104,6 +104,7 @@ OLD_FOODBANK_SLUGS = {
     "swansea/st-thomas-church":"st-thomas",
     "skye":"skye-lochalsh",
     "cromer-district":"north-norfolk",
+    "blandford":"nourish",
 }
 
 FOODBANK_SUBPAGES = [
