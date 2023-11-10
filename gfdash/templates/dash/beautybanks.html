@@ -102,12 +102,12 @@
         <div class="column settings is-hidden">
             <h2>Products</h2>
             <p>List of strings of text we're looking for a foodbank's need...</p>
-            <p>{% for product in products %}{{ product }}, {% endfor %}</p>
+            <p>{% for product in products %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
             <br>
 
             <h2>London Postcode Areas</h2>
             <p>List of postcodes we're using to filter as a London location...</p>
-            <p>{% for london_postcode in london_postcodes %}{{ london_postcode }}, {% endfor %}</p>
+            <p>{% for london_postcode in london_postcodes %}{{ london_postcode }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
         </div>
     </div>
 
