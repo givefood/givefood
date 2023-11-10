@@ -233,6 +233,7 @@ def beautybanks(request):
         "Tampon",
         "Toiletries",
         "Toiletry",
+        "Bubble Bath",
     ]
 
     london_postcode_file = open("./givefood/data/london_postcodes.txt", "r")
