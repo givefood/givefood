@@ -899,6 +899,9 @@ class FoodbankGroup(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
 
+    def foodbanks(self):
+        return Foodbank.objects.filter(foodbank_group = self).order_by("name")
+
     def save(self, *args, **kwargs):
 
         self.slug = slugify(self.name)
