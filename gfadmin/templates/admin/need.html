@@ -70,7 +70,7 @@
             </p>
             {% if need.published %}
               <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
-                <input type="submit" class="button is-warning" value="Send Notifications">
+                <input type="submit" class="button is-warning" value="Send Notifications" onClick="this.form.submit(); this.disabled=true;">
                 {% csrf_token %}
               </form>
             {% endif %}
