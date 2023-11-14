@@ -1,9 +1,12 @@
+/* FORM */
 .find-foodbank {
     margin-top:1rem;
 }
 #postcode_field, #address_field {
     width:220px;
 }
+
+/* NAVS */
 nav.primary {
     margin:1rem 0 3rem 0;
 }
@@ -15,6 +18,8 @@ nav.primary {
 nav.secondary {
     margin:0 0 2rem 0;
 }
+
+/* GF LOGO */
 h1 {
     margin:30px 0 0 0;
     width:148px;
@@ -27,6 +32,8 @@ h1 {
         height:50px;
     }
 }
+
+/* MAP */
 @media screen and (min-width: 769px) {
     .map {
         background-image: url('/static/img/map.svg');
@@ -40,6 +47,9 @@ h1 {
         background-position: right 200px top 50px;
     }
 }
+
+
+/* LOGOS */
 .logos-container {
     background:#D8EDFE;
 }
@@ -58,6 +68,53 @@ h1 {
     margin:auto;
     text-align:center;
 }
+.trusselltrust {
+    height:50px;
+}
+.thetimes {
+    width:100px;
+}
+.nhs {
+    height:35px;
+}
+.scottishgov {
+    width:120px;
+}
+.cdrc {
+    height:50px;
+}
+.reach {
+    width:70px;
+}
+.ifan {
+    height:50px;
+}
+@media screen and (min-width: 769px) {
+    .trusselltrust {
+        height:80px;
+    }
+    .thetimes {
+        width:170px;
+    }
+    .nhs {
+        height:45px;
+    }
+    .scottishgov {
+        width:190px;
+    }
+    .cdrc {
+        height:70px;
+    }
+    .reach {
+        width:110px;
+    }
+    .ifan {
+        height:50px;
+    }
+}
+
+
+/* HOW TO HELP */
 .how-help-container {
     padding-top:4rem;
 }
@@ -73,6 +130,8 @@ h1 {
 .how-help-cat h3 {
     font-weight:bold;
 }
+
+/* ANNUAL REPORT */
 .annualreportteaser {
     margin:30px 0;
     padding:20px;

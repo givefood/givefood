@@ -20,9 +20,54 @@ from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, M
 
 @cache_page(60*60*12)
 def public_index(request):
+    logos = [
+        {
+            "name":"Trussell Trust",
+            "slug":"trusselltrust",
+            "url":"https://www.trusselltrust.org",
+            "format":"svg",
+        },
+        {
+            "name":"The Times",
+            "slug":"thetimes",
+            "url":"https://www.thetimes.co.uk",
+            "format":"png",
+        },
+        {
+            "name":"NHS",
+            "slug":"nhs",
+            "url":"https://www.nhs.uk",
+            "format":"svg",
+        },
+        {
+            "name":"Scottish Government Riaghaltas na h-Alba",
+            "slug":"scottishgov",
+            "url":"https://www.gov.scot",
+            "format":"svg",
+        },
+        {
+            "name":"Consumer Data Research Centre",
+            "slug":"cdrc",
+            "url":"https://www.cdrc.ac.uk",
+            "format":"png",
+        },
+        {
+            "name":"Reach plc",
+            "slug":"reach",
+            "url":"https://www.reachplc.com",
+            "format":"svg",
+        },
+        {
+            "name":"Independent Food Aid Network",
+            "slug":"ifan",
+            "url":"https://www.foodaidnetwork.org.uk",
+            "format":"png",
+        }
+    ]
     gmap_key = get_cred("gmap_key")
     template_vars = {
         "gmap_key":gmap_key,
+        "logos":logos,
     }
     return render(request, "public/index.html", template_vars)
 
