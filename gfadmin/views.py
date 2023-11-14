@@ -1184,6 +1184,18 @@ def foodbank_groups(request):
     return render(request, "admin/foodbank_groups.html", template_vars)
 
 
+def foodbank_group(request, slug):
+
+
+    foodbank_group = get_object_or_404(FoodbankGroup, slug = slug)
+
+    template_vars = {
+        "section":"settings",
+        "foodbank_group":foodbank_group,
+    }
+    return render(request, "admin/foodbank_group.html", template_vars)
+
+
 def foodbank_group_form(request, slug=None):
 
     if slug:

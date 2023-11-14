@@ -76,6 +76,7 @@ urlpatterns = (
     url(r'^order-groups/new/$', order_group_form, name="order_group_new"),
 
     url(r'^foodbank-groups/$', foodbank_groups, name="foodbank_groups"),
+    url(r'^foodbank-group/(?P<slug>[-\w]+)/$', foodbank_group, name="foodbank_group"),
     url(r'^foodbank-group/(?P<slug>[-\w]+)/edit/$', foodbank_group_form, name="foodbank_group_edit"),
     url(r'^foodbank-groups/new/$', foodbank_group_form, name="foodbank_group_new"),
 

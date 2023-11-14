@@ -1,0 +1,23 @@
+{% extends "admin/page.html" %}
+
+{% block title %}{{ foodbank_group }} - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>{{ foodbank_group }}</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+        <ul>
+            {% for foodbank in foodbank_group.foodbanks %}
+                <li><a href="{% url 'admin:foodbank' foodbank.slug %}">{{ foodbank }}</a></li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+  </div>
+
+{% endblock %}

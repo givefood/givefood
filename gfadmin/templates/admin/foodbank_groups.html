@@ -1,5 +1,4 @@
 {% extends "admin/page.html" %}
-{% load humanize %}
 
 {% block title %}Foodbank Groups - GF Admin{% endblock %}
 
@@ -21,7 +20,11 @@
         </tr>
         {% for foodbank_group in foodbank_groups %}
           <tr>
-            <td>{{ foodbank_group.name }}</td>
+            <td>
+              <a href="{% url 'admin:foodbank_group' foodbank_group.slug %}">
+                {{ foodbank_group.name }}
+              </a>
+            </td>
             <td>{{ foodbank_group.created }}</td>
             <td><a href="{% url 'admin:foodbank_group_edit' foodbank_group.slug %}" class="button is-small">Edit</a></td>
           </tr>
