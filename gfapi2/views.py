@@ -8,6 +8,7 @@ from django.views.decorators.cache import cache_page
 from givefood.models import Foodbank, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
 from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_foodbanks, geocode, find_locations, is_uk
+from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
 
 DEFAULT_FORMAT = "json"
 
@@ -63,7 +64,7 @@ def docs(request):
     return render(request, "docs.html", template_vars)
 
 
-@cache_page(60*60*48)
+@cache_page(SECONDS_IN_WEEK)
 def foodbanks(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -143,7 +144,7 @@ def foodbanks(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_page(60*60*336)
+@cache_page(SECONDS_IN_MONTH)
 def foodbank(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -288,7 +289,7 @@ def foodbank(request, slug):
     return ApiResponse(response_dict, "foodbank", format)
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_DAY)
 def foodbank_search(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -367,7 +368,7 @@ def foodbank_search(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_page(60*60*48)
+@cache_page(SECONDS_IN_MONTH)
 def locations(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -446,7 +447,7 @@ def locations(request):
     return ApiResponse(response_list, "locations", format)
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_DAY)
 def location_search(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -575,7 +576,7 @@ def need(request, id):
     return ApiResponse(response_dict, "need", format)
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_DAY)
 def constituencies(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -607,7 +608,7 @@ def constituencies(request):
     return ApiResponse(response_list, "constituencies", format) 
 
 
-@cache_page(60*60*24)
+@cache_page(SECONDS_IN_WEEK)
 def constituency(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
