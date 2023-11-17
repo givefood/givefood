@@ -24,7 +24,7 @@ def main():
 
     try:
         # Start all emulators, persisting data if we're not testing
-        start_emulators(persist_data="test" not in sys.argv)
+        # start_emulators(persist_data="test" not in sys.argv)
         execute_from_command_line(sys.argv)
     finally:
         # Stop all emulators
