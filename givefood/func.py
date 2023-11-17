@@ -1002,6 +1002,8 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
 
     request_headers = {
         "X-Postmark-Server-Token": server_token,
+        "Accept": "application/json",
+        "Content-Type": "application/json",
     }
 
     if is_broadcast:
