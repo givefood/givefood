@@ -11,7 +11,8 @@ from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 from django.urls import reverse
 
-from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX
+from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES
+from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, pluscode
 
 
@@ -954,6 +955,15 @@ class FoodbankChange(models.Model):
             return 0
         else:
             return len(self.change_text.split('\n'))
+    
+    def categorised_items(self):
+        return FoodbankChangeLine.objects.filter(need = self)
+
+    def no_items_categorised(self):
+        return len(self.categorised_items())
+
+    def total_items(self):
+        return len(self.change_list()) + len(self.excess_list())
 
     def set_input_method(self):
         if self.distill_id:
@@ -965,7 +975,10 @@ class FoodbankChange(models.Model):
         return self.change_text.split("\n")
 
     def excess_list(self):
-        return self.excess_change_text.split("\n")
+        if self.excess_change_text:
+            return self.excess_change_text.split("\n")
+        else:
+            return []
 
     def clean_change_text(self):
         if self.change_text:
@@ -1023,6 +1036,29 @@ class FoodbankChange(models.Model):
         if self.foodbank and self.published:
             self.foodbank.save(do_geoupdate=False)
     
+    class Meta:
+        app_label = 'givefood'
+
+
+class FoodbankChangeLine(models.Model):
+    
+    need = models.ForeignKey(FoodbankChange, editable=False, on_delete=models.DO_NOTHING)
+    foodbank = models.ForeignKey(Foodbank, editable=False, on_delete=models.DO_NOTHING)
+    item = models.CharField(max_length=250)
+    type = models.CharField(max_length=250, choices=NEED_LINE_TYPES_CHOICES)
+    category = models.CharField(max_length=250, choices=ITEM_CATEGORIES_CHOICES)
+    group = models.CharField(max_length=250, choices=ITEM_GROUPS_CHOICES, editable=False)
+    created = models.DateTimeField(editable=False)
+
+    def save(self, *args, **kwargs):
+        self.foodbank = self.need.foodbank
+        self.group = ITEM_CATEGORY_GROUPS[self.category]
+        self.created = self.need.created
+        super(FoodbankChangeLine, self).save(*args, **kwargs)
+    
+    def __str__(self):
+        return "%s - %s" % (self.foodbank_change, self.name)
+
     class Meta:
         app_label = 'givefood'
 

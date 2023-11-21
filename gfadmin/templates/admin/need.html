@@ -77,6 +77,18 @@
           {% endif %}
         {% endif %}
       {% endif %}
+
+      <h3>Categorisation</h3>
+      {% if need.published %}
+        <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
+      {% endif %}
+      <p>
+        {% if need.no_items_categorised == need.total_items %}
+          <span style="color:green">✓</span> Done
+        {% else %}
+          <span style="color:red">x</span> Not Done
+        {% endif %}
+      </p>
       
       <h3>Notification Preview</h3>
       <ul>

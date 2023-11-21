@@ -1,0 +1,35 @@
+{% extends "admin/page.html" %}
+{% load bulma_tags %}
+
+{% block title %}{{ need }} - GF Admin{% endblock %}
+
+{% block body %}
+
+
+  <div class="columns">
+
+    <div class="column">
+        <h2>{{ need.need_id }}</h2>
+
+        <form action="{% url 'admin:need_categorise' need.need_id %}" method="post">
+
+            {% for form in forms %}
+                {{ form|bulma }}
+                {% if not forloop.last %}
+                  <hr>
+                {% endif %}
+            {% endfor %}
+
+            <br><br><input type="submit" class="button is-link" value="Submit">
+        </form>
+    </div>
+
+  </div>
+
+  <script>
+    document.querySelectorAll(".field").forEach(function(el) {
+      el.classList.add("is-inline-block-desktop")
+    });
+  </script>
+
+{% endblock %}

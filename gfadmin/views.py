@@ -18,8 +18,8 @@ from django.db.models import Sum
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
-from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm
+from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine
+from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
 def index(request):
@@ -596,6 +596,74 @@ def need_email(request, id):
         "need":need,
     }
     return render(request, "wfbn/emails/notification.%s" % (extension), template_vars, content_type = content_type)
+
+
+def need_categorise(request, id):
+
+    need = get_object_or_404(FoodbankChange, need_id = id)
+    forms = []
+    
+    if request.POST:
+        for line in need.change_text.split("\n"):
+            try:
+                need_line = FoodbankChangeLine.objects.get(need = need, item = line)
+                form = NeedLineForm(request.POST, prefix=line, instance=need_line)
+            except FoodbankChangeLine.DoesNotExist:
+                form = NeedLineForm(request.POST, prefix=line)
+
+            if form.is_valid():
+                need_line = form.save(commit=False)
+                need_line.need = need
+                need_line.save()
+
+        if need.excess_change_text:
+            for line in need.excess_change_text.split("\n"):
+                try:
+                    need_line = FoodbankChangeLine.objects.get(need = need, item = line)
+                    form = NeedLineForm(request.POST, prefix=line, instance=need_line)
+                except FoodbankChangeLine.DoesNotExist:
+                    form = NeedLineForm(request.POST, prefix=line)
+
+                if form.is_valid():
+                    need_line = form.save(commit=False)
+                    need_line.need = need
+                    need_line.save()
+        return redirect("admin:need", id = need.need_id)
+    
+    # Needs
+    for line in need.change_text.split("\n"):
+        try:
+            need_line = FoodbankChangeLine.objects.get(need = need, item = line)
+            form = NeedLineForm(instance=need_line, prefix=line)
+        except FoodbankChangeLine.DoesNotExist:
+            try:
+                prev_need_line = FoodbankChangeLine.objects.filter(item = line).latest("created")
+                form = NeedLineForm(initial={"item":line, "type":"need", "category":prev_need_line.category}, prefix=line)
+            except FoodbankChangeLine.DoesNotExist:
+                form = NeedLineForm(initial={"item":line, "type":"need"}, prefix=line)
+            
+        forms.append(form)
+    # Excess
+    if need.excess_change_text:
+        for line in need.excess_change_text.split("\n"):
+            try:
+                need_line = FoodbankChangeLine.objects.get(need = need, item = line)
+                form = NeedLineForm(instance=need_line, prefix=line)
+            except FoodbankChangeLine.DoesNotExist:
+                try:
+                    prev_need_line = FoodbankChangeLine.objects.filter(item = line).latest("created")
+                    form = NeedLineForm(initial={"item":line, "type":"excess", "category":prev_need_line.category}, prefix=line)
+                except FoodbankChangeLine.DoesNotExist:
+                    form = NeedLineForm(initial={"item":line, "type":"excess"}, prefix=line)
+            forms.append(form)
+
+    template_vars = {
+        "need":need,
+        "forms":forms,
+    }
+    
+    return render(request, "admin/need_categorise.html", template_vars)
+
 
 def locations(request):
 

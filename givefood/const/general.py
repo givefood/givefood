@@ -27,6 +27,12 @@ NEED_INPUT_TYPES = [
 ]
 NEED_INPUT_TYPES_CHOICES = tuple((input_type, input_type) for input_type in NEED_INPUT_TYPES)
 
+NEED_LINE_TYPES = [
+    "need",
+    "excess",
+]
+NEED_LINE_TYPES_CHOICES = tuple((line_type, line_type) for line_type in NEED_LINE_TYPES)
+
 FOODBANK_NETWORKS = [
     "Trussell Trust",
     "IFAN",

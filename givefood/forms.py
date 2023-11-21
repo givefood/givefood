@@ -1,8 +1,8 @@
 from datetime import datetime
 
-from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput
+from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput, TextInput
 from django import forms
-from givefood.models import OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup
+from givefood.models import OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine
 from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
@@ -111,6 +111,14 @@ class NeedForm(ModelForm):
         fields = "__all__"
         exclude = ('change_text_original', 'input_method', 'name', 'uri', 'distill_id')
 
+
+class NeedLineForm(ModelForm):
+    class Meta:
+        model = FoodbankChangeLine
+        fields = "__all__"
+        widgets = {
+            'type': TextInput(attrs={'disabled': 'true'})
+        }
 
 class ParliamentaryConstituencyForm(ModelForm):
     class Meta:
