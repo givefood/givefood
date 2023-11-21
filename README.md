@@ -18,7 +18,7 @@ The source of https://www.givefood.org.uk. A Google App Engine app written in Py
 
 ## About Us
 
-We maintain the the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover over 2700 locations.
+We maintain the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover over 2700 locations.
 
 Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, food manufacturers, hundreds of national & local news websites, apps & the Trussell Trust.
 
