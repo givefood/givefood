@@ -581,7 +581,7 @@ def need_notifications(request, id):
     for subscriber in subscribers:
         post_to_subscriber(need, subscriber)
 
-    return redirect("admin:index")
+    return redirect("admin:need", id = need.need_id)
 
 
 def need_email(request, id):
