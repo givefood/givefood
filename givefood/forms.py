@@ -113,6 +113,11 @@ class NeedForm(ModelForm):
 
 
 class NeedLineForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+   
+        self.fields['item'].widget.attrs['class'] = "item"
+        self.fields['category'].widget.attrs['class'] = "category"
     class Meta:
         model = FoodbankChangeLine
         fields = "__all__"
