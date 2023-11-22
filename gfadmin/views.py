@@ -921,11 +921,14 @@ def need_stats(request):
     need_items = cursor.fetchone()[0]
     cursor.execute("SELECT sum(length(regexp_replace(excess_change_text, E'[^\\n]', '', 'g'))) from givefood_foodbankchange")
     excess_items = cursor.fetchone()[0]
+    categorised_items = FoodbankChangeLine.objects.all().count()
 
     stats = {
         "Needs":FoodbankChange.objects.count(),
         "Need Items":need_items,
         "Excess Items":excess_items,
+        "Total Items":need_items + excess_items,
+        "Categorised Items":categorised_items,
     }
 
     template_vars = {
