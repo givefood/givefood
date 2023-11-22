@@ -939,6 +939,7 @@ class FoodbankChange(models.Model):
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
 
     input_method = models.CharField(max_length=10, choices=NEED_INPUT_TYPES_CHOICES)
+    is_categorised = models.BooleanField(default=False, editable=False)
 
     def clean(self):
         if self.foodbank == None and self.published == True:

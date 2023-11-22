@@ -83,7 +83,7 @@
         <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
       {% endif %}
       <p>
-        {% if need.no_items_categorised == need.total_items %}
+        {% if need.is_categorised %}
           <span style="color:green">✓</span> Done
         {% else %}
           <span style="color:red">x</span> Not Done

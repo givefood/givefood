@@ -15,6 +15,7 @@
         <tr>
           <th>Published?</th>
           <th>Input</th>
+          <th>Cat?</th>
           <th>ID</th>
           <th>Foodbank</th>
           <th>Need</th>
@@ -35,6 +36,9 @@
               {% if need.input_method == "typed" %}⌨️{% endif%}
               {% if need.input_method == "scrape" %}🤖{% endif%}
               {% if need.input_method == "user" %}🧑{% endif%}
+            </td>
+            <td>
+              {% if need.is_categorised %}🪣{% endif %}
             </td>
             <td>
               <a href="{% url "admin:need" need.need_id %}">{{ need.need_id }}</a>

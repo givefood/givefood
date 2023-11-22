@@ -628,6 +628,10 @@ def need_categorise(request, id):
                     need_line = form.save(commit=False)
                     need_line.need = need
                     need_line.save()
+
+        need.is_categorised = True
+        need.save()
+
         return redirect("admin:need", id = need.need_id)
     
     # Needs
