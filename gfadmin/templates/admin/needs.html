@@ -39,6 +39,9 @@
             </td>
             <td>
               {% if need.is_categorised %}🪣{% endif %}
+              {% if uncategorised %}
+                <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
+              {% endif %}
             </td>
             <td>
               <a href="{% url "admin:need" need.need_id %}">{{ need.need_id }}</a>

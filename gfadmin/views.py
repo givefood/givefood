@@ -230,7 +230,7 @@ def orders_csv(request):
 
 def needs(request):
 
-    uncategorised = request.GET.get("uncategorised")
+    uncategorised = request.GET.get("uncategorised", None)
     if uncategorised:
         needs = FoodbankChange.objects.filter(is_categorised__isnull = True).order_by("-created").exclude(change_text = "Facebook").exclude(change_text = "Unknown")[:200]
     else:
@@ -239,6 +239,7 @@ def needs(request):
     template_vars = {
         "needs":needs,
         "section":"needs",
+        "uncategorised":uncategorised,
     }
     return render(request, "admin/needs.html", template_vars)
 
