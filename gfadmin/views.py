@@ -232,7 +232,7 @@ def needs(request):
 
     uncategorised = request.GET.get("uncategorised", None)
     if uncategorised:
-        needs = FoodbankChange.objects.filter(is_categorised__isnull = True).order_by("-created").exclude(change_text = "Facebook").exclude(change_text = "Unknown")[:200]
+        needs = FoodbankChange.objects.filter(is_categorised__isnull = True).order_by("-created").exclude(change_text = "Facebook").exclude(change_text = "Unknown").exclude(change_text = "Nothing")[:200]
     else:
         needs = FoodbankChange.objects.all().order_by("-created")[:200]
 
