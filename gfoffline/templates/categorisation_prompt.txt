@@ -1,0 +1,6 @@
+Here is a list of item categories... 
+
+{% for category in item_categories %}{{ category }}
+{% endfor %}
+
+You should just reply with the text of single category from the list above and no other text. Which category should "{{ item }}" go in?

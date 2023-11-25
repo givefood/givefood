@@ -6,6 +6,7 @@ from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
 from datetime import datetime
 from time import mktime
+import openai
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -1038,6 +1039,7 @@ def group_list(lst):
 
 
 def get_secret(secret_id, version_id="latest"):
+    
     client = secretmanager.SecretManagerServiceClient()
     name = f"projects/givefood/secrets/{secret_id}/versions/{version_id}"
     response = client.access_secret_version(name=name)
@@ -1055,3 +1057,16 @@ def filter_change_text(change_text, filter_list):
                 filtered_change_text_list.add(change_text_list_item)
 
     return "\n".join(filtered_change_text_list)
+
+
+def chatgpt(prompt):
+
+    openai.api_key = get_cred("openai_api_key")
+    response = openai.ChatCompletion.create(
+        model = 'gpt-3.5-turbo',
+        temperature = 0.1,
+        messages = [
+            {"role": "user", "content": prompt}
+        ]
+    )
+    return response["choices"][0]["message"]["content"]

@@ -12,4 +12,5 @@ urlpatterns = (
     url(r'^resaver/$', resaver, name="resaver"),
     url(r'^pluscodes/$', pluscodes, name="pluscodes"),
     url(r'^place_ids/$', place_ids, name="place_ids"),
+    url(r'^need_categorisation/$', need_categorisation, name="need_categorisation"),
 )

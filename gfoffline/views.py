@@ -5,10 +5,12 @@ from datetime import datetime, timedelta, timezone
 from django.http import HttpResponse
 from django.core.cache import cache
 from django.apps import apps
+from givefood.const.item_types import ITEM_CATEGORIES
 
-from givefood.models import Foodbank, FoodbankLocation, FoodbankSubscriber, FoodbankChange
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, FoodbankSubscriber, FoodbankChange
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
+from givefood.func import chatgpt, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
+from django.template.loader import render_to_string
 
 
 def precacher(request):
@@ -86,6 +88,68 @@ def days_between_needs(request):
 
 
     return HttpResponse("OK")
+
+
+def need_categorisation(request):
+
+    needs = FoodbankChange.objects.filter(published=True, is_categorised__isnull = True).order_by("-created").exclude(change_text = "Facebook").exclude(change_text = "Unknown").exclude(change_text = "Nothing")[:500]
+    for need in needs:
+        change_text = need.change_text.split("\n")
+        logging.info("Categorising need %s" % need)
+        for line in change_text:
+            new_category = item_categorisation(line)
+            new_need_line = FoodbankChangeLine(
+                item = line,
+                category = new_category,
+                need = need,
+                type = "need",
+            )
+            new_need_line.save()
+        
+        if need.excess_change_text:
+            change_text = need.excess_change_text.split("\n")
+            for line in change_text:
+                new_category = item_categorisation(line)
+                new_need_line = FoodbankChangeLine(
+                    item = line,
+                    category = new_category,
+                    need = need,
+                    type = "excess",
+                )
+                new_need_line.save()
+
+        need.is_categorised = True
+        need.save()
+
+    return HttpResponse("OK")
+            
+
+def item_categorisation(line):
+
+    logging.info("Categorising %s" % line)
+
+    try:
+        prev_need_line = FoodbankChangeLine.objects.filter(item = line).latest("created")
+        new_category = prev_need_line.category
+        
+    except FoodbankChangeLine.DoesNotExist:
+        prompt = render_to_string(
+            "categorisation_prompt.txt",
+            {
+                "item":line,
+                "item_categories":ITEM_CATEGORIES,
+            }
+        )
+        logging.info("Doing AI cat")
+        ai_response = chatgpt(prompt)
+        if ai_response in ITEM_CATEGORIES:
+            new_category = ai_response
+        else:
+            new_category = "Other"
+        logging.info("Got AI cat %s" % new_category)
+
+    return new_category
+    
 
 
 def resaver(request):
