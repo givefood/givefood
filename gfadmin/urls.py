@@ -24,6 +24,7 @@ urlpatterns = (
     url(r'^orders/csv/$', orders_csv, name="orders_csv"),
 
     url(r'^needs/$', needs, name="needs"),
+    url(r'^needs/otherlines/$', needs_otherlines, name="needs_otherlines"),
     url(r'^needs/deleteall/$', needs_deleteall, name="needs_deleteall"),
     url(r'^needs/csv/$', needs_csv, name="needs_csv"),
 
@@ -50,6 +51,7 @@ urlpatterns = (
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/notifications/$', need_notifications, name="need_notifications"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/email/$', need_email, name="need_email"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/categorise/$', need_categorise, name="need_categorise"),
+    url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/line/(?P<line_id>\d+)/$', needline_form, name="needline_form"),
 
     url(r'^locations/$', locations, name="locations"),
     url(r'^locations/loader/sa/$', locations_loader_sa, name="locations_loader_sa"),
