@@ -40,7 +40,7 @@
           <div class="column is-4">
 
             {% if postcode %}
-                <p>Your postcode <em>{{ postcode|upper }}</em> is in <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> constituency, and your MP is {{ constituency.mp }}.</p>
+                <p>Your postcode {{ postcode|upper }} is in <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> constituency, and your MP is {{ constituency.mp }}.</p>
             {% else %}
                 <p>The MP for <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> is {{ constituency.mp }}.</p>
             {% endif %}
@@ -53,7 +53,7 @@
 
             {% if constituency.email_parl %}
 
-              <p>To write to {{ constituency.mp }} we'll need a few more details to create the email for you to view and send.</p>
+              <p>To write to {{ constituency.mp }} we'll need a few more details. You'll then be able to view the email before we send it for you.</p>
 
               <form method="post" action="{% url 'write:email' constituency.slug %}">
                 {{ form|bulma }}
