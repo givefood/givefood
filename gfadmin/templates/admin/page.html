@@ -21,12 +21,20 @@
           <img src="/static/img/logo.svg" alt="Give Food" class="logo">
         </a>
       </div>
-      <a class="navbar-item{% if section == "foodbanks" %} is-active{% endif %}" href="{% url 'admin:foodbanks' %}">Food Banks</a>
-      <a class="navbar-item{% if section == "locations" %} is-active{% endif %}" href="{% url 'admin:locations' %}">Locations</a>
-      <a class="navbar-item{% if section == "needs" %} is-active{% endif %}" href="{% url 'admin:needs' %}">Needs</a>
-      <a class="navbar-item{% if section == "orders" %} is-active{% endif %}" href="{% url 'admin:orders' %}">Orders</a>
-      <a class="navbar-item{% if section == "finder" %} is-active{% endif %}" href="{% url 'admin:finder' %}" data-turbolinks="false">Finder</a>
-      <a class="navbar-item{% if section == "settings" %} is-active{% endif %}" href="{% url 'admin:settings' %}">Settings</a>
+      <div class="navbar-menu">
+        <a class="navbar-item{% if section == "foodbanks" %} is-active{% endif %}" href="{% url 'admin:foodbanks' %}">Food Banks</a>
+        <a class="navbar-item{% if section == "locations" %} is-active{% endif %}" href="{% url 'admin:locations' %}">Locations</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link{% if section == "needs" %} is-active{% endif %}" href="{% url 'admin:needs' %}" >Needs</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'admin:needs' %}?uncategorised=true">Uncategorised</a>
+            <a class="navbar-item" href="{% url 'admin:needs_otherlines' %}">Other Lines</a>
+          </div>
+        </div>
+        <a class="navbar-item{% if section == "orders" %} is-active{% endif %}" href="{% url 'admin:orders' %}">Orders</a>
+        <a class="navbar-item{% if section == "finder" %} is-active{% endif %}" href="{% url 'admin:finder' %}" data-turbolinks="false">Finder</a>
+        <a class="navbar-item{% if section == "settings" %} is-active{% endif %}" href="{% url 'admin:settings' %}">Settings</a>
+      </div>
 
       <div class="navbar-end">
         <div class="navbar-item">
