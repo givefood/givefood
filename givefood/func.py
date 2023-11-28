@@ -666,13 +666,16 @@ def find_foodbanks(lattlong, quantity = 10, skip_first = False):
     return sorted_foodbanks[first_item:quantity]
 
 
-def find_locations(lattlong, quantity = 10, skip_first = False):
+def find_locations(lat_lng, quantity = 10, skip_first = False):
 
     locations = get_all_open_locations()
     foodbanks = get_all_open_foodbanks()
 
-    latt = float(lattlong.split(",")[0])
-    long = float(lattlong.split(",")[1])
+    try:
+        lat = float(lat_lng.split(",")[0])
+        lng = float(lat_lng.split(",")[1])
+    except ValueError:
+        return []
 
     searchable_locations = []
 
@@ -725,7 +728,7 @@ def find_locations(lattlong, quantity = 10, skip_first = False):
         })
 
     for searchable_location in searchable_locations:
-        searchable_location["distance_m"] = distance_meters(searchable_location.get("lat"), searchable_location.get("lng"), latt, long)
+        searchable_location["distance_m"] = distance_meters(searchable_location.get("lat"), searchable_location.get("lng"), lat, lng)
         searchable_location["distance_km"] = searchable_location["distance_m"] / 1000
         searchable_location["distance_mi"] = miles(searchable_location.get("distance_m"))
 

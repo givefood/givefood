@@ -34,13 +34,10 @@ def index(request):
     where_from = request.GET.get("from","")
     
     location_results = []
-    recently_updated = None
+    recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
 
     if address and not lat_lng:
         lat_lng = geocode(address)
-
-    if not lat_lng:
-        recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
 
     if lat_lng:
         location_results = find_locations(lat_lng, 10)
