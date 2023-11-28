@@ -33,6 +33,9 @@
     column-gap:10px;
     margin-bottom:2rem;
 }
+.needs tr:last-child td {
+    border-bottom:0;
+}
 .needs td {
     padding:0.75em 0.75em 0.75em 0;
 }
