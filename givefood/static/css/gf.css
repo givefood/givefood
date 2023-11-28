@@ -1,15 +1,20 @@
 @font-face {
-    font-family: 'PT Serif';
-    src: url('/static/fonts/pt-serif-v12-latin-700.woff2') format('woff2'),
-            url('/static/fonts/pt-serif-v12-latin-700.woff') format('woff');
-    font-weight: 700;
+    font-family:'Soehne Buch';
+    src:url('/static/fonts/soehne-buch.woff2') format('woff2');
+    font-weight:400;
+}
+@font-face {
+    font-family:'Soehne Dreiviertelfett';
+    src:url('/static/fonts/soehne-dreiviertelfett.woff2') format('woff2');
+    font-weight:700;
+}
+html {
+    hanging-punctuation: first allow-end last;
 }
 body {
     background:#fff;
-    color:rgb(61, 61, 61);
-    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    color:rgb(53, 55, 64);
+    font-family:"Soehne Buch","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .container {
     padding:0 10px;
@@ -29,15 +34,16 @@ a, .breadcrumb a {
     }
 }
 h1 {
-    font-size: 24px !important;
-    font-family: 'PT Serif', serif;
-    font-weight: bold;
+    font-size: 26px !important;
+    font-family:"Soehne Dreiviertelfett","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight: 700 !important;
     margin-bottom: 1.3rem;
 }
 h2, .content h2 {
     font-size: 18px;
     font-weight:normal;
     margin:0 0 10px 0;
+    padding:0 0 2px 0;
     border-bottom:2px solid #eee;
     max-width:100%;
   }

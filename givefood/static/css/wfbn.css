@@ -62,6 +62,9 @@
 .mainmap {
     height:600px !important;
 }
+address {
+    font-style:normal;
+}
 .pluscode {
     margin-bottom:10px;
 }

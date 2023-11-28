@@ -1,3 +1,13 @@
+@font-face {
+  font-family:'Soehne Buch';
+  src:url('/static/fonts/soehne-buch.woff2') format('woff2');
+  font-weight:400;
+}
+@font-face {
+  font-family:'Soehne Dreiviertelfett';
+  src:url('/static/fonts/soehne-dreiviertelfett.woff2') format('woff2');
+  font-weight:700;
+}
 .logo {
   height:40px;
   margin:10px 20px 10px 0;
