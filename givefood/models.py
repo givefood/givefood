@@ -1058,7 +1058,7 @@ class FoodbankChangeLine(models.Model):
         super(FoodbankChangeLine, self).save(*args, **kwargs)
     
     def __str__(self):
-        return "%s - %s" % (self.foodbank_change, self.name)
+        return "%s - %s" % (self.foodbank, self.item)
 
     class Meta:
         app_label = 'givefood'
