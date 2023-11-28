@@ -9,9 +9,12 @@
   font-weight:700;
 }
 .logo {
-  height:40px;
-  margin:10px 20px 10px 0;
+  height:35px;
+  margin:5px 10px 5px 0;
   max-height:unset !important;
+}
+.navbar-dropdown {
+  border-top:0;
 }
 .main {
   padding:0 10px;
