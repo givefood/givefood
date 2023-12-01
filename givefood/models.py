@@ -10,6 +10,7 @@ from django.core.validators import RegexValidator
 from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 from django.urls import reverse
+from requests import PreparedRequest
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
@@ -871,6 +872,12 @@ class FoodbankArticle(models.Model):
     published_date = models.DateTimeField(editable=False)
     title = models.CharField(max_length=250)
     url = models.CharField(max_length=250, unique=True)
+
+    def url_with_ref(self):
+        added_params = {"ref":"givefood.org.uk"}
+        req = PreparedRequest()
+        req.prepare_url(self.url, added_params)
+        return req.url
 
     def title_captialised(self):
         return capwords(self.title).replace("Uk","UK")
