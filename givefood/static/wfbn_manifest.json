@@ -17,14 +17,19 @@
 	],
 	"screenshots": [
 		{
-		  "src": "/static/img/wfbn_screenshot_1.png",
+		  "src": "/static/img/manifestscreens/index.png",
 		  "type": "image/png",
-		  "sizes": "1172x1844"
+		  "sizes": "1402x2356"
 		},
 		{
-		  "src": "/static/img/wfbn_screenshot_2.png",
-		  "type": "image/jpg",
-		  "sizes": "1174x1844"
+		  "src": "/static/img/manifestscreens/search.png",
+		  "type": "image/png",
+		  "sizes": "1402x2356"
+		},
+		{
+		  "src": "/static/img/manifestscreens/foodbank.png",
+		  "type": "image/png",
+		  "sizes": "1402x2356"
 		}
 	  ]
 }
