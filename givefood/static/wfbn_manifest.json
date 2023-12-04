@@ -1,7 +1,7 @@
 {
-	"name" : "What Food Banks Need",
-	"short_name" : "What Food Banks Need",
-	"description" : "Find what UK food banks near you requesting to have donated",
+	"name" : "Give Food",
+	"short_name" : "Give Food",
+	"description" : "Find a food bank near you, see what they need and how you can help by donating, volunteering or writing to your MP",
 	"start_url" : "https://www.givefood.org.uk/needs/",
 	"scope" : "/needs/",
 	"display" : "minimal-ui",
