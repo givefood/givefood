@@ -485,6 +485,13 @@ class FoodbankLocation(models.Model):
 
     def get_absolute_url(self):
         return "/admin/foodbank/%s/location/%s/edit/" % (self.foodbank.slug, self.slug)
+    
+    def clean(self):
+        if self.phone_number:
+            if self.phone_number == self.foodbank.phone_number:
+                raise ValidationError("Phone number can't be the same as the foodbank organisation's phone number")
+            if self.phone_number == self.foodbank.secondary_phone_number:
+                raise ValidationError("Phone number can't be the same as the foodbank organisation's secondary phone number")
 
     def schema_org(self, as_sub_property = False):
 
