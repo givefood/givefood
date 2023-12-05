@@ -69,25 +69,25 @@ h1 {
     text-align:center;
 }
 .trusselltrust {
-    height:50px;
+    height:60px;
 }
 .thetimes {
-    width:100px;
+    width:110px;
 }
 .nhs {
-    height:35px;
+    height:40px;
 }
 .scottishgov {
-    width:120px;
+    width:130px;
 }
 .cdrc {
-    height:50px;
+    height:60px;
 }
 .reach {
-    width:70px;
+    width:75px;
 }
 .ifan {
-    height:50px;
+    height:60px;
 }
 @media screen and (min-width: 769px) {
     .trusselltrust {
