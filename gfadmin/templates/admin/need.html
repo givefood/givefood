@@ -8,7 +8,6 @@
   <div class="columns">
 
     <div class="column">
-      <a href="{% url "admin:need_form" need.need_id %}" class="button is-link is-pulled-right">Edit</a>
       <dl>
         <dt>ID</dt>
         <dd>{{ need.need_id }}</dd>
@@ -18,14 +17,6 @@
             <a href="{% url 'admin:foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a>
           {% else %}
             Unknown
-          {% endif %}
-        </dd>
-        <dt>Published</dt>
-        <dd>
-          {% if need.published %}
-            <span style="color:green">✓</span>
-          {% else %}
-            <span style="color:red">x</span>
           {% endif %}
         </dd>
         <dt>Input Method</dt>
@@ -53,42 +44,59 @@
           <dt>URL</dt>
           <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
         {% endif %}
+        <dt>Food Bank Subs</dt>
+        <dd>{{ need.foodbank.number_subscribers }}</dd>
       </dl>
 
-      {% if need.foodbank %}
-        {% if need.change_text != "Nothing" %}
-          {% if need.change_text != "Unknown" %}
-            <h3>Notifications</h3>
-            <p>
-              {% if need.tweet_sent %}
-                <span style="color:green">✓</span> Sent <time datetime="{{ need.tweet_sent|date:'c' }}" title="{{ need.tweet_sent }}">{{ need.tweet_sent|timesince }} ago</time>
-              {% else %}
-                <span style="color:red">x</span> Not Sent
-              {% endif %}
-              <br> 
-              {{ need.foodbank.number_subscribers }} Subscriber{{ need.foodbank.number_subscribers|pluralize }}
-            </p>
+      <h3>Workflow</h3>
+      <table class="table is-fullwidth">
+        <tr>
+          <td>
+            {% if need.published %}
+              <span style="color:green">✓</span>
+            {% else %}
+              <span style="color:red">x</span>
+            {% endif %}
+          </td>
+          <td>Published</td>
+          <td>
+            <a href="{% url "admin:need_form" need.need_id %}" class="button is-link is-pulled-right is-small">Edit</a>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% if need.tweet_sent %}
+              <span style="color:green">✓</span>
+            {% else %}
+              <span style="color:red">x</span>
+            {% endif %}
+          </td>
+          <td>Notified</td>
+          <td>
             {% if need.published %}
               <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
-                <input type="submit" class="button is-warning" value="Send Notifications" onClick="this.form.submit(); this.disabled=true;">
+                <input type="submit" class="button is-warning is-pulled-right is-small" value="Send" onClick="this.form.submit(); this.disabled=true;">
                 {% csrf_token %}
               </form>
             {% endif %}
-          {% endif %}
-        {% endif %}
-      {% endif %}
-
-      <h3>Categorisation</h3>
-      {% if need.published %}
-        <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
-      {% endif %}
-      <p>
-        {% if need.is_categorised %}
-          <span style="color:green">✓</span> Done
-        {% else %}
-          <span style="color:red">x</span> Not Done
-        {% endif %}
-      </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {% if need.is_categorised %}
+              <span style="color:green">✓</span>
+            {% else %}
+              <span style="color:red">x</span>
+            {% endif %}
+          </td>
+          <td>Categorised</td>
+          <td>
+            {% if need.published %}
+              <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
+            {% endif %}
+          </td>
+        </tr>
+      </table>
       
       <h3>Notification Preview</h3>
       <ul>
