@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden
 from session_csrf import anonymous_csrf
+from givefood.const.cache_times import SECONDS_IN_DAY
 
 from givefood.models import Foodbank, Order, FoodbankChange
 from givefood.forms import FoodbankRegistrationForm
@@ -18,7 +19,7 @@ from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAG
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_DAY)
 def public_index(request):
     logos = [
         {
@@ -72,10 +73,12 @@ def public_index(request):
     return render(request, "public/index.html", template_vars)
 
 
+@cache_page(SECONDS_IN_DAY)
 def public_donate(request):
     return render(request, "public/donate.html")
 
 
+@cache_page(SECONDS_IN_DAY)
 def public_about_us(request):
     return render(request, "public/about_us.html")
 
