@@ -4,6 +4,13 @@ We've found a new list of items requested by {{ need.foodbank.full_name|safe }}.
 
 {{ need.foodbank.full_name|safe }} currently doesn't need anymore of these items: {% for item in need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.{% endif %}
 
+{% if need.foodbank.articles_month %}
+News from {{ need.foodbank.name }} Food Bank...
+{% for article in need.foodbank.articles_month %}
+{{ article.title_captialised }}
+{{ article.url }}
+{% endfor %}
+{% endif %}
 You can find more details at https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/
 
 🗺️ See other nearby food banks https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/nearby/
