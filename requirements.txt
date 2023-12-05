@@ -1,5 +1,5 @@
 git+https://gitlab.com/potato-oss/djangae/djangae.git#egg=djangae
-django>=3.2,<4.2
+django>=3.2,<5.1
 GoogleAppEngineCloudStorageClient==1.9.22.1
 google-python-cloud-debugger==4.1; sys_platform == 'linux'
 django-csp==3.7
