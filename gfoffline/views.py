@@ -141,7 +141,10 @@ def item_categorisation(line):
             }
         )
         logging.info("Doing AI cat")
-        ai_response = chatgpt(prompt)
+        ai_response = chatgpt(
+            prompt = prompt,
+            temperature = 0.1,
+        )
         if ai_response in ITEM_CATEGORIES:
             new_category = ai_response
         else:

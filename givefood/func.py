@@ -1062,12 +1062,12 @@ def filter_change_text(change_text, filter_list):
     return "\n".join(filtered_change_text_list)
 
 
-def chatgpt(prompt):
+def chatgpt(prompt, temperature):
 
     openai.api_key = get_cred("openai_api_key")
     response = openai.ChatCompletion.create(
         model = 'gpt-3.5-turbo',
-        temperature = 0.1,
+        temperature = temperature,
         messages = [
             {"role": "user", "content": prompt}
         ]
