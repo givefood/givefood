@@ -25,10 +25,7 @@
         <form action="{% url 'admin:need_categorise' need.need_id %}" method="post">
 
             {% for form in forms %}
-                {{ form|bulma }}
-                {% if not forloop.last %}
-                  <hr>
-                {% endif %}
+                {{ form|bulma }}<br>
             {% endfor %}
 
             <br><br><input type="submit" class="button is-link" value="Submit">
