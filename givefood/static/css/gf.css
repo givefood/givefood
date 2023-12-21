@@ -110,3 +110,8 @@ footer {
         transform:rotate(360deg);
     }
 }
+.sticky-toc {
+    position:sticky;
+    top:10px;
+    margin-top:3rem;
+}
