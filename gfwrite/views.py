@@ -117,6 +117,7 @@ def send(request, slug):
                 body = body,
                 cc = form.data["from_email"],
                 cc_name = form.data["from_name"],
+                bcc = "write-bcc@givefood.org.uk",
                 reply_to = form.data["from_email"],
                 reply_to_name = form.data["from_name"],
             )
