@@ -999,7 +999,7 @@ def post_to_email(post, extra = {}, header = None):
     send_email("mail@givefood.org.uk", "Food Bank Data Amendment", body_str)
 
 
-def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False):
+def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None):
 
     api_url = "https://api.postmarkapp.com/email"
     server_token = get_cred("postmark_server_token")
@@ -1019,6 +1019,7 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
         "From": "mail@givefood.org.uk",
         "To": to,
         "Cc": cc,
+        "Bcc": bcc,
         "Subject": subject,
         "TextBody": body,
         "HtmlBody": html_body,
