@@ -8,7 +8,7 @@ We've found a new list of items requested by {{ need.foodbank.full_name|safe }}.
 News from {{ need.foodbank.name }} Food Bank...
 {% for article in need.foodbank.articles_month %}
 {{ article.title_captialised }}
-{{ article.url }}
+{{ article.url_with_ref }}
 {% endfor %}
 {% endif %}
 You can find more details at https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/
