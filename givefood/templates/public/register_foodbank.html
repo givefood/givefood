@@ -37,9 +37,8 @@
 
         <p>We hope to get back to you in a couple of days, but sometimes it can take a little longer.</p>
 
-        <form method="post" action="">
-          {{ form|bulma }}
-
+        <form method="post" action="{% url 'public_reg_foodbank' %}">
+            {{ form|bulma }}
             <label class="label">Check you're a human</label>
             <div class="control">
               <div class="cf-turnstile" data-sitekey="0x4AAAAAAABxtIRWlPcEGwhj" data-action="register-foodbank"></div><br>
@@ -48,7 +47,7 @@
             {% csrf_token %}
           </form>
 
-        <p></p>
+        <br><br><br><br>
 
       {% endif %}
 
