@@ -115,3 +115,12 @@ footer {
     top:10px;
     margin-top:3rem;
 }
+.content figure {
+    margin:0 0 10px 0;
+}
+.content img {
+    border-radius:6px;
+}
+.content img.no-corner {
+    border-radius:0;
+}
