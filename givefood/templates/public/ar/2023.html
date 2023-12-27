@@ -1,0 +1,140 @@
+{% extends "public/page.html" %}
+
+{% block title %}2023 Give Food Annual Report{% endblock %}
+
+{% block head %}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@GiveFoodCharity">
+    <meta property="og:title" content="Give Food 2023 Annual Report">
+    <meta property="og:description" content="Find out what we've been doing in 2023">
+    <meta name="description" content="Find out what we've been doing in 2023">
+    <meta property="og:image" content="https://www.givefood.org.uk/static/img/ar/2023/sharing.png">
+{% endblock %}
+
+{% block body %}
+
+<div class="columns">
+
+    <div class="column is-4">
+        <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+
+  </div>
+
+  <div class="columns">
+    <div class="column is-one-third intro">
+
+        <h1>2023 Annual Report</h1>
+        <p>We're a UK charity that supports food banks around the country. We do this by using technology to identify what is needed at food banks, distributing this information and also making our own deliveries.</p>
+        <p>We run the largest and most complete public database of UK food banks and scrape their websites for what they are requesting in real time.</p>
+
+        <div class="sticky-toc content">
+            <ul class="is-size-6">
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#aim-review">Aim Review</a></li>
+                <li><a href="#data-code">Data &amp; Code</a></li>
+                <li><a href="#political-action">Political Action</a></li>
+                <li><a href="#categorisation">Categorisation</a></li>
+                <li><a href="#charity-reporting">Charity Reporting</a></li>
+                <li><a href="#aims-2023">Aims for 2023</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="column is-half content">
+
+        <h2 id="summary">Summary</h2>
+        <ul>
+            <li>Our food bank need data has been viewed by approximately three million people, including our busiest single day ever in December</li>
+            <li>Rebranded charity, refreshed website, rebuilt infrastructure</li>
+            <li>Used AI to categorise the 200,000 items requested by food banks</li>
+        </ul>
+
+        <h2 id="aim-review">Aim Review</h2>
+
+        <p>In our <a href="/2022/">2022 annual report</a> we set ourselves the following aims:</p>
+
+        <ul>
+            <li>Continue our winter food drive, supporting food banks during this difficult period</li>
+            <li>Rebrand of the charity. Refresh the website. Rewrite underlying tech</li>
+        </ul>
+
+        <h3>Continue our winter food drive, supporting food banks during this difficult period</h3>
+
+        <p>✅ In Q4 2022 and Q1 2023 we delivered 7.1 tonnes of food and supplies to food banks, containing 6.3m calories - enough for about 10,000 meals.</p>
+
+        <h3>Rebrand of the charity. Refresh the website. Rewrite underlying tech</h3>
+
+        <p>✅ We successfully rebranded the charity with a fresh logo kindly created by Jonny, Ben and Scott from <a href="https://wearebernadette.co">Bernadette</a>.</p>
+
+        <figure>
+            <img src="/static/img/ar/2023/logo.svg" alt="Give Food Logo" style="width:50%" loading="lazy" class="no-corner">
+        </figure>
+
+        <p>In conjunction with this we also simplified many pages, continuing our user data driven philosophy of a <a href="/2021/#review-redesign">straightforward, fast and clean UX</a>. A sitewide font change has aided readability.</p>
+
+        <figure>
+            <img src="/static/img/ar/2023/old-homepage.png" alt="Give Food Old Homepage" loading="lazy">
+            <figcaption>Old Homepage</figcaption>
+        </figure>
+        <br>
+        <figure>
+            <img src="/static/img/ar/2023/new-homepage.png" alt="Give Food New Homepage" loading="lazy">
+            <figcaption>New Homepage</figcaption>
+        </figure>
+
+        <p>Underneath the hood we rebuilt some of our infrastructure, making almost all page & API generation requests over 10% quicker, and some up to 50% faster. This change also enabled us to build new features this year.</p>
+
+        <p>Improved content delivery network caching and decaching now allows us to push new data up to three hours quicker than we did previously.</p>
+
+        <h2 id="data-code">Data &amp; Code</h2>
+
+        <p>We continue to maintain the UK's largest and most complete database of food banks covering 2,787 locations (up from 2,620 last year, 2,422 in 2021, and 2,329 in 2020).</p>
+
+        <p>We checked food bank websites around 4.3m times this year, and found around 55,000 items requested or in surplus. Our API responded to around 5.6 million requests for data in 2023.</p>
+
+        <p>Other data improvements include two complete audits of every location and we worked with the Salvation Army to improve how their outlets are displayed. Our data now includes <a href="https://maps.google.com/pluscodes/">Plus Codes</a> and <a href="https://developers.google.com/maps/documentation/places/web-service/place-id">Google Place IDs</a> for all food bank locations.</p>
+
+        <p>In May we were selected to have our website preserved by the <a href="https://www.webarchive.org.uk">UK Web Archive</a>.</p>
+        
+        <p>We also built a new Finder tool to identify food banks on Google Maps, Bing Maps and OpenStreetMap that are not in our database. This tool uses a gazetteer of every notable place name in the UK (around 74,000 of them) to compare other database's results to ours.</p>
+
+        <figure>
+            <img src="/static/img/ar/2023/finder.png" alt="Give Food Finder Interface" loading="lazy">
+            <figcaption>Give Food Finder Interface</figcaption>
+        </figure>
+
+        <h2 id="political-action">Political Action</h2>
+
+        <p>With our <a href="/write/">Write to your MP tool</a> constituents have contacted almost every MP in the country to ask what action they are taking with regard to food poverty.</p>
+        <p>We've recieved many reports of thoughtful responses from members of parliament, and useful feedbank from MP's offices directly.</p>
+
+        <h2 id="categorisation">Categorisation</h2>
+
+        <p>When we collect the text description of what food banks need, we don't alter this (other than capitalisation, and spelling correction) before republishing on our website and via our API. This can make some analysis difficult.</p>
+
+        <p>For instance one food bank might call an item they need “UHT Milk”, whilst another may ask for “Long Life Milk” or “Longlife Milk” or “UHT Milk (1 Litre)” or “Cartons Of Milk” etc. In fact there are 962 different ways we've recorded food banks asking for milk.</p>
+
+        <p>The solution is to put each of the 200,000 items we've found being requested into one of about 50 categories. To do this we successfully used AI for the first time - asking ChatGPT to put each item into one of the categories.</p>
+
+        <p>We'll look for interesting uses for for this categorised data in the new year.</p>
+
+        <h2 id="charity-reporting">Charity Reporting</h2>
+
+        <p>2023 was the third year we published our accounts. We did this in June and they are available on the <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/accounts-and-annual-returns ">Charity Commission website</a>.</p>
+
+        <h2 id="aims-2023">Aims for 2024</h2>
+
+        <ul>
+            <li>Build a new faster and more complete version of our API (version 3)</li>
+            <li>Release more and better dashboards, including using the new categorised data</li>
+        </ul>
+
+        <br><br><br><br>
+
+    </div>
+
+  </div>
+
+
+{% endblock %}
