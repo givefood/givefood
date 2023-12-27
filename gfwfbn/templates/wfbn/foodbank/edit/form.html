@@ -9,6 +9,7 @@
   <meta property="og:description" content="Find what {{ foodbank }} food bank is requesting to have donated">
   <meta name="description" content="Find what {{ foodbank }} food bank is requesting to have donated">
   <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_map' foodbank.slug %}">
+  <meta property="og:image:alt" content="Map of {{ foodbank.full_name }}">
   <link rel="manifest" href="/needs/manifest.json">
   <meta name="geo.placename" content="{{ foodbank }} Food Bank">
   <meta name="geo.position" content="{{ foodbank.latt_long }}">
