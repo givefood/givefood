@@ -9,7 +9,6 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden
 from session_csrf import anonymous_csrf
-from givefood.const.cache_times import SECONDS_IN_DAY
 
 from givefood.models import Foodbank, Order, FoodbankChange
 from givefood.forms import FoodbankRegistrationForm
@@ -17,9 +16,10 @@ from givefood.func import get_all_constituencies, get_image, item_class_count, g
 from givefood.func import send_email
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
+from givefood.const.cache_times import SECONDS_IN_WEEK
 
 
-@cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_WEEK)
 def public_index(request):
     logos = [
         {
@@ -73,12 +73,12 @@ def public_index(request):
     return render(request, "public/index.html", template_vars)
 
 
-@cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_WEEK)
 def public_donate(request):
     return render(request, "public/donate.html")
 
 
-@cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_WEEK)
 def public_about_us(request):
     return render(request, "public/about_us.html")
 
@@ -111,17 +111,17 @@ def public_reg_foodbank(request):
     return render(request, "public/register_foodbank.html", template_vars)
 
 
-@cache_page(60*120)
+@cache_page(SECONDS_IN_WEEK)
 def public_api(request):
     return render(request, "public/api.html")
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_WEEK)
 def public_annual_report_index(request):
     return render(request, "public/ar/index.html")
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_WEEK)
 def public_annual_report(request, year):
     article_template = "public/ar/%s.html" % (year)
     return render(request, article_template)
@@ -211,7 +211,7 @@ def public_gen_annual_report(request, year):
     return render(request, "public/annual_report.html", template_vars)
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_WEEK)
 def public_sitemap(request):
 
     foodbanks = get_all_open_foodbanks()
@@ -227,7 +227,7 @@ def public_sitemap(request):
     return render(request, "public/sitemap.xml", template_vars, content_type='text/xml')
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_WEEK)
 def public_sitemap_external(request):
 
     foodbanks = get_all_open_foodbanks()
@@ -239,12 +239,12 @@ def public_sitemap_external(request):
     return render(request, "public/sitemap_external.xml", template_vars, content_type='text/xml')
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_WEEK)
 def public_privacy(request):
     return render(request, "public/privacy.html")
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_WEEK)
 def public_product_image(request):
 
     delivery_provider = request.GET.get("delivery_provider")
