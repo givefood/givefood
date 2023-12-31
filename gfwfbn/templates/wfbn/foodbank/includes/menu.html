@@ -17,7 +17,7 @@
         {% if not foodbank.need_irrelevant %}
             <li><a {% if section == 'history' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_history' foodbank.slug %}">History</a></li>
         {% endif %}
-        <li><a {% if section == 'edit' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_edit' foodbank.slug %}" rel="nofollow">Edit</a></li>
+        <li><a {% if section == 'edit' %}class="is-active" {% endif %} href="{% if not location %}{% url 'wfbn:foodbank_edit' foodbank.slug %}{% else %}{% url 'wfbn:foodbank_edit_form_location' foodbank.slug 'locations' location.slug %}{% endif %}" rel="nofollow">Edit</a></li>
     </ul>
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
         <span aria-hidden="true"></span>

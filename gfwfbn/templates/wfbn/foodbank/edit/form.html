@@ -78,7 +78,7 @@
                 {% if locslug == "new" %}
                   <p>Add a new location for <em>{{ foodbank.full_name }}</em>.</p>
                 {% else %}
-                  <p>Sorry if we've got a location of <em>{{ foodbank.full_name }}</em> wrong. You can amend it below.</p>
+                  <p>Sorry if we've got this location of <em>{{ foodbank.full_name }}</em> wrong. <a href="{% url 'wfbn:foodbank_edit' foodbank.slug %}">Something different incorrect?</a></p>
                 {% endif %}
 
                 <div class="columns">
