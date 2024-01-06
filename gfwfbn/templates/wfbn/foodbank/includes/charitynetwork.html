@@ -4,7 +4,7 @@
         <p>
             {{ foodbank.full_name }} {% if foodbank.charity_just_foodbank %}is{% else %}operates under{% endif %} a charity registered in {% if foodbank.country == "England" or foodbank.country == "Wales" %}England &amp; Wales{% else %}{{ foodbank.country }}{% endif %} <a href="{{ foodbank.charity_register_url }}" id="charity_link">{{ foodbank.charity_number }}</a>
             {% if not foodbank.network == "Independent" %}
-                and is part of the <a href="{{ foodbank.network_url }}">{{ foodbank.network }}</a> network
+                and is part of the <a href="{{ foodbank.network_url }}?ref=givefood.org.uk">{{ foodbank.network }}</a> network
             {% endif %}
         </p>
 

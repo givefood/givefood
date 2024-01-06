@@ -218,9 +218,9 @@ class Foodbank(models.Model):
 
     def network_url(self):
         if self.network == "Trussell Trust":
-            return "https://www.trusselltrust.org"
+            return "https://www.trusselltrust.org/"
         if self.network == "IFAN":
-            return "https://www.foodaidnetwork.org.uk"
+            return "https://www.foodaidnetwork.org.uk/"
         return False
     
     def needs(self):
