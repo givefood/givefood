@@ -9,9 +9,10 @@ from django.urls import reverse
 from givefood.func import find_foodbanks, get_all_foodbanks, geocode
 from givefood.models import Foodbank, FoodbankChange
 from givefood.const.general import API_DOMAIN
+from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH
 
 
-@cache_page(60*60*48)
+@cache_page(SECONDS_IN_MONTH)
 def api_foodbanks(request):
 
     allowed_formats = [
@@ -108,7 +109,7 @@ def api_foodbanks(request):
 
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_DAY)
 def api_foodbank_search(request):
 
     latt_long = request.GET.get("lattlong")
@@ -155,7 +156,7 @@ def api_foodbank_search(request):
     return JsonResponse(response_list, safe=False)
 
 
-@cache_page(60*60*336)
+@cache_page(SECONDS_IN_MONTH)
 def api_foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -209,8 +210,7 @@ def api_foodbank(request, slug):
 
     return JsonResponse(foodbank_response, safe=False)
 
-
-@cache_page(60*60)
+@cache_page(SECONDS_IN_HOUR)
 def api_needs(request):
 
     allowed_limits = [100,1000]
@@ -239,7 +239,7 @@ def api_needs(request):
     return JsonResponse(response_list, safe=False)
 
 
-@cache_page(60*60*4)
+@cache_page(SECONDS_IN_DAY)
 def api_need(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
