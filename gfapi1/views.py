@@ -210,13 +210,6 @@ def api_foodbank(request, slug):
     return JsonResponse(foodbank_response, safe=False)
 
 
-@cache_page(60*60*2)
-def api_foodbank_key(request):
-    key = request.GET.get("key")
-    foodbank = get_object_or_404(Foodbank, pk = key)
-    return api_foodbank(request, foodbank.slug)
-
-
 @cache_page(60*60)
 def api_needs(request):
 
