@@ -8,17 +8,17 @@ from django.views.decorators.cache import cache_page
 from givefood.models import Foodbank, FoodbankChange, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
 from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_foodbanks, geocode, find_locations, is_uk
-from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
+from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
 
 DEFAULT_FORMAT = "json"
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_DAY)
 def index(request):
     return render(request, "index.html")
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_DAY)
 def docs(request):
 
     api_formats = ["JSON","XML","YAML"]
@@ -521,7 +521,7 @@ def location_search(request):
     return ApiResponse(response_list, "locations", format)
 
 
-@cache_page(60*30)
+@cache_page(SECONDS_IN_HOUR)
 def needs(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -551,7 +551,7 @@ def needs(request):
     return ApiResponse(response_list, "needs", format)
 
 
-@cache_page(60*60*12)
+@cache_page(SECONDS_IN_DAY)
 def need(request, id):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
