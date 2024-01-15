@@ -92,7 +92,7 @@
       <p><a href="/needs/">Use our tool</a> to find your local food banks, then donate, volunteer or take political action.</p>
     </div>
     <div class="column">
-      <h3>Food Banks</h3>
+      <h3>Food banks</h3>
       <p><a href="/register-foodbank/">Register a food bank</a> to be included in our database and allow users to find you and what you need.</p>
     </div>
     <div class="column">
@@ -113,24 +113,24 @@
 
   <div class="columns stats">
       <div class="column">
-        <h3>🏢&ensp;Food Bank Organisations</h3>
+        <h3>🏢&ensp;Food bank organisations</h3>
         <p>{{ stats.organisations|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>📍&ensp;Food Bank Locations</h3>
+        <h3>📍&ensp;Food bank locations</h3>
         <p>{{ stats.locations|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>🥫&ensp;Items Requested</h3>
+        <h3>🥫&ensp;Items requested</h3>
         <p>{{ stats.items|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>🥣&ensp;Meals Delivered</h3>
+        <h3>🥣&ensp;Meals delivered</h3>
         <p>{{ stats.meals|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>📅&ensp;Last Updated</h3>
-        <p>{{ stats.last_modified|timesince }} ago</p>
+        <h3>📅&ensp;Data last updated</h3>
+        <p>{{ stats.modified_hours_text }}</p>
       </div>
   </div>
 
