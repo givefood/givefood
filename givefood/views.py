@@ -8,18 +8,19 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden
+from django.db.models import Sum
 from session_csrf import anonymous_csrf
 
-from givefood.models import Foodbank, Order, FoodbankChange
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, Order, FoodbankChange
 from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_all_constituencies, get_image, item_class_count, get_all_open_foodbanks, get_all_open_locations, get_cred, validate_turnstile
 from givefood.func import send_email
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
-from givefood.const.cache_times import SECONDS_IN_WEEK
+from givefood.const.cache_times import SECONDS_IN_MINUTE, SECONDS_IN_WEEK
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_MINUTE * 5)
 def public_index(request):
     logos = [
         {
@@ -65,10 +66,20 @@ def public_index(request):
             "format":"png",
         }
     ]
+
+    stats = {
+        "organisations":Foodbank.objects.count(),
+        "locations":FoodbankLocation.objects.count(),
+        "items":FoodbankChangeLine.objects.count(),
+        "meals":int(Order.objects.aggregate(Sum("calories"))["calories__sum"]/500),
+        "last_modified":Foodbank.objects.latest("modified").modified
+    }
     gmap_key = get_cred("gmap_key")
+
     template_vars = {
         "gmap_key":gmap_key,
         "logos":logos,
+        "stats":stats,
     }
     return render(request, "public/index.html", template_vars)
 

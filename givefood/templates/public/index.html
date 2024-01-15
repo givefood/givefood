@@ -105,6 +105,39 @@
     </div>
   </div>
 
+  <div class="columns">
+    <div class="column">
+      <h2>Realtime statistics</h2>
+    </div>
+  </div>
+
+  <div class="columns stats">
+      <div class="column">
+        <h3>🏢&ensp;Food Bank Organisations</h3>
+        <p>{{ stats.organisations|intcomma }}</p>
+      </div>
+      <div class="column">
+        <h3>📍&ensp;Food Bank Locations</h3>
+        <p>{{ stats.locations|intcomma }}</p>
+      </div>
+      <div class="column">
+        <h3>🥫&ensp;Items Requested</h3>
+        <p>{{ stats.items|intcomma }}</p>
+      </div>
+      <div class="column">
+        <h3>🥣&ensp;Meals Delivered</h3>
+        <p>{{ stats.meals|intcomma }}</p>
+      </div>
+      <div class="column">
+        <h3>📅&ensp;Last Updated</h3>
+        <p>{{ stats.last_modified|timesince }} ago</p>
+      </div>
+  </div>
+
+</div>
+
+<div class="container">
+
   <div class="columns is-centered">
     <div class="column is-three-quarters">
       <p class="annualreportteaser">
