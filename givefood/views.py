@@ -77,7 +77,7 @@ def public_index(request):
 
     stats = {
         "organisations":Foodbank.objects.count(),
-        "locations":FoodbankLocation.objects.count(),
+        "locations":Foodbank.objects.count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.count(),
         "items":FoodbankChangeLine.objects.count(),
         "meals":int(Order.objects.aggregate(Sum("calories"))["calories__sum"]/500),
         "modified_hours":modified_hours,
