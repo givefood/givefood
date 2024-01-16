@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^privacy/$', givefood.views.public_privacy, name="public_privacy"),
     url(r'^about-us/$', givefood.views.public_about_us, name="public_about_us"),
     url(r'^donate/$', givefood.views.public_donate, name="public_donate"),
+    url(r'^frag/(?P<frag>[-\w]+)/$', givefood.views.public_frag, name="public_frag"),
 
     # KINDA PUBLIC
     url(r'^generate-(?P<year>(2019|2020|2021))/$', givefood.views.public_gen_annual_report, name="public_gen_annual_report"),

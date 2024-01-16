@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden
 from django.db.models import Sum
+from django.utils.timesince import timesince
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, Order, FoodbankChange
@@ -17,10 +18,10 @@ from givefood.func import get_all_constituencies, get_image, item_class_count, g
 from givefood.func import send_email
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
-from givefood.const.cache_times import SECONDS_IN_HALF_HOUR, SECONDS_IN_WEEK
+from givefood.const.cache_times import SECONDS_IN_MINUTE, SECONDS_IN_DAY, SECONDS_IN_WEEK
 
 
-@cache_page(SECONDS_IN_HALF_HOUR)
+@cache_page(SECONDS_IN_DAY)
 def public_index(request):
     logos = [
         {
@@ -67,21 +68,11 @@ def public_index(request):
         }
     ]
 
-    modified_hours  = (datetime.now(timezone.utc) - Foodbank.objects.latest("modified").modified).seconds/3600
-    if modified_hours < 1:
-        modified_hours_text = "Less than an hour ago"
-    elif modified_hours < 2:
-        modified_hours_text = "About an hour ago"
-    else:
-        modified_hours_text = "%s hours ago" % (int(modified_hours))
-
     stats = {
         "organisations":Foodbank.objects.count(),
         "locations":Foodbank.objects.count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.count(),
         "items":FoodbankChangeLine.objects.count(),
         "meals":int(Order.objects.aggregate(Sum("calories"))["calories__sum"]/500),
-        "modified_hours":modified_hours,
-        "modified_hours_text":modified_hours_text,
     }
     gmap_key = get_cred("gmap_key")
 
@@ -274,6 +265,18 @@ def public_product_image(request):
 
     return redirect(url)
 
+
+@cache_page(SECONDS_IN_MINUTE)
+def public_frag(request, frag):
+
+    if frag == "lastupdated":
+        timesince_text = timesince(Foodbank.objects.latest("modified").modified)
+        if timesince_text == "0 minutes":
+            frag_text = "Under a minute ago"
+        else:
+            frag_text = "%s ago" % (timesince_text)
+    return HttpResponse(frag_text)
+        
 
 @csrf_exempt
 def distill_webhook(request):
