@@ -87,9 +87,9 @@ class OrderForm(ModelForm):
                 ).order_by('-created')
                 self.fields['need'].queryset = queryset
         if self["foodbank"].value():
-            self.fields['need'].queryset = FoodbankChange.objects.filter(foodbank=self["foodbank"].value()).order_by('-created')[:10]
+            self.fields['need'].queryset = FoodbankChange.objects.filter(foodbank=self["foodbank"].value()).order_by('-created')
         else:
-            self.fields['need'].queryset = FoodbankChange.objects.all().order_by('-created')[:100]
+            self.fields['need'].queryset = FoodbankChange.objects.all().order_by('-created')
 
 
 class OrderItemForm(ModelForm):
