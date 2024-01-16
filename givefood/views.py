@@ -271,7 +271,7 @@ def public_frag(request, frag):
 
     if frag == "lastupdated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)
-        if timesince_text == "0 minutes":
+        if timesince_text == "0 minutes":
             frag_text = "Under a minute ago"
         else:
             frag_text = "%s ago" % (timesince_text)
