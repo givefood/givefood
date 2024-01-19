@@ -68,6 +68,13 @@
               {{ foodbank.address|linebreaksbr }}<br>
               {{ foodbank.postcode }}
             </address>
+            
+            {% if foodbank.delivery_address %}
+              <a href="{% url 'wfbn:foodbank' foodbank.slug %}">Delivery</a>
+              <address>
+                {{ foodbank.delivery_address|linebreaksbr }}
+              </address>
+            {% endif %}
 
             {% for location in foodbank.locations %}
                 <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location.name }}</a>
