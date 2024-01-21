@@ -1,6 +1,6 @@
 Thanks for confirmed your email address.
 
-We'll send you a list of items being requested whenever Norwood & Brixton food bank updates them.  In the meantime, here are some useful links...
+We'll send you a list of items being requested whenever {{ foodbank.full_name }} updates them updates them.  In the meantime, here are some useful links...
 
 🔗 You can find more details about the food bank https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/
 🗺️ See other nearby food banks https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/nearby/
