@@ -25,6 +25,7 @@ urlpatterns = (
     url(r'^at/(?P<slug>[-\w]+)/subscribe/$', foodbank_subscribe, name="foodbank_subscribe"),
     url(r'^at/(?P<slug>[-\w]+)/subscribe/sample/$', foodbank_subscribe_sample, name="foodbank_subscribe_sample"),
     url(r'^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/$', updates, name="updates"),
+    url(r'^at/(?P<slug>[-\w]+)/hit/$', foodbank_hit, name="foodbank_hit"),
 
     # Edit
     url(r'^at/(?P<slug>[-\w]+)/edit/$', foodbank_edit, name="foodbank_edit"),

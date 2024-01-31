@@ -1,10 +1,10 @@
-import requests
+import requests, datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound
 from django.db import IntegrityError
 from django.template.loader import render_to_string
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page, never_cache
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +14,7 @@ from django import forms
 from session_csrf import anonymous_csrf
 from requests.models import PreparedRequest
 
-from givefood.models import Foodbank, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
+from givefood.models import Foodbank, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
 from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
@@ -451,6 +451,22 @@ def updates(request, slug, action):
     }
     return render(request, "wfbn/foodbank/updates.html", template_vars)
 
+
+@never_cache
+def foodbank_hit(request, slug):
+    
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    day = datetime.datetime.today()
+
+    try:
+        hit = FoodbankHit.objects.get(foodbank = foodbank, day = day)
+        hit.hits += 1
+        hit.save()
+    except FoodbankHit.DoesNotExist:
+        hit = FoodbankHit(foodbank = foodbank, day = day, hits = 1)
+        hit.save()
+    
+    return HttpResponse("")
 
 
 def foodbank_edit(request, slug):

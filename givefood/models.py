@@ -1342,6 +1342,13 @@ class ConstituencySubscriber(models.Model):
         app_label = 'givefood'
 
 
+class FoodbankHit(models.Model):
+
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
+    day = models.DateField()
+    hits = models.PositiveIntegerField(default=0)
+
+
 class Place(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
