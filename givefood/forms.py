@@ -8,7 +8,7 @@ from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 class FoodbankRegistrationForm(forms.Form):
     name = forms.CharField(max_length=100, help_text="E.g. 'Brixton', 'Sid Valley', or 'One Can Trust'")
-    address = forms.CharField(widget=forms.Textarea, help_text="Please include your postcode")
+    address = forms.CharField(widget=forms.Textarea)
     postcode = forms.CharField(max_length=10)
     country = forms.ChoiceField(choices=COUNTRIES_CHOICES)
     network = forms.ChoiceField(choices=FOODBANK_NETWORK_CHOICES)
