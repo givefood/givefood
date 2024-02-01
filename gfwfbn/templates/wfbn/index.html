@@ -54,6 +54,12 @@
                   <li><a href="{% url 'wfbn:foodbank' foodbank.foodbank_name_slug %}">{{ foodbank.foodbank_name }}</a></li>
               {% endfor %}
           </ul>
+          <h2>Most viewed this week</h2>
+          <ul class="most-viewed">
+              {% for foodbank in most_viewed %}
+                  <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
+              {% endfor %}
+          </ul>
           
           {% url 'wfbn:index' as share_url %}
           {% include "wfbn/foodbank/includes/share_btns.html" with share_url=share_url %}

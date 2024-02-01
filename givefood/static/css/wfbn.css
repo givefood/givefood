@@ -28,10 +28,13 @@
 #addressform {
     margin-bottom:1rem;
 }
-.recently-updated {
+.recently-updated, .most-viewed {
     column-count:2;
     column-gap:10px;
     margin-bottom:2rem;
+}
+.recently-updated {
+    margin-bottom:1rem;
 }
 .needs tr:last-child td {
     border-bottom:0;

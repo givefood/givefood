@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django import forms
+from django.db.models import Sum
 
 from session_csrf import anonymous_csrf
 from requests.models import PreparedRequest
@@ -20,7 +21,7 @@ from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def index(request):
 
     # Handle old misspelt URL
@@ -33,6 +34,7 @@ def index(request):
     
     location_results = []
     recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
+    most_viewed = FoodbankHit.objects.raw("SELECT 1 as id, (select name from givefood_foodbank where id = foodbank_id) as name, (select slug from givefood_foodbank where id = foodbank_id) as slug, SUM(hits) as sumhits FROM givefood_foodbankhit WHERE day >= CURRENT_DATE - 7 and day <= CURRENT_DATE GROUP BY foodbank_id ORDER BY sumhits DESC LIMIT 10")
 
     if address and not lat_lng:
         lat_lng = geocode(address)
@@ -52,6 +54,7 @@ def index(request):
         "lat_lng":lat_lng,
         "gmap_key":gmap_key,
         "recently_updated":recently_updated,
+        "most_viewed":most_viewed,
         "location_results":location_results,
     }
     return render(request, "wfbn/index.html", template_vars)
