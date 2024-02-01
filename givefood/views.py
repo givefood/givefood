@@ -171,17 +171,6 @@ def public_privacy(request):
     return render(request, "public/privacy.html")
 
 
-@cache_page(SECONDS_IN_WEEK)
-def public_product_image(request):
-
-    delivery_provider = request.GET.get("delivery_provider")
-    product_name = request.GET.get("product_name")
-
-    url = get_image(delivery_provider,product_name)
-
-    return redirect(url)
-
-
 @cache_page(SECONDS_IN_MINUTE)
 def public_frag(request, frag):
 
