@@ -124,3 +124,6 @@ footer {
 .content img.no-corner {
     border-radius:0;
 }
+.help {
+    font-size:14px;
+}
