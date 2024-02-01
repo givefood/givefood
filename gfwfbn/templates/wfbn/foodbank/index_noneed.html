@@ -36,14 +36,14 @@
       <div class="columns">
 
         <div class="column is-4">
-          <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
         </div>
 
       </div>
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
-                <li><a href="{% url 'public_index' %}">Home</a></li>
+                <li><a href="{% url 'index' %}">Home</a></li>
                 <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
                 <li class="is-active"><a href="#" aria-current="page">{{ foodbank.full_name }}</a></li>
             </ul>

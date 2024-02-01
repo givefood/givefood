@@ -22,7 +22,7 @@ from givefood.const.cache_times import SECONDS_IN_MINUTE, SECONDS_IN_HOUR, SECON
 
 
 @cache_page(SECONDS_IN_HOUR)
-def public_index(request):
+def index(request):
     logos = [
         {
             "name":"Trussell Trust",
@@ -85,17 +85,18 @@ def public_index(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def public_donate(request):
-    return render(request, "public/donate.html")
+def annual_report_index(request):
+    return render(request, "public/ar/index.html")
 
 
 @cache_page(SECONDS_IN_WEEK)
-def public_about_us(request):
-    return render(request, "public/about_us.html")
+def annual_report(request, year):
+    article_template = "public/ar/%s.html" % (year)
+    return render(request, article_template)
 
 
 @anonymous_csrf
-def public_reg_foodbank(request):
+def register_foodbank(request):
 
     done = request.GET.get("thanks", False)
 
@@ -111,7 +112,8 @@ def public_reg_foodbank(request):
                 subject = "New Food Bank Registration - %s" % (request.POST.get("name")),
                 body = email_body,
             )
-            return redirect(reverse('public_reg_foodbank') + '?thanks=yes')
+            completed_url = "%s%s" % (reverse("register_foodbank"),"?thanks=1")
+            return redirect(completed_url)
     else:
         form = FoodbankRegistrationForm()
 
@@ -123,23 +125,22 @@ def public_reg_foodbank(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def public_api(request):
+def donate(request):
+    return render(request, "public/donate.html")
+
+
+@cache_page(SECONDS_IN_WEEK)
+def donate(request):
+    return render(request, "public/about_us.html")
+
+
+@cache_page(SECONDS_IN_WEEK)
+def api(request):
     return render(request, "public/api.html")
 
 
 @cache_page(SECONDS_IN_WEEK)
-def public_annual_report_index(request):
-    return render(request, "public/ar/index.html")
-
-
-@cache_page(SECONDS_IN_WEEK)
-def public_annual_report(request, year):
-    article_template = "public/ar/%s.html" % (year)
-    return render(request, article_template)
-
-
-@cache_page(SECONDS_IN_WEEK)
-def public_sitemap(request):
+def sitemap(request):
 
     foodbanks = get_all_open_foodbanks()
     constituencies = get_all_constituencies()
@@ -155,7 +156,7 @@ def public_sitemap(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def public_sitemap_external(request):
+def sitemap_external(request):
 
     foodbanks = get_all_open_foodbanks()
 
@@ -167,12 +168,12 @@ def public_sitemap_external(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def public_privacy(request):
+def privacy(request):
     return render(request, "public/privacy.html")
 
 
 @cache_page(SECONDS_IN_MINUTE)
-def public_frag(request, frag):
+def frag(request, frag):
 
     if frag == "lastupdated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)

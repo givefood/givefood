@@ -6,7 +6,7 @@
 
     <div class="columns">
       <div class="column">
-          <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
       </div>
     </div>
 
@@ -14,7 +14,7 @@
         <div class="column">
             <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
-                <li><a href="{% url 'public_index' %}">Give Food</a></li>
+                <li><a href="{% url 'index' %}">Give Food</a></li>
                 <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
                 <li class="is-active"><a href="{% url 'dash:foodbanks_found' %}" aria-current="page">Food Banks Found</a></li>
             </ul>

@@ -7,7 +7,7 @@
 
   <div class="columns is-centered">
     <div class="column is-half">
-    <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
     </div>
   </div>
 
@@ -37,7 +37,7 @@
 
         <p>We hope to get back to you in a couple of days, but sometimes it can take a little longer.</p>
 
-        <form method="post" action="{% url 'public_reg_foodbank' %}">
+        <form method="post" action="{% url 'register_foodbank' %}">
             {{ form|bulma }}
             <label class="label">Check you're a human</label>
             <div class="control">

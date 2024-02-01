@@ -18,7 +18,7 @@
     <div class="columns">
 
       <div class="column is-4">
-          <a href="/" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
       </div>
   
     </div>
@@ -885,7 +885,7 @@
   </div>
   <footer class="footer">
     <div class="content has-text-centered">
-      <p><a href="{% url "public_index" %}">Give Food</a> is a registered charity in England &amp; Wales <a rel="self" href="https://beta.charitycommission.gov.uk/charity-details/?regId=1188192">1188192</a></p>
+      <p><a href="{% url "index" %}">Give Food</a> is a registered charity in England &amp; Wales <a rel="self" href="https://beta.charitycommission.gov.uk/charity-details/?regId=1188192">1188192</a></p>
     </div>
   </footer>
 

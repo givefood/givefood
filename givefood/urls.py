@@ -15,20 +15,20 @@ urlpatterns = [
     url(r'^_ah/', include('djangae.urls')),
 
     # PUBLIC
-    url(r'^$', givefood.views.public_index, name="public_index"),
+    url(r'^$', givefood.views.index, name="index"),
 
-    url(r'^(?P<year>(2019|2020|2021|2022|2023))/$', givefood.views.public_annual_report, name="public_annual_report"),
-    url(r'^annual-reports/$', givefood.views.public_annual_report_index, name="public_annual_report_index"),
-
-    url(r'^register-foodbank/$', givefood.views.public_reg_foodbank, name="public_reg_foodbank"),
-
-    url(r'^sitemap.xml$', givefood.views.public_sitemap, name="public_sitemap"),
-    url(r'^sitemap_external.xml$', givefood.views.public_sitemap_external, name="public_sitemap_external"),
+    url(r'^annual-reports/$', givefood.views.annual_report_index, name="annual_report_index"),
+    url(r'^(?P<year>(2019|2020|2021|2022|2023))/$', givefood.views.annual_report, name="annual_report"),
     
-    url(r'^privacy/$', givefood.views.public_privacy, name="public_privacy"),
-    url(r'^about-us/$', givefood.views.public_about_us, name="public_about_us"),
-    url(r'^donate/$', givefood.views.public_donate, name="public_donate"),
-    url(r'^frag/(?P<frag>[-\w]+)/$', givefood.views.public_frag, name="public_frag"),
+    url(r'^register-foodbank/$', givefood.views.register_foodbank, name="register_foodbank"),
+
+    url(r'^sitemap.xml$', givefood.views.sitemap, name="sitemap"),
+    url(r'^sitemap_external.xml$', givefood.views.sitemap_external, name="sitemap_external"),
+    
+    url(r'^privacy/$', givefood.views.privacy, name="privacy"),
+    url(r'^about-us/$', givefood.views.donate, name="donate"),
+    url(r'^donate/$', givefood.views.donate, name="donate"),
+    url(r'^frag/(?P<frag>[-\w]+)/$', givefood.views.frag, name="frag"),
 
     # KINDA PUBLIC
     url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
