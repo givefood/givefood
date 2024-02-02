@@ -183,6 +183,9 @@ def frag(request, frag):
         else:
             frag_text = "%s ago" % (timesince_text)
     
+    if not frag_text:
+        return HttpResponseForbidden()
+
     return HttpResponse(frag_text)
         
 
