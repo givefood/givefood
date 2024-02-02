@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^sitemap_external.xml$', givefood.views.sitemap_external, name="sitemap_external"),
     
     url(r'^privacy/$', givefood.views.privacy, name="privacy"),
-    url(r'^about-us/$', givefood.views.donate, name="donate"),
+    url(r'^about-us/$', givefood.views.about_us, name="about_us"),
     url(r'^donate/$', givefood.views.donate, name="donate"),
     url(r'^frag/(?P<frag>[-\w]+)/$', givefood.views.frag, name="frag"),
 

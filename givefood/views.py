@@ -130,7 +130,7 @@ def donate(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def donate(request):
+def about_us(request):
     return render(request, "public/about_us.html")
 
 
