@@ -175,12 +175,14 @@ def privacy(request):
 @cache_page(SECONDS_IN_MINUTE)
 def frag(request, frag):
 
-    if frag == "lastupdated":
+    # last_updated
+    if frag == "last_updated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)
         if timesince_text == "0 minutes":
             frag_text = "Under a minute ago"
         else:
             frag_text = "%s ago" % (timesince_text)
+    
     return HttpResponse(frag_text)
         
 

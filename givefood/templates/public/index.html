@@ -32,9 +32,9 @@
       <p>We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.</p>
 
       <div class="find-foodbank">
-        <p>Find out if there is a <a href="/needs/">food bank nearby</a> that you can help...</p>
+        <p>Find out if there is a <a href="{% url 'wfbn:index' %}">food bank nearby</a> that you can help...</p>
         <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-is-homepage="true">Use my location</a>
-        <form id="addressform" action="/needs/" method="GET" data-is-homepage="true">
+        <form id="addressform" action="{% url 'wfbn:index' %}" method="GET" data-is-homepage="true">
           <label id="address_label" for="address_field" class="label">Postcode or town</label>
           <input id="address_field" type="text" name="address" class="input" placeholder="e.g. EX4 6PX or Sheffield" required>
           <input id="lat_lng_field" type="hidden" name="lat_lng">
@@ -44,9 +44,9 @@
 
       <nav class="primary">
         <ul>
-          <li><a href="/write/">Write to your MP</a></li>
-          <li><a href="/donate/">Donate</a></li>
-          <li><a href="/about-us/">About us</a></li>
+          <li><a href="{% url 'write:index' %}">Write to your MP</a></li>
+          <li><a href="{% url 'donate' %}">Donate</a></li>
+          <li><a href="{% url 'about_us' %}">About us</a></li>
         </ul>
       </nav>
       
@@ -89,11 +89,11 @@
   <div class="columns how-help-cat">
     <div class="column">
       <h3>Public</h3>
-      <p><a href="/needs/">Use our tool</a> to find your local food banks, then donate, volunteer or take political action.</p>
+      <p><a href="{% url 'wfbn:index' %}">Use our tool</a> to find your local food banks, then donate, volunteer or take political action.</p>
     </div>
     <div class="column">
       <h3>Food banks</h3>
-      <p><a href="/register-foodbank/">Register a food bank</a> to be included in our database and allow users to find you and what you need.</p>
+      <p><a href="{% url 'register_foodbank' %}">Register a food bank</a> to be included in our database and allow users to find you and what you need.</p>
     </div>
     <div class="column">
       <h3>Media</h3>
@@ -130,7 +130,7 @@
       </div>
       <div class="column">
         <h3>📅&ensp;Data last updated</h3>
-        <p data-include="/frag/lastupdated/"></p>
+        <p data-include="{% url 'frag' 'last_updated' %}"></p>
       </div>
   </div>
 
@@ -141,7 +141,7 @@
   <div class="columns is-centered">
     <div class="column is-three-quarters">
       <p class="annualreportteaser">
-        Read our <a href="/2023/">2023 annual report</a>
+        Read our <a href="{% url 'annual_report' 2023 %}">2023 annual report</a>
       </p>
     </div>
   </div>
@@ -152,10 +152,10 @@
 
         <nav class="secondary">
           <ul>
-            <li><a href="/register-foodbank/">Register a food bank</a></li>
-            <li><a href="/dashboard/">Dashboards</a></li>
+            <li><a href="{% url 'register_foodbank' %}">Register a food bank</a></li>
+            <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
             <li><a href="/api/">API</a></li>
-            <li><a href="/annual-reports/">Annual reports</a></li>
+            <li><a href="{% url 'annual_report_index' %}">Annual reports</a></li>
           </ul>
         </nav>
 
