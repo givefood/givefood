@@ -142,12 +142,24 @@ def api(request):
 @cache_page(SECONDS_IN_WEEK)
 def sitemap(request):
 
+    url_names = [
+        "index",
+        "about_us",
+        "donate",
+        "register_foodbank",
+        "annual_report_index",
+        "privacy",
+        "wfbn:index",
+        "write:index",
+        "dash:index",
+    ]
     foodbanks = get_all_open_foodbanks()
     constituencies = get_all_constituencies()
     locations = get_all_open_locations()
 
     template_vars = {
         "domain":SITE_DOMAIN,
+        "url_names":url_names,
         "foodbanks":foodbanks,
         "constituencies":constituencies,
         "locations":locations,
