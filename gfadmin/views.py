@@ -56,12 +56,14 @@ def search_results(request):
     foodbanks = Foodbank.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))
     locations = FoodbankLocation.objects.filter(Q(name__icontains=query) | Q(address__icontains=query))
     constituencies = ParliamentaryConstituency.objects.filter(Q(name__icontains=query) | Q(mp__icontains=query))
+    needs = FoodbankChange.objects.filter(change_text__icontains=query).order_by("-created")[:100]
     
     template_vars = {
         "query":query,
         "foodbanks":foodbanks,
         "locations":locations,
         "constituencies":constituencies,
+        "needs":needs,
         "section":"search",
     }
     return render(request, "admin/search.html", template_vars)

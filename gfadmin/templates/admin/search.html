@@ -35,6 +35,16 @@
 
         </div>
 
+        <div class="column">
+
+            <h2>Needs</h2>
+
+            {% for need in needs %}
+                <a href="{% url 'admin:need' need.need_id %}">{{ need.need_id }}</a> {{ need.foodbank_name }}, {{ need.modified }}<br>
+            {% endfor %}
+
+        </div>
+
     </div>
 
 {% endblock %}
