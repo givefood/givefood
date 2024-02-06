@@ -102,6 +102,9 @@ del {
 footer {
     margin-top:3rem;
 }
+.lastupdated {
+    text-transform:lowercase;
+}
 @keyframes spin {
     from {
         transform:rotate(0deg);
