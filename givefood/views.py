@@ -18,7 +18,7 @@ from givefood.func import get_all_constituencies, get_image, item_class_count, g
 from givefood.func import send_email
 from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
 from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
-from givefood.const.cache_times import SECONDS_IN_MINUTE, SECONDS_IN_HOUR, SECONDS_IN_WEEK
+from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
 
 
 @cache_page(SECONDS_IN_HOUR)
@@ -184,7 +184,7 @@ def privacy(request):
     return render(request, "public/privacy.html")
 
 
-@cache_page(SECONDS_IN_MINUTE)
+@cache_page(SECONDS_IN_TWO_MINUTES)
 def frag(request, frag):
 
     # last_updated
