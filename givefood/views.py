@@ -1,4 +1,3 @@
-from datetime import date
 import json
 import requests
 
@@ -14,10 +13,9 @@ from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, Order, FoodbankChange
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_all_constituencies, get_image, item_class_count, get_all_open_foodbanks, get_all_open_locations, get_cred, validate_turnstile
+from givefood.func import get_all_constituencies, get_all_open_foodbanks, get_all_open_locations, get_cred, validate_turnstile
 from givefood.func import send_email
-from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
-from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
+from givefood.const.general import SITE_DOMAIN
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
 
 
