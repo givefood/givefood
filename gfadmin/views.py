@@ -421,6 +421,14 @@ def foodbank_rfi(request, slug):
     return redirect("admin:foodbank", slug = foodbank.slug)
 
 
+@require_POST
+def foodbank_delete(request, slug):
+    
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank.delete()
+    return redirect(reverse("admin:index"))
+
+
 def foodbank_politics_form(request, slug = None):
 
     if slug:

@@ -42,6 +42,7 @@ urlpatterns = (
     url(r'^foodbank/(?P<slug>[-\w]+)/politics/edit/$', foodbank_politics_form, name="foodbank_politics_edit"),
     url(r'^foodbank/(?P<slug>[-\w]+)/crawl/$', foodbank_crawl, name="foodbank_crawl"),
     url(r'^foodbank/(?P<slug>[-\w]+)/sendrfi/$', foodbank_rfi, name="foodbank_rfi"),
+    url(r'^foodbank/(?P<slug>[-\w]+)/delete/$', foodbank_delete, name="foodbank_delete"),
 
     url(r'^need/new/$', need_form, name="newneed"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/$', need, name="need"),

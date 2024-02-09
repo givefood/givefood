@@ -334,6 +334,18 @@ class Foodbank(models.Model):
     class Meta:
         app_label = 'givefood'
 
+    def delete(self, *args, **kwargs):
+        
+        FoodbankHit.objects.filter(foodbank = self).delete()
+        FoodbankChangeLine.objects.filter(foodbank = self).delete()
+        FoodbankChange.objects.filter(foodbank = self).delete()
+        FoodbankLocation.objects.filter(foodbank = self).delete()
+        FoodbankArticle.objects.filter(foodbank = self).delete()
+        FoodbankSubscriber.objects.filter(foodbank = self).delete()
+        
+        super(Foodbank, self).delete(*args, **kwargs)
+
+
     def save(self, do_decache=True, do_geoupdate=True, *args, **kwargs):
 
         logging.info("Saving food bank %s" % self.name)
