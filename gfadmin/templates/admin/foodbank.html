@@ -223,7 +223,7 @@
               <dd>{% if foodbank.plus_code_global %}{{ foodbank.plus_code_global }}{% else %}None{% endif %}</dd>
             </dl>
           </td>
-          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
+          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-small is-pulled-right">Edit</a></td>
         </tr>
         {% if foodbank.delivery_address %}
           <tr>
