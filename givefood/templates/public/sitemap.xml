@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-	<url><loc>{{ domain }}/</loc></url>
-	<url><loc>{{ domain }}/annual-reports/</loc></url>
-	<url><loc>{{ domain }}/2019/</loc></url>
-	<url><loc>{{ domain }}/2020/</loc></url>
-	<url><loc>{{ domain }}/2021/</loc></url>
-	<url><loc>{{ domain }}/2022/</loc></url>
-	<url><loc>{{ domain }}/2023/</loc></url>
-	<url><loc>{{ domain }}/api/</loc></url>
-	<url><loc>{{ domain }}/api/docs/</loc></url>
-	<url><loc>{{ domain }}/needs/</loc></url>
-	<url><loc>{{ domain }}/dashboard/</loc></url>
-	<url><loc>{{ domain }}/write/</loc></url>
-	<url><loc>{{ domain }}/needs/in/constituencies/</loc></url>
-	<url><loc>{{ domain }}/donate/</loc></url>
+	{% for url_name in url_names %}
+		<url><loc>{{ domain }}{% url url_name %}</loc></url>
+	{% endfor %}
 	{% for foodbank in foodbanks %}
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank' foodbank.slug %}</loc></url>
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_nearby' foodbank.slug %}</loc></url>

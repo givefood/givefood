@@ -188,9 +188,14 @@
       </dl>
 
       <h3>⚠️ Danger Zone</h3>
-
       <form action="{% url 'admin:foodbank_rfi' foodbank.slug %}" method="post">
         <input type="submit" class="button is-danger" value="Send RFI" onclick="return confirm('Send RFI to {{ foodbank.name}}?')">
+        {% csrf_token %}
+      </form>
+
+      <h3>REAL Danger Zone</h3>
+      <form action="{% url 'admin:foodbank_delete' foodbank.slug %}" method="post">
+        <input type="submit" class="button is-danger" value="Delete {{ foodbank.full_name }}" onclick="return confirm('DELETE {{ foodbank.name}}?')">
         {% csrf_token %}
       </form>
 
@@ -218,7 +223,7 @@
               <dd>{% if foodbank.plus_code_global %}{{ foodbank.plus_code_global }}{% else %}None{% endif %}</dd>
             </dl>
           </td>
-          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_address" class="button is-small is-pulled-right">Edit</a></td>
+          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-small is-pulled-right">Edit</a></td>
         </tr>
         {% if foodbank.delivery_address %}
           <tr>

@@ -1,4 +1,3 @@
-from datetime import date
 import json
 import requests
 
@@ -14,11 +13,10 @@ from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, Order, FoodbankChange
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_all_constituencies, get_image, item_class_count, get_all_open_foodbanks, get_all_open_locations, get_cred, validate_turnstile
+from givefood.func import get_all_constituencies, get_all_open_foodbanks, get_all_open_locations, get_cred, validate_turnstile
 from givefood.func import send_email
-from givefood.const.general import PACKAGING_WEIGHT_PC, CHECK_COUNT_PER_DAY, PAGE_SIZE_PER_COUNT, SITE_DOMAIN
-from givefood.const.item_classes import TOMATOES, RICE, PUDDINGS, SOUP, FRUIT, MILK, MINCE_PIES
-from givefood.const.cache_times import SECONDS_IN_MINUTE, SECONDS_IN_HOUR, SECONDS_IN_WEEK
+from givefood.const.general import SITE_DOMAIN
+from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
 
 
 @cache_page(SECONDS_IN_HOUR)
@@ -130,7 +128,7 @@ def donate(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def donate(request):
+def about_us(request):
     return render(request, "public/about_us.html")
 
 
@@ -142,12 +140,24 @@ def api(request):
 @cache_page(SECONDS_IN_WEEK)
 def sitemap(request):
 
+    url_names = [
+        "index",
+        "about_us",
+        "donate",
+        "register_foodbank",
+        "annual_report_index",
+        "privacy",
+        "wfbn:index",
+        "write:index",
+        "dash:index",
+    ]
     foodbanks = get_all_open_foodbanks()
     constituencies = get_all_constituencies()
     locations = get_all_open_locations()
 
     template_vars = {
         "domain":SITE_DOMAIN,
+        "url_names":url_names,
         "foodbanks":foodbanks,
         "constituencies":constituencies,
         "locations":locations,
@@ -172,15 +182,20 @@ def privacy(request):
     return render(request, "public/privacy.html")
 
 
-@cache_page(SECONDS_IN_MINUTE)
+@cache_page(SECONDS_IN_TWO_MINUTES)
 def frag(request, frag):
 
-    if frag == "lastupdated":
+    # last_updated
+    if frag == "last_updated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)
         if timesince_text == "0 minutes":
             frag_text = "Under a minute ago"
         else:
             frag_text = "%s ago" % (timesince_text)
+    
+    if not frag_text:
+        return HttpResponseForbidden()
+
     return HttpResponse(frag_text)
         
 

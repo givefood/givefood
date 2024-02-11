@@ -14,7 +14,7 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
 from django.db import IntegrityError, connection
-from django.db.models import Sum
+from django.db.models import Sum, Q
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
@@ -52,44 +52,18 @@ def index(request):
 def search_results(request):
 
     query = request.GET.get("q")
-    all_foodbanks = get_all_foodbanks()
-    all_locations = get_all_locations()
-    all_constituencies = get_all_constituencies()
 
-    foodbanks = []
-    locations = []
-    constituencies = []
-
-    for foodbank in all_foodbanks:
-        if query.lower() in foodbank.name.lower():
-            foodbanks.append(foodbank)
-        if query.lower() in foodbank.address.lower():
-            foodbanks.append(foodbank)
-        if query.lower() in foodbank.postcode.lower():
-            foodbanks.append(foodbank)
-    
-    for location in all_locations:
-        if query.lower() in location.name.lower():
-            locations.append(location)
-        if query.lower() in location.address.lower():
-            locations.append(location)
-
-    for constituency in all_constituencies:
-        if query.lower() in constituency.name.lower():
-            constituencies.append(constituency)
-
-    foodbanks = list(set(foodbanks))
-    locations = list(set(locations))
-    constituencies = list(set(constituencies))
-
-    if not constituencies and not locations and len(foodbanks) == 1:
-        return redirect(reverse("admin:foodbank", args=(foodbanks[0].slug,)))
+    foodbanks = Foodbank.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))
+    locations = FoodbankLocation.objects.filter(Q(name__icontains=query) | Q(address__icontains=query))
+    constituencies = ParliamentaryConstituency.objects.filter(Q(name__icontains=query) | Q(mp__icontains=query))
+    needs = FoodbankChange.objects.filter(change_text__icontains=query).order_by("-created")[:100]
     
     template_vars = {
         "query":query,
         "foodbanks":foodbanks,
         "locations":locations,
         "constituencies":constituencies,
+        "needs":needs,
         "section":"search",
     }
     return render(request, "admin/search.html", template_vars)
@@ -445,6 +419,14 @@ def foodbank_rfi(request, slug):
     foodbank.save()
 
     return redirect("admin:foodbank", slug = foodbank.slug)
+
+
+@require_POST
+def foodbank_delete(request, slug):
+    
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank.delete()
+    return redirect(reverse("admin:index"))
 
 
 def foodbank_politics_form(request, slug = None):
