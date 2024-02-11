@@ -216,11 +216,11 @@
               <dt>Lat Lng</dt>
               <dd>{{ foodbank.latt_long }}</dd>
               <dt>Place ID</dt>
-              <dd>{% if foodbank.place_id %}{{ foodbank.place_id }}{% else %}None{% endif %}</dd>
+              <dd>{% if foodbank.place_id %}{{ foodbank.place_id|truncatechars:25 }}{% else %}None{% endif %}</dd>
               <dt>Plus Code Cmpd</dt>
-              <dd>{% if foodbank.plus_code_compound %}{{ foodbank.plus_code_compound }}{% else %}None{% endif %}</dd>
+              <dd>{% if foodbank.plus_code_compound %}{{ foodbank.plus_code_compound|truncatechars:25 }}{% else %}None{% endif %}</dd>
               <dt>Plus Code Global</dt>
-              <dd>{% if foodbank.plus_code_global %}{{ foodbank.plus_code_global }}{% else %}None{% endif %}</dd>
+              <dd>{% if foodbank.plus_code_global %}{{ foodbank.plus_code_global|truncatechars:25 }}{% else %}None{% endif %}</dd>
             </dl>
           </td>
           <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-small is-pulled-right">Edit</a></td>
@@ -240,14 +240,16 @@
           <td>
             {{ location.address|linebreaksbr }}<br>{{ location.postcode }}
             <dl class="is-size-7">
+              <dt>Phone</dt>
+              <dd>{{ location.phone_number }}</dd>
               <dt>Lat Lng</dt>
               <dd>{{ location.latt_long }}</dd>
               <dt>Place ID</dt>
-              <dd>{% if location.place_id %}{{ location.place_id }}{% else %}None{% endif %}</dd>
+              <dd>{% if location.place_id %}{{ location.place_id|truncatechars:25 }}{% else %}None{% endif %}</dd>
               <dt>Plus Code Cmpd</dt>
-              <dd>{% if location.plus_code_compound %}{{ location.plus_code_compound }}{% else %}None{% endif %}</dd>
+              <dd>{% if location.plus_code_compound %}{{ location.plus_code_compound|truncatechars:25 }}{% else %}None{% endif %}</dd>
               <dt>Plus Code Global</dt>
-              <dd>{% if location.plus_code_global %}{{ location.plus_code_global }}{% else %}None{% endif %}</dd>
+              <dd>{% if location.plus_code_global %}{{ location.plus_code_global|truncatechars:25 }}{% else %}None{% endif %}</dd>
             </dl>
           </td>
           <td>
