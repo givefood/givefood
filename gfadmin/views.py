@@ -95,7 +95,7 @@ def foodbanks(request):
     for sort_option in sort_options:
         display_sort_options[sort_option] = sort_option.replace("_", " ").title()
 
-    foodbanks = Foodbank.objects.all().order_by(sort)
+    foodbanks = Foodbank.objects.all().exclude(is_closed = True).order_by(sort)
 
     template_vars = {
         "sort":sort,
