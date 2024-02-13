@@ -111,6 +111,7 @@ OLD_FOODBANK_SLUGS = {
     "skye":"skye-lochalsh",
     "cromer-district":"north-norfolk",
     "blandford":"nourish",
+    "abergele-district/kinmel-bay-church":"kinmel-bay-church",
 }
 
 FOODBANK_SUBPAGES = [
