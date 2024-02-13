@@ -11,9 +11,9 @@ from django.db.models import Sum
 from django.utils.timesince import timesince
 from session_csrf import anonymous_csrf
 
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, Order, FoodbankChange
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, Order, FoodbankChange, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
-from givefood.func import get_all_constituencies, get_all_open_foodbanks, get_all_open_locations, get_cred, validate_turnstile
+from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
 from givefood.const.general import SITE_DOMAIN
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
@@ -151,9 +151,10 @@ def sitemap(request):
         "write:index",
         "dash:index",
     ]
-    foodbanks = get_all_open_foodbanks()
-    constituencies = get_all_constituencies()
-    locations = get_all_open_locations()
+
+    foodbanks = Foodbank.objects.all().exclude(is_closed=True)
+    constituencies = ParliamentaryConstituency.objects.all()
+    locations = FoodbankLocation.objects.all().exclude(is_closed=True)
 
     template_vars = {
         "domain":SITE_DOMAIN,
@@ -168,7 +169,7 @@ def sitemap(request):
 @cache_page(SECONDS_IN_WEEK)
 def sitemap_external(request):
 
-    foodbanks = get_all_open_foodbanks()
+    foodbanks = Foodbank.objects.all().exclude(is_closed=True)
 
     template_vars = {
         "domain":SITE_DOMAIN,
