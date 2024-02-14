@@ -278,7 +278,7 @@ class Foodbank(models.Model):
         return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")
 
     def no_orders(self):
-        return len(self.orders())
+        return Order.objects.filter(foodbank = self).count()
 
     def subscribers(self):
         return FoodbankSubscriber.objects.filter(foodbank = self)
@@ -290,11 +290,7 @@ class Foodbank(models.Model):
         return len(self.locations())
 
     def total_weight(self):
-        total_weight = float(0)
-        orders = self.orders()
-        for order in orders:
-            total_weight = total_weight + order.weight
-        return total_weight
+        return Order.objects.filter(foodbank = self).aggregate(models.Sum('weight'))['weight__sum']
 
     def total_weight_kg(self):
         return self.total_weight() / 1000
@@ -303,18 +299,10 @@ class Foodbank(models.Model):
         return self.total_weight_kg() * PACKAGING_WEIGHT_PC
 
     def total_cost(self):
-        total_cost = float(0)
-        orders = self.orders()
-        for order in orders:
-            total_cost = total_cost + order.cost
-        return total_cost / 100
+        return Order.objects.filter(foodbank = self).aggregate(models.Sum('cost'))['cost__sum'] / 100
 
     def total_items(self):
-        total_items = 0
-        orders = self.orders()
-        for order in orders:
-            total_items = total_items + order.no_items
-        return total_items
+        return Order.objects.filter(foodbank = self).aggregate(models.Sum('no_items'))['no_items__sum']
 
     def locations(self):
         return FoodbankLocation.objects.filter(foodbank = self).order_by("name")
