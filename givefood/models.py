@@ -1102,7 +1102,7 @@ class ParliamentaryConstituency(models.Model):
     
     centroid = models.CharField(max_length=50)
 
-    # Parlimentary details
+    # Parliamentary details
     email_parl = models.EmailField(null=True, blank=True)
     address_parl = models.TextField(null=True, blank=True, editable=False)
     postcode_parl = models.CharField(max_length=9, null=True, blank=True, editable=False)
