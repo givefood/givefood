@@ -294,7 +294,11 @@ class Foodbank(models.Model):
             return no_locations
 
     def total_weight(self):
-        return Order.objects.filter(foodbank = self).aggregate(models.Sum('weight'))['weight__sum']
+        weight = Order.objects.filter(foodbank = self).aggregate(models.Sum('weight'))['weight__sum']
+        if not weight:
+            return 0
+        else:
+            return weight
 
     def total_weight_kg(self):
         return self.total_weight() / 1000
@@ -303,7 +307,11 @@ class Foodbank(models.Model):
         return self.total_weight_kg() * PACKAGING_WEIGHT_PC
 
     def total_cost(self):
-        return Order.objects.filter(foodbank = self).aggregate(models.Sum('cost'))['cost__sum'] / 100
+        cost = Order.objects.filter(foodbank = self).aggregate(models.Sum('cost'))['cost__sum']
+        if not cost:
+            return 0
+        else:
+            return cost / 100
 
     def total_items(self):
         return Order.objects.filter(foodbank = self).aggregate(models.Sum('no_items'))['no_items__sum']
