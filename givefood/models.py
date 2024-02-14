@@ -287,7 +287,11 @@ class Foodbank(models.Model):
         return FoodbankSubscriber.objects.filter(foodbank = self).count()
 
     def get_no_locations(self):
-        return len(self.locations())
+        no_locations = FoodbankLocation.objects.filter(foodbank = self).count()
+        if not no_locations:
+            return 0
+        else:
+            return no_locations
 
     def total_weight(self):
         return Order.objects.filter(foodbank = self).aggregate(models.Sum('weight'))['weight__sum']
