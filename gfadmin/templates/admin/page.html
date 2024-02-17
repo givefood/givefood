@@ -10,7 +10,9 @@
   <link rel="preload" href="/static/fonts/soehne-dreiviertelfett.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   <meta name="theme-color" content="#F2DECB">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
-  <script src="/static/js/turbo.js?version={{ version }}"></script>
+  <script type="module">
+    import hotwiredTurbo from 'https://cdn.skypack.dev/@hotwired/turbo@7.3.0';
+  </script>
   <script src="/static/js/admin.js?version={{ version }}"></script>
   <title>{% block title %}{% endblock %}</title>
   {% block head %}{% endblock %}
