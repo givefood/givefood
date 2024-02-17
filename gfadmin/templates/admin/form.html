@@ -21,7 +21,15 @@
     {% if need %}
       {% if need.uri %}
         <div class="column">
-          <iframe class="need_preview" src="{% url 'admin:proxy' %}?url={{ need.uri|urlencode }}"></iframe>
+          <iframe class="preview-frame" src="{% url 'admin:proxy' %}?url={{ need.uri|urlencode }}"></iframe>
+        </div>
+      {% endif %}
+    {% endif %}
+    
+    {% if foodbank %}
+      {% if foodbank.url %}
+        <div class="column">
+          <iframe style="position: sticky; top:0;" class="preview-frame" src="{% url 'admin:proxy' %}?url={{ foodbank.url|urlencode }}"></iframe>
         </div>
       {% endif %}
     {% endif %}

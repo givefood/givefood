@@ -389,6 +389,7 @@ def foodbank_form(request, slug = None):
     template_vars = {
         "form":form,
         "page_title":page_title,
+        "foodbank":foodbank,
     }
     return render(request, "admin/form.html", template_vars)
 

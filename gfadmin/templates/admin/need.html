@@ -156,7 +156,7 @@
     {% if need.uri %}
       <div class="column">
         <h2>Food Bank Website</h2>
-        <iframe class="need_preview" src="{% url 'admin:proxy' %}?url={{ need.uri|urlencode }}"></iframe>
+        <iframe class="preview-frame" src="{% url 'admin:proxy' %}?url={{ need.uri|urlencode }}"></iframe>
       </div>
     {% endif %}
 
