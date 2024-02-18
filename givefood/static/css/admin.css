@@ -94,6 +94,8 @@ td.delivery-provider-icon img {
   width:100%;
   border:0;
   height:1000px;
+  position:sticky;
+  top:0;
 }
 .settings {
   font-size:1.1em;
