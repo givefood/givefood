@@ -59,7 +59,7 @@
               {% for need in needs %}
                 <tr id="need-{{ need.need_id }}">
                   <td>
-                    <time datetime="{{ need.created|date:'c' }}">{{ need.created }}</time><br>
+                    <time datetime="{{ need.created_without_microseconds|date:'c' }}">{{ need.created }}</time><br>
                     <span class="is-size-7">{{ need.created|timesince}} ago</span>
                   </td>
                   <td class="thediff">

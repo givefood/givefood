@@ -975,6 +975,9 @@ class FoodbankChange(models.Model):
     def __str__(self):
         return "%s - %s (%s)" % (self.foodbank_name, self.created.strftime("%b %d %Y %H:%M:%S"), self.need_id)
 
+    def created_without_microseconds(self):
+        return self.created.replace(microsecond=0)
+
     def foodbank_name_slug(self):
         return slugify(self.foodbank_name)
 
