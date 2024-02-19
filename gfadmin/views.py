@@ -1431,6 +1431,7 @@ def email_tester_test(request):
         "order":order,
         "sub_key":"SUBKEY123456789",
         "subscriber":{
+            "created":datetime.now(),
             "unsub_key":"UNSUBKEY123456789",
         }
     }
