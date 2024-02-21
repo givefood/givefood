@@ -1071,7 +1071,8 @@ class FoodbankChange(models.Model):
 
         FoodbankChangeLine.objects.filter(need = self).delete()
         super(FoodbankChange, self).delete(*args, **kwargs)
-        self.foodbank.save(do_geoupdate=False)
+        if self.foodbank:
+            self.foodbank.save(do_geoupdate=False)
 
     class Meta:
         app_label = 'givefood'
