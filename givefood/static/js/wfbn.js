@@ -26,12 +26,12 @@ const search_error = "Sorry, we had a problem finding food banks there. The erro
 
 
 function init() {
-    autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
-    autocomplete.setComponentRestrictions({'country': ['gb']});
-    autocomplete.addListener("place_changed", () => {
-      lat_lng_field.value = autocomplete.getPlace().geometry.location.lat() + "," + autocomplete.getPlace().geometry.location.lng();
-    })
     if (addressform) {
+      autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
+      autocomplete.setComponentRestrictions({'country': ['gb']});
+      autocomplete.addListener("place_changed", () => {
+        lat_lng_field.value = autocomplete.getPlace().geometry.location.lat() + "," + autocomplete.getPlace().geometry.location.lng();
+      })
       addressform.addEventListener("submit", do_address);
       if (uml_btn) {
         if (uml_btn.hasAttribute("data-is-homepage")) {
