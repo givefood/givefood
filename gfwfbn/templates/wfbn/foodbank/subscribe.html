@@ -78,3 +78,11 @@
   </div>
 
 {% endblock %}
+
+
+{% block script %}
+
+<script src="{% url 'wfbn:foodbank_hit' foodbank.slug %}" defer></script>
+<script src="/static/js/wfbn.js" defer></script>
+
+{% endblock %}
