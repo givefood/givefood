@@ -592,7 +592,7 @@ class FoodbankLocation(models.Model):
 
         super(FoodbankLocation, self).delete(*args, **kwargs)
         # Resave the parent food bank
-        self.foodbank.save()
+        self.foodbank.save(do_geoupdate=False)
 
     def save(self, do_geoupdate=True, do_foodbank_resave=True, *args, **kwargs):
 
