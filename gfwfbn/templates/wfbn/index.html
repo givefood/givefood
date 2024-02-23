@@ -2,7 +2,6 @@
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css">
-  <link rel="stylesheet" href="/static/css/share_btns.css">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="What Food Banks Need">
@@ -60,9 +59,6 @@
                   <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
               {% endfor %}
           </ul>
-          
-          {% url 'wfbn:index' as share_url %}
-          {% include "wfbn/foodbank/includes/share_btns.html" with share_url=share_url %}
         {% endif %}
       </div>
 
