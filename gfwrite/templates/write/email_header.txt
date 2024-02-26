@@ -1,6 +1,6 @@
-*******************************************************************************
-  This email has been on behalf of {{ name }} by Give Food.
-  Please reply them directly using the email address {{ email }}.
-*******************************************************************************
+*****************************
+This email has been sent on behalf of {{ name }} by Give Food.
+Please reply them directly using the email address {{ email }}.
+*****************************
 
 
