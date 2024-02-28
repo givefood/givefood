@@ -112,6 +112,7 @@ OLD_FOODBANK_SLUGS = {
     "cromer-district":"north-norfolk",
     "blandford":"nourish",
     "abergele-district/kinmel-bay-church":"kinmel-bay-church",
+    "vauxhall":"norwood-brixton/vauxhall",
 }
 
 FOODBANK_SUBPAGES = [
