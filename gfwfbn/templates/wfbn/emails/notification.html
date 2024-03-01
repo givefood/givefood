@@ -24,7 +24,7 @@
 
     <p>🗺️ See other <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/nearby/">nearby food banks</a></p>
 
-    <p>You're getting these emails because you subscribed to them at <a href="https://www.givefood.org.uk/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">givefood.org.uk</a> on {{ subscriber.created|date:"jS F Y" }} at {{ subscriber.created|date:"g:i a" }}. You can unsubscribe by <a href="http://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/updates/unsubscribe/?key={{ subscriber.unsub_key }}">clicking here</a>.</p>
+    <p>You're getting these emails because you subscribed to them at <a href="https://www.givefood.org.uk/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">givefood.org.uk</a> on {{ subscriber.created|date:"jS F Y" }} at {{ subscriber.created|date:"g:i a" }} You can unsubscribe by <a href="http://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/updates/unsubscribe/?key={{ subscriber.unsub_key }}">clicking here</a>.</p>
     
     
 {% endblock %}
