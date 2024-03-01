@@ -932,19 +932,11 @@ def finder_stats(request):
 
 def need_stats(request):
 
-    cursor = connection.cursor()
-    cursor.execute("SELECT sum(length(regexp_replace(change_text, E'[^\\n]', '', 'g'))) from givefood_foodbankchange")
-    need_items = cursor.fetchone()[0]
-    cursor.execute("SELECT sum(length(regexp_replace(excess_change_text, E'[^\\n]', '', 'g'))) from givefood_foodbankchange")
-    excess_items = cursor.fetchone()[0]
-    categorised_items = FoodbankChangeLine.objects.all().count()
-
     stats = {
-        "Needs":FoodbankChange.objects.count(),
-        "Need Items":need_items,
-        "Excess Items":excess_items,
-        "Total Items":need_items + excess_items,
-        "Categorised Items":categorised_items,
+        "Needs": FoodbankChange.objects.count(),
+        "Items": FoodbankChangeLine.objects.all().count(),
+        "Needed Items": FoodbankChangeLine.objects.filter(type = "need").count(),
+        "Excess Items": FoodbankChangeLine.objects.filter(type = "excess").count(),
     }
 
     template_vars = {
