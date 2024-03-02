@@ -322,6 +322,12 @@ class Foodbank(models.Model):
     def get_absolute_url(self):
         return "/admin/foodbank/%s/" % (self.slug)
 
+    def url_with_ref(self):
+        added_params = {"ref":"givefood.org.uk"}
+        req = PreparedRequest()
+        req.prepare_url(self.url, added_params)
+        return req.url
+
     def bankuet_url(self):
         if self.bankuet_slug:
             return "https://www.bankuet.co.uk/%s/?ref=givefood.org.uk" % (self.bankuet_slug)
