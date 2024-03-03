@@ -1,0 +1,54 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Trussell Trust Finder - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Trussell Trust Finder</h2>
+
+  <div class="columns">
+
+    <div class="column">
+        <h3>Their</h3>
+        <ul>
+            {% for url in their_urls %}
+                <li>{{ url }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    <div class="column">
+
+        <h3>Our</h3>
+        <ul>
+            {% for url in our_urls %}
+                <li>{{ url }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    <div class="column">
+
+        <h3>Missing</h3>
+        <ul>
+            {% for url in missing_urls %}
+                <li>{{ url }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+    <div class="column">
+
+        <h3>Extra</h3>
+        <ul>
+            {% for url in extra_urls %}
+                <li>{{ url }}</li>
+            {% endfor %}
+        </ul>
+
+    </div>
+
+  </div>
+
+{% endblock %}
