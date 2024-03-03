@@ -469,6 +469,7 @@ def location_search(request):
     for location in locations:
 
         location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
+        location_url = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
 
         if location.get("type") == "location":
             html_url = "https://www.givefood.org.uk/needs/at/%s/%s/" % (slugify(location.get("foodbank_name")), slugify(location.get("name")))
@@ -515,6 +516,7 @@ def location_search(request):
             },
             "urls": {
                 "html":html_url,
+                "homepage":location_url,
             },
         })
 

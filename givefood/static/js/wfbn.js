@@ -218,7 +218,8 @@ function api_response() {
 
     loctn = this.response[loctnidx];
 
-    url = loctn.urls.html;
+    gf_url = loctn.urls.html
+    url = loctn.urls.homepage;
     fb_name = loctn.name;
     distance = loctn.distance_mi;
     slug = loctn.foodbank.slug;
@@ -231,7 +232,7 @@ function api_response() {
     needs_html = needs.replace(/\n/g, "<br>");
 
     currentrow = document.importNode(template.content, true);
-    currentrow.querySelector("a.foodbank").href = "/needs/click/" + slug + "/";
+    currentrow.querySelector("a.foodbank").href = url;
     currentrow.querySelector("a.foodbank").textContent = fb_name;
     if (org_type == "location" && currentrow.querySelector(".parent_org")) {
       currentrow.querySelector(".parent_org span").innerHTML = "Part of"
@@ -255,7 +256,7 @@ function api_response() {
     }
     if (currentrow.querySelector(".links")) {
       currentrow.querySelector(".links .phone").href = "tel:" + phone;
-      currentrow.querySelector(".links .info").href = url.replace("https://www.givefood.org.uk","");
+      currentrow.querySelector(".links .info").href = gf_url.replace("https://www.givefood.org.uk","");
     }
     if (!phone) {
       currentrow.querySelector(".links .phone").remove();

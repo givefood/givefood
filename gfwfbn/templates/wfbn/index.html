@@ -69,7 +69,7 @@
             {% for location in location_results %}
               <tr>
                 <td>
-                  <a href="/needs/click/{{ location.foodbank_slug }}/" class="foodbank" target="_top">{{ location.name }}</a>
+                  <a href="{{ location.url }}" class="foodbank" target="_top">{{ location.name }}</a>
                   {% if where_from != "trusselltrust" %}
                     {% if location.type == "location" %}
                       <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>

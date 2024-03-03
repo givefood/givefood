@@ -45,6 +45,7 @@ def index(request):
         for location in location_results:
             location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
             location["needs"] = location_need.change_text
+            location["url"] = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
 
     gmap_key = get_cred("gmap_key")
 
