@@ -135,7 +135,7 @@ footer {
     margin:1cm;
 }
 @media print {
-    .breadcrumb, .menu-col, .cta, .subscribe-form, .directions-btn, footer {
+    .breadcrumb, .menu-col, .cta, .subscribe-form, .directions-btn, footer, .gm-fullscreen-control, .subscribe, .links, #usemylocationbtn, #addressform {
         display:none;
     }
 }
