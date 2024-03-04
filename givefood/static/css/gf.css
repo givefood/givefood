@@ -130,3 +130,12 @@ footer {
 .help {
     font-size:14px;
 }
+
+@page {
+    margin:1cm;
+}
+@media print {
+    .breadcrumb, .menu-col, .cta, .subscribe-form, .directions-btn, footer {
+        display:none;
+    }
+}
