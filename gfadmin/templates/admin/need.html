@@ -75,7 +75,7 @@
           <td>
             {% if need.published %}
               <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
-                <input type="submit" class="button is-warning is-pulled-right is-small" value="Send">
+                <input type="submit" class="button is-warning is-pulled-right is-small press-once" value="Send">
                 {% csrf_token %}
               </form>
             {% endif %}
