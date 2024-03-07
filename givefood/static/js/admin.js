@@ -144,11 +144,3 @@ if (change_text_field) {
     event.preventDefault();
   });
 };
-
-// PRESS ONCE
-press_once_btn = document.querySelectorAll(".press-once");
-press_once_btn.forEach(function(btn){
-  btn.addEventListener("click", function(event){
-    btn.disabled = true;
-  });
-});
