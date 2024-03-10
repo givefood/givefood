@@ -26,7 +26,7 @@ from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsFo
 def index(request):
 
     # Foodbanks
-    foodbanks = Foodbank.objects.filter(last_order__isnull=False).order_by("-edited")[:30]
+    foodbanks = Foodbank.objects.all().order_by("-edited")[:30]
 
     # Needs
     unpublished_needs = FoodbankChange.objects.filter(published = False).order_by("-created")
