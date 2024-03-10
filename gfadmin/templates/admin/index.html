@@ -58,21 +58,17 @@
       <dl>
         <dt>Oldest Edit</dt>
         <dd>
-          {{ oldest_edit.edited }}
-          <br><span class="is-size-7">{{ oldest_edit.edited|timesince }} ago</span>
+          {{ oldest_edit.edited|timesince }} ago
+          <br><span class="is-size-7">{{ oldest_edit.edited }}</span>
         </dd>
         <dt>Latest Edit</dt>
         <dd>
-          {{ latest_edit.edited }}
-          <br><span class="is-size-7">{{ latest_edit.edited|timesince }} ago</span>
+          {{ latest_edit.edited|timesince }} ago
+          <br><span class="is-size-7">{{ latest_edit.edited }} </span>
         </dd>
-      </dl>
-
-      <h3>24hr</h3>
-      <dl>
-        <dt>New Subs</dt>
+        <dt>24hr Subs</dt>
         <dd>{{ sub_count_24 }}</dd>
-        <dt>Need Lines</dt>
+        <dt>24hr Need Lines</dt>
         <dd>{{ need_count_24 }}</dd>
       </dl>
 
