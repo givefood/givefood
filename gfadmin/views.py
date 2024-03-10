@@ -33,8 +33,8 @@ def index(request):
     published_needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:20]
 
     # Stats
-    oldest_edit = Foodbank.objects.all().order_by("edited")[:1][0]
-    latest_edit = Foodbank.objects.all().order_by("-edited")[:1][0]
+    oldest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0]
+    latest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("-edited")[:1][0]
     yesterday = datetime.now() - timedelta(days=1)
     sub_count_24 = FoodbankSubscriber.objects.filter(created__gte=yesterday).count()
     need_count_24 = FoodbankChangeLine.objects.filter(created__gte=yesterday).count()
