@@ -19,32 +19,38 @@ from django.db.models import Sum, Q
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
-from givefood.models import Foodbank, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine
+from givefood.models import Foodbank, FoodbankArticle, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine
 from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
 def index(request):
 
+    # Foodbanks
     foodbanks = Foodbank.objects.filter(last_order__isnull=False).order_by("-edited")[:30]
 
-    today = datetime.today()
-    today_orders = Order.objects.filter(delivery_date = today).order_by("delivery_hour")
-
-    upcoming_orders = Order.objects.filter(delivery_date__gt = today).order_by("delivery_date")
-
-    prev_order_threshold = datetime.now() - timedelta(days=1)
-    prev_orders = Order.objects.filter(delivery_datetime__lt = prev_order_threshold).order_by("-delivery_datetime")[:20]
-
+    # Needs
     unpublished_needs = FoodbankChange.objects.filter(published = False).order_by("-created")
     published_needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:20]
 
+    # Stats
+    oldest_edit = Foodbank.objects.all().order_by("edited")[:1][0]
+    latest_edit = Foodbank.objects.all().order_by("-edited")[:1][0]
+    yesterday = datetime.now() - timedelta(days=1)
+    sub_count_24 = FoodbankSubscriber.objects.filter(created__gte=yesterday).count()
+    need_count_24 = FoodbankChangeLine.objects.filter(created__gte=yesterday).count()
+
+    # Articles
+    articles = FoodbankArticle.objects.all().order_by("-published_date")[:20]
+
     template_vars = {
         "foodbanks":foodbanks,
-        "today_orders":today_orders,
-        "upcoming_orders":upcoming_orders,
-        "prev_orders":prev_orders,
         "unpublished_needs":unpublished_needs,
         "published_needs":published_needs,
+        "latest_edit":latest_edit,
+        "oldest_edit":oldest_edit,
+        "sub_count_24":sub_count_24,
+        "need_count_24":need_count_24,
+        "articles":articles,
         "section":"home",
     }
     return render(request, "admin/index.html", template_vars)

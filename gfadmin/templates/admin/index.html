@@ -30,25 +30,7 @@
 
     <div class="column">
 
-      <h2>Orders</h2>
-      <a href="{% url "admin:neworder" %}" class="button is-link">New Order</a><br><br>
-
-      <h3>Today ({{ today_orders.count }})</h3>
-      {% include "admin/includes/ordertable.html" with orders=today_orders %}
-
-      <h3>Upcoming ({{ upcoming_orders.count }})</h3>
-      {% include "admin/includes/ordertable.html" with orders=upcoming_orders %}
-
-      <h3>Previous</h3>
-      {% include "admin/includes/ordertable.html" with orders=prev_orders %}
-
-    </div>
-
-    <div class="column">
-
       <h2>Foodbanks</h2>
-      <a href="{% url "admin:newfoodbank" %}" class="button is-link">New Food Bank</a>
-      
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th></th>
@@ -64,6 +46,45 @@
             </td>
             <td>{{ foodbank.edited }}</td>
           </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+    <div class="column">
+
+      <h2>Stats</h2>
+
+      <dl>
+        <dt>Oldest Edit</dt>
+        <dd>
+          {{ oldest_edit.edited }}
+          <br><span class="is-size-7">{{ oldest_edit.edited|timesince }} ago</span>
+        </dd>
+        <dt>Latest Edit</dt>
+        <dd>
+          {{ latest_edit.edited }}
+          <br><span class="is-size-7">{{ latest_edit.edited|timesince }} ago</span>
+        </dd>
+      </dl>
+
+      <h3>24hr</h3>
+      <dl>
+        <dt>New Subs</dt>
+        <dd>{{ sub_count_24 }}</dd>
+        <dt>Need Lines</dt>
+        <dd>{{ need_count_24 }}</dd>
+      </dl>
+
+
+      <h2>Articles</h2>
+      <table class="table is-narrow is-fullwidth">
+        {% for article in articles %}
+            <tr>
+                <td><a href="{% url 'wfbn:foodbank' article.foodbank_name_slug %}">{{ article.foodbank_name }}</a></td>
+                <td><a href="{{ article.url_with_ref }}">{{ article.title_captialised|truncatewords:10 }}</a></td>
+                <td>{{ article.published_date }}</td>
+            </tr>
         {% endfor %}
       </table>
 
