@@ -328,9 +328,12 @@ class Foodbank(models.Model):
     def locations(self):
         return FoodbankLocation.objects.filter(foodbank = self).order_by("name")
     
+    def location_donation_points(self):
+        return FoodbankLocation.objects.filter(foodbank = self, is_donation_point = True).order_by("name")
+    
     def donation_points(self):
         return FoodbankDonationPoint.objects.filter(foodbank = self).order_by("name")
-
+    
     def get_absolute_url(self):
         return "/admin/foodbank/%s/" % (self.slug)
 

@@ -74,6 +74,15 @@
               </address>
             {% endif %}
 
+            {% for donation_point in foodbank.location_donation_points %}
+                <strong>{{ donation_point.name }}</strong>
+                <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donation_point.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
+                <address>
+                  {{ donation_point.address|linebreaksbr }}<br>
+                  {{ donation_point.postcode }}
+                </address>
+            {% endfor %}
+
             {% for donation_point in foodbank.donation_points %}
                 <strong>{{ donation_point.name }}</strong>
                 <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donation_point.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
@@ -126,6 +135,10 @@ map = new google.maps.Map(document.getElementById("map"), mapOptions);
 {% if foodbank.delivery_address %}
   add_marker({{ foodbank.delivery_latt_long }})
 {% endif %}
+
+{% for donation_point in foodbank.location_donation_points %}
+  add_marker({{ donation_point.latt_long }})
+{% endfor %}
 
 {% for donation_point in foodbank.donation_points %}
   add_marker({{ donation_point.latt_long }})
