@@ -115,10 +115,15 @@ var mapOptions = {
   mapTypeId: google.maps.MapTypeId.ROADMAP,
 };
 map = new google.maps.Map(document.getElementById("map"), mapOptions);
-add_marker({{ foodbank.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
+
+{% if not foodbank.address_is_administrative %}
+  add_marker({{ foodbank.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
+{% endif %}
+
 {% for donation_point in foodbank.donation_points %}
   add_marker({{ donation_point.latt_long }})
 {% endfor %}
+
 google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
   var maxZoom = 15
   if (map.getZoom() > maxZoom) {
