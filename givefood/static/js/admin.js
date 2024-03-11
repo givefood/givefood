@@ -82,12 +82,11 @@ if (fb_name_field) {
 
 // LATTLONG
 if (lattlong_field) {
-  var get_lattlong_btn = document.createElement('div');
-  get_lattlong_btn.innerHTML = "<a href='#' id='get_lattlong_btn' class='extra-form-button button is-info'>Get Lat/Lng &amp; Place ID</a>";
-  insertAfter(get_lattlong_btn, lattlong_field);
-  lattlong_btn = document.querySelector("#get_lattlong_btn");
-  lattlong_btn.addEventListener("click", function(event) {
-    address = address_field.value.replace(/\n/g,", ") + ", " + postcode_field.value;
+  var get_latlng_btn = document.createElement('div');
+  get_latlng_btn.innerHTML = "<a href='#' id='get_latlng_btn' class='extra-form-button button is-info'>Get Lat/Lng &amp; Place ID</a>";
+  insertAfter(get_latlng_btn, lattlong_field);
+  latlng_btn = document.querySelector("#get_latlng_btn");
+  latlng_btn.addEventListener("click", function(event) {
     url = geolocation_url + encodeURIComponent(address);
     var gl_req = new XMLHttpRequest();
     gl_req.addEventListener("load", function(){
