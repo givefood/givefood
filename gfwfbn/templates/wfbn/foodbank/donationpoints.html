@@ -1,0 +1,136 @@
+{% extends "public/page.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFoodCharity">
+  <meta property="og:title" content="{{ foodbank.full_name }}">
+  <meta property="og:description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
+  <meta name="description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_map' foodbank.slug %}">
+  <meta property="og:image:alt" content="Map of {{ foodbank.full_name }}">
+  <link rel="manifest" href="/needs/manifest.json">
+  <meta name="geo.placename" content="{{ foodbank.full_name }}">
+  <meta name="geo.position" content="{{ foodbank.latt_long }}">
+  <meta property="place:location:latitude" content="{{ foodbank.latt }}">
+  <meta property="place:location:longitude" content="{{ foodbank.long }}">
+  {% if foodbank.is_closed %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endblock %}
+
+{% block title %}Donation Points - {{ foodbank.full_name }} - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+        </div>
+
+      </div>
+
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+                <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Donation Points</a></li>
+            </ul>
+      </nav>
+
+      <h1>{{ foodbank.full_name }}</h1>
+
+      <div class="columns">
+
+          <div class="column is-2 menu-col">
+            {% include "wfbn/foodbank/includes/menu.html" %}
+          </div>
+
+          <div class="column is-6">
+            <div id="map" class="mainmap"></div>
+          </div>
+
+          <div class="column donationpoints">
+
+            {% if not foodbank.address_is_administrative %}
+                <em>Main</em>
+                <address>
+                    {{ foodbank.address|linebreaksbr }}<br>
+                    {{ foodbank.postcode }}
+                </address>
+            {% endif %}
+            
+            {% if foodbank.delivery_address %}
+              <em>Delivery</em>
+              <address>
+                {{ foodbank.delivery_address|linebreaksbr }}
+              </address>
+            {% endif %}
+
+            {% for donation_point in foodbank.donation_points %}
+                <em>{{ donation_point.name }}</em>
+                {% if donation_point.in_store_only %}
+                    <br><div class="is-size-7">⚠️ In store donations only</div>
+                {% endif %}
+                <address>
+                  {{ donation_point.address|linebreaksbr }}<br>
+                  {{ donation_point.postcode }}
+                </address>
+            {% endfor %}
+
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="{% url 'wfbn:foodbank_hit' foodbank.slug %}" defer></script>
+<script src="/static/js/wfbn.js" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
+<script>
+function add_marker(lat, lng) {
+  position = new google.maps.LatLng(lat, lng)
+  var marker = new google.maps.Marker({
+  position: position,
+  map: map
+});
+  bounds.extend(position);
+}
+
+var map
+var bounds = new google.maps.LatLngBounds();
+function init_map() {
+var mapOptions = {
+  center: new google.maps.LatLng(55,-4),
+  zoom: 6,
+  mapTypeId: google.maps.MapTypeId.ROADMAP,
+};
+map = new google.maps.Map(document.getElementById("map"), mapOptions);
+add_marker({{ foodbank.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
+{% for donation_point in foodbank.donation_points %}
+  add_marker({{ donation_point.latt_long }})
+{% endfor %}
+google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+  var maxZoom = 15
+  if (map.getZoom() > maxZoom) {
+    map.setZoom(maxZoom);
+  }
+});
+map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
+map.panToBounds(bounds);
+}
+
+google.maps.event.addDomListener(window, 'load', init_map);
+</script>
+
+{% endblock %}
+

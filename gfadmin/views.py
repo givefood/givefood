@@ -19,8 +19,8 @@ from django.db.models import Sum, Q
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
-from givefood.models import Foodbank, FoodbankArticle, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine
-from givefood.forms import FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
+from givefood.models import Foodbank, FoodbankArticle, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine
+from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
 def index(request):
@@ -62,6 +62,7 @@ def search_results(request):
 
     foodbanks = Foodbank.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))
     locations = FoodbankLocation.objects.filter(Q(name__icontains=query) | Q(address__icontains=query))
+    donationpoints = FoodbankDonationPoint.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))[:100]
     constituencies = ParliamentaryConstituency.objects.filter(Q(name__icontains=query) | Q(mp__icontains=query))
     needs = FoodbankChange.objects.filter(change_text__icontains=query).order_by("-created")[:100]
     
@@ -69,6 +70,7 @@ def search_results(request):
         "query":query,
         "foodbanks":foodbanks,
         "locations":locations,
+        "donationpoints":donationpoints,
         "constituencies":constituencies,
         "needs":needs,
         "section":"search",
@@ -531,6 +533,41 @@ def need(request, id):
     return render(request, "admin/need.html", template_vars)
 
 
+def donationpoint_form(request, slug = None, dp_slug = None):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "Edit %s Food Bank Donation Point" % (foodbank.name)
+
+    if dp_slug:
+        donation_point = get_object_or_404(FoodbankDonationPoint, foodbank = foodbank, slug = dp_slug)
+    else:
+        donation_point = None
+
+    if request.POST:
+        form = FoodbankDonationPointForm(request.POST, instance=donation_point)
+        if form.is_valid():
+            donation_point = form.save()
+            redir_url = "%s#donationpoints" % (reverse("admin:foodbank", kwargs={'slug': foodbank.slug}))
+            return redirect(redir_url)
+    else:
+        form = FoodbankDonationPointForm(instance=donation_point, initial={"foodbank":foodbank})
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def donationpoint_delete(request, slug, dp_slug):
+    
+    foodbank = Foodbank.objects.get(slug=slug)
+    donation_point = get_object_or_404(FoodbankDonationPoint, foodbank = foodbank, slug = dp_slug)
+    donation_point.delete()
+
+    return redirect("admin:foodbank", slug = foodbank.slug)
+
+
 def need_form(request, id = None):
 
     if id:
@@ -828,6 +865,8 @@ def edit_stats(request):
     locations = get_all_locations()
     total_locations = len(locations) + total_foodbanks
 
+    donation_points = FoodbankDonationPoint.objects.all().count()
+
     delivery_locations = 0
     for foodbank in all_foodbanks:
         if foodbank.delivery_address:
@@ -842,6 +881,7 @@ def edit_stats(request):
         "Total Food Banks":total_foodbanks,
         "Total Locations":total_locations,
         "Headline Total Locations":total_location_incdel,
+        "Donation Points":donation_points,
         "Newest Edit":newest_edit,
         "Oldest Edit":oldest_edit,
     }

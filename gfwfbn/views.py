@@ -209,6 +209,20 @@ def foodbank_locations(request,slug):
     return render(request, "wfbn/foodbank/locations.html", template_vars)
 
 
+@cache_page(SECONDS_IN_WEEK)
+def foodbank_donationpoints(request,slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    if foodbank.no_donation_points == 0:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "section":"donationpoints",
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/donationpoints.html", template_vars)
+
 @cache_page(SECONDS_IN_DAY)
 def foodbank_news(request,slug):
 

@@ -2,22 +2,25 @@
     <ul class="menu-list">
         <li><a {% if section == 'foodbank' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank' foodbank.slug %}">Details</a></li>
         {% if foodbank.no_locations != 0 %}
-            <li><a {% if section == 'locations' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_locations' foodbank.slug %}">Locations</a></li>
+            <li><a {% if section == 'locations' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_locations' foodbank.slug %}">Locations</a></li>
+        {% endif %}
+        {% if foodbank.no_donation_points != 0 %}
+            <li><a {% if section == 'donationpoints' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_donationpoints' foodbank.slug %}">Donation points</a></li>
         {% endif %}
         {% if foodbank.rss_url %}
-            <li><a {% if section == 'news' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_news' foodbank.slug %}">News</a></li>
+            <li><a {% if section == 'news' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_news' foodbank.slug %}">News</a></li>
         {% endif %}
         {% if foodbank.facebook_page or foodbank.twitter_handle %}
-            <li><a  {% if section == 'socialmedia' %}class="is-active" {% endif %}  href="{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}">Social media</a></li>
+            <li><a  {% if section == 'socialmedia' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}">Social media</a></li>
         {% endif %}
-        <li><a {% if section == 'nearby' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_nearby' foodbank.slug %}">Nearby</a></li>
+        <li><a {% if section == 'nearby' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_nearby' foodbank.slug %}">Nearby</a></li>
         {% if foodbank.has_needs %}
-            <li><a {% if section == 'subscribe' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}">Subscribe</a></li>
+            <li><a {% if section == 'subscribe' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}">Subscribe</a></li>
         {% endif %}
         {% if not foodbank.need_irrelevant %}
-            <li><a {% if section == 'history' %}class="is-active" {% endif %} href="{% url 'wfbn:foodbank_history' foodbank.slug %}">History</a></li>
+            <li><a {% if section == 'history' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_history' foodbank.slug %}">History</a></li>
         {% endif %}
-        <li><a {% if section == 'edit' %}class="is-active" {% endif %} href="{% if not location %}{% url 'wfbn:foodbank_edit' foodbank.slug %}{% else %}{% url 'wfbn:foodbank_edit_form_location' foodbank.slug 'locations' location.slug %}{% endif %}" rel="nofollow">Edit</a></li>
+        <li><a {% if section == 'edit' %}class="is-active" {% endif %}href="{% if not location %}{% url 'wfbn:foodbank_edit' foodbank.slug %}{% else %}{% url 'wfbn:foodbank_edit_form_location' foodbank.slug 'locations' location.slug %}{% endif %}" rel="nofollow">Edit</a></li>
     </ul>
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
         <span aria-hidden="true"></span>

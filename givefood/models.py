@@ -87,6 +87,7 @@ class Foodbank(models.Model):
     last_crawl = models.DateTimeField(editable=False, null=True)
 
     no_locations = models.IntegerField(editable=False, default=0)
+    no_donation_points = models.IntegerField(editable=False, default=0)
     days_between_needs = models.IntegerField(editable=False, default=0)
 
     def __str__(self):
@@ -292,6 +293,13 @@ class Foodbank(models.Model):
             return 0
         else:
             return no_locations
+        
+    def get_no_donation_points(self):
+        no_donation_points = FoodbankDonationPoint.objects.filter(foodbank = self).count()
+        if not no_donation_points:
+            return 0
+        else:
+            return no_donation_points
 
     def total_weight(self):
         weight = Order.objects.filter(foodbank = self).aggregate(models.Sum('weight'))['weight__sum']
@@ -318,6 +326,9 @@ class Foodbank(models.Model):
 
     def locations(self):
         return FoodbankLocation.objects.filter(foodbank = self).order_by("name")
+    
+    def donation_points(self):
+        return FoodbankDonationPoint.objects.filter(foodbank = self).order_by("name")
 
     def get_absolute_url(self):
         return "/admin/foodbank/%s/" % (self.slug)
@@ -348,6 +359,7 @@ class Foodbank(models.Model):
         FoodbankLocation.objects.filter(foodbank = self).delete()
         FoodbankArticle.objects.filter(foodbank = self).delete()
         FoodbankSubscriber.objects.filter(foodbank = self).delete()
+        FoodbankDonationPoint.objects.filter(foodbank = self).delete()
         
         super(Foodbank, self).delete(*args, **kwargs)
 
@@ -397,8 +409,9 @@ class Foodbank(models.Model):
             self.plus_code_compound = pluscodes["compound"]
             self.plus_code_global = pluscodes["global"]
 
-        # Cache number of locations
+        # Cache number of locations & donation points
         self.no_locations = self.get_no_locations()
+        self.no_donation_points = self.get_no_donation_points()
 
         # Cache last need date
         try:
@@ -465,6 +478,8 @@ class FoodbankLocation(models.Model):
             code = "invalid_postcode",
         ),
     ])
+
+    is_donation_point = models.BooleanField(default=False)
     
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
@@ -648,6 +663,115 @@ class FoodbankLocation(models.Model):
 
         super(FoodbankLocation, self).save(*args, **kwargs)
 
+        # Resave the parent food bank
+        if do_foodbank_resave:
+            self.foodbank.save(do_geoupdate=False)
+
+
+class FoodbankDonationPoint(models.Model):
+
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
+    foodbank_name = models.CharField(max_length=100, editable=False)
+    foodbank_slug = models.CharField(max_length=100, editable=False)
+    foodbank_network = models.CharField(max_length=50, editable=False)
+    is_closed = models.BooleanField(default=False)
+
+    name = models.CharField(max_length=100)
+    slug = models.CharField(max_length=100, editable=False)
+    address = models.TextField()
+    postcode = models.CharField(max_length=9, validators=[
+        RegexValidator(
+            regex = POSTCODE_REGEX,
+            message = "Not a valid postcode",
+            code = "invalid_postcode",
+        ),
+    ])
+
+    in_store_only = models.BooleanField(default=False)
+
+    latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
+    plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
+    plus_code_global = models.CharField(max_length=200, verbose_name="Plus Code (Global)", null=True, blank=True, editable=False)
+
+    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
+
+    parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False, on_delete=models.DO_NOTHING)
+    parliamentary_constituency_name = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    parliamentary_constituency_slug = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP", editable=False)
+    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party", editable=False)
+    mp_parl_id = models.IntegerField(verbose_name="MP's ID", null=True, blank=True, editable=False)
+
+    county = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    district = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    ward = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    lsoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    msoa = models.CharField(max_length=50, null=True, blank=True, editable=False)
+
+    modified = models.DateTimeField(auto_now=True, editable=False)
+    edited = models.DateTimeField(editable=False, null=True)
+
+    class Meta:
+       unique_together = ('foodbank', 'name',)
+       app_label = 'givefood'
+
+    def __str__(self):
+        return self.name
+    
+    def __unicode__(self):
+        return self.name
+
+    def full_address(self):
+        return "%s\r\n%s" % (self.address, self.postcode)
+
+    def delete(self, *args, **kwargs):
+
+        super(FoodbankDonationPoint, self).delete(*args, **kwargs)
+        # Resave the parent food bank
+        self.foodbank.save(do_geoupdate=False)
+    
+    def save(self, do_geoupdate=True, do_foodbank_resave=True, *args, **kwargs):
+        # Slugify name
+        self.slug = slugify(self.name)
+
+        # Cache foodbank details
+        self.foodbank_name = self.foodbank.name
+        self.foodbank_slug = self.foodbank.slug
+        self.foodbank_network = self.foodbank.network
+        self.foodbank_phone_number = self.foodbank.phone_number
+        self.foodbank_email = self.foodbank.contact_email
+        self.is_closed = self.foodbank.is_closed
+
+        if do_geoupdate:
+            # Update politics
+            regions = admin_regions_from_postcode(self.postcode)
+            self.country = regions.get("country", None)
+            self.county = regions.get("county", None)
+            self.ward = regions.get("ward", None)
+            self.district = regions.get("district", None)
+            self.lsoa = regions.get("lsoa", None)
+            self.msoa = regions.get("msoa", None)
+
+            try:
+                parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
+                logging.info("Got parl_con %s" % parl_con)
+                self.parliamentary_constituency = parl_con
+                self.parliamentary_constituency_name = self.parliamentary_constituency.name
+                self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
+                self.mp = self.parliamentary_constituency.mp
+                self.mp_party = self.parliamentary_constituency.mp_party
+                self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+            except ParliamentaryConstituency.DoesNotExist: 
+                logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
+                self.parliamentary_constituency = None
+
+            pluscodes = pluscode(self.latt_long)
+            self.plus_code_compound = pluscodes["compound"]
+            self.plus_code_global = pluscodes["global"]
+
+        super(FoodbankDonationPoint, self).save(*args, **kwargs)
+        
         # Resave the parent food bank
         if do_foodbank_resave:
             self.foodbank.save(do_geoupdate=False)

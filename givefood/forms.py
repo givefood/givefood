@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.forms import Form, ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
-from givefood.models import OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine
+from givefood.models import FoodbankDonationPoint, OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine
 from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
@@ -61,6 +61,22 @@ class FoodbankLocationForm(ModelForm):
         if commit:
             location.save()
         return location
+
+   
+class FoodbankDonationPointForm(ModelForm):
+    class Meta:
+        model = FoodbankDonationPoint
+        fields = "__all__"
+        widgets = {'foodbank': HiddenInput()}
+        exclude = ('is_closed',)
+
+    def save(self, commit=True): 
+        donation_point = super().save(commit=False)
+        donation_point.edited = datetime.now()
+        
+        if commit:
+            donation_point.save()
+        return donation_point
 
 
 class FoodbankLocationPoliticsForm(ModelForm):

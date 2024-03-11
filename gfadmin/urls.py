@@ -35,10 +35,16 @@ urlpatterns = (
     url(r'^foodbank/new/$', foodbank_form, name="newfoodbank"),
     url(r'^foodbank/(?P<slug>[-\w]+)/$', foodbank, name="foodbank"),
     url(r'^foodbank/(?P<slug>[-\w]+)/edit/$', foodbank_form, name="foodbank_edit"),
+
+    url(r'^foodbank/(?P<slug>[-\w]+)/donationpoint/new/$', donationpoint_form, name="donationpoint_new"),
+    url(r'^foodbank/(?P<slug>[-\w]+)/donationpoint/(?P<dp_slug>[-\w]+)/edit/$', donationpoint_form, name="donationpoint_edit"),
+    url(r'^foodbank/(?P<slug>[-\w]+)/donationpoint/(?P<dp_slug>[-\w]+)/delete/$', donationpoint_delete, name="donationpoint_delete"),
+
     url(r'^foodbank/(?P<slug>[-\w]+)/location/new/$', fblocation_form, name="fblocation_new"),
     url(r'^foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/edit/$', fblocation_form, name="fblocation_edit"),
     url(r'^foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/delete/$', fblocation_delete, name="fblocation_delete"),
     url(r'^foodbank/(?P<slug>[-\w]+)/location/(?P<loc_slug>[-\w]+)/politics/edit/$', fblocation_politics_edit, name="fblocation_politics_edit"),
+
     url(r'^foodbank/(?P<slug>[-\w]+)/politics/edit/$', foodbank_politics_form, name="foodbank_politics_edit"),
     url(r'^foodbank/(?P<slug>[-\w]+)/crawl/$', foodbank_crawl, name="foodbank_crawl"),
     url(r'^foodbank/(?P<slug>[-\w]+)/sendrfi/$', foodbank_rfi, name="foodbank_rfi"),

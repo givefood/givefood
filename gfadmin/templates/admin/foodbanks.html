@@ -29,6 +29,7 @@
           <th>Postcode</th>
           <th>Closed</th>
           <th>Locations</th>
+          <th>Donation Points</th>
           <th>Network</th>
           <th>Last Order</th>
           <th>Last Need</th>
@@ -46,6 +47,7 @@
               {% endif %}
             </td>
             <td>{{ foodbank.no_locations }}</td>
+            <td>{{ foodbank.no_donation_points }}</td>
             <td>{{ foodbank.network }}</td>
             <td>
               {{ foodbank.last_order }}

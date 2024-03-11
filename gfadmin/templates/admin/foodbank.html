@@ -19,6 +19,11 @@
           <span>Needs &amp; Orders</span>
         </a>
       </li>
+      <li>
+        <a data-tab="donationpoints">
+          <span>Donation Points</span>
+        </a>
+      </li>
       {% if foodbank.articles %}
         <li>
           <a data-tab="articles">
@@ -164,6 +169,8 @@
         <dd>£{{ foodbank.total_cost|intcomma }}</dd>
         <dt>Locations</dt>
         <dd>{{ foodbank.no_locations }}</dd>
+        <dt>Donation Points</dt>
+        <dd>{{ foodbank.no_donation_points }}</dd>
       </dl>
 
       <h3>Dates</h3>
@@ -252,6 +259,10 @@
               <dd>{% if location.plus_code_compound %}{{ location.plus_code_compound|truncatechars:25 }}{% else %}None{% endif %}</dd>
               <dt>Plus Code Global</dt>
               <dd>{% if location.plus_code_global %}{{ location.plus_code_global|truncatechars:25 }}{% else %}None{% endif %}</dd>
+              {% if location.is_donation_point %}
+                <dt>Donation Point</dt>
+                <dd>✅ Yes</dd>
+              {% endif %}
             </dl>
           </td>
           <td>
@@ -263,6 +274,45 @@
           </td>
         {% endfor %}
       </table>
+    </div>
+
+    {# Donation Points #}
+    <div class="column donationpoints is-hidden">
+      <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-link">New Donation Point</a>
+      {% if foodbank.donation_points %}
+        <table class="table is-fullwidth is-hoverable">
+          <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Postcode</th>
+            <th>Lat Lng</th>
+            <th>Place ID</th>
+            <th>Plus Code Cmpd</th>
+            <th>Plus Code Global</th>
+            <th></th>
+          </tr>
+          {% for donationpoint in foodbank.donation_points %}
+            <tr>
+              <td>{{ donationpoint.name }}</td>
+              <td>{{ donationpoint.address|linebreaksbr }}</td>
+              <td>{{ donationpoint.postcode }}</td>
+              <td>{{ donationpoint.latt_long }}</td>
+              <td>{% if donationpoint.place_id %}{{ donationpoint.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
+              <td>{% if donationpoint.plus_code_compound %}{{ donationpoint.plus_code_compound|truncatechars:25 }}{% else %}None{% endif %}</td>
+              <td>{% if donationpoint.plus_code_global %}{{ donationpoint.plus_code_global|truncatechars:25 }}{% else %}None{% endif %}</td>
+              <td>
+                <a href="{% url 'admin:donationpoint_edit' foodbank.slug donationpoint.slug %}" class="button is-small is-link">Edit</a>
+                <form action="{% url 'admin:donationpoint_delete' foodbank.slug donationpoint.slug %}" method="post">
+                  <input type="submit" class="button is-small is-danger" value="Delete" onclick="return confirm('Delete {{ donationpoint.name}}?')">
+                  {% csrf_token %}
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p>No donation points</p>
+      {% endif %}
     </div>
 
     {# Needs #}

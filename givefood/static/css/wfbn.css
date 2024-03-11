@@ -117,6 +117,6 @@ textarea[name='body'] {
     width:200px;
     border-radius:3px;
 }
-.locations address {
+.locations address, .donationpoints address {
     margin-bottom:20px;
 }

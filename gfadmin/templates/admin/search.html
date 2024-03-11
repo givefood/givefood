@@ -15,12 +15,23 @@
             {% endfor %}
 
         </div>
+
         <div class="column">
 
             <h2>Locations</h2>
 
             {% for location in locations %}
                 <a href="{% url 'admin:foodbank' location.foodbank_slug %}">{{ location }}</a> ({{ location.foodbank_name }})<br>
+            {% endfor %}
+
+        </div>
+
+        <div class="column">
+
+            <h2>Donation Point</h2>
+
+            {% for donationpoint in donationpoints %}
+                <a href="{% url 'admin:foodbank' donationpoint.foodbank_slug %}">{{ donationpoint }}</a> ({{ donationpoint.foodbank_name }})<br>
             {% endfor %}
 
         </div>

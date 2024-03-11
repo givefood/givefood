@@ -19,6 +19,7 @@ urlpatterns = (
     url(r'^at/(?P<slug>[-\w]+)/rss.xml$', foodbank_rss, name="foodbank_rss"),
     url(r'^at/(?P<slug>[-\w]+)/map.png$', foodbank_map, name="foodbank_map"),
     url(r'^at/(?P<slug>[-\w]+)/news/$', foodbank_news, name="foodbank_news"),
+    url(r'^at/(?P<slug>[-\w]+)/donationpoints/$', foodbank_donationpoints, name="foodbank_donationpoints"),
     url(r'^at/(?P<slug>[-\w]+)/socialmedia/$', foodbank_socialmedia, name="foodbank_socialmedia"),
     url(r'^at/(?P<slug>[-\w]+)/nearby/$', foodbank_nearby, name="foodbank_nearby"),
     url(r'^at/(?P<slug>[-\w]+)/history/$', foodbank_history, name="foodbank_history"),
