@@ -58,7 +58,7 @@ def index(request):
 
 def search_results(request):
 
-    query = request.GET.get("q")
+    query = request.GET.get("q").strip()
 
     foodbanks = Foodbank.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))
     locations = FoodbankLocation.objects.filter(Q(name__icontains=query) | Q(address__icontains=query))
