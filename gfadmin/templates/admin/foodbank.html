@@ -239,7 +239,13 @@
             <td>
               Delivery
             </td>
-            <td>{{ foodbank.delivery_address|linebreaksbr }}</td>
+            <td>
+              {{ foodbank.delivery_address|linebreaksbr }}
+              <dl class="is-size-7">
+                <dt>Lat Lng</dt>
+                <dd>{{ foodbank.delivery_latt_long }}</dd>
+              </dl>
+            </td>
             <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-small is-pulled-right">Edit</a></td>
           </tr>
         {% endif %}
