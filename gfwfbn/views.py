@@ -26,7 +26,7 @@ def index(request):
 
     # Handle old misspelt URL
     if request.GET.get("lattlong", None):
-        return redirect("%s?lat_lng=%s" % (reverse("wfbn:index"), request.GET.get("lattlong")))
+        return redirect("%s?lat_lng=%s" % (reverse("wfbn:index"), request.GET.get("lattlong")), permanent=True)
 
     address = request.GET.get("address", "")
     lat_lng = request.GET.get("lat_lng", "")
