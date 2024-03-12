@@ -24,6 +24,8 @@
 	{% endfor %}
 	{% for constituency in constituencies %}
 		<url><loc>{{ domain }}{% url 'wfbn:constituency' constituency.slug %}</loc></url>
-		<url><loc>{{ domain }}{% url 'write:constituency' constituency.slug %}</loc></url>
+		{% if enable_write %}
+			<url><loc>{{ domain }}{% url 'write:constituency' constituency.slug %}</loc></url>
+		{% endif %}
 	{% endfor %}
 </urlset>
