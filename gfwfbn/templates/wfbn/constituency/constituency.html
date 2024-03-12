@@ -62,7 +62,9 @@
               {% endif %}
             </p>
             <p>You can write to your MP to politely help them understand that food banks shouldn't exist in our country.</p>
-            <a href="{% url 'write:index' %}" class="button is-link">Write</a><br><br>
+            {% if enable_write %}
+              <a href="{% url 'write:index' %}" class="button is-link">Write</a><br><br>
+            {% endif %}
 
             <p>The following food banks operate in the {{ constituency.name }} constituency. Here is what they are requesting to have donated.</p>
             <table class="table is-narrow is-fullwidth">
