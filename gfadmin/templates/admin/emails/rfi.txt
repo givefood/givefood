@@ -6,7 +6,7 @@ https://www.givefood.org.uk{% url 'wfbn:foodbank' foodbank.slug %}
 
 We're keen to make sure we've got your information correct and also have an up to date list of the items, if any, that you would like to have donated.
 
-You can edit your details, plus add/modify your shopping list here...
+If we've got anything wrong then please reply to this email and we'll fix it straight away. Alternatively, you can edit your details, plus add/modify your shopping list here...
 
 https://www.givefood.org.uk{% url 'wfbn:foodbank_edit' foodbank.slug %}
 
@@ -19,4 +19,4 @@ Jason
 
 About Give Food
 
-Give Food is a charity that collates and publishes data on food banks. We maintain the the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover over 2700 locations. Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, food manufacturers, hundreds of national & local news websites, apps & the Trussell Trust.
+Give Food is a charity that collates and publishes data on food banks. We maintain the the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover over 2800 locations. Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, food manufacturers, hundreds of national & local news websites, apps & the Trussell Trust.
