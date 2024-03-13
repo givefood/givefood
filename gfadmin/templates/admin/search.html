@@ -31,7 +31,7 @@
             <h2>Donation Point</h2>
 
             {% for donationpoint in donationpoints %}
-                <a href="{% url 'admin:foodbank' donationpoint.foodbank_slug %}">{{ donationpoint }}</a> ({{ donationpoint.foodbank_name }})<br>
+                <a href="{% url 'admin:foodbank' donationpoint.foodbank_slug %}#donationpoints">{{ donationpoint }}</a> ({{ donationpoint.foodbank_name }})<br>
             {% endfor %}
 
         </div>
