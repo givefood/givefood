@@ -13,7 +13,7 @@ News from {{ need.foodbank.name }} Food Bank...
 {% endif %}
 You can find more details at https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/
 
-{% if foodbank.no_donation_points != 0 %}🛒 Find donation points https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/donationpoints/{% endif %}
+{% if need.foodbank.no_donation_points != 0 %}🛒 Find donation points https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/donationpoints/{% endif %}
 🗺️ See other nearby food banks https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/nearby/
 
 You're getting these emails because you subscribed to them at www.givefood.org.uk on {{ subscriber.created|date:"jS F Y" }} at {{ subscriber.created|date:"g:i a" }}. To unsubscribe visit http://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/updates/unsubscribe/?key={{ subscriber.unsub_key }}

@@ -22,7 +22,7 @@
 
     <p>You can find more details at <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/</a></p>
 
-    {% if foodbank.no_donation_points != 0 %}
+    {% if need.foodbank.no_donation_points != 0 %}
         <p>🛒 Find <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/donationpoints/">donation points</a></p>
     {% endif %}
     <p>🗺️ See other <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/nearby/">nearby food banks</a></p>
