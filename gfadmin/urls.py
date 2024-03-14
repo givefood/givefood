@@ -112,6 +112,7 @@ urlpatterns = (
     url(r'^stats/needs/$', need_stats, name="need_stats"),
 
     url(r'^proxy/$', proxy, name="proxy"),
+    url(r'^proxy/gmaps/place/textsearch/$', gmap_place_proxy, name="gmap_place_proxy"),
 
     url(r'^resaver/orders/$', resave_orders, name="resave_orders"),
 )

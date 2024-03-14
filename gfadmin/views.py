@@ -7,7 +7,7 @@ import requests
 from datetime import datetime, timedelta
 
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
@@ -536,12 +536,13 @@ def need(request, id):
 def donationpoint_form(request, slug = None, dp_slug = None):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    page_title = "Edit %s Food Bank Donation Point" % (foodbank.name)
 
     if dp_slug:
         donation_point = get_object_or_404(FoodbankDonationPoint, foodbank = foodbank, slug = dp_slug)
+        page_title = "Edit Donation Point"
     else:
         donation_point = None
+        page_title = "New Donation Point"
 
     if request.POST:
         form = FoodbankDonationPointForm(request.POST, instance=donation_point)
@@ -1540,3 +1541,11 @@ def proxy(request):
     }
     request = requests.get(url, headers=headers)
     return HttpResponse(request.text)
+
+
+def gmap_place_proxy(request):
+
+    url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+    params = request.GET.dict()
+    response = requests.get(url, params=params)
+    return JsonResponse(response.json())
