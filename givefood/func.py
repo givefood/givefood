@@ -919,6 +919,8 @@ def fetch_json(url):
 def make_url_friendly(url):
     url = url.replace("https://","")
     url = url.replace("http://","")
+    if url[-1:] == "/":
+        url = url[:-1]
     return url
 
 
