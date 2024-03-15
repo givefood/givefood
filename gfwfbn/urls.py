@@ -19,7 +19,6 @@ urlpatterns = (
     url(r'^at/(?P<slug>[-\w]+)/rss.xml$', foodbank_rss, name="foodbank_rss"),
     url(r'^at/(?P<slug>[-\w]+)/map.png$', foodbank_map, name="foodbank_map"),
     url(r'^at/(?P<slug>[-\w]+)/news/$', foodbank_news, name="foodbank_news"),
-    url(r'^at/(?P<slug>[-\w]+)/donationpoints/$', foodbank_donationpoints, name="foodbank_donationpoints"),
     url(r'^at/(?P<slug>[-\w]+)/socialmedia/$', foodbank_socialmedia, name="foodbank_socialmedia"),
     url(r'^at/(?P<slug>[-\w]+)/nearby/$', foodbank_nearby, name="foodbank_nearby"),
     url(r'^at/(?P<slug>[-\w]+)/history/$', foodbank_history, name="foodbank_history"),
@@ -33,6 +32,10 @@ urlpatterns = (
     url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/$', foodbank_edit_form, name="foodbank_edit_form"),
     url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/(?P<locslug>[-\w]+)/$', foodbank_edit_form, name="foodbank_edit_form_location"),
     url(r'^at/(?P<slug>[-\w]+)/edit/thanks/$', foodbank_edit_thanks, name="foodbank_edit_thanks"),
+
+    # Donation Points
+    url(r'^at/(?P<slug>[-\w]+)/donationpoints/$', foodbank_donationpoints, name="foodbank_donationpoints"),
+    url(r'^at/(?P<slug>[-\w]+)/donationpoint/(?P<dpslug>[-\w]+)/$', foodbank_donationpoint, name="foodbank_donationpoint"),
     
     # Locations
     url(r'^at/(?P<slug>[-\w]+)/locations/$', foodbank_locations, name="foodbank_locations"),

@@ -4,15 +4,14 @@
   <link rel="stylesheet" href="/static/css/wfbn.css">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@GiveFoodCharity">
-  <meta property="og:title" content="{{ location }}, {{ foodbank.full_name }}">
+  <meta property="og:title" content="{{ donationpoint }}, {{ foodbank.full_name }}">
   <meta property="og:description" content="Find what {{ foodbank }} food bank in {{ location }} is requesting to have donated">
   <meta name="description" content="Find what {{ foodbank }} food bank in {{ location }} is requesting to have donated">
-  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_location_map' foodbank.slug location.slug %}">
   <link rel="manifest" href="/needs/manifest.json">
-  <meta name="geo.placename" content="{{ location }} - {{ foodbank.full_name }}">
-  <meta name="geo.position" content="{{ location.latt_long }}">
-  <meta property="place:location:latitude" content="{{ location.latt }}">
-  <meta property="place:location:longitude" content="{{ location.long }}">
+  <meta name="geo.placename" content="{{ donationpoint }} - {{ foodbank.full_name }}">
+  <meta name="geo.position" content="{{ donationpoint.latt_long }}">
+  <meta property="place:location:latitude" content="{{ donationpoint.latt }}">
+  <meta property="place:location:longitude" content="{{ donationpoint.long }}">
   {% if foodbank.is_closed %}
     <meta name="robots" content="noindex">
   {% endif %}
@@ -21,7 +20,7 @@
   </script>
 {% endblock %}
 
-{% block title %}{{ location.name }} - {{ foodbank.full_name }} - Give Food{% endblock %}
+{% block title %}{{ donationpoint.name }} - {{ foodbank.full_name }} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -41,11 +40,12 @@
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
-            <li class="is-active"><a href="#" aria-current="page">{{ location }}</a></li>
+            <li><a href="{% url 'wfbn:foodbank_donationpoints' foodbank.slug %}">Donation Points</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{{ donationpoint }}</a></li>
         </ul>
       </nav>
 
-      <h1>{{ location }} - {{ foodbank.full_name }}</h1>
+      <h1>{{ donationpoint }} - {{ foodbank.full_name }}</h1>
 
       <div class="columns">
 
@@ -59,23 +59,28 @@
               <p class="tag is-danger is-large">This food bank is closed</p>
             {% endif %}
 
-            {% if foodbank.latest_need.change_text == "Facebook" %}
-              <p>You can find out what {{ foodbank.full_name }} is requesting to have donated on their Facebook page:</p>
-              {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
-            {% else %}
-              <p>{{ foodbank.full_name }} is currently requesting the following items to be donated:</p>
-              <p class="needs">
-                {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
-              </p>
-              {% if foodbank.latest_need.excess_change_text %}
-                <p>{{ foodbank.full_name }} currently doesn't need anymore of these items: {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
-              {% endif %}
+            <p>{{ donationpoint }} is a donation point for <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a>. {% if has_need %}Here they are requesting to have donated...{% endif %}</p>
 
-              {% if location.is_donation_point %}
-                <p>🛒 This location accepts donations.</p>
-              {% endif %}
-              
-              {% include 'wfbn/foodbank/includes/subscribe.html' %}
+            {% if has_need %}
+                <p class="needs">
+                    {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
+                </p>
+                {% if foodbank.latest_need.excess_change_text %}
+                  <p>They don't need anymore {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+                {% endif %}
+            {% endif %}
+
+            {% if donationpoint.opening_hours %}
+                <h3>Opening hours</h3>
+                <p>{{ donationpoint.opening_hours|linebreaksbr }}</p>
+            {% endif %}
+
+            {% if donationpoint.in_store_only %}
+                <p>⚠️ Only accepts in-store purchases as donations</p>
+            {% endif %}
+
+            {% if donationpoint.wheelchair_accessible %}
+                <p>♿ Wheelchair accessible</p>
             {% endif %}
 
           </div>
@@ -85,13 +90,13 @@
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
             <div id="map" class="sidemap"></div>
-            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
+            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donationpoint.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
             <address>
-              {{ location.address|linebreaksbr }}<br>
-              {{ location.postcode }}
+              {{ donationpoint.address|linebreaksbr }}<br>
+              {{ donationpoint.postcode }}
             </address>
             <div class="pluscode">
-              <img src="/static/img/pluscode.svg" alt="Plus Code" class="contact-icon"> <a href="https://www.google.co.uk/maps/place/{{ location.plus_code_global|urlencode }}/">{{ location.plus_code_global }}</a>
+              <img src="/static/img/pluscode.svg" alt="Plus Code" class="contact-icon"> <a href="https://www.google.co.uk/maps/place/{{ donationpoint.plus_code_global|urlencode }}/">{{ donationpoint.plus_code_global }}</a>
             </div>
 
             {% if foodbank.delivery_address %}
@@ -102,14 +107,13 @@
             {% endif %}
 
             <div class="contacts is-size-6">
-              <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url_with_ref }}" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
-              {% if foodbank.phone_number %}
-                <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ location.phone_or_foodbank_phone }}">{{ location.phone_or_foodbank_phone }}</a><br>
+              {% if donationpoint.url %}
+                <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ donationpoint.url_with_ref }}" id="website_link">{{ donationpoint.friendly_url|truncatechars:40 }}</a><br>
               {% endif %}
-              <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}" id="email_link">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
+              {% if donationpoint.phone_number %}
+                <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ donationpoint.phone_number }}">{{ donationpoint.phone_number }}</a><br>
+              {% endif %}
             </div>
-
-            {% include "wfbn/foodbank/includes/charitynetwork.html" %}
 
           </div>
       </div>
@@ -147,7 +151,7 @@ var mapOptions = {
   mapTypeId: google.maps.MapTypeId.ROADMAP,
 };
 map = new google.maps.Map(document.getElementById("map"), mapOptions);
-add_marker({{ location.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
+add_marker({{ donationpoint.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
 google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
   var maxZoom = 15
   if (map.getZoom() > maxZoom) {

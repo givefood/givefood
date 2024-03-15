@@ -1543,9 +1543,12 @@ def proxy(request):
     return HttpResponse(request.text)
 
 
-def gmap_place_proxy(request):
+def gmap_proxy(request, type):
 
-    url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+    if type == "textsearch":
+        url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+    if type == "placedetails":
+        url = "https://maps.googleapis.com/maps/api/place/details/json"
     params = request.GET.dict()
     response = requests.get(url, params=params)
     return JsonResponse(response.json())

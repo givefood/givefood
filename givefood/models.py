@@ -438,6 +438,7 @@ class Foodbank(models.Model):
                 reverse("wfbn:foodbank_history", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_rss", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_locations", kwargs={"slug":self.slug}),
+                reverse("wfbn:foodbank_donationpoints", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_socialmedia", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_nearby", kwargs={"slug":self.slug}),
                 reverse("api_foodbanks"),
@@ -462,6 +463,8 @@ class Foodbank(models.Model):
             ]
             for location in self.locations():
                 urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
+            for donationpoint in self.donation_points():
+                urls.append(reverse("wfbn:foodbank_donationpoint", kwargs={"slug":self.slug, "dpslug":donationpoint.slug}))
             decache(urls)
 
 
@@ -693,7 +696,10 @@ class FoodbankDonationPoint(models.Model):
             code = "invalid_postcode",
         ),
     ])
-
+    phone_number = models.CharField(max_length=50, null=True, blank=True)
+    opening_hours = models.TextField(null=True, blank=True)
+    wheelchair_accessible = models.BooleanField(null=True, blank=True)
+    url = models.URLField(max_length=1024, verbose_name="URL", null=True, blank=True)
     in_store_only = models.BooleanField(default=False)
 
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
@@ -728,9 +734,27 @@ class FoodbankDonationPoint(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+    def url_with_ref(self):
+        if self.url:
+            added_params = {"ref":"givefood.org.uk"}
+            req = PreparedRequest()
+            req.prepare_url(self.url, added_params)
+            return req.url
+        else:
+            return False
+    
+    def friendly_url(self):
+        return make_url_friendly(self.url)
 
     def full_address(self):
         return "%s\r\n%s" % (self.address, self.postcode)
+    
+    def latt(self):
+        return float(self.latt_long.split(",")[0])
+
+    def long(self):
+        return float(self.latt_long.split(",")[1])
 
     def delete(self, *args, **kwargs):
 
@@ -742,12 +766,14 @@ class FoodbankDonationPoint(models.Model):
         # Slugify name
         self.slug = slugify(self.name)
 
+        # Cleanup phone number
+        if self.phone_number:
+            self.phone_number = self.phone_number.replace(" ","")
+
         # Cache foodbank details
         self.foodbank_name = self.foodbank.name
         self.foodbank_slug = self.foodbank.slug
         self.foodbank_network = self.foodbank.network
-        self.foodbank_phone_number = self.foodbank.phone_number
-        self.foodbank_email = self.foodbank.contact_email
         self.is_closed = self.foodbank.is_closed
 
         if do_geoupdate:

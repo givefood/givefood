@@ -11,7 +11,7 @@ from django.db.models import Sum
 from django.utils.timesince import timesince
 from session_csrf import anonymous_csrf
 
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, Order, FoodbankChange, ParliamentaryConstituency
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation, Order, FoodbankChange, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
@@ -155,6 +155,7 @@ def sitemap(request):
     foodbanks = Foodbank.objects.all().exclude(is_closed=True)
     constituencies = ParliamentaryConstituency.objects.all()
     locations = FoodbankLocation.objects.all().exclude(is_closed=True)
+    donationpoints = FoodbankDonationPoint.objects.all().exclude(is_closed=True)
 
     template_vars = {
         "domain":SITE_DOMAIN,
@@ -162,6 +163,7 @@ def sitemap(request):
         "foodbanks":foodbanks,
         "constituencies":constituencies,
         "locations":locations,
+        "donationpoints":donationpoints,
     }
     return render(request, "public/sitemap.xml", template_vars, content_type='text/xml')
 

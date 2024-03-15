@@ -60,6 +60,10 @@
               <p class="tag is-danger is-large">This food bank is closed</p>
             {% endif %}
 
+            {% if location.is_donation_point %}
+              <p>🛒 This location accepts donations.</p>
+            {% endif %}
+
             <div class="contacts is-size-6">
                 <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url_with_ref }}" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
                 {% if foodbank.phone_number %}
