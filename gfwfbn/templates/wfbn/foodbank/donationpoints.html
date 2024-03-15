@@ -109,13 +109,17 @@
 <script src="/static/js/wfbn.js" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 <script>
-function add_marker(lat, lng) {
+function add_marker(lat, lng, url) {
   position = new google.maps.LatLng(lat, lng)
   var marker = new google.maps.Marker({
-  position: position,
-  map: map
-});
+    position: position,
+    map: map,
+    url: url
+  });
   bounds.extend(position);
+  google.maps.event.addListener(marker, "click", function () {
+    location.assign(marker.url);
+  });
 }
 
 var map
@@ -133,15 +137,15 @@ map = new google.maps.Map(document.getElementById("map"), mapOptions);
 {% endif %}
 
 {% if foodbank.delivery_address %}
-  add_marker({{ foodbank.delivery_latt_long }})
+  add_marker({{ foodbank.delivery_latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
 {% endif %}
 
 {% for donation_point in foodbank.location_donation_points %}
-  add_marker({{ donation_point.latt_long }})
+  add_marker({{ donation_point.latt_long }}, "{% url 'wfbn:foodbank_location' foodbank.slug  donation_point.slug %}")
 {% endfor %}
 
 {% for donation_point in foodbank.donation_points %}
-  add_marker({{ donation_point.latt_long }})
+  add_marker({{ donation_point.latt_long }}, "{% url 'wfbn:foodbank_donationpoint' foodbank.slug  donation_point.slug %}")
 {% endfor %}
 
 google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
