@@ -442,6 +442,7 @@ class Foodbank(models.Model):
                 reverse("wfbn:foodbank_socialmedia", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_nearby", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_news", kwargs={"slug":self.slug}),
+                reverse("wfbn:foodbank_subscribe", kwargs={"slug":self.slug}),
                 reverse("api_foodbanks"),
                 "%s?format=csv" % (reverse("api_foodbanks")),
                 reverse("api2:foodbanks"),
