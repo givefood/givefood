@@ -114,6 +114,7 @@ OLD_FOODBANK_SLUGS = {
     "blandford":"nourish",
     "abergele-district/kinmel-bay-church":"kinmel-bay-church",
     "vauxhall":"norwood-brixton/vauxhall",
+    "ballymena/ballymena-north":"ballymena-north",
 }
 
 FOODBANK_SUBPAGES = [
