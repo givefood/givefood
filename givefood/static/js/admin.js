@@ -114,7 +114,11 @@ if (dp_name_field) {
       url = place_detail_url + place_id;
       var placedetail_req = new XMLHttpRequest();
       placedetail_req.addEventListener("load", function(){
-        address_field.value = address_cleanup(this.response.result.formatted_address.replaceAll(", ", "\n"))
+        address = address_cleanup(this.response.result.formatted_address.replaceAll(", ", "\n"))
+        postcode = address.match(/[A-Za-z]{1,2}\d{1,2}(?:\s?(?:\d?\w{2}))?/)
+        address = address.replace(" " + postcode, "")
+        address_field.value = address
+        postcode_field.value = postcode
         if (this.response.result.formatted_phone_number) {
           document.querySelector("#id_phone_number").value = this.response.result.formatted_phone_number
         }
