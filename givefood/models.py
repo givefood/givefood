@@ -297,10 +297,12 @@ class Foodbank(models.Model):
         
     def get_no_donation_points(self):
         no_donation_points = FoodbankDonationPoint.objects.filter(foodbank = self).count()
-        if not no_donation_points:
-            return 0
-        else:
-            return no_donation_points
+        no_location_donation_points = FoodbankLocation.objects.filter(foodbank = self, is_donation_point = True).count()
+        no_donation_points = no_donation_points + no_location_donation_points
+        if self.delivery_address:
+            no_donation_points = no_donation_points + 1
+        
+        return no_donation_points
 
     def total_weight(self):
         weight = Order.objects.filter(foodbank = self).aggregate(models.Sum('weight'))['weight__sum']
