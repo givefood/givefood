@@ -59,7 +59,6 @@
 
             {% if not foodbank.address_is_administrative %}
                 <strong>Main</strong>
-                <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
                 <address>
                     {{ foodbank.address|linebreaksbr }}<br>
                     {{ foodbank.postcode }}
