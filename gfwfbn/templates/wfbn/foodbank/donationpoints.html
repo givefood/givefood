@@ -68,7 +68,6 @@
             
             {% if foodbank.delivery_address %}
               <strong>Delivery address</strong>
-              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.delivery_latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
               <address>
                 {{ foodbank.delivery_address|linebreaksbr }}
               </address>
@@ -76,7 +75,6 @@
 
             {% for location_donation_point in foodbank.location_donation_points %}
                 <a href="{% url 'wfbn:foodbank_location' foodbank.slug location_donation_point.slug %}">{{ location_donation_point.name }}</a>
-                <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donation_point.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
                 <address>
                   {{ location_donation_point.address|linebreaksbr }}<br>
                   {{ location_donation_point.postcode }}
@@ -85,7 +83,6 @@
 
             {% for donation_point in foodbank.donation_points %}
                 <a href="{% url 'wfbn:foodbank_donationpoint' foodbank.slug donation_point.slug %}">{{ donation_point.name }}</a>
-                <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donation_point.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
                 {% if donation_point.in_store_only %}
                     <br><div class="is-size-7">⚠️ Donations of in-store purchases only</div>
                 {% endif %}
