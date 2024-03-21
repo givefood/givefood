@@ -42,6 +42,10 @@ h3 {
   font-size:1em;
   margin-top:15px;
 }
+.tabs .tag {
+  height:1.6em;
+  padding:0 4px;
+}
 #fbmap {
   width:1500px;
   height:1500px;

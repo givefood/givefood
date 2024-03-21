@@ -11,23 +11,23 @@
     <ul>
       <li class="is-active">
         <a data-tab="generallocations">
-          <span>General &amp; Locations</span>
+          <span>General &amp; Locations <span class="tag is-info is-normal is-light">{{ counts.locations }}</span></span>
         </a>
       </li>
       <li>
         <a data-tab="needsorders">
-          <span>Needs &amp; Orders</span>
+          <span>Needs <span class="tag is-info is-normal is-light">{{ counts.needs }}</span> &amp; Orders <span class="tag is-info is-normal is-light">{{ counts.orders }}</span></span>
         </a>
       </li>
       <li>
         <a data-tab="donationpoints">
-          <span>Donation Points</span>
+          <span>Donation Points <span class="tag is-info is-normal is-light">{{ counts.donation_points }}</span></span>
         </a>
       </li>
       {% if foodbank.articles %}
         <li>
           <a data-tab="articles">
-            <span>Articles</span>
+            <span>Articles <span class="tag is-info is-normal is-light">{{ counts.articles }}</span></span>
           </a>
         </li>
       {% endif %}
@@ -40,7 +40,7 @@
       {% endif %}
       <li>
         <a data-tab="subscribers">
-          <span>Subscribers</span>
+          <span>Subscribers <span class="tag is-info is-normal is-light">{{ counts.subscribers }}</span></span>
         </a>
       </li>
     </ul>

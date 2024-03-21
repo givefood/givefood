@@ -365,8 +365,18 @@ def foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
+    counts = {
+        "locations":FoodbankLocation.objects.filter(foodbank = foodbank).count(),
+        "needs":FoodbankChange.objects.filter(foodbank = foodbank).count(),
+        "orders":Order.objects.filter(foodbank = foodbank).count(),
+        "donation_points":FoodbankDonationPoint.objects.filter(foodbank = foodbank).count(),
+        "articles":FoodbankArticle.objects.filter(foodbank = foodbank).count(),
+        "subscribers":FoodbankSubscriber.objects.filter(foodbank = foodbank).count(),
+    }
+
     template_vars = {
         "foodbank":foodbank,
+        "counts":counts,
     }
     return render(request, "admin/foodbank.html", template_vars)
 
