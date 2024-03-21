@@ -765,7 +765,7 @@ class FoodbankDonationPoint(models.Model):
             postcodes = list(self.foodbank.locations().values_list("postcode", flat=True))
             postcodes.append(self.foodbank.postcode)
             if self.postcode in postcodes:
-                raise ValidationError("Postcode can't be the same as the food bank or one of it's location")
+                raise ValidationError("Postcode can't be the same as the food bank or one of it's locations")
 
     def delete(self, *args, **kwargs):
 
