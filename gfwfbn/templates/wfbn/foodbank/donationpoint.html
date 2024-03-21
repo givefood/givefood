@@ -99,13 +99,6 @@
               <img src="/static/img/pluscode.svg" alt="Plus Code" class="contact-icon"> <a href="https://www.google.co.uk/maps/place/{{ donationpoint.plus_code_global|urlencode }}/">{{ donationpoint.plus_code_global }}</a>
             </div>
 
-            {% if foodbank.delivery_address %}
-              <h3>Delivery address</h3>
-              <address>
-                {{ foodbank.delivery_address|linebreaksbr }}
-              </address>
-            {% endif %}
-
             <div class="contacts is-size-6">
               {% if donationpoint.url %}
                 <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ donationpoint.url_with_ref }}" id="website_link">{{ donationpoint.friendly_url|truncatechars:40 }}</a><br>
