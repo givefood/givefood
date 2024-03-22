@@ -44,10 +44,11 @@ function slugify(str) {
 }
 
 function address_cleanup(str) {
-  str = str.replace(" Rd ", " Road");
-  str = str.replace(" St ", " Street");
-  str = str.replace(" Ln ", " Lane");
-  str = str.replace(" Cl ", " Close");
+  str = str.replace("Rd\n", "Road\n");
+  str = str.replace("St\n", "Street\n");
+  str = str.replace("Ln\n", "Lane\n");
+  str = str.replace("Cl\n", "Close\n");
+  str = str.replace("Ave\n", "Avenue\n");
   return str
 }
 
