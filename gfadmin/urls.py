@@ -104,6 +104,7 @@ urlpatterns = (
     url(r'^emailtester/$', email_tester, name="email_tester"),
     url(r'^emailtester/test/$', email_tester_test, name="email_tester_test"),
 
+    url(r'^stats/quarter/$', quarter_stats, name="quarter_stats"),
     url(r'^stats/orders/$', order_stats, name="order_stats"),
     url(r'^stats/editing/$', edit_stats, name="edit_stats"),
     url(r'^stats/subscribers/$', subscriber_stats, name="subscriber_stats"),

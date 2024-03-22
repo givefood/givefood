@@ -870,6 +870,56 @@ def politics_csv(request):
     return response
 
 
+def quarter_stats(request):
+
+    start_date = request.GET.get("start")
+    end_date = request.GET.get("end")
+    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+
+    orders = Order.objects.filter(created__gte=start_date, created__lte=end_date)
+    order_count = orders.count()
+
+    weight = 0
+    items = 0
+    calories = 0
+    cost = 0
+    
+    for order in orders:
+        weight += order.weight
+        items += order.no_items
+        calories += order.calories
+        cost += order.cost
+
+    weight = "%s kg" % (round(weight / 1000,2))
+    cost = "£%s" % (round(cost / 1000,2))
+
+    edits = Foodbank.objects.filter(edited__gte=start_date, edited__lte=end_date).count()
+    new_subscribers = FoodbankSubscriber.objects.filter(created__gte=start_date, created__lte=end_date).count()
+    items_found = FoodbankChangeLine.objects.filter(created__gte=start_date, created__lte=end_date).count()
+
+    stats = {
+        "Start Date":start_date,
+        "End Date":end_date,
+        "Deliveries":order_count,
+        "Items":items,
+        "Weight":weight,
+        "Calories":calories,
+        "Cost":cost,
+        "Edits":edits,
+        "Subscriptions":new_subscribers,
+        "Items Found":items_found,
+    }
+
+    template_vars = {
+        "stats":stats,
+        "title":"Quarter",
+        "section":"stats",
+    }
+
+    return render(request, "admin/stats.html", template_vars)
+    
+
 def edit_stats(request):
 
     all_foodbanks = get_all_foodbanks()
