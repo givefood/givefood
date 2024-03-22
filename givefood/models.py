@@ -289,11 +289,7 @@ class Foodbank(models.Model):
         return FoodbankSubscriber.objects.filter(foodbank = self).count()
 
     def get_no_locations(self):
-        no_locations = FoodbankLocation.objects.filter(foodbank = self).count()
-        if not no_locations:
-            return 0
-        else:
-            return no_locations
+        return FoodbankLocation.objects.filter(foodbank = self).count()
         
     def get_no_donation_points(self):
         no_donation_points = FoodbankDonationPoint.objects.filter(foodbank = self).count()
