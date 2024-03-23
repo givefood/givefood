@@ -49,6 +49,7 @@ function address_cleanup(str) {
   str = str.replace("Ln\n", "Lane\n");
   str = str.replace("Cl\n", "Close\n");
   str = str.replace("Ave\n", "Avenue\n");
+  str = str.replace("Ct\n", "Court\n");
   return str
 }
 
