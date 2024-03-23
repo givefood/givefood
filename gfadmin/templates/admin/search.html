@@ -5,56 +5,68 @@
 {% block body %}
 
     <div class="columns">
-
         <div class="column">
-
-            <h2>Food Banks</h2>
-
-            {% for foodbank in foodbanks %}
-                <a href="{% url 'admin:foodbank' foodbank.slug %}">{{ foodbank }}</a><br>
-            {% endfor %}
-
+            <form action="{% url 'admin:search_results' %}" method="get">
+                <div class="field has-addons">
+                    <div class="control">
+                      <input class="input" type="text" name="q" value="{{ query }}">
+                    </div>
+                    <div class="control">
+                      <button class="button is-info">
+                        Search
+                      </button>
+                    </div>
+                  </div>
+            </form>
         </div>
+    </div>
 
-        <div class="column">
+    <div class="columns">
 
-            <h2>Locations</h2>
+        {% if foodbanks %}
+            <div class="column">
+                <h2>Food Banks</h2>
+                {% for foodbank in foodbanks %}
+                    <a href="{% url 'admin:foodbank' foodbank.slug %}">{{ foodbank }}</a><br>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-            {% for location in locations %}
-                <a href="{% url 'admin:foodbank' location.foodbank_slug %}">{{ location }}</a> ({{ location.foodbank_name }})<br>
-            {% endfor %}
+        {% if locations %}
+            <div class="column">
+                <h2>Locations</h2>
+                {% for location in locations %}
+                    <a href="{% url 'admin:foodbank' location.foodbank_slug %}">{{ location }}</a> ({{ location.foodbank_name }})<br>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        </div>
+        {% if donationpoints %}
+            <div class="column">
+                <h2>Donation Points</h2>
+                {% for donationpoint in donationpoints %}
+                    <a href="{% url 'admin:foodbank' donationpoint.foodbank_slug %}#donationpoints">{{ donationpoint }}</a> ({{ donationpoint.foodbank_name }})<br>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-        <div class="column">
+        {% if constituencies %}
+            <div class="column">
+                <h2>Constituencies</h2>
+                {% for constituency in constituencies %}
+                    <a href="{% url 'admin:parlcon_form' constituency.slug %}">{{ constituency }}</a><br>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-            <h2>Donation Point</h2>
-
-            {% for donationpoint in donationpoints %}
-                <a href="{% url 'admin:foodbank' donationpoint.foodbank_slug %}#donationpoints">{{ donationpoint }}</a> ({{ donationpoint.foodbank_name }})<br>
-            {% endfor %}
-
-        </div>
-
-        <div class="column">
-
-            <h2>Constituencies</h2>
-
-            {% for constituency in constituencies %}
-                <a href="{% url 'admin:parlcon_form' constituency.slug %}">{{ constituency }}</a><br>
-            {% endfor %}
-
-        </div>
-
-        <div class="column">
-
-            <h2>Needs</h2>
-
-            {% for need in needs %}
-                <a href="{% url 'admin:need' need.need_id %}">{{ need.need_id }}</a> {{ need.foodbank_name }}, {{ need.modified }}<br>
-            {% endfor %}
-
-        </div>
+        {% if needs %}
+            <div class="column">
+                <h2>Needs</h2>
+                {% for need in needs %}
+                    <a href="{% url 'admin:need' need.need_id %}">{{ need.need_id }}</a> {{ need.foodbank_name }}, {{ need.modified }}<br>
+                {% endfor %}
+            </div>
+        {% endif %}
 
     </div>
 

@@ -58,12 +58,14 @@ def index(request):
 
 def search_results(request):
 
-    query = request.GET.get("q").strip()
+    query = request.GET.get("q")
+    if query:
+        query = query.strip()
 
-    foodbanks = Foodbank.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))
-    locations = FoodbankLocation.objects.filter(Q(name__icontains=query) | Q(address__icontains=query))
+    foodbanks = Foodbank.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))[:100]
+    locations = FoodbankLocation.objects.filter(Q(name__icontains=query) | Q(address__icontains=query))[:100]
     donationpoints = FoodbankDonationPoint.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))[:100]
-    constituencies = ParliamentaryConstituency.objects.filter(Q(name__icontains=query) | Q(mp__icontains=query))
+    constituencies = ParliamentaryConstituency.objects.filter(Q(name__icontains=query) | Q(mp__icontains=query))[:100]
     needs = FoodbankChange.objects.filter(change_text__icontains=query).order_by("-created")[:100]
     
     template_vars = {
