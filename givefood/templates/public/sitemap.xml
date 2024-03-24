@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  👋 Hello!
+  🕰️ Generated at {% now "r" %}
+  🖥️ By machine {{ instance_id }}
+  💿 Using code v{{ version }}
+-->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	{% for url_name in url_names %}
 		<url><loc>{{ domain }}{% url url_name %}</loc></url>
