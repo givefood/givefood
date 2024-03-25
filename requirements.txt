@@ -15,3 +15,4 @@ feedparser
 psycopg2-binary
 google-cloud-secret-manager
 openai==0.28
+furl

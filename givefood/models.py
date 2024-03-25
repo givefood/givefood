@@ -4,6 +4,7 @@
 import hashlib, unicodedata, logging, json
 from datetime import date, datetime, timedelta
 from string import capwords
+from furl import furl
 
 from django.db import models
 from django.core.validators import RegexValidator
@@ -737,10 +738,16 @@ class FoodbankDonationPoint(models.Model):
     
     def url_with_ref(self):
         if self.url:
-            added_params = {"ref":"givefood.org.uk"}
-            req = PreparedRequest()
-            req.prepare_url(self.url, added_params)
-            return req.url
+            url = furl(self.url)
+            url.remove([
+                "utm_source",
+                "utm_medium",
+                "utm_campaign",
+                "y_source",
+                "sc_cmp",
+            ])
+            url.add({"ref":"givefood.org.uk"})
+            return url.url
         else:
             return False
     
