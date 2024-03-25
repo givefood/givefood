@@ -295,6 +295,7 @@
             <th>Place ID</th>
             <th>Plus Code Cmpd</th>
             <th>Has Open Hrs</th>
+            <th>In Store Only?</th>
             <th></th>
           </tr>
           {% for donationpoint in foodbank.donation_points %}
@@ -306,6 +307,7 @@
               <td>{% if donationpoint.place_id %}{{ donationpoint.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
               <td>{% if donationpoint.plus_code_compound %}{{ donationpoint.plus_code_compound|truncatechars:25 }}{% else %}None{% endif %}</td>
               <td>{% if donationpoint.opening_hours %}Y{% endif %}</td>
+              <td>{% if donationpoint.in_store_only %}Y{% endif %}</td>
               <td>
                 <a href="{% url 'admin:donationpoint_edit' foodbank.slug donationpoint.slug %}" class="button is-small is-link">Edit</a>
                 <form action="{% url 'admin:donationpoint_delete' foodbank.slug donationpoint.slug %}" method="post">
