@@ -42,6 +42,11 @@ h3 {
   font-size:1em;
   margin-top:15px;
 }
+input[type=checkbox] {
+  height:18px;
+  width:18px;
+  margin:10px 0;
+}
 .tabs .tag {
   height:1.6em;
   padding:0 4px;
