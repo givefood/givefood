@@ -120,3 +120,12 @@ textarea[name='body'] {
 .locations address, .donationpoints address {
     margin-bottom:20px;
 }
+.map-legend {
+    margin-top:10px;
+}
+.map-legend img {
+    float:left;
+    width:22px;
+    display:block;
+    padding:2px 2px 0 0;
+}
