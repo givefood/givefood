@@ -1,11 +1,12 @@
 import datetime
+import logging
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import slugify
 from django.views.decorators.cache import cache_page
 
-from givefood.models import Foodbank, FoodbankChange, ParliamentaryConstituency, FoodbankChange
+from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
 from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_foodbanks, geocode, find_locations, is_uk
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
@@ -75,7 +76,7 @@ def foodbanks(request):
     if format != "geojson":
         for foodbank in foodbanks:
             response_list.append({
-                "name":foodbank.name,
+                "name":foodbank.full_name(),
                 "alt_name":foodbank.alt_name,
                 "slug":foodbank.slug,
                 "phone":foodbank.phone_number,
@@ -521,6 +522,73 @@ def location_search(request):
         })
 
     return ApiResponse(response_list, "locations", format)
+
+
+@cache_page(SECONDS_IN_WEEK)
+def donationpoints(request):
+
+    format = request.GET.get("format", "geojson")
+    if format != "geojson":
+        return HttpResponseBadRequest()
+
+    donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False)
+
+    features = []
+    for donationpoint in donationpoints:
+        features.append(
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [float(donationpoint.long()), float(donationpoint.latt())]
+                },
+                "properties": {
+                    "name": donationpoint.name,
+                    "slug": donationpoint.slug,
+                    "address": donationpoint.full_address(),
+                    "url": "https://www.givefood.org.uk/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
+                    "network": donationpoint.foodbank_network,
+                    "telephone": donationpoint.phone_number,
+                    "web": donationpoint.url_with_ref(),
+                    "foodbank": donationpoint.foodbank_name,
+                    "foodbank_slug": donationpoint.foodbank_slug,
+                    "foodbank_url": "https://www.givefood.org.uk/needs/at/%s/" % (donationpoint.foodbank_slug),
+                    "parliamentary_constituency": donationpoint.parliamentary_constituency_name,
+                }
+            }
+        )
+
+    deliveryaddresses = Foodbank.objects.filter(is_closed = False).exclude(delivery_address__exact='')
+    for deliveryaddress in deliveryaddresses:
+        features.append(
+            {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [float(deliveryaddress.delivery_long()), float(deliveryaddress.delivery_latt())]
+                },
+                "properties": {
+                    "name": deliveryaddress.name + " delivery address",
+                    "slug": deliveryaddress.slug,
+                    "address": deliveryaddress.full_address(),
+                    "url": "https://www.givefood.org.uk/needs/at/%s/" % (deliveryaddress.slug),
+                    "network": deliveryaddress.network,
+                    "telephone": deliveryaddress.phone_number,
+                    "web": deliveryaddress.url_with_ref(),
+                    "foodbank": deliveryaddress.name,
+                    "foodbank_slug": deliveryaddress.slug,
+                    "foodbank_url": "https://www.givefood.org.uk/needs/at/%s/" % (deliveryaddress.slug),
+                    "parliamentary_constituency": deliveryaddress.parliamentary_constituency_name,
+                }
+            }
+        )
+
+    response_list = {
+        "type": "FeatureCollection",
+        "features": features
+    }
+
+    return ApiResponse(response_list, "donationpoints", format)
 
 
 @cache_page(SECONDS_IN_HOUR)

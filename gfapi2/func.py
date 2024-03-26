@@ -24,6 +24,7 @@ ALLOWED_FORMATS = {
     "foodbanks": STD_FORMATS_GEOJSON,
     "location": STD_FORMATS,
     "locations": STD_FORMATS_GEOJSON,
+    "donationpoints": STD_FORMATS_GEOJSON,
     "need": STD_FORMATS,
     "needs": STD_FORMATS,
     "constituency": STD_FORMATS_GEOJSON,

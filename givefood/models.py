@@ -191,6 +191,12 @@ class Foodbank(models.Model):
 
     def full_address(self):
         return "%s\r\n%s" % (self.address, self.postcode)
+    
+    def delivery_latt(self):
+        return float(self.delivery_latt_long.split(",")[0])
+    
+    def delivery_long(self):
+        return float(self.delivery_latt_long.split(",")[1])
 
     def nearby(self):
         return find_foodbanks(self.latt_long, 10, True)
@@ -452,6 +458,7 @@ class Foodbank(models.Model):
                 "%s?format=xml" % (reverse("api2:locations")),
                 "%s?format=yaml" % (reverse("api2:locations")),
                 "%s?format=geojson" % (reverse("api2:locations")),
+                "%s?format=geojson" % (reverse("api2:donationpoints")),
                 reverse("api_foodbank", kwargs={"slug":self.slug}),
                 reverse("api2:foodbank", kwargs={"slug":self.slug}),
                 "%s?format=xml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
