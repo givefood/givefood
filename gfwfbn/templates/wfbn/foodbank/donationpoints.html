@@ -82,9 +82,6 @@
 
             {% for donation_point in foodbank.donation_points %}
                 <a href="{% url 'wfbn:foodbank_donationpoint' foodbank.slug donation_point.slug %}">{{ donation_point.name }}</a>
-                {% if donation_point.in_store_only %}
-                    <br><div class="is-size-7">⚠️ Donations of in-store purchases only</div>
-                {% endif %}
                 <address>
                   {{ donation_point.address|linebreaksbr }}<br>
                   {{ donation_point.postcode }}
