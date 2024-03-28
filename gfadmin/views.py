@@ -894,7 +894,7 @@ def quarter_stats(request):
         cost += order.cost
 
     weight = "%s kg" % (round(weight / 1000,2))
-    cost = "£%s" % (round(cost / 1000,2))
+    cost = "£%s" % (round(cost / 100,2))
 
     edits = Foodbank.objects.filter(edited__gte=start_date, edited__lte=end_date).count()
     new_subscribers = FoodbankSubscriber.objects.filter(created__gte=start_date, created__lte=end_date).count()
