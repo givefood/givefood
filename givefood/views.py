@@ -69,6 +69,7 @@ def index(request):
     stats = {
         "organisations":Foodbank.objects.count(),
         "locations":Foodbank.objects.count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.count(),
+        "donationpoints":FoodbankDonationPoint.objects.count() + Foodbank.objects.exclude(address_is_administrative = True).count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.filter(is_donation_point = True).count(),
         "items":FoodbankChangeLine.objects.count(),
         "meals":int(Order.objects.aggregate(Sum("calories"))["calories__sum"]/500),
     }
