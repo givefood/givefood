@@ -115,6 +115,7 @@ OLD_FOODBANK_SLUGS = {
     "abergele-district/kinmel-bay-church":"kinmel-bay-church",
     "vauxhall":"norwood-brixton/vauxhall",
     "ballymena/ballymena-north":"ballymena-north",
+    "quinton-oldbury":"quinton",
 }
 
 FOODBANK_SUBPAGES = [
