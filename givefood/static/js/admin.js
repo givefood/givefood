@@ -51,6 +51,7 @@ function address_cleanup(str) {
   str = str.replace("Ave\n", "Avenue\n");
   str = str.replace("Ct\n", "Court\n");
   str = str.replace("Dr\n", "Drive\n");
+  str = str.replace("Pl\n", "Place\n");
   return str
 }
 
