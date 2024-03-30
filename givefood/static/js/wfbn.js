@@ -149,7 +149,7 @@ function address_on_map(address) {
 function move_map(lat,lng) {
   if (typeof map_main !== 'undefined') {
     map_main.panTo(new google.maps.LatLng(lat,lng));
-    map_main.setZoom(12);
+    map_main.setZoom(13);
     var marker = new google.maps.Marker({
       position: {"lat": lat, "lng": lng},
       map: map_main,
