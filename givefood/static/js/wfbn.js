@@ -102,7 +102,7 @@ function do_geolocation() {
   } else {
     status_msg.innerHTML = requesting_loc_html;
     navigator.geolocation.getCurrentPosition(
-      do_lattlong,
+      do_latlng,
       function() {
         window.location = ip_geolocation_url
       }
@@ -126,7 +126,7 @@ function do_address(event) {
   event.preventDefault();
 }
 
-function do_lattlong(position) {
+function do_latlng(position) {
   lat  = position.coords.latitude;
   lng = position.coords.longitude;
   address_field.value = ""
