@@ -122,12 +122,16 @@ def click(request, slug):
     return response
 
 
-@cache_page(SECONDS_IN_WEEK)
-def geojson(request):
+def geojson(request, slug = None):
 
-    foodbanks = Foodbank.objects.filter(is_closed=False)
-    locations = FoodbankLocation.objects.filter(is_closed=False)
-    donationpoints = FoodbankDonationPoint.objects.filter(is_closed=False)
+    if slug:
+        foodbanks = Foodbank.objects.filter(slug = slug)
+        locations = FoodbankLocation.objects.filter(foodbank__slug = slug)
+        donationpoints = FoodbankDonationPoint.objects.filter(foodbank__slug = slug)
+    else:
+        foodbanks = Foodbank.objects.filter(is_closed=False)
+        locations = FoodbankLocation.objects.filter(is_closed=False)
+        donationpoints = FoodbankDonationPoint.objects.filter(is_closed=False)
 
     features = []
     for foodbank in foodbanks:
