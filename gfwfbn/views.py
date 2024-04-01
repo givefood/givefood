@@ -122,6 +122,7 @@ def click(request, slug):
     return response
 
 
+@cache_page(SECONDS_IN_WEEK)
 def geojson(request, slug = None):
 
     if slug:
