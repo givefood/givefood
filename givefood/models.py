@@ -438,6 +438,7 @@ class Foodbank(models.Model):
             urls = [
                 reverse("wfbn:index"),
                 reverse("wfbn:rss"),
+                reverse("wfbn:geojson"),
                 reverse("sitemap"),
                 reverse("wfbn:foodbank", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_history", kwargs={"slug":self.slug}),

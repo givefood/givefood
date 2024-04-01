@@ -1,4 +1,4 @@
-import requests, datetime
+import json, requests, datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound
@@ -120,6 +120,64 @@ def click(request, slug):
     response = redirect(req.url)
     response["X-Robots-Tag"] = "noindex"
     return response
+
+
+@cache_page(SECONDS_IN_WEEK)
+def geojson(request):
+
+    foodbanks = Foodbank.objects.filter(is_closed=False)
+    locations = FoodbankLocation.objects.filter(is_closed=False)
+    donationpoints = FoodbankDonationPoint.objects.filter(is_closed=False)
+
+    features = []
+    for foodbank in foodbanks:
+        features.append({
+            "type":"Feature",
+            "geometry":{
+                "type":"Point",
+                "coordinates":[foodbank.long(), foodbank.latt()],
+            },
+            "properties":{
+                "type":"fb",
+                "name":foodbank.full_name(),
+                "url":"/needs/at/%s/" % foodbank.slug,
+            }
+        })
+    
+    for location in locations:
+        features.append({
+            "type":"Feature",
+            "geometry":{
+                "type":"Point",
+                "coordinates":[location.long(), location.latt()],
+            },
+            "properties":{
+                "type":"loc",
+                "name":"%s - %s" % (location.name, location.foodbank_name),
+                "url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug),
+            }
+        })
+
+    for donationpoint in donationpoints:
+        features.append({
+            "type":"Feature",
+            "geometry":{
+                "type":"Point",
+                "coordinates":[donationpoint.long(), donationpoint.latt()],
+            },
+            "properties":{
+                "type":"dp",
+                "name":"%s - %s" % (donationpoint.name, donationpoint.foodbank_name),
+                "url":"/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
+            }
+        })
+
+    response_dict = {
+            "type": "FeatureCollection",
+            "features": features
+    }
+
+    return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
 
 @cache_page(SECONDS_IN_WEEK)

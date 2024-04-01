@@ -1,6 +1,4 @@
-const foodbank_geojson_url = "/api/2/foodbanks/?format=geojson"
-const location_geojson_url = "/api/2/locations/?format=geojson"
-const donationpoint_geojson_url = "/api/2/donationpoints/?format=geojson"
+const geojson_url = "/needs/geo.json"
 
 var map_main
 
@@ -11,59 +9,31 @@ function init_map() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-    // Food Banks
-    var fb_layer = new google.maps.Data();
-    fb_layer.loadGeoJson(foodbank_geojson_url);
-    fb_layer.setStyle(function(feature) {
+    var data_layer = new google.maps.Data();
+    data_layer.loadGeoJson(geojson_url);
+    data_layer.setStyle(function(feature) {
+        if (feature.getProperty("type") == "fb") {
+            marker_colour = "red"
+            marker_size = 32
+        } else if (feature.getProperty("type") == "loc") {
+            marker_colour = "yellow"
+            marker_size = 26
+        } else if (feature.getProperty("type") == "dp") {
+            marker_colour = "blue"
+            marker_size = 22
+        }
         return {
             icon: {
-                url: "/static/img/mapmarkers/red.png",
-                scaledSize: new google.maps.Size(32, 32),
+                url: "/static/img/mapmarkers/" + marker_colour + ".png",
+                scaledSize: new google.maps.Size(marker_size, marker_size),
             },
             title: feature.getProperty("name")
         };
     });
-    fb_layer.addListener('click', (event) => {
-        const url = event.feature.getProperty('url');
-        window.location = url.replace("https://www.givefood.org.uk","")
+    data_layer.addListener('click', (event) => {
+        window.location = event.feature.getProperty('url');
     });
-    fb_layer.setMap(map_main);
-
-    // Locations
-    var loc_layer = new google.maps.Data();
-    loc_layer.loadGeoJson(location_geojson_url);
-    loc_layer.setStyle(function(feature) {
-        return {
-            icon: {
-                url: "/static/img/mapmarkers/yellow.png",
-                scaledSize: new google.maps.Size(26, 26),
-            },
-            title: feature.getProperty("name")
-        };
-    });
-    loc_layer.addListener('click', (event) => {
-        const url = event.feature.getProperty('url');
-        window.location = url.replace("https://www.givefood.org.uk","")
-    });
-    loc_layer.setMap(map_main);
-
-    // Donation Points
-    var dp_layer = new google.maps.Data();
-    dp_layer.loadGeoJson(donationpoint_geojson_url);
-    dp_layer.setStyle(function(feature) {
-        return {
-            icon: {
-                url: "/static/img/mapmarkers/blue.png",
-                scaledSize: new google.maps.Size(22, 22),
-            },
-            title: feature.getProperty("name")
-        };
-    });
-    dp_layer.addListener('click', (event) => {
-        const url = event.feature.getProperty('url');
-        window.location = url.replace("https://www.givefood.org.uk","")
-    });
-    dp_layer.setMap(map_main);
+    data_layer.setMap(map_main);
 
     if (typeof initial_lat_lng !== 'undefined') {
         split_lat_lng = initial_lat_lng.split(",")

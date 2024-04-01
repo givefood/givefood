@@ -13,6 +13,7 @@ urlpatterns = (
     url(r'^getlocation/$', get_location, name="get_location"),
     url(r'^click/(?P<slug>[-\w]+)/$', click, name="click"),
     url(r'^updates/(?P<action>subscribe|confirm|unsubscribe)/$', updates, name="updates"),
+    url(r'^geo.json$', geojson, name="geojson"),
 
     # Foodbank
     url(r'^at/(?P<slug>[-\w]+)/$', foodbank, name="foodbank"),
