@@ -116,6 +116,7 @@ OLD_FOODBANK_SLUGS = {
     "vauxhall":"norwood-brixton/vauxhall",
     "ballymena/ballymena-north":"ballymena-north",
     "quinton-oldbury":"quinton",
+    "chalk-farm":"kentish-town",
 }
 
 FOODBANK_SUBPAGES = [
