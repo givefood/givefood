@@ -28,7 +28,7 @@ const search_error = "Sorry, we had a problem finding food banks there. The erro
 function init() {
     if (addressform) {
       autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
-      autocomplete.setComponentRestrictions({'country': ['gb']});
+      autocomplete.setComponentRestrictions({'country': ['gb', 'im', 'je', 'gg']});
       autocomplete.addListener("place_changed", () => {
         lat_lng_field.value = autocomplete.getPlace().geometry.location.lat() + "," + autocomplete.getPlace().geometry.location.lng();
       })
