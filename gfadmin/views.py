@@ -924,29 +924,22 @@ def quarter_stats(request):
 
 def edit_stats(request):
 
-    all_foodbanks = get_all_foodbanks()
-    total_foodbanks = len(all_foodbanks)
-
-    locations = get_all_locations()
-    total_locations = len(locations) + total_foodbanks
+    foodbanks = Foodbank.objects.count()
+    locations = FoodbankLocation.objects.count()
+    headline_locations = locations + foodbanks
 
     donation_points = FoodbankDonationPoint.objects.all().count()
-
-    delivery_locations = 0
-    for foodbank in all_foodbanks:
-        if foodbank.delivery_address:
-            delivery_locations += 1
-    
-    total_location_incdel = total_locations + delivery_locations
+    headline_donation_points = donation_points + Foodbank.objects.exclude(address_is_administrative = True).count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.filter(is_donation_point = True).count()
 
     newest_edit = Foodbank.objects.all().order_by("-edited")[:1][0].edited
     oldest_edit = Foodbank.objects.all().order_by("edited")[:1][0].edited
 
     stats = {
-        "Total Food Banks":total_foodbanks,
-        "Total Locations":total_locations,
-        "Headline Total Locations":total_location_incdel,
+        "Total Food Banks":foodbanks,
+        "Total Locations":locations,
+        "Headline Locations":headline_locations,
         "Donation Points":donation_points,
+        "Headline Donation Points":headline_donation_points,
         "Newest Edit":newest_edit,
         "Oldest Edit":oldest_edit,
     }
