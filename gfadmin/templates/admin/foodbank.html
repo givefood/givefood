@@ -259,8 +259,14 @@
           <td>
             {{ location.address|linebreaksbr }}<br>{{ location.postcode }}
             <dl class="is-size-7">
-              <dt>Phone</dt>
-              <dd>{{ location.phone_number }}</dd>
+              {% if location.phone_number %}
+                <dt>Phone</dt>
+                <dd>{{ location.phone_number }}</dd>
+              {% endif %}
+              {% if location.email %}
+                <dt>Email</dt>
+                <dd>{{ location.email }}</dd>
+              {% endif %}
               <dt>Lat Lng</dt>
               <dd>{{ location.latt_long }}</dd>
               <dt>Place ID</dt>
