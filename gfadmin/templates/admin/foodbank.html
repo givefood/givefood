@@ -230,6 +230,10 @@
               <dd>{% if foodbank.plus_code_compound %}{{ foodbank.plus_code_compound|truncatechars:25 }}{% else %}None{% endif %}</dd>
               <dt>Plus Code Global</dt>
               <dd>{% if foodbank.plus_code_global %}{{ foodbank.plus_code_global|truncatechars:25 }}{% else %}None{% endif %}</dd>
+              {% if foodbank.address_is_administrative %}
+                <dt>Just administrative location</dt>
+                <dd>✅ Yes</dd>
+              {% endif %}
             </dl>
           </td>
           <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-small is-pulled-right">Edit</a></td>
