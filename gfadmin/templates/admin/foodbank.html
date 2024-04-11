@@ -58,11 +58,11 @@
       <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link">Edit Food Bank</a><br>
 
       {% if not foodbank.orders %}
-        <a href="{% url "admin:neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Order</a>
+        <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Order</a>
       {% endif %}
 
       {% if not foodbank.needs %}
-        <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Need</a>
+        <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Need</a>
       {% endif %}
 
       {% if foodbank.notes %}
@@ -212,7 +212,7 @@
 
     {# Locations #}
     <div class="column generallocations">
-      <a href="{% url "admin:fblocation_new" foodbank.slug %}" class="button is-link">New Location</a>
+      <a href="{% url 'admin:fblocation_new' foodbank.slug %}" class="button is-link">New Location</a>
       <h3>Locations</h3>
       <table class="table is-fullwidth locationtable">
         <tr>
@@ -326,7 +326,7 @@
     {# Needs #}
     {% if foodbank.needs %}
       <div class="column needsorders is-hidden">
-        <a href="{% url "admin:newneed" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
+        <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th>Published?</th>
@@ -352,7 +352,7 @@
                 {% if need.input_method == "user" %}🧑{% endif%}
               </td>
               <td>
-                <a href="{% url "admin:need" need.need_id %}">{{ need.need_id }}</a>
+                <a href="{% url 'admin:need' need.need_id %}">{{ need.need_id }}</a>
               </td>
               <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
               <td class="is-size-7">{{ need.excess_change_text|linebreaksbr }}</td>
@@ -367,7 +367,7 @@
     {# Orders #}
     {% if foodbank.orders %}
       <div class="column needsorders is-hidden">
-        <a href="{% url "admin:neworder" %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
+        <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th></th>
