@@ -96,6 +96,10 @@
         {% if foodbank.charity_register_url %}
           <dt>Charity register</dt>
           <dd><a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a></dd>
+          {% if foodbank.charity_just_foodbank %}
+            <dt>Charity just food bank</dt>
+            <dd>✅ Yes</dd>
+          {% endif %}
         {% endif %}
         <dt>Network</dt>
         <dd>{{ foodbank.network }}</dd>
