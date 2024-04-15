@@ -14,8 +14,8 @@ const modal_close = document.querySelector(".modal-close");
 const api_url_root = "/api/2/locations/search/";
 const ip_geolocation_url = "/needs/getlocation/"
 
-const working_html = "<img src='/static/img/loading.gif' alt='Loading'> Getting nearby foodbanks...";
-const requesting_loc_html = "<img src='/static/img/loading.gif' alt='Loading'> Requesting your location...";
+const working_html = "<img src='/static/img/loading.svg' alt='Loading'> Getting nearby foodbanks...";
+const requesting_loc_html = "<img src='/static/img/loading.svg' alt='Loading'> Requesting your location...";
 const no_loc_apology_text = "Sorry, we tried to get your location automatically but couldn't. Try a postcode or address.";
 const no_addr_text = "Did you forget to enter an address?";
 const nothing_needed_text = "Nothing right now, thanks";
