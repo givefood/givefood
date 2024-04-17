@@ -139,7 +139,6 @@ function do_latlng(position) {
 }
 
 function address_on_map(address) {
-  console.log("Address on map")
   address = address + ",UK"
   geocoder = new google.maps.Geocoder();
   geocoder.geocode({address:address}, function(results, status) {
