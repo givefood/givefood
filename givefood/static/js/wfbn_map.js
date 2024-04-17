@@ -15,14 +15,16 @@ function init_map() {
                     bounds.extend(LatLng);
                 });
             });
-            if (gf_map_config.allow_zoom) {
-                google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
-                    var maxZoom = 15
-                    if (map.getZoom() > maxZoom) {
-                        map.setZoom(maxZoom);
-                    }
-                });
-            }
+            google.maps.event.addListenerOnce(map_main, 'bounds_changed', function(event) {
+                if (gf_map_config.max_zoom) {
+                    max_zoom = gf_map_config.max_zoom
+                } else {
+                    max_zoom = 15
+                }
+                if (map_main.getZoom() > max_zoom) {
+                    map_main.setZoom(max_zoom);
+                }
+            });
             map_main.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
             map_main.panToBounds(bounds);
         }
