@@ -62,7 +62,7 @@
     height:1000px;
 }
 .sidemap {
-    height:300px !important;
+    height:400px !important;
     margin-bottom:10px;
 }
 .mainmap {
@@ -120,12 +120,14 @@ textarea[name='body'] {
 .locations address, .donationpoints address {
     margin-bottom:20px;
 }
-.map-legend {
-    margin-top:10px;
+#legend {
+    display:none;
+    background:#fff;
+    padding:5px;
+    margin:5px;
+    border:1px solid rgb(53, 55, 64);
 }
-.map-legend img {
-    float:left;
+#legend img {
     width:22px;
-    display:block;
-    padding:2px 2px 0 0;
+    vertical-align:middle;
 }

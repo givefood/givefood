@@ -1,7 +1,3 @@
-const geojson_url = "/needs/geo.json"
-
-var map_main
-
 function init_map() {
     map_main = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(55.4,-4),
@@ -10,7 +6,31 @@ function init_map() {
     });
 
     var data_layer = new google.maps.Data();
-    data_layer.loadGeoJson(geojson_url);
+    data_layer.loadGeoJson(gf_map_config.geojson, null, function(){
+        if (typeof gf_map_config.lat == 'undefined') {
+            bounds = new google.maps.LatLngBounds();
+            data_layer.forEach(function(feature) {
+                geo = feature.getGeometry();
+                geo.forEachLatLng(function(LatLng) {
+                    bounds.extend(LatLng);
+                });
+            });
+            if (gf_map_config.allow_zoom) {
+                google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
+                    var maxZoom = 15
+                    if (map.getZoom() > maxZoom) {
+                        map.setZoom(maxZoom);
+                    }
+                });
+            }
+            map_main.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
+            map_main.panToBounds(bounds);
+        }
+        legendtemplate = document.querySelector("#legendtemplate").content.cloneNode(true)
+        legend = legendtemplate.querySelector("#legend")
+        map_main.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
+        legend.style.display = "block";
+    });
     data_layer.setStyle(function(feature) {
         if (feature.getProperty("type") == "fb") {
             marker_colour = "red"
@@ -35,13 +55,14 @@ function init_map() {
     });
     data_layer.setMap(map_main);
 
-    if (typeof initial_lat_lng !== 'undefined') {
-        split_lat_lng = initial_lat_lng.split(",")
-        lat = parseFloat(split_lat_lng[0])
-        lng = parseFloat(split_lat_lng[1])
-        move_map(lat,lng)
+    if (typeof gf_map_config.lat !== 'undefined') {
+        move_map(
+            gf_map_config.lat,
+            gf_map_config.lng,
+            gf_map_config.zoom,
+        )
     }
-
 }
 
+var map_main
 google.maps.event.addDomListener(window, 'load', init_map);

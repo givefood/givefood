@@ -133,35 +133,42 @@ function do_latlng(position) {
   querystring = "?lat_lng=" + lat + "," + lng;
   api_url = api_url_root + querystring;
   api_request(api_url);
-  move_map(lat,lng)
+  move_map(lat,lng,13)
   record_search(querystring);
   history.pushState({latlng: lat + "," + lng}, "latlng", querystring)
 }
 
 function address_on_map(address) {
+  console.log("Address on map")
   address = address + ",UK"
   geocoder = new google.maps.Geocoder();
   geocoder.geocode({address:address}, function(results, status) {
-    move_map(results[0].geometry.location.lat(),results[0].geometry.location.lng());
+    move_map(
+      results[0].geometry.location.lat(),
+      results[0].geometry.location.lng(),
+      13
+    );
   })
 }
 
-function move_map(lat,lng) {
+function move_map(lat,lng,zoom) {
   if (typeof map_main !== 'undefined') {
     map_main.panTo(new google.maps.LatLng(lat,lng));
-    map_main.setZoom(13);
-    var marker = new google.maps.Marker({
-      position: {"lat": lat, "lng": lng},
-      map: map_main,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 6,
-        fillOpacity: 1,
-        strokeWeight: 2,
-        fillColor: '#5384ED',
-        strokeColor: '#ffffff',
-      },
-    });
+    map_main.setZoom(zoom);
+    if (gf_map_config.location_marker == true) {
+      var marker = new google.maps.Marker({
+        position: {"lat": lat, "lng": lng},
+        map: map_main,
+        icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 6,
+          fillOpacity: 1,
+          strokeWeight: 2,
+          fillColor: '#5384ED',
+          strokeColor: '#ffffff',
+        },
+      });
+    }
   }
 }
 

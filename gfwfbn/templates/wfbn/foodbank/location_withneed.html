@@ -13,6 +13,7 @@
   <meta name="geo.position" content="{{ location.latt_long }}">
   <meta property="place:location:latitude" content="{{ location.latt }}">
   <meta property="place:location:longitude" content="{{ location.long }}">
+  <link rel="preload" href="{% url 'wfbn:geojson' foodbank.slug %}" as="fetch">
   {% if foodbank.is_closed %}
     <meta name="robots" content="noindex">
   {% endif %}
@@ -85,6 +86,8 @@
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
             <div id="map" class="sidemap"></div>
+            {% include "wfbn/foodbank/includes/maplegend.html" %}
+            
             <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
             <address>
               {{ location.address|linebreaksbr }}<br>
@@ -120,46 +123,18 @@
 {% endblock %}
 
 {% block script %}
-
-<script src="{% url 'wfbn:foodbank_hit' foodbank.slug %}" defer></script>
-<script src="/static/js/wfbn.js" defer></script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 <script>
-function add_marker(lat, lng, url) {
-  position = new google.maps.LatLng(lat, lng)
-  var marker = new google.maps.Marker({
-  position: position,
-  map: map,
-  url: url
-});
-  bounds.extend(position);
-  google.maps.event.addListener(marker, "click", function () {
-  location.assign(marker.url);
-});
-}
-
-var map
-var bounds = new google.maps.LatLngBounds();
-function init_map() {
-var mapOptions = {
-  center: new google.maps.LatLng(55,-4),
-  zoom: 6,
-  mapTypeId: google.maps.MapTypeId.ROADMAP,
-};
-map = new google.maps.Map(document.getElementById("map"), mapOptions);
-add_marker({{ location.latt_long }}, "{% url 'wfbn:foodbank' foodbank.slug %}")
-google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
-  var maxZoom = 15
-  if (map.getZoom() > maxZoom) {
-    map.setZoom(maxZoom);
+  var gf_map_config = {
+    geojson: "{% url 'wfbn:geojson' foodbank.slug %}",
+    lat: {{ location.latt }},
+    lng: {{ location.long }},
+    zoom: 15,
+    location_marker: false,
   }
-});
-map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
-map.panToBounds(bounds);
-}
-
-google.maps.event.addDomListener(window, 'load', init_map);
 </script>
 
+<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}" defer></script>
+<script src="/static/js/wfbn.js" defer></script>
+<script src="/static/js/wfbn_map.js" defer></script>
+<script src="{% url 'wfbn:foodbank_hit' foodbank.slug %}" defer></script>
 {% endblock %}
-

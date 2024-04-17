@@ -31,6 +31,8 @@ def index(request):
     address = request.GET.get("address", "")
     lat_lng = request.GET.get("lat_lng", "")
     where_from = request.GET.get("from","")
+    lat = None
+    lng = None
     
     location_results = []
     recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
@@ -40,6 +42,8 @@ def index(request):
         lat_lng = geocode(address)
 
     if lat_lng:
+        lat = lat_lng.split(",")[0]
+        lng = lat_lng.split(",")[1]
         location_results = find_locations(lat_lng, 10)
 
         for location in location_results:
@@ -52,7 +56,8 @@ def index(request):
     template_vars = {
         "where_from":where_from,
         "address":address,
-        "lat_lng":lat_lng,
+        "lat":lat,
+        "lng":lng,
         "gmap_key":gmap_key,
         "recently_updated":recently_updated,
         "most_viewed":most_viewed,

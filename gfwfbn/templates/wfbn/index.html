@@ -12,6 +12,7 @@
   <link rel="alternate" type="application/rss+xml" title="Give Food RSS" href="{% url 'wfbn:rss' %}">
   <link rel="manifest" href="/needs/manifest.json">
   <link rel="preload" href="/static/img/loading.svg" as="image">
+  <link rel="preload" href="{% url 'wfbn:geojson' %}" as="fetch">
 {% endblock %}
 
 {% block title %}What Food Banks Need - Give Food{% endblock %}
@@ -109,11 +110,7 @@
     </div>
     <div class="column is-half">
       <div id="map"></div>
-      <ul class="map-legend">
-        <li><img src="/static/img/mapmarkers/red.png" alt="Red Marker"> Food bank organisation</li>
-        <li><img src="/static/img/mapmarkers/yellow.png" alt="Yellow Marker"> Food bank satellite location</li>
-        <li><img src="/static/img/mapmarkers/blue.png" alt="Blue Marker"> Donation point</li>
-      </ul>
+      {% include "wfbn/foodbank/includes/maplegend.html" %}
     </div>
   </div>
 
@@ -141,11 +138,24 @@
 
 {% block script %}
 
-  {% if lat_lng %}
-    <script>
-      initial_lat_lng = "{{ lat_lng }}";
-    </script>
-  {% endif %}
+  <script>
+    var gf_map_config = {
+      geojson: "{% url 'wfbn:geojson' %}",
+      {% if lat and lng %}
+        lat: {{ lat }},
+        lng: {{ lng }},
+        zoom: 13,
+        location_marker: true,
+      {% else %}
+        lat: 55.4,
+        lng: -4,
+        zoom: 6,
+        location_marker: false,
+      {% endif %}
+      allow_zoom: true,
+    }
+  </script>
+
   <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
   <script src="/static/js/wfbn.js" defer></script>
   <script src="/static/js/wfbn_map.js" defer></script>
