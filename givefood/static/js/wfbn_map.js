@@ -1,5 +1,5 @@
 function init_map() {
-    map_main = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(55.4,-4),
         zoom: 6,
         mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -15,22 +15,22 @@ function init_map() {
                     bounds.extend(LatLng);
                 });
             });
-            google.maps.event.addListenerOnce(map_main, 'bounds_changed', function(event) {
+            google.maps.event.addListenerOnce(map, 'bounds_changed', function(event) {
                 if (gf_map_config.max_zoom) {
                     max_zoom = gf_map_config.max_zoom
                 } else {
                     max_zoom = 15
                 }
-                if (map_main.getZoom() > max_zoom) {
-                    map_main.setZoom(max_zoom);
+                if (map.getZoom() > max_zoom) {
+                    map.setZoom(max_zoom);
                 }
             });
-            map_main.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
-            map_main.panToBounds(bounds);
+            map.fitBounds(bounds,{left:50, right:50, bottom:50, top:50});
+            map.panToBounds(bounds);
         }
         legendtemplate = document.querySelector("#legendtemplate").content.cloneNode(true)
         legend = legendtemplate.querySelector("#legend")
-        map_main.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
+        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
         legend.style.display = "block";
     });
     data_layer.setStyle(function(feature) {
@@ -55,7 +55,7 @@ function init_map() {
     data_layer.addListener('click', (event) => {
         window.location = event.feature.getProperty('url');
     });
-    data_layer.setMap(map_main);
+    data_layer.setMap(map);
 
     if (typeof gf_map_config.lat !== 'undefined') {
         move_map(
@@ -66,5 +66,5 @@ function init_map() {
     }
 }
 
-var map_main
+var map
 google.maps.event.addDomListener(window, 'load', init_map);

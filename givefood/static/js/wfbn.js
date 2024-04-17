@@ -151,13 +151,13 @@ function address_on_map(address) {
 }
 
 function move_map(lat,lng,zoom) {
-  if (typeof map_main !== 'undefined') {
-    map_main.panTo(new google.maps.LatLng(lat,lng));
-    map_main.setZoom(zoom);
+  if (typeof map !== 'undefined') {
+    map.panTo(new google.maps.LatLng(lat,lng));
+    map.setZoom(zoom);
     if (gf_map_config.location_marker == true) {
       var marker = new google.maps.Marker({
         position: {"lat": lat, "lng": lng},
-        map: map_main,
+        map: map,
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           scale: 6,
