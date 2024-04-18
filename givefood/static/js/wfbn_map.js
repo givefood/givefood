@@ -5,11 +5,11 @@ function init_map() {
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 
-    var data_layer = new google.maps.Data();
-    data_layer.loadGeoJson(gf_map_config.geojson, null, function(){
+    var map_data = new google.maps.Data();
+    map_data.loadGeoJson(gf_map_config.geojson, null, function(){
         if (typeof gf_map_config.lat == 'undefined') {
             bounds = new google.maps.LatLngBounds();
-            data_layer.forEach(function(feature) {
+            map_data.forEach(function(feature) {
                 geo = feature.getGeometry();
                 geo.forEachLatLng(function(LatLng) {
                     bounds.extend(LatLng);
@@ -33,7 +33,7 @@ function init_map() {
         map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
         legend.style.display = "block";
     });
-    data_layer.setStyle(function(feature) {
+    map_data.setStyle(function(feature) {
         if (feature.getProperty("type") == "fb") {
             marker_colour = "red"
             marker_size = 32
@@ -52,10 +52,10 @@ function init_map() {
             title: feature.getProperty("name")
         };
     });
-    data_layer.addListener('click', (event) => {
+    map_data.addListener('click', (event) => {
         window.location = event.feature.getProperty('url');
     });
-    data_layer.setMap(map);
+    map_data.setMap(map);
     map.setOptions({styles:[
         {
           featureType: "poi.business",
