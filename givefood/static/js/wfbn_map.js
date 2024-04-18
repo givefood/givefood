@@ -56,6 +56,18 @@ function init_map() {
         window.location = event.feature.getProperty('url');
     });
     data_layer.setMap(map);
+    map.setOptions({styles:[
+        {
+          featureType: "poi.business",
+          stylers: [{ visibility: "off" }],
+        },
+        {
+          featureType: "transit",
+          elementType: "labels.icon",
+          stylers: [{ visibility: "off" }],
+        },
+      ]
+    });
 
     if (typeof gf_map_config.lat !== 'undefined') {
         move_map(
