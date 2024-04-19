@@ -1227,6 +1227,15 @@ class FoodbankChange(models.Model):
                 self.change_list()
             )
 
+    def diff_from_last_excess(self):
+        last_need = self.last_need()
+        if not last_need:
+            return None
+        else:
+            return diff_html(
+                last_need[0].excess_list(),
+                self.excess_list()
+            )
 
     def last_need_date(self):
         last_need = self.last_need()
