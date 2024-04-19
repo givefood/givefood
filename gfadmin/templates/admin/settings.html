@@ -19,7 +19,14 @@
 
         <h3>Stats</h3>
         <ul class="settings">
-          <li>📆 <a href="{% url 'admin:quarter_stats' %}?start=2024-1-1&end=2024-3-31">Dated Stats</a></li>
+          <li>
+            📆 Dated Stats
+            <form action="{% url 'admin:quarter_stats' %}" method="get">
+              <input type="date" name="start" value="2024-01-01">
+              <input type="date" name="end" value="2024-03-31">
+              <input type="submit" value="Go">
+            </form>
+          </li>
           <li>✍️ <a href="{% url 'admin:edit_stats' %}">Edit Stats</a></li>
           <li>🔢 <a href="{% url 'admin:order_stats' %}">Order Stats</a></li>
           <li>✉️ <a href="{% url 'admin:subscriber_stats' %}">Subscriber Stats</a></li>
