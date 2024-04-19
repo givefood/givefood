@@ -84,6 +84,9 @@ th {
   top:0;
   background:#fff;
 }
+.box p {
+  margin:0;
+}
 .locationtable tr:last-child {
   border:0;
 }
