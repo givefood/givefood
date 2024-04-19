@@ -65,6 +65,21 @@
         </tr>
         <tr>
           <td>
+            {% if need.is_categorised %}
+              <span style="color:green">✓</span>
+            {% else %}
+              <span style="color:red">x</span>
+            {% endif %}
+          </td>
+          <td>Categorised</td>
+          <td>
+            {% if need.published %}
+              <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <td>
             {% if need.tweet_sent %}
               <span style="color:green">✓</span>
             {% else %}
@@ -78,21 +93,6 @@
                 <input type="submit" class="button is-warning is-pulled-right is-small" value="Send" onclick="this.form.submit();this.disabled = true;">
                 {% csrf_token %}
               </form>
-            {% endif %}
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {% if need.is_categorised %}
-              <span style="color:green">✓</span>
-            {% else %}
-              <span style="color:red">x</span>
-            {% endif %}
-          </td>
-          <td>Categorised</td>
-          <td>
-            {% if need.published %}
-              <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
             {% endif %}
           </td>
         </tr>
