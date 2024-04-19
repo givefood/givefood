@@ -58,7 +58,7 @@
               <span style="color:red">x</span>
             {% endif %}
           </td>
-          <td>Published</td>
+          <td>Publish</td>
           <td>
             <a href="{% url "admin:need_form" need.need_id %}" class="button is-link is-pulled-right is-small">Edit</a>
           </td>
@@ -71,7 +71,7 @@
               <span style="color:red">x</span>
             {% endif %}
           </td>
-          <td>Categorised</td>
+          <td>Categorise</td>
           <td>
             {% if need.published %}
               <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
@@ -86,7 +86,7 @@
               <span style="color:red">x</span>
             {% endif %}
           </td>
-          <td>Notified</td>
+          <td>Notify</td>
           <td>
             {% if need.published %}
               <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
