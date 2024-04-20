@@ -804,6 +804,27 @@ def locations_loader_sa(request):
     return HttpResponse("OK")
 
 
+def donationpoints(request):
+    
+    sort_options = [
+        "name",
+        "foodbank_name",
+        "edited",
+    ]
+    sort = request.GET.get("sort", "name")
+    if sort not in sort_options:
+        return HttpResponseForbidden()
+
+    donation_points = FoodbankDonationPoint.objects.all().order_by(sort)
+
+    template_vars = {
+        "sort":sort,
+        "donation_points":donation_points,
+        "section":"donationpoints",
+    }
+    return render(request, "admin/donationpoints.html", template_vars)
+
+
 def items(request):
 
     items = OrderItem.objects.all()

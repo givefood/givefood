@@ -1,0 +1,55 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Donation Points - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Donation Points</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <div class="field is-pulled-right">
+        <div class="control">
+          <div class="select is-small">
+            <select onchange="javascript:window.location.href=this.value">
+              <option value="?sort=name"{% if sort == "name" %} selected{% endif %}>Name</option>
+              <option value="?sort=foodbank_name"{% if sort == "foodbank_name" %} selected{% endif %}>Food Bank</option>
+              <option value="?sort=edited"{% if sort == "edited" %} selected{% endif %}>Edited</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Foodbank</th>
+          <th>Location</th>
+          <th>Address</th>
+          <th>Network</th>
+          <th>Country</th>
+          <th>Closed</th>
+          <th>Modified</th>
+          <th>Edited</th>
+        </tr>
+        {% for donation_point in donation_points %}
+          <tr>
+            <td><a href="{% url 'admin:foodbank' donation_point.foodbank_slug %}">{{ donation_point.foodbank_name }}</a></td>
+            <td><a href="{% url 'admin:donationpoint_edit' donation_point.foodbank_slug donation_point.slug %}">{{ donation_point.name }}</a></td>
+            <td>{{ donation_point.address }} {{ donation_point.postcode }}</td>
+            <td>{{ donation_point.foodbank_network }}</td>
+            <td>{{ donation_point.country }}</td>
+            <td>{{ donation_point.is_closed }}</td>
+            <td>{{ donation_point.modified }}</td>
+            <td>{{ donation_point.edited }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

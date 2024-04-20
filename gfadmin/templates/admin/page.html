@@ -24,6 +24,7 @@
       <div class="navbar-menu">
         <a class="navbar-item{% if section == "foodbanks" %} is-active{% endif %}" href="{% url 'admin:foodbanks' %}">Food Banks</a>
         <a class="navbar-item{% if section == "locations" %} is-active{% endif %}" href="{% url 'admin:locations' %}">Locations</a>
+        <a class="navbar-item{% if section == "donationpoints" %} is-active{% endif %}" href="{% url 'admin:donationpoints' %}">Donation Points</a>
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link{% if section == "needs" %} is-active{% endif %}" href="{% url 'admin:needs' %}" >Needs</a>
           <div class="navbar-dropdown">

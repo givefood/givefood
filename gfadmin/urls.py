@@ -63,6 +63,8 @@ urlpatterns = (
     url(r'^locations/$', locations, name="locations"),
     url(r'^locations/loader/sa/$', locations_loader_sa, name="locations_loader_sa"),
 
+    url(r'^donationpoints/$', donationpoints, name="donationpoints"), 
+
     url(r'^parlcon/new/$', parlcon_form, name="parlcon_form"),
     url(r'^parlcon/loader/$', parlcon_loader, name="parlcon_loader"),
     url(r'^parlcon/loader/geojson/$', parlcon_loader_geojson, name="parlcon_loader_geojson"),
