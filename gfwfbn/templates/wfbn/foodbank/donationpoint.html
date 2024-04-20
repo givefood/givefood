@@ -89,6 +89,10 @@
 
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
+            {% if donationpoint.place_id %}
+              <img src="{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}" alt="{{ donationpoint.name }}">
+            {% endif %}
+
             <div id="map" class="sidemap"></div>
             <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donationpoint.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
             <address>

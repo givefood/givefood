@@ -16,7 +16,7 @@ from session_csrf import anonymous_csrf
 from requests.models import PreparedRequest
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, send_email, post_to_email, get_all_constituencies, validate_turnstile
+from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
@@ -435,6 +435,21 @@ def foodbank_donationpoint(request, slug, dpslug):
     }
 
     return render(request, "wfbn/foodbank/donationpoint.html", template_vars)
+
+
+@cache_page(SECONDS_IN_WEEK)
+def foodbank_donationpoint_photo(request, slug, dpslug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
+
+    if not donationpoint.place_id:
+        return HttpResponseNotFound()
+    
+    photo = photo_from_place_id(donationpoint.place_id)
+    
+    return HttpResponse(photo, content_type='image/jpeg')
+
 
 @cache_page(SECONDS_IN_WEEK)
 def constituencies(request):

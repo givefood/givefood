@@ -38,6 +38,7 @@ urlpatterns = (
     # Donation Points
     url(r'^at/(?P<slug>[-\w]+)/donationpoints/$', foodbank_donationpoints, name="foodbank_donationpoints"),
     url(r'^at/(?P<slug>[-\w]+)/donationpoint/(?P<dpslug>[-\w]+)/$', foodbank_donationpoint, name="foodbank_donationpoint"),
+    url(r'^at/(?P<slug>[-\w]+)/donationpoint/(?P<dpslug>[-\w]+)/photo/$', foodbank_donationpoint_photo, name="foodbank_donationpoint_photo"),
     
     # Locations
     url(r'^at/(?P<slug>[-\w]+)/locations/$', foodbank_locations, name="foodbank_locations"),
