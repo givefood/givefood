@@ -39,13 +39,13 @@ function init_map() {
     map_data.setStyle(function(feature) {
         if (feature.getProperty("type") == "fb") {
             marker_colour = "red"
-            marker_size = 32
+            marker_size = 34
         } else if (feature.getProperty("type") == "loc") {
             marker_colour = "yellow"
-            marker_size = 26
+            marker_size = 28
         } else if (feature.getProperty("type") == "dp") {
             marker_colour = "blue"
-            marker_size = 22
+            marker_size = 24
         }
         return {
             icon: {
