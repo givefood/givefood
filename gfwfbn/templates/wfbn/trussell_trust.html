@@ -1,7 +1,7 @@
 {% extends "public/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/wfbn-tt.css">
   <meta name="twitter:card" content="summary">
@@ -59,6 +59,6 @@
 
 {% block script %}
   <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
-  <script src="/static/js/wfbn.js" defer></script>
+  <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.1/iframeResizer.contentWindow.min.js" defer></script>
 {% endblock %}

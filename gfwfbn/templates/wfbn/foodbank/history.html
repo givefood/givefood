@@ -1,7 +1,7 @@
 {% extends "public/page.html" %}
 
 {% block head %}
-  <link rel="stylesheet" href="/static/css/wfbn.css">
+  <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
   <link rel="alternate" type="application/rss+xml" title="RSS feed for {{ foodbank.full_name }}" href="{% url 'wfbn:foodbank_rss' foodbank.slug %}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
@@ -84,7 +84,7 @@
 {% block script %}
 
 <script src="{% url 'wfbn:foodbank_hit' foodbank.slug %}" defer></script>
-<script src="/static/js/wfbn.js" defer></script>
+<script src="/static/js/wfbn.js?v={{ version }}" defer></script>
 
 {% endblock %}
 
