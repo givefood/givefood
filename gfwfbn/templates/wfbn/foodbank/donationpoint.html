@@ -89,7 +89,7 @@
 
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
-            {% if donationpoint.place_id %}
+            {% if donationpoint.opening_hours %}
               <img src="{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}" alt="{{ donationpoint.name }}">
             {% endif %}
 
