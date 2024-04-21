@@ -154,7 +154,7 @@ def get_place_id(address):
     return place_id
 
 
-def photo_from_place_id(place_id):
+def photo_from_place_id(place_id, size = 1080):
     
     places_key = get_cred("gmap_places_key")
     places_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=photo&key=%s" % (place_id, places_key)
@@ -162,7 +162,7 @@ def photo_from_place_id(place_id):
     places_json = places_response.json()
     photo_ref = places_json.get("result", {}).get("photos", [{}])[0].get("photo_reference", None)
 
-    photo_ref_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=1080&photo_reference=%s&key=%s" % (photo_ref, places_key)
+    photo_ref_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=%s&photo_reference=%s&key=%s" % (size, photo_ref, places_key)
     photo_ref_response = requests.get(photo_ref_url)
     photo = photo_ref_response.content
 

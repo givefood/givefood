@@ -440,13 +440,14 @@ def foodbank_donationpoint(request, slug, dpslug):
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_donationpoint_photo(request, slug, dpslug):
 
+    size = request.GET.get("size", 1080)
     foodbank = get_object_or_404(Foodbank, slug = slug)
     donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
 
     if not donationpoint.place_id:
         return HttpResponseNotFound()
     
-    photo = photo_from_place_id(donationpoint.place_id)
+    photo = photo_from_place_id(donationpoint.place_id, size)
     
     return HttpResponse(photo, content_type='image/jpeg')
 
