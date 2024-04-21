@@ -302,6 +302,7 @@
       {% if foodbank.donation_points %}
         <table class="table is-fullwidth is-hoverable">
           <tr>
+            <th></th>
             <th>Name</th>
             <th>Address</th>
             <th>Postcode</th>
@@ -314,6 +315,11 @@
           </tr>
           {% for donationpoint in foodbank.donation_points %}
             <tr>
+              <td>
+                {% if donationpoint.opening_hours %}
+                  <img src="{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}?size=200" loading="lazy" alt="{{ donationpoint.name }}" width="100">
+                {% endif %}
+              </td>
               <td>{{ donationpoint.name }}</td>
               <td>{{ donationpoint.address|linebreaksbr }}</td>
               <td>{{ donationpoint.postcode }}</td>
