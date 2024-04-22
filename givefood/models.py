@@ -99,8 +99,9 @@ class Foodbank(models.Model):
         return self.name
     
     def clean(self):
-        if self.phone_number == self.secondary_phone_number:
-            raise ValidationError('Phone number and secondary phone number can not be the same')
+        if self.phone_number:
+            if self.phone_number == self.secondary_phone_number:
+                raise ValidationError('Phone number and secondary phone number can not be the same')
 
     def days_between_needs_text(self):
         if self.days_between_needs == 0:
