@@ -209,6 +209,8 @@ function record_click() {
 
 function api_response() {
 
+  uml_btn.classList.remove("working")
+
   if (this.status != 200) {
     if (this.status == 400) {
       status_msg.innerHTML = loc_not_uk;
@@ -273,7 +275,6 @@ function api_response() {
   if (status_msg) {
     status_msg.innerHTML = "";
   }
-  uml_btn.classList.remove("working")
 }
 
 function show_subscribe_modal() {
