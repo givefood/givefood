@@ -40,6 +40,33 @@ FOODBANK_NETWORKS = [
 ]
 FOODBANK_NETWORK_CHOICES = tuple((network, network) for network in FOODBANK_NETWORKS)
 
+DONATION_POINT_COMPANIES = [
+    "Sainsbury's",
+    "Tesco",
+    "Asda",
+    "Morrisons",
+    "Waitrose",
+    "Co-op",
+    "Aldi",
+    "Lidl",
+    "Iceland",
+    "Marks & Spencer",
+    "Booths",
+    "Budgens",
+    "Costcutter",
+    "Nisa",
+    "Spar",
+    "One Stop",
+    "Premier",
+    "McColl's",
+    "Best-One",
+    "Londis",
+    "Mace",
+    "Farmfoods",
+    "Scotmid",
+]
+DONATION_POINT_COMPANIES_CHOICES = tuple((company, company) for company in DONATION_POINT_COMPANIES)
+
 
 TRUSSELL_TRUST_SCHEMA = {
     "@type": "NGO",
