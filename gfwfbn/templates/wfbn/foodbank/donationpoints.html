@@ -83,6 +83,9 @@
             {% endfor %}
 
             {% for donation_point in foodbank.donation_points %}
+                {% if donation_point.company %}
+                  <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon">
+                {% endif %}
                 <a href="{% url 'wfbn:foodbank_donationpoint' foodbank.slug donation_point.slug %}">{{ donation_point.name }}</a>
                 <address>
                   {{ donation_point.address|linebreaksbr }}<br>
