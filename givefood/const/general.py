@@ -64,6 +64,7 @@ DONATION_POINT_COMPANIES = [
     "Mace",
     "Farmfoods",
     "Scotmid",
+    "Eurospar",
 ]
 DONATION_POINT_COMPANIES_CHOICES = tuple((company, company) for company in DONATION_POINT_COMPANIES)
 
