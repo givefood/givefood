@@ -28,6 +28,7 @@
           <th>Foodbank</th>
           <th>Location</th>
           <th>Address</th>
+          <th>Company</th>
           <th>Network</th>
           <th>Country</th>
           <th>Closed</th>
@@ -39,6 +40,7 @@
             <td><a href="{% url 'admin:foodbank' donation_point.foodbank_slug %}">{{ donation_point.foodbank_name }}</a></td>
             <td><a href="{% url 'admin:donationpoint_edit' donation_point.foodbank_slug donation_point.slug %}">{{ donation_point.name }}</a></td>
             <td>{{ donation_point.address }} {{ donation_point.postcode }}</td>
+            <td>{% if donation_point.company %}{{ donation_point.company }}{% endif %}</td>
             <td>{{ donation_point.foodbank_network }}</td>
             <td>{{ donation_point.country }}</td>
             <td>{{ donation_point.is_closed }}</td>

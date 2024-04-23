@@ -308,7 +308,7 @@
             <th>Postcode</th>
             <th>Lat Lng</th>
             <th>Place ID</th>
-            <th>Plus Code Cmpd</th>
+            <th>Company</th>
             <th>Has Open Hrs</th>
             <th>In Store Only?</th>
             <th></th>
@@ -325,7 +325,7 @@
               <td>{{ donationpoint.postcode }}</td>
               <td>{{ donationpoint.latt_long }}</td>
               <td>{% if donationpoint.place_id %}{{ donationpoint.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
-              <td>{% if donationpoint.plus_code_compound %}{{ donationpoint.plus_code_compound|truncatechars:25 }}{% else %}None{% endif %}</td>
+              <td>{% if donationpoint.company %}{{ donationpoint.company }}{% endif %}</td>
               <td>{% if donationpoint.opening_hours %}Y{% endif %}</td>
               <td>{% if donationpoint.in_store_only %}Y{% endif %}</td>
               <td>
