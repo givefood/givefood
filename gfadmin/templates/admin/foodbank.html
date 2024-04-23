@@ -313,25 +313,25 @@
             <th>In Store Only?</th>
             <th></th>
           </tr>
-          {% for donationpoint in foodbank.donation_points %}
+          {% for donation_point in foodbank.donation_points %}
             <tr>
               <td>
-                {% if donationpoint.opening_hours %}
-                  <img src="{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}?size=200" loading="lazy" alt="{{ donationpoint.name }}" width="100">
+                {% if donation_point.opening_hours %}
+                  <img src="{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donation_point.slug %}?size=200" loading="lazy" alt="{{ donation_point.name }}" width="100">
                 {% endif %}
               </td>
-              <td>{{ donationpoint.name }}</td>
-              <td>{{ donationpoint.address|linebreaksbr }}</td>
-              <td>{{ donationpoint.postcode }}</td>
-              <td>{{ donationpoint.latt_long }}</td>
-              <td>{% if donationpoint.place_id %}{{ donationpoint.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
-              <td>{% if donationpoint.company %}{{ donationpoint.company }}{% endif %}</td>
-              <td>{% if donationpoint.opening_hours %}Y{% endif %}</td>
-              <td>{% if donationpoint.in_store_only %}Y{% endif %}</td>
+              <td>{{ donation_point.name }}</td>
+              <td>{{ donation_point.address|linebreaksbr }}</td>
+              <td>{{ donation_point.postcode }}</td>
+              <td>{{ donation_point.latt_long }}</td>
+              <td>{% if donation_point.place_id %}{{ donation_point.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
+              <td>{% if donation_point.company %}{{ donation_point.company }}{% endif %}</td>
+              <td>{% if donation_point.opening_hours %}Y{% endif %}</td>
+              <td>{% if donation_point.in_store_only %}Y{% endif %}</td>
               <td>
-                <a href="{% url 'admin:donationpoint_edit' foodbank.slug donationpoint.slug %}" class="button is-small is-link">Edit</a>
-                <form action="{% url 'admin:donationpoint_delete' foodbank.slug donationpoint.slug %}" method="post">
-                  <input type="submit" class="button is-small is-danger" value="Delete" onclick="return confirm('Delete {{ donationpoint.name}}?')">
+                <a href="{% url 'admin:donationpoint_edit' foodbank.slug donation_point.slug %}" class="button is-small is-link">Edit</a>
+                <form action="{% url 'admin:donationpoint_delete' foodbank.slug donation_point.slug %}" method="post">
+                  <input type="submit" class="button is-small is-danger" value="Delete" onclick="return confirm('Delete {{ donation_point.name}}?')">
                   {% csrf_token %}
                 </form>
               </td>
