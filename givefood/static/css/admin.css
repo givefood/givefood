@@ -102,6 +102,11 @@ table td.delivery-provider-icon {
 td.delivery-provider-icon img {
   width:12px;
 }
+.companyicon {
+  width:16px;
+  height:16px;
+  vertical-align:middle;
+}
 .preview-frame {
   width:100%;
   border:0;
