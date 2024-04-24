@@ -325,7 +325,12 @@
               <td>{{ donation_point.postcode }}</td>
               <td>{{ donation_point.latt_long }}</td>
               <td>{% if donation_point.place_id %}{{ donation_point.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
-              <td>{% if donation_point.company %}{{ donation_point.company }}{% endif %}</td>
+              <td>
+                {% if donation_point.company %}
+                  <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon">
+                  {{ donation_point.company }}
+                {% endif %}
+              </td>
               <td>{% if donation_point.opening_hours %}Y{% endif %}</td>
               <td>{% if donation_point.in_store_only %}Y{% endif %}</td>
               <td>
