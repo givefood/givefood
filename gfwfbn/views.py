@@ -187,7 +187,7 @@ def geojson(request, slug = None):
             "features": features
     }
 
-    return HttpResponse(json.dumps(response_dict), content_type="application/json")
+    return HttpResponse(json.dumps(response_dict), content_type="application/json; charset=utf-8")
 
 
 @cache_page(SECONDS_IN_WEEK)
