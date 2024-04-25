@@ -42,7 +42,7 @@
             <td>{{ donation_point.address }} {{ donation_point.postcode }}</td>
             <td>
               {% if donation_point.company %}
-              <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon"> {{ donation_point.company }}
+                <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon"> {{ donation_point.company }}
               {% endif %}
             </td>
             <td>{{ donation_point.foodbank_network }}</td>
