@@ -416,6 +416,21 @@ def foodbank_location_map(request, slug, locslug):
 
 
 @cache_page(SECONDS_IN_WEEK)
+def foodbank_location_photo(request, slug, locslug):
+
+    size = request.GET.get("size", 1080)
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
+
+    if not location.place_has_photo:
+        return HttpResponseNotFound()
+    
+    photo = photo_from_place_id(location.place_id, size)
+    
+    return HttpResponse(photo, content_type='image/jpeg')
+
+
+@cache_page(SECONDS_IN_WEEK)
 def foodbank_donationpoint(request, slug, dpslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -444,7 +459,7 @@ def foodbank_donationpoint_photo(request, slug, dpslug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
 
-    if not donationpoint.place_id:
+    if not donationpoint.place_has_photo:
         return HttpResponseNotFound()
     
     photo = photo_from_place_id(donationpoint.place_id, size)

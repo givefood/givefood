@@ -169,6 +169,20 @@ def photo_from_place_id(place_id, size = 1080):
     return photo
 
 
+def place_has_photo(place_id):
+    
+    places_key = get_cred("gmap_places_key")
+    places_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=photo&key=%s" % (place_id, places_key)
+    places_response = requests.get(places_url)
+    places_json = places_response.json()
+    photo_ref = places_json.get("result", {}).get("photos", [{}])[0].get("photo_reference", None)
+
+    if photo_ref:
+        return True
+    else:
+        return False
+
+
 def oc_geocode(address):
 
     oc_geocode_key = get_cred("oc_geocode_key")

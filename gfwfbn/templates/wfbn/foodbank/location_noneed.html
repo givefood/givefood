@@ -81,6 +81,10 @@
 
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
+            {% if location.place_has_photo %}
+              <img src="{% url 'wfbn:foodbank_location_photo' foodbank.slug location.slug %}" alt="{{ location.name }}">
+            {% endif %}
+
             <div id="map" class="sidemap"></div>
             {% include "wfbn/foodbank/includes/maplegend.html" %}
 

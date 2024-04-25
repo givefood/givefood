@@ -15,7 +15,7 @@ from requests import PreparedRequest
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
-from givefood.func import geocode, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, pluscode
+from givefood.func import geocode, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode
 
 
 class Foodbank(models.Model):
@@ -504,6 +504,7 @@ class FoodbankLocation(models.Model):
     
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
+    place_has_photo = models.BooleanField(default=False, editable=False)
     plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
     plus_code_global = models.CharField(max_length=200, verbose_name="Plus Code (Global)", null=True, blank=True, editable=False)
 
@@ -642,6 +643,12 @@ class FoodbankLocation(models.Model):
 
         # Slugify name
         self.slug = slugify(self.name)
+        
+        # Photo?
+        if self.place_id:
+            self.place_has_photo = place_has_photo(self.place_id)
+        else:
+            self.place_has_photo = False
 
         # Cache foodbank details
         self.foodbank_name = self.foodbank.name
@@ -716,6 +723,7 @@ class FoodbankDonationPoint(models.Model):
 
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
+    place_has_photo = models.BooleanField(default=False, editable=False)
     plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
     plus_code_global = models.CharField(max_length=200, verbose_name="Plus Code (Global)", null=True, blank=True, editable=False)
 
@@ -796,6 +804,12 @@ class FoodbankDonationPoint(models.Model):
         # Slugify name
         self.slug = slugify(self.name)
 
+        # Photo?
+        if self.place_id:
+            self.place_has_photo = place_has_photo(self.place_id)
+        else:
+            self.place_has_photo = False
+
         # Cleanup phone number
         if self.phone_number:
             self.phone_number = self.phone_number.replace(" ","")
@@ -837,7 +851,7 @@ class FoodbankDonationPoint(models.Model):
         
         # Resave the parent food bank
         if do_foodbank_resave:
-            self.foodbank.save(do_geoupdate=False)
+            self.foodbank.save(do_geoupdate=False, do_decache=False)
 
 
 class Order(models.Model):

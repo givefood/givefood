@@ -316,7 +316,7 @@
           {% for donation_point in foodbank.donation_points %}
             <tr>
               <td>
-                {% if donation_point.opening_hours %}
+                {% if donation_point.place_has_photo %}
                   <img src="{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donation_point.slug %}?size=200" loading="lazy" alt="{{ donation_point.name }}" width="100">
                 {% endif %}
               </td>
