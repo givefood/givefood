@@ -851,7 +851,7 @@ class FoodbankDonationPoint(models.Model):
         
         # Resave the parent food bank
         if do_foodbank_resave:
-            self.foodbank.save(do_geoupdate=False, do_decache=False)
+            self.foodbank.save(do_geoupdate=False)
 
 
 class Order(models.Model):
