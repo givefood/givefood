@@ -33,9 +33,7 @@
               {% endif %}
             </td>
             <td>
-              {% if need.input_method == "typed" %}⌨️{% endif%}
-              {% if need.input_method == "scrape" %}🤖{% endif%}
-              {% if need.input_method == "user" %}🧑{% endif%}
+              {{ need.input_method_emoji }}
             </td>
             <td>
               {% if need.is_categorised %}🪣{% endif %}

@@ -21,10 +21,7 @@
         </dd>
         <dt>Input Method</dt>
         <dd>
-          {% if need.input_method == "typed" %}⌨️{% endif%}
-          {% if need.input_method == "scrape" %}🤖{% endif%}
-          {% if need.input_method == "user" %}🧑{% endif%}
-          {{ need.input_method|title }}
+          {{ need.input_method_emoji }}
         </dd>
         <dt>Created</dt>
         <dd><time datetime="{{ need.created|date:'c' }}" title="{{ need.created }}">{{ need.created|timesince }} ago</time></dd>

@@ -1208,6 +1208,16 @@ class FoodbankChange(models.Model):
             return "scrape"
         else:
             return "typed"
+        
+    def input_method_emoji(self):
+        if self.input_method == "scrape":
+            return "🕷️"
+        if self.input_method == "typed":
+            return "⌨️"
+        if self.input_method == "user":
+            return "🧑"
+        if self.input_method == "ai":
+            return "🤖"
 
     def change_list(self):
         return self.change_text.split("\n")
