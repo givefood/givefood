@@ -41,6 +41,12 @@ def index(request):
             "format":"svg",
         },
         {
+            "name":"BBC",
+            "slug":"bbc",
+            "url":"https://www.bbc.co.uk",
+            "format":"svg",
+        },
+        {
             "name":"Scottish Government Riaghaltas na h-Alba",
             "slug":"scottishgov",
             "url":"https://www.gov.scot",
