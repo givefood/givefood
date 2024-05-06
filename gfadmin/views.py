@@ -1618,7 +1618,10 @@ def proxy(request):
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
     }
     request = requests.get(url, headers=headers)
-    return HttpResponse(request.text)
+    if request.status_code == 200:
+        return HttpResponse(request.text)
+    else:
+        return HttpResponse("%s returned %s. You should check the URL" % (url, request.status_code))
 
 
 def gmap_proxy(request, type):
