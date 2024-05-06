@@ -1,7 +1,7 @@
 import json, requests, datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
 from django.db import IntegrityError
 from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page, never_cache
@@ -187,7 +187,7 @@ def geojson(request, slug = None):
             "features": features
     }
 
-    return HttpResponse(json.dumps(response_dict), content_type="application/json; charset=utf-8")
+    return JsonResponse(response_dict)
 
 
 @cache_page(SECONDS_IN_WEEK)
