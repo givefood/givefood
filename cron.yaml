@@ -12,6 +12,10 @@ cron:
   url: /offline/days_between_needs/
   schedule: every 120 hours
 
+- description: discrepancy check
+  url: /offline/discrepancy_check/
+  schedule: every 20 minutes
+
 # - description: resaver
 #   url: /offline/resaver/
 #   schedule: every 48 hours
