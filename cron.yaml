@@ -10,7 +10,7 @@ cron:
 
 - description: calculate days between needs per food bank
   url: /offline/days_between_needs/
-  schedule: every 120 hours
+  schedule: every monday 03:00
 
 - description: discrepancy check
   url: /offline/discrepancy_check/
