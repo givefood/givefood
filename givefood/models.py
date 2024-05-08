@@ -1163,6 +1163,9 @@ class FoodbankDiscrepancy(models.Model):
     discrepancy_type = models.CharField(max_length=50, choices=DISCREPANCY_TYPES_CHOICES)
     discrepancy_text = models.TextField()
 
+    def foodbank_slug(self):
+        return slugify(self.foodbank_name)
+
     def save(self, *args, **kwargs):
 
         if self.foodbank:

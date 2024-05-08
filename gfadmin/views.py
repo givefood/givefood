@@ -19,18 +19,21 @@ from django.db.models import Sum, Q
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_all_constituencies, get_cred, distance_meters
-from givefood.models import Foodbank, FoodbankArticle, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine
+from givefood.models import Foodbank, FoodbankArticle, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
 def index(request):
 
-    # Foodbanks
-    foodbanks = Foodbank.objects.all().order_by("-edited")[:30]
-
     # Needs
     unpublished_needs = FoodbankChange.objects.filter(published = False).order_by("-created")
     published_needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:20]
+
+    # Discrepancies
+    discrepancies = FoodbankDiscrepancy.objects.all().order_by("-created")[:20]
+
+    # Foodbanks
+    foodbanks = Foodbank.objects.all().order_by("-edited")[:30]
 
     # Stats
     oldest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0]
@@ -43,9 +46,10 @@ def index(request):
     articles = FoodbankArticle.objects.all().order_by("-published_date")[:20]
 
     template_vars = {
-        "foodbanks":foodbanks,
         "unpublished_needs":unpublished_needs,
         "published_needs":published_needs,
+        "discrepancies":discrepancies,
+        "foodbanks":foodbanks,
         "latest_edit":latest_edit,
         "oldest_edit":oldest_edit,
         "sub_count_24":sub_count_24,

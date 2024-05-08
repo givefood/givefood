@@ -30,6 +30,27 @@
 
     <div class="column">
 
+      <h2>Discrepancies</h2>
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Time</th>
+          <th>Foodbank</th>
+          <th></th>
+        </tr>
+        {% for discrepancy in discrepancies %}
+          <tr>
+            <td>{{ discrepancy.created }}</td>
+            <td><a href="{% url "admin:foodbank" discrepancy.foodbank_slug %}">{{ discrepancy.foodbank_name }}</a></td>
+            <td>{{ discrepancy.discrepancy_text }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+    <div class="column">
+
       <h2>Foodbanks</h2>
       <table class="table is-fullwidth is-hoverable">
         <tr>
