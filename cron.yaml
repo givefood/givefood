@@ -14,7 +14,7 @@ cron:
 
 - description: discrepancy check
   url: /offline/discrepancy_check/
-  schedule: every 20 minutes
+  schedule: every 10 minutes
 
 # - description: resaver
 #   url: /offline/resaver/
