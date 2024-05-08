@@ -206,7 +206,7 @@
         {% csrf_token %}
       </form>
 
-      <h3>REAL Danger Zone</h3>
+      <h3>⚠️ Really Dangerous Zone</h3>
       <form action="{% url 'admin:foodbank_delete' foodbank.slug %}" method="post">
         <input type="submit" class="button is-danger" value="Delete {{ foodbank.full_name }}" onclick="return confirm('DELETE {{ foodbank.name}}?')">
         {% csrf_token %}
