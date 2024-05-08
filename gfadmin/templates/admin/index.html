@@ -40,9 +40,9 @@
         </tr>
         {% for discrepancy in discrepancies %}
           <tr>
-            <td>{{ discrepancy.created }}</td>
+            <td>{{ discrepancy.created|timesince }}</td>
             <td><a href="{% url "admin:foodbank" discrepancy.foodbank_slug %}">{{ discrepancy.foodbank_name }}</a></td>
-            <td>{{ discrepancy.discrepancy_text }}</td>
+            <td class="is-size-7">{{ discrepancy.discrepancy_text }}</td>
           </tr>
         {% endfor %}
       </table>
