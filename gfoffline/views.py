@@ -183,7 +183,7 @@ def days_between_needs(request):
         needs = FoodbankChange.objects.filter(foodbank = foodbank).order_by("-created")[:number_of_needs]
         if len(needs) == number_of_needs:
             last_need_date = needs[number_of_needs-1].created
-            days_since_earliest_sample_need = (last_need_date - datetime.now(timezone.utc)).days
+            days_since_earliest_sample_need = (last_need_date - datetime.now()).days
             days_between_needs = int(-days_since_earliest_sample_need / number_of_needs)
 
         foodbank.days_between_needs = days_between_needs
