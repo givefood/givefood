@@ -126,7 +126,7 @@ class NeedForm(ModelForm):
     class Meta:
         model = FoodbankChange
         fields = "__all__"
-        exclude = ('change_text_original', 'input_method', 'name', 'uri', 'distill_id')
+        exclude = ('change_text_original', 'input_method', 'name', 'uri', 'distill_id', 'excess_change_text_original')
 
 
 class NeedLineForm(ModelForm):
