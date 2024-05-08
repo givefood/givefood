@@ -390,6 +390,8 @@ class Foodbank(models.Model):
 
         if self.delivery_address:
             self.delivery_latt_long = geocode(self.delivery_address)
+        else:
+            self.delivery_latt_long = None
 
         if do_geoupdate:
             regions = admin_regions_from_postcode(self.postcode)
