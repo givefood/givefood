@@ -41,6 +41,18 @@ FOODBANK_NETWORKS = [
 ]
 FOODBANK_NETWORK_CHOICES = tuple((network, network) for network in FOODBANK_NETWORKS)
 
+DISCREPANCY_TYPES = [
+    "postcode",
+    "address",
+    "phone",
+    "email",
+    "charity_number",
+    "need",
+    "website",
+]
+DISCREPANCY_TYPES_CHOICES = tuple((discrepancy_type, discrepancy_type) for discrepancy_type in DISCREPANCY_TYPES)
+
+
 DONATION_POINT_COMPANIES = [
     "Sainsbury's",
     "Tesco",

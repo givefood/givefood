@@ -7,6 +7,7 @@ from collections import OrderedDict
 from datetime import datetime
 from time import mktime
 import openai
+from bs4 import BeautifulSoup
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -1106,3 +1107,9 @@ def chatgpt(prompt, temperature):
         ]
     )
     return response["choices"][0]["message"]["content"]
+
+
+def htmlbodytext(html):
+
+    soup = BeautifulSoup(html, features="html.parser")
+    return soup.body.get_text()

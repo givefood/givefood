@@ -1,0 +1,12 @@
+Reply with a valid JSON object containing the following:
+
+{
+    "phone_number": The foodbank's phone number without spaces.
+    "address": The food bank's postal address, line separated, without commas on the end of lines. This will probably be three or four lines of address - do not include the postcode (e.g. EX4 6PX) here, the name of the food bank or any other directions.
+    "postcode": The foodbank's postcode.
+    "charity_number": The food bank's registered charity number.
+}
+
+From this text describing the food bank:
+
+{{ foodbank_page }}

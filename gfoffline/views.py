@@ -1,15 +1,16 @@
-import logging
+import json
+import logging, requests
 
 from datetime import datetime, timedelta, timezone
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.cache import cache
 from django.apps import apps
 from givefood.const.item_types import ITEM_CATEGORIES
 
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankLocation, FoodbankSubscriber, FoodbankChange
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankLocation, FoodbankSubscriber, FoodbankChange
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
+from givefood.func import chatgpt, htmlbodytext, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
 from django.template.loader import render_to_string
 
 
@@ -52,6 +53,99 @@ def crawl_articles(request):
     for foodbank in foodbanks_with_rss:
         foodbank_article_crawl(foodbank)
 
+    return HttpResponse("OK")
+
+
+def discrepancy_check(request):
+
+    foodbanks = Foodbank.objects.all().order_by("-last_discrepancy_check")[:1]
+
+    for foodbank in foodbanks:
+
+        if "facebook.com" not in foodbank.url:
+
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+            }
+            foodbank_page = requests.get(foodbank.url, headers=headers)
+            foodbank_page = htmlbodytext(foodbank_page.text)
+
+            # DETAILS
+            detail_prompt = render_to_string(
+                "foodbank_detail_prompt.txt",
+                {
+                    "foodbank_page":foodbank_page,
+                }
+            )
+            detail_response = chatgpt(
+                prompt = detail_prompt,
+                temperature = 0.8,
+            )
+            detail_response = json.loads(detail_response)
+
+            if detail_response["phone_number"] != foodbank.phone_number:
+                phone_discrepancy = FoodbankDiscrepancy(
+                    foodbank = foodbank,
+                    discrepancy_type = "phone",
+                    discrepancy_text = "Phone number '%s' changed to '%s'" % (foodbank.phone_number, detail_response["phone_number"]),
+                    url = foodbank.url,
+                )
+                phone_discrepancy.save()
+
+            if detail_response["postcode"] != foodbank.postcode:
+                postcode_discrepancy = FoodbankDiscrepancy(
+                    foodbank = foodbank,
+                    discrepancy_type = "postcode",
+                    discrepancy_text = "Postcode '%s' changed to '%s'" % (foodbank.postcode, detail_response["postcode"]),
+                    url = foodbank.url,
+                )
+                postcode_discrepancy.save()
+                
+
+            # EMAIL
+            # if foodbank.email not in foodbank_page:
+                # email_discrepancy = FoodbankDiscrepancy(
+                #     foodbank = foodbank,
+                #     discrepancy_type = "email",
+                #     discrepancy_text = "Missing email %s" % foodbank.email,
+                #     url = foodbank.url,
+                # )
+                # email_discrepancy.save()
+
+            # SHOPPING LIST
+            # foodbank_shoppinglist_page = requests.get(foodbank.shopping_list_url, headers=headers)
+            # foodbank_shoppinglist_page = htmlbodytext(foodbank_shoppinglist_page.text)
+
+            # detail_prompt = render_to_string(
+            #     "foodbank_need_prompt.txt",
+            #     {
+            #         "foodbank_page":foodbank_shoppinglist_page,
+            #     }
+            # )
+            # detail_response = chatgpt(
+            #     prompt = detail_prompt,
+            #     temperature = 0.8,
+            # )
+            # detail_response = json.loads(detail_response)
+
+            # need_text = '\n'.join(detail_response["needed"])
+            # excess_text = '\n'.join(detail_response["excess"])
+
+            # if need_text != foodbank.latest_need().change_text or excess_text != foodbank.latest_need().excess_change_text:
+            #     foodbank_change = FoodbankChange(
+            #         foodbank = foodbank,
+            #         uri = foodbank.shopping_list_url,
+            #         change_text = need_text,
+            #         change_text_original = need_text,
+            #         excess_change_text = excess_text,
+            #         excess_change_text_original = excess_text,
+            #         input_method = "ai",
+            #     )
+            #     foodbank_change.save()
+
+        foodbank.last_discrepancy_check = datetime.now()
+        foodbank.save(do_decache=False, do_geoupdate=False)
+    
     return HttpResponse("OK")
 
 

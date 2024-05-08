@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse
 from requests import PreparedRequest
 
-from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES
+from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import geocode, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode
 
@@ -87,6 +87,7 @@ class Foodbank(models.Model):
     last_need = models.DateTimeField(editable=False, null=True)
     last_rfi = models.DateTimeField(editable=False, null=True)
     last_crawl = models.DateTimeField(editable=False, null=True)
+    last_discrepancy_check = models.DateTimeField(editable=False, null=True)
 
     no_locations = models.IntegerField(editable=False, default=0)
     no_donation_points = models.IntegerField(editable=False, default=0)
@@ -1149,6 +1150,27 @@ class FoodbankGroup(models.Model):
         app_label = 'givefood'
 
 
+class FoodbankDiscrepancy(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+    
+    foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.DO_NOTHING)
+    foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
+    need = models.ForeignKey("FoodbankChange", null=True, blank=True, on_delete=models.DO_NOTHING)
+
+    url = models.URLField(null=True, blank=True)
+    discrepancy_type = models.CharField(max_length=50, choices=DISCREPANCY_TYPES_CHOICES)
+    discrepancy_text = models.TextField()
+
+    def save(self, *args, **kwargs):
+
+        if self.foodbank:
+            self.foodbank_name = self.foodbank.name
+
+        super(FoodbankDiscrepancy, self).save(*args, **kwargs)
+
+
 class FoodbankChange(models.Model):
 
     # This is known on the frontend as a 'need'
@@ -1168,6 +1190,7 @@ class FoodbankChange(models.Model):
     change_text_original = models.TextField(null=True, blank=True)
 
     excess_change_text = models.TextField(verbose_name="Excess Items", null=True, blank=True)
+    excess_change_text_original = models.TextField(null=True, blank=True)
 
     published = models.BooleanField(default=False)
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)

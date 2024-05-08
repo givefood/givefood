@@ -1,0 +1,10 @@
+Reply with a valid JSON object containing the following:
+
+{
+    "needed": JSON list of items this food bank is requesting to have donated, in Title Case keeping the linebreaks in the same places
+    "excess": JSON list of items this food bank doesn't need donating, in Title Case
+}
+
+From this text describing the food bank's needed and excess items...
+
+{{ foodbank_page }}
