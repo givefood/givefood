@@ -68,38 +68,47 @@ def discrepancy_check(request):
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
             }
             foodbank_page = requests.get(foodbank.url, headers=headers)
-            foodbank_page = htmlbodytext(foodbank_page.text)
+            if foodbank_page.status_code == 200:
+                foodbank_page = htmlbodytext(foodbank_page.text)
 
-            # DETAILS
-            detail_prompt = render_to_string(
-                "foodbank_detail_prompt.txt",
-                {
-                    "foodbank_page":foodbank_page,
-                }
-            )
-            detail_response = chatgpt(
-                prompt = detail_prompt,
-                temperature = 0.8,
-            )
-            detail_response = json.loads(detail_response)
+                # DETAILS
+                detail_prompt = render_to_string(
+                    "foodbank_detail_prompt.txt",
+                    {
+                        "foodbank_page":foodbank_page,
+                    }
+                )
+                detail_response = chatgpt(
+                    prompt = detail_prompt,
+                    temperature = 0.8,
+                )
+                detail_response = json.loads(detail_response)
 
-            if detail_response["phone_number"] != foodbank.phone_number:
-                phone_discrepancy = FoodbankDiscrepancy(
+                if detail_response["phone_number"] != foodbank.phone_number:
+                    phone_discrepancy = FoodbankDiscrepancy(
+                        foodbank = foodbank,
+                        discrepancy_type = "phone",
+                        discrepancy_text = "Phone number '%s' changed to '%s'" % (foodbank.phone_number, detail_response["phone_number"]),
+                        url = foodbank.url,
+                    )
+                    phone_discrepancy.save()
+
+                if detail_response["postcode"] != foodbank.postcode:
+                    postcode_discrepancy = FoodbankDiscrepancy(
+                        foodbank = foodbank,
+                        discrepancy_type = "postcode",
+                        discrepancy_text = "Postcode '%s' changed to '%s'" % (foodbank.postcode, detail_response["postcode"]),
+                        url = foodbank.url,
+                    )
+                    postcode_discrepancy.save()
+            else:
+                website_discrepancy = FoodbankDiscrepancy(
                     foodbank = foodbank,
-                    discrepancy_type = "phone",
-                    discrepancy_text = "Phone number '%s' changed to '%s'" % (foodbank.phone_number, detail_response["phone_number"]),
+                    discrepancy_type = "website",
+                    discrepancy_text = "Website %s returned HTTP code %s" % (foodbank.url, foodbank_page.status_code),
                     url = foodbank.url,
                 )
-                phone_discrepancy.save()
-
-            if detail_response["postcode"] != foodbank.postcode:
-                postcode_discrepancy = FoodbankDiscrepancy(
-                    foodbank = foodbank,
-                    discrepancy_type = "postcode",
-                    discrepancy_text = "Postcode '%s' changed to '%s'" % (foodbank.postcode, detail_response["postcode"]),
-                    url = foodbank.url,
-                )
-                postcode_discrepancy.save()
+                website_discrepancy.save()
                 
 
             # EMAIL
