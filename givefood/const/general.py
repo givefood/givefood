@@ -52,6 +52,13 @@ DISCREPANCY_TYPES = [
 ]
 DISCREPANCY_TYPES_CHOICES = tuple((discrepancy_type, discrepancy_type) for discrepancy_type in DISCREPANCY_TYPES)
 
+DISCREPANCY_STATUSES = [
+    "New",
+    "Done",
+    "Invalid",
+]
+DISCREPANCY_STATUS_CHOICES = tuple((status, status) for status in DISCREPANCY_STATUSES)
+
 
 DONATION_POINT_COMPANIES = [
     "Sainsbury's",

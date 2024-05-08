@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse
 from requests import PreparedRequest
 
-from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES
+from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import geocode, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode
 
@@ -1164,6 +1164,7 @@ class FoodbankDiscrepancy(models.Model):
     url = models.URLField(null=True, blank=True)
     discrepancy_type = models.CharField(max_length=50, choices=DISCREPANCY_TYPES_CHOICES)
     discrepancy_text = models.TextField()
+    status = models.CharField(max_length=10, choices=DISCREPANCY_STATUS_CHOICES, default="New")
 
     def foodbank_slug(self):
         return slugify(self.foodbank_name)
