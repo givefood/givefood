@@ -187,7 +187,7 @@ def days_between_needs(request):
             days_between_needs = int(-days_since_earliest_sample_need / number_of_needs)
 
         foodbank.days_between_needs = days_between_needs
-        foodbank.save()
+        foodbank.save(do_decache=False, do_geoupdate=False)
 
 
     return HttpResponse("OK")
