@@ -32,9 +32,6 @@ def index(request):
     # Discrepancies
     discrepancies = FoodbankDiscrepancy.objects.all().order_by("-created")[:20]
 
-    # Foodbanks
-    foodbanks = Foodbank.objects.all().order_by("-edited")[:30]
-
     # Stats
     oldest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0]
     latest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("-edited")[:1][0]
@@ -49,7 +46,6 @@ def index(request):
         "unpublished_needs":unpublished_needs,
         "published_needs":published_needs,
         "discrepancies":discrepancies,
-        "foodbanks":foodbanks,
         "latest_edit":latest_edit,
         "oldest_edit":oldest_edit,
         "sub_count_24":sub_count_24,

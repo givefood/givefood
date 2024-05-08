@@ -51,29 +51,6 @@
 
     <div class="column">
 
-      <h2>Foodbanks</h2>
-      <table class="table is-fullwidth is-hoverable">
-        <tr>
-          <th></th>
-          <th>Edited</th>
-        </tr>
-        {% for foodbank in foodbanks %}
-          <tr>
-            <td>
-              {% if foodbank.is_closed %}
-                <span style="color:red">X</span>
-              {% endif %}
-              <a href="{% url "admin:foodbank" foodbank.slug %}">{{ foodbank }}</a>
-            </td>
-            <td>{{ foodbank.edited }}</td>
-          </tr>
-        {% endfor %}
-      </table>
-
-    </div>
-
-    <div class="column">
-
       <h2>Stats</h2>
 
       <dl>
