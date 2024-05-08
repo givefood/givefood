@@ -37,12 +37,23 @@
           <th>Time</th>
           <th>Foodbank</th>
           <th></th>
+          <th></th>
         </tr>
         {% for discrepancy in discrepancies %}
           <tr>
             <td>{{ discrepancy.created|timesince }}</td>
             <td><a href="{% url "admin:foodbank" discrepancy.foodbank_slug %}">{{ discrepancy.foodbank_name }}</a></td>
             <td class="is-size-7">{{ discrepancy.discrepancy_text }}</td>
+            <td>
+              <form action="{% url 'admin:discrepancy_action' discrepancy.id %}" method="post">
+                <input type="hidden" name="action" value="done">
+                <input type="submit" value="✓" class="button is-small is-success">
+              </form>
+              <form action="{% url 'admin:discrepancy_action' discrepancy.id %}" method="post">
+                <input type="hidden" name="action" value="invalid">
+                <input type="submit" value="✗" class="button is-small is-danger">
+              </form>
+            </td>
           </tr>
         {% endfor %}
       </table>

@@ -30,7 +30,7 @@ def index(request):
     published_needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:20]
 
     # Discrepancies
-    discrepancies = FoodbankDiscrepancy.objects.all().order_by("-created")[:20]
+    discrepancies = FoodbankDiscrepancy.objects.filter(status = 'New').order_by("-created")[:20]
 
     # Stats
     oldest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0]
@@ -802,6 +802,20 @@ def locations_loader_sa(request):
 
 
     return HttpResponse("OK")
+
+
+def discrepancy_action(request, id):
+
+    action = request.POST.get("action")
+    discrepancy = get_object_or_404(FoodbankDiscrepancy, id = id)
+    if action == "invalid":
+        discrepancy.status = "Invalid"
+    if action == "done":
+        discrepancy.status = "Done"
+    
+    discrepancy.save()
+
+    return redirect("admin:index")
 
 
 def donationpoints(request):
