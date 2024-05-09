@@ -44,7 +44,7 @@
           <tr>
             <td>{{ discrepancy.created|timesince }}</td>
             <td><a href="{% url "admin:foodbank" discrepancy.foodbank_slug %}">{{ discrepancy.foodbank_name }}</a></td>
-            <td><a href="{{ discrepancy.url }}">🔗</a></td>
+            <td><a href="{{ discrepancy.url }}" target="_blank">🔗</a></td>
             <td class="is-size-7">{{ discrepancy.discrepancy_text }}</td>
             <td>
               <form action="{% url 'admin:discrepancy_action' discrepancy.id %}" method="post">
