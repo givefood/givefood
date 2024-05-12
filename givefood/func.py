@@ -156,18 +156,31 @@ def get_place_id(address):
 
 
 def photo_from_place_id(place_id, size = 1080):
+
+    from givefood.models import PlacePhoto
+
+    try:
+        photo = PlacePhoto.objects.get(place_id = place_id)
+    except PlacePhoto.DoesNotExist:
     
-    places_key = get_cred("gmap_places_key")
-    places_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=photo&key=%s" % (place_id, places_key)
-    places_response = requests.get(places_url)
-    places_json = places_response.json()
-    photo_ref = places_json.get("result", {}).get("photos", [{}])[0].get("photo_reference", None)
+        places_key = get_cred("gmap_places_key")
+        places_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=photo&key=%s" % (place_id, places_key)
+        places_response = requests.get(places_url)
+        places_json = places_response.json()
+        photo_ref = places_json.get("result", {}).get("photos", [{}])[0].get("photo_reference", None)
 
-    photo_ref_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=%s&photo_reference=%s&key=%s" % (size, photo_ref, places_key)
-    photo_ref_response = requests.get(photo_ref_url)
-    photo = photo_ref_response.content
+        photo_ref_url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=%s&photo_reference=%s&key=%s" % (size, photo_ref, places_key)
+        photo_ref_response = requests.get(photo_ref_url)
+        photo_blob = photo_ref_response.content
 
-    return photo
+        photo = PlacePhoto(
+            place_id = place_id,
+            blob = photo_blob,
+            photo_ref = photo_ref,
+        )
+        photo.save()
+
+    return photo.blob
 
 
 def place_has_photo(place_id):

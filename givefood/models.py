@@ -1654,3 +1654,20 @@ class Place(models.Model):
 
     class Meta:
         app_label = 'givefood'
+
+
+class PlacePhoto(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    place_id = models.CharField(max_length=1024, null=True, blank=True)
+    photo_ref= models.CharField(max_length=1024, unique=True)
+    html_attributions = models.TextField()
+    blob = models.BinaryField()
+
+    def __str__(self):
+        return self.place_id
+
+    class Meta:
+        app_label = 'givefood'
