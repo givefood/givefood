@@ -67,7 +67,16 @@ def discrepancy_check(request):
             headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
             }
-            foodbank_page = requests.get(foodbank.url, headers=headers)
+            try:
+                foodbank_page = requests.get(foodbank.url, headers=headers, verify=False)
+            except requests.exceptions.Timeout:
+                website_discrepancy = FoodbankDiscrepancy(
+                    foodbank = foodbank,
+                    discrepancy_type = "website",
+                    discrepancy_text = "Website %s connection failed" % (foodbank.url),
+                    url = foodbank.url,
+                )
+                
             if foodbank_page.status_code == 200:
                 foodbank_page = htmlbodytext(foodbank_page.text)
 
