@@ -115,18 +115,6 @@ def get_location(request):
     return redirect(redirect_url)
 
 
-def click(request, slug):
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-
-    added_params = {"ref":"givefood.org.uk"}
-    req = PreparedRequest()
-    req.prepare_url(foodbank.url, added_params)
-    response = redirect(req.url)
-    response["X-Robots-Tag"] = "noindex"
-    return response
-
-
 @cache_page(SECONDS_IN_WEEK)
 def geojson(request, slug = None):
 
