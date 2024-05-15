@@ -165,6 +165,7 @@ OLD_FOODBANK_SLUGS = {
     "ballymena/ballymena-north":"ballymena-north",
     "quinton-oldbury":"quinton",
     "chalk-farm":"kentish-town",
+    "cupboard-love":"bridport",
 }
 
 FOODBANK_SUBPAGES = [
