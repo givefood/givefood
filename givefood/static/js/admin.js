@@ -64,11 +64,22 @@ const change_text_field = document.querySelector("#id_change_text");
 const excess_change_text = document.querySelector("#id_excess_change_text");
 const fb_name_field = document.querySelector(".form-new-food-bank #id_name");
 const dp_name_field = document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name");
+const company_field = document.querySelector("#id_company");
 
 const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=" + gmap_geocode_key + "&address="
 const place_url = "/admin/proxy/gmaps/textsearch/?region=uk&key=" + gmap_places_key + "&query="
 const place_detail_url = "/admin/proxy/gmaps/placedetails/?region=uk&key=" + gmap_places_key + "&placeid="
 const map_url = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&key=" + gmap_static_key + "&scale=2&center="
+
+if (company_field) {
+  dp_name_field.addEventListener("keyup", function(event) {
+    for(i=0; i < company_field.options.length;i++) {
+      if (dp_name_field.value.includes(company_field.options[i].value)) {
+        company_field.options[i].selected = "selected";
+      }
+    }
+  });
+}
 
 // Check FB slug
 if (fb_name_field) {
