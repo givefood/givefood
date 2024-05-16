@@ -58,7 +58,7 @@ def crawl_articles(request):
 
 def discrepancy_check(request):
 
-    foodbanks = Foodbank.objects.filter(is_closed = False).order_by("last_discrepancy_check", "edited")[:1]
+    foodbanks = Foodbank.objects.filter(is_closed = False).order_by("last_discrepancy_check")[:1]
 
     for foodbank in foodbanks:
 
