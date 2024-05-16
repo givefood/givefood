@@ -615,7 +615,7 @@ def needs(request):
             },
             "needs":need.change_text,
             "excess":need.excess_change_text,
-            "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
+            "self":"https://www.givefood.org.uk/api/2/need/%s/" % (need.need_id),
         })
 
     return ApiResponse(response_list, "needs", format)
@@ -640,7 +640,7 @@ def need(request, id):
         },
         "needs":need.change_text,
         "excess":need.excess_change_text,
-        "self":"https://www.givefood.org.uk/api/2/needs/%s/" % (need.need_id),
+        "self":"https://www.givefood.org.uk/api/2/need/%s/" % (need.need_id),
     }
 
     return ApiResponse(response_dict, "need", format)
