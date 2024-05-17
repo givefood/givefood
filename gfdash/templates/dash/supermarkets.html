@@ -1,0 +1,71 @@
+{% extends "public/page.html" %}
+
+{% block title %}Supermarkets - Give Food{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+      <div class="column">
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+      </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash:supermarkets' %}" aria-current="page">Supermarket Donation Points</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+      <h1>Supermarket Donation Points</h1>
+      <div id="chart" style="height:600px"></div>
+
+      <table class="table is-striped is-narrow is-fullwidth">
+          <tr>
+              <th>Supermarket</th>
+              <th>Number of Donation Points</th>
+          </tr>
+          {% for supermarket in supermarkets %}
+              <tr>
+                  <td>{{ supermarket.company }}</td>
+                  <td>{{ supermarket.count }}</td>
+              </tr>
+          {% endfor %}
+      </table>
+    </div>
+
+  </div><br><br>
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script>
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Supermarket', "Number of Donation Points"],
+        {% for supermarket in supermarkets %}
+            ["{{ supermarket.company|safe }}", {{ supermarket.count }}],
+        {% endfor %}
+      ]);
+
+      var options = {
+        bars: 'verticle',
+        legend:{position:'none'},
+      };
+      
+      var chart = new google.visualization.PieChart(document.getElementById('chart'));
+      chart.draw(data);
+    }
+  </script>
+
+{% endblock %}

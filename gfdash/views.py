@@ -8,9 +8,9 @@ from functools import reduce
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
-from django.db.models import Q
+from django.db.models import Q, Count
 
-from givefood.models import Foodbank, FoodbankChange, FoodbankArticle, Order
+from givefood.models import Foodbank, FoodbankChange, FoodbankArticle, FoodbankDonationPoint, Order
 from givefood.func import group_list, get_all_foodbanks, filter_change_text
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR
 
@@ -393,3 +393,14 @@ def deliveries(request, metric):
     }
 
     return render(request, "dash/deliveries.html", template_vars)
+
+
+# @cache_page(SECONDS_IN_DAY)
+def supermarkets(request):
+
+    supermarkets = FoodbankDonationPoint.objects.filter(company__isnull = False).values("company").annotate(count=Count("company")).order_by("-count")
+    template_vars = {
+        "supermarkets":supermarkets,
+    }
+
+    return render(request, "dash/supermarkets.html", template_vars)
