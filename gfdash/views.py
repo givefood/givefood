@@ -395,7 +395,7 @@ def deliveries(request, metric):
     return render(request, "dash/deliveries.html", template_vars)
 
 
-# @cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_DAY)
 def supermarkets(request):
 
     supermarkets = FoodbankDonationPoint.objects.filter(company__isnull = False).values("company").annotate(count=Count("company")).order_by("-count")
