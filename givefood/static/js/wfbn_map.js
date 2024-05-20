@@ -1,4 +1,5 @@
 function init_map() {
+    var infowindow = new google.maps.InfoWindow();
     map = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(55.4,-4),
         zoom: 6,
@@ -8,11 +9,11 @@ function init_map() {
         streetViewControl: false,
     });
 
-    var map_data = new google.maps.Data();
-    map_data.loadGeoJson(gf_map_config.geojson, null, function(){
+    var data = new google.maps.Data();
+    data.loadGeoJson(gf_map_config.geojson, null, function(){
         if (typeof gf_map_config.lat == 'undefined') {
             bounds = new google.maps.LatLngBounds();
-            map_data.forEach(function(feature) {
+            data.forEach(function(feature) {
                 geo = feature.getGeometry();
                 geo.forEachLatLng(function(LatLng) {
                     bounds.extend(LatLng);
@@ -36,14 +37,14 @@ function init_map() {
         map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
         legend.style.display = "block";
     });
-    map_data.setStyle(function(feature) {
-        if (feature.getProperty("type") == "fb") {
+    data.setStyle(function(feature) {
+        if (feature.getProperty("type") == "f") {
             marker_colour = "red"
             marker_size = 34
-        } else if (feature.getProperty("type") == "loc") {
+        } else if (feature.getProperty("type") == "l") {
             marker_colour = "yellow"
             marker_size = 28
-        } else if (feature.getProperty("type") == "dp") {
+        } else if (feature.getProperty("type") == "d") {
             marker_colour = "blue"
             marker_size = 24
         }
@@ -55,10 +56,19 @@ function init_map() {
             title: feature.getProperty("name")
         };
     });
-    map_data.addListener('click', (event) => {
-        window.location = event.feature.getProperty('url');
+    data.addListener('click', (event) => {
+        feat = event.feature
+        title = feat.getProperty('name');
+        url = feat.getProperty('url');
+        address = feat.getProperty('address');
+        html = "<div class='infowindow'><h3>" + title + "</h3><address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address><a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
+        console.log(html)
+        infowindow.setContent(html);
+        infowindow.setPosition(event.latLng);
+        infowindow.setOptions({pixelOffset: new google.maps.Size(0,-34)});
+        infowindow.open(map);
     });
-    map_data.setMap(map);
+    data.setMap(map);
     map.setOptions({styles:[
         {
           "featureType": "administrative.land_parcel",

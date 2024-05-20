@@ -136,8 +136,9 @@ def geojson(request, slug = None):
                 "coordinates":[foodbank.long(), foodbank.latt()],
             },
             "properties":{
-                "type":"fb",
+                "type":"f",
                 "name":foodbank.full_name(),
+                "address":foodbank.full_address(),
                 "url":"/needs/at/%s/" % foodbank.slug,
             }
         })
@@ -150,8 +151,9 @@ def geojson(request, slug = None):
                 "coordinates":[location.long(), location.latt()],
             },
             "properties":{
-                "type":"loc",
+                "type":"l",
                 "name":"%s - %s" % (location.name, location.foodbank_name),
+                "address":location.full_address(),
                 "url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug),
             }
         })
@@ -164,8 +166,9 @@ def geojson(request, slug = None):
                 "coordinates":[donationpoint.long(), donationpoint.latt()],
             },
             "properties":{
-                "type":"dp",
+                "type":"d",
                 "name":"%s - %s" % (donationpoint.name, donationpoint.foodbank_name),
+                "address":donationpoint.full_address(),
                 "url":"/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
             }
         })
