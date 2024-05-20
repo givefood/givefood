@@ -83,7 +83,7 @@
     border-radius: 2px;
     font-family:'Soehne Buch' !important;
 }
-.infowindow h3, .infowindow address {
+.infowindow h3, .infowindow p, .infowindow address {
     margin-bottom:10px;
 }
 address {

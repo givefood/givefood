@@ -58,14 +58,23 @@ function init_map() {
     });
     data.addListener('click', (event) => {
         feat = event.feature
+        type = feat.getProperty('type');
         title = feat.getProperty('name');
         url = feat.getProperty('url');
         address = feat.getProperty('address');
-        html = "<div class='infowindow'><h3>" + title + "</h3><address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address><a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
-        console.log(html)
+        html = "<div class='infowindow'><h3>" + title + "</h3>"
+        if (type != "f") {
+            if (type == "l") {
+                html += "<p>Location for "
+            } else {
+                html += "<p>Donation point for "
+            }
+            html += "<a href='/needs/at/" + slugify(feat.getProperty('foodbank')) + "/'>" + feat.getProperty('foodbank') + "</a> Food Bank.</p>"
+        }
+        html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address><a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
         infowindow.setContent(html);
         infowindow.setPosition(event.latLng);
-        infowindow.setOptions({pixelOffset: new google.maps.Size(0,-34)});
+        infowindow.setOptions({pixelOffset: new google.maps.Size(0,-28)});
         infowindow.open(map);
     });
     data.setMap(map);
@@ -111,3 +120,21 @@ function init_map() {
 
 var map
 google.maps.event.addDomListener(window, 'load', init_map);
+
+function slugify(str) {
+  str = str.replace(/^\s+|\s+$/g, ''); // trim
+  str = str.toLowerCase();
+
+  // remove accents, swap ñ for n, etc
+  var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+  var to   = "aaaaeeeeiiiioooouuuunc------";
+  for (var i=0, l=from.length ; i<l ; i++) {
+      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+  }
+
+  str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+      .replace(/\s+/g, '-') // collapse whitespace and replace by -
+      .replace(/-+/g, '-'); // collapse dashes
+
+  return str;
+}
