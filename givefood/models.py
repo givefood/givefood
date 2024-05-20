@@ -768,6 +768,7 @@ class FoodbankDonationPoint(models.Model):
                 "y_source",
                 "sc_cmp",
                 "extcam",
+                "utm_content",
             ])
             url.add({"ref":"givefood.org.uk"})
             return url.url
