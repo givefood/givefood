@@ -977,6 +977,10 @@ def edit_stats(request):
         "Headline Donation Points":headline_donation_points,
         "Newest Edit":newest_edit,
         "Oldest Edit":oldest_edit,
+        "Total Discrepancies":FoodbankDiscrepancy.objects.count(),
+        "Discrepancies Outstanding":FoodbankDiscrepancy.objects.filter(status = "New").count(),
+        "Discrepancies Invalid":FoodbankDiscrepancy.objects.filter(status = "Invalid").count(),
+        "Discrepancies Done":FoodbankDiscrepancy.objects.filter(status = "Done").count(),
     }
 
     template_vars = {
