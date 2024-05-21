@@ -226,6 +226,8 @@ class Foodbank(models.Model):
                 return "https://www.charitycommissionni.org.uk/charity-details/?regId=%s" % (self.charity_number.replace("NIC",""))
             if self.country == "Wales" or self.country == "England":
                 return "https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=%s&subid=0" % (self.charity_number)
+            if self.country == "Isle of Man":
+                return "https://www.gov.im/about-the-government/offices/attorney-generals-chambers/crown-office/charities/index-of-charities-registered-in-the-isle-of-man/"
 
     def network_url(self):
         if self.network == "Trussell Trust":
