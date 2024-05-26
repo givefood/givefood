@@ -846,7 +846,7 @@ def admin_regions_from_postcode(postcode):
         return {
             "county":pc_api_json["result"]["admin_county"],
             "country":pc_api_json["result"]["country"],
-            "parliamentary_constituency":pc_api_json["result"]["parliamentary_constituency"],
+            "parliamentary_constituency":pc_api_json["result"]["parliamentary_constituency_2024"],
             "ward":pc_api_json["result"]["admin_ward"],
             "district":pc_api_json["result"]["admin_district"],
             "lsoa":pc_api_json["result"]["codes"]['lsoa'],

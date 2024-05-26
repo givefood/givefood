@@ -416,9 +416,9 @@ class Foodbank(models.Model):
                 self.parliamentary_constituency = parl_con
                 self.parliamentary_constituency_name = self.parliamentary_constituency.name
                 self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
-                self.mp = self.parliamentary_constituency.mp
-                self.mp_party = self.parliamentary_constituency.mp_party
-                self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+                # self.mp = self.parliamentary_constituency.mp
+                # self.mp_party = self.parliamentary_constituency.mp_party
+                # self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
             except ParliamentaryConstituency.DoesNotExist: 
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
@@ -683,9 +683,9 @@ class FoodbankLocation(models.Model):
                 self.parliamentary_constituency = parl_con
                 self.parliamentary_constituency_name = self.parliamentary_constituency.name
                 self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
-                self.mp = self.parliamentary_constituency.mp
-                self.mp_party = self.parliamentary_constituency.mp_party
-                self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+                # self.mp = self.parliamentary_constituency.mp
+                # self.mp_party = self.parliamentary_constituency.mp_party
+                # self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
             except ParliamentaryConstituency.DoesNotExist: 
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
@@ -811,10 +811,10 @@ class FoodbankDonationPoint(models.Model):
         self.slug = slugify(self.name)
 
         # Photo?
-        if self.place_id:
-            self.place_has_photo = place_has_photo(self.place_id)
-        else:
-            self.place_has_photo = False
+        # if self.place_id:
+        #     self.place_has_photo = place_has_photo(self.place_id)
+        # else:
+        #     self.place_has_photo = False
 
         # Cleanup phone number
         if self.phone_number:
@@ -842,9 +842,9 @@ class FoodbankDonationPoint(models.Model):
                 self.parliamentary_constituency = parl_con
                 self.parliamentary_constituency_name = self.parliamentary_constituency.name
                 self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
-                self.mp = self.parliamentary_constituency.mp
-                self.mp_party = self.parliamentary_constituency.mp_party
-                self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+                # self.mp = self.parliamentary_constituency.mp
+                # self.mp_party = self.parliamentary_constituency.mp_party
+                # self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
             except ParliamentaryConstituency.DoesNotExist: 
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
@@ -1365,30 +1365,30 @@ class ParliamentaryConstituency(models.Model):
     slug = models.CharField(max_length=50, editable=False)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, null=True, blank=True)
 
-    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
-    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
-    mp_parl_id = models.IntegerField(verbose_name="MP's ID")
+    # mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
+    # mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
+    # mp_parl_id = models.IntegerField(verbose_name="MP's ID")
 
-    mp_display_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="MP Display Name", editable=False)
-    mp_synopsis = models.TextField(null=True, blank=True, editable=False)
-    mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True)
-    mp_website = models.URLField(max_length=250, null=True, blank=True, editable=False)
+    # mp_display_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="MP Display Name", editable=False)
+    # mp_synopsis = models.TextField(null=True, blank=True, editable=False)
+    # mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True)
+    # mp_website = models.URLField(max_length=250, null=True, blank=True, editable=False)
     
     centroid = models.CharField(max_length=50)
 
     # Parliamentary details
-    email_parl = models.EmailField(null=True, blank=True)
-    address_parl = models.TextField(null=True, blank=True, editable=False)
-    postcode_parl = models.CharField(max_length=9, null=True, blank=True, editable=False)
-    lat_lng_parl= models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
-    phone_parl = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    # email_parl = models.EmailField(null=True, blank=True)
+    # address_parl = models.TextField(null=True, blank=True, editable=False)
+    # postcode_parl = models.CharField(max_length=9, null=True, blank=True, editable=False)
+    # lat_lng_parl= models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
+    # phone_parl = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     # Constituency details
-    email_con = models.EmailField(null=True, blank=True, editable=False)
-    address_con = models.TextField(null=True, blank=True, editable=False)
-    postcode_con = models.CharField(max_length=9, null=True, blank=True, editable=False)
-    lat_lng_con = models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
-    phone_con = models.CharField(max_length=50, null=True, blank=True, editable=False)
+    # email_con = models.EmailField(null=True, blank=True, editable=False)
+    # address_con = models.TextField(null=True, blank=True, editable=False)
+    # postcode_con = models.CharField(max_length=9, null=True, blank=True, editable=False)
+    # lat_lng_con = models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
+    # phone_con = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     boundary_geojson = models.TextField(null=True, blank=True)
 
@@ -1501,32 +1501,32 @@ class ParliamentaryConstituency(models.Model):
         self.slug = slugify(self.name)
 
         # Get MP contact details
-        contact_details = mp_contact_details(self.mp_parl_id)
+        # contact_details = mp_contact_details(self.mp_parl_id)
 
-        self.mp_display_name = contact_details.get("display_name", None)
+        # self.mp_display_name = contact_details.get("display_name", None)
 
-        self.website = contact_details.get("website", None)
-        self.mp_twitter_handle = contact_details.get("twitter", None)
-        self.mp_synopsis = contact_details.get("synopsis", None)
+        # self.website = contact_details.get("website", None)
+        # self.mp_twitter_handle = contact_details.get("twitter", None)
+        # self.mp_synopsis = contact_details.get("synopsis", None)
         
-        if not self.email_parl:
-            self.email_parl = contact_details.get("email_parl", None)
-        self.address_parl = contact_details.get("address_parl", None)
-        self.postcode_parl = contact_details.get("postcode_parl", None)
-        self.lat_lng_parl = contact_details.get("lat_lng_parl", None)
-        self.phone_parl = contact_details.get("phone_parl", None)
+        # if not self.email_parl:
+        #     self.email_parl = contact_details.get("email_parl", None)
+        # self.address_parl = contact_details.get("address_parl", None)
+        # self.postcode_parl = contact_details.get("postcode_parl", None)
+        # self.lat_lng_parl = contact_details.get("lat_lng_parl", None)
+        # self.phone_parl = contact_details.get("phone_parl", None)
 
-        self.email_con = contact_details.get("email_con", None)
-        self.address_con = contact_details.get("address_con", None)
-        self.postcode_con = contact_details.get("postcode_con", None)
-        self.lat_lng_con = contact_details.get("lat_lng_con", None)
-        self.phone_con = contact_details.get("phone_con", None)
+        # self.email_con = contact_details.get("email_con", None)
+        # self.address_con = contact_details.get("address_con", None)
+        # self.postcode_con = contact_details.get("postcode_con", None)
+        # self.lat_lng_con = contact_details.get("lat_lng_con", None)
+        # self.phone_con = contact_details.get("phone_con", None)
 
-        # Cleanup phone numbers
-        if self.phone_parl:
-            self.phone_parl = self.phone_parl.replace(" ","")
-        if self.phone_con:
-            self.phone_con = self.phone_con.replace(" ","")
+        # # Cleanup phone numbers
+        # if self.phone_parl:
+        #     self.phone_parl = self.phone_parl.replace(" ","")
+        # if self.phone_con:
+        #     self.phone_con = self.phone_con.replace(" ","")
 
         # Resave denormed data
         foodbanks = Foodbank.objects.filter(parliamentary_constituency = self) 

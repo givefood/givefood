@@ -65,7 +65,7 @@ def search_results(request):
     foodbanks = Foodbank.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))[:100]
     locations = FoodbankLocation.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))[:100]
     donationpoints = FoodbankDonationPoint.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))[:100]
-    constituencies = ParliamentaryConstituency.objects.filter(Q(name__icontains=query) | Q(mp__icontains=query))[:100]
+    constituencies = ParliamentaryConstituency.objects.filter(Q(name__icontains=query))[:100]
     needs = FoodbankChange.objects.filter(change_text__icontains=query).order_by("-created")[:100]
     
     template_vars = {
@@ -1144,8 +1144,9 @@ def parlcon_form(request, slug = None):
 
 def parlcon_loader(request):
 
-    foodbanks = get_all_foodbanks()
-    locations = get_all_locations()
+    foodbanks = Foodbank.objects.all()
+    locations = FoodbankLocation.objects.all()
+    donation_points = FoodbankDonationPoint.objects.all()
 
     for foodbank in foodbanks:
         try:
@@ -1155,9 +1156,9 @@ def parlcon_loader(request):
             logging.info("adding %s" % foodbank.parliamentary_constituency_slug)
             newparlcon = ParliamentaryConstituency(
                 name = foodbank.parliamentary_constituency,
-                mp = foodbank.mp,
-                mp_party = foodbank.mp_party,
-                mp_parl_id = foodbank.mp_parl_id,
+                # mp = foodbank.mp,
+                # mp_party = foodbank.mp_party,
+                # mp_parl_id = foodbank.mp_parl_id,
             )
             newparlcon.save()
 
@@ -1170,9 +1171,23 @@ def parlcon_loader(request):
             logging.info("adding %s" % location.parliamentary_constituency_slug)
             newparlcon = ParliamentaryConstituency(
                 name = location.parliamentary_constituency,
-                mp = location.mp,
-                mp_party = location.mp_party,
-                mp_parl_id = location.mp_parl_id,
+                # mp = location.mp,
+                # mp_party = location.mp_party,
+                # mp_parl_id = location.mp_parl_id,
+            )
+            newparlcon.save()
+
+    for donation_point in donation_points:
+        try:
+            logging.info("trying dp parlcon %s" % donation_point.parliamentary_constituency_slug)
+            parlcon = ParliamentaryConstituency.objects.get(slug = donation_point.parliamentary_constituency_slug)
+        except ParliamentaryConstituency.DoesNotExist:
+            logging.info("adding %s" % donation_point.parliamentary_constituency_slug)
+            newparlcon = ParliamentaryConstituency(
+                name = donation_point.parliamentary_constituency,
+                # mp = donation_point.mp,
+                # mp_party = donation_point.mp_party,
+                # mp_parl_id = donation_point.mp_parl_id,
             )
             newparlcon.save()
 
@@ -1185,7 +1200,6 @@ def parlcon_loader_geojson(request):
 
     files = [
         "gb",
-        "northernireland",
     ]
 
     for file in files:

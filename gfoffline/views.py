@@ -269,29 +269,37 @@ def item_categorisation(line):
 
 def resaver(request):
 
-    models = [
-        "ParliamentaryConstituency",
-        "FoodbankGroup",
-        "Foodbank",
-        "FoodbankLocation", 
-        "FoodbankChange",
-        "OrderGroup",
-        "OrderItem",
-        "Order",
-        # "OrderLine",
-        "FoodbankArticle",
-        "GfCredential",
-        "FoodbankSubscriber",
-        "ConstituencySubscriber",
-        "Place",
-    ]
+    # models = [
+    #     # "ParliamentaryConstituency",
+    #     # "FoodbankGroup",
+    #     # "Foodbank",
+    #     # "FoodbankLocation", 
+    #     "FoodbankDonationPoint",
+    #     # "FoodbankChange",
+    #     # "OrderGroup",
+    #     # "OrderItem",
+    #     # "Order",
+    #     # "OrderLine",
+    #     # "FoodbankArticle",
+    #     # "GfCredential",
+    #     # "FoodbankSubscriber",
+    #     # "ConstituencySubscriber",
+    #     # "Place",
+    # ]
 
-    for model in models:
-        model_class = apps.get_model("givefood", model)
-        instances = model_class.objects.all()
-        for instance in instances:
-            logging.info("Resaving %s %s" % (model, instance))
-            instance.save()
+    # for model in models:
+    #     model_class = apps.get_model("givefood", model)
+    #     instances = model_class.objects.all()
+    #     for instance in instances:
+    #         logging.info("Resaving %s %s" % (model, instance))
+    #         instance.save()
+
+    for foodbank in Foodbank.objects.all():
+        foodbank.save(do_decache=False)
+    for location in FoodbankLocation.objects.all():
+        location.save(do_foodbank_resave=False)
+    for donationpoint in FoodbankDonationPoint.objects.all():
+        donationpoint.save(do_foodbank_resave=False)
 
     return HttpResponse("OK")
 
