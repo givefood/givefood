@@ -811,10 +811,10 @@ class FoodbankDonationPoint(models.Model):
         self.slug = slugify(self.name)
 
         # Photo?
-        # if self.place_id:
-        #     self.place_has_photo = place_has_photo(self.place_id)
-        # else:
-        #     self.place_has_photo = False
+        if self.place_id:
+            self.place_has_photo = place_has_photo(self.place_id)
+        else:
+            self.place_has_photo = False
 
         # Cleanup phone number
         if self.phone_number:
