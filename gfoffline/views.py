@@ -8,7 +8,7 @@ from django.core.cache import cache
 from django.apps import apps
 from givefood.const.item_types import ITEM_CATEGORIES
 
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankLocation, FoodbankSubscriber, FoodbankChange
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
 from givefood.func import chatgpt, htmlbodytext, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
 from django.template.loader import render_to_string
