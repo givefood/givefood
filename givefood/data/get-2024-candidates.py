@@ -11,7 +11,10 @@ for candidate in csv_file:
     person_id = candidate["person_id"]
     print("Got person %s" % (candidate["person_name"]))
 
-    if os.path.isfile("../static/img/2024-candidates/%s.jpg" % candidate["person_id"]):
+    image_file = "%s.jpg" % candidate["person_id"]
+    image_path = "../static/img/2024-candidates/%s" % image_file
+
+    if os.path.isfile(image_path):
         print("Image already exists %s" % candidate["person_name"])
     else:
 
@@ -23,26 +26,8 @@ for candidate in csv_file:
 
             print("Got image %s" % candidate["person_name"])
 
-            file_name = "../static/img/2024-candidates/%s.jpg" % candidate["person_id"]
+            file_name = image_path
             file = open(file_name, 'a+b')
             file.write(image_response.content)
             file.close()
             print("Wrote image %s" % candidate["person_name"])
-        # time.sleep(2)
-
-        # api_url = "https://candidates.democracyclub.org.uk/api/next/people/%s/" % (person_id)
-        # request = requests.get(api_url)
-        # request.raise_for_status()
-        # person = request.json()
-        # if person.get("thumbnail"):
-        #     image_url = person.get("thumbnail")
-
-        #     image_response = requests.get(image_url)
-        #     image_response.raise_for_status()
-
-        #     print("Got image %s" % candidate["person_name"])
-
-        #     file_name = "../static/img/2024-candidates/%s.jpg" % candidate["person_id"]
-        #     file = open(file_name, 'a+b')
-        #     file.write(image_response.content)
-        #     file.close()
