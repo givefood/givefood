@@ -54,14 +54,7 @@
           </div>
 
           <div class="column is-6">
-            <p>{{ constituency.name }} constituency is represented by <a href="https://www.google.co.uk/search?q={{ constituency.mp|urlencode }}%20MP">{{ constituency.mp }} MP</a>
-              {% if constituency.mp_party == "Speaker" %}
-                who is the Speaker of the House of Commons.
-              {% else %}
-                of the {{ constituency.mp_party }} party.
-              {% endif %}
-            </p>
-            <p>You can write to your MP to politely help them understand that food banks shouldn't exist in our country.</p>
+            <p>You can write to your prospective MPs to ask them what they intend to do about food insecurity in their constituency and the UK.</p>
             {% if enable_write %}
               <a href="{% url 'write:index' %}" class="button is-link">Write</a><br><br>
             {% endif %}

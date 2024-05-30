@@ -1,17 +1,17 @@
 {% if with_header %}{% include "write/email_header.txt" %}{% endif %}{{ address }}
 {% now "jS F Y" %}
 
-Dear {{ constituency.mp_display_name }},
+Dear {{ candidate.name }},
 
 My name is {{ name }} and I am a constituent of {{ constituency }}. I am writing to you today because I am concerned about the increasing number of people being forced to use food banks in our country. 
 
 Food banks in our {{ constituency }} constituency include {% for foodbank in foodbanks %}{% if not forloop.first %}{% if not forloop.last %},{% endif %} {% endif %}{% if not forloop.first %}{% if forloop.last %}and {% endif %}{% endif %}{{ foodbank }} Food Bank{% endfor %}.
 
-There was a 74% increase in emergency food parcels provided by food banks in the UK’s largest food bank network, the Trussell Trust, in the last five years.
+Over three million emergency food parcels were given out by the UK's largest food bank network, The Trussell Trust, in the past 12 months. This is more than double the number compared to five years ago.
 
 People are driven to using emergency food supplies from charities because of the cost of living increasing, a lack of income, benefit delays & cuts, and inadequate support during challenging life experiences.
 
-I'd be interested in hearing what you are doing to support our local food banks, especially preventing my fellow constituents from having to use them in the first place.
+I'd be interested in hearing what you propose doing to support our local food banks, especially preventing my fellow constituents from having to use them in the first place.
 
 I look forward to hearing from you.  
 
