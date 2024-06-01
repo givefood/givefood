@@ -50,7 +50,7 @@
           </div>
 
           <div class="column is-6">
-            <p>The candidates you can vote for in <a href="{% url 'wfbn:constituency' constituency.slug %}">{{{ constituency }}</a> parliamentary constituency are...</p>
+            <p>The candidates you can vote for in <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> parliamentary constituency are...</p>
             <ul>
               {% for candidate in candidates %}
                 <li style="clear:left; margin-top:10px;">
