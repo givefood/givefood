@@ -47,35 +47,41 @@ function init_map() {
         } else if (feature.getProperty("type") == "d") {
             marker_colour = "blue"
             marker_size = 24
+        } else if (feature.getProperty("type") == "b") {
+            marker_colour = ""
+            marker_size = 0
         }
         return {
             icon: {
                 url: "/static/img/mapmarkers/" + marker_colour + ".png",
                 scaledSize: new google.maps.Size(marker_size, marker_size),
             },
+            strokeWeight: 1,
             title: feature.getProperty("name")
         };
     });
     data.addListener('click', (event) => {
         feat = event.feature
-        type = feat.getProperty('type');
-        title = feat.getProperty('name');
-        url = feat.getProperty('url');
-        address = feat.getProperty('address');
-        html = "<div class='infowindow'><h3>" + title + "</h3>"
-        if (type != "f") {
-            if (type == "l") {
-                html += "<p>Location for "
-            } else {
-                html += "<p>Donation point for "
+        if (feat.getProperty('type') != "b") {
+            type = feat.getProperty('type');
+            title = feat.getProperty('name');
+            url = feat.getProperty('url');
+            address = feat.getProperty('address');
+            html = "<div class='infowindow'><h3>" + title + "</h3>"
+            if (type != "f") {
+                if (type == "l") {
+                    html += "<p>Location for "
+                } else {
+                    html += "<p>Donation point for "
+                }
+                html += "<a href='/needs/at/" + slugify(feat.getProperty('foodbank')) + "/'>" + feat.getProperty('foodbank') + "</a> Food Bank.</p>"
             }
-            html += "<a href='/needs/at/" + slugify(feat.getProperty('foodbank')) + "/'>" + feat.getProperty('foodbank') + "</a> Food Bank.</p>"
+            html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address><a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
+            infowindow.setContent(html);
+            infowindow.setPosition(event.latLng);
+            infowindow.setOptions({pixelOffset: new google.maps.Size(0,-28)});
+            infowindow.open(map);
         }
-        html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address><a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
-        infowindow.setContent(html);
-        infowindow.setPosition(event.latLng);
-        infowindow.setOptions({pixelOffset: new google.maps.Size(0,-28)});
-        infowindow.open(map);
     });
     data.setMap(map);
     map.setOptions({styles:[
