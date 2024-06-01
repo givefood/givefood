@@ -14,7 +14,7 @@
   <meta name="geo.position" content="{{ foodbank.latt_long }}">
   <meta property="place:location:latitude" content="{{ foodbank.latt }}">
   <meta property="place:location:longitude" content="{{ foodbank.long }}">
-  <link rel="preload" href="{% url 'wfbn:geojson' foodbank.slug %}" as="fetch">
+  <link rel="preload" href="{% url 'wfbn:foodbank_geojson' foodbank.slug %}" as="fetch">
   {% if foodbank.is_closed %}
     <meta name="robots" content="noindex">
   {% endif %}
@@ -105,7 +105,7 @@
 
 <script>
   var gf_map_config = {
-    geojson: "{% url 'wfbn:geojson' foodbank.slug %}",   
+    geojson: "{% url 'wfbn:foodbank_geojson' foodbank.slug %}",   
   }
 </script>
 

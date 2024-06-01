@@ -128,7 +128,7 @@
 {% block script %}
 <script>
   var gf_map_config = {
-    geojson: "{% url 'wfbn:geojson' foodbank.slug %}",
+    geojson: "{% url 'wfbn:foodbank_geojson' foodbank.slug %}",
     lat: {{ donationpoint.latt }},
     lng: {{ donationpoint.long }},
     zoom: 15,
