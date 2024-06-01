@@ -132,6 +132,14 @@ def geojson(request, slug = None, parlcon_slug = None):
         donationpoints = FoodbankDonationPoint.objects.filter(is_closed=False)
 
     features = []
+
+    # Parlcon outline
+    if parlcon_slug:
+        parlcon = get_object_or_404(ParliamentaryConstituency, slug = parlcon_slug)
+        boundary = parlcon.boundary_geojson_dict()
+        boundary["properties"]["type"] = "b"
+        features.append(boundary)
+
     for foodbank in foodbanks:
         features.append({
             "type":"Feature",
