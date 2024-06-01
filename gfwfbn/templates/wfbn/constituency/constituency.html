@@ -74,8 +74,10 @@
           </div>
 
           <div class="column is-4">
+            
             <div id="map" class="sidemap"></div>
-            <br>
+            {% include "wfbn/foodbank/includes/maplegend.html" %}
+
             <h2>Nearby Constituencies</h2>
             <ul>
               {% for nearby_constituency in constituency.nearby %}
