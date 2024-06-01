@@ -843,15 +843,22 @@ def admin_regions_from_postcode(postcode):
     if request.status_code == 200:
         pc_api_json = request.json()
 
-        return {
+        if pc_api_json["result"]["parliamentary_constituency_2024"]:
+            parlimentary_constituency = pc_api_json["result"]["parliamentary_constituency_2024"]
+        else:
+            parlimentary_constituency = pc_api_json["result"]["parliamentary_constituency"]
+
+        regions = {
             "county":pc_api_json["result"]["admin_county"],
             "country":pc_api_json["result"]["country"],
-            "parliamentary_constituency":pc_api_json["result"]["parliamentary_constituency_2024"],
+            "parliamentary_constituency":parlimentary_constituency,
             "ward":pc_api_json["result"]["admin_ward"],
             "district":pc_api_json["result"]["admin_district"],
             "lsoa":pc_api_json["result"]["codes"]['lsoa'],
             "msoa":pc_api_json["result"]["codes"]['msoa'],
         }
+
+        return regions
     else:
         return {}
 
