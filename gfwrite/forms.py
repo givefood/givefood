@@ -9,7 +9,7 @@ to_from_attrs = {
 class ConstituentDetailsForm(forms.Form):
     name = forms.CharField(label="Your Name", max_length=100, help_text="E.g. Amy Baker or Tom Smith")
     address = forms.CharField(label="Your Full Address", widget=forms.Textarea, help_text="Lay out the address using multiple lines and please include your postcode")
-    email = forms.EmailField(label="Your Email Address", help_text="We'll send you a copy, and also hopefully needed so your MP is able to respond")
+    email = forms.EmailField(label="Your Email Address", help_text="We'll send you a copy, and also hopefully needed so the candidate is able to respond")
     subscribe = forms.BooleanField(label="Keep me up to date with very occasional emails about helping food banks", initial=True, required=False)
 
 
