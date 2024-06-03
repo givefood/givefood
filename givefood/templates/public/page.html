@@ -51,14 +51,31 @@
   </div>
   {% if not headless %}
     <footer class="footer">
-      <div class="content has-text-centered">
-        <p>Site last updated <span class="lastupdated" data-include="{% url 'frag' 'last_updated' %}"></span></p>
-        <p>
-          <a href="{% url 'index' %}">Give Food</a> is a registered charity in England &amp; Wales <a rel="self" href="https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=1188192&subid=0">1188192</a><br>
-          Registered with the <a href="https://www.fundraisingregulator.org.uk/directory/give-food">Fundraising Regulator</a><br>
-          ICO Data Protection Registration <a href="https://ico.org.uk/ESDWebPages/Entry/ZB528540">ZB528540</a>
-        </p>
-        <p><a href="{% url 'privacy' %}">Privacy Policy</a></p>
+      <div class="container">
+        <div class="columns">
+          <div class="column has-text-left">
+            <ul>
+              <li><a href="{% url 'register_foodbank' %}">Register a food bank</a></li>
+              <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+              <li><a href="/api/">API</a></li>
+              <li><a href="{% url 'annual_report_index' %}">Annual reports</a></li>
+            </ul>
+            <br>
+            <ul>
+              <li><a href="{% url 'about_us' %}">About us</a></li>
+              <li><a href="{% url 'donate' %}">Donate</a></li>
+            </ul>
+          </div>
+          <div class="column has-text-right">
+            <p>Site last updated <span class="lastupdated" data-include="{% url 'frag' 'last_updated' %}"></span></p>
+            <p>
+              <a href="{% url 'index' %}">Give Food</a> is a registered charity in England &amp; Wales <a rel="self" href="https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=1188192&subid=0">1188192</a><br>
+              Registered with the <a href="https://www.fundraisingregulator.org.uk/directory/give-food">Fundraising Regulator</a><br>
+              ICO Data Protection Registration <a href="https://ico.org.uk/ESDWebPages/Entry/ZB528540">ZB528540</a>
+            </p>
+            <p><a href="{% url 'privacy' %}">Privacy Policy</a></p>
+          </div>
+        </div>
       </div>
     </footer>
   {% endif %}
