@@ -42,7 +42,7 @@
 
             <form id="postcodeform" action="{% url 'write:index' %}" method="GET">
               <label id="postcode_label" for="postcode_field" class="label">Postcode</label>
-              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="e.g. EX4 6PX" required value="{{ postcode }}">
+              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="e.g. EX4 6PX" required value="{% if postcode %}{{ postcode }}{% endif %}">
               <input type="submit" class="button is-light is-info" value="Go">
             </form>
 
