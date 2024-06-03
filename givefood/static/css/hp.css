@@ -8,11 +8,17 @@
 
 /* NAVS */
 .ge2024 {
-    margin:2rem 0 3rem 0;
+    margin:2rem 0 2rem 0;
+    padding:20px;
+    border-radius: 3px;
+    background:#fcfcdb;
+}
+.ge2024 p {
+    margin:0;
 }
 @media screen and (min-width: 1200px) {
     .ge2024 {
-        margin:2rem 0 5rem 0;
+        margin:2rem 0 4rem 0;
     }
 }
 nav.secondary {
