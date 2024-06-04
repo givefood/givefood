@@ -67,7 +67,8 @@ function init_map() {
             title = feat.getProperty('name');
             url = feat.getProperty('url');
             address = feat.getProperty('address');
-            html = "<div class='infowindow'><h3>" + title + "</h3>"
+            html = "<div class='infowindow'>"
+            html += "<h3>" + title + "</h3>"
             if (type != "f") {
                 if (type == "l") {
                     html += "<p>Location for "
@@ -79,7 +80,10 @@ function init_map() {
             html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address><a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
             infowindow.setContent(html);
             infowindow.setPosition(event.latLng);
-            infowindow.setOptions({pixelOffset: new google.maps.Size(0,-28)});
+            infowindow.setOptions({
+                maxWidth: 250,
+                pixelOffset: new google.maps.Size(0,-28),
+            });
             infowindow.open(map);
         }
     });
