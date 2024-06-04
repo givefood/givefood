@@ -660,15 +660,6 @@ def constituencies(request):
             "name":constituency.name,
             "slug":constituency.slug,
             "country":constituency.country,
-            "mp": {
-                "name":constituency.mp,
-                "mp_party":constituency.mp_party,
-                "id":constituency.mp_parl_id,
-                "urls": {
-                    "html":"https://members.parliament.uk/member/%s/contact" % (constituency.mp_parl_id),
-                    "photo":"https://www.givefood.org.uk/static/img/mp/%s.jpg" % (constituency.mp_parl_id),
-                }
-            },
             "urls": {
                 "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (constituency.slug),
                 "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (constituency.slug),
@@ -708,15 +699,6 @@ def constituency(request, slug):
         response_dict = {
             "name":constituency.name,
             "slug":constituency.slug,
-            "mp": {
-                "name":constituency.mp,
-                "party":constituency.mp_party,
-                "id":constituency.mp_parl_id,
-                "urls": {
-                    "html":"https://members.parliament.uk/member/%s/contact" % (constituency.mp_parl_id),
-                    "photo":"https://www.givefood.org.uk/static/img/mp/%s.jpg" % (constituency.mp_parl_id),
-                }
-            },
             "foodbanks":foodbank_list,
         }
     else:
