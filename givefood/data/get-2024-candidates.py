@@ -1,6 +1,7 @@
-import requests, csv, time, os.path
+import requests, csv, time, os.path, random
 
-csv_url = "https://candidates.democracyclub.org.uk/data/export_csv/?election_date=&ballot_paper_id=&election_id=parl.2024-07-04&party_id=&cancelled=&field_group=candidacy&field_group=person&format=csv"
+random_number = random.randrange(1000000)
+csv_url = "https://candidates.democracyclub.org.uk/data/export_csv/?election_date=&ballot_paper_id=&election_id=parl.2024-07-04&party_id=&cancelled=&field_group=candidacy&field_group=person&format=csv&decache=%s" % (random_number)
 
 request = requests.get(csv_url)
 with open('2024-candidates.csv', 'wb') as file:
