@@ -974,6 +974,16 @@ def make_url_friendly(url):
     return url
 
 
+def make_friendly_phone(phone):
+    return phone[0:5] + " " + phone[5:8] + " " + phone[8:]
+
+
+def make_full_phone(phone):
+    if phone.startswith("0"):
+        phone = "+44%s" % (phone[1:])
+    return phone
+
+
 def get_cred(cred_name):
 
     from givefood.models import GfCredential

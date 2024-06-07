@@ -1,4 +1,5 @@
 {% extends "public/page.html" %}
+{% load custom_tags %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
@@ -111,7 +112,7 @@
             <div class="contacts is-size-6">
               <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url_with_ref }}" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
               {% if foodbank.phone_number %}
-                <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a>{% if foodbank.secondary_phone_number %} or <a href="tel:{{ foodbank.secondary_phone_number }}">{{ foodbank.secondary_phone_number }}</a>{% endif %}<br>
+                <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number|full_phone }}">{{ foodbank.phone_number|friendly_phone }}</a>{% if foodbank.secondary_phone_number %} or <a href="tel:{{ foodbank.secondary_phone_number|full_phone }}">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}<br>
               {% endif %}
               <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}" id="email_link">{{ foodbank.contact_email|truncatechars:40 }}</a>
             </div>
