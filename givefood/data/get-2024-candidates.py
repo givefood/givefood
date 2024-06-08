@@ -14,7 +14,7 @@ for candidate in csv_file:
     print("Got person %s" % (candidate["person_name"]))
 
     image_file = "%s.jpg" % candidate["person_id"]
-    image_path = "../static/img/2024-candidates/%s" % image_file
+    image_path = "../static/img/photos/2024-ge-candidates/%s" % image_file
 
     if candidate.get("image"):
         image_url = candidate.get("image")
