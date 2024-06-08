@@ -7,18 +7,12 @@
 }
 
 /* NAVS */
-.ge2024 {
-    margin:2rem 0 2rem 0;
-    padding:20px;
-    border-radius: 3px;
-    background:#fcfcdb;
-}
-.ge2024 p {
-    margin:0;
+nav.primary {
+    margin:1rem 0 3rem 0;
 }
 @media screen and (min-width: 1200px) {
-    .ge2024 {
-        margin:2rem 0 4rem 0;
+    nav.primary {
+        margin:2rem 0 6rem 0;
     }
 }
 nav.secondary {
