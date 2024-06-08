@@ -10,6 +10,42 @@ from givefood.func import admin_regions_from_postcode, send_email
 from givefood.models import ConstituencySubscriber, ParliamentaryConstituency
 from gfwrite.forms import ConstituentDetailsForm, EmailForm
 
+def get_candidates(constituency):
+    candidates = []
+    
+    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
+    for row in csv_file:
+        if row["post_label"] == constituency.name:
+            email = row.get("email", None)
+            if email:
+                email = email.replace("\"","")
+            candidates.append({
+                "id": row["person_id"],
+                "name": row["person_name"],
+                "party": row["party_name"],
+                "email": email,
+                "has_photo": row.get("image", None),
+            })     
+    return candidates
+
+
+def get_candidate(person_id):
+    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
+    for row in csv_file:
+        if row["person_id"] == person_id:
+            email = row.get("email", None)
+            if email:
+                email = email.replace("\"","")
+            candidate = {
+                "id": row["person_id"],
+                "name": row["person_name"],
+                "party": row["party_name"],
+                "email": email,
+                "has_photo": row.get("image", None),
+            }
+    return candidate
+
+
 def index(request):
 
     postcode = request.GET.get("postcode", None)
@@ -34,21 +70,7 @@ def constituency(request, slug):
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
     postcode = request.GET.get("postcode", None)
 
-    candidates = []
-    
-    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
-    for row in csv_file:
-        if row["post_label"] == constituency.name:
-            email = row.get("email", None)
-            if email:
-                email = email.replace("\"","")
-            candidates.append({
-                "id": row["person_id"],
-                "name": row["person_name"],
-                "party": row["party_name"],
-                "email": email,
-                "has_photo": os.path.isfile("./givefood/static/img/2024-candidates/%s.jpg" % row["person_id"]),
-            })     
+    candidates = get_candidates(constituency)  
 
     template_vars = {
         "constituency":constituency,
@@ -62,20 +84,7 @@ def constituency(request, slug):
 def candidate(request, slug, person_id):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
-
-    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
-    for row in csv_file:
-        if row["person_id"] == person_id:
-            email = row.get("email", None)
-            if email:
-                email = email.replace("\"","")
-            candidate = {
-                "id": row["person_id"],
-                "name": row["person_name"],
-                "party": row["party_name"],
-                "email": email,
-                "has_photo": os.path.isfile("./givefood/static/img/2024-candidates/%s.jpg" % row["person_id"]),
-            }
+    candidate = get_candidate(person_id)
 
     if request.POST:
         form = ConstituentDetailsForm(request.POST)
@@ -93,20 +102,7 @@ def candidate(request, slug, person_id):
 def email(request, slug, person_id):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
-
-    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
-    for row in csv_file:
-        if row["person_id"] == person_id:
-            email = row.get("email", None)
-            if email:
-                email = email.replace("\"","")
-            candidate = {
-                "id": row["person_id"],
-                "name": row["person_name"],
-                "party": row["party_name"],
-                "email": email,
-                "has_photo": os.path.isfile("./givefood/static/img/2024-candidates/%s.jpg" % row["person_id"]),
-            }
+    candidate = get_candidate(person_id)
 
     if request.POST:
         form = ConstituentDetailsForm(request.POST)
@@ -167,20 +163,7 @@ def email(request, slug, person_id):
 def send(request, slug, person_id):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
-
-    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
-    for row in csv_file:
-        if row["person_id"] == person_id:
-            email = row.get("email", None)
-            if email:
-                email = email.replace("\"","")
-            candidate = {
-                "id": row["person_id"],
-                "name": row["person_name"],
-                "party": row["party_name"],
-                "email": email,
-                "has_photo": os.path.isfile("./givefood/static/img/2024-candidates/%s.jpg" % row["person_id"]),
-            }
+    candidate = get_candidate(person_id)
 
     if request.POST:
         form = EmailForm(request.POST)
@@ -218,20 +201,7 @@ def send(request, slug, person_id):
 def done(request, slug, person_id):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
-
-    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
-    for row in csv_file:
-        if row["person_id"] == person_id:
-            email = row.get("email", None)
-            if email:
-                email = email.replace("\"","")
-            candidate = {
-                "id": row["person_id"],
-                "name": row["person_name"],
-                "party": row["party_name"],
-                "email": email,
-                "has_photo": os.path.isfile("./givefood/static/img/2024-candidates/%s.jpg" % row["person_id"]),
-            }
+    candidate = get_candidate(person_id)
             
     email = request.GET.get("email")
     template_vars = {
