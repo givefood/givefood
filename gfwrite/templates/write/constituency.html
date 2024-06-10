@@ -61,7 +61,8 @@
                   {% endif %}
                   <h3>{{ candidate.name }}</h3>
                   <p>
-                    {{ candidate.party }}
+                    {{ candidate.party }}<br>
+                    <a href="https://whocanivotefor.co.uk/person/{{ candidate.id }}/?ref=givefood.org.uk" class="is-size-7">More on Who Can I Vote For</a>
                     {% if candidate.email %}
                       <a href="{% url 'write:candidate' constituency.slug candidate.id %}" class="button is-pulled-right is-info">Write</a>
                     {% endif %}
