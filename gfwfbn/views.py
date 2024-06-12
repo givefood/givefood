@@ -1,4 +1,4 @@
-import json, requests, datetime
+import json, requests, datetime, logging
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
@@ -47,8 +47,12 @@ def index(request):
         location_results = find_locations(lat_lng, 10)
 
         for location in location_results:
-            location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
-            location["needs"] = location_need.change_text
+            try:
+                location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
+                location["needs"] = location_need.change_text
+            except FoodbankChange.DoesNotExist:
+                logging.warn("No need found for %s" % location.get("foodbank_name"))
+                location["needs"] = "Unknown"            
             location["url"] = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
 
     gmap_key = get_cred("gmap_key")
