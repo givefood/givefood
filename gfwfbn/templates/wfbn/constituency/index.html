@@ -71,7 +71,7 @@
           </div>
 
           <div class="column is-6">
-            <div id="map" class="sidemap full-uk-map"></div>
+            <div id="map"></div>
           </div>
       </div>
 
@@ -111,7 +111,7 @@ function init_map() {
     map.fitBounds(bounds);
   })
   map.data.addListener('click', (event) => {
-        const name = event.feature.getProperty('pcon19nm');
+        const name = event.feature.getProperty('PCON24NM');
         const slug = slugify(name)
         window.location = '/needs/in/constituency/'+ slug +'/';
     });
