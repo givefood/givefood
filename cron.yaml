@@ -2,7 +2,7 @@ cron:
 
 - description: crawl foodbank articles
   url: /offline/crawl_articles/
-  schedule: every 4 hours
+  schedule: every 2 hours
 
 - description: cleanup unconfirmed subscriptions
   url: /offline/cleanup_subs/
