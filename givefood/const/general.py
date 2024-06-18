@@ -166,6 +166,7 @@ OLD_FOODBANK_SLUGS = {
     "quinton-oldbury":"quinton",
     "chalk-farm":"kentish-town",
     "cupboard-love":"bridport",
+    "glastonbury":"glastonbury-street",
 }
 
 FOODBANK_SUBPAGES = [
