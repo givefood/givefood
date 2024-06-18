@@ -124,13 +124,6 @@ IFAN_SCHEMA = {
 
 PACKAGING_WEIGHT_PC = 1.18
 
-CHECK_COUNT_PER_DAY = {
-    2019:5784,
-    2020:7753,
-    2021:7753,
-}
-PAGE_SIZE_PER_COUNT = 1444997 #Bytes
-
 FB_MC_KEY = "all_foodbanks"
 FB_OPEN_MC_KEY = "all_open_foodbanks"
 LOC_MC_KEY = "all_locations"
