@@ -998,28 +998,7 @@ def get_cred(cred_name):
 
 def post_to_subscriber(need, subscriber):
 
-    possible_emoji = [
-        "🍝",
-        "🍲",
-        "🍛",
-        "🥫",
-        "🌽",
-        "🥕",
-        "🥔",
-        "🍚",
-        "🍽️",
-        "🍴",
-        "🥘",
-        "🍅",
-        "🫘",
-        "🫛",
-        "🥄",
-        "🥣",
-        "🥧",
-    ]
-    emoji = random.choice(possible_emoji)
-
-    subject = "%s %s needs %s items" % (emoji, need.foodbank.full_name(), apnumber(need.no_items()))
+    subject = "%s needs %s items" % (need.foodbank.full_name(), apnumber(need.no_items()))
 
     text_body = render_to_string(
         "wfbn/emails/notification.txt",
