@@ -32,7 +32,7 @@ urlpatterns = (
     url(r'^item/new/$', item_form, name="item_new"),
     url(r'^item/(?P<slug>[-\w]+)/edit/$', item_form, name="item_form"),
 
-    url(r'^foodbank/new/$', foodbank_form, name="newfoodbank"),
+    url(r'^foodbank/new/$', foodbank_form, name="foodbank_new"),
     url(r'^foodbank/(?P<slug>[-\w]+)/$', foodbank, name="foodbank"),
     url(r'^foodbank/(?P<slug>[-\w]+)/edit/$', foodbank_form, name="foodbank_edit"),
 
