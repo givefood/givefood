@@ -14,6 +14,8 @@ html {
 body {
     background:#fff;
     color:rgb(53, 55, 64);
+}
+body, input, textarea {
     font-family:"Soehne Buch","Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 .container {
@@ -21,6 +23,15 @@ body {
 }
 a, .breadcrumb a {
     color:#007BC7;
+}
+a:hover, .breadcrumb a:hover {
+    color:#363636
+}
+.breadcrumb li.is-active a {
+    color:#363636;
+}
+a.button.is-link:hover, .menu a.is-active:hover {
+    color:#fff;
 }
 .logo img {
     margin:30px 0 0 0;
@@ -104,6 +115,9 @@ footer {
 }
 .lastupdated {
     text-transform:lowercase;
+}
+.button.is-medium {
+    border-radius: 4px;
 }
 @keyframes spin {
     from {

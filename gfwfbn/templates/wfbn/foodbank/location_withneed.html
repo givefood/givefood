@@ -93,7 +93,7 @@
             <div id="map" class="sidemap"></div>
             {% include "wfbn/foodbank/includes/maplegend.html" %}
             
-            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
+            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
             <address>
               {{ location.address|linebreaksbr }}<br>
               {{ location.postcode }}

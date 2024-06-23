@@ -234,7 +234,7 @@
               {% endif %}
             </dl>
           </td>
-          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-small is-pulled-right">Edit</a></td>
+          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right">Edit</a></td>
         </tr>
         {% if foodbank.delivery_address %}
           <tr>
@@ -248,7 +248,7 @@
                 <dd><a href="https://www.google.co.uk/maps/?q={{ foodbank.delivery_latt_long }}">{{ foodbank.delivery_latt_long }}</a></dd>
               </dl>
             </td>
-            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-small is-pulled-right">Edit</a></td>
+            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-link is-small is-pulled-right">Edit</a></td>
           </tr>
         {% endif %}
         {% for location in foodbank.locations %}
@@ -280,7 +280,7 @@
             </dl>
           </td>
           <td>
-            <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-small is-pulled-right">Edit</a>
+            <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-link is-small is-pulled-right">Edit</a>
             <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post">
               <input type="submit" class="button is-small is-danger is-pulled-right" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
               {% csrf_token %}

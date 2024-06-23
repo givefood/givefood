@@ -90,7 +90,7 @@
             {% if foodbank.address_is_administrative%}
               <h3>Administrative address</h3>
             {% else %}
-              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
+              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
             {% endif %}
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
@@ -103,7 +103,7 @@
 
             {% if foodbank.delivery_address %}
               <h3>Delivery address</h3>
-              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.delivery_latt_long }}" class="is-pulled-right button is-info is-small directions-btn">Directions</a>
+              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.delivery_latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
               <address>
                 {{ foodbank.delivery_address|linebreaksbr }}
               </address>
