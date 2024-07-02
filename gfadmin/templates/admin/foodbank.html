@@ -234,7 +234,7 @@
               {% endif %}
             </dl>
           </td>
-          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right">Edit</a></td>
+          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light">Edit</a></td>
         </tr>
         {% if foodbank.delivery_address %}
           <tr>
@@ -280,9 +280,9 @@
             </dl>
           </td>
           <td>
-            <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-link is-small is-pulled-right">Edit</a>
+            <a href="{% url 'admin:fblocation_edit' foodbank.slug location.slug %}" class="button is-link is-small is-pulled-right is-light">Edit</a>
             <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post">
-              <input type="submit" class="button is-small is-danger is-pulled-right" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
+              <input type="submit" class="button is-small is-danger is-pulled-right is-light" value="Delete" onclick="return confirm('Delete {{ location.name}}?')">
               {% csrf_token %}
             </form>
           </td>
@@ -322,9 +322,9 @@
               <td>{% if donation_point.opening_hours %}Y{% endif %}</td>
               <td>{% if donation_point.in_store_only %}Y{% endif %}</td>
               <td>
-                <a href="{% url 'admin:donationpoint_edit' foodbank.slug donation_point.slug %}" class="button is-small is-link">Edit</a>
+                <a href="{% url 'admin:donationpoint_edit' foodbank.slug donation_point.slug %}" class="button is-small is-link is-light">Edit</a>
                 <form action="{% url 'admin:donationpoint_delete' foodbank.slug donation_point.slug %}" method="post">
-                  <input type="submit" class="button is-small is-danger" value="Delete" onclick="return confirm('Delete {{ donation_point.name}}?')">
+                  <input type="submit" class="button is-small is-danger is-light" value="Delete" onclick="return confirm('Delete {{ donation_point.name}}?')">
                   {% csrf_token %}
                 </form>
               </td>
