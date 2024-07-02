@@ -1,9 +1,9 @@
 runtime: python38
 default_expiration: "7d"
-instance_class: F2
+instance_class: F4
 
 automatic_scaling:
-  max_concurrent_requests: 200
+  max_concurrent_requests: 500
 
 handlers:
 
