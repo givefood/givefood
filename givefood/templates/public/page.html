@@ -16,19 +16,6 @@
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-  {% if not headless %}
-    {% if app_name != 'gfwrite' %}
-      <div style="background:#fcfcdb;">
-        <div class="container">
-          <div class="columns">
-            <div class="column has-text-centered" style="padding-top:24px;">
-              <strong>General Election 2024</strong> <a href="{% url 'write:index' %}">Write to your prospective MPs</a> about food insecurity.
-            </div>
-          </div>
-        </div>
-      </div>
-    {% endif %}
-  {% endif %}
   <div class="container {% block container_class %}{% endblock %}">
     {% block body %}{% endblock %}
   </div>
