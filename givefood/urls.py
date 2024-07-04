@@ -59,6 +59,6 @@ urlpatterns += [
     url(r'^admin/', include('gfadmin.urls', namespace="admin")),
     url(r'^dashboard/', include('gfdash.urls', namespace="dash")),
     url(r'^offline/', include('gfoffline.urls', namespace="offline")),
-    url(r'^write/', include('gfwrite.urls', namespace="write")),
+    # url(r'^write/', include('gfwrite.urls', namespace="write")),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
