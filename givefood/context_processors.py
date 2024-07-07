@@ -1,11 +1,11 @@
 import os, sys
 from django.urls import resolve
 
-from givefood.const.general import ENABLE_WRITE
+from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN
 
 def context(request):
 
-    canonical_path = "https://www.givefood.org.uk%s" % (request.path)
+    canonical_path = "%s%s" % (SITE_DOMAIN, request.path)
     instance_id = os.environ.get('GAE_INSTANCE')
     version = os.environ.get('GAE_VERSION')
     try:
