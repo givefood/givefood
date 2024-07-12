@@ -209,7 +209,7 @@ function record_click() {
 
 function api_response() {
 
-  uml_btn.classList.remove("working")
+  if (uml_btn) uml_btn.classList.remove("working")
 
   if (this.status != 200) {
     if (this.status == 400) {
