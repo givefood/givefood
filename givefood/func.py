@@ -1078,6 +1078,10 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
     else:
         message_stream = "outbound"
 
+    # Handle test emails
+    if reply_to == "test@example.com":
+        to = "mail+testemail@givefood.org.uk"
+
     request_body = {
         "From": "mail@givefood.org.uk",
         "To": to,
