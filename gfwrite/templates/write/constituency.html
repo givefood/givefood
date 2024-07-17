@@ -29,7 +29,7 @@
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'write:index' %}">Write to your prospective MPs</a></li>
+                <li><a href="{% url 'write:index' %}">Write to your MP</a></li>
                 <li><a href="{% url 'write:constituency' constituency.slug %}">{{ constituency }}</a></li>
             </ul>
       </nav>
@@ -41,8 +41,12 @@
           <div class="column is-4">
 
             {% if postcode %}
-                <p>Your postcode {{ postcode|upper }} is in <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> constituency.</p>
+                <p>Your postcode {{ postcode|upper }} is in <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> constituency, and your MP is {{ constituency.mp }}.</p>
+            {% else %}
+                <p>The MP for <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> is {{ constituency.mp }}.</p>
             {% endif %}
+
+            <img src="//photos.givefood.org.uk/2024-mp/{{ constituency.mp_parl_id }}.jpg" alt="{{ constituency.mp }}" class="mp_photo">
 
             <div id="map" class="sidemap"></div>
             {% include "wfbn/foodbank/includes/maplegend.html" %}
@@ -50,28 +54,23 @@
           </div>
 
           <div class="column is-6">
-            <p>The candidates you can vote for in <a href="{% url 'wfbn:constituency' constituency.slug %}">{{ constituency }}</a> parliamentary constituency are...</p>
-            <ul>
-              {% for candidate in candidates %}
-                <li style="clear:left; margin-top:10px;">
-                  {% if candidate.has_photo %}
-                    <img src="//photos.givefood.org.uk/2024-ge-candidates/{{ candidate.id }}.jpg" style="float:left;width:100px;height:100px;margin:0 10px 10px 0;" alt="{{ candidate.name }}"> 
-                  {% else %}
-                    <img src="/static/img/default_avatar.svg" style="float:left;width:100px;height:100px;margin:0 10px 10px 0;">
-                  {% endif %}
-                  <h3>{{ candidate.name }}</h3>
-                  {% if candidate.email %}
-                    <a href="{% url 'write:candidate' constituency.slug candidate.id %}" class="button is-pulled-right is-info">Write</a>
-                  {% endif %}
-                  <p>
-                    {{ candidate.party }}<br>
-                    <a href="https://whocanivotefor.co.uk/person/{{ candidate.id }}/?ref=givefood.org.uk" class="is-size-7">More on Who Can I Vote For</a>
-                  </p>
-                </li>
-              {% endfor %}
-            </ul>
+            
+            {% if constituency.email %}
 
-            <p style="clear:left;margin-top:40px;">Data from <a href="https://democracyclub.org.uk/?ref=givefood.org.uk">Democracy Club</a></p>
+              <p>To write to {{ constituency.mp }} we'll need a few more details. You'll then be able to view the email before we send it for you.</p>
+
+              <form method="post" action="{% url 'write:email' constituency.slug %}">
+                {{ form|bulma }}
+                <input type="submit" class="button is-link" value="Continue">
+                {% csrf_token %}
+              </form>
+
+            {% else %}
+
+              <p>Sorry, we don't have an email address for {{ constituency.mp }}, so this service is unavailable in your area.</p>
+
+            {% endif %}
+
           </div>
       </div>
 

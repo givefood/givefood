@@ -44,7 +44,7 @@
                 <ul>
                     <li>Be polite</li>
                     <li>Feel free to edit the subject &amp; email body</li>
-                    <li>We'll send this on your behalf, but the candidate will be able to reply to you directly</li>
+                    <li>We'll send this on your behalf, but the MP will be able to reply to you directly</li>
                 </ul>
             </div>
 
@@ -52,7 +52,7 @@
 
           <div class="column is-6">
 
-            <form method="post" action="{% url 'write:send' constituency.slug candidate.id %}">
+            <form method="post" action="{% url 'write:send' constituency.slug %}">
                 {{ form|bulma }}
                 <input type="submit" class="button is-link" value="Send Email">
                 {% csrf_token %}

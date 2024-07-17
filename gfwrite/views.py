@@ -10,42 +10,6 @@ from givefood.func import admin_regions_from_postcode, send_email
 from givefood.models import ConstituencySubscriber, ParliamentaryConstituency
 from gfwrite.forms import ConstituentDetailsForm, EmailForm
 
-def get_candidates(constituency):
-    candidates = []
-    
-    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
-    for row in csv_file:
-        if row["post_label"] == constituency.name:
-            email = row.get("email", None)
-            if email:
-                email = email.replace("\"","")
-            candidates.append({
-                "id": row["person_id"],
-                "name": row["person_name"],
-                "party": row["party_name"],
-                "email": email,
-                "has_photo": row.get("image", None),
-            })     
-    return candidates
-
-
-def get_candidate(person_id):
-    csv_file = csv.DictReader(open("./givefood/data/2024-candidates.csv"))
-    for row in csv_file:
-        if row["person_id"] == person_id:
-            email = row.get("email", None)
-            if email:
-                email = email.replace("\"","")
-            candidate = {
-                "id": row["person_id"],
-                "name": row["person_name"],
-                "party": row["party_name"],
-                "email": email,
-                "has_photo": row.get("image", None),
-            }
-    return candidate
-
-
 def index(request):
 
     postcode = request.GET.get("postcode", None)
@@ -70,39 +34,18 @@ def constituency(request, slug):
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
     postcode = request.GET.get("postcode", None)
 
-    candidates = get_candidates(constituency)  
-
     template_vars = {
         "constituency":constituency,
         "postcode":postcode,
-        "candidates":candidates,
+        "form":ConstituentDetailsForm,
     }
 
     return render(request, "write/constituency.html", template_vars)
 
 
-def candidate(request, slug, person_id):
+def email(request, slug):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
-    candidate = get_candidate(person_id)
-
-    if request.POST:
-        form = ConstituentDetailsForm(request.POST)
-    else:
-        form = ConstituentDetailsForm()
-
-    template_vars = {
-        "constituency":constituency,
-        "candidate":candidate,
-        "form":form,
-    }
-    return render(request, "write/candidate.html", template_vars)
-
-
-def email(request, slug, person_id):
-
-    constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
-    candidate = get_candidate(person_id)
 
     if request.POST:
         form = ConstituentDetailsForm(request.POST)
@@ -119,7 +62,7 @@ def email(request, slug, person_id):
                 )
                 constituency_subscriber.save()
 
-            to_field = "%s <%s>" % (candidate["name"], candidate["email"])
+            to_field = "%s <%s>" % (constituency.mp_display_name, constituency.email)
             from_field = "%s <%s>" % (name, email)
             subject = "Food Banks in %s" % (constituency.name)
 
@@ -129,7 +72,6 @@ def email(request, slug, person_id):
                 "name":name,
                 "email":email,
                 "constituency":constituency,
-                "candidate":candidate,
                 "foodbanks":foodbanks,
             })
 
@@ -144,14 +86,12 @@ def email(request, slug, person_id):
 
             template_vars = {
                 "constituency":constituency,
-                "candidate":candidate,
                 "form":form,
             }
             return render(request, "write/email.html", template_vars)
         else:
             template_vars = {
                 "constituency":constituency,
-                "candidate":candidate,
                 "form":ConstituentDetailsForm,
             }
             return render(request, "write/constituency.html", template_vars)
@@ -160,10 +100,9 @@ def email(request, slug, person_id):
         return HttpResponseNotFound()
 
 
-def send(request, slug, person_id):
+def send(request, slug):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
-    candidate = get_candidate(person_id)
 
     if request.POST:
         form = EmailForm(request.POST)
@@ -175,7 +114,7 @@ def send(request, slug, person_id):
             })
             body = "%s%s" % (body_header, form.data["body"])
             send_email(
-                to = candidate["email"],
+                to = constituency.email,
                 subject = form.data["subject"],
                 body = body,
                 cc = form.data["from_email"],
@@ -185,23 +124,21 @@ def send(request, slug, person_id):
                 reply_to_name = form.data["from_name"],
             )
             done_url = "%s?email=%s" % (
-                reverse("write:done", kwargs={"slug":constituency.slug, "person_id":candidate["id"]}),
+                reverse("write:done", kwargs={"slug":constituency.slug}),
                 form.data["from_email"],
             )
             return HttpResponseRedirect(done_url)
         else:
             template_vars = {
                 "constituency":constituency,
-                "candidate":candidate,
                 "form":form,
             }
             return render(request, "write/email.html", template_vars)
 
 
-def done(request, slug, person_id):
+def done(request, slug):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
-    candidate = get_candidate(person_id)
             
     email = request.GET.get("email")
     template_vars = {

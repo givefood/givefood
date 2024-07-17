@@ -1,7 +1,7 @@
 {% if with_header %}{% include "write/email_header.txt" %}{% endif %}{{ address }}
 {% now "jS F Y" %}
 
-Dear {{ candidate.name }},
+Dear {{ constituency.mp_display_name }},
 
 My name is {{ name }} and I am a constituent of {{ constituency }}. I am writing to you today because I am concerned about the increasing number of people being forced to use food banks in our country. 
 

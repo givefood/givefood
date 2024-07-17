@@ -136,7 +136,7 @@ RICK_ASTLEY = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 SITE_DOMAIN = "https://www.givefood.org.uk"
 API_DOMAIN = SITE_DOMAIN
 
-ENABLE_WRITE = False
+ENABLE_WRITE = True
 
 OLD_FOODBANK_SLUGS = {
     "angus":"dundee-angus",
