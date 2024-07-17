@@ -8,6 +8,7 @@ from datetime import datetime
 from time import mktime
 import openai
 from bs4 import BeautifulSoup
+from urllib.parse import quote
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -888,10 +889,10 @@ def mp_from_parlcon(parliamentary_constituency):
 def mpid_from_name(name):
 
     if name:
-        mpid_url = "https://members-api.parliament.uk/api/Members/Search?Name=%s&House=Commons&IsCurrentMember=true&skip=0&take=20" % (urllib.quote(name))
-        request = request.get(mpid_url)
-        if request.status_code == 200:
-            mpid_api_json = request.json()
+        mpid_url = "https://members-api.parliament.uk/api/Members/Search?Name=%s&House=Commons&IsCurrentMember=true&skip=0&take=20" % (quote(name))
+        response = requests.get(mpid_url)
+        if response.status_code == 200:
+            mpid_api_json = response.json()
             if mpid_api_json["totalResults"] != 0:
                 return mpid_api_json["items"][0]["value"]["id"]
     return False

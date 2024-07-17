@@ -1,3 +1,4 @@
+import csv
 import json
 import logging, requests
 
@@ -8,9 +9,9 @@ from django.core.cache import cache
 from django.apps import apps
 from givefood.const.item_types import ITEM_CATEGORIES
 
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, htmlbodytext, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
+from givefood.func import chatgpt, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
 from django.template.loader import render_to_string
 
 
@@ -346,5 +347,39 @@ def place_ids(request):
         place_id = get_place_id(address)
         location.place_id = place_id
         location.save(do_geoupdate=False, do_foodbank_resave=False)
+
+    return HttpResponse("OK")
+
+
+def load_mps(request):
+
+    logging.warn("Loading MPs")
+
+    with open('./givefood/data/2024_mps.csv', 'r') as file:
+        reader = csv.reader(file)
+        mps = {}
+        for row in reader:
+            name = "%s %s" % (row[0], row[1])
+            mp_parl_id = mpid_from_name(name)
+            logging.warning(name)
+
+            parl_con = ParliamentaryConstituency.objects.get(name=row[5])
+            parl_con.mp = name
+            parl_con.mp_party = row[4]
+            parl_con.mp_parl_id = mp_parl_id
+            parl_con.mp_display_name = row[2]
+            parl_con.email = row[6]
+            parl_con.save()
+
+            if mp_parl_id:                
+                image_url = "https://members-api.parliament.uk/api/Members/%s/Thumbnail" % mp_parl_id
+                image_response = requests.get(image_url)
+                image_response.raise_for_status()
+                print("Got image %s" % mp_parl_id)
+                file_name = "./givefood/static/img/photos/2024-mp/%s.jpg" % mp_parl_id
+                file = open(file_name, 'a+b')
+                file.write(image_response.content)
+                file.close()
+                print("Wrote image %s" % mp_parl_id)
 
     return HttpResponse("OK")

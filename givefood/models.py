@@ -1367,30 +1367,13 @@ class ParliamentaryConstituency(models.Model):
     slug = models.CharField(max_length=50, editable=False)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, null=True, blank=True)
 
-    # mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
-    # mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
-    # mp_parl_id = models.IntegerField(verbose_name="MP's ID")
-
-    # mp_display_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="MP Display Name", editable=False)
-    # mp_synopsis = models.TextField(null=True, blank=True, editable=False)
-    # mp_twitter_handle = models.CharField(max_length=50, null=True, blank=True)
-    # mp_website = models.URLField(max_length=250, null=True, blank=True, editable=False)
+    mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
+    mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party")
+    mp_parl_id = models.IntegerField(verbose_name="MP's ID")
+    mp_display_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="MP Display Name", editable=False)
+    email = models.EmailField(null=True, blank=True)
     
     centroid = models.CharField(max_length=50)
-
-    # Parliamentary details
-    # email_parl = models.EmailField(null=True, blank=True)
-    # address_parl = models.TextField(null=True, blank=True, editable=False)
-    # postcode_parl = models.CharField(max_length=9, null=True, blank=True, editable=False)
-    # lat_lng_parl= models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
-    # phone_parl = models.CharField(max_length=50, null=True, blank=True, editable=False)
-
-    # Constituency details
-    # email_con = models.EmailField(null=True, blank=True, editable=False)
-    # address_con = models.TextField(null=True, blank=True, editable=False)
-    # postcode_con = models.CharField(max_length=9, null=True, blank=True, editable=False)
-    # lat_lng_con = models.CharField(max_length=50, verbose_name="Lat,Lng", null=True, blank=True, editable=False)
-    # phone_con = models.CharField(max_length=50, null=True, blank=True, editable=False)
 
     boundary_geojson = models.TextField(null=True, blank=True)
 
@@ -1531,13 +1514,13 @@ class ParliamentaryConstituency(models.Model):
         #     self.phone_con = self.phone_con.replace(" ","")
 
         # Resave denormed data
-        foodbanks = Foodbank.objects.filter(parliamentary_constituency = self) 
-        for foodbank in foodbanks:
-            foodbank.save()
+        # foodbanks = Foodbank.objects.filter(parliamentary_constituency = self) 
+        # for foodbank in foodbanks:
+        #     foodbank.save()
 
-        locations = FoodbankLocation.objects.filter(parliamentary_constituency = self)
-        for location in locations:
-            location.save()
+        # locations = FoodbankLocation.objects.filter(parliamentary_constituency = self)
+        # for location in locations:
+        #     location.save()
         
         super(ParliamentaryConstituency, self).save(*args, **kwargs)
 
