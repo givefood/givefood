@@ -880,9 +880,6 @@ def politics(request):
 
     parlcons = ParliamentaryConstituency.objects.all().order_by("name")
 
-    # for parlcon in parlcons:
-    #     deferred.defer(parlcon.save)
-
     template_vars = {
         "parlcons":parlcons,
         "section":"politics",
