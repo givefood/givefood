@@ -122,6 +122,10 @@ def get_location(request):
 @cache_page(SECONDS_IN_WEEK)
 def geojson(request, slug = None, parlcon_slug = None):
 
+    # Handle bad fb slug
+    if slug:
+        foodbank = get_object_or_404(Foodbank, slug = slug)
+
     if slug:
         foodbanks = Foodbank.objects.filter(slug = slug)
         locations = FoodbankLocation.objects.filter(foodbank__slug = slug)
