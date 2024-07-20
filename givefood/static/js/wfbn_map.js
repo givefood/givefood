@@ -77,7 +77,10 @@ function init_map() {
                 }
                 html += "<a href='/needs/at/" + slugify(feat.getProperty('foodbank')) + "/'>" + feat.getProperty('foodbank') + "</a> Food Bank.</p>"
             }
-            html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address><a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
+            if (address) {
+                html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>"
+            }
+            html += "<a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
             infowindow.setContent(html);
             infowindow.setPosition(event.latLng);
             infowindow.setOptions({

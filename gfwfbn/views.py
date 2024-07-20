@@ -122,6 +122,9 @@ def get_location(request):
 @cache_page(SECONDS_IN_WEEK)
 def geojson(request, slug = None, parlcon_slug = None):
 
+    # All items
+    all_items = not slug and not parlcon_slug
+
     # Handle bad fb slug
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -194,6 +197,11 @@ def geojson(request, slug = None, parlcon_slug = None):
                 "url":"/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
             }
         })
+
+    # Remove address if all items (for download size)
+    if all_items:
+        for feature in features:
+            feature["properties"].pop("address", None)
 
     response_dict = {
             "type": "FeatureCollection",
