@@ -1391,6 +1391,9 @@ class ParliamentaryConstituency(models.Model):
 
     def long(self):
         return float(self.centroid.split(",")[1])
+    
+    def mp_photo_url(self):
+        return "https://photos.givefood.org.uk/2024-mp/%s.jpg" % (self.mp_parl_id)
 
     def schema_org(self):
 
