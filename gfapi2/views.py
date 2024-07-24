@@ -46,13 +46,10 @@ def docs(request):
     for eg_need in eg_needs_obj:
         eg_needs.append(eg_need.need_id)
 
-    eg_parl_cons = {
-        "Uxbridge and South Ruislip",
-        "Vauxhall",
-        "Exeter",
-        "Orkney and Shetland",
-        "North Somerset",
-    }
+    eg_parl_cons_obj = ParliamentaryConstituency.objects.all().order_by("?")[:5]
+    eg_parl_cons = []
+    for eg_parl_con in eg_parl_cons_obj:
+        eg_parl_cons.append(eg_parl_con.name)
 
     template_vars = {
         "api_formats":api_formats,
