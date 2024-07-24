@@ -1,0 +1,46 @@
+{% extends "admin/page.html" %}
+{% load bulma_tags %}
+
+{% block title %}Discrepancy - GF Admin{% endblock %}
+
+{% block body %}
+
+
+  <div class="columns">
+
+    <div class="column">
+      <h2>Discrepancy</h2>
+      <dl>
+        <dt>Food bank</dt>
+        <dd><a href="{% url "admin:foodbank" discrepancy.foodbank_slug %}">{{ discrepancy.foodbank_name }}</a></dd>
+        <dt>🤖 thinks...</dt>
+        <dd>{{ discrepancy.discrepancy_text }}</dd>
+        <dt>URL</dt>
+        <dd><a href="{{ discrepancy.url }}" target="_blank">{{ discrepancy.url }}</a></dd>
+      </dl>
+
+      <br><br>
+      <form action="{% url 'admin:discrepancy_action' discrepancy.id %}" method="post">
+        <input type="hidden" name="action" value="invalid">
+        <input type="submit" value="Invalid" class="button is-danger is-light">
+      </form>
+
+    </div>
+
+    <div class="column">
+
+      <form method="post" action="{% url 'admin:foodbank_edit' discrepancy.foodbank.slug %}?discrepancy={{ discrepancy.id }}">
+        {{ foodbank_form|bulma }}
+        <input type="submit" class="button is-link" value="Submit" onclick="this.form.submit();this.disabled = true;">
+        {% csrf_token %}
+      </form>
+
+    </div>
+
+    <div class="column">
+      <iframe class="preview-frame" src="{% url 'admin:proxy' %}?url={{ discrepancy.url|urlencode }}"></iframe>
+    </div>
+
+  </div>
+
+{% endblock %}

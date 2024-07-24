@@ -396,7 +396,17 @@ def foodbank_form(request, slug = None):
         form = FoodbankForm(request.POST, instance=foodbank)
         if form.is_valid():
             foodbank = form.save()
-            return redirect("admin:foodbank", slug = foodbank.slug)
+
+            discrepancy_id = request.GET.get("discrepancy")
+            if discrepancy_id:
+                discrepancy = FoodbankDiscrepancy.objects.get(id = discrepancy_id)
+                discrepancy.status = "Done"
+                discrepancy.save()
+                return redirect("admin:index")
+            else:
+                return redirect("admin:foodbank", slug = foodbank.slug)
+
+            
     else:
         if foodbank:
             form = FoodbankForm(instance=foodbank)
@@ -802,6 +812,18 @@ def locations_loader_sa(request):
 
 
     return HttpResponse("OK")
+
+
+def discrepancy(request, id):
+    
+    discrepancy = get_object_or_404(FoodbankDiscrepancy, id = id)
+    foodbank_form = FoodbankForm(instance=discrepancy.foodbank)
+    
+    template_vars = {
+        "discrepancy":discrepancy,
+        "foodbank_form":foodbank_form,
+    }
+    return render(request, "admin/discrepancy.html", template_vars)
 
 
 def discrepancy_action(request, id):
