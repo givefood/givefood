@@ -1391,8 +1391,6 @@ def finder_trusselltrust(request):
 
     template_vars = {
         "section": "finder",
-        "their_urls": their_urls,
-        "our_urls": our_urls,
         "missing_urls": missing_urls,
         "extra_urls":extra_urls,
     }
