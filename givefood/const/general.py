@@ -160,6 +160,7 @@ OLD_FOODBANK_SLUGS = {
     "chalk-farm":"kentish-town",
     "cupboard-love":"bridport",
     "glastonbury":"glastonbury-street",
+    "hollingdean":"hollingdean-fiveways",
 }
 
 FOODBANK_SUBPAGES = [
