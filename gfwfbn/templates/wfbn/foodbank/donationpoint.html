@@ -13,6 +13,10 @@
   <meta name="geo.position" content="{{ donationpoint.latt_long }}">
   <meta property="place:location:latitude" content="{{ donationpoint.latt }}">
   <meta property="place:location:longitude" content="{{ donationpoint.long }}">
+  {% if donationpoint.place_has_photo %}
+    <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}">
+    <meta property="og:image:alt" content="{{ donationpoint }} - {{ foodbank.full_name }}">
+  {% endif %}
   {% if foodbank.is_closed %}
     <meta name="robots" content="noindex">
   {% endif %}
