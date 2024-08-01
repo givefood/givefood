@@ -1,4 +1,4 @@
-runtime: python38
+runtime: python312
 default_expiration: "7d"
 instance_class: F4
 
