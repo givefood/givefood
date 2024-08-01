@@ -29,16 +29,25 @@
       <div id="chart" style="height:600px"></div>
 
       <table class="table is-striped is-narrow is-fullwidth">
+        <thead>
           <tr>
               <th>Supermarket</th>
               <th>Number of Donation Points</th>
           </tr>
+        </thead>
+        <tbody>
           {% for supermarket in supermarkets %}
               <tr>
                   <td>{{ supermarket.company }}</td>
                   <td>{{ supermarket.count }}</td>
               </tr>
           {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+              <td>Total Supermarket Donation Points</td>
+              <td>{{ supermarket_total }}</td>
+          </tr>
       </table>
     </div>
 

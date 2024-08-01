@@ -399,8 +399,10 @@ def deliveries(request, metric):
 def supermarkets(request):
 
     supermarkets = FoodbankDonationPoint.objects.filter(company__isnull = False).values("company").annotate(count=Count("company")).order_by("-count")
+    supermarket_total = FoodbankDonationPoint.objects.filter(company__isnull = False).count()
     template_vars = {
         "supermarkets":supermarkets,
+        "supermarket_total":supermarket_total,
     }
 
     return render(request, "dash/supermarkets.html", template_vars)
