@@ -161,6 +161,7 @@ OLD_FOODBANK_SLUGS = {
     "cupboard-love":"bridport",
     "glastonbury":"glastonbury-street",
     "hollingdean":"hollingdean-fiveways",
+    "bay":"the-bay",
 }
 
 FOODBANK_SUBPAGES = [
