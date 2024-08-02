@@ -51,6 +51,9 @@ input[type=checkbox] {
   height:1.6em;
   padding:0 4px;
 }
+.tabs li.is-active a {
+  color: rgb(53, 55, 64);
+}
 #fbmap {
   width:1500px;
   height:1500px;
