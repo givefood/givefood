@@ -165,6 +165,20 @@ def geojson(request, slug = None, parlcon_slug = None):
                 "url":"/needs/at/%s/" % foodbank.slug,
             }
         })
+        if foodbank.delivery_address:
+            features.append({
+                "type":"Feature",
+                "geometry":{
+                    "type":"Point",
+                    "coordinates":[foodbank.delivery_long(), foodbank.delivery_latt()],
+                },
+                "properties":{
+                    "type":"f",
+                    "name":"%s Delivery Address" % (foodbank.full_name()),
+                    "address":foodbank.delivery_address,
+                    "url":"/needs/at/%s/" % foodbank.slug,
+                }
+            })
     
     for location in locations:
         features.append({
