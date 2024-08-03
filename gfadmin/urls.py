@@ -19,6 +19,7 @@ urlpatterns = (
     url(r'^foodbanks/delivery_addresses/$', foodbanks_delivery_addresses, name="foodbanks_delivery_addresses"),
     url(r'^foodbanks/dupe_postcodes/$', foodbanks_dupe_postcodes, name="foodbanks_dupe_postcodes"),
     url(r'^foodbanks/csv/$', foodbanks_csv, name="foodbanks_csv"),
+    url(r'^foodbanks/without_need/$', foodbanks_without_need, name="foodbanks_without_need"),
 
     url(r'^orders/$', orders, name="orders"),
     url(r'^orders/csv/$', orders_csv, name="orders_csv"),

@@ -1618,6 +1618,22 @@ def places(request):
     return render(request, "admin/places.html", template_vars)
 
 
+def foodbanks_without_need(request):
+
+    foodbanks = Foodbank.objects.all()
+    for foodbank in foodbanks:
+        try:
+            foodbank.need = FoodbankChange.objects.filter(foodbank_name=foodbank.name, published=True).latest("created")
+        except FoodbankChange.DoesNotExist:
+            foodbank.need = None
+
+    template_vars = {
+        "section":"settings",
+        "foodbanks":foodbanks,
+    }
+    return render(request, "admin/foodbanks_without_need.html", template_vars)
+
+
 def clearcache(request):
 
     cache.clear()
