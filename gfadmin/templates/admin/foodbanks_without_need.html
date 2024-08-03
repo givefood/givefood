@@ -11,20 +11,6 @@
 
     <div class="column">
 
-      <a href="{% url 'admin:foodbank_new' %}" class="button is-link">New Foodbank</a>
-
-      <div class="field is-pulled-right">
-        <div class="control">
-          <div class="select">
-            <select onchange="javascript:window.location.href=this.value">
-              {% for sort_option in display_sort_options.items %}
-                <option value="?sort={{ sort_option.0 }}"{% if sort == sort_option.0 %} selected{% endif %}>{{ sort_option.1 }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-      </div>
-
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Name</th>
