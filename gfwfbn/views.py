@@ -73,7 +73,7 @@ def index(request):
 @cache_page(SECONDS_IN_WEEK)
 def rss(request):
 
-    needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
+    needs = FoodbankChange.objects.filter(published = True).exclude(change_text = "Nothing").exclude(change_text = "Facebook").exclude(change_text = "Unknown").order_by("-created")[:10]
     news = FoodbankArticle.objects.all().order_by("-published_date")[:10]
 
     items = []
