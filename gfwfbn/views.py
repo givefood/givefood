@@ -250,7 +250,7 @@ def foodbank_rss(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
-    needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).order_by("-created")[:10]
+    needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).exclude(change_text = "Nothing").exclude(change_text = "Facebook").exclude(change_text = "Unknown").order_by("-created")[:10]
     news = FoodbankArticle.objects.filter(foodbank = foodbank).order_by("-published_date")[:10]
 
     items = []
