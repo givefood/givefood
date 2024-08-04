@@ -82,7 +82,7 @@ def rss(request):
             "title":"%s items requested at %s" % (need.no_items(), need.foodbank.full_name()),
             "url":"https://www.givefood.org.uk/needs/at/%s/history/#need-%s" % (need.foodbank.slug, need.need_id),
             "date":need.created,
-            "description":need.clean_change_text()
+            "description":need.change_text,
         })
     for newsitem in news:
         items.append({
