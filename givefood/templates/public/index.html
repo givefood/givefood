@@ -115,12 +115,8 @@
 
   <div class="columns stats">
       <div class="column">
-        <h3>🏢&ensp;Food bank organisations</h3>
-        <p>{{ stats.organisations|intcomma }}</p>
-      </div>
-      <div class="column">
-        <h3>📍&ensp;Food bank locations</h3>
-        <p>{{ stats.locations|intcomma }}</p>
+        <h3>📍&ensp;Food banks</h3>
+        <p>{{ stats.foodbanks|intcomma }}</p>
       </div>
       <div class="column">
         <h3>🛒&ensp;Donation points</h3>
@@ -135,7 +131,7 @@
         <p>{{ stats.meals|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>📅&ensp;Data last updated</h3>
+        <h3>📅&ensp;Last updated</h3>
         <p data-include="{% url 'frag' 'last_updated' %}"></p>
       </div>
   </div>
