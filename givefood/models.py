@@ -791,6 +791,51 @@ class FoodbankDonationPoint(models.Model):
     def long(self):
         return float(self.latt_long.split(",")[1])
     
+    def schema_org(self):
+
+        needs = self.foodbank.latest_need_text()
+        seeks = []
+
+        if needs != "Nothing" and needs != "Unknown" and needs != "Facebook":
+            need_list = needs.splitlines()
+            for need in need_list:
+                seeks.append({
+                    "itemOffered": {
+                        "@type":"Product",
+                        "name":need,
+                    }
+                })
+
+        schema_dict = {
+            "@context": "https://schema.org",
+            "@type": "Place",
+            "name": self.name,
+            "url": self.url,
+            "telephone": self.phone_number,
+            "isAccessibleForFree": self.wheelchair_accessible,
+            "address": {
+                "@type": "PostalAddress",
+                "postalCode": self.postcode,
+                "addressCountry": self.country,
+                "streetAddress": self.address,
+            },
+            "location": {
+                "geo": {
+                    "@type": "GeoCoordinates",
+                    "latitude": self.latt(),
+                    "longitude": self.long(),
+                },
+            }
+        }
+
+        if seeks:
+            schema_dict["seeks"] = seeks
+
+        return schema_dict
+
+    def schema_org_str(self):
+        return json.dumps(self.schema_org(), indent=4, sort_keys=True)
+    
     def clean(self):
         if self.postcode:
             lat_lngs = []
