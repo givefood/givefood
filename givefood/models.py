@@ -853,15 +853,16 @@ class FoodbankDonationPoint(models.Model):
         # Resave the parent food bank
         self.foodbank.save(do_geoupdate=False)
     
-    def save(self, do_geoupdate=True, do_foodbank_resave=True, *args, **kwargs):
+    def save(self, do_geoupdate=True, do_foodbank_resave=True, do_photo_update=True, *args, **kwargs):
         # Slugify name
         self.slug = slugify(self.name)
 
         # Photo?
-        if self.place_id:
-            self.place_has_photo = place_has_photo(self.place_id)
-        else:
-            self.place_has_photo = False
+        if do_photo_update:
+            if self.place_id:
+                self.place_has_photo = place_has_photo(self.place_id)
+            else:
+                self.place_has_photo = False
 
         # Cleanup phone number
         if self.phone_number:
