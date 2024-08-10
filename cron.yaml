@@ -12,9 +12,9 @@ cron:
   url: /offline/days_between_needs/
   schedule: every monday 03:00
 
-# - description: discrepancy check
-#   url: /offline/discrepancy_check/
-#   schedule: every 5 minutes
+- description: discrepancy check
+  url: /offline/discrepancy_check/
+  schedule: every 10 minutes
 
 # - description: resaver
 #   url: /offline/resaver/
