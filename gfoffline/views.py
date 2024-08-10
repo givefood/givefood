@@ -295,12 +295,12 @@ def resaver(request):
     #         logging.info("Resaving %s %s" % (model, instance))
     #         instance.save()
 
-    for foodbank in Foodbank.objects.all():
-        foodbank.save(do_decache=False)
-    for location in FoodbankLocation.objects.all():
-        location.save(do_foodbank_resave=False)
+    # for foodbank in Foodbank.objects.all():
+    #     foodbank.save(do_decache=False)
+    # for location in FoodbankLocation.objects.all():
+    #     location.save(do_foodbank_resave=False)
     for donationpoint in FoodbankDonationPoint.objects.all():
-        donationpoint.save(do_foodbank_resave=False)
+        donationpoint.save(do_foodbank_resave=False, do_geoupdate=False, do_photo_update=False)
 
     return HttpResponse("OK")
 
