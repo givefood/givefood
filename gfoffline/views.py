@@ -11,7 +11,7 @@ from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
+from givefood.func import chatgpt, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
 from django.template.loader import render_to_string
 
 
@@ -88,7 +88,7 @@ def discrepancy_check(request):
                         "foodbank_page":foodbank_page,
                     }
                 )
-                detail_response = chatgpt(
+                detail_response = gemini(
                     prompt = detail_prompt,
                     temperature = 0.8,
                 )
@@ -254,7 +254,7 @@ def item_categorisation(line):
             }
         )
         logging.info("Doing AI cat")
-        ai_response = chatgpt(
+        ai_response = gemini(
             prompt = prompt,
             temperature = 0.1,
         )

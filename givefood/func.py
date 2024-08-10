@@ -7,6 +7,7 @@ from collections import OrderedDict
 from datetime import datetime
 from time import mktime
 import openai
+import google.generativeai as genai
 from bs4 import BeautifulSoup
 from urllib.parse import quote
 
@@ -1142,6 +1143,30 @@ def chatgpt(prompt, temperature):
         ]
     )
     return response["choices"][0]["message"]["content"]
+
+
+def gemini(prompt, temperature):
+
+    genai.configure(api_key=get_cred("gemini_api_key"))
+    generation_config = {
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 64,
+        "max_output_tokens": 8192,
+        "response_mime_type": "application/json",
+    }
+    safety_settings = {
+        'HATE': 'BLOCK_NONE',
+        'HARASSMENT': 'BLOCK_NONE',
+        'SEXUAL' : 'BLOCK_NONE',
+        'DANGEROUS' : 'BLOCK_NONE'
+    }
+    model = genai.GenerativeModel(
+        model_name = "gemini-1.5-flash",
+        generation_config = generation_config,
+        safety_settings = safety_settings,
+    )
+    return model.generate_content(prompt).text
 
 
 def htmlbodytext(html):

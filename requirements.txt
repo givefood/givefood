@@ -17,3 +17,4 @@ google-cloud-secret-manager
 openai==0.28
 furl
 beautifulsoup4
+google-generativeai
