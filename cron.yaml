@@ -16,6 +16,10 @@ cron:
   url: /offline/discrepancy_check/
   schedule: every 30 minutes
 
+- description: decache donation points with opening hours
+  url: /offline/decache_donationpoints/
+  schedule: every Monday at 02:00
+
 # - description: resaver
 #   url: /offline/resaver/
 #   schedule: every 48 hours

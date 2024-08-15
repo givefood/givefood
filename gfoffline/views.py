@@ -4,14 +4,14 @@ import logging, requests
 
 from datetime import datetime, timedelta, timezone
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.core.cache import cache
-from django.apps import apps
+from django.urls import reverse
 from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
+from givefood.func import chatgpt, decache, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
 from django.template.loader import render_to_string
 
 
@@ -166,6 +166,19 @@ def discrepancy_check(request):
         foodbank.save(do_decache=False, do_geoupdate=False)
     
     return HttpResponse("OK")
+
+
+def decache_donationpoints(request):
+
+    urls = []
+    donationpoints = FoodbankDonationPoint.objects.filter(opening_hours__isnull=False).exclude(opening_hours = "")
+    for donationpoint in donationpoints:
+        urls.append(reverse("wfbn:foodbank_donationpoint", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug}))
+    
+    decache(urls)
+
+    return HttpResponse("OK")
+
 
 
 def cleanup_subs(request):

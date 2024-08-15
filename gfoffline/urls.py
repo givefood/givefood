@@ -8,6 +8,7 @@ urlpatterns = (
     url(r'^oc_geocode/$', fire_oc_geocode, name="fire_oc_geocode"),
     url(r'^crawl_articles/$', crawl_articles, name="crawl_articles"),
     url(r'^discrepancy_check/$', discrepancy_check, name="discrepancy_check"),
+    url(r'^decache_donationpoints/$', decache_donationpoints, name="decache_donationpoints"),
     url(r'^cleanup_subs/$', cleanup_subs, name="cleanup_subs"),
     url(r'^days_between_needs/$', days_between_needs, name="days_between_needs"),
     url(r'^resaver/$', resaver, name="resaver"),
