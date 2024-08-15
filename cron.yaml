@@ -18,7 +18,7 @@ cron:
 
 - description: decache donation points with opening hours
   url: /offline/decache_donationpoints/
-  schedule: every Monday at 02:00
+  schedule: every Monday 02:00
 
 # - description: resaver
 #   url: /offline/resaver/
