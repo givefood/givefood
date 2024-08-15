@@ -10,6 +10,7 @@ import openai
 import google.generativeai as genai
 from bs4 import BeautifulSoup
 from urllib.parse import quote
+from furl import furl
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -18,7 +19,7 @@ from django.contrib.humanize.templatetags.humanize import apnumber
 
 from google.cloud import secretmanager
 
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -971,6 +972,9 @@ def fetch_json(url):
 def make_url_friendly(url):
     url = url.replace("https://","")
     url = url.replace("http://","")
+    url = furl(url)
+    url.remove(QUERYSTRING_RUBBISH)
+    url = url.url
     if url[-1:] == "/":
         url = url[:-1]
     return url
