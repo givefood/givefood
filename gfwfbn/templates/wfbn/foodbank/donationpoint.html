@@ -77,13 +77,23 @@
 
             {% if donationpoint.opening_hours %}
                 <h3>Opening hours</h3>
-                <p>{{ donationpoint.opening_hours|linebreaksbr }}</p>
+                <p>
+                  {% for day in donationpoint.opening_hours_days %}
+                      {{ day.text }}
+                      {% if not day.is_closed %}
+                        {% if day.holiday %}
+                          <span class="is-size-7">Hours may vary because of <em>{{ day.holiday.title }}</em></span>
+                        {% endif %}
+                      {% endif %}
+                      <br>
+                  {% endfor %}
+                </p>
             {% endif %}
 
             {% if donationpoint.in_store_only %}
                 <p>
                   ⚠️ Only accepts in-store purchases as donations
-                  <br><small class="is-size-7	">Although, sometimes you can add items marked as not from the store. Best to check.</small>
+                  <br><small class="is-size-7">Although, sometimes you can add items marked as not from the store. Best to check.</small>
                 </p>
             {% endif %}
 

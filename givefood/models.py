@@ -828,6 +828,41 @@ class FoodbankDonationPoint(models.Model):
     def schema_org_str(self):
         return json.dumps(self.schema_org(), indent=4, sort_keys=True)
     
+    def opening_hours_days(self):
+        if self.opening_hours:
+            days = self.opening_hours.split("\n")
+        else:
+            return False
+        
+        bank_holidays = json.load(open("./givefood/data/bank-holidays.json"))
+
+        if self.country == "England":
+            bank_holidays = bank_holidays["england-and-wales"]
+        if self.country == "Wales":
+            bank_holidays = bank_holidays["england-and-wales"]
+        if self.country == "Scotland":
+            bank_holidays = bank_holidays["scotland"]
+        if self.country == "Northern Ireland":
+            bank_holidays = bank_holidays["northern-ireland"]
+
+        bank_holidays = bank_holidays["events"]
+        for idx, holiday in enumerate(bank_holidays):
+            bank_holidays[idx]["date"] = datetime.strptime(holiday["date"], "%Y-%m-%d").date()
+
+        today = date.today()
+        monday_date = today + timedelta(days = -today.weekday())
+
+        for idx, day in enumerate(days):
+            day_date = monday_date + timedelta(days = idx + 1)
+            days[idx] = {
+                "text": day,
+                "date": day_date,
+                "is_closed": "Closed" in day,
+                "holiday": next((holiday for holiday in bank_holidays if holiday["date"] == day_date), None),
+            }
+
+        return days
+        
     def clean(self):
         if self.postcode:
             lat_lngs = []
