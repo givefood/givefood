@@ -4,4 +4,4 @@ We'll send you a list of items being requested whenever {{ foodbank.full_name }}
 
 🔗 You can find more details about the food bank https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/
 🗺️ See other nearby food banks https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/nearby/
-🗳️ Explain to your MP that food banks shouldn't exist by taking political action https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/politics/
+🗳️ Explain to your MP that food banks shouldn't exist by taking political action https://www.givefood.org.uk/write/
