@@ -22,13 +22,13 @@ body, input, textarea {
     padding:0 10px;
 }
 a, .breadcrumb a {
-    color:#1d70b8;
+    color:#007BC7;
 }
 a:hover, .breadcrumb a:hover {
-    color:#003078
+    color:#363636
 }
 .breadcrumb li.is-active a {
-    color:#003078;
+    color:#363636;
 }
 a.button.is-link:hover, .menu a.is-active:hover {
     color:#fff;
