@@ -874,6 +874,10 @@ class FoodbankDonationPoint(models.Model):
             if self.latt_long in lat_lngs:
                 raise ValidationError("Location can't be the same as the food bank or one of it's locations")
 
+            if admin_regions_from_postcode(self.postcode) == {}:
+                raise ValidationError("Invalid postcode")
+        
+
     def delete(self, *args, **kwargs):
 
         super(FoodbankDonationPoint, self).delete(*args, **kwargs)
