@@ -853,7 +853,7 @@ class FoodbankDonationPoint(models.Model):
         monday_date = today + timedelta(days = -today.weekday())
 
         for idx, day in enumerate(days):
-            day_date = monday_date + timedelta(days = idx + 1)
+            day_date = monday_date + timedelta(days = idx)
             days[idx] = {
                 "text": day,
                 "date": day_date,
