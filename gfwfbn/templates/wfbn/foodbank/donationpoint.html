@@ -82,7 +82,7 @@
                       {{ day.text }}
                       {% if not day.is_closed %}
                         {% if day.holiday %}
-                          <span class="is-size-7">Hours may vary because of <em>{{ day.holiday.title }}</em></span>
+                          <span class="is-size-7">Hours may vary because of {{ day.holiday.title }}</span>
                         {% endif %}
                       {% endif %}
                       <br>
