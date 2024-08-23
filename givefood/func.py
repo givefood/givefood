@@ -840,6 +840,17 @@ def distance_meters(lat1, lon1, lat2, lon2):
     return meters
 
 
+def validate_postcode(postcode):
+
+    pc_api_url = "https://api.postcodes.io/postcodes/%s/validate" % (urllib.parse.quote(postcode))
+    request = requests.get(pc_api_url)
+    if request.status_code == 200:
+        pc_api_json = request.json()
+        return pc_api_json["result"]
+    else:
+        return False
+
+
 def admin_regions_from_postcode(postcode):
     pc_api_url = "https://api.postcodes.io/postcodes/%s?decache=true" % (urllib.parse.quote(postcode))
     request = requests.get(pc_api_url)
