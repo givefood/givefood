@@ -845,9 +845,10 @@ class FoodbankDonationPoint(models.Model):
         if self.country == "Northern Ireland":
             bank_holidays = bank_holidays["northern-ireland"]
 
-        bank_holidays = bank_holidays["events"]
-        for idx, holiday in enumerate(bank_holidays):
-            bank_holidays[idx]["date"] = datetime.strptime(holiday["date"], "%Y-%m-%d").date()
+        bank_holidays = bank_holidays.get("events", None)
+        if bank_holidays:
+            for idx, holiday in enumerate(bank_holidays):
+                bank_holidays[idx]["date"] = datetime.strptime(holiday["date"], "%Y-%m-%d").date()
 
         today = date.today()
         monday_date = today + timedelta(days = -today.weekday())
@@ -858,8 +859,9 @@ class FoodbankDonationPoint(models.Model):
                 "text": day,
                 "date": day_date,
                 "is_closed": "Closed" in day,
-                "holiday": next((holiday for holiday in bank_holidays if holiday["date"] == day_date), None),
             }
+            if bank_holidays:
+                days[idx]["holiday"] = next((holiday for holiday in bank_holidays if holiday["date"] == day_date), None)
 
         return days
         
