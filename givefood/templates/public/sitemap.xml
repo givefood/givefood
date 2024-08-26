@@ -5,7 +5,10 @@
 		<url><loc>{{ domain }}{% url url_name %}</loc></url>
 	{% endfor %}
 	{% for foodbank in foodbanks %}
-		<url><loc>{{ domain }}{% url 'wfbn:foodbank' foodbank.slug %}</loc></url>
+		<url>
+			<loc>{{ domain }}{% url 'wfbn:foodbank' foodbank.slug %}</loc>
+			<changefreq>{{ foodbank.changefreq }}</changefreq>
+		</url>
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_nearby' foodbank.slug %}</loc></url>
 		{% if foodbank.no_locations != 0 %}
 			<url><loc>{{ domain }}{% url 'wfbn:foodbank_locations' foodbank.slug %}</loc></url>

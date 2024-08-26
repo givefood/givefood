@@ -118,6 +118,18 @@ class Foodbank(models.Model):
         if self.days_between_needs > 7:
             return "week or so"
         return "week"
+    
+    def changefreq(self):
+        if self.days_between_needs == 0:
+            return "yearly"
+        if self.days_between_needs > 90:
+            return "yearly"
+        if self.days_between_needs > 25:
+            return "monthly"
+        if self.days_between_needs > 10:
+            return "weekly"
+        return "daily"
+
 
     def schema_org(self, as_sub_property = False):
 
