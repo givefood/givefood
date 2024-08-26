@@ -130,7 +130,6 @@ class Foodbank(models.Model):
             return "weekly"
         return "daily"
 
-
     def schema_org(self, as_sub_property = False):
 
         needs = self.latest_need_text()
