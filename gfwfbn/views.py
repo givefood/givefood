@@ -1,7 +1,7 @@
 import json, requests, datetime, logging
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest
 from django.db import IntegrityError
 from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page, never_cache
@@ -42,8 +42,11 @@ def index(request):
         lat_lng = geocode(address)
 
     if lat_lng:
-        lat = lat_lng.split(",")[0]
-        lng = lat_lng.split(",")[1]
+        try:
+            lat = lat_lng.split(",")[0]
+            lng = lat_lng.split(",")[1]
+        except IndexError:
+            return HttpResponseBadRequest()
         location_results = find_locations(lat_lng, 10)
 
         for location in location_results:
