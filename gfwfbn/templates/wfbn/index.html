@@ -71,10 +71,8 @@
               <tr>
                 <td>
                   <a href="{{ location.url }}" class="foodbank" target="_top">{{ location.name }}</a>
-                  {% if where_from != "trusselltrust" %}
-                    {% if location.type == "location" %}
-                      <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
-                    {% endif %}
+                  {% if location.type == "location" %}
+                    <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
                   {% endif %}
                   <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
                   <div class="links">
