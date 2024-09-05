@@ -38,10 +38,10 @@
         <input type="submit" class="button is-light is-info" value="Go">
       </form>
 
-      <p id="status-msg"></p>
+      <p id="status-msg">{% if not is_uk %}Sorry, we couldn't use that location. Is it inside the United Kingdom?{% endif %}</p>
 
       <div id="index_intro">
-        {% if not location_results %}
+        {% if not location_results and is_uk %}
           <ul>
               <li><a href="{% url 'wfbn:constituencies' %}">Browse by parliamentary constituency</a></li>
               <li><a href="/register-foodbank/">Register a food bank</a></li>

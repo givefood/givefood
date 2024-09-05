@@ -16,7 +16,7 @@ from session_csrf import anonymous_csrf
 from requests.models import PreparedRequest
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
+from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
@@ -32,6 +32,7 @@ def index(request):
     lat_lng = request.GET.get("lat_lng", "")
     lat = None
     lng = None
+    lat_lng_is_uk = True
     
     location_results = []
     recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
@@ -46,16 +47,19 @@ def index(request):
             lng = lat_lng.split(",")[1]
         except IndexError:
             return HttpResponseBadRequest()
-        location_results = find_locations(lat_lng, 10)
+        
+        lat_lng_is_uk = is_uk(lat_lng)
 
-        for location in location_results:
-            try:
-                location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
-                location["needs"] = location_need.change_text
-            except FoodbankChange.DoesNotExist:
-                logging.warn("No need found for %s" % location.get("foodbank_name"))
-                location["needs"] = "Unknown"            
-            location["url"] = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
+        if lat_lng_is_uk:
+            location_results = find_locations(lat_lng, 10)
+            for location in location_results:
+                try:
+                    location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
+                    location["needs"] = location_need.change_text
+                except FoodbankChange.DoesNotExist:
+                    logging.warn("No need found for %s" % location.get("foodbank_name"))
+                    location["needs"] = "Unknown"            
+                location["url"] = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
 
     gmap_key = get_cred("gmap_key")
 
@@ -67,6 +71,7 @@ def index(request):
         "recently_updated":recently_updated,
         "most_viewed":most_viewed,
         "location_results":location_results,
+        "is_uk":lat_lng_is_uk,
     }
     return render(request, "wfbn/index.html", template_vars)
 
