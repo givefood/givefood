@@ -11,7 +11,7 @@ The source of https://www.givefood.org.uk. A Google App Engine app, fronted by C
 | gfapi2    | Current API                         | https://www.givefood.org.uk/api/       |
 | gfapi3    | Future API                          | https://www.givefood.org.uk/api/3/     |
 | gfdash    | Data dashboards                     | https://www.givefood.org.uk/dashboard/ |
-| gfoffline | Offline tasks                       |                                        |
+| gfoffline | Offline tasks                       | N/A                                    |
 | gfwfbn    | What food banks need tool           | https://www.givefood.org.uk/needs/     |
 | gfwrite   | Allow users to contact their MPs    | https://www.givefood.org.uk/write/     |
 | givefood  | Public app                          | https://www.givefood.org.uk            |
