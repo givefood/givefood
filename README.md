@@ -16,6 +16,8 @@ The source of https://www.givefood.org.uk. A Google App Engine app, fronted by C
 | gfwrite   | Allow users to contact their MPs    | https://www.givefood.org.uk/write/     |
 | givefood  | Public app                          | https://www.givefood.org.uk            |
 
+[/givefood/static/img/photos/](https://github.com/givefood/givefood/tree/main/givefood/static/img/photos) is deployed to https://photos.givefood.org.uk
+
 ## About Us
 
 We are a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.
