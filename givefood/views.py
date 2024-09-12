@@ -21,6 +21,10 @@ from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, 
 
 @cache_page(SECONDS_IN_HOUR)
 def index(request):
+    """
+    Give Food homepage, with stats and logos
+    """ 
+
     logos = [
         {
             "name":"Trussell Trust",
@@ -90,18 +94,26 @@ def index(request):
 
 @cache_page(SECONDS_IN_WEEK)
 def annual_report_index(request):
+    """
+    Annual report homepage, with links to each year's report
+    """ 
     return render(request, "public/ar/index.html")
 
 
 @cache_page(SECONDS_IN_WEEK)
 def annual_report(request, year):
-    article_template = "public/ar/%s.html" % (year)
-    return render(request, article_template)
+    """
+    Annual report page, with report content
+    """
+    return render(request, "public/ar/%s.html" % (year))
 
 
 @anonymous_csrf
 def register_foodbank(request):
-
+    """
+    Food bank registration form
+    """
+    
     done = request.GET.get("thanks", False)
 
     if request.POST:
@@ -130,21 +142,33 @@ def register_foodbank(request):
 
 @cache_page(SECONDS_IN_WEEK)
 def donate(request):
+    """
+    Donate page
+    """
     return render(request, "public/donate.html")
 
 
 @cache_page(SECONDS_IN_WEEK)
 def about_us(request):
+    """
+    About us page
+    """
     return render(request, "public/about_us.html")
 
 
 @cache_page(SECONDS_IN_WEEK)
 def api(request):
+    """
+    API doc index
+    """
     return render(request, "public/api.html")
 
 
 @cache_page(SECONDS_IN_WEEK)
 def sitemap(request):
+    """
+    XML sitemap for search engines
+    """
 
     url_names = [
         "index",
@@ -176,6 +200,9 @@ def sitemap(request):
 
 @cache_page(SECONDS_IN_WEEK)
 def sitemap_external(request):
+    """
+    XML sitemap for external links
+    """
 
     foodbanks = Foodbank.objects.all().exclude(is_closed=True)
 
@@ -188,11 +215,17 @@ def sitemap_external(request):
 
 @cache_page(SECONDS_IN_WEEK)
 def privacy(request):
+    """
+    Privacy policy
+    """
     return render(request, "public/privacy.html")
 
 
 @cache_page(SECONDS_IN_TWO_MINUTES)
 def frag(request, frag):
+    """
+    Fragments for client side includes
+    """
 
     # last_updated
     if frag == "last_updated":
@@ -210,6 +243,9 @@ def frag(request, frag):
 
 @csrf_exempt
 def distill_webhook(request):
+    """
+    Webhook for distill changes to be submitted
+    """
 
     distill_key = get_cred("distill_key")
     given_key = request.GET.get("key", None)
@@ -239,6 +275,9 @@ def distill_webhook(request):
 
 
 def proxy(request, item):
+    """
+    Proxy for external data
+    """
 
     if item == "trusselltrust":
         url = "https://www.trusselltrust.org/get-help/find-a-foodbank/foodbank-search/?foodbank_s=all&callback=REMOVEME"
