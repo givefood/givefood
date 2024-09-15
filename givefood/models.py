@@ -126,7 +126,7 @@ class Foodbank(models.Model):
             return "yearly"
         if self.days_between_needs > 25:
             return "monthly"
-        if self.days_between_needs > 10:
+        if self.days_between_needs > 6:
             return "weekly"
         return "daily"
 

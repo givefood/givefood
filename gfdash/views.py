@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
 from django.db.models import Q, Count
 
-from givefood.models import Foodbank, FoodbankChange, FoodbankArticle, FoodbankDonationPoint, Order
+from givefood.models import Foodbank, FoodbankChange, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, Order
 from givefood.func import group_list, get_all_foodbanks, filter_change_text
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR
 
@@ -190,6 +190,18 @@ def most_excess_items(request):
     }
 
     return render(request, "dash/most_excess_items.html", template_vars)
+
+
+@cache_page(SECONDS_IN_DAY)
+def item_categories(request):
+
+    categories = FoodbankChangeLine.objects.filter(type = "need").values("category").annotate(count=Count("category")).order_by("-count")
+    template_vars = {
+        "categories":categories,
+    }
+
+    return render(request, "dash/item_categories.html", template_vars)
+
 
 @cache_page(SECONDS_IN_HOUR)
 def tt_old_data(request):

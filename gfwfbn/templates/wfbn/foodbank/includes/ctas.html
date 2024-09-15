@@ -12,15 +12,6 @@
         </p>
     {% endif %}
 
-    {% if enable_write %}
-        {% if foodbank.parliamentary_constituency_name %}
-            <p>
-                <a href="{% url 'write:index' %}" class="button is-info is-small is-light" id="takeaction_btn">Take Action</a>
-                Email your MP
-            </p>
-        {% endif %}
-    {% endif %}
-
     {% if foodbank.latest_need.change_text != "Facebook" and foodbank.latest_need.change_text != "Nothing" and foodbank.latest_need.change_text != "Unknown" %}
         <p>
             <a href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}" class="button is-info is-small is-light" id="updates_btn">Get Updates</a>

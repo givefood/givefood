@@ -9,6 +9,7 @@ urlpatterns = (
     url(r'^items-requested-weekly/by-year/$', weekly_itemcount_year, name="weekly_itemcount_year"),
     url(r'^most-requested-items/$', most_requested_items, name="most_requested_items"),
     url(r'^most-excess-items/$', most_excess_items, name="most_excess_items"),
+    url(r'^item-categories/$', item_categories, name="item_categories"),
     url(r'^trusselltrust/old-data/$', tt_old_data, name="tt_old_data"),
     url(r'^trusselltrust/most-requested-items/$', most_requested_items, name="tt_most_requested_items"),
     url(r'^articles/$', articles, name="articles"),

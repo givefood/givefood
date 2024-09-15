@@ -14,52 +14,70 @@ from django import forms
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
+from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
 @cache_page(SECONDS_IN_DAY)
 def index(request):
+    """
+    The What Food Banks Need index page
+    """ 
 
     # Handle old misspelt URL
     if request.GET.get("lattlong", None):
         return redirect("%s?lat_lng=%s" % (reverse("wfbn:index"), request.GET.get("lattlong")), permanent=True)
 
+    # All the vars we'll need
     address = request.GET.get("address", "")
     lat_lng = request.GET.get("lat_lng", "")
-    where_from = request.GET.get("from","")
     lat = None
     lng = None
-    
+    lat_lng_is_uk = True
     location_results = []
+
+    # Recently updated food banks
     recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
+
+    # Most viewed food banks
     most_viewed = FoodbankHit.objects.raw("SELECT 1 as id, (select name from givefood_foodbank where id = foodbank_id) as name, (select slug from givefood_foodbank where id = foodbank_id) as slug, SUM(hits) as sumhits FROM givefood_foodbankhit WHERE day >= CURRENT_DATE - 7 and day <= CURRENT_DATE GROUP BY foodbank_id ORDER BY sumhits DESC LIMIT 10")
 
+    # Geocode address if no lat_lng
     if address and not lat_lng:
         lat_lng = geocode(address)
 
     if lat_lng:
+
+        # Validate lat_lng
         try:
             lat = lat_lng.split(",")[0]
             lng = lat_lng.split(",")[1]
         except IndexError:
             return HttpResponseBadRequest()
-        location_results = find_locations(lat_lng, 10)
+        
+        # Check if lat_lng is in UK
+        lat_lng_is_uk = is_uk(lat_lng)
 
-        for location in location_results:
-            try:
-                location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
-                location["needs"] = location_need.change_text
-            except FoodbankChange.DoesNotExist:
-                logging.warn("No need found for %s" % location.get("foodbank_name"))
-                location["needs"] = "Unknown"            
-            location["url"] = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
+        if lat_lng_is_uk:
 
+            # Do the search
+            location_results = find_locations(lat_lng, 10)
+
+            # Add needs to location results
+            for location in location_results:
+                try:
+                    location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
+                    location["needs"] = location_need.change_text
+                except FoodbankChange.DoesNotExist:
+                    logging.warn("No need found for %s" % location.get("foodbank_name"))
+                    location["needs"] = "Unknown"            
+                location["url"] = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
+
+    # Need the Google Maps API key too
     gmap_key = get_cred("gmap_key")
 
     template_vars = {
-        "where_from":where_from,
         "address":address,
         "lat":lat,
         "lng":lng,
@@ -67,16 +85,23 @@ def index(request):
         "recently_updated":recently_updated,
         "most_viewed":most_viewed,
         "location_results":location_results,
+        "is_uk":lat_lng_is_uk,
     }
     return render(request, "wfbn/index.html", template_vars)
 
 
 @cache_page(SECONDS_IN_WEEK)
 def rss(request):
+    """
+    Site-wide RSS feed
+    """ 
 
+    # Get needs
     needs = FoodbankChange.objects.filter(published = True).exclude(change_text = "Nothing").exclude(change_text = "Facebook").exclude(change_text = "Unknown").order_by("-created")[:10]
+    # Get news
     news = FoodbankArticle.objects.all().order_by("-published_date")[:10]
 
+    # Put them all together
     items = []
     for need in needs:
         items.append({
@@ -92,6 +117,7 @@ def rss(request):
             "date":newsitem.published_date,
         })
 
+    # Sort all the items by date
     items = sorted(items, key=lambda d: d['date'], reverse=True) 
 
     template_vars = {
@@ -103,6 +129,9 @@ def rss(request):
 
 @cache_page(SECONDS_IN_WEEK)
 def trussell_trust_index(request):
+    """
+    The Trussell Trust index page
+    """ 
 
     gmap_key = get_cred("gmap_key")
 
@@ -114,6 +143,9 @@ def trussell_trust_index(request):
 
 
 def get_location(request):
+    """
+    Handle non-javascript location requests
+    """
 
     lat_lng = request.META.get("HTTP_X_APPENGINE_CITYLATLONG")
     redirect_url = "/needs/?lat_lng=%s" % (lat_lng)
@@ -122,6 +154,9 @@ def get_location(request):
 
 @cache_page(SECONDS_IN_WEEK)
 def geojson(request, slug = None, parlcon_slug = None):
+    """
+    GeoJSON for everything, a food bank or a parliamentary constituency
+    """
 
     # All items
     all_items = not slug and not parlcon_slug
@@ -228,6 +263,9 @@ def geojson(request, slug = None, parlcon_slug = None):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank(request, slug):
+    """
+    Food bank index
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
@@ -248,6 +286,9 @@ def foodbank(request, slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_rss(request, slug):
+    """
+    Food bank RSS feed
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
@@ -281,6 +322,9 @@ def foodbank_rss(request, slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_map(request, slug):
+    """
+    Food bank map PNG
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     gmap_static_key = get_cred("gmap_static_key")
@@ -300,6 +344,9 @@ def foodbank_map(request, slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_locations(request,slug):
+    """
+    Food bank locations index
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     if foodbank.no_locations == 0:
@@ -315,6 +362,9 @@ def foodbank_locations(request,slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_donationpoints(request,slug):
+    """
+    Food bank donation points index
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     if foodbank.no_donation_points == 0:
@@ -329,6 +379,9 @@ def foodbank_donationpoints(request,slug):
 
 @cache_page(SECONDS_IN_DAY)
 def foodbank_news(request,slug):
+    """
+    Food bank news
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     if not foodbank.rss_url:
@@ -344,6 +397,9 @@ def foodbank_news(request,slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_history(request, slug):
+    """
+    Food bank need history
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
         
@@ -360,6 +416,9 @@ def foodbank_history(request, slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_socialmedia(request, slug):
+    """
+    Food bank social media links
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     # TODO: check if fb has social media
@@ -374,6 +433,9 @@ def foodbank_socialmedia(request, slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_nearby(request, slug):
+    """
+    Food bank nearby list
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     nearby_locations = find_locations(foodbank.latt_long, 20, True)
@@ -389,6 +451,9 @@ def foodbank_nearby(request, slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_subscribe(request, slug):
+    """
+    Food bank subscribe page
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     email = request.GET.get("email", None)
@@ -406,6 +471,10 @@ def foodbank_subscribe(request, slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_subscribe_sample(request, slug):
+    """
+    Food bank subscribe sample email
+    Used in an iframe in the subscribe page
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
@@ -419,6 +488,9 @@ def foodbank_subscribe_sample(request, slug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_location(request, slug, locslug):
+    """
+    Food bank individual location
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
@@ -440,6 +512,9 @@ def foodbank_location(request, slug, locslug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_location_map(request, slug, locslug):
+    """
+    Food bank location map PNG
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
@@ -453,6 +528,9 @@ def foodbank_location_map(request, slug, locslug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_location_photo(request, slug, locslug):
+    """
+    Food bank location photo JPEG
+    """
 
     size = request.GET.get("size", 1080)
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -468,6 +546,9 @@ def foodbank_location_photo(request, slug, locslug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_donationpoint(request, slug, dpslug):
+    """
+    Food bank donation point
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
@@ -490,6 +571,9 @@ def foodbank_donationpoint(request, slug, dpslug):
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_donationpoint_photo(request, slug, dpslug):
+    """
+    Food bank donation point photo JPEG
+    """
 
     size = request.GET.get("size", 1080)
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -505,6 +589,9 @@ def foodbank_donationpoint_photo(request, slug, dpslug):
 
 @cache_page(SECONDS_IN_WEEK)
 def constituencies(request):
+    """
+    Food bank constituencies index
+    """
 
     postcode = request.GET.get("postcode", None)
     if postcode:
@@ -525,6 +612,9 @@ def constituencies(request):
 
 @cache_page(SECONDS_IN_WEEK)
 def constituency(request, slug):
+    """
+    Food bank constituency
+    """
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
 
@@ -537,6 +627,10 @@ def constituency(request, slug):
 
 @csrf_exempt
 def updates(request, slug, action):
+    """
+    Food bank updates pages
+    Subscribe, confirm, unsubscribe acions
+    """
 
     key = request.GET.get("key", None)
     email = request.POST.get("email", None)
@@ -628,6 +722,9 @@ def updates(request, slug, action):
 
 @never_cache
 def foodbank_hit(request, slug):
+    """
+    Food bank hit counter
+    """
     
     foodbank = get_object_or_404(Foodbank, slug = slug)
     day = datetime.datetime.today()
@@ -656,6 +753,9 @@ def foodbank_edit(request, slug):
 
 @anonymous_csrf
 def foodbank_edit_form(request, slug, action, locslug = None):
+    """
+    Food bank edit form
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = None
@@ -726,6 +826,9 @@ def foodbank_edit_form(request, slug, action, locslug = None):
 
 
 def foodbank_edit_thanks(request, slug):
+    """
+    Food bank edit thanks page
+    """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     template_vars = {

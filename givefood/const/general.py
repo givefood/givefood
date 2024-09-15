@@ -162,6 +162,7 @@ OLD_FOODBANK_SLUGS = {
     "glastonbury":"glastonbury-street",
     "hollingdean":"hollingdean-fiveways",
     "bay":"the-bay",
+    "st-pauls-centre":":st-pauls",
 }
 
 FOODBANK_SUBPAGES = [

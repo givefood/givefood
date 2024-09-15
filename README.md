@@ -1,7 +1,7 @@
 <img width="200" alt="Give Food" src="https://github.com/givefood/givefood/assets/763913/0b5033f6-a5be-467a-87e4-79b5c33810af"><br>
 
 
-The source of https://www.givefood.org.uk. A Google App Engine app, fronted by CloudFlare, written in Python, using Django and [Djangae](https://gitlab.com/potato-oss/djangae/djangae).
+The source of https://www.givefood.org.uk. A Google App Engine app, fronted by CloudFlare, written in Python using Django and [Djangae](https://gitlab.com/potato-oss/djangae/djangae).
 
 ## Structure 
 | App Name  | Description                         | URL                                    |
@@ -11,10 +11,12 @@ The source of https://www.givefood.org.uk. A Google App Engine app, fronted by C
 | gfapi2    | Current API                         | https://www.givefood.org.uk/api/       |
 | gfapi3    | Future API                          | https://www.givefood.org.uk/api/3/     |
 | gfdash    | Data dashboards                     | https://www.givefood.org.uk/dashboard/ |
-| gfoffline | Offline tasks                       |                                        |
+| gfoffline | Offline tasks                       | N/A                                    |
 | gfwfbn    | What food banks need tool           | https://www.givefood.org.uk/needs/     |
 | gfwrite   | Allow users to contact their MPs    | https://www.givefood.org.uk/write/     |
 | givefood  | Public app                          | https://www.givefood.org.uk            |
+
+[/givefood/static/img/photos/](https://github.com/givefood/givefood/tree/main/givefood/static/img/photos) is deployed to https://photos.givefood.org.uk
 
 ## About Us
 
