@@ -38,7 +38,13 @@
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Edit</a></li>
+            <li><a href="{% url 'wfbn:foodbank_edit' foodbank.slug %}">Edit</a></li>
+            <li class="is-active"><a href="#" aria-current="page">
+              {% if action == "needs" %}Shopping List{% endif %}
+              {% if action == "locations" %}Locations{% endif %}
+              {% if action == "contacts" %}Contact information{% endif %}
+              {% if action == "closed" %}Closed{% endif %}
+            </a></li>
         </ul>
   </nav>
 
