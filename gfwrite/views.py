@@ -11,6 +11,9 @@ from givefood.models import ConstituencySubscriber, ParliamentaryConstituency
 from gfwrite.forms import ConstituentDetailsForm, EmailForm
 
 def index(request):
+    """
+    Write index
+    """
 
     postcode = request.GET.get("postcode", None)
     if postcode:
@@ -30,6 +33,9 @@ def index(request):
 
 
 def constituency(request, slug):
+    """
+    Write constituency
+    """
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
     postcode = request.GET.get("postcode", None)
@@ -44,6 +50,9 @@ def constituency(request, slug):
 
 
 def email(request, slug):
+    """
+    Write the email
+    """
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
 
@@ -101,6 +110,9 @@ def email(request, slug):
 
 
 def send(request, slug):
+    """
+    Send the email
+    """
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
 
@@ -137,6 +149,9 @@ def send(request, slug):
 
 
 def done(request, slug):
+    """
+    Write confirmation
+    """
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
             
