@@ -128,21 +128,6 @@ def rss(request):
     return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
 
 
-@cache_page(SECONDS_IN_WEEK)
-def trussell_trust_index(request):
-    """
-    The Trussell Trust index page
-    """ 
-
-    gmap_key = get_cred("gmap_key")
-
-    template_vars = {
-        "gmap_key":gmap_key,
-        "headless":True,
-    }
-    return render(request, "wfbn/trussell_trust.html", template_vars)
-
-
 def get_location(request):
     """
     Handle non-javascript location requests
