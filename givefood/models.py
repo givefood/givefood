@@ -61,6 +61,7 @@ class Foodbank(models.Model):
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
     bankuet_slug = models.CharField(max_length=50, null=True, blank=True)
+    fsa_id = models.CharField(max_length=50, null=True, blank=True, verbose_name="Food Standards Agency Business ID")
 
     foodbank_group = models.ForeignKey("FoodbankGroup", null=True, blank=True, on_delete=models.DO_NOTHING)
     foodbank_group_name = models.CharField(max_length=100, null=True, blank=True, editable=False)

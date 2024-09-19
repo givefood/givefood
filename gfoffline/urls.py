@@ -16,4 +16,5 @@ urlpatterns = (
     url(r'^place_ids/$', place_ids, name="place_ids"),
     url(r'^need_categorisation/$', need_categorisation, name="need_categorisation"),
     url(r'^load_mps/$', load_mps, name="load_mps"),
+    url(r'^refresh_mps/$', refresh_mps, name="refresh_mps"),
 )

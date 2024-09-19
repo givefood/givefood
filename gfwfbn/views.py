@@ -170,9 +170,9 @@ def geojson(request, slug = None, parlcon_slug = None):
         locations = FoodbankLocation.objects.filter(foodbank__slug = slug)
         donationpoints = FoodbankDonationPoint.objects.filter(foodbank__slug = slug)
     elif parlcon_slug:
-        foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = parlcon_slug)
-        locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = parlcon_slug)
-        donationpoints = FoodbankDonationPoint.objects.filter(parliamentary_constituency_slug = parlcon_slug)
+        foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False)
+        locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False)
+        donationpoints = FoodbankDonationPoint.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False)
     else:
         foodbanks = Foodbank.objects.filter(is_closed=False)
         locations = FoodbankLocation.objects.filter(is_closed=False)

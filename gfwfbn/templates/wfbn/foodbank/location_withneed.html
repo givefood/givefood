@@ -47,7 +47,7 @@
         </ul>
       </nav>
 
-      <h1>{{ location }} - {{ foodbank.full_name }}</h1>
+      {% include "wfbn/foodbank/includes/pagetitle.html" with prefix=location %}
 
       <div class="columns">
 

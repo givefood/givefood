@@ -384,7 +384,7 @@ def load_mps(request):
             parl_con.email = row[6]
             parl_con.save()
 
-            if mp_parl_id:                
+            if mp_parl_id:
                 image_url = "https://members-api.parliament.uk/api/Members/%s/Thumbnail" % mp_parl_id
                 image_response = requests.get(image_url)
                 image_response.raise_for_status()
@@ -394,5 +394,50 @@ def load_mps(request):
                 file.write(image_response.content)
                 file.close()
                 print("Wrote image %s" % mp_parl_id)
+
+    return HttpResponse("OK")
+
+
+def refresh_mps(request):
+
+    parl_cons = ParliamentaryConstituency.objects.all()
+
+    for parl_con in parl_cons:
+
+        mp_parl_id = parl_con.mp_parl_id
+
+        # Get name
+        member_url = "https://members-api.parliament.uk/api/Members/%s" % mp_parl_id
+        member_response = requests.get(member_url)
+        member_response.raise_for_status()
+        json_response = member_response.json()
+        display_name = json_response["value"]["nameDisplayAs"]
+        parl_con.mp_display_name = display_name
+        parl_con.save()
+        print("Wrote name %s" % display_name)
+
+        # Get email
+        contact_url = "https://members-api.parliament.uk/api/Members/%s/Contact" % mp_parl_id
+        contact_response = requests.get(contact_url)
+        contact_response.raise_for_status()
+        json_response = contact_response.json()
+        try:
+            email = json_response["value"][0]["email"]
+        except KeyError:
+            email = None
+        parl_con.email = email
+        parl_con.save()
+        print("Wrote email %s" % email)
+
+        # Get photo
+        image_url = "https://members-api.parliament.uk/api/Members/%s/Thumbnail" % mp_parl_id
+        image_response = requests.get(image_url)
+        image_response.raise_for_status()
+        print("Got image %s" % mp_parl_id)
+        file_name = "./givefood/static/img/photos/2024-mp/%s.jpg" % mp_parl_id
+        file = open(file_name, 'a+b')
+        file.write(image_response.content)
+        file.close()
+        print("Wrote image %s" % mp_parl_id)
 
     return HttpResponse("OK")
