@@ -27,9 +27,9 @@ def index(request):
 
     logos = [
         {
-            "name":"Trussell Trust",
-            "slug":"trusselltrust",
-            "url":"https://www.trusselltrust.org",
+            "name":"Trussell",
+            "slug":"trussell",
+            "url":"https://www.trussell.org.uk",
             "format":"svg",
         },
         {
