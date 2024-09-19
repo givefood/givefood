@@ -32,6 +32,10 @@
     vertical-align: middle;
     margin-right:5px;
 }
+.altname {
+    margin-top:-1.3rem;
+    font-style: italic;
+}
 .recently-updated, .most-viewed {
     column-count:2;
     column-gap:10px;
