@@ -115,11 +115,53 @@
                       {% endif %}
 
                     </div>
-
                 </div>
 
-
             {% endif %}
+
+            {% if action == "donationpoints" %}
+
+              {% if locslug == "new" %}
+                <p>Add a donation point for <em>{{ foodbank.full_name }}</em>.</p>
+              {% else %}
+                <p>Sorry if we've got this donation point of <em>{{ foodbank.full_name }}</em> wrong. <a href="{% url 'wfbn:foodbank_edit' foodbank.slug %}">Something different incorrect?</a></p>
+              {% endif %}
+
+              <div class="columns">
+                  <div class="column is-one-third">
+                      <aside class="menu">
+                          <ul class="menu-list">
+                              {% for donation_point in foodbank.donation_points %}
+                                  <li><a {% if locslug == donation_point.slug %}class="is-active"{% endif %} href="{% url 'wfbn:foodbank_edit_form_location' foodbank.slug action donation_point.slug %}">{{ donation_point.name }}</a></li>
+                              {% endfor %}
+                          </ul>
+                          <br>
+                          <a class="button{% if locslug == 'new' %} is-link{% endif %}" href="{% url 'wfbn:foodbank_edit_form_location' foodbank.slug action 'new' %}">New Donation Point</a>
+                      </aside>
+                  </div>
+
+                  <div class="column is-two-thirds">
+
+                    <form method="post" action="">
+                      {{ form|bulma }}
+                      <input type="submit" class="button is-link" value="Submit">
+                      {% csrf_token %}
+                    </form>
+
+                    {% if donationpoint %}
+                      <hr>
+                      <p>If the donation point has closed (or isn't a donation point anymore), please press this button.</p>
+                      <form method="post" action="">
+                        <input type="hidden" name="closed" value="closed">
+                        <input type="submit" class="button is-danger" value="The {{ donationpoint.name }} location has closed">
+                        {% csrf_token %}
+                      </form><br><br>
+                    {% endif %}
+
+                  </div>
+              </div>
+
+          {% endif %}
 
             {% if action == "contacts" %}
 

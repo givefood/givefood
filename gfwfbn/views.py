@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django import forms
 
+from givefood.forms import FoodbankDonationPointForm
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
@@ -759,6 +760,7 @@ def foodbank_edit_form(request, slug, action, locslug = None):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = None
+    donationpoint = None
 
     if action == "needs":
         heading = "Shopping List"
@@ -792,6 +794,26 @@ def foodbank_edit_form(request, slug, action, locslug = None):
                 "location":location,
             })
             return redirect("wfbn:foodbank_edit_thanks", slug = slug)
+    
+    if action == "donationpoints":
+        heading = "Donation Points"
+
+        if locslug:
+            if locslug == "new":
+                form = FoodbankDonationPointForm()
+            else:
+                donationpoint = get_object_or_404(FoodbankDonationPoint, foodbank = foodbank, slug = locslug)
+                form = FoodbankDonationPointForm(instance=donationpoint)
+        else:
+            donationpoint = None
+            form = FoodbankDonationPointForm(instance=donationpoint)
+
+        if request.POST:
+            post_to_email(request.POST, {
+                "foodbank":foodbank.name,
+                "donationpoint":donationpoint,
+            })
+            return redirect("wfbn:foodbank_edit_thanks", slug = slug)
 
     if action == "contacts":
         heading = "Contact Information"
@@ -819,6 +841,7 @@ def foodbank_edit_form(request, slug, action, locslug = None):
         "action":action,
         "locslug":locslug,
         "location":location,
+        "donationpoint":donationpoint,
         "form":form,
         "heading":heading,
     }

@@ -30,8 +30,8 @@ urlpatterns = (
 
     # Edit
     url(r'^at/(?P<slug>[-\w]+)/edit/$', foodbank_edit, name="foodbank_edit"),
-    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/$', foodbank_edit_form, name="foodbank_edit_form"),
-    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|closed)/(?P<locslug>[-\w]+)/$', foodbank_edit_form, name="foodbank_edit_form_location"),
+    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|donationpoints|closed)/$', foodbank_edit_form, name="foodbank_edit_form"),
+    url(r'^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|donationpoints|closed)/(?P<locslug>[-\w]+)/$', foodbank_edit_form, name="foodbank_edit_form_location"),
     url(r'^at/(?P<slug>[-\w]+)/edit/thanks/$', foodbank_edit_thanks, name="foodbank_edit_thanks"),
 
     # Donation Points

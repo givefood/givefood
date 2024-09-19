@@ -69,6 +69,10 @@
                     <p>Phone number, web addresses, email address, social media or charity status.</p>
                 </li>
                 <li>
+                  <a href="{% url 'wfbn:foodbank_edit_form' foodbank.slug 'donationpoints' %}" class="is-size-5">🛒 Donation points</a>
+                  <p>Locations where the public can donate items</p>
+                </li>
+                <li>
                     <a href="{% url 'wfbn:foodbank_edit_form' foodbank.slug 'closed' %}" class="is-size-5">🛑 Closed</a>
                     <p>If the food bank organisation has closed.</p>
                 </li>
