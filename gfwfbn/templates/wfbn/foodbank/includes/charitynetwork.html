@@ -8,5 +8,10 @@
         <p>The Salvation Army is a registered charity in England &amp; Wales <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/214779/charity-overview">214779</a> &amp; <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/215174/charity-overview">215174</a>, and Scotland <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC009359">SC009359</a> &amp; <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC037691">SC037691</a>.</p>
     {% endif %}
 {% else %}
-<br>
+    <br>
+{% endif %}
+{% if foodbank.fsa_id %}
+    <div id="fsarating">
+        <script src="https://ratings.food.gov.uk/embed/embed-badge.js" data-business-id="{{ foodbank.fsa_id }}" data-rating-style="3" data-welsh="{% if foodbank.country == 'Wales' %}true{% else %}false{% endif %}"></script>
+    </div>
 {% endif %}

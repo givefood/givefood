@@ -125,6 +125,10 @@ p.needs {
     vertical-align: middle;
     margin-right:5px;
 }
+#fsarating img[style] {
+    min-width:200px !important;
+    width:200px;
+}
 #subscription_example {
     width:100%;
     height:500px;
