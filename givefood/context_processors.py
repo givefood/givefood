@@ -19,6 +19,7 @@ def context(request):
         'version': version,
         'enable_write': ENABLE_WRITE,
         'app_name': app_name,
+        'domain': SITE_DOMAIN,
     }
 
     return context
