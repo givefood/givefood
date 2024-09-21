@@ -1,7 +1,8 @@
 {% extends "public/page.html" %}
 {% load humanize %}
+{% load i18n %}
 
-{% block title %}About Us - Give Food{% endblock %}
+{% block title %}{% trans "About us" %} - Give Food{% endblock %}
 
 {% block head %}
   <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
@@ -17,8 +18,8 @@
 
     <div class="columns is-centered">
         <div class="column is-half content">
-            <h1>About us</h1>
-            <p>Give Food is a UK charity that uses data to highlight local and structural food insecurity, then provides tools to help alleviate it.</p>
+            <h1>{% trans "About us" %}</h1>
+            <p>{% blocktrans %}Give Food is a UK charity that uses data to highlight local and structural food insecurity, then provides tools to help alleviate it.{% endblocktrans %}</p>
 
             <p>We run the only <a href="/needs/">national public database of food banks</a>, tracking in realtime what they are requesting to have donated.</p>
 

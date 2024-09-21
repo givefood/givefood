@@ -5,6 +5,7 @@ from djangae.contrib.secrets import get
 from djangae.environment import project_id
 from djangae.settings_base import *  # noqa
 from givefood.func import get_secret
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'djangae.contrib.googleauth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'csp.middleware.CSPMiddleware',
 ]
 
@@ -75,6 +77,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
                 "gfadmin.context_processors.gmap_keys",
                 "givefood.context_processors.context",
             ],
@@ -137,15 +140,17 @@ AUTH_USER_MODEL = 'googleauth.User'
 # Internationalization
 # https://docs.djangoproject.com/en/{{ docs_version }}/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
+LANGUAGE_CODE = 'en'
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = False
+
+LANGUAGES = [
+    ("en", _("English")),
+    ("cy", _("Welsh")),
+]
+
 
 
 # Static files (CSS, JavaScript, Images)

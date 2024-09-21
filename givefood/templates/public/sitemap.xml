@@ -3,6 +3,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	{% for url_name in url_names %}
 		<url><loc>{{ domain }}{% url url_name %}</loc></url>
+		<url><loc>{{ domain }}/cy{% url url_name %}</loc></url>
 	{% endfor %}
 	{% for foodbank in foodbanks %}
 		<url>

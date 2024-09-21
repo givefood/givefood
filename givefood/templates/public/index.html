@@ -1,18 +1,26 @@
 {% extends "public/page.html" %}
 {% load humanize %}
+{% load i18n %}
 
 {% block title %}Give Food{% endblock %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/hp.css">
-  <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
+  <meta name="description" content="{% blocktrans %}Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}">
   <link rel="alternate" type="application/rss+xml" title="Give Food RSS" href="{% url 'wfbn:rss' %}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="Give Food">
-  <meta property="og:description" content="We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it">
+  <meta property="og:description" content="{% blocktrans %}We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}">
   <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
   <meta property="og:image:alt" content="Map of UK food banks">
+  {% for language in LANGUAGES %}
+    {% if language.0 == "en" %}
+      <link rel="alternate" hreflang="{{ language.0 }}" href="{{ domain }}/">
+    {% else %}
+      <link rel="alternate" hreflang="{{ language.0 }}" href="{{ domain }}/{{ language.0 }}/">
+    {% endif %}
+  {% endfor %}
 {% endblock %}
 
 {% block body %}
@@ -29,26 +37,26 @@
   <div class="columns is-desktop is-centered">
 
     <div class="column is-one-third">
-      <p>We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.</p>
+      <p>{% blocktrans %}We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}</p>
 
       <div class="find-foodbank">
-        <p>Find out if there is a <a href="{% url 'wfbn:index' %}">food bank nearby</a> that you can help...</p>
-        <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-is-homepage="true">Use my location</a>
+        <p>{% trans "Find out if there is a" %} <a href="{% url 'wfbn:index' %}">{% trans "food bank nearby" %}</a> {% trans "that you can help" %}...</p>
+        <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-is-homepage="true">{% blocktrans %}Use my location{% endblocktrans %}</a>
         <form id="addressform" action="{% url 'wfbn:index' %}" method="GET" data-is-homepage="true">
-          <label id="address_label" for="address_field" class="label">Postcode or town</label>
-          <input id="address_field" type="text" name="address" class="input" placeholder="e.g. EX4 6PX or Sheffield" required autofocus>
+          <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
+          <input id="address_field" type="text" name="address" class="input" placeholder="{% blocktrans %}e.g. EX4 6PX or Sheffield{% endblocktrans %}" required autofocus>
           <input id="lat_lng_field" type="hidden" name="lat_lng">
-          <input type="submit" class="button is-light is-info" value="Go">
+          <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
         </form>
       </div>
 
       <nav class="primary">
         <ul>
           {% if enable_write %}
-            <li><a href="{% url 'write:index' %}">Write to your MP</a></li>
+            <li><a href="{% url 'write:index' %}">{% trans 'Write to your MP' %}</a>{% if LANGUAGE_CODE == 'cy' %} ({% trans 'English' %}){% endif %}</li>
           {% endif %}
-          <li><a href="{% url 'donate' %}">Donate</a></li>
-          <li><a href="{% url 'about_us' %}">About us</a></li>
+          <li><a href="{% url 'donate' %}">{% trans 'Donate' %}</a></li>
+          <li><a href="{% url 'about_us' %}">{% trans 'About us' %}</a></li>
         </ul>
       </nav>
       
@@ -64,7 +72,7 @@
   <div class="container">
     <div class="columns">
       <div class="column">
-        <h2>We've worked with</h2>
+        <h2>{% trans "We've worked with" %}</h2>
       </div>
     </div>
 
@@ -84,54 +92,58 @@
 
   <div class="columns">
     <div class="column how-help">
-      <h2>How we can help</h2>
+      <h2>{% trans "How we can help" %}</h2>
     </div>
   </div>
 
   <div class="columns how-help-cat">
     <div class="column">
-      <h3>Public</h3>
-      <p><a href="{% url 'wfbn:index' %}">Use our tool</a> to find your local food banks, then donate, volunteer or take political action.</p>
+      <h3>{% trans "Public" %}</h3>
+      <p>{% trans "Use our tool to find your local food banks, then donate, volunteer or take political action." %}</p>
+      <a href="{% url 'wfbn:index' %}">{% trans "Find out how to help" %}&nbsp;<svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg></a>
     </div>
     <div class="column">
-      <h3>Food banks</h3>
-      <p><a href="{% url 'register_foodbank' %}">Register a food bank</a> to be included in our database and allow users to find you and what you need.</p>
+      <h3>{% trans "Food banks" %}</h3>
+      <p>{% trans "Register a food bank to be included in our database and allow users to find you and what you need." %}</p>
+      <a href="{% url 'register_foodbank' %}">{% trans "Register a food bank" %}&nbsp;<svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg></a>
     </div>
     <div class="column">
-      <h3>Media</h3>
-      <p>Journalists, particularly data journalists, can use our data for stories around food poverty. See our <a href="/api/">API</a>, or get in touch.</p>
+      <h3>{% trans "Media" %}</h3>
+      <p>{% trans "Data journalists can use our data for stories around food poverty or get in touch." %}</p>
+      <a href="/api/">{% trans "Use our API" %}&nbsp;<svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg></a>
     </div>
     <div class="column">
-      <h3>Researchers &amp; students</h3>
-      <p>We can provide our data in bulk, plus advice on how to interpret it, for academic or governmental research. Have a look at our <a href="/api/">API</a>, or email us.</p>
+      <h3>{% trans "Researchers & students" %}</h3>
+      <p>{% trans "We can provide our data in bulk, plus advice on how to interpret it, for academic or governmental research. Have a look at our API or email us." %}</p>
+      <a href="/api/">{% trans "Use our API" %}&nbsp;<svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg></a>
     </div>
   </div>
 
   <div class="columns">
     <div class="column">
-      <h2>Real time statistics</h2>
+      <h2>{% trans "Statistics" %}</h2>
     </div>
   </div>
 
   <div class="columns stats">
       <div class="column">
-        <h3>📍&ensp;Food banks</h3>
+        <h3>📍&ensp;{% trans "Food banks" %}</h3>
         <p>{{ stats.foodbanks|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>🛒&ensp;Donation points</h3>
+        <h3>🛒&ensp;{% trans "Donation points" %}</h3>
         <p>{{ stats.donationpoints|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>🥫&ensp;Items requested</h3>
+        <h3>🥫&ensp;{% trans "Items requested" %}</h3>
         <p>{{ stats.items|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>🥣&ensp;Meals delivered</h3>
+        <h3>🥣&ensp;{% trans "Meals delivered" %}</h3>
         <p>{{ stats.meals|intcomma }}</p>
       </div>
       <div class="column">
-        <h3>📅&ensp;Last updated</h3>
+        <h3>📅&ensp;{% trans "Last updated" %}</h3>
         <p data-include="{% url 'frag' 'last_updated' %}"></p>
       </div>
   </div>
@@ -143,7 +155,7 @@
   <div class="columns is-centered">
     <div class="column is-three-quarters">
       <p class="annualreportteaser">
-        Read our <a href="{% url 'annual_report' 2023 %}">2023 annual report</a>
+        {% trans "Read our" %} <a href="{% url 'annual_report' 2023 %}">2023 {% trans "annual report" %}</a>
       </p>
     </div>
   </div>
@@ -154,14 +166,14 @@
 
         <nav class="secondary">
           <ul>
-            <li><a href="{% url 'register_foodbank' %}">Register a food bank</a></li>
-            <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
-            <li><a href="/api/">API</a></li>
-            <li><a href="{% url 'annual_report_index' %}">Annual reports</a></li>
+            <li><a href="{% url 'register_foodbank' %}">{% trans "Register a food bank" %}</a></li>
+            <li><a href="{% url 'dash:index' %}">{% trans "Dashboards" %}</a></li>
+            <li><a href="/api/">API</a> {% if LANGUAGE_CODE == 'cy' %} ({% trans 'English' %}){% endif %}</li>
+            <li><a href="{% url 'annual_report_index' %}">{% trans "Annual reports" %}</a></li>
           </ul>
         </nav>
 
-        <h3>Email</h3>
+        <h3>{% trans "Email" %}</h3>
         <p>
           <a href="mailto:mail@givefood.org.uk" class="is-size-5">mail@givefood.org.uk</a>
         </p>        

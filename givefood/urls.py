@@ -3,7 +3,9 @@ import logging
 from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import RedirectView
+
 
 import givefood.views
 from givefood.const.general import RICK_ASTLEY, OLD_FOODBANK_SLUGS, FOODBANK_SUBPAGES
@@ -11,24 +13,25 @@ from givefood.const.general import RICK_ASTLEY, OLD_FOODBANK_SLUGS, FOODBANK_SUB
 import session_csrf
 session_csrf.monkeypatch()
 
-urlpatterns = [
-    url(r'^_ah/', include('djangae.urls')),
-
-    # PUBLIC
+urlpatterns = i18n_patterns(
     url(r'^$', givefood.views.index, name="index"),
-
+    url(r'^frag/(?P<frag>[-\w]+)/$', givefood.views.frag, name="frag"),
     url(r'^annual-reports/$', givefood.views.annual_report_index, name="annual_report_index"),
     url(r'^(?P<year>(2019|2020|2021|2022|2023))/$', givefood.views.annual_report, name="annual_report"),
-    
     url(r'^register-foodbank/$', givefood.views.register_foodbank, name="register_foodbank"),
+    url(r'^about-us/$', givefood.views.about_us, name="about_us"),
+    url(r'^donate/$', givefood.views.donate, name="donate"),
+
+    prefix_default_language=False,
+)
+    
+
+urlpatterns += [
+    url(r'^_ah/', include('djangae.urls')),
 
     url(r'^sitemap.xml$', givefood.views.sitemap, name="sitemap"),
     url(r'^sitemap_external.xml$', givefood.views.sitemap_external, name="sitemap_external"),
-    
     url(r'^privacy/$', givefood.views.privacy, name="privacy"),
-    url(r'^about-us/$', givefood.views.about_us, name="about_us"),
-    url(r'^donate/$', givefood.views.donate, name="donate"),
-    url(r'^frag/(?P<frag>[-\w]+)/$', givefood.views.frag, name="frag"),
 
     # KINDA PUBLIC
     url(r'^distill_webhook/$', givefood.views.distill_webhook, name="distill_webhook"),
@@ -42,12 +45,12 @@ urlpatterns = [
     url(r'^static/img/map-allloc\.png$', RedirectView.as_view(url="/static/img/map.png")),
 ]
 
+
 # Old Food Bank Redirects
 for old_slug, new_slug in OLD_FOODBANK_SLUGS.items():
     urlpatterns.append(url(r'^needs/at/%s/$' % (old_slug), RedirectView.as_view(url='/needs/at/%s/' % new_slug)))
     for subpage in FOODBANK_SUBPAGES:
         urlpatterns.append(url(r'^needs/at/%s/%s/$' % (old_slug, subpage), RedirectView.as_view(url='/needs/at/%s/%s/' % (new_slug, subpage))))
-
 
 # Apps
 urlpatterns += [

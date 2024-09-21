@@ -1,0 +1,340 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-09-21 15:24+0000\n"
+"PO-Revision-Date: 2024-09-19 18:04+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: PO File Editor https://pofile.net/free-po-editor\n"
+
+#: givefood/settings/default.py:151 givefood/templates/public/index.html:52
+#: givefood/templates/public/index.html:167
+#: givefood/templates/public/page.html:30
+msgid "English"
+msgstr "Saesneg"
+
+#: givefood/settings/default.py:152
+msgid "Welsh"
+msgstr "Cymraeg"
+
+#: givefood/templates/public/about_us.html:5
+#: givefood/templates/public/about_us.html:21
+#: givefood/templates/public/index.html:55
+#: givefood/templates/public/page.html:36
+msgid "About us"
+msgstr "Amdanom ni"
+
+#: givefood/templates/public/about_us.html:22
+#, fuzzy
+#| msgid ""
+#| "Give Food is a UK charity uses data to highlight local and structural "
+#| "food insecurity then provides tools to help alleviate it."
+msgid ""
+"Give Food is a UK charity that uses data to highlight local and structural "
+"food insecurity, then provides tools to help alleviate it."
+msgstr ""
+"Mae Give Food yn elusen yn y DU sy’n defnyddio data i amlygu ansicrwydd bwyd "
+"lleol a strwythurol ac yna’n darparu offer i helpu i’w liniaru."
+
+#: givefood/templates/public/ar/index.html:5
+#: givefood/templates/public/ar/index.html:22
+#: givefood/templates/public/index.html:168
+#: givefood/templates/public/page.html:31
+msgid "Annual reports"
+msgstr "Adroddiadau blynyddol"
+
+#: givefood/templates/public/ar/index.html:8
+#: givefood/templates/public/donate.html:8
+msgid ""
+"Give Food is a UK charity uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
+msgstr ""
+"Mae Give Food yn elusen yn y DU sy’n defnyddio data i amlygu ansicrwydd bwyd "
+"lleol a strwythurol ac yna’n darparu offer i helpu i’w liniaru."
+
+#: givefood/templates/public/ar/index.html:25
+msgid "Rebrand, refresh, rewrite &amp; categorisation"
+msgstr "Ailfrandio, adnewyddu, ailysgrifennu &amp; categoreiddio"
+
+#: givefood/templates/public/ar/index.html:28
+msgid "Write to your MP tool, surplus monitoring, data audits"
+msgstr "Ysgrifennwch at eich offeryn AS, monitro gwarged, archwiliadau data"
+
+#: givefood/templates/public/ar/index.html:31
+#, fuzzy
+#| msgid "Data & UX review, dashboards, charity reporting"
+msgid "Data &amp; UX review, dashboards, charity reporting"
+msgstr "Adolygu data ac UX, dangosfyrddau, adroddiadau elusennau"
+
+#: givefood/templates/public/ar/index.html:34
+msgid "Pandemic response, becoming a charity, publishing our data"
+msgstr "Ymateb pandemig, dod yn elusen, cyhoeddi ein data"
+
+#: givefood/templates/public/ar/index.html:37
+msgid "Initial deliveries, Christmas"
+msgstr "Dosbarthiadau cychwynnol, Nadolig"
+
+#: givefood/templates/public/donate.html:5
+#: givefood/templates/public/donate.html:21
+#: givefood/templates/public/index.html:54
+#: givefood/templates/public/page.html:35
+msgid "Donate"
+msgstr "Rhoddwch"
+
+#: givefood/templates/public/donate.html:27
+msgid "To"
+msgstr "I"
+
+#: givefood/templates/public/donate.html:28
+#, python-format
+msgid ""
+"100%% of donations from the public to Give Food are used directly to "
+"efficiently and quickly deliver requested food and supplies to UK food banks."
+msgstr ""
+"Mae 100%% o roddion gan y cyhoedd i Give Food yn cael eu defnyddio’n "
+"uniongyrchol i ddosbarthu’r bwyd a’r cyflenwadau y gofynnir amdanynt yn "
+"effeithlon ac yn gyflym i fanciau bwyd y DU."
+
+#: givefood/templates/public/donate.html:29
+msgid "Donate using CAF Donate"
+msgstr "Cyfrannwch gan ddefnyddio CAF Donate"
+
+#: givefood/templates/public/donate.html:32
+msgid "To a food bank"
+msgstr "Cofrestru banc bwyd"
+
+#: givefood/templates/public/donate.html:33
+msgid ""
+"Use our tool to find a local food bank and see what they need. Then donate "
+"food, household supplies, toiletries, money or your time."
+msgstr ""
+"Defnyddiwch ein hofferyn i ddod o hyd i fanc bwyd lleol a gweld beth sydd ei "
+"angen arnynt. Yna cyfrannwch fwyd, cyflenwadau cartref, pethau ymolchi, "
+"arian neu'ch amser."
+
+#: givefood/templates/public/donate.html:34
+msgid "Find a food bank"
+msgstr "Dod o hyd i fanc bwyd"
+
+#: givefood/templates/public/donate.html:40
+msgid "Managed donations"
+msgstr "Rhoddion a reolir"
+
+#: givefood/templates/public/donate.html:41
+msgid ""
+"For donations or grants of £500 or more we can provide a managed service. "
+"Leveraging our data and logistical expertise we can ensure your donation is "
+"used to effectively deliver the required items to food banks that match your "
+"charitable aims. Realtime reports and tracking of how your donation is used "
+"can also be provided."
+msgstr ""
+"Ar gyfer rhoddion neu grantiau o £500 neu fwy gallwn ddarparu gwasanaeth a "
+"reolir. Trwy ddefnyddio ein data a’n harbenigedd logistaidd gallwn sicrhau "
+"bod eich rhodd yn cael ei ddefnyddio i ddosbarthu’r eitemau gofynnol yn "
+"effeithiol i fanciau bwyd sy’n cyfateb i’ch nodau elusennol. Gellir darparu "
+"adroddiadau amser real ac olrhain sut y defnyddir eich rhodd hefyd."
+
+#: givefood/templates/public/index.html:9
+#, fuzzy
+#| msgid ""
+#| "Give Food is a UK charity uses data to highlight local and structural "
+#| "food insecurity then provides tools to help alleviate it."
+msgid ""
+"Give Food a UK charity uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
+msgstr ""
+"Mae Give Food yn elusen yn y DU sy’n defnyddio data i amlygu ansicrwydd bwyd "
+"lleol a strwythurol ac yna’n darparu offer i helpu i’w liniaru."
+
+#: givefood/templates/public/index.html:14
+#: givefood/templates/public/index.html:36
+msgid ""
+"We're a UK charity that uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
+msgstr ""
+"Rydym yn elusen yn y DU sy'n defnyddio data i amlygu ansicrwydd bwyd lleol a "
+"strwythurol ac yna'n darparu offer i helpu i'w liniaru."
+
+#: givefood/templates/public/index.html:39
+msgid "Find out if there is a"
+msgstr "Darganfyddwch a oes a"
+
+#: givefood/templates/public/index.html:39
+msgid "food bank nearby"
+msgstr "banc bwyd gerllaw"
+
+#: givefood/templates/public/index.html:39
+msgid "that you can help"
+msgstr "y gallwch chi helpu"
+
+#: givefood/templates/public/index.html:40
+msgid "Use my location"
+msgstr "Defnyddiwch fy lleoliad"
+
+#: givefood/templates/public/index.html:42
+msgid "Postcode or town"
+msgstr "Cod post neu dref"
+
+#: givefood/templates/public/index.html:43
+msgid "e.g. EX4 6PX or Sheffield"
+msgstr "e.e. LL11 2AH neu Aberystwyth"
+
+#: givefood/templates/public/index.html:45
+msgid "Go"
+msgstr "Ewch"
+
+#: givefood/templates/public/index.html:52
+msgid "Write to your MP"
+msgstr "Ysgrifennwch at eich AS"
+
+#: givefood/templates/public/index.html:71
+msgid "We've worked with"
+msgstr "Rydyn ni wedi gweithio gyda"
+
+#: givefood/templates/public/index.html:91
+msgid "How we can help"
+msgstr "Sut gallwn ni helpu"
+
+#: givefood/templates/public/index.html:97
+msgid "Public"
+msgstr "Cyhoeddus"
+
+#: givefood/templates/public/index.html:98
+msgid ""
+"Use our tool to find your local food banks, then donate, volunteer or take "
+"political action."
+msgstr ""
+"Defnyddiwch ein hofferyn i ddod o hyd i'ch banciau bwyd lleol, yna cyfrannu, "
+"gwirfoddoli neu gymryd camau gwleidyddol."
+
+#: givefood/templates/public/index.html:99
+msgid "Find out how to help"
+msgstr "Darganfyddwch a oes a"
+
+#: givefood/templates/public/index.html:102
+#: givefood/templates/public/index.html:126
+msgid "Food banks"
+msgstr "Banc bwyd"
+
+#: givefood/templates/public/index.html:103
+msgid ""
+"Register a food bank to be included in our database and allow users to find "
+"you and what you need."
+msgstr ""
+"Cofrestrwch fanc bwyd i'w gynnwys yn ein cronfa ddata a chaniatáu i "
+"ddefnyddwyr ddod o hyd i chi a'r hyn sydd ei angen arnoch."
+
+#: givefood/templates/public/index.html:104
+#: givefood/templates/public/index.html:165
+#: givefood/templates/public/page.html:28
+#: givefood/templates/public/register_foodbank.html:5
+#: givefood/templates/public/register_foodbank.html:17
+msgid "Register a food bank"
+msgstr "Cofrestru banc bwyd"
+
+#: givefood/templates/public/index.html:107
+msgid "Media"
+msgstr "Cyfryngau"
+
+#: givefood/templates/public/index.html:108
+msgid ""
+"Data journalists can use our data for stories around food poverty or get in "
+"touch."
+msgstr ""
+"Gall newyddiadurwyr data ddefnyddio ein data ar gyfer straeon am dlodi bwyd "
+"neu gysylltu â ni."
+
+#: givefood/templates/public/index.html:109
+#: givefood/templates/public/index.html:114
+msgid "Use our API"
+msgstr "Defnyddiwch ein API"
+
+#: givefood/templates/public/index.html:112
+msgid "Researchers & students"
+msgstr "Ymchwilwyr a myfyrwyr"
+
+#: givefood/templates/public/index.html:113
+msgid ""
+"We can provide our data in bulk, plus advice on how to interpret it, for "
+"academic or governmental research. Have a look at our API or email us."
+msgstr ""
+"Gallwn ddarparu ein data mewn swmp, ynghyd â chyngor ar sut i'w ddehongli, "
+"ar gyfer ymchwil academaidd neu lywodraethol. Edrychwch ar ein API neu e-"
+"bostiwch ni."
+
+#: givefood/templates/public/index.html:120
+msgid "Statistics"
+msgstr "Ystadegau"
+
+#: givefood/templates/public/index.html:130
+msgid "Donation points"
+msgstr "Pwyntiau rhoi"
+
+#: givefood/templates/public/index.html:134
+msgid "Items requested"
+msgstr "Eitemau y gofynnwyd amdanynt"
+
+#: givefood/templates/public/index.html:138
+msgid "Meals delivered"
+msgstr "Prydau wedi'u dosbarthu"
+
+#: givefood/templates/public/index.html:142
+#: givefood/templates/public/page.html:40
+msgid "Last updated"
+msgstr "Diweddarwyd diwethaf"
+
+#: givefood/templates/public/index.html:154
+msgid "Read our"
+msgstr "Darllenwch ein"
+
+#: givefood/templates/public/index.html:154
+msgid "annual report"
+msgstr "adroddiad blynyddol"
+
+#: givefood/templates/public/index.html:166
+#: givefood/templates/public/page.html:29
+msgid "Dashboards"
+msgstr "Dangosfyrddau"
+
+#: givefood/templates/public/index.html:172
+msgid "Email"
+msgstr "Ebost"
+
+#: givefood/templates/public/page.html:42
+msgid "Give Food is a registered charity in England & Wales"
+msgstr "Mae Give Food yn elusen gofrestredig yng Nghymru a Lloegr"
+
+#: givefood/templates/public/page.html:43
+msgid "Registered with the"
+msgstr "Wedi cofrestru gyda'r"
+
+#: givefood/templates/public/page.html:44
+msgid "ICO Data Protection Registration"
+msgstr "ICO Cofrestru Diogelu Data"
+
+#: givefood/templates/public/page.html:46
+msgid "Privacy policy"
+msgstr "Polisi preifatrwydd"
+
+#: givefood/views.py:234
+msgid "minutes"
+msgstr "munudau"
+
+#: givefood/views.py:235
+msgid "Under a minute ago"
+msgstr "O dan funud yn ôl"
+
+#: givefood/views.py:237
+msgid "ago"
+msgstr "yn ôl"

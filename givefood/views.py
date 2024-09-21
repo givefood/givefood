@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden
 from django.db.models import Sum
 from django.utils.timesince import timesince
+from django.utils.translation import gettext_lazy as _
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation, Order, FoodbankChange, ParliamentaryConstituency
@@ -177,9 +178,6 @@ def sitemap(request):
         "register_foodbank",
         "annual_report_index",
         "privacy",
-        "wfbn:index",
-        "write:index",
-        "dash:index",
     ]
 
     foodbanks = Foodbank.objects.all().exclude(is_closed=True)
@@ -230,10 +228,10 @@ def frag(request, frag):
     # last_updated
     if frag == "last_updated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)
-        if timesince_text == "0 minutes":
-            frag_text = "Under a minute ago"
+        if timesince_text == "0 %s" % (_("minutes")):
+            frag_text = _("Under a minute ago")
         else:
-            frag_text = "%s ago" % (timesince_text)
+            frag_text = "%s %s" % (timesince_text, _("ago"))
     
     if not frag_text:
         return HttpResponseForbidden()

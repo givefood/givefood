@@ -1,10 +1,11 @@
 {% extends "public/page.html" %}
 {% load humanize %}
+{% load i18n %}
 
-{% block title %}Annual Reports - Give Food{% endblock %}
+{% block title %}{% trans "Annual reports" %} - Give Food{% endblock %}
 
 {% block head %}
-  <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
+  <meta name="description" content="{% blocktrans %}Give Food is a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}">
 {% endblock %}
 
 {% block body %}
@@ -18,22 +19,22 @@
     <div class="columns is-centered">
         <div class="column is-half content">
             
-            <h1>Annual reports</h1>
+            <h1>{% trans "Annual reports" %}</h1>
 
             <a class="is-size-4" href="/2023/">2023</a><br>
-            <p>Rebrand, refresh, rewrite &amp; categorisation</p>
+            <p>{% blocktrans %}Rebrand, refresh, rewrite &amp; categorisation{% endblocktrans %}</p>
 
             <a class="is-size-4" href="/2022/">2022</a><br>
-            <p>Write to your MP tool, surplus monitoring, data audits</p>
+            <p>{% blocktrans %}Write to your MP tool, surplus monitoring, data audits{% endblocktrans %}</p>
 
             <a class="is-size-4" href="/2021/">2021</a><br>
-            <p>Data &amp; UX review, dashboards, charity reporting</p>
+            <p>{% blocktrans %}Data &amp; UX review, dashboards, charity reporting{% endblocktrans %}</p>
 
             <a class="is-size-4" href="/2020/">2020</a><br>
-            <p>Pandemic response, becoming a charity, publishing our data</p>
+            <p>{% blocktrans %}Pandemic response, becoming a charity, publishing our data{% endblocktrans %}</p>
 
             <a class="is-size-4" href="/2019/">2019</a><br>
-            <p>Initial deliveries, Christmas</p>
+            <p>{% blocktrans %}Initial deliveries, Christmas{% endblocktrans %}</p>
 
         </div>
     </div>

@@ -1,10 +1,11 @@
 {% extends "public/page.html" %}
 {% load humanize %}
+{% load i18n %}
 
-{% block title %}Donate - Give Food{% endblock %}
+{% block title %}{% trans 'Donate' %} - Give Food{% endblock %}
 
 {% block head %}
-    <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
+    <meta name="description" content="{% blocktrans %}Give Food is a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}">
 {% endblock %}
 
 {% block body %}
@@ -17,28 +18,28 @@
 
     <div class="columns is-centered">
         <div class="column is-half content">
-            <h1>Donate</h1>
+            <h1>{% trans 'Donate' %}</h1>
         </div>
     </div>
 
     <div class="columns is-centered">
         <div class="column is-one-quarter content">
-            <h2>To Give Food</h2>
-            <p>100% of donations from the public to Give Food are used directly to efficiently and quickly deliver requested food and supplies to UK food banks.</p>
-            <p><a href="https://cafdonate.cafonline.org/24602" class="button is-link">Donate using CAF Donate</a></p>
+            <h2>{% trans "To" %} Give Food</h2>
+            <p>{% blocktrans %}100% of donations from the public to Give Food are used directly to efficiently and quickly deliver requested food and supplies to UK food banks.{% endblocktrans %}</p>
+            <p><a href="https://cafdonate.cafonline.org/24602" class="button is-link">{% blocktrans %}Donate using CAF Donate{% endblocktrans %}</a></p>
         </div>
         <div class="column is-one-quarter content">
-            <h2>To a food bank</h2>
-            <p>Use our tool to find a local food bank and see what they need. Then donate food, household supplies, toiletries, money or your time.</p>
-            <p><a href="{% url 'wfbn:index' %}" class="button is-link">Find a Food Bank</a></p>
+            <h2>{% blocktrans %}To a food bank{% endblocktrans %}</h2>
+            <p>{% blocktrans %}Use our tool to find a local food bank and see what they need. Then donate food, household supplies, toiletries, money or your time.{% endblocktrans %}</p>
+            <p><a href="{% url 'wfbn:index' %}" class="button is-link">{% blocktrans %}Find a food bank{% endblocktrans %}</a></p>
         </div>
     </div>
 
     <div class="columns is-centered">
         <div class="column is-half">
-            <h2>Managed donations</h2>
-            <p>For donations or grants of £500 or more we can provide a managed service. Leveraging our data and logistical expertise we can ensure your donation is used to effectively deliver the required items to food banks that match your charitable aims. Realtime reports and tracking of how your donation is used can also be provided.</p>
-            <p>Please email us for more information. <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></p>
+            <h2>{% blocktrans %}Managed donations{% endblocktrans %}</h2>
+            <p>{% blocktrans %}For donations or grants of £500 or more we can provide a managed service. Leveraging our data and logistical expertise we can ensure your donation is used to effectively deliver the required items to food banks that match your charitable aims. Realtime reports and tracking of how your donation is used can also be provided.{% endblocktrans %}</p>
+            <p><a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></p>
         </div>
     </div>
 
