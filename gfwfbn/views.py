@@ -134,7 +134,8 @@ def get_location(request):
     """
 
     lat_lng = request.META.get("HTTP_X_APPENGINE_CITYLATLONG")
-    redirect_url = "/needs/?lat_lng=%s" % (lat_lng)
+    url = reverse("wfbn:index")
+    redirect_url = "%s?lat_lng=%s" % (url, lat_lng)
     return redirect(redirect_url)
 
 
