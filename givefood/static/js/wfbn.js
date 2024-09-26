@@ -75,21 +75,22 @@ function record_conversion() {
 
 function uml_click(redirect) {
   uml_btn.classList.add("working")
+  to_url = uml_btn.getAttribute("data-to-url")
   if (redirect) {
-    do_geolocation_redirect()
+    do_geolocation_redirect(to_url)
   } else {
     do_geolocation()
   }
 }
 
-function do_geolocation_redirect() {
+function do_geolocation_redirect(to_url) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function(position){
           lat  = position.coords.latitude;
           lng = position.coords.longitude;
           address_field.value = "";
-          window.location = "?lat_lng=" + lat + "," + lng;
+          window.location = to_url + "?lat_lng=" + lat + "," + lng;
       }
     );
   }
