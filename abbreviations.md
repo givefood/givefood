@@ -19,4 +19,8 @@
   <dd>Dashboards</dd>
   <dt>cta</dt>
   <dd>Call to action</dd>
+  <dt>uml</dt>
+  <dd>Use my location</dd>
+  <dt>cy</dt>
+  <dd>Cymru (Welsh, in Welsh)</dd>
 </dl>
