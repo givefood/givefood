@@ -72,6 +72,14 @@ p {
 tfoot {
     font-style: italic;
 }
+.language {
+    display:inline-block;
+    margin:10px 0 0 0;
+}
+.language span {
+    vertical-align: middle;
+    font-size:28px;
+}
 #usemylocationbtn {
     margin:0 0 10px 0;
     padding:5px 10px 5px 5px;

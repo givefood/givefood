@@ -1,4 +1,5 @@
 {% extends "public/page.html" %}
+{% load i18n %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
@@ -20,7 +21,7 @@
   {% endif %}
 {% endblock %}
 
-{% block title %}Nearby - {{ foodbank.full_name }} - Give Food{% endblock %}
+{% block title %}{% blocktrans %}Nearby{% endblocktrans %} - {{ foodbank.full_name }} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -37,14 +38,15 @@
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
         <ul>
-            <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+            <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Nearby</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{% blocktrans %}Nearby{% endblocktrans %}</a></li>
         </ul>
   </nav>
 
-      {% include "wfbn/foodbank/includes/pagetitle.html" with prefix="Nearby" %}
+      {% trans "Nearby" as prefix %}
+      {% include "wfbn/foodbank/includes/pagetitle.html" with prefix=prefix %}
 
       <div class="columns is-8 is-variable">
 
@@ -62,9 +64,9 @@
 
             {% for location in nearby %}
               {% if location.type == "location" %}
-                <a href="{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}">{{ location.name }}</a> ({{ location.foodbank_name }}) <span class="is-size-7">{{ location.distance_mi|floatformat:1 }}mi away</span><br>
+                <a href="{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}">{{ location.name }}</a> ({{ location.foodbank_name }}) <span class="is-size-7">{{ location.distance_mi|floatformat:1 }}mi {% blocktrans %}away{% endblocktrans %}</span><br>
               {% else %}
-                <a href="{% url 'wfbn:foodbank' location.foodbank_slug %}">{{ location.name }}</a> <span class="is-size-7">{{ location.distance_mi|floatformat:1 }}mi away</span><br>
+                <a href="{% url 'wfbn:foodbank' location.foodbank_slug %}">{{ location.name }}</a> <span class="is-size-7">{{ location.distance_mi|floatformat:1 }}mi {% blocktrans %}away{% endblocktrans %}</span><br>
               {% endif %}
             {% endfor %}
 

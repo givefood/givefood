@@ -1,17 +1,21 @@
+{% load i18n %}
 {% if foodbank.charity_number %}
     <br>
     {% if not foodbank.name == "Salvation Army" %}
         <p>
-            {{ foodbank.full_name }} {% if foodbank.charity_just_foodbank %}is{% else %}operates under{% endif %} a charity registered in {% if foodbank.country == "England" or foodbank.country == "Wales" %}England &amp; Wales{% else %}{{ foodbank.country }}{% endif %} <a href="{{ foodbank.charity_register_url }}" id="charity_link">{{ foodbank.charity_number }}</a>{% if not foodbank.network == "Independent" %} in the <a href="{{ foodbank.network_url }}?ref=givefood.org.uk">{{ foodbank.network }}</a> network{% endif %}{% if foodbank.foodbank_group %}, and the {{ foodbank.foodbank_group_name }} group{% endif %}.
+            {% blocktrans %}Charity Registration:{% endblocktrans %} <a href="{{ foodbank.charity_register_url }}" id="charity_link">{{ foodbank.charity_number }}</a><br>
+            {% blocktrans %}Part of{% endblocktrans %} {% if not foodbank.network == "Independent" %}
+                <a href="{{ foodbank.network_url }}?ref=givefood.org.uk">{{ foodbank.network }}</a>{% endif %}{% if foodbank.foodbank_group %}, and the {{ foodbank.foodbank_group_name }} group
+            {% endif %}
         </p>
     {% else %}
-        <p>The Salvation Army is a registered charity in England &amp; Wales <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/214779/charity-overview">214779</a> &amp; <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/215174/charity-overview">215174</a>, and Scotland <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC009359">SC009359</a> &amp; <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC037691">SC037691</a>.</p>
+        <p>Salvation Army {% blocktrans %}is a registered charity in England &amp; Wales{% endblocktrans %} <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/214779/charity-overview">214779</a> &amp; <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/215174/charity-overview">215174</a>, Scotland <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC009359">SC009359</a> &amp; <a href="https://www.oscr.org.uk/about-charities/search-the-register/charity-details?number=SC037691">SC037691</a>.</p>
     {% endif %}
 {% else %}
     <br>
 {% endif %}
 {% if foodbank.fsa_id %}
     <div id="fsarating">
-        <script src="https://ratings.food.gov.uk/embed/embed-badge.js" data-business-id="{{ foodbank.fsa_id }}" data-rating-style="3" data-welsh="{% if foodbank.country == 'Wales' %}true{% else %}false{% endif %}"></script>
+        <script src="https://ratings.food.gov.uk/embed/embed-badge.js" data-business-id="{{ foodbank.fsa_id }}" data-rating-style="3" data-welsh="{% if LANGUAGE_CODE == 'cy' %}true{% else %}false{% endif %}"></script>
     </div>
 {% endif %}

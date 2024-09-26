@@ -1,4 +1,5 @@
 {% extends "public/page.html" %}
+{% load i18n %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
@@ -20,7 +21,7 @@
   {% endif %}
 {% endblock %}
 
-{% block title %}History - {{ foodbank.full_name }} - Give Food{% endblock %}
+{% block title %}{% blocktrans %}History{% endblocktrans %} - {{ foodbank.full_name }} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -37,14 +38,15 @@
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
         <ul>
-            <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+            <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
-            <li class="is-active"><a href="#" aria-current="page">History</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{% blocktrans %}History{% endblocktrans %}</a></li>
         </ul>
   </nav>
 
-    {% include "wfbn/foodbank/includes/pagetitle.html" with prefix="History" %}
+    {% trans "History" as prefix %}
+    {% include "wfbn/foodbank/includes/pagetitle.html" with prefix=prefix %}
 
       <div class="columns">
 
@@ -54,19 +56,18 @@
 
           <div class="column">
 
-            <p>What {{ foodbank.full_name }} has requested over time. <ins>Green</ins> is for new items, <del>red struckthrough</del> are ones that have been removed.</p>
             <table>
               {% for need in needs %}
                 <tr id="need-{{ need.need_id }}">
                   <td>
                     <time datetime="{{ need.created_without_microseconds|date:'c' }}">{{ need.created }}</time><br>
-                    <span class="is-size-7">{{ need.created|timesince}} ago</span>
+                    <span class="is-size-7">{{ need.created|timesince}} {% blocktrans %}ago{% endblocktrans %}</span>
                   </td>
                   <td class="thediff">
                     {% if need.diff_from_last%}
                       <p>{{ need.diff_from_last|safe|linebreaksbr }}</p>
                     {% else %}
-                      <p class="nochange"><span>No change</span></p>
+                      <p class="nochange"><span>{% blocktrans %}No change{% endblocktrans %}</span></p>
                     {% endif %}
                   </td>
                 </tr>

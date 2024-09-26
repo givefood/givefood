@@ -58,6 +58,12 @@
           <li><a href="{% url 'donate' %}">{% trans 'Donate' %}</a></li>
           <li><a href="{% url 'about_us' %}">{% trans 'About us' %}</a></li>
         </ul>
+
+        {% if LANGUAGE_CODE == 'en' %}
+          <a href="/cy/" lang="cy" class="language"><span>🏴󠁧󠁢󠁷󠁬󠁳󠁿</span> Cymraeg</a>
+        {% else %}
+          <a href="/" lang="en" class="language"><span>🇬🇧</span> English</a>
+        {% endif %}
       </nav>
       
     </div>

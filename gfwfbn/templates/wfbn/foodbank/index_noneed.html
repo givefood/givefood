@@ -1,5 +1,6 @@
 {% extends "public/page.html" %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
@@ -44,8 +45,8 @@
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
-                <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+                <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+                <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
                 <li class="is-active"><a href="#" aria-current="page">{{ foodbank.full_name }}</a></li>
             </ul>
       </nav>
@@ -61,15 +62,15 @@
           <div class="column">
 
             {% if foodbank.is_closed %}
-              <p class="tag is-danger is-large">This food bank is closed</p>
+              <p class="tag is-danger is-large">{% blocktrans %}This food bank is closed{% endblocktrans %}</p>
             {% endif %}
 
             <div class="contacts is-size-6">
-              <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url_with_ref }}" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
+              <img src="/static/img/web.svg" alt="{% blocktrans %}Website{% endblocktrans %}" class="contact-icon"> <a href="{{ foodbank.url_with_ref }}" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
               {% if foodbank.phone_number %}
-                <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number|full_phone }}">{{ foodbank.phone_number|friendly_phone }}</a>{% if foodbank.secondary_phone_number %} or <a href="tel:{{ foodbank.secondary_phone_number|full_phone }}">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}<br>
+                <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ foodbank.phone_number|full_phone }}">{{ foodbank.phone_number|friendly_phone }}</a>{% if foodbank.secondary_phone_number %} or <a href="tel:{{ foodbank.secondary_phone_number|full_phone }}">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}<br>
               {% endif %}
-              <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}" id="email_link">{{ foodbank.contact_email|truncatechars:40 }}</a>
+              <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}" id="email_link">{{ foodbank.contact_email|truncatechars:40 }}</a>
             </div>
 
             {% include "wfbn/foodbank/includes/charitynetwork.html" %}
@@ -84,9 +85,9 @@
             {% include "wfbn/foodbank/includes/maplegend.html" %}
             
             {% if foodbank.address_is_administrative%}
-              <h3>Administrative address</h3>
+              <h3>{% blocktrans %}Administrative{% endblocktrans %}</h3>
             {% else %}
-              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
+              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
             {% endif %}
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
@@ -98,8 +99,8 @@
             </div>
 
             {% if foodbank.delivery_address %}
-              <h3>Delivery address</h3>
-              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.delivery_latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
+              <h3>{% blocktrans %}Delivery{% endblocktrans %}</h3>
+              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.delivery_latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
               <address>
                 {{ foodbank.delivery_address|linebreaksbr }}
               </address>

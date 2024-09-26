@@ -1,4 +1,5 @@
 {% extends "public/page.html" %}
+{% load i18n %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
@@ -20,7 +21,7 @@
   {% endif %}
 {% endblock %}
 
-{% block title %}Locations - {{ foodbank.full_name }} - Give Food{% endblock %}
+{% block title %}{% blocktrans %}Locations{% endblocktrans %} - {{ foodbank.full_name }} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -37,14 +38,15 @@
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
-                <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+                <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+                <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
                 <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
-                <li class="is-active"><a href="#" aria-current="page">Locations</a></li>
+                <li class="is-active"><a href="#" aria-current="page">{% blocktrans %}Locations{% endblocktrans %}</a></li>
             </ul>
       </nav>
 
-      {% include "wfbn/foodbank/includes/pagetitle.html" with prefix="Locations" %}
+      {% trans "Locations" as prefix %}
+      {% include "wfbn/foodbank/includes/pagetitle.html" with prefix=prefix %}
 
       <div class="columns">
 
@@ -61,9 +63,9 @@
 
             <a href="{% url 'wfbn:foodbank' foodbank.slug %}">
               {% if foodbank.address_is_administrative %}
-                Administration
+                {% blocktrans %}Administration{% endblocktrans %}
               {% else %}
-                Main
+                {% blocktrans %}Main{% endblocktrans %}
               {% endif %}
             </a>
             <address>
@@ -72,7 +74,7 @@
             </address>
             
             {% if foodbank.delivery_address %}
-              <a href="{% url 'wfbn:foodbank' foodbank.slug %}">Delivery</a>
+              <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{% blocktrans %}Delivery{% endblocktrans %}</a>
               <address>
                 {{ foodbank.delivery_address|linebreaksbr }}
               </address>

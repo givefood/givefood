@@ -1,5 +1,6 @@
 {% extends "public/page.html" %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
@@ -42,8 +43,8 @@
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
         <ul>
-            <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+            <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
             <li><a href="{% url 'wfbn:foodbank_donationpoints' foodbank.slug %}">Donation Points</a></li>
             <li class="is-active"><a href="#" aria-current="page">{{ donationpoint }}</a></li>
@@ -61,28 +62,28 @@
           <div class="column">
 
             {% if foodbank.is_closed %}
-              <p class="tag is-danger is-large">This food bank is closed</p>
+              <p class="tag is-danger is-large">{% blocktrans %}This food bank is closed{% endblocktrans %}</p>
             {% endif %}
 
-            <p>{{ donationpoint }} is a donation point for <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a>. {% if has_need %}Here they are requesting to have donated...{% endif %}</p>
+            <p>{{ donationpoint }} {% blocktrans %}is a donation point for{% endblocktrans %} <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a>. {% if has_need %}{% blocktrans %}Here they are requesting to have donated...{% endblocktrans %}{% endif %}</p>
 
             {% if has_need %}
                 <p class="needs">
                     {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
                 </p>
                 {% if foodbank.latest_need.excess_change_text %}
-                  <p>They don't need anymore {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+                  <p>{% blocktrans %}They don't need anymore{% endblocktrans %} {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
                 {% endif %}
             {% endif %}
 
             {% if donationpoint.opening_hours %}
-                <h3>Opening hours</h3>
+                <h3>{% blocktrans %}Opening hours{% endblocktrans %}</h3>
                 <p>
                   {% for day in donationpoint.opening_hours_days %}
                       {{ day.text }}
                       {% if not day.is_closed %}
                         {% if day.holiday %}
-                          <span class="is-size-7">Hours may vary because of {{ day.holiday.title }}</span>
+                          <span class="is-size-7">{% blocktrans %}Hours may vary because of{% endblocktrans %} {{ day.holiday.title }}</span>
                         {% endif %}
                       {% endif %}
                       <br>
@@ -92,13 +93,13 @@
 
             {% if donationpoint.in_store_only %}
                 <p>
-                  ⚠️ Only accepts in-store purchases as donations
-                  <br><small class="is-size-7">Although, sometimes you can add items marked as not from the store. Best to check.</small>
+                  ⚠️ {% blocktrans %}Only accepts in-store purchases as donations{% endblocktrans %}
+                  <br><small class="is-size-7">{% blocktrans %}Although, sometimes you can add items marked as not from the store. Best to check.{% endblocktrans %}</small>
                 </p>
             {% endif %}
 
             {% if donationpoint.wheelchair_accessible %}
-                <p>♿ Wheelchair accessible</p>
+                <p>♿ {% blocktrans %}Wheelchair accessible{% endblocktrans %}</p>
             {% endif %}
 
           </div>
@@ -114,7 +115,7 @@
             <div id="map" class="sidemap"></div>
             {% include "wfbn/foodbank/includes/maplegend.html" %}
 
-            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donationpoint.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
+            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donationpoint.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
             <address>
               {{ donationpoint.address|linebreaksbr }}<br>
               {{ donationpoint.postcode }}

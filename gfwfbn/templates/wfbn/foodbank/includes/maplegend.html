@@ -1,7 +1,8 @@
+{% load i18n %}
 <template id="legendtemplate">
     <div id="legend">
-        <img src="/static/img/mapmarkers/red.png" alt="Red Marker"> Organisation<br>
-        <img src="/static/img/mapmarkers/yellow.png" alt="Yellow Marker"> Location<br>
-        <img src="/static/img/mapmarkers/blue.png" alt="Blue Marker"> Donation point<br>
+        <img src="/static/img/mapmarkers/red.png" alt="{% blocktrans %}Organisation{% endblocktrans %} {% blocktrans %}marker{% endblocktrans %}"> {% blocktrans %}Organisation{% endblocktrans %}<br>
+        <img src="/static/img/mapmarkers/yellow.png" alt="{% blocktrans %}Location{% endblocktrans %} {% blocktrans %}marker{% endblocktrans %}"> {% blocktrans %}Location{% endblocktrans %}<br>
+        <img src="/static/img/mapmarkers/blue.png" alt="{% blocktrans %}Donation point{% endblocktrans %} {% blocktrans %}marker{% endblocktrans %}"> {% blocktrans %}Donation point{% endblocktrans %}<br>
     </div>
 </template>

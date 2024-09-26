@@ -1,21 +1,22 @@
+{% load i18n %}
 <div class="cta">
 
     <p>
-        <a href="{{ foodbank.url_with_ref }}" class="button is-info is-medium is-light" id="donate_btn">Donate</a> 
-        Food, money or your time
+        <a href="{{ foodbank.url_with_ref }}" class="button is-info is-medium is-light" id="donate_btn">{% blocktrans %}Donate{% endblocktrans %}</a> 
+        {% blocktrans %}Food, money or your time{% endblocktrans %}
     </p>
 
     {% if foodbank.bankuet_slug %}
         <p>
             <a href="{{ foodbank.bankuet_url }}" class="button is-info is-small is-light" id="bankuet_btn">Bankuet</a>
-            Donate using Bankuet
+            {% blocktrans %}Donate using {% endblocktrans %} Bankuet
         </p>
     {% endif %}
 
     {% if foodbank.latest_need.change_text != "Facebook" and foodbank.latest_need.change_text != "Nothing" and foodbank.latest_need.change_text != "Unknown" %}
         <p>
-            <a href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}" class="button is-info is-small is-light" id="updates_btn">Get Updates</a>
-            Get an email when new items are needed
+            <a href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}" class="button is-info is-small is-light" id="updates_btn">{% blocktrans %}Get updates{% endblocktrans %}</a>
+            {% blocktrans %}Get any email when new items are needed{% endblocktrans %}
         </p>
     {% endif %}
 

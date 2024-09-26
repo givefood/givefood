@@ -1,5 +1,6 @@
 {% extends "public/page.html" %}
 {% load custom_tags %}
+{% load i18n %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
@@ -41,8 +42,8 @@
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
         <ul>
-            <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+            <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+            <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
             <li class="is-active"><a href="#" aria-current="page">{{ location }}</a></li>
         </ul>
@@ -59,7 +60,7 @@
           <div class="column">
 
             {% if foodbank.is_closed %}
-              <p class="tag is-danger is-large">This food bank is closed</p>
+              <p class="tag is-danger is-large">>{% blocktrans %}This food bank is closed{% endblocktrans %}</p>
             {% endif %}
 
             {% if location.is_donation_point %}
@@ -89,7 +90,7 @@
             <div id="map" class="sidemap"></div>
             {% include "wfbn/foodbank/includes/maplegend.html" %}
 
-            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
+            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
             <address>
               {{ location.address|linebreaksbr }}<br>
               {{ location.postcode }}
@@ -99,7 +100,7 @@
             </div>
 
             {% if foodbank.delivery_address %}
-              <h3>Delivery address</h3>
+              <h3>{% blocktrans %}Delivery{% endblocktrans %}</h3>
               <address>
                 {{ foodbank.delivery_address|linebreaksbr }}
               </address>

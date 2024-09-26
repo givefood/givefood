@@ -89,7 +89,7 @@ function do_geolocation_redirect() {
           lat  = position.coords.latitude;
           lng = position.coords.longitude;
           address_field.value = "";
-          window.location = "/needs/?lat_lng=" + lat + "," + lng;
+          window.location = "?lat_lng=" + lat + "," + lng;
       }
     );
   }
@@ -245,13 +245,13 @@ function api_response() {
     if (org_type == "location" && currentrow.querySelector(".parent_org")) {
       currentrow.querySelector(".parent_org span").innerHTML = "Part of"
       currentrow.querySelector(".parent_org a").innerHTML = parent_org;
-      currentrow.querySelector(".parent_org a").href = "/needs/at/" + parent_org_slug + "/";
+      currentrow.querySelector(".parent_org a").href = "at/" + parent_org_slug + "/";
     }
     currentrow.querySelector(".distance span").textContent = distance;
     if (number_needs > 0 && needs != "Nothing" && needs != "Unknown" && needs != "Facebook") {
       if (number_needs > 1) {item_text = "items"} else {item_text = "item"};
       currentrow.querySelector(".fb_needs p").innerHTML = needs_html;
-      currentrow.querySelector(".subscribe").href = "/needs/at/" + parent_org_slug + "/subscribe/";
+      currentrow.querySelector(".subscribe").href = "at/" + parent_org_slug + "/subscribe/";
     } else if (needs == "Unknown") {
       currentrow.querySelector(".fb_needs").innerHTML = need_unknown_text;
       currentrow.querySelector(".subscribe").remove()
@@ -264,7 +264,7 @@ function api_response() {
     }
     if (currentrow.querySelector(".links")) {
       currentrow.querySelector(".links .phone").href = "tel:" + phone;
-      currentrow.querySelector(".links .info").href = gf_url.replace("https://www.givefood.org.uk","");
+      currentrow.querySelector(".links .info").href = gf_url.replace("https://www.givefood.org.uk/needs/","");
     }
     if (!phone) {
       currentrow.querySelector(".links .phone").remove();
@@ -279,7 +279,7 @@ function api_response() {
 
 function show_subscribe_modal() {
   fb_name = this.getAttribute("data-foodbankname")
-  modal.querySelector("form").setAttribute("action","/needs/at/" + slugify(fb_name) + "/updates/subscribe/")
+  modal.querySelector("form").setAttribute("action","at/" + slugify(fb_name) + "/updates/subscribe/")
   modal.querySelector(".foodbank-name").innerHTML = fb_name
   modal.classList.add("is-active")
   record_conversion()

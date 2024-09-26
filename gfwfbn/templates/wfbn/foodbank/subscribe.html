@@ -1,4 +1,5 @@
 {% extends "public/page.html" %}
+{% load i18n %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
@@ -26,7 +27,7 @@
   </script>
 {% endblock %}
 
-{% block title %}Get Updates - {{ foodbank.full_name }} - Give Food{% endblock %}
+{% block title %}{% blocktrans %}Get updates{% endblocktrans %} - {{ foodbank.full_name }} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -43,14 +44,15 @@
 
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
-                <li><a href="{% url 'index' %}">Home</a></li>
-                <li><a href="{% url 'wfbn:index' %}">What Food Banks Need</a></li>
+                <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+                <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
                 <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
-                <li class="is-active"><a href="#" aria-current="page">Get Updates</a></li>
+                <li class="is-active"><a href="#" aria-current="page">{% blocktrans %}Get updates{% endblocktrans %}</a></li>
             </ul>
       </nav>
 
-      {% include "wfbn/foodbank/includes/pagetitle.html" with prefix="Get Updates" %}
+      {% trans "Get updates" as prefix %}
+      {% include "wfbn/foodbank/includes/pagetitle.html" with prefix=prefix %}
 
       <div class="columns">
 
@@ -66,7 +68,7 @@
 
           <div class="column is-6">
 
-            <p>Here is what the email you'll get looks like...</p>
+            <p>{% blocktrans %}Here is what the email you'll get looks like...{% endblocktrans %}</p>
             <iframe src="{% url 'wfbn:foodbank_subscribe_sample' foodbank.slug %}" id="subscription_example"></iframe>
 
           </div>

@@ -1,21 +1,22 @@
 {% extends "public/page.html" %}
+{% load i18n %}
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
-  <meta property="og:title" content="What Food Banks Need">
-  <meta property="og:description" content="Use Give Food's tool to find what food banks near you are asking to have donated">
-  <meta name="description" content="Use Give Food's tool to find what food banks near you are requesting to have donated">
+  <meta property="og:title" content="{% blocktrans %}What Food Banks Need{% endblocktrans %}">
+  <meta property="og:description" content="{% blocktrans %}Use Give Food's tool to find what food banks near you are requesting to have donated{% endblocktrans %}">
+  <meta name="description" content="{% blocktrans %}Use Give Food's tool to find what food banks near you are requesting to have donated{% endblocktrans %}">
   <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
-  <meta property="og:image:alt" content="Map of UK food banks">
+  <meta property="og:image:alt" content="{% blocktrans %}Map of UK food banks{% endblocktrans %}>
   <link rel="alternate" type="application/rss+xml" title="Give Food RSS" href="{% url 'wfbn:rss' %}">
   <link rel="manifest" href="/needs/manifest.json">
   <link rel="preload" href="/static/img/loading.svg" as="image">
   <link rel="preload" href="{% url 'wfbn:geojson' %}" as="fetch">
 {% endblock %}
 
-{% block title %}Find a food bank & see what they need - Give Food{% endblock %}
+{% block title %}{% blocktrans %}Find a food bank & see what they need{% endblocktrans %} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -28,33 +29,33 @@
   <div class="columns">
     <div class="column is-half">
 
-      <p>Find a food bank near you, see what they need and how you can help by donating or volunteering.</p>
+      <p>{% blocktrans %}Find a food bank near you, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
 
-      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info">Use my location</a>
-      <form id="addressform" action="/needs/" method="GET">
-        <label id="address_label" for="address_field" class="label">Postcode or town</label>
-        <input id="address_field" type="text" name="address" class="input" placeholder="e.g. EX4 6PX or Sheffield" value="{{ address }}" required autofocus aria-required="true">
+      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info">{% blocktrans %}Use my location{% endblocktrans %}</a>
+      <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
+        <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
+        <input id="address_field" type="text" name="address" class="input" placeholder="{% blocktrans %}e.g. EX4 6PX or Sheffield{% endblocktrans %}" value="{{ address }}" required autofocus aria-required="true">
         <input id="lat_lng_field" type="hidden" name="lat_lng">
-        <input type="submit" class="button is-light is-info" value="Go">
+        <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
       </form>
 
-      <p id="status-msg">{% if not is_uk %}Sorry, we couldn't use that location. Is it inside the United Kingdom?{% endif %}</p>
+      <p id="status-msg">{% if not is_uk %}{% blocktrans %}Sorry, we couldn't use that location. Is it inside the United Kingdom?{% endblocktrans %}{% endif %}</p>
 
       <div id="index_intro">
         {% if not location_results and is_uk %}
           <ul>
-              <li><a href="{% url 'wfbn:constituencies' %}">Browse by parliamentary constituency</a></li>
-              <li><a href="/register-foodbank/">Register a food bank</a></li>
-              <li><a href="/about-us/">About us</a></li>
+              <li><a href="{% url 'wfbn:constituencies' %}">{% blocktrans %}Browse by parliamentary constituency{% endblocktrans %}</a></li>
+              <li><a href="{% url 'register_foodbank' %}">{% blocktrans %}Register a food bank{% endblocktrans %}</a></li>
+              <li><a href="{% url 'about_us' %}">{% blocktrans %}About us{% endblocktrans %}</a></li>
           </ul>
           <br>
-          <h2>Recently updated</h2>
+          <h2>{% blocktrans %}Recently updated{% endblocktrans %}</h2>
           <ul class="recently-updated">
               {% for foodbank in recently_updated %}
                   <li><a href="{% url 'wfbn:foodbank' foodbank.foodbank_name_slug %}">{{ foodbank.foodbank_name }}</a></li>
               {% endfor %}
           </ul>
-          <h2>Most viewed this week</h2>
+          <h2>{% blocktrans %}Most viewed this week{% endblocktrans %}</h2>
           <ul class="most-viewed">
               {% for foodbank in most_viewed %}
                   <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
@@ -72,28 +73,28 @@
                 <td>
                   <a href="{{ location.url }}" class="foodbank" target="_top">{{ location.name }}</a>
                   {% if location.type == "location" %}
-                    <div class="parent_org">Part of <a href="/needs/at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
+                    <div class="parent_org">{% blocktrans %}Part of{% endblocktrans %} <a href="at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
                   {% endif %}
-                  <div class="distance">{{ location.distance_mi|floatformat:2 }}mi away</div>
+                  <div class="distance">{{ location.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
                   <div class="links">
                     {% if location.phone %}
-                      <a class="phone" href="tel:{{ location.phone }}" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
+                      <a class="phone" href="tel:{{ location.phone }}" title="{% blocktrans %}Phone{% endblocktrans %}"><img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}"></a>
                     {% endif %}
-                    <a class="info" href="/needs/at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
+                    <a class="info" href="at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="{% blocktrans %}Information{% endblocktrans %}"><img src="/static/img/info.svg" alt="{% blocktrans %}Information{% endblocktrans %}"></a>
                   </div>
                   {% if location.needs != "Nothing" and location.needs != "Unknown" and location.needs != "Facebook" %}
-                    <a class="subscribe button is-link is-small" href="/needs/at/{{ location.foodbank_slug }}/subscribe/">Get Updates</a>
+                    <a class="subscribe button is-link is-small" href="at/{{ location.foodbank_slug }}/subscribe/">{% blocktrans %}Get updates{% endblocktrans %}</a>
                   {% endif %}
                   
                 </td>
                 <td class="need_detail">
                   <div class="fb_needs">
                     {% if location.needs == "Nothing" %}
-                      Nothing right now, thanks
+                      {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
                     {% elif location.needs == "Unknown" %}
-                      Sorry. We don't know what's needed here, please contact the food bank
+                      {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
                     {% elif location.needs == "Facebook" %}
-                      Check the food bank's Facebook page for what they need
+                      {% blocktrans %}Check the food bank's Facebook page for what they need{% endblocktrans %}
                     {% else %}
                       {{ location.needs|linebreaks }}
                     {% endif %}
@@ -117,12 +118,12 @@
       <td>
         <a href="#" class="foodbank" target="_top"></a>
         <div class="parent_org"><span></span> <a href="#"></a></div>
-        <div class="distance"><span></span>mi away</div>
+        <div class="distance"><span></span>mi {% blocktrans %}away{% endblocktrans %}</div>
         <div class="links">
-          <a class="phone" href="" title="Call the food bank"><img src="/static/img/phone.svg" alt="Phone"></a>
-          <a class="info" href="" title="More information"><img src="/static/img/info.svg" alt="Information"></a>
+          <a class="phone" href="" title="{% blocktrans %}Phone{% endblocktrans %}"><img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}"></a>
+          <a class="info" href="" title="{% blocktrans %}Information{% endblocktrans %}"><img src="/static/img/info.svg" alt="{% blocktrans %}Information{% endblocktrans %}"></a>
         </div>
-        <a href="#" class="subscribe button is-link is-small" target="_top">Get Updates</a>
+        <a href="#" class="subscribe button is-link is-small" target="_top">{% blocktrans %}Get updates{% endblocktrans %}</a>
       </td>
       <td class="need_detail">
         <div class="fb_needs">

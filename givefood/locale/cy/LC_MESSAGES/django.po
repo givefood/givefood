@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-21 15:24+0000\n"
+"POT-Creation-Date: 2024-09-25 19:11+0000\n"
 "PO-Revision-Date: 2024-09-19 18:04+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: PO File Editor https://pofile.net/free-po-editor\n"
 
-#: givefood/settings/default.py:151 givefood/templates/public/index.html:52
-#: givefood/templates/public/index.html:167
+#: givefood/settings/default.py:150 givefood/templates/public/index.html:56
+#: givefood/templates/public/index.html:177
 #: givefood/templates/public/page.html:30
 msgid "English"
 msgstr "Saesneg"
 
-#: givefood/settings/default.py:152
+#: givefood/settings/default.py:151
 msgid "Welsh"
 msgstr "Cymraeg"
 
 #: givefood/templates/public/about_us.html:5
 #: givefood/templates/public/about_us.html:21
-#: givefood/templates/public/index.html:55
+#: givefood/templates/public/index.html:59
 #: givefood/templates/public/page.html:36
 msgid "About us"
 msgstr "Amdanom ni"
@@ -49,7 +49,7 @@ msgstr ""
 
 #: givefood/templates/public/ar/index.html:5
 #: givefood/templates/public/ar/index.html:22
-#: givefood/templates/public/index.html:168
+#: givefood/templates/public/index.html:178
 #: givefood/templates/public/page.html:31
 msgid "Annual reports"
 msgstr "Adroddiadau blynyddol"
@@ -87,7 +87,7 @@ msgstr "Dosbarthiadau cychwynnol, Nadolig"
 
 #: givefood/templates/public/donate.html:5
 #: givefood/templates/public/donate.html:21
-#: givefood/templates/public/index.html:54
+#: givefood/templates/public/index.html:58
 #: givefood/templates/public/page.html:35
 msgid "Donate"
 msgstr "Rhoddwch"
@@ -145,6 +145,10 @@ msgstr ""
 "effeithiol i fanciau bwyd sy’n cyfateb i’ch nodau elusennol. Gellir darparu "
 "adroddiadau amser real ac olrhain sut y defnyddir eich rhodd hefyd."
 
+#: givefood/templates/public/includes/debugcomment.html:3
+msgid "Hello"
+msgstr "Helo"
+
 #: givefood/templates/public/index.html:9
 #, fuzzy
 #| msgid ""
@@ -158,7 +162,7 @@ msgstr ""
 "lleol a strwythurol ac yna’n darparu offer i helpu i’w liniaru."
 
 #: givefood/templates/public/index.html:14
-#: givefood/templates/public/index.html:36
+#: givefood/templates/public/index.html:40
 msgid ""
 "We're a UK charity that uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
@@ -166,51 +170,51 @@ msgstr ""
 "Rydym yn elusen yn y DU sy'n defnyddio data i amlygu ansicrwydd bwyd lleol a "
 "strwythurol ac yna'n darparu offer i helpu i'w liniaru."
 
-#: givefood/templates/public/index.html:39
+#: givefood/templates/public/index.html:43
 msgid "Find out if there is a"
 msgstr "Darganfyddwch a oes a"
 
-#: givefood/templates/public/index.html:39
+#: givefood/templates/public/index.html:43
 msgid "food bank nearby"
 msgstr "banc bwyd gerllaw"
 
-#: givefood/templates/public/index.html:39
+#: givefood/templates/public/index.html:43
 msgid "that you can help"
 msgstr "y gallwch chi helpu"
 
-#: givefood/templates/public/index.html:40
+#: givefood/templates/public/index.html:44
 msgid "Use my location"
 msgstr "Defnyddiwch fy lleoliad"
 
-#: givefood/templates/public/index.html:42
+#: givefood/templates/public/index.html:46
 msgid "Postcode or town"
 msgstr "Cod post neu dref"
 
-#: givefood/templates/public/index.html:43
+#: givefood/templates/public/index.html:47
 msgid "e.g. EX4 6PX or Sheffield"
 msgstr "e.e. LL11 2AH neu Aberystwyth"
 
-#: givefood/templates/public/index.html:45
+#: givefood/templates/public/index.html:49
 msgid "Go"
 msgstr "Ewch"
 
-#: givefood/templates/public/index.html:52
+#: givefood/templates/public/index.html:56
 msgid "Write to your MP"
 msgstr "Ysgrifennwch at eich AS"
 
-#: givefood/templates/public/index.html:71
+#: givefood/templates/public/index.html:81
 msgid "We've worked with"
 msgstr "Rydyn ni wedi gweithio gyda"
 
-#: givefood/templates/public/index.html:91
+#: givefood/templates/public/index.html:101
 msgid "How we can help"
 msgstr "Sut gallwn ni helpu"
 
-#: givefood/templates/public/index.html:97
+#: givefood/templates/public/index.html:107
 msgid "Public"
 msgstr "Cyhoeddus"
 
-#: givefood/templates/public/index.html:98
+#: givefood/templates/public/index.html:108
 msgid ""
 "Use our tool to find your local food banks, then donate, volunteer or take "
 "political action."
@@ -218,16 +222,16 @@ msgstr ""
 "Defnyddiwch ein hofferyn i ddod o hyd i'ch banciau bwyd lleol, yna cyfrannu, "
 "gwirfoddoli neu gymryd camau gwleidyddol."
 
-#: givefood/templates/public/index.html:99
+#: givefood/templates/public/index.html:109
 msgid "Find out how to help"
 msgstr "Darganfyddwch a oes a"
 
-#: givefood/templates/public/index.html:102
-#: givefood/templates/public/index.html:126
+#: givefood/templates/public/index.html:112
+#: givefood/templates/public/index.html:136
 msgid "Food banks"
 msgstr "Banc bwyd"
 
-#: givefood/templates/public/index.html:103
+#: givefood/templates/public/index.html:113
 msgid ""
 "Register a food bank to be included in our database and allow users to find "
 "you and what you need."
@@ -235,19 +239,19 @@ msgstr ""
 "Cofrestrwch fanc bwyd i'w gynnwys yn ein cronfa ddata a chaniatáu i "
 "ddefnyddwyr ddod o hyd i chi a'r hyn sydd ei angen arnoch."
 
-#: givefood/templates/public/index.html:104
-#: givefood/templates/public/index.html:165
+#: givefood/templates/public/index.html:114
+#: givefood/templates/public/index.html:175
 #: givefood/templates/public/page.html:28
 #: givefood/templates/public/register_foodbank.html:5
 #: givefood/templates/public/register_foodbank.html:17
 msgid "Register a food bank"
 msgstr "Cofrestru banc bwyd"
 
-#: givefood/templates/public/index.html:107
+#: givefood/templates/public/index.html:117
 msgid "Media"
 msgstr "Cyfryngau"
 
-#: givefood/templates/public/index.html:108
+#: givefood/templates/public/index.html:118
 msgid ""
 "Data journalists can use our data for stories around food poverty or get in "
 "touch."
@@ -255,16 +259,16 @@ msgstr ""
 "Gall newyddiadurwyr data ddefnyddio ein data ar gyfer straeon am dlodi bwyd "
 "neu gysylltu â ni."
 
-#: givefood/templates/public/index.html:109
-#: givefood/templates/public/index.html:114
+#: givefood/templates/public/index.html:119
+#: givefood/templates/public/index.html:124
 msgid "Use our API"
 msgstr "Defnyddiwch ein API"
 
-#: givefood/templates/public/index.html:112
+#: givefood/templates/public/index.html:122
 msgid "Researchers & students"
 msgstr "Ymchwilwyr a myfyrwyr"
 
-#: givefood/templates/public/index.html:113
+#: givefood/templates/public/index.html:123
 msgid ""
 "We can provide our data in bulk, plus advice on how to interpret it, for "
 "academic or governmental research. Have a look at our API or email us."
@@ -273,41 +277,41 @@ msgstr ""
 "ar gyfer ymchwil academaidd neu lywodraethol. Edrychwch ar ein API neu e-"
 "bostiwch ni."
 
-#: givefood/templates/public/index.html:120
+#: givefood/templates/public/index.html:130
 msgid "Statistics"
 msgstr "Ystadegau"
 
-#: givefood/templates/public/index.html:130
+#: givefood/templates/public/index.html:140
 msgid "Donation points"
 msgstr "Pwyntiau rhoi"
 
-#: givefood/templates/public/index.html:134
+#: givefood/templates/public/index.html:144
 msgid "Items requested"
 msgstr "Eitemau y gofynnwyd amdanynt"
 
-#: givefood/templates/public/index.html:138
+#: givefood/templates/public/index.html:148
 msgid "Meals delivered"
 msgstr "Prydau wedi'u dosbarthu"
 
-#: givefood/templates/public/index.html:142
+#: givefood/templates/public/index.html:152
 #: givefood/templates/public/page.html:40
 msgid "Last updated"
 msgstr "Diweddarwyd diwethaf"
 
-#: givefood/templates/public/index.html:154
+#: givefood/templates/public/index.html:164
 msgid "Read our"
 msgstr "Darllenwch ein"
 
-#: givefood/templates/public/index.html:154
+#: givefood/templates/public/index.html:164
 msgid "annual report"
 msgstr "adroddiad blynyddol"
 
-#: givefood/templates/public/index.html:166
+#: givefood/templates/public/index.html:176
 #: givefood/templates/public/page.html:29
 msgid "Dashboards"
 msgstr "Dangosfyrddau"
 
-#: givefood/templates/public/index.html:172
+#: givefood/templates/public/index.html:182
 msgid "Email"
 msgstr "Ebost"
 
@@ -327,14 +331,14 @@ msgstr "ICO Cofrestru Diogelu Data"
 msgid "Privacy policy"
 msgstr "Polisi preifatrwydd"
 
-#: givefood/views.py:234
+#: givefood/views.py:231
 msgid "minutes"
 msgstr "munudau"
 
-#: givefood/views.py:235
+#: givefood/views.py:232
 msgid "Under a minute ago"
 msgstr "O dan funud yn ôl"
 
-#: givefood/views.py:237
+#: givefood/views.py:234
 msgid "ago"
 msgstr "yn ôl"

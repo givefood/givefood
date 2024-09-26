@@ -10,25 +10,36 @@
 			<loc>{{ domain }}{% url 'wfbn:foodbank' foodbank.slug %}</loc>
 			<changefreq>{{ foodbank.changefreq }}</changefreq>
 		</url>
+		<url>
+			<loc>{{ domain }}/cy{% url 'wfbn:foodbank' foodbank.slug %}</loc>
+			<changefreq>{{ foodbank.changefreq }}</changefreq>
+		</url>
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_nearby' foodbank.slug %}</loc></url>
+		<url><loc>{{ domain }}/cy{% url 'wfbn:foodbank_nearby' foodbank.slug %}</loc></url>
 		{% if foodbank.no_locations != 0 %}
 			<url><loc>{{ domain }}{% url 'wfbn:foodbank_locations' foodbank.slug %}</loc></url>
+			<url><loc>{{ domain }}/cy{% url 'wfbn:foodbank_locations' foodbank.slug %}</loc></url>
 		{% endif %}
 		{% if foodbank.no_donation_points != 0 %}
 			<url><loc>{{ domain }}{% url 'wfbn:foodbank_donationpoints' foodbank.slug %}</loc></url>
+			<url><loc>{{ domain }}/cy{% url 'wfbn:foodbank_donationpoints' foodbank.slug %}</loc></url>
 		{% endif %}
 		{% if foodbank.rss_url %}
 			<url><loc>{{ domain }}{% url 'wfbn:foodbank_news' foodbank.slug %}</loc></url>
+			<url><loc>{{ domain }}/cy{% url 'wfbn:foodbank_news' foodbank.slug %}</loc></url>
 		{% endif %}
 		{% if foodbank.facebook_page or foodbank.twitter_handle %}
 			<url><loc>{{ domain }}{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}</loc></url>
+			<url><loc>{{ domain }}/cy{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}</loc></url>
 		{% endif %}
 	{% endfor %}
 	{% for location in locations %}
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}</loc></url>
+		<url><loc>{{ domain }}/cy{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}</loc></url>
 	{% endfor %}
 	{% for donationpoint in donationpoints %}
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_donationpoint' donationpoint.foodbank_slug donationpoint.slug %}</loc></url>
+		<url><loc>{{ domain }}/cy{% url 'wfbn:foodbank_donationpoint' donationpoint.foodbank_slug donationpoint.slug %}</loc></url>
 	{% endfor %}
 	{% for constituency in constituencies %}
 		<url><loc>{{ domain }}{% url 'wfbn:constituency' constituency.slug %}</loc></url>
