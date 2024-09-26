@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-25 19:11+0000\n"
+"POT-Creation-Date: 2024-09-26 07:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,8 +83,8 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:75
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:76
 #: gfwfbn/templates/wfbn/foodbank/location_withneed.html:74
-msgid "They don't need anymore"
-msgstr "Nid oes angen mwyach"
+msgid "They don't need any more"
+msgstr "Nid oes angen mwy arnynt"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:80
 msgid "Opening hours"
@@ -164,6 +164,11 @@ msgstr "Dim newid"
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
 msgid "Charity Registration:"
 msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:7
+#: gfwfbn/templates/wfbn/index.html:76
+msgid "Part of"
+msgstr "Rhan o"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:12
 msgid "is a registered charity in England &amp; Wales"
@@ -245,8 +250,6 @@ msgid "Nearby"
 msgstr "Gerllaw"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:3
-#, fuzzy
-#| msgid "Get any email when new items are needed"
 msgid "Get an email when items are needed."
 msgstr "Cael unrhyw e-bost pan fydd angen eitemau newydd"
 
@@ -374,10 +377,6 @@ msgstr "Wedi'i ddiweddaru'n ddiweddar"
 #: gfwfbn/templates/wfbn/index.html:58
 msgid "Most viewed this week"
 msgstr "Edrychwyd arno fwyaf yr wythnos hon"
-
-#: gfwfbn/templates/wfbn/index.html:76
-msgid "Part of"
-msgstr "Rhan o"
 
 #: gfwfbn/templates/wfbn/index.html:83 gfwfbn/templates/wfbn/index.html:124
 msgid "Information"

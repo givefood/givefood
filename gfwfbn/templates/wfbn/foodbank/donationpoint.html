@@ -72,7 +72,7 @@
                     {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
                 </p>
                 {% if foodbank.latest_need.excess_change_text %}
-                  <p>{% blocktrans %}They don't need anymore{% endblocktrans %} {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+                  <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
                 {% endif %}
             {% endif %}
 
