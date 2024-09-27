@@ -10,7 +10,7 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
-from django.urls import reverse
+from django.urls import reverse, translate_url
 from requests import PreparedRequest
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES
@@ -454,11 +454,11 @@ class Foodbank(models.Model):
         super(Foodbank, self).save(*args, **kwargs)
 
         if do_decache:
-            urls = [
+            page_urls = [
                 reverse("wfbn:index"),
                 reverse("wfbn:rss"),
                 reverse("wfbn:geojson"),
-                reverse("sitemap"),
+                
                 reverse("wfbn:foodbank", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_history", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_rss", kwargs={"slug":self.slug}),
@@ -470,6 +470,19 @@ class Foodbank(models.Model):
                 reverse("wfbn:foodbank_news", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_subscribe", kwargs={"slug":self.slug}),
                 reverse("api_foodbanks"),
+            ]
+
+            for location in self.locations():
+                page_urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
+            for donationpoint in self.donation_points():
+                page_urls.append(reverse("wfbn:foodbank_donationpoint", kwargs={"slug":self.slug, "dpslug":donationpoint.slug}))
+
+            translated_urls = []
+            for url in page_urls:
+                translated_urls.append(translate_url(url, "cy"))
+
+            api_urls = [
+                reverse("sitemap"),
                 "%s?format=csv" % (reverse("api_foodbanks")),
                 reverse("api2:foodbanks"),
                 "%s?format=xml" % (reverse("api2:foodbanks")),
@@ -491,10 +504,8 @@ class Foodbank(models.Model):
                 "%s?format=yaml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
                 "%s?format=geojson" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
             ]
-            for location in self.locations():
-                urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
-            for donationpoint in self.donation_points():
-                urls.append(reverse("wfbn:foodbank_donationpoint", kwargs={"slug":self.slug, "dpslug":donationpoint.slug}))
+
+            urls = page_urls + translated_urls + api_urls
             decache(urls)
 
 
