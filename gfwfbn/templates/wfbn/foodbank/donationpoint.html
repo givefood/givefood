@@ -46,7 +46,7 @@
             <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
             <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
-            <li><a href="{% url 'wfbn:foodbank_donationpoints' foodbank.slug %}">Donation Points</a></li>
+            <li><a href="{% url 'wfbn:foodbank_donationpoints' foodbank.slug %}">{% blocktrans %}Donation points{% endblocktrans %}</a></li>
             <li class="is-active"><a href="#" aria-current="page">{{ donationpoint }}</a></li>
         </ul>
       </nav>
