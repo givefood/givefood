@@ -96,17 +96,15 @@ msgstr ""
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:96
 msgid "Only accepts in-store purchases as donations"
-msgstr ""
+msgstr "Dim ond fel rhoddion y mae'n derbyn pryniannau yn y siop"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:97
-msgid ""
-"Although, sometimes you can add items marked as not from the store. Best to "
-"check."
-msgstr ""
+msgid "Although, sometimes you can add items marked as not from the store. Best to check."
+msgstr "Er, weithiau gallwch ychwanegu eitemau sydd wedi'u nodi fel rhai nad ydynt o'r siop. Gorau i wirio."
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:102
 msgid "Wheelchair accessible"
-msgstr ""
+msgstr "Hygyrch i gadeiriau olwyn"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:118
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:90
