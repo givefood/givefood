@@ -1,11 +1,14 @@
 import os, sys
-from django.urls import resolve
+from django.urls import resolve, translate_url
 
 from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN
 
 def context(request):
 
-    canonical_path = "%s%s" % (SITE_DOMAIN, request.path)
+    language = request.LANGUAGE_CODE
+    path = request.path
+    translated_path = translate_url(path, language)
+    canonical_path = "%s%s" % (SITE_DOMAIN, translated_path)
     instance_id = os.environ.get('GAE_INSTANCE')
     version = os.environ.get('GAE_VERSION')
     try:
