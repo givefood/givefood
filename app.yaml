@@ -26,10 +26,6 @@ handlers:
   static_files: givefood/static/img/favicon.ico
   upload: givefood/static/img/favicon.ico
 
-- url: /needs/manifest.json
-  static_files: givefood/static/wfbn_manifest.json
-  upload: givefood/static/wfbn_manifest.json
-
 - url: /robots.txt
   static_files: givefood/static/root/robots.txt
   upload: givefood/static/root/robots.txt

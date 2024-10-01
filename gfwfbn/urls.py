@@ -12,6 +12,7 @@ urlpatterns = [
     path("getlocation/", get_location, name="get_location"),
     re_path("updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),
     path("geo.json", geojson, name="geojson"),
+    path("manifest.json", manifest, name="manifest"),
 
     # Foodbank
     path("at/<slug:slug>/", foodbank, name="foodbank"),
