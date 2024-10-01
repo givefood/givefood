@@ -38,7 +38,7 @@
         <tbody>
           {% for supermarket in supermarkets %}
               <tr>
-                  <td>{{ supermarket.company }}</td>
+                  <td><img src="/static/img/co/{{ supermarket.company|slugify }}.png" alt="{{ supermarket.company }}" style="width:16px;vertical-align:middle; display:inline; margin-right:3px;"> {{ supermarket.company }}</td>
                   <td>{{ supermarket.count }}</td>
               </tr>
           {% endfor %}
