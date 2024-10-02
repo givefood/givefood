@@ -48,7 +48,12 @@
               <li><a href="{% url 'register_foodbank' %}">{% blocktrans %}Register a food bank{% endblocktrans %}</a></li>
               <li><a href="{% url 'about_us' %}">{% blocktrans %}About us{% endblocktrans %}</a></li>
           </ul>
-          <br>
+          {% if LANGUAGE_CODE == 'en' %}
+            <a href="/cy/needs/" lang="cy" class="language"><span>🏴󠁧󠁢󠁷󠁬󠁳󠁿</span> Cymraeg</a>
+          {% else %}
+            <a href="/needs/" lang="en" class="language"><span>🇬🇧</span> English</a>
+          {% endif %}
+          <br><br>
           <h2>{% blocktrans %}Recently updated{% endblocktrans %}</h2>
           <ul class="recently-updated">
               {% for foodbank in recently_updated %}
