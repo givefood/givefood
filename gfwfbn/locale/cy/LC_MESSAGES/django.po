@@ -354,7 +354,7 @@ msgstr ""
 
 #: gfwfbn/templates/wfbn/index.html:42
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
-msgstr ""
+msgstr "Mae'n ddrwg gennym, ni allem ddefnyddio'r lleoliad hwnnw. A yw o fewn y Deyrnas Unedig?"
 
 #: gfwfbn/templates/wfbn/index.html:47
 msgid "Browse by parliamentary constituency"
