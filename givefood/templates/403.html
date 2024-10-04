@@ -1,0 +1,40 @@
+{% extends "public/page.html" %}
+
+{% block title %}403 - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column is-4">
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+        </div>
+    
+
+      </div>
+
+      <h1>403 - Forbidden</h1>
+
+      <div class="columns">
+
+          <div class="column">
+
+            <p>Sorry, something has gone wrong there and we can't serve that page. This error has been logged and we'll look into it.</p>
+
+            <ul>
+                <li><a href="/">Homepage</a></li>
+                <li><a href="/needs/">Find what food banks need</a></li>
+                <li>Email us at <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></li>
+            </ul>
+           
+          </div>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
