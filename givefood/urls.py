@@ -19,7 +19,7 @@ for old_slug, new_slug in OLD_FOODBANK_SLUGS.items():
     for subpage in FOODBANK_SUBPAGES:
         urlpatterns.append(re_path(r'^needs/at/%s/%s/$' % (old_slug, subpage), RedirectView.as_view(url='/needs/at/%s/%s/' % (new_slug, subpage))))
 
-urlpatterns = i18n_patterns(
+urlpatterns += i18n_patterns(
 
     # Public
     path("", givefood.views.index, name="index"),
