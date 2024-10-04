@@ -744,6 +744,9 @@ def updates(request, slug, action):
 
     if action == "unsubscribe":
 
+        if not key:
+            return HttpResponseForbidden()
+
         sub = get_object_or_404(FoodbankSubscriber, unsub_key=key)
         sub.delete()
 
