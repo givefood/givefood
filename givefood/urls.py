@@ -13,12 +13,22 @@ from givefood.const.general import RICK_ASTLEY, OLD_FOODBANK_SLUGS, FOODBANK_SUB
 
 urlpatterns = []
 
-# Old Food Bank Redirects
+# Old food bank slug redirects
+redirectors = {}
 for old_slug, new_slug in OLD_FOODBANK_SLUGS.items():
-    urlpatterns.append(url(r'^needs/at/%s/$' % (old_slug), RedirectView.as_view(url='/needs/at/%s/' % new_slug)))
+    redirectors[("needs/at/%s/" % old_slug)] = ("/needs/at/%s/" % new_slug)
     for subpage in FOODBANK_SUBPAGES:
-        urlpatterns.append(re_path(r'^needs/at/%s/%s/$' % (old_slug, subpage), RedirectView.as_view(url='/needs/at/%s/%s/' % (new_slug, subpage))))
+        redirectors["needs/at/%s/%s/" % (old_slug, subpage)] = "/needs/at/%s/%s/" % (new_slug, subpage)
+for from_url, to_url in redirectors.copy().items():
+    redirectors["cy/%s" % (from_url)] = "/cy%s" % (to_url)
 
+redirect_patterns = []
+for from_url, to_url in redirectors.items():
+    redirect_patterns.append(path(from_url, RedirectView.as_view(url=to_url)))
+
+urlpatterns += redirect_patterns
+
+# Translated pages
 urlpatterns += i18n_patterns(
 
     # Public
@@ -32,14 +42,13 @@ urlpatterns += i18n_patterns(
     path("annual-reports/", givefood.views.annual_report_index, name="annual_report_index"),
     re_path(r"^(?P<year>(2019|2020|2021|2022|2023))/$", givefood.views.annual_report, name="annual_report"),
 
-
     # WFBN
     path("needs/", include('gfwfbn.urls', namespace="wfbn")),
 
     prefix_default_language=False,
 )
     
-
+# Untranslated pages
 urlpatterns += [
     re_path(r'^_ah/', include('djangae.urls')),
 
