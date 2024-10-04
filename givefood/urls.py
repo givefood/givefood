@@ -23,12 +23,15 @@ urlpatterns = i18n_patterns(
 
     # Public
     path("", givefood.views.index, name="index"),
-    re_path(r"^frag/(?P<frag>[-\w]+)/$", givefood.views.frag, name="frag"),
-    re_path(r"^annual-reports/$", givefood.views.annual_report_index, name="annual_report_index"),
-    re_path(r"^(?P<year>(2019|2020|2021|2022|2023))/$", givefood.views.annual_report, name="annual_report"),
-    re_path(r"^register-foodbank/$", givefood.views.register_foodbank, name="register_foodbank"),
+    path("register-foodbank/", givefood.views.register_foodbank, name="register_foodbank"),
     path("about-us/", givefood.views.about_us, name="about_us"),
     path("donate/", givefood.views.donate, name="donate"),
+    path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
+
+    # Annual Reports
+    path("annual-reports/", givefood.views.annual_report_index, name="annual_report_index"),
+    re_path(r"^(?P<year>(2019|2020|2021|2022|2023))/$", givefood.views.annual_report, name="annual_report"),
+
 
     # WFBN
     path("needs/", include('gfwfbn.urls', namespace="wfbn")),
