@@ -4,7 +4,8 @@
     {% if not foodbank.name == "Salvation Army" %}
         <p>
             {% blocktrans %}Charity Registration:{% endblocktrans %} <a href="{{ foodbank.charity_register_url }}" id="charity_link">{{ foodbank.charity_number }}</a><br>
-            {% blocktrans %}Part of{% endblocktrans %} {% if not foodbank.network == "Independent" %}
+            {% if not foodbank.network == "Independent" %}
+                {% blocktrans %}Part of{% endblocktrans %}
                 <a href="{{ foodbank.network_url }}?ref=givefood.org.uk">{{ foodbank.network }}</a>{% endif %}{% if foodbank.foodbank_group %}, and the {{ foodbank.foodbank_group_name }} group
             {% endif %}
         </p>
