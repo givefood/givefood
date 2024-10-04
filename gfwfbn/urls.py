@@ -24,7 +24,7 @@ urlpatterns = [
     path("at/<slug:slug>/history/", foodbank_history, name="foodbank_history"),
     path("at/<slug:slug>/subscribe/", foodbank_subscribe, name="foodbank_subscribe"),
     path("at/<slug:slug>/subscribe/sample/", foodbank_subscribe_sample, name="foodbank_subscribe_sample"),
-    re_path(r"^at/(?P<slug>[-\w]+)/subscribe/updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),
+    re_path(r"^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),
     path("at/<slug:slug>/hit/", foodbank_hit, name="foodbank_hit"),
 
     # Edit
