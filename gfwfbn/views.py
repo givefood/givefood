@@ -754,7 +754,7 @@ def updates(request, slug, action):
 
 
     template_vars = {
-        "section":"details",
+        "section":"subscribe",
         "foodbank":foodbank,
         "message":message,
     }
