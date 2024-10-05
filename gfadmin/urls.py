@@ -81,7 +81,6 @@ urlpatterns = (
 
     url(r'^finder/$', finder, name="finder"),
     url(r'^finder/check/$', finder_check, name="finder_check"),
-    url(r'^finder/trusselltrust/$', finder_trusselltrust, name="finder_trusselltrust"),
 
     url(r'^politics/$', politics, name="politics"),
     url(r'^politics/csv/$', politics_csv, name="politics_csv"),

@@ -1352,53 +1352,6 @@ def finder(request):
     return render(request, "admin/finder.html", template_vars)
 
 
-def finder_trusselltrust(request):
-
-    url = "https://www.trusselltrust.org/get-help/find-a-foodbank/foodbank-search/?foodbank_s=all&callback=REMOVEME"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
-    }
-    tt_request = requests.get(url, headers=headers)
-    content = tt_request.text
-    content = content.replace("REMOVEME(","")
-    content = content.replace(");","")
-    content = json.loads(content)
-
-    their_urls = []
-    for foodbank in content:
-        url = foodbank["foodbank_information"]["website"]
-        if url.endswith("/"):
-            url = url[:-1]
-        url = url.replace("http://","https://")
-        their_urls.append(url)
-
-    our_urls = []
-    for foodbank in Foodbank.objects.filter(network = "Trussell Trust", is_closed = False):
-        url = foodbank.url
-        if url.endswith("/"):
-            url = url[:-1]
-        our_urls.append(url)
-
-    missing_urls = []
-    for url in their_urls:
-        if url not in our_urls:
-            missing_urls.append(url)
-
-    extra_urls = []
-    for url in our_urls:
-        if url not in their_urls:
-            extra_urls.append(url)
-
-    template_vars = {
-        "section": "finder",
-        "missing_urls": missing_urls,
-        "extra_urls":extra_urls,
-    }
-
-    return render(request, "admin/finder_trusselltrust.html", template_vars)
-
-
-
 @require_POST
 def finder_check(request):
 
