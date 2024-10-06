@@ -84,7 +84,7 @@
             <div id="map" class="sidemap"></div>
             {% include "wfbn/foodbank/includes/maplegend.html" %}
 
-            {% if foodbank.place_has_photo %}
+            {% if foodbank.place_has_photo and not foodbank.address_is_administrative %}
               <div>
                 <img src="{% url 'wfbn:foodbank_photo' foodbank.slug %}" alt="{{ foodbank.name }}" loading="lazy" class="placephoto">
               </div>
