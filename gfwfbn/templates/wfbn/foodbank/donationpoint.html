@@ -109,7 +109,9 @@
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
             {% if donationpoint.place_has_photo %}
-              <img src="{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}" alt="{{ donationpoint.name }}">
+              <div>
+                <img src="{% url 'wfbn:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}" alt="{{ donationpoint.name }}" loading="lazy" class="placephoto">
+              </div>
             {% endif %}
 
             <div id="map" class="sidemap"></div>

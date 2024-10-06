@@ -36,6 +36,7 @@ class Foodbank(models.Model):
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
     plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
     plus_code_global = models.CharField(max_length=200, verbose_name="Plus Code (Global)", null=True, blank=True, editable=False)
+    place_has_photo = models.BooleanField(default=False, editable=False)
 
     delivery_address = models.TextField(null=True, blank=True)
     delivery_latt_long = models.CharField(max_length=50, verbose_name="Delivery latitude, longitude", editable=False, null=True, blank=True)
@@ -407,6 +408,12 @@ class Foodbank(models.Model):
             self.delivery_latt_long = geocode(self.delivery_address)
         else:
             self.delivery_latt_long = None
+
+        # Photo?
+        if self.place_id:
+            self.place_has_photo = place_has_photo(self.place_id)
+        else:
+            self.place_has_photo = False
 
         if do_geoupdate:
             regions = admin_regions_from_postcode(self.postcode)

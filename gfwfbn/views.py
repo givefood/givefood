@@ -381,6 +381,23 @@ def foodbank_map(request, slug):
 
 
 @cache_page(SECONDS_IN_WEEK)
+def foodbank_photo(request, slug):
+    """
+    Food bank photo JPEG
+    """
+
+    size = request.GET.get("size", 1080)
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    if not foodbank.place_has_photo:
+        return HttpResponseNotFound()
+    
+    photo = photo_from_place_id(foodbank.place_id, size)
+    
+    return HttpResponse(photo, content_type='image/jpeg')
+
+
+@cache_page(SECONDS_IN_WEEK)
 def foodbank_locations(request,slug):
     """
     Food bank locations index

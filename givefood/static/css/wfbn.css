@@ -99,6 +99,10 @@
 .infowindow h3, .infowindow p, .infowindow address {
     margin-bottom:10px;
 }
+.placephoto {
+    margin-bottom:10px;
+    max-height:400px;
+}
 address {
     font-style:normal;
 }

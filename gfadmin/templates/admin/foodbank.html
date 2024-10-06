@@ -232,6 +232,10 @@
                 <dt>Just administrative location</dt>
                 <dd>✅ Yes</dd>
               {% endif %}
+              {% if foodbank.place_has_photo %}
+                <dt>Place ID has photo</dt>
+                <dd>✅ Yes</dd>
+              {% endif %}
             </dl>
           </td>
           <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light">Edit</a></td>

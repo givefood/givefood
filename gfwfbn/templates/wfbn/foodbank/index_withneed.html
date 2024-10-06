@@ -88,6 +88,12 @@
             <div id="map" class="sidemap"></div>
             {% include "wfbn/foodbank/includes/maplegend.html" %}
 
+            {% if foodbank.place_has_photo %}
+              <div>
+                <img src="{% url 'wfbn:foodbank_photo' foodbank.slug %}" alt="{{ foodbank.name }}" loading="lazy" class="placephoto">
+              </div>
+            {% endif %}
+
             {% if foodbank.address_is_administrative%}
               <h3>{% blocktrans %}Administrative{% endblocktrans %}</h3>
             {% else %}
