@@ -24,7 +24,7 @@ There is a useful list of abbreviations used in [abbreviations.md](abbreviations
 
 We are a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.
 
-We maintain the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover around 2800 locations.
+We maintain the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover nearly 3000 locations.
 
 Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, food manufacturers, hundreds of national & local news websites, apps & the Trussell Trust.
 
