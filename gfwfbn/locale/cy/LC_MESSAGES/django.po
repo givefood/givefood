@@ -160,8 +160,8 @@ msgid "No change"
 msgstr "Dim newid"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
-msgid "Charity Registration:"
-msgstr ""
+msgid "Charity Registration"
+msgstr "Cofrestru Elusen"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:7
 #: gfwfbn/templates/wfbn/index.html:76
