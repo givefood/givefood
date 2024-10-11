@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-10 18:00+0000\n"
+"POT-Creation-Date: 2024-10-11 10:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,6 +62,31 @@ msgstr "Hafan"
 msgid "What Food Banks Need"
 msgstr "Beth sydd ei angen ar Fanciau Bwyd"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:34
+#: gfwfbn/templates/wfbn/constituency/index.html:38
+msgid "Browse by parliamentary constituency"
+msgstr "Pori yn ôl etholaeth seneddol"
+
+msgid "Parliamentary Constituencies"
+msgstr "Etholaethau Seneddol"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:44
+msgid "Find which food banks operate in your parliamentary constituency, then donate or take action."
+msgstr "Darganfyddwch pa fanciau bwyd sy'n gweithredu yn eich etholaeth seneddol, yna cyfrannwch neu gweithredwch."
+
+#: gfwfbn/templates/wfbn/constituency/index.html:48
+msgid "Sorry, we didn't recognise this postcode. Could you try again?"
+msgstr "Mae'n ddrwg gennym, ni wnaethom adnabod y cod post hwn. Allech chi geisio eto?"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:53
+msgid "Search by postcode"
+msgstr "Chwilio yn ôl cod post"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:54
+#: gfwfbn/templates/wfbn/index.html:39
+msgid "Go"
+msgstr ""
+
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:49
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:24
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:44
@@ -78,6 +103,7 @@ msgstr "Pwyntiau rhoi"
 msgid "This food bank is closed"
 msgstr "Mae'r banc bwyd hwn ar gau"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:68
 msgid "is a donation point for"
 msgstr "yn bwynt rhodd ar gyfer"
 
@@ -356,19 +382,11 @@ msgstr ""
 msgid "e.g. EX4 6PX or Sheffield"
 msgstr ""
 
-#: gfwfbn/templates/wfbn/index.html:39
-msgid "Go"
-msgstr ""
-
 #: gfwfbn/templates/wfbn/index.html:42
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
 msgstr ""
 "Mae'n ddrwg gennym, ni allem ddefnyddio'r lleoliad hwnnw. A yw o fewn y "
 "Deyrnas Unedig?"
-
-#: gfwfbn/templates/wfbn/index.html:47
-msgid "Browse by parliamentary constituency"
-msgstr "Pori yn ôl etholaeth seneddol"
 
 #: gfwfbn/templates/wfbn/index.html:48
 msgid "Register a food bank"
