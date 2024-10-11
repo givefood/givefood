@@ -11,7 +11,7 @@ from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
-from django.views.decorators.http import require_POST, require_http_methods
+from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
 from django.db import IntegrityError, connection
@@ -626,12 +626,12 @@ def need_form(request, id = None):
     return render(request, "admin/form.html", template_vars)
 
 
-@require_http_methods(["DELETE"])
+@require_POST
 def need_delete(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
     need.delete()
-    return HttpResponse("")
+    return redirect("admin:index")
 
 
 @require_POST
