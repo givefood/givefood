@@ -61,7 +61,7 @@ urlpatterns += [
     re_path("proxy/(trusselltrust|ifan)/", givefood.views.proxy, name="proxy"),
 
     # Rickrolling
-    path("wp-login\.php", RedirectView.as_view(url=RICK_ASTLEY)),
+    path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),
 
     # Old URL redirects
     path("what-food-banks-need/", RedirectView.as_view(url='/needs/')),
