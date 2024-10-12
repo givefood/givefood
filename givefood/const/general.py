@@ -198,3 +198,9 @@ QUERYSTRING_RUBBISH = [
     "extcam",
     "utm_content",
 ]
+
+LANGUAGE_FLAGS = {
+    "en": "🇬🇧",
+    "cy": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+    "gd": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+}

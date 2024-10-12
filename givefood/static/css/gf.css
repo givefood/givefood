@@ -72,14 +72,6 @@ p {
 tfoot {
     font-style: italic;
 }
-.language {
-    display:inline-block;
-    margin:10px 0 0 0;
-}
-.language span {
-    vertical-align: middle;
-    font-size:28px;
-}
 #usemylocationbtn {
     margin:0 0 10px 0;
     padding:5px 10px 5px 5px;
@@ -154,6 +146,26 @@ footer {
 }
 .help {
     font-size:14px;
+}
+@media screen and (min-width: 769px) {
+    .langswitcher.is-pulled-right {
+        margin:35px 0 0 0;
+    }
+}
+.langswitcher.is-pulled-right {
+    margin:25px 0 0 0;
+}
+.langswitcher svg {
+    width:10px;
+    height:10px;
+    stroke:rgb(53, 55, 64);
+    stroke-width:1.5;
+    margin-left:3px;
+    rotate: 90deg;
+    margin:4px 0 0 10px;
+}
+.dropdown-item {
+    font-size:inherit;
 }
 
 @page {

@@ -89,6 +89,7 @@ def index(request):
         "gmap_key":gmap_key,
         "logos":logos,
         "stats":stats,
+        "is_home":True,
     }
     return render(request, "public/index.html", template_vars)
 

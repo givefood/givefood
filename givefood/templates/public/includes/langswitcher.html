@@ -1,0 +1,31 @@
+{% if page_translatable %}
+    <div class="langswitcher{% if not is_home %} is-pulled-right{% endif %}">
+        <div class="dropdown is-hoverable{% if not is_home %} is-right{% endif %}">
+            <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="langswitcher">
+                    <span>
+                        {% if LANGUAGE_CODE == 'cy' %}
+                            🏴󠁧󠁢󠁷󠁬󠁳󠁿 Cymraeg
+                        {% endif %}
+                        {% if LANGUAGE_CODE == 'en' %}
+                            🇬🇧 English
+                        {% endif %}
+                        {% if LANGUAGE_CODE == 'gd' %}
+                            🏴󠁧󠁢󠁳󠁣󠁴󠁿 Gàidhlig
+                        {% endif %}
+                    </span>
+                    <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg>
+                </button>
+            </div>
+            <div class="dropdown-menu" id="langswitcher" role="menu">
+                <div class="dropdown-content">
+                    {% for language in languages %}
+                        <a href="{{ language.url }}" class="dropdown-item">
+                            {{ language.flag }} {{ language.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
