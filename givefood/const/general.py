@@ -163,6 +163,7 @@ OLD_FOODBANK_SLUGS = {
     "hollingdean":"hollingdean-fiveways",
     "bay":"the-bay",
     "st-pauls-centre":":st-pauls",
+    "central-southwark-community-hub":"spring-community-hub",
 }
 
 FOODBANK_SUBPAGES = [
