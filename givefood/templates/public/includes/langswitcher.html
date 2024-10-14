@@ -21,7 +21,7 @@
                 <div class="dropdown-content">
                     {% for language in languages %}
                         <a href="{{ language.url }}" class="dropdown-item">
-                            {{ language.flag }} {{ language.name }}
+                            {{ language.flag }} {{ language.name }} {% if language.code != 'en' %}<span class="beta is-size-7">beta</span>{% endif %}
                         </a>
                     {% endfor %}
                 </div>
