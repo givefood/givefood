@@ -5,13 +5,13 @@
                 <button class="button" aria-haspopup="true" aria-controls="langswitcher">
                     <span>
                         {% if LANGUAGE_CODE == 'cy' %}
-                            🏴󠁧󠁢󠁷󠁬󠁳󠁿 Cymraeg
+                            <span class="flag is-size-5">🏴󠁧󠁢󠁷󠁬󠁳󠁿</span> Cymraeg
                         {% endif %}
                         {% if LANGUAGE_CODE == 'en' %}
-                            🇬🇧 English
+                            <span class="flag is-size-5">🇬🇧</span> English
                         {% endif %}
                         {% if LANGUAGE_CODE == 'gd' %}
-                            🏴󠁧󠁢󠁳󠁣󠁴󠁿 Gàidhlig
+                            <span class="flag is-size-5">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span> Gàidhlig
                         {% endif %}
                     </span>
                     <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg>
@@ -21,7 +21,7 @@
                 <div class="dropdown-content">
                     {% for language in languages %}
                         <a href="{{ language.url }}" class="dropdown-item">
-                            {{ language.flag }} {{ language.name }} {% if language.code != 'en' %}<span class="beta is-size-7">beta</span>{% endif %}
+                            <span class="flag is-size-5">{{ language.flag }}</span> {{ language.name }} {% if language.code != 'en' %}<span class="beta is-size-7">beta</span>{% endif %}
                         </a>
                     {% endfor %}
                 </div>
