@@ -45,6 +45,9 @@ urlpatterns += i18n_patterns(
     # WFBN
     path("needs/", include('gfwfbn.urls', namespace="wfbn")),
 
+    # Sitemaps
+    path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
+
     prefix_default_language=False,
 )
     
@@ -52,7 +55,6 @@ urlpatterns += i18n_patterns(
 urlpatterns += [
     re_path(r'^_ah/', include('djangae.urls')),
 
-    path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
 

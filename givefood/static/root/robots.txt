@@ -10,3 +10,5 @@ Crawl-delay: 1
 
 
 Sitemap: https://www.givefood.org.uk/sitemap.xml
+Sitemap: https://www.givefood.org.uk/cy/sitemap.xml
+Sitemap: https://www.givefood.org.uk/gd/sitemap.xml
