@@ -149,6 +149,7 @@ USE_TZ = False
 LANGUAGES = [
     ("en", "English"),
     ("cy", "Cymraeg"),
+    ("gd", "Gàidhlig"),
 ]
 
 
