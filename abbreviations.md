@@ -23,4 +23,8 @@
   <dd>Use my location</dd>
   <dt>cy</dt>
   <dd>Cymru (Welsh, in Welsh)</dd>
+  <dt>gd</dt>
+  <dd>Gàidhlig (Gaelic, in Gaelic)</dd>
+  <dt>ar</dt>
+  <dd>Annual report</dd>
 </dl>
