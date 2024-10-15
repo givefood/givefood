@@ -271,31 +271,3 @@ def distill_webhook(request):
     new_foodbank_change.save()
 
     return HttpResponse("OK")
-
-
-def proxy(request, item):
-    """
-    Proxy for external data
-    """
-
-    if item == "trusselltrust":
-        url = "https://www.trusselltrust.org/get-help/find-a-foodbank/foodbank-search/?foodbank_s=all&callback=REMOVEME"
-    if item == "ifan":
-        url = "https://www.google.com/maps/d/u/0/kml?mid=15mnlXFpd8-x0j4O6Ck6U90chPn4bkbWz&forcekml=1"
-
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
-    }
-
-    request = requests.get(url, headers=headers)
-    if request.status_code == 200:
-
-        content = request.text
-
-        if item == "trusselltrust":
-            content = content.replace("REMOVEME(","")
-            content = content.replace(");","")
-            content = json.loads(content)
-            content = json.dumps(content, indent=4)
-
-        return HttpResponse(content)

@@ -60,7 +60,6 @@ urlpatterns += [
 
     # KINDA PUBLIC
     path("distill_webhook/", givefood.views.distill_webhook, name="distill_webhook"),
-    re_path("proxy/(trusselltrust|ifan)/", givefood.views.proxy, name="proxy"),
 
     # Rickrolling
     path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),
