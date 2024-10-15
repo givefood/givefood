@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-14 11:04+0000\n"
-"PO-Revision-Date: 2024-10-14 12:04+0100\n"
+"PO-Revision-Date: 2024-10-15 16:16+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: gd\n"
@@ -277,7 +277,7 @@ msgstr "Na meadhanan sòisealta"
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:44
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:48
 msgid "Nearby"
-msgstr "Nearby"
+msgstr "Faisg air làimh"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:3
 msgid "Get an email when items are needed."
