@@ -487,6 +487,7 @@ class Foodbank(models.Model):
             translated_urls = []
             for url in page_urls:
                 translated_urls.append(translate_url(url, "cy"))
+                translated_urls.append(translate_url(url, "gd"))
 
             api_urls = [
                 reverse("sitemap"),
