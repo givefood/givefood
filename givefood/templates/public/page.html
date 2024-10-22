@@ -12,6 +12,8 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
   <link rel="canonical" href="{{ canonical_path }}">
   <script defer data-domain="givefood.org.uk" data-api="/psb/api/event" event-language="{{ LANGUAGE_CODE }}" src="/psb/js/script.outbound-links.pageview-props.js"></script>
+  {% if page_translatable %}{% for language in languages %}
+  <link rel="alternate" hreflang="{{ language.code }}" href="{{ language.url }}">{% endfor %}{% endif %}
   {% block head %}{% endblock %}
   <title>{% block title %}{% endblock %}</title>
 </head>

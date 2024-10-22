@@ -163,6 +163,8 @@ OLD_FOODBANK_SLUGS = {
     "hollingdean":"hollingdean-fiveways",
     "bay":"the-bay",
     "st-pauls-centre":":st-pauls",
+    "central-southwark-community-hub":"spring-community-hub",
+    "clyde-avon-nethan":"larkhall-district",
 }
 
 FOODBANK_SUBPAGES = [
@@ -198,3 +200,9 @@ QUERYSTRING_RUBBISH = [
     "extcam",
     "utm_content",
 ]
+
+LANGUAGE_FLAGS = {
+    "en": "🇬🇧",
+    "cy": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+    "gd": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+}

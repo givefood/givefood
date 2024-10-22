@@ -1,41 +1,40 @@
 {% if needs.all %}
   <table class="table is-fullwidth is-hoverable">
-    <thead>
+    <tr>
+      <th></th>
+      <th>Foodbank</th>
+      <th>When</th>
+      <th></th>
+    </tr>
+    {% for need in needs %}
       <tr>
-        <th></th>
-        <th>Foodbank</th>
-        <th>When</th>
-        <th></th>
+        <td>
+          {{ need.input_method_emoji }}
+        </td>
+        <td>
+          {% if need.foodbank_name %}
+              <a href="{% url 'admin:foodbank' need.foodbank_name_slug %}">
+                {{ need.foodbank_name }}
+              </a>
+          {% else %}
+            Unknown
+          {% endif %}
+        </td>
+        <td>
+          <a href="{% url "admin:need" need.need_id %}">
+            {{ need.created|timesince }} ago
+          </a>
+        </td>
+        <td>
+          {% if not need.published %}
+            <form action="{% url 'admin:need_delete' need.need_id %}" method="post">
+              <button type="submit" class="delete is-small" onclick="return confirm('Are you sure you want to delete {{ need.foodbank_name }} need?')" style="margin-top:3px;"></button>
+              {% csrf_token %}
+            </form>
+          {% endif %}
+        </td>
       </tr>
-    </thead>
-    <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML">
-      {% for need in needs %}
-        <tr>
-          <td>
-            {{ need.input_method_emoji }}
-          </td>
-          <td>
-            {% if need.foodbank_name %}
-                <a href="{% url 'admin:foodbank' need.foodbank_name_slug %}">
-                  {{ need.foodbank_name }}
-                </a>
-            {% else %}
-              Unknown
-            {% endif %}
-          </td>
-          <td>
-            <a href="{% url "admin:need" need.need_id %}">
-              {{ need.created|timesince }} ago
-            </a>
-          </td>
-          <td>
-            {% if not need.published %}
-              <button type="submit" class="delete is-small" style="margin-top:3px;" hx-delete="{% url 'admin:need_delete' need.need_id %}"></button>
-            {% endif %}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
+    {% endfor %}
   </table>
 {% else %}
   <p>No needs</p>

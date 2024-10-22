@@ -5,18 +5,19 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-26 07:54+0000\n"
-"PO-Revision-Date: 2024-09-19 18:04+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: en_US\n"
+"POT-Creation-Date: 2024-10-11 10:40+0000\n"
+"PO-Revision-Date: 2024-10-11 17:09+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: cy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: PO File Editor https://pofile.net/free-po-editor\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n==3 ? "
+"3 : n==6 ? 4 : 5);\n"
+"X-Generator: Poedit 3.5\n"
 
 #: givefood/settings/default.py:150 givefood/templates/public/index.html:56
 #: givefood/templates/public/index.html:177
@@ -36,16 +37,12 @@ msgid "About us"
 msgstr "Amdanom ni"
 
 #: givefood/templates/public/about_us.html:22
-#, fuzzy
-#| msgid ""
-#| "Give Food is a UK charity uses data to highlight local and structural "
-#| "food insecurity then provides tools to help alleviate it."
 msgid ""
 "Give Food is a UK charity that uses data to highlight local and structural "
 "food insecurity, then provides tools to help alleviate it."
 msgstr ""
-"Mae Give Food yn elusen yn y DU sy’n defnyddio data i amlygu ansicrwydd bwyd "
-"lleol a strwythurol ac yna’n darparu offer i helpu i’w liniaru."
+"Elusen yn y DU yw Give Food sy’n defnyddio data i amlygu ansicrwydd bwyd "
+"lleol a strwythurol, ac yna’n darparu offer i helpu i’w liniaru."
 
 #: givefood/templates/public/ar/index.html:5
 #: givefood/templates/public/ar/index.html:22
@@ -72,8 +69,6 @@ msgid "Write to your MP tool, surplus monitoring, data audits"
 msgstr "Ysgrifennwch at eich offeryn AS, monitro gwarged, archwiliadau data"
 
 #: givefood/templates/public/ar/index.html:31
-#, fuzzy
-#| msgid "Data & UX review, dashboards, charity reporting"
 msgid "Data &amp; UX review, dashboards, charity reporting"
 msgstr "Adolygu data ac UX, dangosfyrddau, adroddiadau elusennau"
 
@@ -150,10 +145,6 @@ msgid "Hello"
 msgstr "Helo"
 
 #: givefood/templates/public/index.html:9
-#, fuzzy
-#| msgid ""
-#| "Give Food is a UK charity uses data to highlight local and structural "
-#| "food insecurity then provides tools to help alleviate it."
 msgid ""
 "Give Food a UK charity uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."

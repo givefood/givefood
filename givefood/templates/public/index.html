@@ -14,13 +14,6 @@
   <meta property="og:description" content="{% blocktrans %}We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}">
   <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
   <meta property="og:image:alt" content="Map of UK food banks">
-  {% for language in LANGUAGES %}
-    {% if language.0 == "en" %}
-      <link rel="alternate" hreflang="{{ language.0 }}" href="{{ domain }}/">
-    {% else %}
-      <link rel="alternate" hreflang="{{ language.0 }}" href="{{ domain }}/{{ language.0 }}/">
-    {% endif %}
-  {% endfor %}
 {% endblock %}
 
 {% block body %}
@@ -58,12 +51,8 @@
           <li><a href="{% url 'donate' %}">{% trans 'Donate' %}</a></li>
           <li><a href="{% url 'about_us' %}">{% trans 'About us' %}</a></li>
         </ul>
-
-        {% if LANGUAGE_CODE == 'en' %}
-          <a href="/cy/" lang="cy" class="language"><span>🏴󠁧󠁢󠁷󠁬󠁳󠁿</span> Cymraeg</a>
-        {% else %}
-          <a href="/" lang="en" class="language"><span>🇬🇧</span> English</a>
-        {% endif %}
+        <br>
+        {% include 'public/includes/langswitcher.html' %}
       </nav>
       
     </div>

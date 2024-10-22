@@ -1,0 +1,431 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-14 11:04+0000\n"
+"PO-Revision-Date: 2024-10-15 16:16+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: gd\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 || n==11 ? 0 : n==2 || n==12 ? 1 : "
+"(n>=3 && n<=10) || (n>=13 && n<=19) ? 2 : 3);\n"
+"X-Generator: Poedit 3.5\n"
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:42
+#: gfwfbn/templates/wfbn/constituency/index.html:32
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:46
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:41
+#: gfwfbn/templates/wfbn/foodbank/edit/form.html:39
+#: gfwfbn/templates/wfbn/foodbank/edit/index.html:38
+#: gfwfbn/templates/wfbn/foodbank/edit/thanks.html:38
+#: gfwfbn/templates/wfbn/foodbank/history.html:41
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:48
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:47
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:45
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:44
+#: gfwfbn/templates/wfbn/foodbank/locations.html:41
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:41
+#: gfwfbn/templates/wfbn/foodbank/news.html:41
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:40
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:47
+#: gfwfbn/templates/wfbn/foodbank/updates.html:40
+msgid "Home"
+msgstr "Dachaidh"
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:43
+#: gfwfbn/templates/wfbn/constituency/index.html:33
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:47
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:42
+#: gfwfbn/templates/wfbn/foodbank/edit/form.html:40
+#: gfwfbn/templates/wfbn/foodbank/edit/index.html:39
+#: gfwfbn/templates/wfbn/foodbank/edit/thanks.html:39
+#: gfwfbn/templates/wfbn/foodbank/history.html:42
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:49
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:48
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:46
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:45
+#: gfwfbn/templates/wfbn/foodbank/locations.html:42
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:42
+#: gfwfbn/templates/wfbn/foodbank/news.html:42
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:41
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:48
+#: gfwfbn/templates/wfbn/foodbank/updates.html:41
+#: gfwfbn/templates/wfbn/index.html:8
+msgid "What Food Banks Need"
+msgstr "Dè na bancaichean bìdh a dh 'fheumas"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:34
+#: gfwfbn/templates/wfbn/constituency/index.html:38
+msgid "Parliamentary Constituencies"
+msgstr "Roinnean-pàrlamaid"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:44
+msgid ""
+"Find which food banks operate in your parliamentary constituency, then "
+"donate or take action."
+msgstr ""
+"Faigh a - mach dè na bancaichean bìdh a tha ag obair anns a 'phàrlamaid "
+"agad, an uairsin thoir seachad no cuir an gnìomh."
+
+#: gfwfbn/templates/wfbn/constituency/index.html:48
+msgid "Sorry, we didn't recognise this postcode. Could you try again?"
+msgstr ""
+"Duilich, cha d 'fhuair sinn am post - d seo. An urrainn dhut/dhuibh sin "
+"fheuchainn a - rithist?"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:53
+msgid "Search by postcode"
+msgstr "Lorg a - rèir còd - puist"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:54
+#: gfwfbn/templates/wfbn/index.html:40
+msgid "Go"
+msgstr "Rachaibh"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:49
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:24
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:44
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:48
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
+msgid "Donation points"
+msgstr "Puingean tabhartais"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:65
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:65
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:64
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:63
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:62
+msgid "This food bank is closed"
+msgstr "Tha am banca seo dùinte"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:68
+msgid "is a donation point for"
+msgstr "tha e a 'toirt taic do"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:68
+msgid "Here they are requesting to have donated..."
+msgstr "Tha iad ag iarraidh gun tèid tabhartas a thoirt seachad..."
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:75
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:76
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:74
+msgid "They don't need any more"
+msgstr "Chan eil feum air tuilleadh"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:80
+msgid "Opening hours"
+msgstr "Uairean fosglaidh"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:86
+msgid "Hours may vary because of"
+msgstr "Dh'fhaoidte gum bi na h - uairean ag atharrachadh air sgàth"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:96
+msgid "Only accepts in-store purchases as donations"
+msgstr "A 'ceannach a - steach mar thabhartasan a - mhàin"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:97
+msgid ""
+"Although, sometimes you can add items marked as not from the store. Best to "
+"check."
+msgstr ""
+"Ach, uaireannan faodaidh tu rudan a chuir ris a tha air an comharrachadh mar "
+"nach eil bhon bhùth. An rud as fheàrr airson sgrùdadh."
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:102
+msgid "Wheelchair accessible"
+msgstr "Ruigsinneach do chathraichean - cuibhle"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:120
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:96
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:109
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:100
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:113
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:95
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:99
+msgid "Directions"
+msgstr "Stiùireadh"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:65
+#: gfwfbn/templates/wfbn/foodbank/locations.html:68
+msgid "Main"
+msgstr "Prìomh"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:73
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:108
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:112
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:105
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:109
+#: gfwfbn/templates/wfbn/foodbank/locations.html:77
+msgid "Delivery"
+msgstr "Lìbhrigeadh"
+
+#: gfwfbn/templates/wfbn/foodbank/edit/index.html:21
+#: gfwfbn/templates/wfbn/foodbank/edit/index.html:41
+#: gfwfbn/templates/wfbn/foodbank/edit/index.html:45
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:24
+msgid "Edit"
+msgstr "Deasaichvector-mode"
+
+#: gfwfbn/templates/wfbn/foodbank/history.html:24
+#: gfwfbn/templates/wfbn/foodbank/history.html:44
+#: gfwfbn/templates/wfbn/foodbank/history.html:48
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:22
+msgid "History"
+msgstr "Eachdraidh"
+
+#: gfwfbn/templates/wfbn/foodbank/history.html:64
+msgid "ago"
+msgstr "o chionn"
+
+#: gfwfbn/templates/wfbn/foodbank/history.html:70
+msgid "No change"
+msgstr "Gun atharrachadh"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
+msgid "Charity Registration"
+msgstr "Clàradh carthannais"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
+#: gfwfbn/templates/wfbn/index.html:77
+msgid "Part of"
+msgstr "Pàirt de"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:13
+msgid "is a registered charity in England &amp; Wales"
+msgstr "tha e na charthannas clàraichte ann an Sasainn agus sa Chuimrigh"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
+msgid "Donate"
+msgstr "Tabhartas"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:6
+msgid "Food, money or your time"
+msgstr "Biadh, airgead no àm ri teachd"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:12
+msgid "Donate using "
+msgstr "Thoir seachad a ‘cleachdadh "
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:18
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:19
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:30
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:50
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:54
+#: gfwfbn/templates/wfbn/index.html:87 gfwfbn/templates/wfbn/index.html:127
+msgid "Get updates"
+msgstr "Faigh ùrachaidhean"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:19
+msgid "Get any email when new items are needed"
+msgstr "Faigh post - d sam bith nuair a tha feum air nithean ùra"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+msgid "Organisation"
+msgstr "Eagrachadh"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+msgid "marker"
+msgstr "momharra"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+msgid "Location"
+msgstr "Ionad"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+msgid "Donation point"
+msgstr "Puing tabhartais"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
+msgid "Details"
+msgstr "Mion-fhiosrachadh"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:6
+#: gfwfbn/templates/wfbn/foodbank/locations.html:24
+#: gfwfbn/templates/wfbn/foodbank/locations.html:44
+#: gfwfbn/templates/wfbn/foodbank/locations.html:48
+msgid "Locations"
+msgstr "Àiteachan"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
+#: gfwfbn/templates/wfbn/foodbank/news.html:24
+#: gfwfbn/templates/wfbn/foodbank/news.html:44
+#: gfwfbn/templates/wfbn/foodbank/news.html:48
+msgid "News"
+msgstr "Naidheachdan"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:23
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:43
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:47
+msgid "Social media"
+msgstr "Na meadhanan sòisealta"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:17
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:24
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:44
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:48
+msgid "Nearby"
+msgstr "Faisg air làimh"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:3
+msgid "Get an email when items are needed."
+msgstr "Cuir post - d thugainn nuair a tha feum air."
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
+msgid "Email address"
+msgstr "Seòladh puist - d"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:10
+msgid "Subscribe"
+msgstr "Fo-sgrìobhadh"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:16
+msgid ""
+"We'll never use your email address for anything else, and you can "
+"unsubscribe at any time."
+msgstr ""
+"Cha chleachd sinn an seòladh puist - d agad airson rud sam bith eile, agus "
+"faodaidh tu dì - chlàradh aig àm sam bith."
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:69
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:120
+msgid "Website"
+msgstr "Làrach-lìn"
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:71
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:122
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:118
+#: gfwfbn/templates/wfbn/index.html:82 gfwfbn/templates/wfbn/index.html:124
+msgid "Phone"
+msgstr "Fòn"
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:73
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:124
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:120
+msgid "Email"
+msgstr "Post-d"
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:94
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:98
+msgid "Administrative"
+msgstr "Ver"
+
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:68
+msgid "You can find out what being to have donated on Facebook:"
+msgstr "Faodaidh tu faighinn a - mach dè a th 'ann an tabhartas air Facebook:"
+
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:71
+msgid "is currently requesting the following items to be donated:"
+msgstr "tha na duilleagan a leanas a 'ceangal ri Tabhartas:"
+
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:67
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:78
+msgid "This location accepts donations"
+msgstr "Tha an t - àite seo a 'gabhail ri tabhartasan"
+
+#: gfwfbn/templates/wfbn/foodbank/locations.html:66
+msgid "Administration"
+msgstr "Rianachd"
+
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:67
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:69
+#: gfwfbn/templates/wfbn/index.html:79 gfwfbn/templates/wfbn/index.html:122
+msgid "away"
+msgstr "air falbh"
+
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:71
+msgid "Here is what the email you'll get looks like..."
+msgstr "Seo mar a gheibh thu an iPhone agad..."
+
+#: gfwfbn/templates/wfbn/index.html:9 gfwfbn/templates/wfbn/index.html:10
+#: gfwfbn/views.py:266
+msgid ""
+"Use Give Food's tool to find what food banks near you are requesting to have "
+"donated"
+msgstr "Faigh a - mach dè na bancaichean bìdh a tha thu ag iarraidh"
+
+#: gfwfbn/templates/wfbn/index.html:12
+msgid "Map of UK food banks"
+msgstr "Bancaichean Biadh Bhreatainn"
+
+#: gfwfbn/templates/wfbn/index.html:19
+msgid "Find a food bank & see what they need"
+msgstr ""
+"Faigh a - mach dè a th 'ann am banca bìdh agus faic dè a tha a dhìth orra"
+
+#: gfwfbn/templates/wfbn/index.html:33
+msgid ""
+"Find a food bank near you, see what they need and how you can help by "
+"donating or volunteering."
+msgstr ""
+"Lorg banca bìdh faisg ort, faic na tha a dhìth orra agus mar as urrainn dhut "
+"cuideachadh le bhith a 'toirt seachad no ag obair gu saor - thoileach."
+
+#: gfwfbn/templates/wfbn/index.html:35
+msgid "Use my location"
+msgstr "Cleachd m 'ionad"
+
+#: gfwfbn/templates/wfbn/index.html:37
+msgid "Postcode or town"
+msgstr "Cairt - phuist no baile"
+
+#: gfwfbn/templates/wfbn/index.html:38
+msgid "e.g. EX4 6PX or Sheffield"
+msgstr "e.g. EH12 5PJ no Glasgow"
+
+#: gfwfbn/templates/wfbn/index.html:43
+msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
+msgstr ""
+"Tha mi duilich, cha b 'urrainn dhuinn an t - àite sin a chleachdadh. A bheil "
+"e ann am Breatainn?"
+
+#: gfwfbn/templates/wfbn/index.html:48
+msgid "Browse by parliamentary constituency"
+msgstr "Pàrlamaid na h - Alba Parliamentary constituency"
+
+#: gfwfbn/templates/wfbn/index.html:49
+msgid "Register a food bank"
+msgstr "Clàraich banca bìdh"
+
+#: gfwfbn/templates/wfbn/index.html:50
+msgid "About us"
+msgstr "Mu ar deidhinn"
+
+#: gfwfbn/templates/wfbn/index.html:53
+msgid "Recently updated"
+msgstr "Ùrachadh o chionn ghoirid"
+
+#: gfwfbn/templates/wfbn/index.html:59
+msgid "Most viewed this week"
+msgstr "A 'mhòr - chuid den t - seachdain seo"
+
+#: gfwfbn/templates/wfbn/index.html:84 gfwfbn/templates/wfbn/index.html:125
+msgid "Information"
+msgstr "Fiosrachadh"
+
+#: gfwfbn/templates/wfbn/index.html:94
+msgid "Nothing right now, thanks"
+msgstr "No big deal, thanks"
+
+#: gfwfbn/templates/wfbn/index.html:96
+msgid "Sorry. We don't know what's needed here, please contact the food bank"
+msgstr ""
+"Duilich. Chan eil fios againn dè a tha a dhìth an seo, cuir fios chun bhanca "
+"bìdh"
+
+#: gfwfbn/templates/wfbn/index.html:98
+msgid "Check the food bank's Facebook page for what they need"
+msgstr ""
+"Thoir sùil air duilleag Facebook a 'bhanca bìdh airson na tha a dhìth orra"

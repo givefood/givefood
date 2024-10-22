@@ -2,7 +2,7 @@
 <rss version="2.0">
         <channel>
                 <title>{% if foodbank %}{{ foodbank.full_name }}{% else %}Give Food{% endif %}</title>
-                <description>{% blocktrans %}News & donation requests from{% endblocktrans %} {% if foodbank %}{{ foodbank.full_name }}{% else %}{% blocktrans %}UK food banks{% endblocktrans %}{% endif %}</description>
+                <description>News &amp; donation requests from {% if foodbank %}{{ foodbank.full_name }}{% else %}UK food banks{% endif %}</description>
                 <link>https://www.givefood.org.uk{% if foodbank %}{% url 'wfbn:foodbank' foodbank.slug %}{% endif %}</link>
                 <lastBuildDate>{% now "D, d M Y H:i:s O" %}</lastBuildDate>
                 {% for item in items %}

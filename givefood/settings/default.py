@@ -147,8 +147,9 @@ USE_L10N = True
 USE_TZ = False
 
 LANGUAGES = [
-    ("en", _("English")),
-    ("cy", _("Welsh")),
+    ("en", "English"),
+    ("cy", "Cymraeg"),
+    ("gd", "Gàidhlig"),
 ]
 
 

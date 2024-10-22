@@ -31,27 +31,27 @@
             <ul>
                 <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
                 <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
-                <li class="is-active"><a href="#" aria-current="page">Constituencies</a></li>
+                <li class="is-active"><a href="#" aria-current="page">{% blocktrans %}Parliamentary Constituencies{% endblocktrans %}</a></li>
             </ul>
       </nav>
 
-      <h1>Parliamentary Constituencies</h1>
+      <h1>{% blocktrans %}Parliamentary Constituencies{% endblocktrans %}</h1>
 
       <div class="columns">
 
           <div class="column">
 
-            <p>Find which food banks operate in your parliamentary constituency, then donate or take action.</p>
+            <p>{% blocktrans %}Find which food banks operate in your parliamentary constituency, then donate or take action.{% endblocktrans %}</p>
 
             {% if postcode %}
               <div class="notification is-warning">
-                Sorry, we couldn't recognise this postcode. Could you try again?
+                {% blocktrans %}Sorry, we didn't recognise this postcode. Could you try again?{% endblocktrans %}
               </div>
             {% endif %}
 
             <form id="postcodeform" action="{% url 'wfbn:constituencies' %}" method="get">
-              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="Search by postcode" value="{% if postcode %}{{ postcode }}{% endif %}" autofocus>
-              <input type="submit" class="button is-info" value="Go">
+              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="{% blocktrans %}Search by postcode{% endblocktrans %}" value="{% if postcode %}{{ postcode }}{% endif %}" autofocus>
+              <input type="submit" class="button is-info" value="{% blocktrans %}Go{% endblocktrans %}">
             </form>
 
             <br>
@@ -84,6 +84,7 @@
 {% block script %}
 
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
+<script src="/static/js/slugify.js?v={{ version }}" defer></script>
 <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
 <script>
 
@@ -126,24 +127,6 @@ function init_map() {
 
 google.maps.event.addDomListener(window, 'load', init_map);
 
-
-function slugify(str) {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
-    str = str.toLowerCase();
-  
-    // remove accents, swap ñ for n, etc
-    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to   = "aaaaeeeeiiiioooouuuunc------";
-    for (var i=0, l=from.length ; i<l ; i++) {
-        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-    }
-
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-        .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-'); // collapse dashes
-
-    return str;
-}
 </script>
 
 {% endblock %}

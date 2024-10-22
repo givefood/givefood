@@ -45,6 +45,9 @@ urlpatterns += i18n_patterns(
     # WFBN
     path("needs/", include('gfwfbn.urls', namespace="wfbn")),
 
+    # Sitemaps
+    path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
+
     prefix_default_language=False,
 )
     
@@ -52,16 +55,14 @@ urlpatterns += i18n_patterns(
 urlpatterns += [
     re_path(r'^_ah/', include('djangae.urls')),
 
-    path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
 
     # KINDA PUBLIC
     path("distill_webhook/", givefood.views.distill_webhook, name="distill_webhook"),
-    re_path("proxy/(trusselltrust|ifan)/", givefood.views.proxy, name="proxy"),
 
     # Rickrolling
-    path("wp-login\.php", RedirectView.as_view(url=RICK_ASTLEY)),
+    path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),
 
     # Old URL redirects
     path("what-food-banks-need/", RedirectView.as_view(url='/needs/')),
