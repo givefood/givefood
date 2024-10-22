@@ -91,9 +91,9 @@ DONATION_POINT_COMPANIES_CHOICES = tuple((company, company) for company in DONAT
 
 TRUSSELL_TRUST_SCHEMA = {
     "@type": "NGO",
-    "name": "Trussell Trust",
-    "url": "https://www.trusselltrust.org",
-    "email": "enquiries@trusselltrust.org",
+    "name": "Trussell",
+    "url": "https://www.trussell.org.uk",
+    "email": "enquiries@trussell.org.uk",
     "telephone": "01722580180",
     "address": {
         "@type": "PostalAddress",
@@ -103,7 +103,7 @@ TRUSSELL_TRUST_SCHEMA = {
     },
     "identifier": "1110522",
     "duns": "346282481",
-    "sameAs":"https://en.wikipedia.org/wiki/The_Trussell_Trust",
+    "sameAs":"https://www.wikidata.org/wiki/Q15621299",
 }
 IFAN_SCHEMA = {
     "@type": "NGO",
@@ -119,7 +119,7 @@ IFAN_SCHEMA = {
     },
     "identifier": "1180382",
     "duns": "224810933",
-    "sameAs": "https://en.wikipedia.org/wiki/Independent_Food_Aid_Network",
+    "sameAs": "https://www.wikidata.org/wiki/Q109638006",
 }
 
 PACKAGING_WEIGHT_PC = 1.18
