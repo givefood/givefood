@@ -153,7 +153,8 @@ footer {
     }
 }
 .langswitcher.is-pulled-right {
-    margin:25px 0 0 0;
+    margin:40px 0 0 0;
+    zoom:80%;
 }
 .langswitcher .flag {
     display:inline-block;
