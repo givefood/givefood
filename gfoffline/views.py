@@ -70,7 +70,7 @@ def discrepancy_check(request):
             }
             try:
                 foodbank_page = requests.get(foodbank.url, headers=headers, verify=False)
-            except requests.exceptions.Timeout:
+            except requests.exceptions.RequestException:
                 website_discrepancy = FoodbankDiscrepancy(
                     foodbank = foodbank,
                     discrepancy_type = "website",
