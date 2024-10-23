@@ -305,7 +305,6 @@ msgid "Email"
 msgstr "Post-d"
 
 #: givefood/templates/public/page.html:44
-#, fuzzy
 msgid "Give Food is a registered charity in England & Wales"
 msgstr "Tha Give Food na charthannas clàraichte ann an Sasainn agus sa Chuimrigh"
 
@@ -314,26 +313,21 @@ msgid "Registered with the"
 msgstr "Air a chlàradh leis a '"
 
 #: givefood/templates/public/page.html:46
-#, fuzzy
 msgid "ICO Data Protection Registration"
 msgstr "Clàradh Dìon Dàta ICO"
 
 #: givefood/templates/public/page.html:48
-#, fuzzy
 msgid "Privacy policy"
 msgstr "Poileasaidh prìobhaideachd"
 
 #: givefood/views.py:232
-#, fuzzy
 msgid "minutes"
 msgstr "mionaidean"
 
 #: givefood/views.py:233
-#, fuzzy
 msgid "Under a minute ago"
 msgstr "Nas lugha na mionaid air ais"
 
 #: givefood/views.py:235
-#, fuzzy
 msgid "ago"
 msgstr "o chionn"
