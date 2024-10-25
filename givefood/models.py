@@ -683,12 +683,6 @@ class FoodbankLocation(models.Model):
 
         # Slugify name
         self.slug = slugify(self.name)
-        
-        # Photo?
-        if self.place_id:
-            self.place_has_photo = place_has_photo(self.place_id)
-        else:
-            self.place_has_photo = False
 
         # Cache foodbank details
         self.foodbank_name = self.foodbank.name
@@ -703,6 +697,13 @@ class FoodbankLocation(models.Model):
             self.phone_number = self.phone_number.replace(" ","")
 
         if do_geoupdate:
+
+            # Photo?
+            if self.place_id:
+                self.place_has_photo = place_has_photo(self.place_id)
+            else:
+                self.place_has_photo = False
+
             # Update politics
             regions = admin_regions_from_postcode(self.postcode)
             self.country = regions.get("country", None)
