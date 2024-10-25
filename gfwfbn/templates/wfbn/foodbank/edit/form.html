@@ -57,7 +57,7 @@
             {% if action == "needs" %}
 
                 <p>Sorry if we've got what <em>{{ foodbank.full_name }}</em> is requesting to have donated wrong. Usually we crawl your website to find this. Let's fix it.</p>
-                <p>Here is what we think is the shopping list, which we last updated <em>{{ foodbank.latest_need.created }} ({{ foodbank.latest_need.created|timesince }} ago</em>). We found this by {% if foodbank.latest_need.input_method == "typed" %}inputting it manually{% endif %}{% if foodbank.latest_need.input_method == "scrape" %}automatically scraping it from the food bank's website{% endif %}{% if foodbank.latest_need.input_method == "user" %}someone filling out this form{% endif %}.</p>
+                <p>Here is what we think is the shopping list, which we last updated <em>{{ foodbank.latest_need.created }} ({{ foodbank.latest_need.created|timesince }} ago</em>). We found this by {% if foodbank.latest_need.input_method == "typed" %}inputting it manually{% endif %}{% if foodbank.latest_need.input_method == "scrape" or foodbank.latest_need.input_method == "ai" %}automatically scraping it from the food bank's website{% endif %}{% if foodbank.latest_need.input_method == "user" %}someone filling out this form{% endif %}.</p>
 
                 <div class="needs">
                   {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}<br>
