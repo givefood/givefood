@@ -410,13 +410,14 @@ class Foodbank(models.Model):
         else:
             self.delivery_latt_long = None
 
-        # Photo?
-        if self.place_id:
-            self.place_has_photo = place_has_photo(self.place_id)
-        else:
-            self.place_has_photo = False
-
         if do_geoupdate:
+
+            # Photo?
+            if self.place_id:
+                self.place_has_photo = place_has_photo(self.place_id)
+            else:
+                self.place_has_photo = False
+
             regions = admin_regions_from_postcode(self.postcode)
             self.county = regions.get("county", None)
             self.ward = regions.get("ward", None)
