@@ -183,6 +183,8 @@
         <dd>{{ foodbank.edited }}</dd>
         <dt>Last Need</dt>
         <dd>{{ foodbank.last_need }}</dd>
+        <dt>Last Need Check</dt>
+        <dd>{{ foodbank.last_need_check }}</dd>
         <dt>Last RFI</dt>
         <dd>{{ foodbank.last_rfi }}</dd>
         <dt>Last Discrepancy Check</dt>
@@ -346,7 +348,8 @@
         <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
-            <th>Published?</th>
+            <th>Published</th>
+            <th>Nonpertinent</th>
             <th>Input</th>
             <th>ID</th>
             <th>Need</th>
@@ -358,6 +361,13 @@
             <tr>
               <td>
                 {% if need.published %}
+                  <span style="color:green">✓</span>
+                {% else %}
+                  <span style="color:red">x</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if need.nonpertinent %}
                   <span style="color:green">✓</span>
                 {% else %}
                   <span style="color:red">x</span>

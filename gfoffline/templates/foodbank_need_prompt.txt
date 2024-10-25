@@ -1,10 +1,12 @@
 Reply with a valid JSON object containing the following:
 
 {
-    "needed": JSON list of items this food bank is requesting to have donated, in Title Case keeping the linebreaks in the same places
-    "excess": JSON list of items this food bank doesn't need donating, in Title Case
+    "needed": JSON list of items this food bank is requesting to have donated, are running low on, or need, keeping the linebreaks in the same places
+    "excess": JSON list of items this food bank has too many of
 }
 
-From this text describing the food bank's needed and excess items...
+It is fine to have no items if you can't find any. 
+
+From this text, and only from this text, describing the food bank's needed and excess items...
 
 {{ foodbank_page }}

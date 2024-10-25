@@ -12,6 +12,10 @@ cron:
   url: /offline/days_between_needs/
   schedule: every monday 03:00
 
+- description: need check
+  url: /offline/need_check/
+  schedule: every 1 minutes
+
 - description: discrepancy check
   url: /offline/discrepancy_check/
   schedule: every 30 minutes

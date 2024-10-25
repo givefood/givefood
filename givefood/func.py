@@ -1164,7 +1164,7 @@ def gemini(prompt, temperature):
 
     genai.configure(api_key=get_cred("gemini_api_key"))
     generation_config = {
-        "temperature": 1,
+        "temperature": temperature,
         "top_p": 0.95,
         "top_k": 64,
         "max_output_tokens": 8192,
@@ -1181,10 +1181,16 @@ def gemini(prompt, temperature):
         generation_config = generation_config,
         safety_settings = safety_settings,
     )
-    return model.generate_content(prompt).text
+    try:
+        return model.generate_content(prompt).text
+    except Exception as e:
+        return False
 
 
 def htmlbodytext(html):
 
     soup = BeautifulSoup(html, features="html.parser")
-    return soup.body.get_text()
+    if soup.body:
+        return soup.body.get_text()
+    else:
+        return False

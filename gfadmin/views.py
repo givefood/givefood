@@ -26,18 +26,24 @@ from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, N
 def index(request):
 
     # Needs
-    unpublished_needs = FoodbankChange.objects.filter(published = False).order_by("-created")
+    unpublished_needs = FoodbankChange.objects.filter(published = False, nonpertinent = False).order_by("-created")
     published_needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:20]
 
     # Discrepancies
     discrepancies = FoodbankDiscrepancy.objects.filter(status = 'New').order_by("-created")[:20]
 
     # Stats
-    oldest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0]
-    latest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("-edited")[:1][0]
     yesterday = datetime.now() - timedelta(days=1)
-    sub_count_24 = FoodbankSubscriber.objects.filter(created__gte=yesterday).count()
-    need_count_24 = FoodbankChangeLine.objects.filter(created__gte=yesterday).count()
+    stats = {
+        "oldest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0],
+        "latest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("-edited")[:1][0],
+        "sub_count_24":FoodbankSubscriber.objects.filter(created__gte=yesterday).count(),
+        "need_count_24":FoodbankChangeLine.objects.filter(created__gte=yesterday).count(),
+        "need_check_24":Foodbank.objects.filter(last_need_check__gte=yesterday).count(),
+        "oldest_need_check":Foodbank.objects.all().exclude(is_closed = True).order_by("last_need_check")[:1][0],
+        "latest_need_check":Foodbank.objects.all().exclude(is_closed = True).order_by("-last_need_check")[:1][0],
+    }
+
 
     # Articles
     articles = FoodbankArticle.objects.all().order_by("-published_date")[:20]
@@ -46,10 +52,7 @@ def index(request):
         "unpublished_needs":unpublished_needs,
         "published_needs":published_needs,
         "discrepancies":discrepancies,
-        "latest_edit":latest_edit,
-        "oldest_edit":oldest_edit,
-        "sub_count_24":sub_count_24,
-        "need_count_24":need_count_24,
+        "stats":stats,
         "articles":articles,
         "section":"home",
     }
@@ -624,6 +627,15 @@ def need_form(request, id = None):
         "need":need,
     }
     return render(request, "admin/form.html", template_vars)
+
+
+@require_POST
+def need_nonpertinent(request, id):
+
+    need = get_object_or_404(FoodbankChange, need_id = id)
+    need.nonpertinent = True
+    need.save()
+    return redirect("admin:index")
 
 
 @require_POST

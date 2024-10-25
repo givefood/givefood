@@ -90,6 +90,7 @@ class Foodbank(models.Model):
     last_rfi = models.DateTimeField(editable=False, null=True)
     last_crawl = models.DateTimeField(editable=False, null=True)
     last_discrepancy_check = models.DateTimeField(editable=False, null=True)
+    last_need_check = models.DateTimeField(editable=False, null=True)
 
     no_locations = models.IntegerField(editable=False, default=0)
     no_donation_points = models.IntegerField(editable=False, default=0)
@@ -1314,6 +1315,7 @@ class FoodbankChange(models.Model):
     excess_change_text_original = models.TextField(null=True, blank=True)
 
     published = models.BooleanField(default=False)
+    nonpertinent = models.BooleanField(default=False, editable=False)
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
 
     input_method = models.CharField(max_length=10, choices=NEED_INPUT_TYPES_CHOICES)

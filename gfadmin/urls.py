@@ -54,6 +54,7 @@ urlpatterns = (
     url(r'^need/new/$', need_form, name="newneed"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/$', need, name="need"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/edit/$', need_form, name="need_form"),
+    url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/nonpertinent/$', need_nonpertinent, name="need_nonpertinent"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/delete/$', need_delete, name="need_delete"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/(?P<action>publish|unpublish)/$', need_publish, name="need_publish"),
     url(r'^need/(?P<id>\b[0-9a-f]{8}\b)/notifications/$', need_notifications, name="need_notifications"),

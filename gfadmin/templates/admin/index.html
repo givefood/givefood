@@ -69,18 +69,30 @@
       <dl>
         <dt>Oldest Edit</dt>
         <dd>
-          {{ oldest_edit.edited|timesince }} ago
-          <br><span class="is-size-7">{{ oldest_edit.edited }}</span>
+          {{ stats.oldest_edit.edited|timesince }} ago
+          <br><span class="is-size-7">{{ stats.oldest_edit.edited }}</span>
         </dd>
         <dt>Latest Edit</dt>
         <dd>
-          {{ latest_edit.edited|timesince }} ago
-          <br><span class="is-size-7">{{ latest_edit.edited }} </span>
+          {{ stats.latest_edit.edited|timesince }} ago
+          <br><span class="is-size-7">{{ stats.latest_edit.edited }} </span>
         </dd>
+        <dt>Oldest Need Check</dt>
+        <dd>
+          {{ stats.oldest_need_check.last_need_check|timesince }} ago
+          <br><span class="is-size-7">{{ stats.oldest_need_check.last_need_check }} </span>
+        </dd>
+        <dt>Latest Need Check</dt>
+        <dd>
+          {{ stats.latest_need_check.last_need_check|timesince }} ago
+          <br><span class="is-size-7">{{ stats.latest_need_check.last_need_check }} </span>
+        </dd>
+        <dt>24hr AI Need Checks</dt>
+        <dd>{{ stats.need_check_24 }}</dd>
+        <dt>24hr Pub. Need Lines</dt>
+        <dd>{{ stats.need_count_24 }}</dd>
         <dt>24hr Subs</dt>
-        <dd>{{ sub_count_24 }}</dd>
-        <dt>24hr Need Lines</dt>
-        <dd>{{ need_count_24 }}</dd>
+        <dd>{{ stats.sub_count_24 }}</dd>
       </dl>
 
 
