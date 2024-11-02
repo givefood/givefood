@@ -1445,7 +1445,7 @@ class FoodbankChange(models.Model):
 
         FoodbankChangeLine.objects.filter(need = self).delete()
         super(FoodbankChange, self).delete(*args, **kwargs)
-        if self.foodbank:
+        if self.foodbank and self.published:
             self.foodbank.save(do_geoupdate=False)
 
     class Meta:
