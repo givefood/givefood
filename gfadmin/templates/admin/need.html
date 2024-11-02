@@ -48,6 +48,12 @@
       <h3>Workflow</h3>
       <table class="table is-fullwidth">
         <tr>
+          <td colspan="2">Edit</td>
+          <td>
+            <a href="{% url "admin:need_form" need.need_id %}" class="button is-link is-pulled-right is-small">Edit</a>
+          </td>
+        </tr>
+        <tr>
           <td>
             {% if need.published %}
               <span style="color:green">✓</span>
@@ -57,7 +63,10 @@
           </td>
           <td>Publish</td>
           <td>
-            <a href="{% url "admin:need_form" need.need_id %}" class="button is-link is-pulled-right is-small">Edit</a>
+            <form action="{% url "admin:need_publish" need.need_id 'publish' %}" method="post">
+              <input type="submit" class="button is-warning is-pulled-right is-small" value="Publish" onclick="this.form.submit();this.disabled = true;">
+              {% csrf_token %}
+            </form>
           </td>
         </tr>
         <tr>

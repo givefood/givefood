@@ -655,7 +655,7 @@ def need_publish(request, id, action):
     if action == "unpublish":
         need.published = False
     need.save()
-    return redirect("admin:index")
+    return redirect("admin:need", id = need.need_id)
 
 
 @require_POST
