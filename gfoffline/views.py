@@ -201,8 +201,8 @@ def foodbank_need_check(request, slug):
         foodbank.save(do_decache=False, do_geoupdate=False)
         return HttpResponse("Error AI parse %s" % (foodbank.url))
 
-    need_text = '\n'.join(need_response["needed"]).title().replace("Uht", "UHT")
-    excess_text = '\n'.join(need_response["excess"]).title().replace("Uht", "UHT")
+    need_text = '\n'.join(need_response["needed"]).title().replace("Uht", "UHT").replace("'S ", "'s ")
+    excess_text = '\n'.join(need_response["excess"]).title().replace("Uht", "UHT").replace("'S ", "'s ")
 
     last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
     try:
