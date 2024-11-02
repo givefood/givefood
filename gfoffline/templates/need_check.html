@@ -1,0 +1,39 @@
+{% extends "admin/page.html" %}
+
+{% block container_class %}is-fluid{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h1>{{ foodbank }}</h1>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <h2>Prompt</h2>
+            {{ need_prompt|linebreaks }}
+        </div>
+        <div class="column">
+            <h2>Found Need</h2>
+            {{ need_text|linebreaks }}
+            <h2>Pub Need</h2>
+            {{ last_published_need.change_text|linebreaks }}
+            <h2>Nonpert Need</h2>
+            {{ last_nonpertinent_need.change_text|linebreaks }}
+        </div> 
+        <div class="column">
+            <h2>Found Excess</h2>
+            {{ excess_text|linebreaks }}
+            <h2>Pub Excess</h2>
+            {{ last_published_need.excess_change_text|linebreaks }}
+            <h2>Nonpert Excess</h2>
+            {{ last_nonpertinent_need.excess_change_text|linebreaks }}
+        </div>
+        <div class="column">
+            <iframe class="preview-frame" src="{% url 'admin:proxy' %}?url={{ foodbank.shopping_list_url|urlencode }}" loading="lazy"></iframe>
+        </div> 
+    </div>
+
+{% endblock %}

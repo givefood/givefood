@@ -9,6 +9,7 @@ urlpatterns = (
     url(r'^crawl_articles/$', crawl_articles, name="crawl_articles"),
     url(r'^discrepancy_check/$', discrepancy_check, name="discrepancy_check"),
     url(r'^need_check/$', need_check, name="need_check"),
+    url(r'^foodbank_need_check/(?P<slug>[-\w]+)/$', foodbank_need_check, name="foodbank_need_check"),
     url(r'^decache_donationpoints/$', decache_donationpoints, name="decache_donationpoints"),
     url(r'^cleanup_subs/$', cleanup_subs, name="cleanup_subs"),
     url(r'^days_between_needs/$', days_between_needs, name="days_between_needs"),
