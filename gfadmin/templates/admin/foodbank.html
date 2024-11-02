@@ -184,7 +184,10 @@
         <dt>Last Need</dt>
         <dd>{{ foodbank.last_need }}</dd>
         <dt>Last Need Check</dt>
-        <dd>{{ foodbank.last_need_check }}</dd>
+        <dd>
+          {{ foodbank.last_need_check }}<br>
+          <a href="{% url 'offline:foodbank_need_check' foodbank.slug %}" class="button is-info is-small">Force Check</a>
+        </dd>
         <dt>Last RFI</dt>
         <dd>{{ foodbank.last_rfi }}</dd>
         <dt>Last Discrepancy Check</dt>
