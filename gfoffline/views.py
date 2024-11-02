@@ -132,17 +132,26 @@ def discrepancy_check(request):
 
 def need_check(request):
 
-    logging.warn("Need check")
+    foodbank = Foodbank.objects.filter(is_closed = False).order_by("last_need_check")[0]
 
-    foodbanks_to_check_per_run = 1
-    foodbanks = Foodbank.objects.filter(is_closed = False).order_by("last_need_check")[:foodbanks_to_check_per_run]
-    return foodbank_need_check(request, foodbanks[0].slug)
+    do_check = True
+
+    if foodbank.latest_need().change_text == "Facebook":
+        do_check = False
+    if "facebook.com" in foodbank.shopping_list_url :
+        do_check = False
+    
+    if do_check:
+        return foodbank_need_check(request, foodbank.slug)
+    else:
+        foodbank.last_need_check = datetime.now()
+        foodbank.save(do_decache=False, do_geoupdate=False)
+        return HttpResponse("OK")
 
 
 def foodbank_need_check(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug=slug)
-    logging.warn("Checking %s" % foodbank)
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
