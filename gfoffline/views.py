@@ -13,7 +13,7 @@ from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, decache, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
+from givefood.func import chatgpt, clean_foodbank_need_text, decache, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
 from django.template.loader import render_to_string
 
 
@@ -136,8 +136,6 @@ def need_check(request):
 
     do_check = True
 
-    if foodbank.latest_need().change_text == "Facebook":
-        do_check = False
     if "facebook.com" in foodbank.shopping_list_url :
         do_check = False
     
@@ -210,8 +208,10 @@ def foodbank_need_check(request, slug):
         foodbank.save(do_decache=False, do_geoupdate=False)
         return HttpResponse("Error AI parse %s" % (foodbank.url))
 
-    need_text = '\n'.join(need_response["needed"]).title().replace("Uht", "UHT").replace("'S ", "'s ")
-    excess_text = '\n'.join(need_response["excess"]).title().replace("Uht", "UHT").replace("'S ", "'s ")
+    need_text = '\n'.join(need_response["needed"])
+    need_text = clean_foodbank_need_text(need_text)
+    excess_text = '\n'.join(need_response["excess"])
+    excess_text = clean_foodbank_need_text(excess_text)
 
     last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
     try:
@@ -219,15 +219,26 @@ def foodbank_need_check(request, slug):
     except FoodbankChange.DoesNotExist:
         last_nonpertinent_need = None
 
-    no_change = False
+    is_nonpertinent = False
+    is_change = False
+    change_state = []
 
-    if need_text == last_published_need.change_text and excess_text == last_published_need.excess_change_text:
-        no_change = True
     if last_nonpertinent_need:
-        if need_text == last_nonpertinent_need.change_text and excess_text == last_nonpertinent_need.excess_change_text:
-            no_change = True
+        if need_text == last_nonpertinent_need.change_text:
+            is_nonpertinent = True
+            change_state.append("Last nonpert need change")
+        if excess_text != last_nonpertinent_need.excess_change_text:
+            is_nonpertinent = True
+            change_state.append("Last nonpert excess change")
+    if is_nonpertinent == False:
+        if need_text != last_published_need.change_text:
+            is_change = True
+            change_state.append("Last pub need change")
+        if excess_text != last_published_need.excess_change_text:
+            is_change = True
+            change_state.append("Last pub excess change")
 
-    if not no_change:
+    if is_change:
         foodbank_change = FoodbankChange(
             foodbank = foodbank,
             uri = foodbank.shopping_list_url,
@@ -245,6 +256,9 @@ def foodbank_need_check(request, slug):
     template_vars = {
         "foodbank":foodbank,
         "need_prompt":need_prompt,
+        "is_nonpertinent":is_nonpertinent,
+        "is_change":is_change,
+        "change_state":change_state,
         "need_text":need_text,
         "excess_text":excess_text,
         "last_published_need":last_published_need,
