@@ -670,6 +670,9 @@ def clean_foodbank_need_text(text):
         text_list[line_number] = text_list[line_number].strip()
     text = '\n'.join(text_list)
 
+    # UHT miscaptialisation
+    text = text.replace("Uht","UHT")
+
     return text
 
 
