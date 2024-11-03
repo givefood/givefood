@@ -41,7 +41,7 @@ def index(request):
         "need_count_24":FoodbankChangeLine.objects.filter(created__gte=yesterday).count(),
         "need_check_24":Foodbank.objects.filter(last_need_check__gte=yesterday).count(),
         "oldest_need_check":Foodbank.objects.all().exclude(is_closed = True).order_by("last_need_check")[:1][0],
-        "latest_need_check":Foodbank.objects.all().exclude(is_closed = True).order_by("-last_need_check")[:1][0],
+        "latest_need_check":Foodbank.objects.all().exclude(is_closed = True).exclude(last_need_check__isnull=True).order_by("-last_need_check")[:1][0],
     }
 
 
