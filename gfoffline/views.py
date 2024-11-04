@@ -230,15 +230,15 @@ def foodbank_need_check(request, slug):
         if text_for_comparison(excess_text) != text_for_comparison(last_nonpertinent_need.excess_change_text):
             is_nonpertinent = True
             change_state.append("Last nonpert excess change")
-    if is_nonpertinent == True:
-        if text_for_comparison(need_text) != text_for_comparison(last_published_need.change_text):
-            is_change = True
-            change_state.append("Last pub need change")
-        if text_for_comparison(excess_text) != text_for_comparison(last_published_need.excess_change_text):
-            is_change = True
-            change_state.append("Last pub excess change")
 
-    if is_change:
+    if text_for_comparison(need_text) != text_for_comparison(last_published_need.change_text):
+        is_change = True
+        change_state.append("Last pub need change")
+    if text_for_comparison(excess_text) != text_for_comparison(last_published_need.excess_change_text):
+        is_change = True
+        change_state.append("Last pub excess change")
+
+    if is_change and not is_nonpertinent:
         foodbank_change = FoodbankChange(
             foodbank = foodbank,
             uri = foodbank.shopping_list_url,
