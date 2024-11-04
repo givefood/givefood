@@ -13,7 +13,7 @@ from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, clean_foodbank_need_text, decache, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode
+from givefood.func import chatgpt, clean_foodbank_need_text, decache, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison
 from django.template.loader import render_to_string
 
 
@@ -224,17 +224,17 @@ def foodbank_need_check(request, slug):
     change_state = []
 
     if last_nonpertinent_need:
-        if need_text == last_nonpertinent_need.change_text:
+        if text_for_comparison(need_text) == text_for_comparison(last_nonpertinent_need.change_text):
             is_nonpertinent = True
             change_state.append("Last nonpert need change")
-        if excess_text != last_nonpertinent_need.excess_change_text:
+        if text_for_comparison(excess_text) == text_for_comparison(last_nonpertinent_need.excess_change_text):
             is_nonpertinent = True
             change_state.append("Last nonpert excess change")
     if is_nonpertinent == False:
-        if need_text != last_published_need.change_text:
+        if text_for_comparison(need_text) != text_for_comparison(last_published_need.change_text):
             is_change = True
             change_state.append("Last pub need change")
-        if excess_text != last_published_need.excess_change_text:
+        if text_for_comparison(excess_text) != text_for_comparison(last_published_need.excess_change_text):
             is_change = True
             change_state.append("Last pub excess change")
 

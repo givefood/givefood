@@ -588,6 +588,13 @@ def item_class_count(all_items, item_class_items):
     return count
 
 
+def text_for_comparison(text):
+    if text:
+        return text.lower().replace(" ", "").replace("\n", "").replace("\r", "").replace("\t", "").replace(".", "")
+    else:
+        return text
+
+
 def clean_foodbank_need_text(text):
 
     to_clean = [
