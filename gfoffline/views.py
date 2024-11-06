@@ -180,7 +180,7 @@ def foodbank_need_check(request, slug):
     try:
         need_response = gemini(
             prompt = need_prompt,
-            temperature = 0.1,
+            temperature = 0,
         )
     except Exception as e:
         website_discrepancy = FoodbankDiscrepancy(
