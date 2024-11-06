@@ -21,7 +21,7 @@
         </dd>
         <dt>Input Method</dt>
         <dd>
-          {{ need.input_method_emoji }}
+          {{ need.input_method_emoji }} {{ need.input_method_human }}
         </dd>
         <dt>Created</dt>
         <dd><time datetime="{{ need.created|date:'c' }}" title="{{ need.created }}">{{ need.created|timesince }} ago</time></dd>
