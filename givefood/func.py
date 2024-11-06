@@ -1175,8 +1175,6 @@ def gemini(prompt, temperature):
     genai.configure(api_key=get_cred("gemini_api_key"))
     generation_config = {
         "temperature": temperature,
-        "top_p": 0.95,
-        "top_k": 64,
         "max_output_tokens": 8192,
         "response_mime_type": "application/json",
     }
