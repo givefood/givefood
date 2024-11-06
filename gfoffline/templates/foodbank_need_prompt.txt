@@ -9,6 +9,6 @@ Reply with a valid JSON object containing the following:
     "excess": JSON list of items this food bank has too many of, using linebreaks to separate items. In titlecase. Don't repeat items.
 }
 
-From this text, and only from this text, describing the food bank's needed and excess items...
+From this text, and only from this text, describing the food bank's needed and excess items below:
 
 {{ foodbank_page }}
