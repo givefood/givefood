@@ -101,6 +101,9 @@ ins {
 del {
     background:#ff9494;
 }
+.nochange {
+    background:#fbffb3;
+}
 .arproducts img {
     width:100px;
     float:left;

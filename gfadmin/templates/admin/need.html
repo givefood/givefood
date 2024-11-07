@@ -27,22 +27,30 @@
         <dd><time datetime="{{ need.created|date:'c' }}" title="{{ need.created }}">{{ need.created|timesince }} ago</time></dd>
         <dt>Modified</dt>
         <dd><time datetime="{{ need.modified|date:'c' }}" title="{{ need.modified }}">{{ need.modified|timesince }} ago</time></dd>
-        {% if need.foodbank %}
-          <dt>Prev. Need</dt>
-          <dd>
-            {% if need.diff_from_last %}
-              <time datetime="{{ need.last_need_date|date:'c' }}" title="{{ need.last_need_date }}">{{ need.last_need_date|timesince }} ago</time>
-            {% else %}
-              Never
-            {% endif %}
-          </dd>
-        {% endif %}
         {% if need.uri %}
           <dt>URL</dt>
           <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
         {% endif %}
         <dt>Food Bank Subs</dt>
         <dd>{{ need.foodbank.number_subscribers }}</dd>
+      </dl>
+
+      <h3>Previous</h3>
+      <dl>
+        {% if prev_published %}
+          <dt>Published</dt>
+          <dd>
+            <time datetime="{{ prev_published.created|date:'c' }}" title="{{ prev_published.created }}">{{ prev_published.created|timesince }} ago</time>
+            <br><a href="{% url 'admin:need' prev_published.need_id %}">{{ prev_published.need_id }}</a>
+          </dd>
+        {% endif %}
+        {% if prev_nonpert %}
+          <dt>NonPert</dt>
+          <dd>
+            <time datetime="{{ prev_nonpert.created|date:'c' }}" title="{{ prev_nonpert.created }}">{{ prev_nonpert.created|timesince }} ago</time>
+            <br><a href="{% url 'admin:need' prev_nonpert.need_id %}">{{ prev_nonpert.need_id }}</a>
+          </dd>
+        {% endif %}
       </dl>
 
       <h3>Workflow</h3>
@@ -124,66 +132,120 @@
 
     </div>
 
-    <div class="column">
-      
-      <h2>Shopping List</h2>
-      <div class="box">
-        <p>{{ need.change_text|linebreaksbr }}</p>
+    <div class="column is-half">
+
+      <div class="columns">
+        <div class="column">
+          <h3>Needs</h3>
+          <div class="box">
+            <p>{{ need.change_text|linebreaksbr }}</p>
+          </div>
+        </div>
+        <div class="column">
+          <h3>Excess</h3>
+          <div class="box">
+            <p>{{ need.excess_change_text|linebreaksbr }}</p>
+          </div>
+        </div>
       </div>
 
-      {% if need.diff_from_last %}
-        <h3>Previous Need</h3>
-        <div class="box">
-          <p>{{ need.diff_from_last|safe|linebreaksbr }}</p>
-        </div>
-        {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)
-      {% else %}
-        {% if need.last_need_date %}
-          No change from need found {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)<br><br>
-        {% endif %}
-      {% endif %}
+      <div class="tabs is-boxed">
+        <ul>
+          <li class="is-active">
+            <a data-tab="published">
+              <span>Published</span>
+            </a>
+          </li>
+          <li>
+            <a data-tab="nonpert">
+              <span>Non Pertinent</span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
-      {% if need.change_text_original %}
-        <h3>Original Text</h3>
-        <div class="box">
-          <p>{{ need.change_text_original|linebreaksbr }}</p>
-        </div>
-      {% endif %}
+      <div class="columns sections">
+
+        {% if prev_published %}
+          <div class="published column is-half">
+            <div class="tab-content" data-tab="published">
+              <div class="box">
+                {% if need.diff_from_pub %}
+                  <p>{{ need.diff_from_pub|safe|linebreaksbr }}</p>
+                {% else %}
+                  <p class="nochange">No change</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <div class="published column is-half">
+            <div class="tab-content" data-tab="nonpert">
+              <div class="box">
+                {% if need.diff_from_pub_excess %}
+                  <p>{{ need.diff_from_pub_excess|safe|linebreaksbr }}</p>
+                {% else %}
+                  <p class="nochange">No change</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="published column is-hidden">
+            No previous published need
+          </div>
+        {% endif %}
+
+        {% if prev_nonpert %}
+          <div class="nonpert column is-half is-hidden">
+            <div class="tab-content" data-tab="published">
+              <div class="box">
+                <p>
+                  {% if need.diff_from_nonpert %}
+                    {{ need.diff_from_nonpert|safe|linebreaksbr }}
+                  {% else %}
+                    No change
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="nonpert column is-half is-hidden">
+            <div class="tab-content" data-tab="nonpert">
+              <div class="box">
+                <p>
+                  {% if need.diff_from_nonpert_excess %}
+                    {{ need.diff_from_nonpert_excess|safe|linebreaksbr }}
+                  {% else %}
+                    No change
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          <div class="nonpert column is-hidden">
+            No previous nonpertinent need
+          </div>
+        {% endif %}
+
+      </div>
+
 
     </div>
 
-    {% if need.excess_change_text %}
-
-      <div class="column">
-        
-        <h2>Excess</h2>
-        <div class="box">
-          <p>{{ need.excess_change_text|linebreaksbr }}</p>
-        </div>
-
-        {% if need.diff_from_last_excess %}
-          <h3>Previous Excess</h3>
-          <div class="box">
-            <p>{{ need.diff_from_last_excess|safe|linebreaksbr }}</p>
-          </div>
-          {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)
-        {% else %}
-          {% if need.last_need_date %}
-            No change from excess found {{ need.last_need_date }} ({{ need.last_need_date|timesince:need.created }} before)<br><br>
-          {% endif %}
-        {% endif %}
-
-      </div>
-
-    {% endif %}
-
     {% if need.uri %}
       <div class="column">
-        <h2>Source</h2>
         <iframe class="preview-frame" src="{% url 'admin:proxy' %}?url={{ need.uri|urlencode }}"></iframe>
       </div>
     {% endif %}
 
   </div>
 
+{% endblock %}
+
+
+{% block script %}
+  <script src="/static/js/tabber.js" defer></script>
 {% endblock %}

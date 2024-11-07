@@ -553,9 +553,23 @@ def fblocation_delete(request, slug, loc_slug):
 def need(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
+    if need.foodbank:
+        try:
+            prev_published = FoodbankChange.objects.filter(foodbank = need.foodbank, created__lt = need.created, published = True).latest("created")
+        except FoodbankChange.DoesNotExist:
+            prev_published = None
+        try:
+            prev_nonpert = FoodbankChange.objects.filter(foodbank = need.foodbank, created__lt = need.created, nonpertinent = True).latest("created")
+        except FoodbankChange.DoesNotExist:
+            prev_nonpert = None
+    else:
+        prev_published = None
+        prev_nonpert = None
     
     template_vars = {
         "need":need,
+        "prev_published":prev_published,
+        "prev_nonpert":prev_nonpert,
     }
     return render(request, "admin/need.html", template_vars)
 

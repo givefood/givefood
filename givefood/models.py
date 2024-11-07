@@ -1397,11 +1397,12 @@ class FoodbankChange(models.Model):
         last_need = FoodbankChange.objects.filter(
             foodbank = self.foodbank,
             created__lt = self.created,
+            published = True,
         ).order_by("-created")[:1]
 
         return last_need
 
-    def diff_from_last(self):
+    def diff_from_pub(self):
         last_need = self.last_need()
         if not last_need:
             return None
@@ -1411,7 +1412,7 @@ class FoodbankChange(models.Model):
                 self.change_list()
             )
 
-    def diff_from_last_excess(self):
+    def diff_from_pub_excess(self):
         last_need = self.last_need()
         if not last_need:
             return None
@@ -1427,6 +1428,36 @@ class FoodbankChange(models.Model):
             return None
         else:
             return last_need[0].created
+        
+    def last_nonpert_need(self):
+
+        last_need = FoodbankChange.objects.filter(
+            foodbank = self.foodbank,
+            created__lt = self.created,
+            nonpertinent = True,
+        ).order_by("-created")[:1]
+
+        return last_need
+    
+    def diff_from_nonpert(self):
+        last_need = self.last_nonpert_need()
+        if not last_need:
+            return None
+        else:
+            return diff_html(
+                last_need[0].change_list(),
+                self.change_list()
+            )
+
+    def diff_from_nonpert_excess(self):
+        last_need = self.last_nonpert_need()
+        if not last_need:
+            return None
+        else:
+            return diff_html(
+                last_need[0].excess_list(),
+                self.excess_list()
+            )
 
     def save(self, *args, **kwargs):
 
