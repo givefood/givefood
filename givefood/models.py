@@ -150,7 +150,7 @@ class Foodbank(models.Model):
 
         member_of = {}
         if self.network != "Independent":
-            if self.network == "Trussell Trust":
+            if self.network == "Trussell":
                 member_of = TRUSSELL_TRUST_SCHEMA
             if self.network == "IFAN":
                 member_of = IFAN_SCHEMA
@@ -244,7 +244,7 @@ class Foodbank(models.Model):
                 return "https://www.gov.im/about-the-government/offices/attorney-generals-chambers/crown-office/charities/index-of-charities-registered-in-the-isle-of-man/"
 
     def network_url(self):
-        if self.network == "Trussell Trust":
+        if self.network == "Trussell":
             return "https://www.trussell.org.uk/"
         if self.network == "IFAN":
             return "https://www.foodaidnetwork.org.uk/"
@@ -606,7 +606,7 @@ class FoodbankLocation(models.Model):
 
         member_of = {}
         if self.foodbank_network != "Independent":
-            if self.foodbank_network == "Trussell Trust":
+            if self.foodbank_network == "Trussell":
                 member_of = TRUSSELL_TRUST_SCHEMA
             if self.foodbank_network == "IFAN":
                 member_of = IFAN_SCHEMA

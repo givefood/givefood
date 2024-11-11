@@ -35,7 +35,7 @@ NEED_LINE_TYPES = [
 NEED_LINE_TYPES_CHOICES = tuple((line_type, line_type) for line_type in NEED_LINE_TYPES)
 
 FOODBANK_NETWORKS = [
-    "Trussell Trust",
+    "Trussell",
     "IFAN",
     "Independent",
 ]

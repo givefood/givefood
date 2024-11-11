@@ -96,7 +96,7 @@ def most_requested_items(request):
 
     # Find the food banks that have updated their needs within the day threshold
     if trusselltrust:
-        recent_foodbanks = Foodbank.objects.filter(network = "Trussell Trust", last_need__gt = day_threshold).order_by("-last_need")
+        recent_foodbanks = Foodbank.objects.filter(network = "Trussell", last_need__gt = day_threshold).order_by("-last_need")
     else:
         recent_foodbanks = Foodbank.objects.filter(last_need__gt = day_threshold).order_by("-last_need")
 
@@ -206,8 +206,8 @@ def item_categories(request):
 @cache_page(SECONDS_IN_HOUR)
 def tt_old_data(request):
 
-    recent = Foodbank.objects.filter(network = "Trussell Trust", is_closed = False).order_by("-last_need")[:100]
-    old = Foodbank.objects.filter(network = "Trussell Trust", is_closed = False).order_by("last_need")[:100]
+    recent = Foodbank.objects.filter(network = "Trussell", is_closed = False).order_by("-last_need")[:100]
+    old = Foodbank.objects.filter(network = "Trussell", is_closed = False).order_by("last_need")[:100]
 
     template_vars = {
         "recent":recent,
