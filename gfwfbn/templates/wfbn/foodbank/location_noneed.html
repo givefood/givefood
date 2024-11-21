@@ -10,7 +10,7 @@
   <meta property="og:title" content="{{ location }}, {{ foodbank.full_name }}">
   <meta property="og:description" content="Find what {{ foodbank.full_name }} in {{ location }} is requesting to have donated">
   <meta name="description" content="Find what {{ foodbank.full_name }} in {{ location }} is requesting to have donated">
-  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_location_map' foodbank.slug location.slug %}">
+  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn-generic:foodbank_location_map' foodbank.slug location.slug %}">
   <link rel="manifest" href="{% url 'wfbn:manifest' %}">
   <meta name="geo.placename" content="{{ location }} - {{ foodbank.full_name }}">
   <meta name="geo.position" content="{{ location.latt_long }}">
@@ -86,7 +86,7 @@
 
             {% if location.place_has_photo %}
               <div>
-                <img src="{% url 'wfbn:foodbank_location_photo' foodbank.slug location.slug %}" alt="{{ location.name }}" loading="lazy" class="placephoto">
+                <img src="{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %}" alt="{{ location.name }}" loading="lazy" class="placephoto">
               </div>
             {% endif %}
 
@@ -131,6 +131,6 @@
 <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}" defer></script>
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
 <script src="/static/js/wfbn_map.js?v={{ version }}" defer></script>
-<script src="{% url 'wfbn:foodbank_hit' foodbank.slug %}" defer></script>
+<script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
 {% endblock %}
 

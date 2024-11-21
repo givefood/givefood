@@ -8,7 +8,7 @@
   <meta property="og:title" content="{{ foodbank.full_name }}">
   <meta property="og:description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
   <meta name="description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
-  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_map' foodbank.slug %}">
+  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn-generic:foodbank_map' foodbank.slug %}">
   <meta property="og:image:alt" content="Map of {{ foodbank.full_name }}">
   <link rel="manifest" href="{% url 'wfbn:manifest' %}">
   <meta name="geo.placename" content="{{ foodbank.full_name }}">
@@ -77,7 +77,7 @@
 
 {% block script %}
 
-<script src="{% url 'wfbn:foodbank_hit' foodbank.slug %}" defer></script>
+<script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
 
 {% endblock %}
