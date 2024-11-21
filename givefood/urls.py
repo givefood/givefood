@@ -43,7 +43,7 @@ urlpatterns += i18n_patterns(
     re_path(r"^(?P<year>(2019|2020|2021|2022|2023))/$", givefood.views.annual_report, name="annual_report"),
 
     # WFBN
-    path("needs/", include('gfwfbn.urls', namespace="wfbn")),
+    path("needs/", include('gfwfbn.urls.i18n', namespace="wfbn")),
 
     # Sitemaps
     path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
@@ -53,6 +53,9 @@ urlpatterns += i18n_patterns(
     
 # Untranslated pages
 urlpatterns += [
+
+    # WFBN
+    path("needs/", include('gfwfbn.urls.generic', namespace="wfbn")),
     re_path(r'^_ah/', include('djangae.urls')),
 
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
