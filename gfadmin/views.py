@@ -101,7 +101,9 @@ def foodbanks(request):
         "no_locations",
         "-no_locations",
         "no_donation_points",
-        "-no_donation_points"
+        "-no_donation_points",
+        "last_need_check",
+        "-last_need_check",
     ]
     sort = request.GET.get("sort", "edited")
     if sort not in sort_options:

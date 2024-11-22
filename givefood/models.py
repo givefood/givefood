@@ -63,6 +63,7 @@ class Foodbank(models.Model):
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
     bankuet_slug = models.CharField(max_length=50, null=True, blank=True)
     fsa_id = models.CharField(max_length=50, null=True, blank=True, verbose_name="Food Standards Agency Business ID")
+    hours_between_need_check = models.IntegerField(default=3, verbose_name="Hours between need checks", choices=((3,3),(6,6),(12,12),(48,48)))
 
     foodbank_group = models.ForeignKey("FoodbankGroup", null=True, blank=True, on_delete=models.DO_NOTHING)
     foodbank_group_name = models.CharField(max_length=100, null=True, blank=True, editable=False)

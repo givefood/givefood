@@ -13,7 +13,7 @@ from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, clean_foodbank_need_text, decache, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison
+from givefood.func import chatgpt, clean_foodbank_need_text, decache, do_foodbank_need_check, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison
 from django.template.loader import render_to_string
 
 
@@ -130,137 +130,24 @@ def discrepancy_check(request):
     return HttpResponse("OK")
 
 
-def need_check(request):
+def need_check(request, hours):
 
-    foodbank = Foodbank.objects.filter(is_closed = False).order_by("last_need_check")[0]
+    foodbanks = Foodbank.objects.filter(
+        is_closed = False,
+        hours_between_need_check = hours
+    ).exclude(
+        shopping_list_url__contains = "facebook.com"
+    ).order_by("?")
 
-    do_check = True
-
-    if "facebook.com" in foodbank.shopping_list_url :
-        do_check = False
-    
-    if do_check:
-        return foodbank_need_check(request, foodbank.slug)
-    else:
-        foodbank.last_need_check = datetime.now()
-        foodbank.save(do_decache=False, do_geoupdate=False)
-        return HttpResponse("OK")
+    for foodbank in foodbanks:
+        do_foodbank_need_check(foodbank)
+    return HttpResponse("%s foodbank needs checked" % len(foodbanks))
 
 
 def foodbank_need_check(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug=slug)
-
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
-    }
-
-    try:
-        foodbank_shoppinglist_page = requests.get(foodbank.shopping_list_url, headers=headers, verify=False)
-    except requests.exceptions.RequestException:
-        website_discrepancy = FoodbankDiscrepancy(
-            foodbank = foodbank,
-            discrepancy_type = "website",
-            discrepancy_text = "Website %s connection failed" % (foodbank.url),
-            url = foodbank.url,
-        )
-        website_discrepancy.save()
-        foodbank.last_need_check = datetime.now()
-        foodbank.save(do_decache=False, do_geoupdate=False)
-        return HttpResponse("Error website %s" % (foodbank.url))
-    
-    foodbank_shoppinglist_page = htmlbodytext(foodbank_shoppinglist_page.text)
-
-    need_prompt = render_to_string(
-        "foodbank_need_prompt.txt",
-        {
-            "foodbank_page":foodbank_shoppinglist_page,
-        }
-    )
-    try:
-        need_response = gemini(
-            prompt = need_prompt,
-            temperature = 0,
-        )
-    except Exception as e:
-        website_discrepancy = FoodbankDiscrepancy(
-            foodbank = foodbank,
-            discrepancy_type = "website",
-            discrepancy_text = "Website need AI parse failed %s" % (e),
-            url = foodbank.url,
-        )
-        website_discrepancy.save()
-        foodbank.last_need_check = datetime.now()
-        foodbank.save(do_decache=False, do_geoupdate=False)
-        return HttpResponse("Error AI parse %s" % (foodbank.url))
-    
-    if need_response:
-        need_response = json.loads(need_response)
-    else:
-        website_discrepancy = FoodbankDiscrepancy(
-            foodbank = foodbank,
-            discrepancy_type = "website",
-            discrepancy_text = "Website need AI parse failed",
-            url = foodbank.url,
-        )
-        website_discrepancy.save()
-        foodbank.last_need_check = datetime.now()
-        foodbank.save(do_decache=False, do_geoupdate=False)
-        return HttpResponse("Error AI parse %s" % (foodbank.url))
-
-    need_text = '\n'.join(need_response["needed"])
-    need_text = clean_foodbank_need_text(need_text)
-    excess_text = '\n'.join(need_response["excess"])
-    excess_text = clean_foodbank_need_text(excess_text)
-
-    last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
-    try:
-        last_nonpertinent_need = FoodbankChange.objects.filter(foodbank = foodbank, nonpertinent = True).latest("created")
-    except FoodbankChange.DoesNotExist:
-        last_nonpertinent_need = None
-
-    is_nonpertinent = False
-    is_change = False
-    change_state = []
-
-    if last_nonpertinent_need:
-        if text_for_comparison(need_text) == text_for_comparison(last_nonpertinent_need.change_text) and text_for_comparison(excess_text) == text_for_comparison(last_nonpertinent_need.excess_change_text):
-            is_nonpertinent = True
-            change_state.append("Last nonpert same")
-
-    if text_for_comparison(need_text) != text_for_comparison(last_published_need.change_text):
-        is_change = True
-        change_state.append("Last pub need change")
-    if text_for_comparison(excess_text) != text_for_comparison(last_published_need.excess_change_text):
-        is_change = True
-        change_state.append("Last pub excess change")
-
-    if is_change and not is_nonpertinent:
-        foodbank_change = FoodbankChange(
-            foodbank = foodbank,
-            uri = foodbank.shopping_list_url,
-            change_text = need_text,
-            change_text_original = need_text,
-            excess_change_text = excess_text,
-            excess_change_text_original = excess_text,
-            input_method = "ai",
-        )
-        foodbank_change.save()
-
-    foodbank.last_need_check = datetime.now()
-    foodbank.save(do_decache=False, do_geoupdate=False)
-
-    template_vars = {
-        "foodbank":foodbank,
-        "need_prompt":need_prompt,
-        "is_nonpertinent":is_nonpertinent,
-        "is_change":is_change,
-        "change_state":change_state,
-        "need_text":need_text,
-        "excess_text":excess_text,
-        "last_published_need":last_published_need,
-        "last_nonpertinent_need":last_nonpertinent_need,
-    }
+    template_vars = do_foodbank_need_check(foodbank)
 
     return render(request, "need_check.html", template_vars)
 
@@ -275,7 +162,6 @@ def decache_donationpoints(request):
     decache(urls)
 
     return HttpResponse("OK")
-
 
 
 def cleanup_subs(request):

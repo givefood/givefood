@@ -13,8 +13,20 @@ cron:
   schedule: every monday 03:00
 
 - description: need check
-  url: /offline/need_check/
-  schedule: every 1 minutes
+  url: /offline/need_check/3/
+  schedule: every 3 hours
+
+- description: need check
+  url: /offline/need_check/6/
+  schedule: every 6 hours
+
+- description: need check
+  url: /offline/need_check/12/
+  schedule: every 12 hours
+
+- description: need check
+  url: /offline/need_check/48/
+  schedule: every 48 hours
 
 - description: discrepancy check
   url: /offline/discrepancy_check/

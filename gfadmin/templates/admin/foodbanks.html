@@ -35,6 +35,7 @@
           <th>Network</th>
           <th>Last Order</th>
           <th>Last Need</th>
+          <th>Last Need Check</th>
           <th>Created</th>
           <th>Modified</th>
           <th>Edited</th>
@@ -60,6 +61,12 @@
             <td>
               {{ foodbank.last_need }}<br>
               <span class="is-size-7">{{ foodbank.last_need|timesince }} ago</span>
+            </td>
+            <td>
+              {{ foodbank.last_need_check }}
+              {% if foodbank.last_need_check %}
+                <br><span class="is-size-7">{{ foodbank.last_need_check|timesince }} ago</span>
+              {% endif %}
             </td>
             <td>
               {{ foodbank.created }}<br>

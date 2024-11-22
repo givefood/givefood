@@ -54,9 +54,8 @@ urlpatterns += i18n_patterns(
 # Untranslated pages
 urlpatterns += [
 
-    # WFBN
-    path("needs/", include('gfwfbn.urls.generic', namespace="wfbn-generic")),
-    re_path(r'^_ah/', include('djangae.urls')),
+    # Warmup
+    path("_ah/warmup/", givefood.views.index, name="index"),
 
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
@@ -75,6 +74,7 @@ urlpatterns += [
 
 # Untranslated apps
 urlpatterns += [
+    path("needs/", include('gfwfbn.urls.generic', namespace="wfbn-generic")),
     url(r'^api/1/', include('gfapi1.urls')),
     url(r'^api/2/', include('gfapi2.urls', namespace="api2")),
     url(r'^api/3/', include('gfapi3.urls', namespace="api3")),
