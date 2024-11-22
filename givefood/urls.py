@@ -28,6 +28,10 @@ for from_url, to_url in redirectors.items():
 
 urlpatterns += redirect_patterns
 
+urlpatterns += [
+    path("needs/", include('gfwfbn.urls.generic', namespace="wfbn-generic")),
+]
+
 # Translated pages
 urlpatterns += i18n_patterns(
 
@@ -74,7 +78,6 @@ urlpatterns += [
 
 # Untranslated apps
 urlpatterns += [
-    path("needs/", include('gfwfbn.urls.generic', namespace="wfbn-generic")),
     url(r'^api/1/', include('gfapi1.urls')),
     url(r'^api/2/', include('gfapi2.urls', namespace="api2")),
     url(r'^api/3/', include('gfapi3.urls', namespace="api3")),
