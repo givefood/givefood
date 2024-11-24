@@ -4,6 +4,7 @@
 import hashlib, unicodedata, logging, json
 from datetime import date, datetime, timedelta
 from string import capwords
+from urllib.parse import quote_plus
 from furl import furl
 
 from django.db import models
@@ -179,6 +180,15 @@ class Foodbank(models.Model):
             "identifier": self.charity_number,
             "memberOf": member_of,
         }
+
+        # sameAs
+        schema_dict["sameAs"] = []
+        schema_dict["sameAs"].append(self.url)
+        if self.place_id:
+            schema_dict["sameAs"].append("https://www.google.co.uk/maps/place/%s/" % quote_plus(self.plus_code_global))
+        if self.charity_number:
+            schema_dict["sameAs"].append(self.charity_register_url())
+        
         if not as_sub_property:
             schema_dict["@context"] = "https://schema.org"
             if seeks:
