@@ -187,7 +187,7 @@ def geojson(request, slug = None, parlcon_slug = None):
                 "type":"f",
                 "name":foodbank.full_name(),
                 "address":foodbank.full_address(),
-                "url":"/needs/at/%s/" % foodbank.slug,
+                "url":reverse("wfbn:foodbank", kwargs={"slug":foodbank.slug}),
             }
         })
         if foodbank.delivery_address:
@@ -201,7 +201,7 @@ def geojson(request, slug = None, parlcon_slug = None):
                     "type":"f",
                     "name":"%s Delivery Address" % (foodbank.full_name()),
                     "address":foodbank.delivery_address,
-                    "url":"/needs/at/%s/" % foodbank.slug,
+                    "url":reverse("wfbn:foodbank", kwargs={"slug":foodbank.slug}),
                 }
             })
     
@@ -217,7 +217,7 @@ def geojson(request, slug = None, parlcon_slug = None):
                 "name":location.name,
                 "foodbank":location.foodbank_name,
                 "address":location.full_address(),
-                "url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug),
+                "url":reverse("wfbn:foodbank_location", kwargs={"slug":foodbank.slug, "locslug":location.slug}),
             }
         })
 
@@ -233,7 +233,7 @@ def geojson(request, slug = None, parlcon_slug = None):
                 "name":donationpoint.name,
                 "foodbank":donationpoint.foodbank_name,
                 "address":donationpoint.full_address(),
-                "url":"/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
+                "url":reverse("wfbn:foodbank_donationpoint", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug}),
             }
         })
 
