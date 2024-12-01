@@ -135,8 +135,6 @@ def need_check(request, hours):
     foodbanks = Foodbank.objects.filter(
         is_closed = False,
         hours_between_need_check = hours
-    ).exclude(
-        shopping_list_url__contains = "facebook.com"
     ).order_by("?")
 
     for foodbank in foodbanks:
