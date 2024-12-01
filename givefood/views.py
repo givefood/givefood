@@ -3,16 +3,16 @@ import requests
 
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.template.loader import render_to_string
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.db.models import Sum
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _
 from session_csrf import anonymous_csrf
 
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation, Order, FoodbankChange, ParliamentaryConstituency
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation, Order, FoodbankChange, OrderGroup, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
@@ -148,6 +148,69 @@ def donate(request):
     Donate page
     """
     return render(request, "public/donate.html")
+
+
+def managed_donation(request, slug, key):
+    """
+    Managed donation page
+    """
+
+    order_group = get_object_or_404(OrderGroup, slug=slug, key=key, public=True)
+
+    items = 0
+    weight = 0
+    calories = 0
+    cost = 0
+
+    for order in order_group.orders():
+        items += order.no_items
+        weight += order.weight_kg_pkg()
+        calories += order.calories
+        cost += order.cost
+
+    template_vars = {
+        "order_group":order_group,
+        "items":items,
+        "weight":weight,
+        "calories":calories,
+        "cost":cost/100,
+        "meals":int(calories/500),
+    }
+    return render(request, "public/managed_donation.html", template_vars)
+
+
+def managed_donation_geojson(request, slug, key):
+
+    order_group = get_object_or_404(OrderGroup, slug=slug, key=key, public=True)
+
+    features = []
+    for order in order_group.orders():
+        feature = {
+            "type":"Feature",
+            "geometry":{
+                "type":"Point",
+                "coordinates":[order.foodbank.long(), order.foodbank.latt()],
+            },
+            "properties":{
+                "type":"f",
+                "name":order.foodbank.name,
+                "address":order.foodbank.address,
+                "postcode":order.foodbank.postcode,
+                "no_items":order.no_items,
+                "weight":order.weight_kg_pkg(),
+                "calories":order.calories,
+                "cost":order.cost/100,
+                "url":"/needs/at/%s/" % order.foodbank.slug,
+            }
+        }
+        features.append(feature)
+
+    response_dict = {
+            "type": "FeatureCollection",
+            "features": features
+    }
+
+    return JsonResponse(response_dict)
 
 
 @cache_page(SECONDS_IN_WEEK)

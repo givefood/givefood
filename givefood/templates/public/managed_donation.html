@@ -1,0 +1,94 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+{% load i18n %}
+
+{% block title %}{{ order_group.name }} Donation - Give Food{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
+    <link rel="stylesheet" href="/static/css/managed_donation.css?v={{ version }}">
+    <meta name="description" content="{% blocktrans %}Give Food is a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}">
+    <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns is-centered">
+        <div class="column">
+            <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column content">
+            <h1>{{ order_group.name }} Donation</h1>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column is-one-half content">
+            <div id="map"></div>
+        </div>
+        <div class="column is-one-half content">
+
+            <p>Give Food is a UK charity that runs the largest public database of food banks and what they are requesting to have donated.</p>
+            <p>We've managed a donation on your behalf, aiming to get the specific items requested to food banks when they need it. Here are the details of what has been delivered where.</p>
+            
+            <dl>
+                <dt>Items</dt>
+                <dd>{{ items|intcomma }}</dd>
+                <dt>Weight</dt>
+                <dd>{{ weight|floatformat:2 }}kg</dd>
+                <dt>Calories</dt>
+                <dd>{{ calories|intcomma }}</dd>
+                <dt>Cost</dt>
+                <dd>£{{ cost|intcomma }}</dd>
+            </dl>
+
+            <p>{{ calories|intcomma }} calories is enough for around {{ meals|intcomma }} meals.</p>
+
+            <table class="table is-fullwidth is-narrow">
+                <tr>
+                    <th>Date</th>
+                    <th>Food Bank</th>
+                    <th>Items</th>
+                    <th>Weight</th>
+                    <th>Calories</th>
+                    <th>Cost</th>
+                </tr>
+                {% for order in order_group.orders %}
+                    <tr>
+                        <td>{{ order.delivery_date }}</td>
+                        <td><a href="{% url 'wfbn:foodbank' order.foodbank.slug %}">{{ order.foodbank.name }}</a></td>
+                        <td>{{ order.no_items }}</td>
+                        <td>{{ order.weight_kg_pkg|intcomma|floatformat:2 }}kg</td>
+                        <td>{{ order.calories|intcomma }}</td>
+                        <td>£{{ order.natural_cost }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+  <script>
+    var gf_map_config = {
+      geojson: "{% url 'managed_donation_geojson' order_group.slug order_group.key %}",
+      lat: 55.4,
+      lng: -4,
+      zoom: 6,
+      location_marker: false,
+    }
+  </script>
+
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places" defer></script>
+  <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
+  <script src="/static/js/wfbn_map.js?v={{ version }}" defer></script>
+
+{% endblock %}

@@ -17,12 +17,19 @@
         <tr>
           <th>Name</th>
           <th>Created</th>
+          <th>Public?</th>
           <th></th>
         </tr>
         {% for order_group in order_groups %}
           <tr>
             <td><a href="{% url 'admin:order_group' order_group.slug %}">{{ order_group.name }}</a></td>
             <td>{{ order_group.created }}</td>
+            <td>
+              {% if order_group.public %}
+                <span style="color:green">✓</span>
+                <a href="{% url 'managed_donation' order_group.slug order_group.key %}">Link</a>
+              {% endif %}
+            </td>
             <td><a href="{% url 'admin:order_group_edit' order_group.slug %}" class="button is-small">Edit</a></td>
           </tr>
         {% endfor %}

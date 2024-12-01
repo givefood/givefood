@@ -1201,6 +1201,8 @@ class OrderGroup(models.Model):
 
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, editable=False)
+    public = models.BooleanField(default=False)
+    key = models.CharField(max_length=8, null=True, blank=True)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)

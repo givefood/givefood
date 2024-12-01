@@ -1,0 +1,13 @@
+.content h1 {
+  margin-bottom:-10px;
+}
+dt {
+  float:left;
+  width:200px;
+  font-weight:bold;
+}
+dd {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
