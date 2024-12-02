@@ -30,9 +30,6 @@
             <div id="map"></div>
         </div>
         <div class="column is-one-half content">
-
-            <p>Give Food is a UK charity that runs the largest public database of food banks and what they are requesting to have donated.</p>
-            <p>We've managed a donation on your behalf, aiming to get the specific items requested to food banks when they need it. Here are the details of what has been delivered where.</p>
             
             <dl>
                 <dt>Items</dt>
@@ -40,12 +37,10 @@
                 <dt>Weight</dt>
                 <dd>{{ weight|floatformat:2 }}kg</dd>
                 <dt>Calories</dt>
-                <dd>{{ calories|intcomma }}</dd>
+                <dd>{{ calories|intcomma }} (around {{ meals|intcomma }} meals)</dd>
                 <dt>Cost</dt>
                 <dd>£{{ cost|intcomma }}</dd>
             </dl>
-
-            <p>{{ calories|intcomma }} calories is enough for around {{ meals|intcomma }} meals.</p>
 
             <table class="table is-fullwidth is-narrow">
                 <tr>
@@ -58,7 +53,7 @@
                 </tr>
                 {% for order in order_group.orders %}
                     <tr>
-                        <td>{{ order.delivery_date }}</td>
+                        <td>{{ order.delivery_date }}, {{ order.delivery_hour }}:00</td>
                         <td><a href="{% url 'wfbn:foodbank' order.foodbank.slug %}">{{ order.foodbank.name }}</a></td>
                         <td>{{ order.no_items }}</td>
                         <td>{{ order.weight_kg_pkg|intcomma|floatformat:2 }}kg</td>
