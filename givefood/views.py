@@ -200,7 +200,7 @@ def managed_donation_geojson(request, slug, key):
                 "weight":order.weight_kg_pkg(),
                 "calories":order.calories,
                 "cost":order.cost/100,
-                "url":"/needs/at/%s/" % order.foodbank.slug,
+                "url":reverse("wfbn:foodbank", kwargs={"slug":order.foodbank.slug}),
             }
         }
         features.append(feature)
