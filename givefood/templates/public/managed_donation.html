@@ -27,9 +27,6 @@
 
     <div class="columns is-centered">
         <div class="column is-one-half content">
-            <div id="map"></div>
-        </div>
-        <div class="column is-one-half content">
             
             <dl>
                 <dt>Items</dt>
@@ -42,9 +39,11 @@
                 <dd>£{{ cost|intcomma }}</dd>
             </dl>
 
-            <table class="table is-fullwidth is-narrow">
+            <br>
+
+            <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
                 <tr>
-                    <th>Date</th>
+                    <th>Delivery</th>
                     <th>Food Bank</th>
                     <th>Items</th>
                     <th>Weight</th>
@@ -62,7 +61,16 @@
                     </tr>
                 {% endfor %}
             </table>
+
+            <br>
+
+            <h2>About Give Food</h2>
+            <p>We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.</p>
+            <p>We've managed this kind donation to UK food banks on your behalf to get the items requested by food banks delivered directly to them. Thank you!</p>
             
+        </div>
+        <div class="column is-one-half content">
+            <div id="map"></div>
         </div>
     </div>
 
