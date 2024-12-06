@@ -165,6 +165,7 @@ OLD_FOODBANK_SLUGS = {
     "st-pauls-centre":":st-pauls",
     "central-southwark-community-hub":"spring-community-hub",
     "clyde-avon-nethan":"larkhall-district",
+    "norwood-brixton":"lambeth-south-croydon",
 }
 
 FOODBANK_SUBPAGES = [
