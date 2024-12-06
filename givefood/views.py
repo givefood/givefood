@@ -150,6 +150,7 @@ def donate(request):
     return render(request, "public/donate.html")
 
 
+@cache_page(SECONDS_IN_HOUR)
 def managed_donation(request, slug, key):
     """
     Managed donation page
@@ -179,6 +180,7 @@ def managed_donation(request, slug, key):
     return render(request, "public/managed_donation.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
 def managed_donation_geojson(request, slug, key):
 
     order_group = get_object_or_404(OrderGroup, slug=slug, key=key, public=True)
