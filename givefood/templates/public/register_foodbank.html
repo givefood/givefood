@@ -2,6 +2,10 @@
 {% load bulma_tags %}
 {% load i18n %}
 
+{% block head %}
+  <meta name="robots" content="noindex">
+{% endblock %}
+
 {% block title %}{% trans "Register a food bank" %} - Give Food{% endblock %}
 
 {% block body %}
