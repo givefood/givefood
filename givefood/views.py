@@ -241,7 +241,6 @@ def sitemap(request):
         "index",
         "about_us",
         "donate",
-        "register_foodbank",
         "annual_report_index",
         "privacy",
     ]
