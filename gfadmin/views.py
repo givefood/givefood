@@ -138,26 +138,6 @@ def foodbanks_csv(request):
     return response
 
 
-def foodbanks_christmascards(request):
-
-    foodbanks = Foodbank.objects.filter(is_closed = False).order_by("name")
-
-    template_vars = {
-        "foodbanks":foodbanks,
-    }
-    return render(request, "admin/foodbanks_christmascards.html", template_vars)
-
-
-def foodbanks_delivery_addresses(request):
-
-    foodbanks = Foodbank.objects.all().order_by("name")
-
-    template_vars = {
-        "foodbanks":foodbanks,
-    }
-    return render(request, "admin/foodbanks_deliveryaddresses.html", template_vars)
-
-
 def foodbanks_dupe_postcodes(request):
 
     foodbanks = get_all_foodbanks()
@@ -1155,15 +1135,6 @@ def order_email(request, id):
         "order":order,
     }
     return render(request, "emails/order.%s" % (extension), template_vars, content_type = content_type)
-
-
-def resave_orders(request):
-
-    orders = Order.objects.all().order_by("created")
-    for order in orders:
-        order.save()
-
-    return HttpResponse("OK")
 
 
 def parlcon_form(request, slug = None):
