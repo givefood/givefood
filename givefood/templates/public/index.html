@@ -123,19 +123,19 @@
   <div class="columns stats">
       <div class="column">
         <h3>📍&ensp;{% trans "Food banks" %}</h3>
-        <p>{{ stats.foodbanks|intcomma }}</p>
+        <p>{{ stats.foodbanks|intcomma:False }}</p>
       </div>
       <div class="column">
         <h3>🛒&ensp;{% trans "Donation points" %}</h3>
-        <p>{{ stats.donationpoints|intcomma }}</p>
+        <p>{{ stats.donationpoints|intcomma:False }}</p>
       </div>
       <div class="column">
         <h3>🥫&ensp;{% trans "Items requested" %}</h3>
-        <p>{{ stats.items|intcomma }}</p>
+        <p>{{ stats.items|intcomma:False }}</p>
       </div>
       <div class="column">
         <h3>🥣&ensp;{% trans "Meals delivered" %}</h3>
-        <p>{{ stats.meals|intcomma }}</p>
+        <p>{{ stats.meals|intcomma:False }}</p>
       </div>
       <div class="column">
         <h3>📅&ensp;{% trans "Last updated" %}</h3>
