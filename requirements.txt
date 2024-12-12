@@ -1,4 +1,4 @@
-django>=3.2,<3.3
+django==4.2.17
 git+https://gitlab.com/potato-oss/djangae/djangae.git#egg=djangae
 GoogleAppEngineCloudStorageClient==1.9.22.1
 google-cloud-tasks>=2.0.0
@@ -8,7 +8,7 @@ django-session-csrf
 python-dateutil
 requests-toolbelt
 requests
-django-bulma==0.8.3
+django-bulma==0.9.0
 unicodecsv
 dicttoxml
 feedparser

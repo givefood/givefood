@@ -1,7 +1,7 @@
 import logging
 
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import RedirectView
@@ -80,12 +80,12 @@ urlpatterns += [
 
 # Untranslated apps
 urlpatterns += [
-    url(r'^api/1/', include('gfapi1.urls')),
-    url(r'^api/2/', include('gfapi2.urls', namespace="api2")),
-    url(r'^api/3/', include('gfapi3.urls', namespace="api3")),
-    url(r'^api/', include('gfapi2.urls')),
-    url(r'^admin/', include('gfadmin.urls', namespace="admin")),
-    url(r'^dashboard/', include('gfdash.urls', namespace="dash")),
-    url(r'^offline/', include('gfoffline.urls', namespace="offline")),
-    url(r'^write/', include('gfwrite.urls', namespace="write")),
+    path('api/1/', include('gfapi1.urls')),
+    path('api/2/', include('gfapi2.urls', namespace="api2")),
+    path('api/3/', include('gfapi3.urls', namespace="api3")),
+    path('api/', include('gfapi2.urls')),
+    path('admin/', include('gfadmin.urls', namespace="admin")),
+    path('dashboard/', include('gfdash.urls', namespace="dash")),
+    path('offline/', include('gfoffline.urls', namespace="offline")),
+    path('write/', include('gfwrite.urls', namespace="write")),
 ]
