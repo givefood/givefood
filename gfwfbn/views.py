@@ -217,7 +217,7 @@ def geojson(request, slug = None, parlcon_slug = None):
                 "name":location.name,
                 "foodbank":location.foodbank_name,
                 "address":location.full_address(),
-                "url":reverse("wfbn:foodbank_location", kwargs={"slug":foodbank.slug, "locslug":location.slug}),
+                "url":reverse("wfbn:foodbank_location", kwargs={"slug":location.foodbank_slug, "locslug":location.slug}),
             }
         })
 
