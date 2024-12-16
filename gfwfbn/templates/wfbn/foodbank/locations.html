@@ -105,9 +105,8 @@
   }
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}" defer></script>
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
-<script src="/static/js/wfbn_map.js?v={{ version }}" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places&loading=async&callback=init&region=GB" defer></script>
 <script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
 
 {% endblock %}

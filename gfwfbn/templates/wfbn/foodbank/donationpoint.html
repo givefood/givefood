@@ -145,19 +145,18 @@
 {% endblock %}
 
 {% block script %}
-<script>
-  var gf_map_config = {
-    geojson: "{% url 'wfbn:foodbank_geojson' foodbank.slug %}",
-    lat: {{ donationpoint.latt }},
-    lng: {{ donationpoint.long }},
-    zoom: 15,
-    location_marker: false,
-  }
-</script>
+  <script>
+    var gf_map_config = {
+      geojson: "{% url 'wfbn:foodbank_geojson' foodbank.slug %}",
+      lat: {{ donationpoint.latt }},
+      lng: {{ donationpoint.long }},
+      zoom: 15,
+      location_marker: false,
+    }
+  </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}" defer></script>
-<script src="/static/js/wfbn.js?v={{ version }}" defer></script>
-<script src="/static/js/wfbn_map.js?v={{ version }}" defer></script>
-<script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
+  <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places&loading=async&callback=init&region=GB" defer></script>
+  <script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
 {% endblock %}
 
