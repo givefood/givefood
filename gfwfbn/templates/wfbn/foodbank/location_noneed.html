@@ -16,7 +16,7 @@
   <meta name="geo.position" content="{{ location.latt_long }}">
   <meta property="place:location:latitude" content="{{ location.latt }}">
   <meta property="place:location:longitude" content="{{ location.long }}">
-  <link rel="preload" href="{% url 'wfbn:foodbank_geojson' foodbank.slug %}" as="fetch">
+  <link rel="preload" href="{% url 'wfbn:foodbank_geojson' foodbank.slug %}" as="fetch" crossorigin="anonymous">
   {% if foodbank.is_closed %}
     <meta name="robots" content="noindex">
   {% endif %}
