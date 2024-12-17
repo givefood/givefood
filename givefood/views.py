@@ -74,6 +74,18 @@ def index(request):
             "slug":"ifan",
             "url":"https://www.foodaidnetwork.org.uk",
             "format":"png",
+        },
+        {
+            "name":"Channel 4",
+            "slug":"channel4",
+            "url":"https://www.channel4.com",
+            "format":"svg",
+        },
+        {
+            "name":"Welsh Government",
+            "slug":"welshgov",
+            "url":"https://www.gov.wales",
+            "format":"svg",
         }
     ]
 

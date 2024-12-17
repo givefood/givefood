@@ -95,6 +95,12 @@ h2 {
 .ifan {
     height:45px;
 }
+.channel4 {
+    height:60px;
+}
+.welshgov {
+    height:60px;
+}
 @media screen and (min-width: 769px) {
     .trusselltrust {
         height:80px;
