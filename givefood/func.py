@@ -1226,12 +1226,15 @@ def do_foodbank_need_check(foodbank):
         foodbank.save(do_decache=False, do_geoupdate=False)
         return False
     
+    foodbank_shoppinglist_html = foodbank_shoppinglist_page.text
     foodbank_shoppinglist_page = htmlbodytext(foodbank_shoppinglist_page.text)
 
     need_prompt = render_to_string(
         "foodbank_need_prompt.txt",
         {
+            "foodbank":foodbank,
             "foodbank_page":foodbank_shoppinglist_page,
+            "foodbank_html":foodbank_shoppinglist_html,
         }
     )
     try:
