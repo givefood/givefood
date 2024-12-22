@@ -13,9 +13,7 @@
     {% endif %}
 </h1>
 {% if foodbank.alt_name %}
-    {% if LANGUAGE_CODE == "en" %}
-        <p class="altname" lang="cy">{{ foodbank.alt_name }}</p>
-    {% else %}
+    {% if LANGUAGE_CODE == "cy" %}
         <p class="altname" lang="en">{{ foodbank.full_name }}</p>
     {% endif %}
 {% endif %}
