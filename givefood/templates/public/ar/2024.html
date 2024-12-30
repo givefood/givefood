@@ -1,0 +1,113 @@
+{% extends "public/page.html" %}
+
+{% block title %}2024 Give Food Annual Report{% endblock %}
+
+{% block head %}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@GiveFoodCharity">
+    <meta property="og:title" content="Give Food 2023 Annual Report">
+    <meta property="og:description" content="Find out what we've been doing in 2024">
+    <meta name="description" content="Find out what we've been doing in 2024">
+    <meta property="og:image" content="https://www.givefood.org.uk/static/img/ar/2024/sharing.png">
+    <meta property="og:image:alt" content="Map of UK food banks">
+{% endblock %}
+
+{% block body %}
+
+<div class="columns">
+
+    <div class="column is-4">
+        <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+
+  </div>
+
+  <div class="columns">
+    <div class="column is-one-third intro">
+
+        <h1>2024 annual report</h1>
+        <p>We're a UK charity that supports food banks around the country. We do this by using technology to identify what is needed at food banks, distributing this information and also making our own deliveries.</p>
+        <p>We run the largest and most complete public database of UK food banks and scrape their websites for what they are requesting in real time.</p>
+
+        <div class="sticky-toc content">
+            <ul class="is-size-6">
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#ai-data">AI &amp; data</a></li>
+                <li><a href="#general-election">General election</a></li>
+                <li><a href="#welsh-gaelic">Welsh &amp; Scots Gaelic support</a></li>
+                <li><a href="#donation-points">Donation points</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="column is-half content">
+
+        <h2 id="summary">Summary</h2>
+
+        <ul>
+            <li>Now use AI extensively to keep food bank data up-to-date</li>
+            <li>For the 2024 UK general election we build an interface for the public to engage with parliamentary candidates about food poverty</li>
+            <li>Our website is now available in <a href="/cy/">Welsh</a> and <a href="/gd/">Scots Gaelic</a></li>
+            <li>Added a fourth trustee to oversee the charity</li>
+        </ul>
+
+        <h2 id="ai-data">AI &amp; data</h2>
+        <p>We continue to maintain the UK's largest and most complete database of food banks covering 2,916 locations (up from 2,787 last year, 2,620 in 2022, 2,422 in 2021, and 2,329 in 2020).</p>
+
+        <p>During <a href="/2023/">2023</a> we started using AI to categorise the items that food banks needed. We expanded on this twice in 2024 - first to check food bank location and contact information, then to improve our crawling of the items food banks are requesting, and have in excess, from their websites.</p>
+
+        <figure>
+            <img src="/static/img/ar/2024/ai-need.png" alt="List of what a food bank needs and has in excess" loading="lazy">
+            <figcaption>AI discovering what a food bank needs donating, and what is in excess</figcaption>
+        </figure>
+
+        <p>In May we added support for food bank charities based on the Isle of Man.</p>
+
+        <p>Since July we've automatically checked the details of food banks tens of thousands of times resulting in the successful identification of hundreds of detail discrepancies such as phone number or postcode.</p>
+
+        <p>In September we added Food Standards Agency food hygiene ratings to food banks assessed by that organisation.</p>
+            
+        <p>Since late October we've used AI to find tens of thousands of items needed at UK food banks.</p>
+
+        <p>Our API responded to around 6.6 million requests for data in 2024.</p>
+
+        <h2 id="general-election">General election</h2>
+        <p>With the UK general election unexpectedly called earlier than many were expecting we quickly rebuilt our tool that allows users to email their MP to instead email candidates, using the new constituency boundaries.</p>
+
+        <p>The public received many thoughtful responses from the 26,234 people it was possible to vote for across the country, allowing candidates to give their thoughts on food poverty.</p>
+
+        <figure>
+            <img src="/static/img/ar/2024/general-election.png" alt="Interface to email electorial candidates about food poverty" loading="lazy">
+            <figcaption>Give Food General Election 2024 Tool</figcaption>
+        </figure>
+
+        <p>The day after the election was one of the busiest of the year that we saw for people looking to donate to food banks.</p>
+
+        <p>We then rebuilt the tool again as parliament restarted with a new government to allow the public to email their elected representative.</p>
+
+        <h2 id="welsh-gaelic">Welsh &amp; Scots Gaelic support</h2>
+
+        <p><em>Hello! <span lang="cy">Helo!</span> <span lang="gd">Halò!</span></em></p>
+
+        <p>In our continued efforts to make our data as accessible as possible we translated large portions of our website into <a href="/cy/">Welsh</a> and <a href="/gd/">Scots Gaelic</a>. We'll continue to improve this and add more languages spoken in the UK during 2025.</p>
+
+        <h2 id="donation-points">Donation points</h2>
+
+        <p>We added donation points to our data to show users where they can donate the items food banks are requesting. Currently we index nearly 7,000 donation points, of which about 3,000 are <a href="https://www.givefood.org.uk/dashboard/donationpoints/supermarkets/">supermarkets</a>.</p>
+
+        <p>Donation point data includes their address, opening hours, accessibility information plus photos and a map.</p>
+
+        <figure>
+            <img src="/static/img/ar/2024/donation-points.jpg" alt="A phone box and Canterbury cathedral" loading="lazy">
+            <figcaption>Donation points range from <a href="/needs/at/waveney/donationpoint/walpole-phone-box/">phone boxes</a> to <a href="/needs/at/canterbury/donationpoint/canterbury-cathedral/">cathedrals</a></figcaption>
+        </figure>
+
+
+        <br><br><br><br>
+
+    </div>
+
+  </div>
+
+
+{% endblock %}
