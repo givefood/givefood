@@ -68,6 +68,7 @@
 }
 #map {
     height:1000px;
+    border-radius: 0.25rem;
 }
 .sidemap {
     height:400px !important;
@@ -102,6 +103,7 @@
 .placephoto {
     margin-bottom:10px;
     max-height:400px;
+    border-radius: 0.25rem;
 }
 address {
     font-style:normal;

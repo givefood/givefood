@@ -142,7 +142,7 @@ footer {
     margin:0 0 10px 0;
 }
 .content img {
-    border-radius:6px;
+    border-radius:0.25rem;
 }
 .content img.no-corner {
     border-radius:0;
