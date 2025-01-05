@@ -70,7 +70,7 @@ h2 {
     margin:auto;
     text-align:center;
 }
-.trusselltrust {
+.trussell {
     height:60px;
 }
 .thetimes {
@@ -101,7 +101,7 @@ h2 {
     height:60px;
 }
 @media screen and (min-width: 769px) {
-    .trusselltrust {
+    .trussell {
         height:80px;
     }
     .thetimes {
