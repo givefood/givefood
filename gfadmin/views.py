@@ -1374,7 +1374,7 @@ def finder_trussell(request):
         page_text = response.text
         if "Sorry, there are no results which match your location." in page_text:
             at_the_end = True
-        trussell_urls.extend(re.findall("https:\/\/(\w+)\.foodbank\.org\.uk\/", page_text))
+        trussell_urls.extend(re.findall(r"https://(\w+)\.foodbank\.org\.uk/", page_text))
         page = page + 1
     trussell_urls = list(set(trussell_urls))
     trussell_urls.sort()
