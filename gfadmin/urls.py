@@ -80,6 +80,7 @@ urlpatterns = (
 
     path("finder/", finder, name="finder"),
     path("finder/check/", finder_check, name="finder_check"),
+    path("finder/trussell/", finder_trussell, name="finder_trussell"),
 
     path("politics/", politics, name="politics"),
     path("politics/csv/", politics_csv, name="politics_csv"),

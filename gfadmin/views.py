@@ -1361,6 +1361,46 @@ def finder_check(request):
     return redirect("admin:finder")
 
 
+def finder_trussell(request):
+
+    url = "https://www.trussell.org.uk/food-donation?lat=51.07167399999999&lng=-1.8121246&address=SP2%207HL&page="
+    page = 1
+    trussell_urls = []
+    at_the_end = False
+
+    while at_the_end == False:
+        page_url = "%s%s" % (url, page)
+        response = requests.get(page_url)
+        page_text = response.text
+        if "Sorry, there are no results which match your location." in page_text:
+            at_the_end = True
+        trussell_urls.extend(re.findall("https:\/\/(\w+)\.foodbank\.org\.uk\/", page_text))
+        page = page + 1
+    trussell_urls = list(set(trussell_urls))
+    trussell_urls.sort()
+
+    our_slugs = []
+    foodbanks = Foodbank.objects.filter(network = "Trussell").exclude(is_closed = True)
+    for foodbank in foodbanks:
+        our_slugs.append(foodbank.url.replace("https://","").replace(".foodbank.org.uk","").replace("/",""))
+    our_slugs.sort()
+
+    missing = []
+    for trussell_url in trussell_urls:
+        if trussell_url not in our_slugs:
+            missing.append(trussell_url)
+
+
+    template_vars = {
+        "section":"finder",
+        "trussell_urls":trussell_urls,
+        "our_slugs":our_slugs,
+        "missing":missing,
+    }
+    return render(request, "admin/finder_trussell.html", template_vars)
+
+
+
 def settings(request):
 
     template_vars = {
