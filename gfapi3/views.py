@@ -13,7 +13,7 @@ def index(request):
 
 def items(request):
 
-    items = FoodbankChangeLine.objects.select_related("foodbank").all()
+    items = FoodbankChangeLine.objects.select_related("foodbank").all().order_by("created")
 
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename="givefood_items.csv"'
