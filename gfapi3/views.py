@@ -2,7 +2,7 @@ import unicodecsv as csv
 
 from django.http import HttpResponse
 
-from givefood.models import Foodbank
+from givefood.models import Foodbank, FoodbankChangeLine
 
 DEFAULT_FORMAT = "json"
 
@@ -11,12 +11,53 @@ def index(request):
     return HttpResponse("Give Food API 3")
 
 
-def everything_csv(request):
+def items(request):
+
+    items = FoodbankChangeLine.objects.select_related("foodbank").all()
+
+    response = HttpResponse(content_type="text/csv")
+    response['Content-Disposition'] = 'attachment; filename="givefood_items.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([
+        "organisation_name",
+        "organisation_alt_name",
+        "organisation_slug",
+        "network",
+        "country",
+        "lat_lng",
+        "type",
+        "item",
+        "category",
+        "group",
+        "created",
+    ])
+
+    for item in items:
+        writer.writerow([
+            item.foodbank.name,
+            item.foodbank.alt_name,
+            item.foodbank.slug,
+            item.foodbank.network,
+            item.foodbank.country,
+            item.foodbank.latt_long,
+            item.type,
+            item.item,
+            item.category,
+            item.group,
+            item.created,
+        ])
+
+    return response
+
+    
+
+def foodbanks(request):
 
     foodbanks = Foodbank.objects.filter(is_closed=False).order_by("name")
 
     response = HttpResponse(content_type="text/csv")
-    response['Content-Disposition'] = 'attachment; filename="givefood.csv"'
+    response['Content-Disposition'] = 'attachment; filename="givefood_foodbanks.csv"'
 
     writer = csv.writer(response)
     writer.writerow([

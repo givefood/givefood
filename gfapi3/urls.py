@@ -5,5 +5,6 @@ app_name = "gfapi3"
 
 urlpatterns = (
     re_path(r'^$', index, name="index"),
-    re_path(r'^csv/$', everything_csv, name="everything_csv"),
+    re_path(r'^items/$', items, name="items"),
+    re_path(r'^foodbanks/$', foodbanks, name="foodbanks"),
 )
