@@ -167,6 +167,7 @@ OLD_FOODBANK_SLUGS = {
     "clyde-avon-nethan":"larkhall-district",
     "norwood-brixton":"lambeth-south-croydon",
     "southbourne":"bournemouth/southbourne",
+    "east-ayrshire":"ayrshire-east",
 }
 
 FOODBANK_SUBPAGES = [
