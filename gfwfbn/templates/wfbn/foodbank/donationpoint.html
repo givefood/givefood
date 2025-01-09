@@ -75,6 +75,9 @@
                 {% if foodbank.latest_need.excess_change_text %}
                   <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
                 {% endif %}
+
+                {% include 'wfbn/foodbank/includes/subscribe.html' %}
+
             {% endif %}
 
             {% if donationpoint.opening_hours %}
