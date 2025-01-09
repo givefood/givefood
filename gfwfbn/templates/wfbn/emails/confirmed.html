@@ -7,6 +7,9 @@
     
     <p>
         🔗 You can find more details <a href="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/">about the food bank</a><br>
+        {% if foodbank.no_donation_points != 0 %}
+            🛒 View the foodbank's <a href="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/donationpoints/">donation points</a><br>
+        {% endif %}
         🗺️ See other <a href="https://www.givefood.org.uk/needs/at/{{ foodbank.slug }}/nearby/">nearby food banks</a><br>
         🗳️ Explain to your MP that food banks shouldn't exist by <a href="https://www.givefood.org.uk/write/">taking political action</a>
     </p>
