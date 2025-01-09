@@ -314,36 +314,3 @@ def frag(request, frag):
         return HttpResponseForbidden()
 
     return HttpResponse(frag_text)
-        
-
-@csrf_exempt
-def distill_webhook(request):
-    """
-    Webhook for distill changes to be submitted
-    """
-
-    distill_key = get_cred("distill_key")
-    given_key = request.GET.get("key", None)
-
-    if distill_key != given_key:
-        return HttpResponseForbidden()
-
-    post_text = request.body
-    change_details = json.loads(post_text)
-
-    try:
-        foodbank = Foodbank.objects.get(shopping_list_url=change_details.get("uri"))
-    except Foodbank.DoesNotExist:
-        foodbank = None
-
-    new_foodbank_change = FoodbankChange(
-        distill_id = change_details.get("id"),
-        uri = change_details.get("uri"),
-        name = change_details.get("name"),
-        change_text = change_details.get("text"),
-        change_text_original = change_details.get("text"),
-        foodbank = foodbank,
-    )
-    new_foodbank_change.save()
-
-    return HttpResponse("OK")

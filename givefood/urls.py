@@ -68,9 +68,6 @@ urlpatterns += [
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
 
-    # KINDA PUBLIC
-    path("distill_webhook/", givefood.views.distill_webhook, name="distill_webhook"),
-
     # Rickrolling
     path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),
 
