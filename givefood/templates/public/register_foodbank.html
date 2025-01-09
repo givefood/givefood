@@ -42,13 +42,11 @@
 
         <p>We hope to get back to you in a couple of days, but sometimes it can take a little longer.</p>
 
-        <form method="post" action="{% url 'register_foodbank' %}">
+        <form method="post" action="{% url 'human' %}">
             {{ form|bulma }}
-            <label class="label">Check you're a human</label>
-            <div class="control">
-              <div class="cf-turnstile" data-sitekey="0x4AAAAAAABxtIRWlPcEGwhj" data-action="register-foodbank"></div><br>
-            </div>
             <input type="submit" class="button is-link">
+            <input type="hidden" name="target" value="{% url 'register_foodbank' %}">
+            <input type="hidden" name="action" value="register-foodbank">
             {% csrf_token %}
           </form>
 
@@ -59,9 +57,4 @@
     </div>
   </div>
 
-{% endblock %}
-
-
-{% block script %}
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endblock %}

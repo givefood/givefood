@@ -1,0 +1,43 @@
+{% extends "public/page.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Human check" %} - Give Food{% endblock %}
+
+{% block head %}
+  <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns is-centered">
+        <div class="column is-half">
+            <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column is-half content">
+
+            <p>{% trans "Sorry, but we just have to check you are a human..." %}</p>
+
+            <form action="https://www.givefood.org.uk{{ target }}" method="post">
+
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAAABxtIRWlPcEGwhj" data-action="{{ action }}" data-callback="turnstilecallback"></div>
+                <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+                <script>
+                    function turnstilecallback(token) {
+                        document.querySelector("form").submit();
+                    }
+                </script>
+
+                {% for post_var in post_vars.items %}
+                    <input type="hidden" name="{{ post_var.0 }}" value="{{ post_var.1 }}">
+                {% endfor %}
+
+            </form>
+
+        </div>
+    </div>
+
+
+{% endblock %}

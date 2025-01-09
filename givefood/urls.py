@@ -40,6 +40,7 @@ urlpatterns += i18n_patterns(
     path("register-foodbank/", givefood.views.register_foodbank, name="register_foodbank"),
     path("about-us/", givefood.views.about_us, name="about_us"),
     path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
+    path("human/", givefood.views.human, name="human"),
 
     # Donate
     path("donate/", givefood.views.donate, name="donate"),

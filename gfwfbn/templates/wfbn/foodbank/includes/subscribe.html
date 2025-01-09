@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="subscribe-form">
     <p id="subscribe" class="subscribe-tease">{% blocktrans %}Get an email when items are needed.{% endblocktrans %}</p>
-    <form action="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}" method="post">
+    <form action="{% url 'human' %}" method="post">
         <div class="field has-addons">
             <div class="control is-expanded">
                 <input class="input" id="email" maxlength="254" name="email" type="email" value="{% if email %}{{ email }}{% endif %}" placeholder="{% blocktrans %}Email address{% endblocktrans %}" required="required" autocomplete="email"{% if autofocus %} autofocus{% endif %}>
@@ -10,8 +10,8 @@
                 <button type="submit" class="button is-link" id="subscribe_btn">{% blocktrans %}Get updates{% endblocktrans %}</button>
             </div>
         </div>
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAABxtIRWlPcEGwhj" data-action="subscribe"></div>
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+        <input type="hidden" name="target" value="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}">
+        <input type="hidden" name="action" value="subscribe">
     </form>
     <p class="is-size-7 subscribe-hint">{% blocktrans %}We'll never use your email address for anything else, and you can unsubscribe at any time.{% endblocktrans %}</p>
 </div>

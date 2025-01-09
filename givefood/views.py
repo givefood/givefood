@@ -2,7 +2,7 @@ import json
 import requests
 
 from django.views.decorators.cache import cache_page
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 from django.template.loader import render_to_string
@@ -314,3 +314,28 @@ def frag(request, frag):
         return HttpResponseForbidden()
 
     return HttpResponse(frag_text)
+
+
+@require_POST
+def human(request):
+    """
+    Human check
+    """
+    post_vars = request.POST.dict()
+
+    target = post_vars.get("target")
+    if not target:
+        return HttpResponseForbidden()
+    post_vars.pop("target")
+    action = post_vars.get("action")
+    if not action:
+        return HttpResponseForbidden()
+    post_vars.pop("action")
+
+    tempate_vars = {
+        "headless":True,
+        "target":target,
+        "action":action,
+        "post_vars":post_vars,
+    }
+    return render(request, "public/human.html", tempate_vars)
