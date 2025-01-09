@@ -155,31 +155,6 @@
     </div>
   </div>
 
-  <div class="columns is-centered">
-
-      <div class="column is-one-quarter">
-
-        <nav class="secondary">
-          <ul>
-            <li><a href="{% url 'register_foodbank' %}">{% trans "Register a food bank" %}</a></li>
-            <li><a href="{% url 'dash:index' %}">{% trans "Dashboards" %}</a></li>
-            <li><a href="/api/">API</a> {% if LANGUAGE_CODE == 'cy' %} ({% trans 'English' %}){% endif %}</li>
-            <li><a href="{% url 'annual_report_index' %}">{% trans "Annual reports" %}</a></li>
-          </ul>
-        </nav>
-
-        <h3>{% trans "Email" %}</h3>
-        <p>
-          <a href="mailto:mail@givefood.org.uk" class="is-size-5">mail@givefood.org.uk</a>
-        </p>        
-      </div>
-
-      <div class="column is-one-quarter">
-        {% include 'wfbn/includes/facebook_embed.html' with page_name='GiveFoodOrgUK' %}
-      </div>
-      
-  </div>
-
 
 {% endblock %}
 
