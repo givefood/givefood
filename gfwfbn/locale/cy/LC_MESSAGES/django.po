@@ -179,7 +179,7 @@ msgid "Get updates"
 msgstr "Cael diweddariadau"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:19
-msgid "Get any email when new items are needed"
+msgid "Get an email when new items are needed"
 msgstr "Cael unrhyw e-bost pan fydd angen eitemau newydd"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
@@ -225,8 +225,8 @@ msgid "Nearby"
 msgstr "Gerllaw"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:3
-msgid "Get an email when items are needed."
-msgstr "Cael unrhyw e-bost pan fydd angen eitemau newydd"
+msgid "Get an email when items are needed"
+msgstr "Cael e-bost pan fydd angen eitemau"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
 msgid "Email address"

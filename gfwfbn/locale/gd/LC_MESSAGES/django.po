@@ -225,10 +225,6 @@ msgstr "Thoir seachad a ‘cleachdadh "
 msgid "Get updates"
 msgstr "Faigh ùrachaidhean"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:19
-msgid "Get any email when new items are needed"
-msgstr "Faigh post - d sam bith nuair a tha feum air nithean ùra"
-
 #: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "Eagrachadh"
@@ -280,8 +276,8 @@ msgid "Nearby"
 msgstr "Faisg air làimh"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:3
-msgid "Get an email when items are needed."
-msgstr "Cuir post - d thugainn nuair a tha feum air."
+msgid "Get an email when items are needed"
+msgstr "Faigh post-d nuair a tha feum air nithean"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
 msgid "Email address"
