@@ -39,10 +39,12 @@ urlpatterns += i18n_patterns(
     path("", givefood.views.index, name="index"),
     path("register-foodbank/", givefood.views.register_foodbank, name="register_foodbank"),
     path("about-us/", givefood.views.about_us, name="about_us"),
+    path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
+
+    # Donate
     path("donate/", givefood.views.donate, name="donate"),
     path("donate/managed/<slug:slug>-<slug:key>/", givefood.views.managed_donation, name="managed_donation"),
     path("donate/managed/<slug:slug>-<slug:key>/geo.json", givefood.views.managed_donation_geojson, name="managed_donation_geojson"),
-    path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
 
     # Annual Reports
     path("annual-reports/", givefood.views.annual_report_index, name="annual_report_index"),
