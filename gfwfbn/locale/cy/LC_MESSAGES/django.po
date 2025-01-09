@@ -178,10 +178,6 @@ msgstr "Cyfrannwch gan ddefnyddio "
 msgid "Get updates"
 msgstr "Cael diweddariadau"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:19
-msgid "Get an email when new items are needed"
-msgstr "Cael unrhyw e-bost pan fydd angen eitemau newydd"
-
 #: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "Sefydliad"
