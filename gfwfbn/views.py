@@ -795,7 +795,7 @@ def foodbank_hit(request, slug):
         hit = FoodbankHit(foodbank = foodbank, day = day, hits = 1)
         hit.save()
     
-    return HttpResponse("", content_type="text/javascript")
+    return render(request, "wfbn/foodbank/hit.js", content_type="text/javascript")
 
 
 def foodbank_edit(request, slug):

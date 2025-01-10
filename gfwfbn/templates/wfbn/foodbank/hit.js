@@ -1,0 +1,3 @@
+function dontDoAnythingClientSide(){
+    // Do nothing
+}
