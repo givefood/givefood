@@ -107,15 +107,15 @@ del {
 .arproducts img {
     width:100px;
     float:left;
-  }
-  .arproducts span {
+}
+.arproducts span {
     font-size:1.2em;
     font-weight:bold;
-  }
-  .arproducts .box {
+}
+.arproducts .box {
     overflow:hidden;
     zoom:0;
-  }
+}
 footer {
     margin-top:3rem;
 }
