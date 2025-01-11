@@ -4,6 +4,11 @@
     font-weight:400;
 }
 @font-face {
+    font-family:'Soehne Kraftig';
+    src:url('/static/fonts/soehne-kraftig.woff2') format('woff2');
+    font-weight:500;
+}
+@font-face {
     font-family:'Soehne Dreiviertelfett';
     src:url('/static/fonts/soehne-dreiviertelfett.woff2') format('woff2');
     font-weight:700;
@@ -32,6 +37,10 @@ a:hover, .breadcrumb a:hover {
 }
 a.button.is-link:hover, .menu a.is-active:hover {
     color:#fff;
+}
+label, strong, b, h3 {
+    font-family:"Soehne Kraftig","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight:500 !important;
 }
 .logo img {
     margin:30px 0 0 0;
@@ -63,7 +72,6 @@ h2, .content h2 {
 }
 h3, .content h3 {
     font-size:1em;
-    font-weight:bold;
     margin:0 0 2px 0;
 }
 p {
