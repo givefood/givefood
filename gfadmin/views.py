@@ -2,6 +2,7 @@ from collections import OrderedDict
 import csv
 import json
 import logging
+from random import randrange
 import re
 import requests
 from datetime import datetime, timedelta
@@ -1369,7 +1370,7 @@ def finder_trussell(request):
     at_the_end = False
 
     while at_the_end == False:
-        page_url = "%s%s" % (url, page)
+        page_url = "%s%s&randomthing=%s" % (url, page, randrange(1000))
         response = requests.get(page_url)
         page_text = response.text
         if "Sorry, there are no results which match your location." in page_text:
