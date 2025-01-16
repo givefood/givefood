@@ -64,7 +64,8 @@ urlpatterns += i18n_patterns(
 urlpatterns += [
 
     # Warmup
-    path("_ah/warmup/", givefood.views.index, name="warmup"),
+    path("_ah/warmup", givefood.views.index, name="warmup"),
+    path("_ah/start", givefood.views.index, name="start"),
 
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
