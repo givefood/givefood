@@ -144,11 +144,11 @@ def api_foodbank_search(request):
             "district":foodbank.district,
             "charity_number":foodbank.charity_number,
             "charity_register_url":foodbank.charity_register_url(),
-            "needs":foodbank.latest_need_text(),
-            "number_needs":foodbank.latest_need_number(),
-            "need_id":foodbank.latest_need_id(),
-            "updated":str(foodbank.latest_need_date()),
-            "updated_text":timesince(foodbank.latest_need_date()),
+            "needs":foodbank.latest_need.change_text,
+            "number_needs":foodbank.latest_need.no_items(),
+            "need_id":foodbank.latest_need.need_id,
+            "updated":str(foodbank.latest_need.created),
+            "updated_text":timesince(foodbank.latest_need.created),
             "latt_long":foodbank.latt_long,
             "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
         })
@@ -159,7 +159,7 @@ def api_foodbank_search(request):
 @cache_page(SECONDS_IN_MONTH)
 def api_foodbank(request, slug):
 
-    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
     locations = foodbank.locations()
 
     locations_list = []
@@ -197,14 +197,14 @@ def api_foodbank(request, slug):
         "closed":foodbank.is_closed,
         "latt_long":foodbank.latt_long,
         "network":foodbank.network,
-        "needs":foodbank.latest_need_text(),
-        "number_needs":foodbank.latest_need_number(),
+        "needs":foodbank.latest_need.change_text,
+        "number_needs":foodbank.latest_need.no_items(),
         "need_found":foodbank.last_need,
-        "need_id":foodbank.latest_need_id(),
-        "need_self":"%s%s" % (API_DOMAIN, reverse("api_need", kwargs={"id":foodbank.latest_need_id()})),
+        "need_id":foodbank.latest_need.need_id,
+        "need_self":"%s%s" % (API_DOMAIN, reverse("api_need", kwargs={"id":foodbank.latest_need.need_id})),
         "locations":locations_list,
         "updated":str(foodbank.latest_need_date()),
-        "updated_text":timesince(foodbank.latest_need_date()),
+        "updated_text":timesince(foodbank.latest_need.created),
         "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
     }
 

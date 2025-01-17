@@ -146,7 +146,7 @@ def foodbanks(request):
 def foodbank(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
-    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
     locations = foodbank.locations()
 
     if format != "geojson":
@@ -229,11 +229,11 @@ def foodbank(request, slug):
                 },
             },
             "need": {
-                "id":foodbank.latest_need_id(),
-                "needs":foodbank.latest_need().change_text,
-                "excess":foodbank.latest_need().excess_change_text,
-                "created":datetime.datetime.fromtimestamp(foodbank.latest_need().created.timestamp()),
-                "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need_id()),
+                "id":foodbank.latest_need.need_id,
+                "needs":foodbank.latest_need.change_text,
+                "excess":foodbank.latest_need.excess_change_text,
+                "created":datetime.datetime.fromtimestamp(foodbank.latest_need.created.timestamp()),
+                "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need.need_id),
             },
             "nearby_foodbanks": nearby_foodbank_list,
         }
@@ -318,7 +318,7 @@ def foodbank_search(request):
     response_list = []
 
     for foodbank in foodbanks:
-        latest_need = foodbank.latest_need()
+        latest_need = foodbank.latest_need
         response_list.append({
             "name":foodbank.name,
             "alt_name":foodbank.alt_name,

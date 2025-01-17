@@ -54,7 +54,7 @@ def items(request):
 
 def foodbanks(request):
 
-    foodbanks = Foodbank.objects.filter(is_closed=False).order_by("name")
+    foodbanks = Foodbank.objects.select_related("latest_need").filter(is_closed=False).order_by("name")
 
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename="givefood_foodbanks.csv"'
@@ -101,8 +101,6 @@ def foodbanks(request):
 
     for foodbank in foodbanks:
 
-        need = foodbank.latest_need()
-
         writer.writerow([
             foodbank.name,
             foodbank.alt_name,
@@ -136,10 +134,10 @@ def foodbanks(request):
             foodbank.created,
             foodbank.modified,
             foodbank.edited,
-            need.need_id,
-            need.change_text,
-            need.excess_change_text,
-            need.created,
+            foodbank.latest_need.need_id,
+            foodbank.latest_need.change_text,
+            foodbank.latest_need.excess_change_text,
+            foodbank.latest_need.created,
         ])
 
         for location in foodbank.locations():
@@ -176,10 +174,10 @@ def foodbanks(request):
                 foodbank.created,
                 location.modified,
                 location.edited,
-                need.need_id,
-                need.change_text,
-                need.excess_change_text,
-                need.created,
+                foodbank.latest_need.need_id,
+                foodbank.latest_need.change_text,
+                foodbank.latest_need.excess_change_text,
+                foodbank.latest_need.created,
             ])
 
     return response

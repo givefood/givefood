@@ -305,9 +305,9 @@ def foodbank(request, slug):
     Food bank index
     """
 
-    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
 
-    change_text = foodbank.latest_need().change_text
+    change_text = foodbank.latest_need.change_text
 
     if change_text == "Unknown" or change_text == "Nothing":
         template = "noneed"
@@ -534,7 +534,7 @@ def foodbank_subscribe_sample(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
     template_vars = {
-        "need":foodbank.latest_need(),
+        "need":foodbank.latest_need,
         "is_sample":True,
     }
 
@@ -547,10 +547,10 @@ def foodbank_location(request, slug, locslug):
     Food bank individual location
     """
 
-    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
 
-    change_text = foodbank.latest_need().change_text
+    change_text = foodbank.latest_need.change_text
     if change_text == "Unknown" or change_text == "Nothing":
         template = "noneed"
     else:
@@ -605,10 +605,10 @@ def foodbank_donationpoint(request, slug, dpslug):
     Food bank donation point
     """
 
-    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
     donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
 
-    change_text = foodbank.latest_need().change_text
+    change_text = foodbank.latest_need.change_text
     if change_text == "Unknown" or change_text == "Nothing" or change_text == "Facebook":
         has_need = False
     else:
@@ -830,7 +830,7 @@ def foodbank_edit_form(request, slug, action, locslug = None):
                 foodbank_change.save()
                 return redirect("wfbn:foodbank_edit_thanks", slug = slug)
         else:
-            form = NeedForm(instance=foodbank.latest_need())
+            form = NeedForm(instance=foodbank.latest_need)
 
     if action == "locations":
         heading = "Locations"

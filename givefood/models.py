@@ -93,6 +93,7 @@ class Foodbank(models.Model):
     last_crawl = models.DateTimeField(editable=False, null=True)
     last_discrepancy_check = models.DateTimeField(editable=False, null=True)
     last_need_check = models.DateTimeField(editable=False, null=True)
+    latest_need = models.ForeignKey("FoodbankChange", null=True, blank=True, editable=False, on_delete=models.DO_NOTHING, related_name="latest_need")
 
     no_locations = models.IntegerField(editable=False, default=0)
     no_donation_points = models.IntegerField(editable=False, default=0)
@@ -264,15 +265,8 @@ class Foodbank(models.Model):
     def needs(self):
         return FoodbankChange.objects.filter(foodbank = self).order_by("-created")
 
-    def latest_need(self):
-        try:
-            need = FoodbankChange.objects.filter(foodbank = self, published = True).latest("created")
-            return need
-        except FoodbankChange.DoesNotExist:
-            return None
-
     def latest_need_text(self):
-        latest_need = self.latest_need()
+        latest_need = self.latest_need
         if latest_need:
             return latest_need.change_text
         else:
@@ -284,14 +278,14 @@ class Foodbank(models.Model):
 
     def latest_need_id(self):
 
-        latest_need = self.latest_need()
+        latest_need = self.latest_need
         if latest_need:
             return latest_need.need_id
         else:
             return None
 
     def latest_need_date(self):
-        latest_need = self.latest_need()
+        latest_need = self.latest_need
         if latest_need:
             return latest_need.created
         else:
@@ -302,6 +296,8 @@ class Foodbank(models.Model):
         if latest_need_text == "Unknown":
             return 0
         if latest_need_text == "Nothing":
+            return 0
+        if latest_need_text == "Facebook":
             return 0
         return latest_need_text.count('\n')+1
 
@@ -470,6 +466,13 @@ class Foodbank(models.Model):
             self.last_need = last_need.created
         except FoodbankChange.DoesNotExist:
             self.last_need = None
+
+        # Cache latest need
+        try:
+            need = FoodbankChange.objects.filter(foodbank = self, published = True).latest("created")
+            self.latest_need = need
+        except FoodbankChange.DoesNotExist:
+            self.latest_need = None
 
         super(Foodbank, self).save(*args, **kwargs)
 
@@ -671,7 +674,7 @@ class FoodbankLocation(models.Model):
             return self.foodbank_email
 
     def latest_need(self):
-        return self.foodbank.latest_need()
+        return self.foodbank.latest_need
 
     def full_address(self):
         return "%s\r\n%s" % (self.address, self.postcode)
@@ -1600,7 +1603,7 @@ class ParliamentaryConstituency(models.Model):
 
 
     def foodbank_obj(self):
-        return Foodbank.objects.filter(parliamentary_constituency = self, is_closed = False)
+        return Foodbank.objects.select_related("latest_need").filter(parliamentary_constituency = self, is_closed = False)
 
     def location_obj(self):
         return FoodbankLocation.objects.filter(parliamentary_constituency = self, is_closed = False)
@@ -1617,7 +1620,7 @@ class ParliamentaryConstituency(models.Model):
                 "name":foodbank.name,
                 "slug":foodbank.slug,
                 "lat_lng":foodbank.latt_long,
-                "needs":foodbank.latest_need(),
+                "needs":foodbank.latest_need,
                 "url":foodbank.url,
                 "shopping_list_url":foodbank.shopping_list_url,
                 "gf_url":"/needs/at/%s/" % (foodbank.slug),

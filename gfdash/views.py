@@ -96,9 +96,9 @@ def most_requested_items(request):
 
     # Find the food banks that have updated their needs within the day threshold
     if trusselltrust:
-        recent_foodbanks = Foodbank.objects.filter(network = "Trussell", last_need__gt = day_threshold).order_by("-last_need")
+        recent_foodbanks = Foodbank.objects.select_related("latest_need").filter(network = "Trussell", last_need__gt = day_threshold).order_by("-last_need")
     else:
-        recent_foodbanks = Foodbank.objects.filter(last_need__gt = day_threshold).order_by("-last_need")
+        recent_foodbanks = Foodbank.objects.select_related("latest_need").filter(last_need__gt = day_threshold).order_by("-last_need")
 
     # Keywords we use in need text that we'll exclude
     invalid_text = ["Nothing", "Unknown", "Facebook"]
@@ -107,7 +107,7 @@ def most_requested_items(request):
     for recent_foodbank in recent_foodbanks:
 
         # Find need text
-        need_text = recent_foodbank.latest_need().change_text
+        need_text = recent_foodbank.latest_need.change_text
 
         # Don't count the need if it's a keyword
         if not need_text in invalid_text:
@@ -162,7 +162,7 @@ def most_excess_items(request):
     for recent_foodbank in recent_foodbanks:
 
         # Find need text
-        excess_text = recent_foodbank.latest_need().excess_change_text
+        excess_text = recent_foodbank.latest_need.excess_change_text
 
         # Make list of items in this need
         if excess_text:
