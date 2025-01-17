@@ -63,7 +63,7 @@ urlpatterns += i18n_patterns(
 # Untranslated pages
 urlpatterns += [
 
-    # Warmup
+    # Appengine URLs
     path("_ah/warmup", givefood.views.index, name="warmup"),
     path("_ah/start", givefood.views.index, name="start"),
 
