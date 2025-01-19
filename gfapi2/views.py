@@ -1,10 +1,12 @@
 import datetime
+from itertools import chain
 import logging
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import slugify
 from django.views.decorators.cache import cache_page
+from django.db.models import Value
 
 from django_earthdistance.models import EarthDistance, LlToEarth
 
@@ -324,6 +326,7 @@ def foodbank_search(request):
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
         ])).order_by("distance")[:10]
+    
     response_list = []
 
     for foodbank in foodbanks:
@@ -477,110 +480,94 @@ def location_search(request):
         distance=EarthDistance([
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
-        ])).order_by("distance")[:10]
+        ])).annotate(type=Value("organisation")).order_by("distance")[:10]
     
     locations = FoodbankLocation.objects.filter(is_closed = False).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
-        ])).order_by("distance")[:10]
+        ])).annotate(type=Value("location")).order_by("distance")[:10]
+    
+
+    foodbanksandlocations = list(chain(foodbanks,locations))
 
     response_list = []
 
-    for foodbank in foodbanks:
+    for item in foodbanksandlocations:
 
-        response_list.append({
-            "type":"organisation",
-            "slug":foodbank.slug,
-            "name":foodbank.name,
-            "lat_lng":foodbank.latt_long,
-            "distance_m":int(foodbank.distance),
-            "distance_mi":round(miles(foodbank.distance),2),
-            "phone":foodbank.phone_number,
-            "email":foodbank.contact_email,
-            "foodbank": {
-                "name":foodbank.name,
-                "slug":foodbank.slug,
-                "network":foodbank.network,
-                "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
-                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
-                }
-            },
-            "needs": {
-                "id":foodbank.latest_need.need_id,
-                "needs":foodbank.latest_need.change_text,
-                "excess":foodbank.latest_need.excess_change_text,
-                "number":foodbank.latest_need.no_items(),
-                "found":datetime.datetime.fromtimestamp(foodbank.latest_need.created.timestamp()),
-            },
-            "address":foodbank.full_address(),
-            "postcode":foodbank.postcode,
+        item_dict = {
+            "type":item.type,
+            "slug":item.slug,
+            "name":item.name,
+            "lat_lng":item.latt_long,
+            "distance_m":int(item.distance),
+            "distance_mi":round(miles(item.distance),2),
+            "address":item.full_address(),
+            "postcode":item.postcode,
             "politics": {
-                "parliamentary_constituency":foodbank.parliamentary_constituency_name,
-                "mp":foodbank.mp,
-                "mp_party":foodbank.mp_party,
-                "mp_parl_id":foodbank.mp_parl_id,
-                "ward":foodbank.ward,
-                "district":foodbank.district,
+                "parliamentary_constituency":item.parliamentary_constituency_name,
+                "mp":item.mp,
+                "mp_party":item.mp_party,
+                "mp_parl_id":item.mp_parl_id,
+                "ward":item.ward,
+                "district":item.district,
                 "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (foodbank.parliamentary_constituency_slug),
-                    "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (foodbank.parliamentary_constituency_slug),
+                    "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (item.parliamentary_constituency_slug),
+                    "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (item.parliamentary_constituency_slug),
                 },
             },
-            "urls": {
-                "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
-                "homepage":foodbank.url_with_ref(),
-            },
-        })
-    
-    for location in locations:
+        }
 
-        response_list.append({
-            "type":"location",
-            "slug":location.slug,
-            "name":location.name,
-            "lat_lng":location.latt_long,
-            "distance_m":int(location.distance),
-            "distance_mi":round(miles(location.distance),2),
-            "phone":location.phone_or_foodbank_phone(),
-            "email":location.email_or_foodbank_email(),
-            "foodbank": {
-                "name":location.foodbank_name,
-                "slug":location.foodbank_slug,
-                "network":location.foodbank_network,
+        if item.type == "organisation":
+            item_dict["phone"] = item.phone_number
+            item_dict["email"] = item.contact_email
+            item_dict["needs"] = {
+                "id":item.latest_need.need_id,
+                "needs":item.latest_need.change_text,
+                "excess":item.latest_need.excess_change_text,
+                "number":item.latest_need.no_items(),
+                "found":datetime.datetime.fromtimestamp(item.latest_need.created.timestamp()),
+            }
+            item_dict["foodbank"] = {
+                "name":item.name,
+                "slug":item.slug,
+                "network":item.network,
                 "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (location.foodbank_slug),
-                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (location.foodbank_slug),
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (item.slug),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (item.slug),
                 }
-            },
-            "needs": {
-                "id":location.foodbank.latest_need.need_id,
-                "needs":location.foodbank.latest_need.change_text,
-                "excess":location.foodbank.latest_need.excess_change_text,
-                "number":location.foodbank.latest_need.no_items(),
-                "found":datetime.datetime.fromtimestamp(location.foodbank.latest_need.created.timestamp()),
-            },
-            "address":location.full_address(),
-            "postcode":location.postcode,
-            "politics": {
-                "parliamentary_constituency":location.parliamentary_constituency_name,
-                "mp":location.mp,
-                "mp_party":location.mp_party,
-                "mp_parl_id":location.mp_parl_id,
-                "ward":location.ward,
-                "district":location.district,
+            }
+            item_dict["urls"] = {
+                "html":"https://www.givefood.org.uk/needs/at/%s/" % (item.slug),
+                "homepage":item.url_with_ref(),
+            }
+        
+        if item.type == "location":
+            item_dict["phone"] = item.phone_or_foodbank_phone()
+            item_dict["email"] = item.email_or_foodbank_email()
+            item_dict["needs"] = {
+                "id":item.foodbank.latest_need.need_id,
+                "needs":item.foodbank.latest_need.change_text,
+                "excess":item.foodbank.latest_need.excess_change_text,
+                "number":item.foodbank.latest_need.no_items(),
+                "found":datetime.datetime.fromtimestamp(item.foodbank.latest_need.created.timestamp()),
+            }
+            item_dict["foodbank"] = {
+                "name":item.foodbank_name,
+                "slug":item.foodbank_slug,
+                "network":item.foodbank_network,
                 "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (location.parliamentary_constituency_slug),
-                    "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (location.parliamentary_constituency_slug),
-                },
-            },
-            "urls": {
-                "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (location.foodbank_slug, location.slug),
-                "homepage":location.foodbank.url_with_ref(),
-            },
-        })
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (item.foodbank_slug),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (item.foodbank_slug),
+                }
+            }
+            item_dict["urls"] = {
+                "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (item.foodbank_slug, item.slug),
+                "homepage":item.foodbank.url_with_ref(),
+            }
 
+        
+        response_list.append(item_dict)
     
     sorted_locations = sorted(response_list, key=lambda k: k['distance_m'])
 
