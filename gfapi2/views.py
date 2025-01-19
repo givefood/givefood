@@ -6,9 +6,11 @@ from django.http import HttpResponseBadRequest
 from django.template.defaultfilters import slugify
 from django.views.decorators.cache import cache_page
 
-from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, ParliamentaryConstituency, FoodbankChange
+from django_earthdistance.models import EarthDistance, LlToEarth
+
+from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, FoodbankLocation, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_foodbanks, geocode, find_locations, is_uk
+from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_foodbanks, geocode, find_locations, is_uk, miles
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
 
 DEFAULT_FORMAT = "json"
@@ -313,8 +315,15 @@ def foodbank_search(request):
     # Check lat_lng is in the UK
     if not is_uk(lat_lng):
         return HttpResponseBadRequest()
+    
+    lat = lat_lng.split(",")[0]
+    lng = lat_lng.split(",")[1]
 
-    foodbanks = find_foodbanks(lat_lng, 10)
+    foodbanks = Foodbank.objects.select_related("latest_need").filter(is_closed = False).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).order_by("distance")[:10]
     response_list = []
 
     for foodbank in foodbanks:
@@ -329,8 +338,8 @@ def foodbank_search(request):
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
             "lat_lng":foodbank.latt_long,
-            "distance_m":int(foodbank.distance_m),
-            "distance_mi":round(foodbank.distance_mi,2),
+            "distance_m":int(foodbank.distance),
+            "distance_mi":round(miles(foodbank.distance),2),
             "needs": {
                 "id":latest_need.need_id,
                 "needs":latest_need.change_text,
@@ -460,65 +469,122 @@ def location_search(request):
 
     if not is_uk(lat_lng):
         return HttpResponseBadRequest() 
+    
+    lat = lat_lng.split(",")[0]
+    lng = lat_lng.split(",")[1]
 
-    locations = find_locations(lat_lng, 10)
+    foodbanks = Foodbank.objects.select_related("latest_need").filter(is_closed = False).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).order_by("distance")[:10]
+    
+    locations = FoodbankLocation.objects.filter(is_closed = False).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).order_by("distance")[:10]
 
     response_list = []
-    for location in locations:
 
-        location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
-        location_url = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
-
-        if location.get("type") == "location":
-            html_url = "https://www.givefood.org.uk/needs/at/%s/%s/" % (slugify(location.get("foodbank_name")), slugify(location.get("name")))
-        if location.get("type") == "organisation":
-            html_url = "https://www.givefood.org.uk/needs/at/%s/" % (slugify(location.get("foodbank_name")))
+    for foodbank in foodbanks:
 
         response_list.append({
-            "type":location.get("type"),
-            "name":location.get("name"),
-            "lat_lng":location.get("lat_lng"),
-            "distance_m":int(location.get("distance_m")),
-            "distance_mi":round(location.get("distance_mi"),2),
-            "phone":location.get("phone"),
-            "email":location.get("email"),
+            "type":"organisation",
+            "slug":foodbank.slug,
+            "name":foodbank.name,
+            "lat_lng":foodbank.latt_long,
+            "distance_m":int(foodbank.distance),
+            "distance_mi":round(miles(foodbank.distance),2),
+            "phone":foodbank.phone_number,
+            "email":foodbank.contact_email,
             "foodbank": {
-                "name":location.get("foodbank_name"),
-                "slug":str(slugify(location.get("foodbank_name"))),
-                "network":location.get("foodbank_network"),
+                "name":foodbank.name,
+                "slug":foodbank.slug,
+                "network":foodbank.network,
                 "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % slugify(location.get("foodbank_name")),
-                    "html":"https://www.givefood.org.uk/needs/at/%s/" % slugify(location.get("foodbank_name")),
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (foodbank.slug),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
                 }
             },
             "needs": {
-                "id":location_need.need_id,
-                "needs":location_need.change_text,
-                "excess":location_need.excess_change_text,
-                "number":location_need.no_items(),
-                "found":datetime.datetime.fromtimestamp(location_need.created.timestamp()),
+                "id":foodbank.latest_need.need_id,
+                "needs":foodbank.latest_need.change_text,
+                "excess":foodbank.latest_need.excess_change_text,
+                "number":foodbank.latest_need.no_items(),
+                "found":datetime.datetime.fromtimestamp(foodbank.latest_need.created.timestamp()),
             },
-            "address":location.get("address"),
-            "postcode":location.get("postcode"),
+            "address":foodbank.full_address(),
+            "postcode":foodbank.postcode,
             "politics": {
-                "parliamentary_constituency":location.get("parliamentary_constituency"),
-                "mp":location.get("mp"),
-                "mp_party":location.get("mp_party"),
-                "mp_parl_id":location.get("mp_parl_id"),
-                "ward":location.get("ward"),
-                "district":location.get("district"),
+                "parliamentary_constituency":foodbank.parliamentary_constituency_name,
+                "mp":foodbank.mp,
+                "mp_party":foodbank.mp_party,
+                "mp_parl_id":foodbank.mp_parl_id,
+                "ward":foodbank.ward,
+                "district":foodbank.district,
                 "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (location.get("parliamentary_constituency_slug")),
-                    "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (location.get("parliamentary_constituency_slug")),
+                    "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (foodbank.parliamentary_constituency_slug),
+                    "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (foodbank.parliamentary_constituency_slug),
                 },
             },
             "urls": {
-                "html":html_url,
-                "homepage":location_url,
+                "html":"https://www.givefood.org.uk/needs/at/%s/" % (foodbank.slug),
+                "homepage":foodbank.url_with_ref(),
+            },
+        })
+    
+    for location in locations:
+
+        response_list.append({
+            "type":"location",
+            "slug":location.slug,
+            "name":location.name,
+            "lat_lng":location.latt_long,
+            "distance_m":int(location.distance),
+            "distance_mi":round(miles(location.distance),2),
+            "phone":location.phone_or_foodbank_phone(),
+            "email":location.email_or_foodbank_email(),
+            "foodbank": {
+                "name":location.foodbank_name,
+                "slug":location.foodbank_slug,
+                "network":location.foodbank_network,
+                "urls": {
+                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (location.foodbank_slug),
+                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (location.foodbank_slug),
+                }
+            },
+            "needs": {
+                "id":location.foodbank.latest_need.need_id,
+                "needs":location.foodbank.latest_need.change_text,
+                "excess":location.foodbank.latest_need.excess_change_text,
+                "number":location.foodbank.latest_need.no_items(),
+                "found":datetime.datetime.fromtimestamp(location.foodbank.latest_need.created.timestamp()),
+            },
+            "address":location.full_address(),
+            "postcode":location.postcode,
+            "politics": {
+                "parliamentary_constituency":location.parliamentary_constituency_name,
+                "mp":location.mp,
+                "mp_party":location.mp_party,
+                "mp_parl_id":location.mp_parl_id,
+                "ward":location.ward,
+                "district":location.district,
+                "urls": {
+                    "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (location.parliamentary_constituency_slug),
+                    "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (location.parliamentary_constituency_slug),
+                },
+            },
+            "urls": {
+                "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (location.foodbank_slug, location.slug),
+                "homepage":location.foodbank.url_with_ref(),
             },
         })
 
-    return ApiResponse(response_list, "locations", format)
+    
+    sorted_locations = sorted(response_list, key=lambda k: k['distance_m'])
+
+    return ApiResponse(sorted_locations[:10], "locations", format)
 
 
 @cache_page(SECONDS_IN_WEEK)

@@ -18,3 +18,4 @@ openai==0.28
 furl
 beautifulsoup4
 google-generativeai
+django-earthdistance
