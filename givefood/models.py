@@ -34,6 +34,8 @@ class Foodbank(models.Model):
     ])
 
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    latitude = models.FloatField(editable=False)
+    longitude = models.FloatField(editable=False)
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
     plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
     plus_code_global = models.CharField(max_length=200, verbose_name="Plus Code (Global)", null=True, blank=True, editable=False)
@@ -406,6 +408,10 @@ class Foodbank(models.Model):
         # Slugify name
         self.slug = slugify(self.name)
 
+        # LatLong
+        self.latitude = self.latt_long.split(",")[0]
+        self.longitude = self.latt_long.split(",")[1]
+
         # Cleanup phone numbers
         if self.phone_number:
             self.phone_number = self.phone_number.replace(" ","")
@@ -557,6 +563,9 @@ class FoodbankLocation(models.Model):
     is_donation_point = models.BooleanField(default=False)
     
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    latitude = models.FloatField(editable=False)
+    longitude = models.FloatField(editable=False)
+
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
     place_has_photo = models.BooleanField(default=False, editable=False)
     plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
@@ -698,6 +707,10 @@ class FoodbankLocation(models.Model):
         # Slugify name
         self.slug = slugify(self.name)
 
+        # LatLong
+        self.latitude = self.latt_long.split(",")[0]
+        self.longitude = self.latt_long.split(",")[1]
+
         # Cache foodbank details
         self.foodbank_name = self.foodbank.name
         self.foodbank_slug = self.foodbank.slug
@@ -777,6 +790,9 @@ class FoodbankDonationPoint(models.Model):
     company = models.CharField(max_length=100, null=True, blank=True, choices=DONATION_POINT_COMPANIES_CHOICES)
 
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    latitude = models.FloatField(editable=False)
+    longitude = models.FloatField(editable=False)
+
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
     place_has_photo = models.BooleanField(default=False, editable=False)
     plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
@@ -935,8 +951,13 @@ class FoodbankDonationPoint(models.Model):
         self.foodbank.save(do_geoupdate=False)
     
     def save(self, do_geoupdate=True, do_foodbank_resave=True, do_photo_update=True, *args, **kwargs):
+
         # Slugify name
         self.slug = slugify(self.name)
+
+        # LatLong
+        self.latitude = self.latt_long.split(",")[0]
+        self.longitude = self.latt_long.split(",")[1]
 
         # Photo?
         if do_photo_update:
@@ -1548,6 +1569,8 @@ class ParliamentaryConstituency(models.Model):
     email = models.EmailField(null=True, blank=True)
     
     centroid = models.CharField(max_length=50)
+    latitude = models.FloatField(editable=False)
+    longitude = models.FloatField(editable=False)
 
     boundary_geojson = models.TextField(null=True, blank=True)
 
@@ -1661,6 +1684,10 @@ class ParliamentaryConstituency(models.Model):
     def save(self, *args, **kwargs):
 
         self.slug = slugify(self.name)
+
+        # LatLong
+        self.latitude = self.centroid.split(",")[0]
+        self.longitude = self.centroid.split(",")[1]
 
         # Get MP contact details
         # contact_details = mp_contact_details(self.mp_parl_id)
