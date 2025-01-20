@@ -1,10 +1,8 @@
 import datetime
 from itertools import chain
-import logging
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseBadRequest
-from django.template.defaultfilters import slugify
 from django.views.decorators.cache import cache_page
 from django.db.models import Value
 
@@ -12,7 +10,7 @@ from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, FoodbankLocation, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import get_all_open_foodbanks, get_all_open_locations, find_foodbanks, geocode, find_locations, is_uk, miles
+from givefood.func import get_all_open_foodbanks, get_all_open_locations, geocode, is_uk, miles
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
 
 DEFAULT_FORMAT = "json"
