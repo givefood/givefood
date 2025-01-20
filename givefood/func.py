@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from django.urls import reverse
 import re, logging, operator, urllib, difflib, requests, feedparser, random, json
+from itertools import chain
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
 from datetime import datetime
@@ -11,15 +13,17 @@ import google.generativeai as genai
 from bs4 import BeautifulSoup
 from urllib.parse import quote
 from furl import furl
+from django_earthdistance.models import EarthDistance, LlToEarth
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.cache import cache
 from django.contrib.humanize.templatetags.humanize import apnumber
+from django.db.models import Value
 
 from google.cloud import secretmanager
 
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -725,71 +729,47 @@ def find_foodbanks(lattlong, quantity = 10, skip_first = False):
 
 def find_locations(lat_lng, quantity = 10, skip_first = False):
 
-    locations = get_all_open_locations()
-    foodbanks = get_all_open_foodbanks()
+    from givefood.models import Foodbank, FoodbankLocation
 
-    try:
-        lat = float(lat_lng.split(",")[0])
-        lng = float(lat_lng.split(",")[1])
-    except ValueError:
-        return []
+    lat = lat_lng.split(",")[0]
+    lng = lat_lng.split(",")[1]
 
-    searchable_locations = []
+    foodbanks = Foodbank.objects.select_related("latest_need").filter(is_closed = False).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).annotate(type=Value("organisation")).order_by("distance")[:quantity]
+    
+    locations = FoodbankLocation.objects.filter(is_closed = False).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).annotate(type=Value("location")).order_by("distance")[:quantity]
+    
+    for foodbank in foodbanks:
+        foodbank.distance_mi = miles(foodbank.distance)
+        foodbank.foodbank_name = foodbank.name
+        foodbank.foodbank_slug = foodbank.slug
+        foodbank.foodbank_network = foodbank.network
+        foodbank.html_url = "%s%s" % (
+            SITE_DOMAIN,
+            reverse("wfbn:foodbank", kwargs={"slug":foodbank.slug}),
+        )
+        foodbank.homepage = foodbank.url_with_ref()
 
     for location in locations:
-        searchable_locations.append({
-            "type":"location",
-            "name":location.name,
-            "lat":location.latt(),
-            "lng":location.long(),
-            "lat_lng":location.latt_long,
-            "address":location.full_address(),
-            "postcode":location.postcode,
-            "parliamentary_constituency":location.parliamentary_constituency_name,
-            "parliamentary_constituency_slug":location.parliamentary_constituency_slug,
-            "mp":location.mp,
-            "mp_party":location.mp_party,
-            "mp_parl_id":location.mp_parl_id,
-            "ward":location.ward,
-            "district":location.district,
-            "phone":location.phone_or_foodbank_phone(),
-            "email":location.email_or_foodbank_email(),
-            "slug":location.slug,
-            "foodbank_slug":location.foodbank_slug,
-            "foodbank_name":location.foodbank_name,
-            "foodbank_network":location.foodbank_network,
-        })
+        location.distance_mi = miles(location.distance)
+        location.phone_number = location.phone_or_foodbank_phone()
+        location.contact_email = location.email_or_foodbank_email()
+        location.latest_need = location.foodbank.latest_need
+        location.html_url = "%s%s" % (
+            SITE_DOMAIN,
+            reverse("wfbn:foodbank_location", kwargs={"slug":location.foodbank_slug, "locslug":location.slug}),
+        )
+        location.homepage = foodbank.url_with_ref()
 
-    for foodbank in foodbanks:
-        searchable_locations.append({
-            "type":"organisation",
-            "name":foodbank.name,
-            "lat":foodbank.latt(),
-            "lng":foodbank.long(),
-            "lat_lng":foodbank.latt_long,
-            "address":foodbank.full_address(),
-            "postcode":foodbank.postcode,
-            "parliamentary_constituency":foodbank.parliamentary_constituency_name,
-            "parliamentary_constituency_slug":foodbank.parliamentary_constituency_slug,
-            "mp":foodbank.mp,
-            "mp_party":foodbank.mp_party,
-            "mp_parl_id":foodbank.mp_parl_id,
-            "ward":foodbank.ward,
-            "district":foodbank.district,
-            "phone":foodbank.phone_number,
-            "email":foodbank.contact_email,
-            "slug":foodbank.slug,
-            "foodbank_slug":foodbank.slug,
-            "foodbank_name":foodbank.name,
-            "foodbank_network":foodbank.network,
-        })
-
-    for searchable_location in searchable_locations:
-        searchable_location["distance_m"] = distance_meters(searchable_location.get("lat"), searchable_location.get("lng"), lat, lng)
-        searchable_location["distance_km"] = searchable_location["distance_m"] / 1000
-        searchable_location["distance_mi"] = miles(searchable_location.get("distance_m"))
-
-    sorted_searchable_locations = sorted(searchable_locations, key=lambda k: k['distance_m'])
+    foodbanksandlocations = list(chain(foodbanks,locations))
+    foodbanksandlocations = sorted(foodbanksandlocations, key=lambda k: k.distance)
 
     if skip_first:
         first_item = 1
@@ -797,7 +777,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
     else:
         first_item = 0
 
-    return sorted_searchable_locations[first_item:quantity]
+    return foodbanksandlocations[first_item:quantity]
 
 
 def find_parlcons(lattlong, quantity = 10, skip_first = False):

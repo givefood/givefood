@@ -1,4 +1,5 @@
-import json, requests, datetime, logging
+import json, requests, datetime
+from itertools import chain
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest
@@ -11,13 +12,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django import forms
 from django.utils.translation import gettext
+from django.db.models import Value
+
+from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.const.general import SITE_DOMAIN
 from givefood.forms import FoodbankDonationPointForm
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
+from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, miles, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
@@ -35,10 +39,9 @@ def index(request):
     # All the vars we'll need
     address = request.GET.get("address", "")
     lat_lng = request.GET.get("lat_lng", "")
-    lat = None
-    lng = None
+
     lat_lng_is_uk = True
-    location_results = []
+    lat = lng = location_results = None
 
     # Recently updated food banks
     recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
@@ -63,19 +66,7 @@ def index(request):
         lat_lng_is_uk = is_uk(lat_lng)
 
         if lat_lng_is_uk:
-
-            # Do the search
-            location_results = find_locations(lat_lng, 10)
-
-            # Add needs to location results
-            for location in location_results:
-                try:
-                    location_need = FoodbankChange.objects.filter(foodbank_name=location.get("foodbank_name"), published=True).latest("created")
-                    location["needs"] = location_need.change_text
-                except FoodbankChange.DoesNotExist:
-                    logging.warn("No need found for %s" % location.get("foodbank_name"))
-                    location["needs"] = "Unknown"            
-                location["url"] = Foodbank.objects.get(name=location.get("foodbank_name")).url_with_ref()
+            location_results = find_locations(lat_lng, 20)
 
     # Need the Google Maps API key too
     gmap_key = get_cred("gmap_key")

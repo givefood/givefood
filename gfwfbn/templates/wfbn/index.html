@@ -78,26 +78,26 @@
                   {% endif %}
                   <div class="distance">{{ location.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
                   <div class="links">
-                    {% if location.phone %}
-                      <a class="phone" href="tel:{{ location.phone }}" title="{% blocktrans %}Phone{% endblocktrans %}"><img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}"></a>
+                    {% if location.phone_number %}
+                      <a class="phone" href="tel:{{ location.phone_number }}" title="{% blocktrans %}Phone{% endblocktrans %}"><img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}"></a>
                     {% endif %}
                     <a class="info" href="at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="{% blocktrans %}Information{% endblocktrans %}"><img src="/static/img/info.svg" alt="{% blocktrans %}Information{% endblocktrans %}"></a>
                   </div>
-                  {% if location.needs != "Nothing" and location.needs != "Unknown" and location.needs != "Facebook" %}
+                  {% if location.latest_need.change_text != "Nothing" and location.latest_need.change_text != "Unknown" and location.latest_need.change_text != "Facebook" %}
                     <a class="subscribe button is-link is-small" href="at/{{ location.foodbank_slug }}/subscribe/">{% blocktrans %}Get updates{% endblocktrans %}</a>
                   {% endif %}
                   
                 </td>
                 <td class="need_detail">
                   <div class="fb_needs">
-                    {% if location.needs == "Nothing" %}
+                    {% if location.latest_need.change_text == "Nothing" %}
                       {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
-                    {% elif location.needs == "Unknown" %}
+                    {% elif location.latest_need.change_text == "Unknown" %}
                       {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
-                    {% elif location.needs == "Facebook" %}
+                    {% elif location.latest_need.change_text == "Facebook" %}
                       {% blocktrans %}Check the food bank's Facebook page for what they need{% endblocktrans %}
                     {% else %}
-                      {{ location.needs|linebreaks }}
+                      {{ location.latest_need.change_text|linebreaks }}
                     {% endif %}
                   </div>
                 </td>

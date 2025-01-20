@@ -10,7 +10,7 @@ from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, FoodbankLocation, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import get_all_open_foodbanks, get_all_open_locations, geocode, is_uk, miles
+from givefood.func import find_locations, get_all_open_foodbanks, get_all_open_locations, geocode, is_uk, miles
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
 
 DEFAULT_FORMAT = "json"
@@ -470,24 +470,8 @@ def location_search(request):
 
     if not is_uk(lat_lng):
         return HttpResponseBadRequest() 
-    
-    lat = lat_lng.split(",")[0]
-    lng = lat_lng.split(",")[1]
 
-    foodbanks = Foodbank.objects.select_related("latest_need").filter(is_closed = False).annotate(
-        distance=EarthDistance([
-            LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("organisation")).order_by("distance")[:10]
-    
-    locations = FoodbankLocation.objects.filter(is_closed = False).annotate(
-        distance=EarthDistance([
-            LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("location")).order_by("distance")[:10]
-    
-
-    foodbanksandlocations = list(chain(foodbanks,locations))
+    foodbanksandlocations = find_locations(lat_lng, 20, False)
 
     response_list = []
 
@@ -514,43 +498,16 @@ def location_search(request):
                     "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (item.parliamentary_constituency_slug),
                 },
             },
-        }
-
-        if item.type == "organisation":
-            item_dict["phone"] = item.phone_number
-            item_dict["email"] = item.contact_email
-            item_dict["needs"] = {
+            "phone":item.phone_number,
+            "email":item.contact_email,
+            "needs": {
                 "id":item.latest_need.need_id,
                 "needs":item.latest_need.change_text,
                 "excess":item.latest_need.excess_change_text,
                 "number":item.latest_need.no_items(),
                 "found":datetime.datetime.fromtimestamp(item.latest_need.created.timestamp()),
-            }
-            item_dict["foodbank"] = {
-                "name":item.name,
-                "slug":item.slug,
-                "network":item.network,
-                "urls": {
-                    "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (item.slug),
-                    "html":"https://www.givefood.org.uk/needs/at/%s/" % (item.slug),
-                }
-            }
-            item_dict["urls"] = {
-                "html":"https://www.givefood.org.uk/needs/at/%s/" % (item.slug),
-                "homepage":item.url_with_ref(),
-            }
-        
-        if item.type == "location":
-            item_dict["phone"] = item.phone_or_foodbank_phone()
-            item_dict["email"] = item.email_or_foodbank_email()
-            item_dict["needs"] = {
-                "id":item.foodbank.latest_need.need_id,
-                "needs":item.foodbank.latest_need.change_text,
-                "excess":item.foodbank.latest_need.excess_change_text,
-                "number":item.foodbank.latest_need.no_items(),
-                "found":datetime.datetime.fromtimestamp(item.foodbank.latest_need.created.timestamp()),
-            }
-            item_dict["foodbank"] = {
+            },
+            "foodbank": {
                 "name":item.foodbank_name,
                 "slug":item.foodbank_slug,
                 "network":item.foodbank_network,
@@ -558,18 +515,16 @@ def location_search(request):
                     "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (item.foodbank_slug),
                     "html":"https://www.givefood.org.uk/needs/at/%s/" % (item.foodbank_slug),
                 }
-            }
-            item_dict["urls"] = {
-                "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (item.foodbank_slug, item.slug),
-                "homepage":item.foodbank.url_with_ref(),
-            }
-
+            },
+            "urls": {
+                "html": item.html_url,
+                "homepage":item.homepage,
+            },
+        }
         
         response_list.append(item_dict)
-    
-    sorted_locations = sorted(response_list, key=lambda k: k['distance_m'])
 
-    return ApiResponse(sorted_locations[:10], "locations", format)
+    return ApiResponse(response_list, "locations", format)
 
 
 @cache_page(SECONDS_IN_WEEK)
