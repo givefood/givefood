@@ -72,7 +72,7 @@
             {% for location in location_results %}
               <tr>
                 <td>
-                  <a href="{{ location.url }}" class="foodbank" target="_top">{{ location.name }}</a>
+                  <a href="{{ location.homepage }}" class="foodbank" target="_top">{{ location.name }}</a>
                   {% if location.type == "location" %}
                     <div class="parent_org">{% blocktrans %}Part of{% endblocktrans %} <a href="at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
                   {% endif %}
