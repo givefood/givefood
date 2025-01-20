@@ -748,6 +748,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
     
     for foodbank in foodbanks:
         foodbank.distance_mi = miles(foodbank.distance)
+        foodbank.distance_km = foodbank.distance / 1000
         foodbank.foodbank_name = foodbank.name
         foodbank.foodbank_slug = foodbank.slug
         foodbank.foodbank_network = foodbank.network
@@ -759,6 +760,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
 
     for location in locations:
         location.distance_mi = miles(location.distance)
+        foodbank.distance_km = location.distance / 1000
         location.phone_number = location.phone_or_foodbank_phone()
         location.contact_email = location.email_or_foodbank_email()
         location.latest_need = location.foodbank.latest_need
