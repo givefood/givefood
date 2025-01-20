@@ -768,7 +768,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
             SITE_DOMAIN,
             reverse("wfbn:foodbank_location", kwargs={"slug":location.foodbank_slug, "locslug":location.slug}),
         )
-        location.homepage = foodbank.url_with_ref()
+        location.homepage = location.foodbank.url_with_ref()
 
     foodbanksandlocations = list(chain(foodbanks,locations))
     foodbanksandlocations = sorted(foodbanksandlocations, key=lambda k: k.distance)
