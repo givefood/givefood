@@ -1,5 +1,4 @@
 import json, requests, datetime
-from itertools import chain
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest
@@ -12,17 +11,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django import forms
 from django.utils.translation import gettext
-from django.db.models import Value
-
-from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.const.general import SITE_DOMAIN
 from givefood.forms import FoodbankDonationPointForm
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, miles, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
-from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_WEEK
+from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
+from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
