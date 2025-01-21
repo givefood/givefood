@@ -26,7 +26,7 @@ from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
 
-@cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_HOUR)
 def index(request):
     """
     The What Food Banks Need index page
