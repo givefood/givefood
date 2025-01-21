@@ -1,6 +1,3 @@
-import json
-import requests
-
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
@@ -12,7 +9,7 @@ from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _
 from session_csrf import anonymous_csrf
 
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation, Order, FoodbankChange, OrderGroup, ParliamentaryConstituency
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
