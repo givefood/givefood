@@ -4,11 +4,10 @@ from itertools import chain
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseBadRequest
 from django.views.decorators.cache import cache_page
-from django.db.models import Value
 
 from django_earthdistance.models import EarthDistance, LlToEarth
 
-from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, FoodbankLocation, ParliamentaryConstituency, FoodbankChange
+from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
 from givefood.func import find_locations, get_all_open_foodbanks, get_all_open_locations, geocode, is_uk, miles
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
