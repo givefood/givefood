@@ -26,7 +26,7 @@ We are a UK charity that uses data to highlight local and structural food insecu
 
 We maintain the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover nearly 3000 locations.
 
-Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, food manufacturers, hundreds of national & local news websites, apps & the Trussell Trust.
+Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, broadcasters, food manufacturers, hundreds of national & local news websites, and apps.
 
 Give Food is a registered charity in England & Wales [1188192](https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5147019)
 
