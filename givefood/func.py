@@ -711,7 +711,7 @@ def is_uk(lat_lng):
     lat = float(lat_lng.split(",")[0])
     lng = float(lat_lng.split(",")[1])
 
-    sw_lat = 49.674
+    sw_lat = 49.1
     sw_lng = -14.015517
     ne_lat = 61.061
     ne_lng = 2.0919117
