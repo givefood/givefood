@@ -147,6 +147,25 @@ def geocode(address):
     return lat_lng
 
 
+def approx_rev_geocode(lat_lng):
+
+    gmap_geocode_key = get_cred("gmap_geocode_key")
+
+    lat = lat_lng.split(",")[0]
+    lng = lat_lng.split(",")[1]
+
+    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&latlng=%s,%s" % (gmap_geocode_key, lat, lng)
+    logging.warning("JASON")
+    logging.warning(address_api_url)
+    request = requests.get(address_api_url)
+
+    if request.status_code == 200:
+        address_result_json = request.json()
+        address_components = address_result_json["results"][0]["address_components"]
+        sublocality = address_components[2]["long_name"]
+    return sublocality
+
+
 def get_place_id(address):
     
     gmap_geocode_key = get_cred("gmap_geocode_key")

@@ -16,7 +16,17 @@
   <link rel="preload" href="{% url 'wfbn:geojson' %}" as="fetch" crossorigin="anonymous">
 {% endblock %}
 
-{% block title %}{% blocktrans %}Find a food bank & see what they need{% endblocktrans %} - Give Food{% endblock %}
+{% block title %}
+  {% if not location_results %}
+    {% blocktrans %}Find a food bank & see what they need{% endblocktrans %}
+  {% else %}
+    {% if address %}
+      {{ address }} {% blocktrans %}food banks{% endblocktrans %}
+    {% else %}
+      {{ approx_address }} {% blocktrans %}food banks{% endblocktrans %}
+    {% endif %}
+  {% endif %} - Give Food
+{% endblock %}
 
 {% block body %}
 
@@ -30,9 +40,11 @@
   <div class="columns">
     <div class="column is-half">
 
-      <p>{% blocktrans %}Find a food bank near you, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
+      {% if not location_results and is_uk %}
+        <p>{% blocktrans %}Find a food bank near you, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
+      {% endif %}
 
-      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info">{% blocktrans %}Use my location{% endblocktrans %}</a>
+      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}">{% blocktrans %}Use my location{% endblocktrans %}</a>
       <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
         <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
         <input id="address_field" type="text" name="address" class="input" placeholder="{% blocktrans %}e.g. EX4 6PX or Sheffield{% endblocktrans %}" value="{{ address }}" required autofocus aria-required="true">
@@ -40,10 +52,12 @@
         <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
       </form>
 
-      <p id="status-msg">{% if not is_uk %}{% blocktrans %}Sorry, we couldn't use that location. Is it inside the United Kingdom?{% endblocktrans %}{% endif %}</p>
-
-      <div id="index_intro">
-        {% if not location_results and is_uk %}
+      {% if not is_uk %}
+        <p>{% blocktrans %}Sorry, we couldn't use that location. Is it inside the United Kingdom?{% endblocktrans %}</p>
+      {% endif %}
+      
+      {% if not location_results and is_uk %}
+        <div id="index_intro">
           <ul>
               <li><a href="{% url 'wfbn:constituencies' %}">{% blocktrans %}Browse by parliamentary constituency{% endblocktrans %}</a></li>
               <li><a href="{% url 'register_foodbank' %}">{% blocktrans %}Register a food bank{% endblocktrans %}</a></li>
@@ -62,8 +76,8 @@
                   <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
               {% endfor %}
           </ul>
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
 
       <div id="theresults">
             
@@ -113,26 +127,6 @@
       {% include "wfbn/foodbank/includes/maplegend.html" %}
     </div>
   </div>
-
-  <template id="fb_row">
-    <tr>
-      <td>
-        <a href="#" class="foodbank" target="_top"></a>
-        <div class="parent_org"><span></span> <a href="#"></a></div>
-        <div class="distance"><span></span>mi {% blocktrans %}away{% endblocktrans %}</div>
-        <div class="links">
-          <a class="phone" href="" title="{% blocktrans %}Phone{% endblocktrans %}"><img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}"></a>
-          <a class="info" href="" title="{% blocktrans %}Information{% endblocktrans %}"><img src="/static/img/info.svg" alt="{% blocktrans %}Information{% endblocktrans %}"></a>
-        </div>
-        <a href="#" class="subscribe button is-link is-small" target="_top">{% blocktrans %}Get updates{% endblocktrans %}</a>
-      </td>
-      <td class="need_detail">
-        <div class="fb_needs">
-          <p></p>
-        </div>
-      </td>
-    </tr>
-  </template>
 
 {% endblock %}
 

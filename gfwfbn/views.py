@@ -17,7 +17,7 @@ from givefood.forms import FoodbankDonationPointForm
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
+from givefood.func import approx_rev_geocode, geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
@@ -37,7 +37,7 @@ def index(request):
     lat_lng = request.GET.get("lat_lng", "")
 
     lat_lng_is_uk = True
-    lat = lng = location_results = None
+    lat = lng = location_results = approx_address = None
 
     # Recently updated food banks
     recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
@@ -48,6 +48,9 @@ def index(request):
     # Geocode address if no lat_lng
     if address and not lat_lng:
         lat_lng = geocode(address)
+
+    if lat_lng and not address:
+        approx_address = approx_rev_geocode(lat_lng)
 
     if lat_lng:
 
@@ -71,6 +74,7 @@ def index(request):
         "address":address,
         "lat":lat,
         "lng":lng,
+        "approx_address":approx_address,
         "gmap_key":gmap_key,
         "recently_updated":recently_updated,
         "most_viewed":most_viewed,
