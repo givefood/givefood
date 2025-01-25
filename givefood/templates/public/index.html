@@ -34,7 +34,7 @@
 
       <div class="find-foodbank">
         <p>{% trans "Find out if there is a" %} <a href="{% url 'wfbn:index' %}">{% trans "food bank nearby" %}</a> {% trans "that you can help" %}...</p>
-        <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}">{% blocktrans %}Use my location{% endblocktrans %}</a>
+        <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}" data-no-instant>{% blocktrans %}Use my location{% endblocktrans %}</a>
         <form id="addressform" action="{% url 'wfbn:index' %}" method="GET" data-is-homepage="true">
           <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
           <input id="address_field" type="text" name="address" class="input" placeholder="{% blocktrans %}e.g. EX4 6PX or Sheffield{% endblocktrans %}" required autofocus>

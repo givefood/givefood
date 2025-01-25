@@ -43,7 +43,7 @@
         <p>{% blocktrans %}Find a food bank near you, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
       {% endif %}
 
-      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}">{% blocktrans %}Use my location{% endblocktrans %}</a>
+      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}" data-no-instant>{% blocktrans %}Use my location{% endblocktrans %}</a>
       <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
         <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
         <input id="address_field" type="text" name="address" class="input" placeholder="{% blocktrans %}e.g. EX4 6PX or Sheffield{% endblocktrans %}" value="{{ address }}" required autofocus aria-required="true">
