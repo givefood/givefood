@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
@@ -7,9 +8,10 @@ from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.db.models import Sum
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _
+from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
@@ -306,6 +308,10 @@ def frag(request, frag):
             frag_text = _("Under a minute ago")
         else:
             frag_text = "%s %s" % (timesince_text, _("ago"))
+
+    # Need hits
+    if frag == "needhits":
+        frag_text = intcomma(FoodbankHit.objects.filter(day__gte=datetime.now() - timedelta(days=7)).aggregate(Sum('hits'))["hits__sum"])
     
     if not frag_text:
         return HttpResponseForbidden()
