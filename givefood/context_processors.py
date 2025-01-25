@@ -10,17 +10,22 @@ def context(request):
     path = request.path
     translated_path = translate_url(path, language)
     canonical_path = "%s%s" % (SITE_DOMAIN, translated_path)
+    querystring = request.META['QUERY_STRING']
     instance_id = os.environ.get('GAE_INSTANCE')
     version = os.environ.get('GAE_VERSION')
 
     page_translatable = "/cy/" == translate_url(path, "cy")[:4]
     languages = []
     for language in LANGUAGES:
+        if querystring:
+            url = "%s?%s" % (translate_url(path, language[0]), querystring)
+        else:
+            url = translate_url(path, language[0])
         languages.append({
             'code': language[0],
             'name': language[1],
             'flag': LANGUAGE_FLAGS[language[0]],
-            'url': translate_url(path, language[0]),
+            'url': url,
         })
 
     try:
