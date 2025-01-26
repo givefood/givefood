@@ -1,7 +1,5 @@
-import io
 from itertools import chain
 import json, requests, datetime
-from PIL import Image
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest
