@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% block head %}
+
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
@@ -12,11 +13,18 @@
   <meta property="og:image:alt" content="{% blocktrans %}Map of UK food banks{% endblocktrans %}">
   <link rel="alternate" type="application/rss+xml" title="Give Food RSS" href="{% url 'wfbn:rss' %}">
   <link rel="manifest" href="{% url 'wfbn:manifest' %}">
-  <link rel="preload" href="{% url 'wfbn:geojson' %}" as="fetch" crossorigin="anonymous">
+  <link rel="preload" href="{% url 'wfbn:geojson' %}" as="fetch" crossorigin="anonymous" type="application/json">
+
+  {% if locations %}
+    {% for location in locations|slice:"5" %}
+      <link rel="preload" href="{% url 'wfbn:foodbank' location.foodbank_slug %}" as="document">
+    {% endfor %}
+  {% endif %}
+
 {% endblock %}
 
 {% block title %}
-  {% if not location_results %}
+  {% if not locations %}
     {% blocktrans %}Find a food bank & see what they need{% endblocktrans %}
   {% else %}
     {% if address %}
@@ -37,9 +45,9 @@
   </div>
 
   <div class="columns">
-    <div class="column is-half">
+    <div class="column is-three-fifths">
 
-      {% if not location_results and is_uk %}
+      {% if not locations and is_uk %}
         <p>{% blocktrans %}Find a food bank near you, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
       {% endif %}
 
@@ -55,7 +63,7 @@
         <p>{% blocktrans %}Sorry, we couldn't use that location. Is it inside the United Kingdom?{% endblocktrans %}</p>
       {% endif %}
       
-      {% if not location_results and is_uk %}
+      {% if not locations and is_uk %}
         <div id="index_intro">
           <ul>
               <li><a href="{% url 'wfbn:constituencies' %}">{% blocktrans %}Browse by parliamentary constituency{% endblocktrans %}</a></li>
@@ -78,50 +86,91 @@
         </div>
       {% endif %}
 
-      <div id="theresults">
-            
-        <table class="table needs">
-          {% if location_results %}
-            {% for location in location_results %}
-              <tr>
-                <td>
-                  <a href="{{ location.homepage }}" class="foodbank" target="_top">{{ location.name }}</a>
-                  {% if location.type == "location" %}
-                    <div class="parent_org">{% blocktrans %}Part of{% endblocktrans %} <a href="at/{{ location.foodbank_slug }}/">{{ location.foodbank_name }}</a></div>
-                  {% endif %}
-                  <div class="distance">{{ location.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
-                  <div class="links">
-                    {% if location.phone_number %}
-                      <a class="phone" href="tel:{{ location.phone_number }}" title="{% blocktrans %}Phone{% endblocktrans %}"><img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}"></a>
+      {% if locations %}
+        <div id="theresults" class="sections">
+
+          <div class="tabs is-boxed">
+            <ul>
+              <li class="is-active">
+                <a data-tab="foodbanks">
+                  <span>{% blocktrans %}Food banks{% endblocktrans %}</span>
+                </a>
+              </li>
+              <li>
+                <a data-tab="donationpoints">
+                  <span>{% blocktrans %}Donation points{% endblocktrans %}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="foodbanks tabcontent">
+            <table class="table needs">
+              {% for location in locations %}
+                <tr>
+                  <td>
+                    <a href="{% if location.type == 'organisation' %}{% url 'wfbn:foodbank' location.foodbank_slug %}{% endif %}{% if location.type == 'location' %}{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}{% endif %}">{{ location.name }}</a>
+                    {% if location.type == "location" %}
+                      <div class="parent_org">{% blocktrans %}Part of{% endblocktrans %} <a href="{% url 'wfbn:foodbank' location.foodbank_slug %}">{{ location.foodbank_name }}</a></div>
                     {% endif %}
-                    <a class="info" href="at/{{ location.foodbank_slug }}/{% if location.type == "location" %}{{ location.slug }}/{% endif %}" title="{% blocktrans %}Information{% endblocktrans %}"><img src="/static/img/info.svg" alt="{% blocktrans %}Information{% endblocktrans %}"></a>
-                  </div>
-                  {% if location.latest_need.change_text != "Nothing" and location.latest_need.change_text != "Unknown" and location.latest_need.change_text != "Facebook" %}
-                    <a class="subscribe button is-link is-small" href="at/{{ location.foodbank_slug }}/subscribe/">{% blocktrans %}Get updates{% endblocktrans %}</a>
-                  {% endif %}
-                  
-                </td>
-                <td class="need_detail">
-                  <div class="fb_needs">
-                    {% if location.latest_need.change_text == "Nothing" %}
-                      {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
-                    {% elif location.latest_need.change_text == "Unknown" %}
-                      {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
-                    {% elif location.latest_need.change_text == "Facebook" %}
-                      {% blocktrans %}Check the food bank's Facebook page for what they need{% endblocktrans %}
-                    {% else %}
-                      {{ location.latest_need.change_text|linebreaks }}
+                    <div class="distance">{{ location.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
+                  </td>
+                  <td class="need_detail">
+                    <div class="fb_needs">
+                      {% if location.latest_need.change_text == "Nothing" %}
+                        {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
+                      {% elif location.latest_need.change_text == "Unknown" %}
+                        {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
+                      {% elif location.latest_need.change_text == "Facebook" %}
+                        Check the food bank's <a href="https://www.facebook.com/{% if location.type == 'organisation' %}{{ location.facebook_page }}{% endif %}{% if location.type == 'location' %}{{ location.foodbank.facebook_page }}{% endif %}?ref=givefood.org.uk">Facebook page</a> for what they need
+                      {% else %}
+                        {{ location.latest_need.change_text|linebreaks }}
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
+
+          <div class="donationpoints tabcontent is-hidden">
+            <table class="table donationpoints">
+              {% for donationpoint in donationpoints %}
+                <tr>
+                  <td>
+                    {% if donationpoint.place_has_photo %}
+                      <a href="{{ donationpoint.url }}">
+                        <img src="{{ donationpoint.photo_url }}" alt="{{ donationpoint.name }}" loading="lazy" class="placephoto" style="width:200px;">
+                      </a>
                     {% endif %}
-                  </div>
-                </td>
-              </tr>
-            {% endfor %}
-          {% endif %}
-        </table>
-      </div>
+                  </td>
+                  <td>
+                    <a href="{{ donationpoint.url }}">{{ donationpoint.name }}</a>
+                    <div class="parent_org">{% blocktrans %}For{% endblocktrans %} <a href="{% url 'wfbn:foodbank' donationpoint.foodbank_slug %}">{{ donationpoint.foodbank_name }}</a></div>
+                    <div class="distance">{{ donationpoint.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
+                  </td>
+                  <td>
+                    {% if donationpoint.foodbank.latest_need.change_text == "Nothing" %}
+                        {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
+                      {% elif donationpoint.foodbank.latest_need.change_text == "Unknown" %}
+                        {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
+                      {% elif donationpoint.foodbank.latest_need.change_text == "Facebook" %}
+                        Check the food bank's <a href="https://www.facebook.com/{{ donationpoint.foodbank.facebook_page }}?ref=givefood.org.uk">Facebook page</a> for what they need
+                      {% else %}
+                        {{ donationpoint.foodbank.latest_need.change_text|linebreaks }}
+                      {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </table>
+          </div>
+          
+        </div>
+      {% endif %}
 
     </div>
-    <div class="column is-half">
+
+    <div class="column is-two-fifths">
       <div id="map"></div>
       {% include "wfbn/foodbank/includes/maplegend.html" %}
     </div>
@@ -142,13 +191,14 @@
       {% else %}
         lat: 55.4,
         lng: -4,
-        zoom: 6,
+        zoom: 5,
         location_marker: false,
       {% endif %}
     }
   </script>
 
   <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
+  <script src="/static/js/tabber.js?v={{ version }}" defer></script>
   <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places&loading=async&callback=init&region=GB" defer></script>
 
 {% endblock %}

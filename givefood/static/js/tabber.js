@@ -3,7 +3,7 @@ function changetab(section) {
         item.classList.remove("is-active")
     })
     document.querySelector("." + section).parentNode.classList.add("is-active")
-    document.querySelectorAll(".sections .column").forEach(item => {
+    document.querySelectorAll(".sections .tabcontent").forEach(item => {
         item.classList.add("is-hidden")
     })
     document.querySelectorAll("." + section).forEach(item => {

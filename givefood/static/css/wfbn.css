@@ -44,10 +44,14 @@
 .recently-updated {
     margin-bottom:1rem;
 }
-.needs tr:last-child td {
+.tabs {
+    padding-top:25px;
+    margin:0 !important;
+}
+.needs tr:last-child td, .donationpoints tr:last-child td {
     border-bottom:0;
 }
-.needs td {
+.needs td, .donationpoints td {
     padding:0.75em 0.75em 0.75em 0;
 }
 .distance, .parent_org {
@@ -67,7 +71,7 @@
     margin-top:10px;
 }
 #map {
-    height:1000px;
+    height:750px;
     border-radius: 0.25rem;
 }
 .sidemap {

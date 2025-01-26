@@ -49,7 +49,7 @@
   <div class="columns sections">
 
     {# General #}
-    <div class="column generallocations">
+    <div class="column tabcontent generallocations">
 
       {% if foodbank.is_closed %}
         <span class="tag is-danger">Closed</span>
@@ -218,7 +218,7 @@
     </div>
 
     {# Locations #}
-    <div class="column generallocations">
+    <div class="column tabcontent generallocations">
       <a href="{% url 'admin:fblocation_new' foodbank.slug %}" class="button is-link">New Location</a>
       <h3>Locations</h3>
       <table class="table is-fullwidth locationtable">
@@ -300,7 +300,7 @@
     </div>
 
     {# Donation Points #}
-    <div class="column donationpoints is-hidden">
+    <div class="column tabcontent donationpoints is-hidden">
       <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-link">New Donation Point</a>
       {% if foodbank.donation_points %}
         <table class="table is-fullwidth is-hoverable">
@@ -347,7 +347,7 @@
 
     {# Needs #}
     {% if foodbank.needs %}
-      <div class="column needsorders is-hidden">
+      <div class="column tabcontent needsorders is-hidden">
         <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
@@ -394,7 +394,7 @@
 
     {# Orders #}
     {% if foodbank.orders %}
-      <div class="column needsorders is-hidden">
+      <div class="column tabcontent needsorders is-hidden">
         <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
@@ -419,7 +419,7 @@
 
     {# Articles #}
     {% if foodbank.articles %}
-      <div class="column articles is-hidden">
+      <div class="column tabcontent articles is-hidden">
         <table class="table is-fullwidth is-hoverable">
           {% for article in foodbank.articles %}
             <tr>
@@ -437,13 +437,13 @@
 
     {# Social Media #}
     {% if foodbank.facebook_page %}
-      <div class="column socialmedia is-hidden">
+      <div class="column tabcontent socialmedia is-hidden">
         {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
       </div>
     {% endif %}
 
     {% if foodbank.twitter_handle %}
-      <div class="column socialmedia is-hidden">
+      <div class="column tabcontent socialmedia is-hidden">
         <div class="twitter-feed">
           <a class="twitter-timeline" href="https://twitter.com/{{ foodbank.twitter_handle }}">Tweets by {{ foodbank.twitter_handle }}</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
@@ -451,7 +451,7 @@
     {% endif %}
 
     {# Subscribers #}
-    <div class="column subscribers is-hidden">
+    <div class="column tabcontent subscribers is-hidden">
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Email</th>

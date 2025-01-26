@@ -130,6 +130,9 @@ footer {
 .lastupdated {
     text-transform:lowercase;
 }
+.tabs li.is-active a {
+    color: rgb(53, 55, 64);
+}
 .button.is-medium {
     border-radius: 4px;
 }

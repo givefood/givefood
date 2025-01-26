@@ -1,4 +1,7 @@
+import io
+from itertools import chain
 import json, requests, datetime
+from PIL import Image
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest
@@ -11,13 +14,16 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django import forms
 from django.utils.translation import gettext
+from django.db.models import Value
+
+from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.const.general import SITE_DOMAIN
 from givefood.forms import FoodbankDonationPointForm
 from session_csrf import anonymous_csrf
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import approx_rev_geocode, geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
+from givefood.func import approx_rev_geocode, geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, miles, photo_from_place_id, send_email, post_to_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_WEEK
 from gfwfbn.forms import NeedForm, ContactForm, FoodbankLocationForm, LocationLocationForm
 
@@ -37,7 +43,7 @@ def index(request):
     lat_lng = request.GET.get("lat_lng", "")
 
     lat_lng_is_uk = True
-    lat = lng = location_results = approx_address = None
+    lat = lng = approx_address = locations = donationpoints = None
 
     # Recently updated food banks
     recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
@@ -65,7 +71,31 @@ def index(request):
         lat_lng_is_uk = is_uk(lat_lng)
 
         if lat_lng_is_uk:
-            location_results = find_locations(lat_lng, 20)
+            locations = find_locations(lat_lng, 20)
+
+        donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).annotate(type=Value("donationpoint")).order_by("distance")[:20]
+
+        location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).annotate(type=Value("location")).order_by("distance")[:20]
+
+        donationpoints = list(chain(donationpoints,location_donationpoints))
+        donationpoints = sorted(donationpoints, key=lambda k: k.distance)[:20]
+
+        for donationpoint in donationpoints:
+            if donationpoint.type == "location":
+                donationpoint.url = reverse("wfbn:foodbank_location", kwargs={"slug":donationpoint.foodbank_slug, "locslug":donationpoint.slug})
+                donationpoint.photo_url = reverse("wfbn-generic:foodbank_location_photo", kwargs={"slug":donationpoint.foodbank_slug, "locslug":donationpoint.slug})
+            if donationpoint.type == "donationpoint":
+                donationpoint.url = reverse("wfbn:foodbank_donationpoint", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
+                donationpoint.photo_url = reverse("wfbn-generic:foodbank_donationpoint_photo", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
+            donationpoint.distance_mi = miles(donationpoint.distance)
 
     # Need the Google Maps API key too
     gmap_key = get_cred("gmap_key")
@@ -78,7 +108,8 @@ def index(request):
         "gmap_key":gmap_key,
         "recently_updated":recently_updated,
         "most_viewed":most_viewed,
-        "location_results":location_results,
+        "locations":locations,
+        "donationpoints":donationpoints,
         "is_uk":lat_lng_is_uk,
     }
     return render(request, "wfbn/index.html", template_vars)
