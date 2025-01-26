@@ -85,6 +85,12 @@ def index(request):
             "slug":"welshgov",
             "url":"https://www.gov.wales",
             "format":"svg",
+        },
+        {
+            "name":"Foreign, Commonwealth & Development Office",
+            "slug":"fcdo",
+            "url":"https://www.gov.uk/government/organisations/foreign-commonwealth-development-office",
+            "format":"svg",
         }
     ]
 
