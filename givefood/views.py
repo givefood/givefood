@@ -11,6 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 
+from givefood.const.topplaces import TOP_PLACES
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm
 from givefood.func import get_cred, validate_turnstile
@@ -266,6 +267,7 @@ def sitemap(request):
     constituencies = ParliamentaryConstituency.objects.all()
     locations = FoodbankLocation.objects.all().exclude(is_closed=True)
     donationpoints = FoodbankDonationPoint.objects.all().exclude(is_closed=True)
+    top_places = TOP_PLACES
 
     template_vars = {
         "domain":SITE_DOMAIN,
@@ -274,6 +276,7 @@ def sitemap(request):
         "constituencies":constituencies,
         "locations":locations,
         "donationpoints":donationpoints,
+        "top_places":top_places,
     }
     return render(request, "public/sitemap.xml", template_vars, content_type='text/xml')
 

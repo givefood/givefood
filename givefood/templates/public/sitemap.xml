@@ -35,4 +35,7 @@
 			<url><loc>{{ domain }}{% url 'write:constituency' constituency.slug %}</loc></url>
 		{% endif %}
 	{% endfor %}
+	{% for top_place in top_places %}
+		<url><loc>{{ domain }}{% url 'wfbn:index' %}?address={{ top_place|urlencode }}%20UK</loc></url>
+	{% endfor %}
 </urlset>
