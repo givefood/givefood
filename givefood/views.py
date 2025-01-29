@@ -311,7 +311,7 @@ def frag(request, frag):
     """
 
     # last_updated
-    if frag == "last_updated":
+    if frag == "last-updated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)
         if timesince_text == "0 %s" % (_("minutes")):
             frag_text = _("Under a minute ago")
@@ -319,7 +319,7 @@ def frag(request, frag):
             frag_text = "%s %s" % (timesince_text, _("ago"))
 
     # Need hits
-    if frag == "needhits":
+    if frag == "need-hits":
         frag_text = intcomma(FoodbankHit.objects.filter(day__gte=datetime.now() - timedelta(days=7)).aggregate(Sum('hits'))["hits__sum"])
     
     if not frag_text:
