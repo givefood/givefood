@@ -1,0 +1,66 @@
+{% extends "app/page.html" %}
+{% load custom_tags %}
+
+{% block title %}{{ foodbank.name }}{% endblock %}
+
+{% block body %}
+
+  <main>
+
+      <p class="needs">
+          {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
+      </p>
+
+      <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
+      <address>
+          {{ foodbank.address|linebreaksbr }}<br>
+          {{ foodbank.postcode }}<br>
+          {{ foodbank.country }}
+      </address>
+
+      <br>
+      <div class="contacts is-size-6">
+          <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url_with_ref }}" id="website_link">{{ foodbank.friendly_url }}</a><br>
+          {% if foodbank.phone_number %}
+            <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ foodbank.phone_number|full_phone }}">{{ foodbank.phone_number|friendly_phone }}</a>{% if foodbank.secondary_phone_number %} or <a href="tel:{{ foodbank.secondary_phone_number|full_phone }}">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}<br>
+          {% endif %}
+          <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}" id="email_link">{{ foodbank.contact_email }}</a>
+      </div>
+
+      {% if foodbank.latest_need.change_text != "Facebook" %}
+        {% include 'wfbn/foodbank/includes/subscribe.html' %}
+      {% endif %}
+
+      {% if locations %}
+          <details>
+              <summary>Locations</summary>
+              {% for location in locations %}
+                  <h3>{{ location.name }}</h3>
+                  <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
+                  <address>
+                      {{ location.address|linebreaksbr }}<br>
+                      {{ location.postcode }}
+                  </address>
+                  <br>
+              {% endfor %}
+          </details>
+      {% endif %}
+
+      {% if donationpoints %}
+        <details>
+          <summary>Donation Points</summary>
+          {% for donationpoint in donationpoints %}
+              <h3>{{ donationpoint.name }}</h3>
+              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donationpoint.latt_long }}" class="is-pulled-right button is-info is-small is-light directions-btn">Directions</a>
+              <address>
+                  {{ donationpoint.address|linebreaksbr }}<br>
+                  {{ donationpoint.postcode }}
+              </address>
+              <br>
+          {% endfor %}
+        </details>
+      {% endif %}
+
+  </main>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+@font-face {
+    font-family:'Soehne Buch';
+    src:url('/static/fonts/soehne-buch.woff2') format('woff2');
+    font-weight:400;
+}
+@font-face {
+    font-family:'Soehne Kraftig';
+    src:url('/static/fonts/soehne-kraftig.woff2') format('woff2');
+    font-weight:500;
+}
+@font-face {
+    font-family:'Soehne Dreiviertelfett';
+    src:url('/static/fonts/soehne-dreiviertelfett.woff2') format('woff2');
+    font-weight:700;
+}
+html {
+    hanging-punctuation: first allow-end last;
+}
+body {
+    background:#fff;
+    color:#000;
+}
+main {
+    margin:0.8rem 1rem 1rem 1rem;
+}
+body, input, textarea {
+    font-family:"Soehne Buch","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+label, strong, b, h3 {
+    font-family:"Soehne Kraftig","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-weight:500 !important;
+}
+a {
+    text-decoration: none;
+    color:rgb(26, 13, 171)
+}
+.table td {
+    padding:8px 0;
+}
+#address_field {
+    width:250px;
+}
+
+#map {
+    width:100%;
+    height:500px;
+}
+address {
+    font-style:normal;
+}
+.contact-icon {
+    width:16px;
+    display:inline-block;
+    margin:0 2px 0 2px;
+    vertical-align:middle;
+}
+
+summary {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    font-weight: bold;
+}
+
+summary::after {
+    content: '';
+    width: 18px;
+    height: 10px;
+    background: url('/static/img/arrow.svg') no-repeat;
+    background-size: cover;
+    transition: 0.2s;
+}
+
+details[open] > summary::after {
+    transform: rotate(180deg);
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary {
+    color: #30353b;
+    border-radius: 5px;
+    background:#D8EDFE
+}
+
+details[open] summary {
+    border-radius: 5px 5px 0 0;
+}
+
