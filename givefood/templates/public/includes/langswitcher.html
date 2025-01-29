@@ -5,23 +5,23 @@
                 <button class="button" aria-haspopup="true" aria-controls="langswitcher">
                     <span>
                         {% if LANGUAGE_CODE == 'cy' %}
-                            <span class="flag is-size-5">🏴󠁧󠁢󠁷󠁬󠁳󠁿</span> Cymraeg
+                            <img src="/static/img/langflags/cy.svg" alt="Cymraeg" aria-hidden="true"> Cymraeg
                         {% endif %}
                         {% if LANGUAGE_CODE == 'en' %}
-                            <span class="flag is-size-5">🇬🇧</span> English
+                            <img src="/static/img/langflags/en.svg" alt="Cymraeg" aria-hidden="true"> English
                         {% endif %}
                         {% if LANGUAGE_CODE == 'gd' %}
-                            <span class="flag is-size-5">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span> Gàidhlig
+                            <img src="/static/img/langflags/gd.svg" alt="Gàidhlig" aria-hidden="true"> Gàidhlig
                         {% endif %}
                     </span>
-                    <svg viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg>
+                    <svg class="arrow" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg>
                 </button>
             </div>
             <div class="dropdown-menu" id="langswitcher" role="menu">
                 <div class="dropdown-content">
                     {% for language in languages %}
                         <a href="{{ language.url }}" class="dropdown-item">
-                            <span class="flag is-size-5">{{ language.flag }}</span> {{ language.name }} {% if language.code != 'en' %}<span class="beta is-size-7">beta</span>{% endif %}
+                            <img src="/static/img/langflags/{{ language.code }}.svg" alt="{{ language.name }}" aria-hidden="true"> {{ language.name }} {% if language.code != 'en' %}<span class="beta is-size-7">beta</span>{% endif %}
                         </a>
                     {% endfor %}
                 </div>

@@ -170,12 +170,11 @@ footer {
         margin:45px 0 0 0;
     }
 }
-.langswitcher .flag {
-    display:inline-block;
-    vertical-align: middle;
-    margin-right:2px;
+.langswitcher img {
+    width:16px;
+    margin-right:4px;
 }
-.langswitcher svg {
+.langswitcher .arrow {
     width:10px;
     height:10px;
     stroke:rgb(53, 55, 64);
