@@ -90,5 +90,5 @@ urlpatterns += [
     path('dashboard/', include('gfdash.urls', namespace="dash")),
     path('offline/', include('gfoffline.urls', namespace="offline")),
     path('write/', include('gfwrite.urls', namespace="write")),
-    path('app/', include('gfapp.urls', namespace="app")),
+    path('appfe/', include('gfapp.urls', namespace="app")),
 ]
