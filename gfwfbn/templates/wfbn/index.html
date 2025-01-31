@@ -138,6 +138,7 @@
                       {% else %}
                         {{ location.latest_need.change_text|linebreaks }}
                       {% endif %}
+                      <script src="{% url 'wfbn-generic:foodbank_hit' location.foodbank_slug %}" defer></script>
                     </div>
                   </td>
                 </tr>
@@ -171,6 +172,7 @@
                       {% else %}
                         {{ donationpoint.foodbank.latest_need.change_text|linebreaks }}
                       {% endif %}
+                      <script src="{% url 'wfbn-generic:foodbank_hit' donationpoint.foodbank_slug %}" defer></script>
                   </td>
                 </tr>
               {% endfor %}
