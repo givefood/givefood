@@ -17,10 +17,9 @@ def context(request):
     page_translatable = "/cy/" == translate_url(path, "cy")[:4]
     languages = []
     for language in LANGUAGES:
+        url = translate_url(path, language[0])
         if querystring:
-            url = "%s?%s" % (translate_url(path, language[0]), querystring)
-        else:
-            url = translate_url(path, language[0])
+            url = "%s?%s" % (url, querystring)
         languages.append({
             'code': language[0],
             'name': language[1],
