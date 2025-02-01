@@ -1,8 +1,6 @@
 const ip_geolocation_url = "/needs/getlocation/"
 const address_field = document.querySelector("#address_field");
 const lat_lng_field = document.querySelector("#lat_lng_field");
-const burger_menu = document.querySelector(".navbar-burger");
-const menu_items = document.querySelectorAll(".foodbank-menu li a");
 const uml_btn = document.querySelector("#usemylocationbtn");
 const addressform = document.querySelector("#addressform");
 const map_element = document.querySelector("#map");
@@ -35,14 +33,6 @@ function init() {
         });
       }
     }
-    if (burger_menu) {
-      burger_menu.addEventListener('click',function(){
-          for (const menu_item of menu_items) {
-              menu_item.style.display = 'block';
-          }
-          burger_menu.style.display = 'none';
-      })
-    };
 }
 
 function move_map(lat,lng,zoom) {
