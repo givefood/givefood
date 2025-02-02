@@ -88,7 +88,7 @@
             {% for donation_point in foodbank.donation_points %}
                 <div style="clear:both;">
                   {% if donation_point.place_has_photo %}
-                    <a href="{{ donation_point.url }}">
+                    <a href="{% url 'wfbn:foodbank_donationpoint' foodbank.slug donation_point.slug %}">
                       <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donation_point.slug %}" alt="{{ donation_point.name }}" loading="lazy" class="placephoto is-pulled-right" style="width:150px;clear:both;">
                     </a>
                   {% endif %}
