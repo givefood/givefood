@@ -86,14 +86,21 @@
             {% endfor %}
 
             {% for donation_point in foodbank.donation_points %}
-                {% if donation_point.company %}
-                  <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon">
-                {% endif %}
-                <a href="{% url 'wfbn:foodbank_donationpoint' foodbank.slug donation_point.slug %}">{{ donation_point.name }}</a>
-                <address>
-                  {{ donation_point.address|linebreaksbr }}<br>
-                  {{ donation_point.postcode }}
-                </address>
+                <div style="clear:both;">
+                  {% if donation_point.place_has_photo %}
+                    <a href="{{ donation_point.url }}">
+                      <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donation_point.slug %}" alt="{{ donation_point.name }}" loading="lazy" class="placephoto is-pulled-right" style="width:150px;clear:both;">
+                    </a>
+                  {% endif %}
+                  {% if donation_point.company %}
+                    <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon">
+                  {% endif %}
+                  <a href="{% url 'wfbn:foodbank_donationpoint' foodbank.slug donation_point.slug %}">{{ donation_point.name }}</a>
+                  <address>
+                    {{ donation_point.address|linebreaksbr }}<br>
+                    {{ donation_point.postcode }}
+                  </address>
+                </div>
             {% endfor %}
 
           </div>
