@@ -78,18 +78,25 @@
             {% endif %}
 
             {% for location_donation_point in foodbank.location_donation_points %}
-                <a href="{% url 'wfbn:foodbank_location' foodbank.slug location_donation_point.slug %}">{{ location_donation_point.name }}</a>
-                <address>
-                  {{ location_donation_point.address|linebreaksbr }}<br>
-                  {{ location_donation_point.postcode }}
-                </address>
+                <div style="clear:both">
+                  {% if location_donation_point.place_has_photo %}
+                    <a href="{% url 'wfbn:foodbank_location' foodbank.slug location_donation_point.slug %}">
+                      <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location_donation_point.slug %}" alt="{{ location_donation_point.name }}" loading="lazy" class="placephoto is-pulled-right" style="width:150px;clear:left">
+                    </a>
+                  {% endif %}
+                  <a href="{% url 'wfbn:foodbank_location' foodbank.slug location_donation_point.slug %}">{{ location_donation_point.name }}</a>
+                  <address>
+                    {{ location_donation_point.address|linebreaksbr }}<br>
+                    {{ location_donation_point.postcode }}
+                  </address>
+                </div>
             {% endfor %}
 
             {% for donation_point in foodbank.donation_points %}
-                <div style="clear:both;">
+                <div style="clear:both">
                   {% if donation_point.place_has_photo %}
                     <a href="{% url 'wfbn:foodbank_donationpoint' foodbank.slug donation_point.slug %}">
-                      <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donation_point.slug %}" alt="{{ donation_point.name }}" loading="lazy" class="placephoto is-pulled-right" style="width:150px;clear:both;">
+                      <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donation_point.slug %}" alt="{{ donation_point.name }}" loading="lazy" class="placephoto is-pulled-right" style="width:150px;clear:left">
                     </a>
                   {% endif %}
                   {% if donation_point.company %}

@@ -82,11 +82,18 @@
             {% endif %}
 
             {% for location in foodbank.locations %}
+              <div style="clear:both">
+                {% if location.place_has_photo %}
+                  <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">
+                    <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %}" alt="{{ location.name }}" loading="lazy" class="placephoto is-pulled-right" style="width:150px;clear:left">
+                  </a>
+                {% endif %}
                 <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location.name }}</a>
                 <address>
                   {{ location.address|linebreaksbr }}<br>
                   {{ location.postcode }}
                 </address>
+              </div>
             {% endfor %}
 
           </div>
