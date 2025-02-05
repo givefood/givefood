@@ -28,9 +28,9 @@ cron:
   url: /offline/need_check/48/
   schedule: every 48 hours
 
-# - description: discrepancy check
-#   url: /offline/discrepancy_check/
-#   schedule: every 30 minutes
+- description: discrepancy check
+  url: /offline/discrepancy_check/
+  schedule: every 30 minutes
 
 - description: decache donation points with opening hours
   url: /offline/decache_donationpoints/
