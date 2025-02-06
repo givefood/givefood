@@ -20,7 +20,6 @@ urlpatterns = [
     path("at/<slug:slug>/news/", foodbank_news, name="foodbank_news"),
     path("at/<slug:slug>/socialmedia/", foodbank_socialmedia, name="foodbank_socialmedia"),
     path("at/<slug:slug>/nearby/", foodbank_nearby, name="foodbank_nearby"),
-    path("at/<slug:slug>/history/", foodbank_history, name="foodbank_history"),
     path("at/<slug:slug>/subscribe/", foodbank_subscribe, name="foodbank_subscribe"),
     path("at/<slug:slug>/subscribe/sample/", foodbank_subscribe_sample, name="foodbank_subscribe_sample"),
     re_path(r"^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),

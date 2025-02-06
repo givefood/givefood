@@ -178,7 +178,6 @@ FOODBANK_SUBPAGES = [
     "donationpoints",
     "socialmedia",
     "nearby",
-    "history",
     "subscribe",
 ]
 

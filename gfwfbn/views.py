@@ -471,25 +471,6 @@ def foodbank_news(request,slug):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def foodbank_history(request, slug):
-    """
-    Food bank need history
-    """
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-        
-    needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).order_by("-created")[:10]
-
-    template_vars = {
-        "section":"history",
-        "foodbank":foodbank,
-        "needs":needs,
-    }
-
-    return render(request, "wfbn/foodbank/history.html", template_vars)
-
-
-@cache_page(SECONDS_IN_WEEK)
 def foodbank_socialmedia(request, slug):
     """
     Food bank social media links

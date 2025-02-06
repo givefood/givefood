@@ -489,7 +489,6 @@ class Foodbank(models.Model):
                 reverse("wfbn:geojson"),
                 
                 reverse("wfbn:foodbank", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_history", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_rss", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_geojson", kwargs={"slug":self.slug}),
                 reverse("wfbn:foodbank_locations", kwargs={"slug":self.slug}),
