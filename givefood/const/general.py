@@ -168,7 +168,8 @@ OLD_FOODBANK_SLUGS = {
     "norwood-brixton":"lambeth-south-croydon",
     "southbourne":"bournemouth/southbourne",
     "east-ayrshire":"ayrshire-east",
-    "falkirk/donationpoint/asda-superstore-stenhousemuir":"klsb/donationpoint/asda-stenhousemuir"
+    "falkirk/donationpoint/asda-superstore-stenhousemuir":"klsb/donationpoint/asda-stenhousemuir",
+    "newcastle-west-end":"newcastle",
 }
 
 FOODBANK_SUBPAGES = [
