@@ -24,12 +24,6 @@ urlpatterns = [
     path("at/<slug:slug>/subscribe/sample/", foodbank_subscribe_sample, name="foodbank_subscribe_sample"),
     re_path(r"^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),
 
-    # Edit
-    path("at/<slug:slug>/edit/", foodbank_edit, name="foodbank_edit"),
-    re_path(r"^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|donationpoints|closed)/", foodbank_edit_form, name="foodbank_edit_form"),
-    re_path(r"^at/(?P<slug>[-\w]+)/edit/(?P<action>needs|locations|contacts|donationpoints|closed)/(?P<locslug>[-\w]+)/", foodbank_edit_form, name="foodbank_edit_form_location"),
-    path("at/<slug:slug>/edit/thanks/", foodbank_edit_thanks, name="foodbank_edit_thanks"),
-
     # Donation Points
     path("at/<slug:slug>/donationpoints/", foodbank_donationpoints, name="foodbank_donationpoints"),
     path("at/<slug:slug>/donationpoint/<slug:dpslug>/", foodbank_donationpoint, name="foodbank_donationpoint"),
