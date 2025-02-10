@@ -13,7 +13,7 @@ from session_csrf import anonymous_csrf
 
 from givefood.const.topplaces import TOP_PLACES
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
-from givefood.forms import FoodbankRegistrationForm
+from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
 from givefood.const.general import SITE_DOMAIN
@@ -353,25 +353,37 @@ def human(request):
     return render(request, "public/human.html", tempate_vars)
 
 
-@require_POST
 def flag(request):
     """
     Flag a page
     """
-    url = request.POST.get("url")
+    url = request.GET.get("url")
+    done = request.GET.get("thanks", False)
 
-    turnstile_is_valid = validate_turnstile(request.POST.get("cf-turnstile-response"))
-    if turnstile_is_valid:
-        send_email(
-            to = "mail@givefood.org.uk",
-            subject = "Flagged page",
-            body = url,
-        )
+    if request.POST:
+        form = FlagForm(request.POST)
+
+        turnstile_is_valid = validate_turnstile(request.POST.get("cf-turnstile-response"))
+
+        if form.is_valid() and turnstile_is_valid:
+            email_body = render_to_string("public/flag_email.txt",{"form":request.POST.items()})
+            send_email(
+                to = "mail@givefood.org.uk",
+                subject = "Flagged Page",
+                body = email_body,
+            )
+            completed_url = "%s%s" % (reverse("flag"),"?thanks=1")
+            return redirect(completed_url)
     else:
-        return HttpResponseForbidden()
+        form = FlagForm(
+            initial = {
+                "our_page":url,
+            }
+        )
 
     template_vars = {
-        "headless":True,
-        "url":url,
+        "is_flag_page":True,
+        "form":form,
+        "done":done,
     }
     return render(request, "public/flag.html", template_vars)

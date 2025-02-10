@@ -130,12 +130,12 @@ footer {
 .lastupdated {
     text-transform:lowercase;
 }
-.flag a svg {
+.flag svg {
     stroke:#007BC7;
     vertical-align:middle;
     margin:0 2px 2px 0;
 }
-.flag a:hover svg {
+.flag:hover svg {
     stroke:rgb(53, 55, 64);
 }
 .tabs li.is-active a {

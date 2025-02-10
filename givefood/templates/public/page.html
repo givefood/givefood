@@ -27,13 +27,10 @@
       <div class="container">
         <div class="columns">
           <div class="column has-text-left">
-            <form action="{% url 'human' %}" method="post" class="flag">
-              <input type="hidden" name="target" value="{% url 'flag' %}">
-              <input type="hidden" name="url" value="{{ flag_path }}">
-              <input type="hidden" name="action" value="flag">
-              <a href="{% url 'flag' %}" onclick="javascript:document.querySelector('.flag').submit();return false;"><svg fill="none" height="16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="m4 15s1-1 4-1 5 2 8 2 4-1 4-1v-12s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="m4 22v-7"/></svg> {% trans 'Something wrong in this page?' %}</a>
-            </form>
-            <br>
+            {% if not is_flag_page %}
+              <a href="{% url 'flag' %}?url={{ flag_path|urlencode }}" rel="nofollow" class="flag"><svg fill="none" height="16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="m4 15s1-1 4-1 5 2 8 2 4-1 4-1v-12s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="m4 22v-7"/></svg> {% trans 'Something wrong in this page?' %}</a>
+              <br><br>
+            {% endif %}
             <p>
               {% trans "Last updated" %} <span class="lastupdated" data-include="{% url 'frag' 'last-updated' %}"></span><br>
               <span class="needhits" data-include="{% url 'frag' 'need-hits' %}"></span> {% trans "food bank needs viewed this week" %}

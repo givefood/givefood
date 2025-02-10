@@ -21,6 +21,12 @@ class FoodbankRegistrationForm(forms.Form):
     twitter = forms.URLField(help_text="Optional. E.g. https://twitter.com/BrixtonFoodbank/", required=False)
 
 
+class FlagForm(forms.Form):
+    our_page = forms.URLField(help_text="Address of the page you're flagging")
+    your_email = forms.EmailField(help_text="Optional. Your email address", required=False)
+    explanation = forms.CharField(widget=forms.Textarea, help_text="Optional. Please explain why you're flagging this page", required=False)
+
+
 class FoodbankForm(ModelForm):
     class Meta:
         model = Foodbank

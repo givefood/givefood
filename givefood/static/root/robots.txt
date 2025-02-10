@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /needs/getlocation/
+Disallow: /flag/
 
 User-agent: BLEXBot
 Disallow: /

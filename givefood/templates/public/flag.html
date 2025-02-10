@@ -1,10 +1,12 @@
 {% extends "public/page.html" %}
+{% load bulma_tags %}
 {% load i18n %}
 
 {% block title %}{% trans "Flag something wrong" %} - Give Food{% endblock %}
 
 {% block head %}
   <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
+  <meta name="robots" content="noindex">
 {% endblock %}
 
 {% block body %}
@@ -20,14 +22,23 @@
 
             <h1>{% trans "Flag something wrong" %}</h1>
 
-            <p>{% blocktrans %}Sorry that we got that wrong! We'll review this report in the next 24 hours.{% endblocktrans %}</p>
+            {% if done %}
 
-            <p>{% blocktrans %}The address of the page that was reported: {% endblocktrans %}<em>{{ url }}</em></p>
-            <br>
-            <p><a href="/" class="button is-link">{% trans "Return to the homepage" %}</a></p>
-            
+                <p>Thanks! We'll try and get back to you within 24 hours.</p>
+    
+            {% else %}
 
+                <p>{% blocktrans %}Sorry that you've found something wrong. We'll review your report within 24 hours.{% endblocktrans %}</p>
 
+                <form action="{% url 'human' %}" method="post">
+                    {{ form|bulma }}
+                    <input type="submit" class="button is-link">
+                    <input type="hidden" name="target" value="{% url 'flag' %}">
+                    <input type="hidden" name="action" value="flag">
+                </form>
+                
+            {% endif %}
+        
         </div>
     </div>
 
