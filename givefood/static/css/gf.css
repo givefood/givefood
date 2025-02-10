@@ -133,7 +133,7 @@ footer {
 .flag a svg {
     stroke:#007BC7;
     vertical-align:middle;
-    margin-right:3px;
+    margin:0 2px 2px 0;
 }
 .flag a:hover svg {
     stroke:rgb(53, 55, 64);
