@@ -31,15 +31,19 @@
               <li><a href="{% url 'register_foodbank' %}">{% trans "Register a food bank" %}</a></li>
               <li><a href="{% url 'dash:index' %}">{% trans "Dashboards" %}</a></li>
               <li><a href="/api/">API</a> {% if LANGUAGE_CODE == 'cy' %} ({% trans 'English' %}){% endif %}</li>
-              <li><a href="{% url 'annual_report_index' %}">{% trans "Annual reports" %}</a></li>
-            </ul>
-            <br>
-            <ul>
               <li><a href="{% url 'donate' %}">{% trans 'Donate' %}</a></li>
               <li><a href="{% url 'about_us' %}">{% trans 'About us' %}</a></li>
+              <li><a href="{% url 'privacy' %}">{% trans "Privacy policy" %}</a></li>
             </ul>
           </div>
           <div class="column has-text-right">
+            <form action="{% url 'human' %}" method="post" class="flag">
+              <input type="hidden" name="target" value="{% url 'flag' %}">
+              <input type="hidden" name="url" value="{{ flag_path }}">
+              <input type="hidden" name="action" value="flag">
+              <a href="{% url 'flag' %}" onclick="javascript:document.querySelector('.flag').submit();return false;"><svg fill="none" height="16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="m4 15s1-1 4-1 5 2 8 2 4-1 4-1v-12s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="m4 22v-7"/></svg> {% trans 'Something wrong in this page?' %}</a>
+            </form>
+            <br>
             <p>
               {% trans "Last updated" %} <span class="lastupdated" data-include="{% url 'frag' 'last-updated' %}"></span><br>
               <span class="needhits" data-include="{% url 'frag' 'need-hits' %}"></span> {% trans "food bank needs viewed this week" %}
@@ -49,7 +53,6 @@
               {% trans "Registered with the" %} <a href="https://www.fundraisingregulator.org.uk/directory/give-food">Fundraising Regulator</a><br>
               {% trans "ICO Data Protection Registration" %} <a href="https://ico.org.uk/ESDWebPages/Entry/ZB528540">ZB528540</a>
             </p>
-            <p><a href="{% url 'privacy' %}">{% trans "Privacy policy" %}</a></p>
           </div>
         </div>
       </div>

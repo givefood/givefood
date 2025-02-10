@@ -351,3 +351,27 @@ def human(request):
         "post_vars":post_vars,
     }
     return render(request, "public/human.html", tempate_vars)
+
+
+@require_POST
+def flag(request):
+    """
+    Flag a page
+    """
+    url = request.POST.get("url")
+
+    turnstile_is_valid = validate_turnstile(request.POST.get("cf-turnstile-response"))
+    if turnstile_is_valid:
+        send_email(
+            to = "mail@givefood.org.uk",
+            subject = "Flagged page",
+            body = url,
+        )
+    else:
+        return HttpResponseForbidden()
+
+    template_vars = {
+        "headless":True,
+        "url":url,
+    }
+    return render(request, "public/flag.html", template_vars)

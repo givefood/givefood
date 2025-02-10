@@ -41,6 +41,7 @@ urlpatterns += i18n_patterns(
     path("about-us/", givefood.views.about_us, name="about_us"),
     path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
     path("human/", givefood.views.human, name="human"),
+    path("flag/", givefood.views.flag, name="flag"),
 
     # Donate
     path("donate/", givefood.views.donate, name="donate"),

@@ -27,6 +27,10 @@ def context(request):
             'url': url,
         })
 
+    flag_path = canonical_path
+    if querystring:
+        flag_path = "%s?%s" % (canonical_path, querystring)
+
     try:
         app_name = sys.modules[resolve(request.path_info).func.__module__].__package__
     except:
@@ -35,6 +39,7 @@ def context(request):
 
     context = {
         'canonical_path': canonical_path,
+        'flag_path': flag_path,
         'instance_id': instance_id,
         'version': version,
         'enable_write': ENABLE_WRITE,
