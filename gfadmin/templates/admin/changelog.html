@@ -1,0 +1,32 @@
+{% extends "admin/page.html" %}
+{% load bulma_tags %}
+
+{% block title %}Changelog - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Changelog</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+        <form action="{% url 'admin:changelog' %}" method="post">
+            {{ form|bulma }}
+            <input type="submit" value="Add" class="button is-link">
+        </form>
+
+    </div>
+
+    <div class="column">
+
+        {% for change in changelog %}
+            <h3>{{ change.date }}</h3>
+            <p>{{ change.change|linebreaksbr }}</p>
+        {% endfor %}
+
+    </div>
+
+  </div>
+
+{% endblock %}

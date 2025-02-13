@@ -109,6 +109,8 @@ urlpatterns = (
     path("emailtester/", email_tester, name="email_tester"),
     path("emailtester/test/", email_tester_test, name="email_tester_test"),
 
+    path("changelog/", changelog, name="changelog"),
+
     path("stats/quarter/", quarter_stats, name="quarter_stats"),
     path("stats/orders/", order_stats, name="order_stats"),
     path("stats/editing/", edit_stats, name="edit_stats"),

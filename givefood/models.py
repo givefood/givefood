@@ -1862,3 +1862,12 @@ class PlacePhoto(models.Model):
 
     class Meta:
         app_label = 'givefood'
+
+
+class Changelog(models.Model):
+
+    date = models.DateField()
+    change = models.TextField()
+
+    class Meta:
+        app_label = 'givefood'
