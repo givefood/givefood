@@ -1,6 +1,10 @@
 User-agent: *
 Disallow: /needs/getlocation/
+Disallow: /cy/needs/getlocation/
+Disallow: /gd/needs/getlocation/
 Disallow: /flag/
+Disallow: /cy/flag/
+Disallow: /gd/flag/
 
 User-agent: BLEXBot
 Disallow: /
