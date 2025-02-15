@@ -54,7 +54,7 @@
 
     <div class="columns sections">
 
-        <div class="column map">
+        <div class="column map tabcontent">
             <p>Food banks requesting a Beauty Banks item in the last 28 days</p>
             <div id="the-map" style="width:700px;height:1000px;"></div>
         </div>
@@ -79,7 +79,7 @@
             </table>
         </div>
 
-        <div class="column london is-hidden">
+        <div class="column london tabcontent is-hidden">
             <table class="table is-narrow is-fullwidth">
                 <tr>
                     <th>Foodbank</th>
@@ -99,7 +99,7 @@
             </table>
         </div>
 
-        <div class="column settings is-hidden">
+        <div class="column settings tabcontent is-hidden">
             <h2>Products</h2>
             <p>List of strings of text we're looking for in a foodbank's need...</p>
             <p>{% for product in products %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
