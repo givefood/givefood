@@ -1871,3 +1871,13 @@ class Changelog(models.Model):
 
     class Meta:
         app_label = 'givefood'
+
+    def save(self, *args, **kwargs):
+
+        super(Changelog, self).save(*args, **kwargs)
+        decache(reverse("colophon"))
+
+    def delete(self, *args, **kwargs):
+
+        super(Changelog, self).delete(*args, **kwargs)
+        decache(reverse("colophon"))
