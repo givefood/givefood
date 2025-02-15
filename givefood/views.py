@@ -341,7 +341,8 @@ def frag(request, frag):
 
     # Need hits
     if frag == "need-hits":
-        frag_text = intcomma(FoodbankHit.objects.filter(day__gte=datetime.now() - timedelta(days=7)).aggregate(Sum('hits'))["hits__sum"])
+        number_hits = FoodbankHit.objects.filter(day__gte=datetime.now() - timedelta(days=7)).aggregate(Sum('hits'))["hits__sum"]
+        frag_text = intcomma(number_hits, False)
     
     if not frag_text:
         return HttpResponseForbidden()
