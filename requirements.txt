@@ -19,3 +19,4 @@ furl
 beautifulsoup4
 google-generativeai
 django-earthdistance
+requirements-parser

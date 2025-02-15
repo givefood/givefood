@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import requirements, requests
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
@@ -12,7 +13,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 
 from givefood.const.topplaces import TOP_PLACES
-from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
+from givefood.models import Changelog, Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
@@ -302,6 +303,26 @@ def privacy(request):
     Privacy policy
     """
     return render(request, "public/privacy.html")
+
+
+@cache_page(SECONDS_IN_WEEK)
+def colophon(request):
+    """
+    colophon
+    """
+    requirements_url = "https://raw.githubusercontent.com/givefood/givefood/refs/heads/main/requirements.txt"
+    requirements_text = requests.get(requirements_url).content.decode("utf-8")
+    requirements_dict = requirements.parse(requirements_text)
+    requirement_names = []
+    for requirement in requirements_dict:
+        requirement_names.append(requirement.name)
+
+    changelog = Changelog.objects.all().order_by("-date")
+    template_vars = {
+        "changelog":changelog,
+        "requirements":requirement_names,
+    }
+    return render(request, "public/colophon.html", template_vars)
 
 
 @cache_page(SECONDS_IN_TWO_MINUTES)

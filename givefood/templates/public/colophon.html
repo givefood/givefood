@@ -1,0 +1,37 @@
+{% extends "public/page.html" %}
+{% load bulma_tags %}
+{% load i18n %}
+
+{% block title %}{% trans "Colophon" %} - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns is-centered">
+    <div class="column is-half">
+    <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+  </div>
+  
+
+  <div class="columns is-centered">
+    <div class="column is-half">
+      <h1>{% trans "Colophon" %}</h1>
+      <p>Give Food is a Google App Engine app, fronted by Cloudflare, written in Python using Django and Djangae.</p>
+      <h2>Libraries</h2>
+      <p>
+        {% for requirement in requirements %}
+          <a href="https://pypi.org/project/{{ requirement }}/">{{ requirement }}</a>{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      </p>
+    
+      <h2>{% trans "Changelog" %}</h2>
+
+        {% for change in changelog %}
+            <h3>{{ change.date }}</h3>
+            <p>{{ change.change|linebreaksbr }}</p>
+        {% endfor %}
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -39,6 +39,7 @@ urlpatterns += i18n_patterns(
     path("", givefood.views.index, name="index"),
     path("register-foodbank/", givefood.views.register_foodbank, name="register_foodbank"),
     path("about-us/", givefood.views.about_us, name="about_us"),
+    path("colophon/", givefood.views.colophon, name="colophon"),
     path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
     path("human/", givefood.views.human, name="human"),
     path("flag/", givefood.views.flag, name="flag"),
