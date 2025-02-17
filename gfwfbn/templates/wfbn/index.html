@@ -150,7 +150,7 @@
             <table class="table donationpoints">
               {% for donationpoint in donationpoints %}
                 <tr>
-                  <td>
+                  <td style="min-width:100px;">
                     {% if donationpoint.place_has_photo %}
                       <a href="{{ donationpoint.url }}">
                         <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{{ donationpoint.photo_url }}" alt="{{ donationpoint.name }}" loading="lazy" class="placephoto" style="width:150px;">
