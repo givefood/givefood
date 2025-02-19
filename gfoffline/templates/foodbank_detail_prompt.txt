@@ -1,4 +1,4 @@
-Reply with a valid JSON object containing the following:
+Reply with a single valid JSON object not in a list containing the following:
 
 {
     "phone_number": The foodbank's phone number without spaces.
