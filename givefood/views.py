@@ -93,6 +93,12 @@ def index(request):
             "slug":"fcdo",
             "url":"https://www.gov.uk/government/organisations/foreign-commonwealth-development-office",
             "format":"svg",
+        },
+        {
+            "name":"Mars",
+            "slug":"mars",
+            "url":"https://www.mars.com/en-gb",
+            "format":"svg",
         }
     ]
 
