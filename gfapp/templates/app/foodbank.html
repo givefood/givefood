@@ -27,10 +27,6 @@
           <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}" id="email_link">{{ foodbank.contact_email }}</a>
       </div>
 
-      {% if foodbank.latest_need.change_text != "Facebook" %}
-        {% include 'wfbn/foodbank/includes/subscribe.html' %}
-      {% endif %}
-
       {% if locations %}
           <details>
               <summary>Locations</summary>

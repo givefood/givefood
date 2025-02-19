@@ -5,7 +5,7 @@ app_name = "gfapp"
 
 urlpatterns = [
     path("", index, name="index"),
-    path("map/", map, name="map"),
+    path("search/", search, name="search"),
     path("fb/<slug:slug>/", foodbank, name="foodbank"),
-    path("search/", search_results, name="search_results"),
+    path("fb/<slug:slug>/<slug:locslug>/", location, name="location"),
 ]
