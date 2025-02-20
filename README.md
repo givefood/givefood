@@ -45,7 +45,7 @@ Give Food is a registered charity in England & Wales [1188192](https://register-
 
 To set up for local development, run the following:
 
- - `virtualenv --python=python2.7 .venv`
+ - `virtualenv --python=python3.12 .venv`
  - `source .venv/bin/activate`
  - `./install_deps`
  - `./manage.py runserver`
