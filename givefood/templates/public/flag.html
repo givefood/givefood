@@ -28,7 +28,7 @@
     
             {% else %}
 
-                <p>{% blocktrans %}Sorry that you've found something wrong. We'll review your report within 24 hours.{% endblocktrans %}</p>
+                <p>{% blocktrans %}Sorry that you've found something wrong. We'll review your report within 24 hours, usually quicker.{% endblocktrans %}</p>
 
                 <form action="{% url 'human' %}" method="post">
                     {{ form|bulma }}
