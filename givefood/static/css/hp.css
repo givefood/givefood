@@ -64,7 +64,13 @@ h2 {
     border-bottom-color:#b4daf9;
 }
 .logos {
+    padding-bottom:1rem;
+}
+.morelogos {
     padding-bottom:2rem;
+}
+.logos img {
+    max-width:120px;
 }
 .logos div {
     margin:auto;
