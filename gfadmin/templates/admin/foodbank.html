@@ -1,5 +1,6 @@
 {% extends "admin/page.html" %}
 {% load humanize %}
+{% load custom_tags %}
 
 {% block title %}{{ foodbank }} - GF Admin{% endblock %}
 
@@ -121,15 +122,15 @@
         {% endif %}
         {% if foodbank.phone_number %}
           <dt>Phone</dt>
-          <dd><a href="call:{{ foodbank.phone_number }}">{{ foodbank.phone_number }}</a></dd>
+          <dd><a href="tel:{{ foodbank.phone_number }}">{{ foodbank.phone_number|friendly_phone }}</a></dd>
         {% endif %}
         {% if foodbank.secondary_phone_number %}
           <dt>Secondary phone</dt>
-          <dd><a href="call:{{ foodbank.secondary_phone_number }}">{{ foodbank.secondary_phone_number }}</a></dd>
+          <dd><a href="tel:{{ foodbank.secondary_phone_number }}">{{ foodbank.secondary_phone_number|friendly_phone }}</a></dd>
         {% endif %}
         {% if foodbank.delivery_phone_number %}
           <dt>Delivery phone</dt>
-          <dd><a href="call:{{ foodbank.delivery_phone_number }}">{{ foodbank.delivery_phone_number }}</a></dd>
+          <dd><a href="tel:{{ foodbank.delivery_phone_number }}">{{ foodbank.delivery_phone_number|friendly_phone }}</a></dd>
         {% endif %}
         {% if foodbank.foodbank_group %}
           <dt>Foodbank Group</dt>
