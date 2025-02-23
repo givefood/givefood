@@ -74,9 +74,15 @@
         <dt>GF Info</dt>
         <dd><a href="{% url 'wfbn:foodbank' foodbank.slug %}" data-turbo="false">{{ foodbank.slug }}</a></dd>
         <dt>Website</dt>
-        <dd><a href="{{ foodbank.url }}">{{ foodbank.friendly_url }}</a></dd>
+        <dd>
+          <a href="{{ foodbank.url }}">{{ foodbank.friendly_url }}</a>
+          <a href="{{ foodbank.url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+        </dd>
         <dt>Shopping list</dt>
-        <dd><a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url }}</a></dd>
+        <dd>
+          <a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url }}</a>
+          <a href="{{ foodbank.shopping_list_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+        </dd>
         {% if foodbank.rss_url %}
           <dt>RSS</dt>
           <dd><a href="{{ foodbank.rss_url }}">RSS</a></dd>
