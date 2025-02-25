@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-14 11:04+0000\n"
-"PO-Revision-Date: 2024-10-14 12:01+0100\n"
+"POT-Creation-Date: 2025-02-25 13:03+0000\n"
+"PO-Revision-Date: 2025-02-25 13:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: gd\n"
@@ -23,8 +23,7 @@ msgstr ""
 #: givefood/templates/public/about_us.html:5
 #: givefood/templates/public/about_us.html:21
 #: givefood/templates/public/index.html:52
-#: givefood/templates/public/page.html:38
-#, fuzzy
+#: givefood/templates/public/page.html:52
 msgid "About us"
 msgstr "Mu ar deidhinn"
 
@@ -39,14 +38,13 @@ msgstr ""
 
 #: givefood/templates/public/ar/index.html:5
 #: givefood/templates/public/ar/index.html:22
-#: givefood/templates/public/index.html:167
-#: givefood/templates/public/page.html:33
+#: givefood/templates/public/page.html:50
 msgid "Annual reports"
 msgstr "Aithisgean bliadhnail"
 
 #: givefood/templates/public/ar/index.html:8
 #: givefood/templates/public/donate.html:8
-#, fuzzy
+#: givefood/templates/public/managed_donation.html:10
 msgid ""
 "Give Food is a UK charity that uses data to highlight local and structural "
 "food insecurity then provides tools to help alleviate it."
@@ -56,35 +54,43 @@ msgstr ""
 "uairsin a’ toirt seachad innealan gus a lughdachadh."
 
 #: givefood/templates/public/ar/index.html:25
-#, fuzzy
+msgid "AI, general election, site translation"
+msgstr "AI, taghadh coitcheann, eadar-theangachadh làraich"
+
+#: givefood/templates/public/ar/index.html:28
 msgid "Rebrand, refresh, rewrite &amp; categorisation"
 msgstr "Ath-bhranndadh, ùrachadh, ath-sgrìobhadh &amp; seòrsachadh"
 
-#: givefood/templates/public/ar/index.html:28
-#, fuzzy
+#: givefood/templates/public/ar/index.html:31
 msgid "Write to your MP tool, surplus monitoring, data audits"
 msgstr "Sgrìobh chun inneal BP agad, sgrùdadh a bharrachd, sgrùdaidhean dàta"
 
-#: givefood/templates/public/ar/index.html:31
-#, fuzzy
+#: givefood/templates/public/ar/index.html:34
 msgid "Data &amp; UX review, dashboards, charity reporting"
 msgstr "Dàta &amp; Lèirmheas UX, clàran-deasachaidh, aithris carthannais"
 
-#: givefood/templates/public/ar/index.html:34
-#, fuzzy
+#: givefood/templates/public/ar/index.html:37
 msgid "Pandemic response, becoming a charity, publishing our data"
 msgstr "Freagairt pandemic, a bhith na charthannas, a’ foillseachadh ar dàta"
 
-#: givefood/templates/public/ar/index.html:37
-#, fuzzy
+#: givefood/templates/public/ar/index.html:40
 msgid "Initial deliveries, Christmas"
 msgstr "Lìbhrigeadh tùsail, Nollaig"
+
+#: givefood/templates/public/colophon.html:5
+#: givefood/templates/public/colophon.html:18
+#: givefood/templates/public/page.html:53
+msgid "Colophon"
+msgstr "Colophon"
+
+#: givefood/templates/public/colophon.html:27
+msgid "Changelog"
+msgstr "Clàr-atharrachaidh"
 
 #: givefood/templates/public/donate.html:5
 #: givefood/templates/public/donate.html:21
 #: givefood/templates/public/index.html:51
-#: givefood/templates/public/page.html:37
-#, fuzzy
+#: givefood/templates/public/page.html:51
 msgid "Donate"
 msgstr "Thoir seachad"
 
@@ -93,7 +99,7 @@ msgid "To"
 msgstr "Gu"
 
 #: givefood/templates/public/donate.html:28
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "100%% of donations from the public to Give Food are used directly to "
 "efficiently and quickly deliver requested food and supplies to UK food banks."
@@ -103,17 +109,14 @@ msgstr ""
 "èifeachdach agus gu sgiobalta gu bancaichean bìdh na RA."
 
 #: givefood/templates/public/donate.html:29
-#, fuzzy
 msgid "Donate using CAF Donate"
 msgstr "Thoir seachad a’ cleachdadh CAF Donate"
 
 #: givefood/templates/public/donate.html:32
-#, fuzzy
 msgid "To a food bank"
 msgstr "Gu banca bìdh"
 
 #: givefood/templates/public/donate.html:33
-#, fuzzy
 msgid ""
 "Use our tool to find a local food bank and see what they need. Then donate "
 "food, household supplies, toiletries, money or your time."
@@ -123,17 +126,14 @@ msgstr ""
 "sgeadachaidh, airgead no an ùine agad."
 
 #: givefood/templates/public/donate.html:34
-#, fuzzy
 msgid "Find a food bank"
 msgstr "Lorg banca bìdh"
 
 #: givefood/templates/public/donate.html:40
-#, fuzzy
 msgid "Managed donations"
 msgstr "Tabhartasan air an riaghladh"
 
 #: givefood/templates/public/donate.html:41
-#, fuzzy
 msgid ""
 "For donations or grants of £500 or more we can provide a managed service. "
 "Leveraging our data and logistical expertise we can ensure your donation is "
@@ -149,18 +149,43 @@ msgstr ""
 "aithisgean fìor-ùine agus tracadh air mar a thèid do thabhartas a "
 "chleachdadh a thoirt seachad cuideachd."
 
+#: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
+msgid "Flag something wrong"
+msgstr "Bratach rudeigin ceàrr"
+
+#: givefood/templates/public/flag.html:31
+msgid ""
+"Sorry that you've found something wrong. We'll review your report within 24 "
+"hours, usually quicker."
+msgstr ""
+"Duilich gun do lorg thu rudeigin ceàrr. Nì sinn lèirmheas air an aithisg "
+"agad taobh a-staigh 24 uairean, mar as trice nas luaithe."
+
+#: givefood/templates/public/human.html:4
+msgid "Human check"
+msgstr "Sgrùdadh daonna"
+
+#: givefood/templates/public/human.html:21
+msgid "Sorry, but we just have to check you are a human..."
+msgstr ""
+"Duilich, ach feumaidh sinn dèanamh cinnteach gur e duine daonna a th’ "
+"annad..."
+
 #: givefood/templates/public/includes/debugcomment.html:3
 msgid "Hello"
 msgstr "Halò"
 
 #: givefood/templates/public/index.html:9
-msgid "Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it."
+msgid ""
+"Give Food a UK charity uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
 msgstr ""
 "Bidh carthannas Give Food a UK a’ cleachdadh dàta gus mì-thèarainteachd bìdh "
 "ionadail agus structarail a shoilleireachadh agus an uairsin a’ toirt "
 "seachad innealan gus cuideachadh le bhith ga lughdachadh."
 
 #: givefood/templates/public/index.html:14
+#: givefood/templates/public/index.html:33
 msgid ""
 "We're a UK charity that uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
@@ -202,8 +227,7 @@ msgid "Write to your MP"
 msgstr "Sgrìobh chun BP agad"
 
 #: givefood/templates/public/index.html:49
-#: givefood/templates/public/index.html:166
-#: givefood/templates/public/page.html:32
+#: givefood/templates/public/page.html:49
 msgid "English"
 msgstr "Beurla"
 
@@ -211,123 +235,149 @@ msgstr "Beurla"
 msgid "We've worked with"
 msgstr "Tha sinn air a bhith ag obair le"
 
-#: givefood/templates/public/index.html:90
+#: givefood/templates/public/index.html:95
 msgid "How we can help"
 msgstr "Mar as urrainn dhuinn cuideachadh"
 
-#: givefood/templates/public/index.html:96
+#: givefood/templates/public/index.html:101
 msgid "Public"
 msgstr "Poblach"
 
-#: givefood/templates/public/index.html:97
-msgid "Use our tool to find your local food banks, then donate, volunteer or take political action."
-msgstr "Cleachd an inneal againn gus na bancaichean bìdh ionadail agad a lorg, an uairsin thoir seachad, saor-thoileach no gabh gnìomh poilitigeach."
+#: givefood/templates/public/index.html:102
+msgid ""
+"Use our tool to find your local food banks, then donate, volunteer or take "
+"political action."
+msgstr ""
+"Cleachd an inneal againn gus na bancaichean bìdh ionadail agad a lorg, an "
+"uairsin thoir seachad, saor-thoileach no gabh gnìomh poilitigeach."
 
-#: givefood/templates/public/index.html:98
+#: givefood/templates/public/index.html:103
 msgid "Find out how to help"
 msgstr "Faigh a-mach mar a chuidicheas tu"
 
-#: givefood/templates/public/index.html:101
-#: givefood/templates/public/index.html:125
+#: givefood/templates/public/index.html:106
+#: givefood/templates/public/index.html:130
 msgid "Food banks"
 msgstr "Bancaichean bìdh"
 
-#: givefood/templates/public/index.html:102
-#, fuzzy
-msgid "Register a food bank to be included in our database and allow users to find you and what you need."
-msgstr "Clàraich banca bìdh airson a bhith san stòr-dàta againn agus leig le luchd-cleachdaidh do lorg agus na tha a dhìth ort."
+#: givefood/templates/public/index.html:107
+msgid ""
+"Register a food bank to be included in our database and allow users to find "
+"you and what you need."
+msgstr ""
+"Clàraich banca bìdh airson a bhith san stòr-dàta againn agus leig le luchd-"
+"cleachdaidh do lorg agus na tha a dhìth ort."
 
-#: givefood/templates/public/index.html:103
-#: givefood/templates/public/index.html:164
-#: givefood/templates/public/page.html:30
-#: givefood/templates/public/register_foodbank.html:5
-#: givefood/templates/public/register_foodbank.html:17
+#: givefood/templates/public/index.html:108
+#: givefood/templates/public/page.html:47
+#: givefood/templates/public/register_foodbank.html:9
+#: givefood/templates/public/register_foodbank.html:21
 msgid "Register a food bank"
 msgstr "Clàraich banca bìdh"
 
-#: givefood/templates/public/index.html:106
+#: givefood/templates/public/index.html:111
 msgid "Media"
 msgstr "Na meadhanan"
 
-#: givefood/templates/public/index.html:107
-msgid "Data journalists can use our data for stories around food poverty or get in touch."
-msgstr "Faodaidh luchd-naidheachd dàta an dàta againn a chleachdadh airson sgeulachdan mu bhochdainn bìdh no fios a chur thugainn."
+#: givefood/templates/public/index.html:112
+msgid ""
+"Journalists, in particular data journalists, can use our data for stories "
+"around food poverty."
+msgstr ""
+"Faodaidh luchd-naidheachd, gu sònraichte luchd-naidheachd dàta, an dàta "
+"againn a chleachdadh airson sgeulachdan mu bhochdainn bìdh."
 
-#: givefood/templates/public/index.html:108
 #: givefood/templates/public/index.html:113
+#: givefood/templates/public/index.html:118
 msgid "Use our API"
 msgstr "Cleachd an API againn"
 
-#: givefood/templates/public/index.html:111
+#: givefood/templates/public/index.html:116
 msgid "Researchers & students"
 msgstr "Luchd-rannsachaidh & oileanaich"
 
-#: givefood/templates/public/index.html:112
-msgid "We can provide our data in bulk, plus advice on how to interpret it, for academic or governmental research. Have a look at our API or email us."
-msgstr "Is urrainn dhuinn ar dàta a thoirt seachad gu ìre mhòr, agus comhairle air mar a mhìnicheas sinn e, airson rannsachadh acadaimigeach no riaghaltais. Thoir sùil air an API againn no cuir post-d thugainn."
+#: givefood/templates/public/index.html:117
+msgid ""
+"We can provide our data in bulk, plus advice on how to interpret it, to "
+"researchers. Have a look at our API or email us."
+msgstr ""
+"Is urrainn dhuinn ar dàta a thoirt seachad gu mòr, agus comhairle air mar a "
+"mhìnicheas sinn e, do luchd-rannsachaidh. Thoir sùil air an API againn no "
+"cuir post-d thugainn."
 
-#: givefood/templates/public/index.html:119
+#: givefood/templates/public/index.html:124
 msgid "Statistics"
 msgstr "Staitistig"
 
-#: givefood/templates/public/index.html:129
+#: givefood/templates/public/index.html:134
 msgid "Donation points"
 msgstr "Puingean tabhartais"
 
-#: givefood/templates/public/index.html:133
+#: givefood/templates/public/index.html:138
 msgid "Items requested"
 msgstr "Nithean a chaidh iarraidh"
 
-#: givefood/templates/public/index.html:137
+#: givefood/templates/public/index.html:142
 msgid "Meals delivered"
 msgstr "Biadh air a lìbhrigeadh"
 
-#: givefood/templates/public/index.html:141
-#: givefood/templates/public/page.html:42
+#: givefood/templates/public/index.html:146
+#: givefood/templates/public/page.html:35
 msgid "Last updated"
 msgstr "Air ùrachadh mu dheireadh"
 
-#: givefood/templates/public/index.html:153
+#: givefood/templates/public/index.html:158
 msgid "Read our"
 msgstr "Leugh ar"
 
-#: givefood/templates/public/index.html:153
+#: givefood/templates/public/index.html:158
 msgid "annual report"
 msgstr "aithisg bhliadhnail"
 
-#: givefood/templates/public/index.html:165
 #: givefood/templates/public/page.html:31
-msgid "Dashboards"
-msgstr "Dashboards"
+msgid "Something wrong in this page?"
+msgstr "A bheil rudeigin ceàrr air an duilleag seo?"
 
-#: givefood/templates/public/index.html:171
-msgid "Email"
-msgstr "Post-d"
+#: givefood/templates/public/page.html:36
+msgid "food bank needs viewed this week"
+msgstr "feumalachdan banca bìdh air fhaicinn an t-seachdain seo"
 
-#: givefood/templates/public/page.html:44
+#: givefood/templates/public/page.html:39
 msgid "Give Food is a registered charity in England & Wales"
-msgstr "Tha Give Food na charthannas clàraichte ann an Sasainn agus sa Chuimrigh"
+msgstr ""
+"Tha Give Food na charthannas clàraichte ann an Sasainn agus sa Chuimrigh"
 
-#: givefood/templates/public/page.html:45
+#: givefood/templates/public/page.html:40
 msgid "Registered with the"
 msgstr "Air a chlàradh leis a '"
 
-#: givefood/templates/public/page.html:46
+#: givefood/templates/public/page.html:41
 msgid "ICO Data Protection Registration"
 msgstr "Clàradh Dìon Dàta ICO"
 
+#: givefood/templates/public/page.html:46
+msgid "Home"
+msgstr "Dachaidh"
+
 #: givefood/templates/public/page.html:48
+msgid "Dashboards"
+msgstr "Dashboards"
+
+#: givefood/templates/public/page.html:54
 msgid "Privacy policy"
 msgstr "Poileasaidh prìobhaideachd"
 
-#: givefood/views.py:232
+#: givefood/views.py:343
 msgid "minutes"
 msgstr "mionaidean"
 
-#: givefood/views.py:233
+#: givefood/views.py:344
 msgid "Under a minute ago"
 msgstr "Nas lugha na mionaid air ais"
 
-#: givefood/views.py:235
+#: givefood/views.py:346
 msgid "ago"
 msgstr "o chionn"
+
+#~ msgid "Email"
+#~ msgstr "Post-d"
