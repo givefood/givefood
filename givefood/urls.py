@@ -78,7 +78,6 @@ urlpatterns += [
 
     # Old URL redirects
     path("what-food-banks-need/", RedirectView.as_view(url='/needs/')),
-    path("static/img/map-allloc.png", RedirectView.as_view(url="/static/img/map.png")),
 ]
 
 

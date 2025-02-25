@@ -20,9 +20,6 @@ handlers:
 - url: /_ah/internalupload.*
   script: auto
 
-- url: /static/img/map-allloc.png
-  script: auto
-
 - url: /favicon.ico
   static_files: givefood/static/img/favicon.ico
   upload: givefood/static/img/favicon.ico
@@ -44,10 +41,6 @@ handlers:
   login: admin
 
 - url: /admin.*
-  script: auto
-  login: admin
-
-- url: /generate-(2019|2020|2021)/$
   script: auto
   login: admin
 
