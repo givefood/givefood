@@ -4,15 +4,11 @@
             <div class="dropdown-trigger">
                 <button class="button" aria-haspopup="true" aria-controls="langswitcher">
                     <span>
-                        {% if LANGUAGE_CODE == 'cy' %}
-                            <img src="/static/img/langflags/cy.svg" alt="Cymraeg" aria-hidden="true"> Cymraeg
-                        {% endif %}
-                        {% if LANGUAGE_CODE == 'en' %}
-                            <img src="/static/img/langflags/en.svg" alt="Cymraeg" aria-hidden="true"> English
-                        {% endif %}
-                        {% if LANGUAGE_CODE == 'gd' %}
-                            <img src="/static/img/langflags/gd.svg" alt="Gàidhlig" aria-hidden="true"> Gàidhlig
-                        {% endif %}
+                        {% for language in languages %}
+                            {% if language.code == LANGUAGE_CODE %}
+                                <img src="/static/img/langflags/{{ language.code }}.svg" alt="{{ language.name }}" aria-hidden="true"> {{ language.name }}
+                            {% endif %}
+                        {% endfor %}
                     </span>
                     <svg class="arrow" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M1 1l4 4-4 4"></path></svg>
                 </button>
