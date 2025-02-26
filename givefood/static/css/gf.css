@@ -171,7 +171,7 @@ footer {
 }
 .langswitcher.is-pulled-right {
     margin:35px 0 0 0;
-    zoom:75%;
+    zoom:90%;
 }
 @media screen and (min-width: 769px) {
     .langswitcher.is-pulled-right {
