@@ -153,6 +153,7 @@ LANGUAGES = [
     ("gd", "Gàidhlig"),
     ("pl", "Polski"),
     ("ro", "Română"),
+    ("pa", "ਪੰਜਾਬੀ"),
 ]
 
 
