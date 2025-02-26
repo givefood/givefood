@@ -88,10 +88,13 @@ tfoot {
 #usemylocationbtn:before {
     width:25px;
     height:25px;
-    margin-right:7px;
+    margin:0 7px 0 0;
     background: url("/static/img/getlocation.svg");
     background-size: cover;
     content: '';
+}
+.text-direction-rtl #usemylocationbtn:before {
+    margin:0 0 0 7px;
 }
 .working:before {
     animation-name: spin;
@@ -169,12 +172,12 @@ footer {
 .help {
     font-size:14px;
 }
-.langswitcher.is-pulled-right {
+.langswitcher.is-pulled {
     margin:35px 0 0 0;
     zoom:90%;
 }
 @media screen and (min-width: 769px) {
-    .langswitcher.is-pulled-right {
+    .langswitcher.is-pulled {
         margin:45px 0 0 0;
     }
 }
@@ -207,4 +210,8 @@ footer {
     .breadcrumb, .menu-col, .cta, .subscribe-form, .directions-btn, footer, .gm-fullscreen-control, .subscribe, .links, #usemylocationbtn, #addressform {
         display:none;
     }
+}
+
+.menu-list a:dir(rtl) {
+    text-align:right;
 }

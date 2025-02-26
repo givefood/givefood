@@ -2,7 +2,7 @@
     {% if prefix %}
         {{ prefix }} -
     {% endif %}
-    {% if LANGUAGE_CODE == "cy" %}
+    {% if language_code == "cy" %}
         {% if foodbank.alt_name %}
             {{ foodbank.alt_name }}
         {% else %}
@@ -13,7 +13,7 @@
     {% endif %}
 </h1>
 {% if foodbank.alt_name %}
-    {% if LANGUAGE_CODE == "cy" %}
+    {% if language_code == "cy" %}
         <p class="altname" lang="en">{{ foodbank.full_name }}</p>
     {% endif %}
 {% endif %}

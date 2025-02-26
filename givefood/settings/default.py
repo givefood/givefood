@@ -154,8 +154,10 @@ LANGUAGES = [
     ("pl", "Polski"),
     ("ro", "Română"),
     ("pa", "ਪੰਜਾਬੀ"),
+    ("ur", "اردو"),
 ]
 
+LANGUAGE_BIDI = True
 
 
 # Static files (CSS, JavaScript, Images)

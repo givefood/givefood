@@ -1,14 +1,17 @@
 import os, sys
 from django.urls import resolve, translate_url
 from givefood.settings.default import LANGUAGES
+from django.utils.translation import get_language_info
+
 
 from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN
 
 def context(request):
 
-    language = request.LANGUAGE_CODE
+    language_code = request.LANGUAGE_CODE
+    language_direction = "rtl" if get_language_info(language_code)['bidi'] else "ltr"
     path = request.path
-    translated_path = translate_url(path, language)
+    translated_path = translate_url(path, language_code)
     canonical_path = "%s%s" % (SITE_DOMAIN, translated_path)
     querystring = request.META['QUERY_STRING']
     instance_id = os.environ.get('GAE_INSTANCE')
@@ -46,6 +49,8 @@ def context(request):
         'domain': SITE_DOMAIN,
         'page_translatable': page_translatable,
         'languages': languages,
+        'language_code': language_code,
+        'language_direction': language_direction,
     }
 
     return context

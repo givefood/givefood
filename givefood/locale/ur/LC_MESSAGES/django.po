@@ -1,0 +1,373 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-26 16:33+0000\n"
+"PO-Revision-Date: 2025-02-26 16:38+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ur\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.5\n"
+
+#: givefood/templates/public/about_us.html:5
+#: givefood/templates/public/about_us.html:21
+#: givefood/templates/public/index.html:52
+#: givefood/templates/public/page.html:52
+msgid "About us"
+msgstr "ہمارے بارے میں"
+
+#: givefood/templates/public/about_us.html:22
+msgid ""
+"Give Food is a UK charity that uses data to highlight local and structural "
+"food insecurity, then provides tools to help alleviate it."
+msgstr ""
+"Give Food برطانیہ کا ایک خیراتی ادارہ ہے جو مقامی اور ساختی خوراک کی عدم "
+"تحفظ کو اجاگر کرنے کے لیے ڈیٹا کا استعمال کرتا ہے، پھر اسے کم کرنے میں مدد "
+"کے لیے ٹولز فراہم کرتا ہے۔"
+
+#: givefood/templates/public/ar/index.html:5
+#: givefood/templates/public/ar/index.html:22
+#: givefood/templates/public/page.html:50
+msgid "Annual reports"
+msgstr "سالانہ رپورٹس"
+
+#: givefood/templates/public/ar/index.html:8
+#: givefood/templates/public/donate.html:8
+#: givefood/templates/public/managed_donation.html:10
+msgid ""
+"Give Food is a UK charity that uses data to highlight local and structural "
+"food insecurity then provides tools to help alleviate it."
+msgstr ""
+"Give Food برطانیہ کا ایک خیراتی ادارہ ہے جو مقامی اور ساختی غذائی عدم تحفظ "
+"کو اجاگر کرنے کے لیے ڈیٹا کا استعمال کرتا ہے اور پھر اسے کم کرنے میں مدد کے "
+"لیے ٹولز فراہم کرتا ہے۔"
+
+#: givefood/templates/public/ar/index.html:25
+msgid "AI, general election, site translation"
+msgstr "AI، عام انتخابات، سائٹ کا ترجمہ"
+
+#: givefood/templates/public/ar/index.html:28
+msgid "Rebrand, refresh, rewrite &amp; categorisation"
+msgstr "دوبارہ برانڈ کریں، ریفریش کریں، دوبارہ لکھیں اور درجہ بندی"
+
+#: givefood/templates/public/ar/index.html:31
+msgid "Write to your MP tool, surplus monitoring, data audits"
+msgstr "اپنے ایم پی ٹول، سرپلس مانیٹرنگ، ڈیٹا آڈٹ پر لکھیں۔"
+
+#: givefood/templates/public/ar/index.html:34
+msgid "Data &amp; UX review, dashboards, charity reporting"
+msgstr "ڈیٹا &amp; UX جائزہ، ڈیش بورڈز، چیریٹی رپورٹنگ"
+
+#: givefood/templates/public/ar/index.html:37
+msgid "Pandemic response, becoming a charity, publishing our data"
+msgstr "وبائی مرض کا جواب، ایک خیراتی ادارہ بننا، ہمارا ڈیٹا شائع کرنا"
+
+#: givefood/templates/public/ar/index.html:40
+msgid "Initial deliveries, Christmas"
+msgstr "ابتدائی ترسیل، کرسمس"
+
+#: givefood/templates/public/colophon.html:5
+#: givefood/templates/public/colophon.html:18
+#: givefood/templates/public/page.html:53
+msgid "Colophon"
+msgstr "کولفون"
+
+#: givefood/templates/public/colophon.html:27
+msgid "Changelog"
+msgstr "ترامیم"
+
+#: givefood/templates/public/donate.html:5
+#: givefood/templates/public/donate.html:21
+#: givefood/templates/public/index.html:51
+#: givefood/templates/public/page.html:51
+msgid "Donate"
+msgstr "عطیہ کریں۔"
+
+#: givefood/templates/public/donate.html:27
+msgid "To"
+msgstr "کو"
+
+#: givefood/templates/public/donate.html:28
+#, python-format
+msgid ""
+"100%% of donations from the public to Give Food are used directly to "
+"efficiently and quickly deliver requested food and supplies to UK food banks."
+msgstr ""
+"کھانے کو دینے کے لیے عوام کی طرف سے 100%% عطیات کا استعمال براہ راست مؤثر "
+"طریقے سے اور فوری طور پر برطانیہ کے فوڈ بینکوں کو مطلوبہ خوراک اور سامان "
+"فراہم کرنے کے لیے کیا جاتا ہے۔"
+
+#: givefood/templates/public/donate.html:29
+msgid "Donate using CAF Donate"
+msgstr "CAF Donate کا استعمال کرتے ہوئے عطیہ کریں۔"
+
+#: givefood/templates/public/donate.html:32
+msgid "To a food bank"
+msgstr "فوڈ بینک کو"
+
+#: givefood/templates/public/donate.html:33
+msgid ""
+"Use our tool to find a local food bank and see what they need. Then donate "
+"food, household supplies, toiletries, money or your time."
+msgstr ""
+"مقامی فوڈ بینک تلاش کرنے کے لیے ہمارے ٹول کا استعمال کریں اور دیکھیں کہ "
+"انہیں کیا ضرورت ہے۔ پھر کھانا، گھریلو سامان، بیت الخلاء، پیسہ یا اپنا وقت "
+"عطیہ کریں۔"
+
+#: givefood/templates/public/donate.html:34
+msgid "Find a food bank"
+msgstr "فوڈ بینک تلاش کریں۔"
+
+#: givefood/templates/public/donate.html:40
+msgid "Managed donations"
+msgstr "منظم عطیات"
+
+#: givefood/templates/public/donate.html:41
+msgid ""
+"For donations or grants of £500 or more we can provide a managed service. "
+"Leveraging our data and logistical expertise we can ensure your donation is "
+"used to effectively deliver the required items to food banks that match your "
+"charitable aims. Realtime reports and tracking of how your donation is used "
+"can also be provided."
+msgstr ""
+"£500 یا اس سے زیادہ کے عطیات یا گرانٹس کے لیے ہم ایک منظم سروس فراہم کر سکتے "
+"ہیں۔ اپنے ڈیٹا اور لاجسٹک مہارت کا فائدہ اٹھاتے ہوئے ہم یہ یقینی بنا سکتے "
+"ہیں کہ آپ کے عطیہ کا استعمال مؤثر طریقے سے مطلوبہ اشیاء کو فوڈ بینکوں تک "
+"پہنچانے کے لیے کیا جائے جو آپ کے خیراتی مقاصد سے مماثل ہوں۔ ریئل ٹائم رپورٹس "
+"اور آپ کا عطیہ کیسے استعمال ہوتا ہے اس کی ٹریکنگ بھی فراہم کی جا سکتی ہے۔"
+
+#: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
+msgid "Flag something wrong"
+msgstr "کچھ غلط پر جھنڈا لگائیں۔"
+
+#: givefood/templates/public/flag.html:31
+msgid ""
+"Sorry that you've found something wrong. We'll review your report within 24 "
+"hours, usually quicker."
+msgstr ""
+"معذرت کہ آپ کو کچھ غلط ملا۔ ہم 24 گھنٹوں کے اندر آپ کی رپورٹ کا جائزہ لیں "
+"گے، عام طور پر اس سے بھی تیز۔"
+
+#: givefood/templates/public/human.html:4
+msgid "Human check"
+msgstr "انسانی جانچ"
+
+#: givefood/templates/public/human.html:21
+msgid "Sorry, but we just have to check you are a human..."
+msgstr "معذرت، لیکن ہمیں صرف یہ دیکھنا ہے کہ آپ انسان ہیں..."
+
+#: givefood/templates/public/includes/debugcomment.html:3
+msgid "Hello"
+msgstr "ہیلو"
+
+#: givefood/templates/public/index.html:9
+msgid ""
+"Give Food a UK charity uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
+msgstr ""
+"Give Food a UK چیریٹی مقامی اور ساختی خوراک کی عدم تحفظ کو اجاگر کرنے کے لیے "
+"ڈیٹا کا استعمال کرتی ہے پھر اسے کم کرنے میں مدد کے لیے ٹولز فراہم کرتی ہے۔"
+
+#: givefood/templates/public/index.html:14
+#: givefood/templates/public/index.html:33
+msgid ""
+"We're a UK charity that uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
+msgstr ""
+"ہم برطانیہ کا ایک خیراتی ادارہ ہے جو مقامی اور ساختی غذائی عدم تحفظ کو اجاگر "
+"کرنے کے لیے ڈیٹا کا استعمال کرتا ہے پھر اسے کم کرنے میں مدد کے لیے ٹولز "
+"فراہم کرتا ہے۔"
+
+#: givefood/templates/public/index.html:36
+msgid "Find out if there is a"
+msgstr "معلوم کریں کہ اگر وہاں ایک ہے"
+
+#: givefood/templates/public/index.html:36
+msgid "food bank nearby"
+msgstr "قریبی فوڈ بینک"
+
+#: givefood/templates/public/index.html:36
+msgid "that you can help"
+msgstr "کہ آپ مدد کر سکتے ہیں۔"
+
+#: givefood/templates/public/index.html:37
+msgid "Use my location"
+msgstr "میرا مقام استعمال کریں۔"
+
+#: givefood/templates/public/index.html:39
+msgid "Postcode or town"
+msgstr "پوسٹ کوڈ یا شہر"
+
+#: givefood/templates/public/index.html:40
+msgid "e.g. EX4 6PX or Sheffield"
+msgstr "جیسے EX4 6PX یا شیفیلڈ"
+
+#: givefood/templates/public/index.html:42
+msgid "Go"
+msgstr "جائیں"
+
+#: givefood/templates/public/index.html:49
+msgid "Write to your MP"
+msgstr "اپنے ایم پی کو لکھیں۔"
+
+#: givefood/templates/public/index.html:49
+#: givefood/templates/public/page.html:49
+msgid "English"
+msgstr "انگلش"
+
+#: givefood/templates/public/index.html:70
+msgid "We've worked with"
+msgstr "ہم نے ساتھ کام کیا ہے۔"
+
+#: givefood/templates/public/index.html:95
+msgid "How we can help"
+msgstr "ہم کس طرح مدد کر سکتے ہیں۔"
+
+#: givefood/templates/public/index.html:101
+msgid "Public"
+msgstr "عوامی"
+
+#: givefood/templates/public/index.html:102
+msgid ""
+"Use our tool to find your local food banks, then donate, volunteer or take "
+"political action."
+msgstr ""
+"اپنے مقامی فوڈ بینکوں کو تلاش کرنے کے لیے ہمارے ٹول کا استعمال کریں، پھر "
+"چندہ دیں، رضاکارانہ طور پر کام کریں یا سیاسی کارروائی کریں۔"
+
+#: givefood/templates/public/index.html:103
+msgid "Find out how to help"
+msgstr "مدد کرنے کا طریقہ معلوم کریں۔"
+
+#: givefood/templates/public/index.html:106
+#: givefood/templates/public/index.html:130
+msgid "Food banks"
+msgstr "فوڈ بینکس"
+
+#: givefood/templates/public/index.html:107
+msgid ""
+"Register a food bank to be included in our database and allow users to find "
+"you and what you need."
+msgstr ""
+"ہمارے ڈیٹابیس میں شامل کرنے کے لیے ایک فوڈ بینک رجسٹر کریں اور صارفین کو آپ "
+"کو اور آپ کی ضرورت کو تلاش کرنے کی اجازت دیں۔"
+
+#: givefood/templates/public/index.html:108
+#: givefood/templates/public/page.html:47
+#: givefood/templates/public/register_foodbank.html:9
+#: givefood/templates/public/register_foodbank.html:21
+msgid "Register a food bank"
+msgstr "فوڈ بینک رجسٹر کریں۔"
+
+#: givefood/templates/public/index.html:111
+msgid "Media"
+msgstr "میڈیا"
+
+#: givefood/templates/public/index.html:112
+msgid ""
+"Journalists, in particular data journalists, can use our data for stories "
+"around food poverty."
+msgstr ""
+"صحافی، خاص طور پر ڈیٹا جرنلسٹ، ہمارے ڈیٹا کو خوراک کی غربت کے ارد گرد "
+"کہانیوں کے لیے استعمال کر سکتے ہیں۔"
+
+#: givefood/templates/public/index.html:113
+#: givefood/templates/public/index.html:118
+msgid "Use our API"
+msgstr "ہمارا API استعمال کریں۔"
+
+#: givefood/templates/public/index.html:116
+msgid "Researchers & students"
+msgstr "محققین اور طلباء"
+
+#: givefood/templates/public/index.html:117
+msgid ""
+"We can provide our data in bulk, plus advice on how to interpret it, to "
+"researchers. Have a look at our API or email us."
+msgstr ""
+"ہم اپنے ڈیٹا کو بڑی تعداد میں فراہم کر سکتے ہیں، نیز اس کی تشریح کرنے کے "
+"بارے میں مشورہ محققین کو دے سکتے ہیں۔ ہمارے API پر ایک نظر ڈالیں یا ہمیں ای "
+"میل کریں۔"
+
+#: givefood/templates/public/index.html:124
+msgid "Statistics"
+msgstr "شماریات"
+
+#: givefood/templates/public/index.html:134
+msgid "Donation points"
+msgstr "عطیہ پوائنٹس"
+
+#: givefood/templates/public/index.html:138
+msgid "Items requested"
+msgstr "اشیاء کی درخواست کی"
+
+#: givefood/templates/public/index.html:142
+msgid "Meals delivered"
+msgstr "کھانا پہنچایا"
+
+#: givefood/templates/public/index.html:146
+#: givefood/templates/public/page.html:35
+msgid "Last updated"
+msgstr "آخری بار اپ ڈیٹ کیا گیا"
+
+#: givefood/templates/public/index.html:158
+msgid "Read our"
+msgstr "ہمارے پڑھیں"
+
+#: givefood/templates/public/index.html:158
+msgid "annual report"
+msgstr "سالانہ رپورٹ"
+
+#: givefood/templates/public/page.html:31
+msgid "Something wrong in this page?"
+msgstr "اس صفحہ میں کچھ غلط ہے؟"
+
+#: givefood/templates/public/page.html:36
+msgid "food bank needs viewed this week"
+msgstr "فوڈ بینک کو اس ہفتے دیکھنے کی ضرورت ہے"
+
+#: givefood/templates/public/page.html:39
+msgid "Give Food is a registered charity in England & Wales"
+msgstr "‫Give Food انگلینڈ اور ویلز میں ایک رجسٹرڈ خیراتی ادارہ ہے"
+
+#: givefood/templates/public/page.html:40
+msgid "Registered with the"
+msgstr "کے ساتھ رجسٹرڈ"
+
+#: givefood/templates/public/page.html:41
+msgid "ICO Data Protection Registration"
+msgstr "ICO ڈیٹا پروٹیکشن رجسٹریشن"
+
+#: givefood/templates/public/page.html:46
+msgid "Home"
+msgstr "صفحہ اولیں"
+
+#: givefood/templates/public/page.html:48
+msgid "Dashboards"
+msgstr "ڈیش بورڈز"
+
+#: givefood/templates/public/page.html:54
+msgid "Privacy policy"
+msgstr "رازداری کی پالیسی"
+
+#: givefood/views.py:371
+msgid "minutes"
+msgstr "منٹ"
+
+#: givefood/views.py:372
+msgid "Under a minute ago"
+msgstr "ایک منٹ پہلے"
+
+#: givefood/views.py:374
+msgid "ago"
+msgstr "پہلے"

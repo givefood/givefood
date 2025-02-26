@@ -1,5 +1,5 @@
 {% load i18n %}<!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}">
+<html lang="{{ language_code }}" dir="{{ language_direction }}" class="text-direction-{{ language_direction}}">
 {% include 'public/includes/debugcomment.html' %}
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +12,7 @@
   <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
   <link rel="canonical" href="{{ canonical_path }}">
-  <script defer data-domain="givefood.org.uk" data-api="/psb/api/event" event-language="{{ LANGUAGE_CODE }}" src="/psb/js/script.outbound-links.pageview-props.js"></script>
+  <script defer data-domain="givefood.org.uk" data-api="/psb/api/event" event-language="{{ language_code }}" src="/psb/js/script.outbound-links.pageview-props.js"></script>
   {% if page_translatable %}{% for language in languages %}
   <link rel="alternate" hreflang="{{ language.code }}" href="{{ language.url }}">{% endfor %}{% endif %}
   {% block head %}{% endblock %}
@@ -26,7 +26,7 @@
     <footer class="footer">
       <div class="container">
         <div class="columns">
-          <div class="column has-text-left">
+          <div class="column {% if language_direction == 'ltr' %}has-text-left{% else %}has-text-right{% endif %}">
             {% if not is_flag_page %}
               <a href="{% url 'flag' %}?url={{ flag_path|urlencode }}" rel="nofollow" class="flag"><svg fill="none" height="16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="m4 15s1-1 4-1 5 2 8 2 4-1 4-1v-12s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="m4 22v-7"/></svg> {% trans 'Something wrong in this page?' %}</a>
               <br><br>
@@ -41,12 +41,12 @@
               {% trans "ICO Data Protection Registration" %} <a href="https://ico.org.uk/ESDWebPages/Entry/ZB528540">ZB528540</a>
             </p>
           </div>
-          <div class="column has-text-right">
+          <div class="column {% if language_direction == 'ltr' %}has-text-right{% else %}has-text-left{% endif %}">
             <ul>
               <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
               <li><a href="{% url 'register_foodbank' %}">{% trans "Register a food bank" %}</a></li>
               <li><a href="{% url 'dash:index' %}">{% trans "Dashboards" %}</a></li>
-              <li><a href="/api/">API</a> {% if LANGUAGE_CODE != 'en' %} ({% trans 'English' %}){% endif %}</li>
+              <li><a href="/api/">API</a> {% if language_code != 'en' %} ({% trans 'English' %}){% endif %}</li>
               <li><a href="{% url 'annual_report_index' %}">{% trans "Annual reports" %}</a></li>
               <li><a href="{% url 'donate' %}">{% trans 'Donate' %}</a></li>
               <li><a href="{% url 'about_us' %}">{% trans 'About us' %}</a></li>

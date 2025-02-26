@@ -53,6 +53,16 @@ h2 {
         background-position: right 200px top 50px;
     }
 }
+@media screen and (min-width: 769px) {
+    .map:dir(rtl) {
+        background-position: left 50px top 50px;
+    }
+}
+@media screen and (min-width: 1200px) {
+    .map:dir(rtl) {
+        background-position: left 100px top 50px;
+    }
+}
 
 
 /* LOGOS */
