@@ -1,4 +1,4 @@
-django==4.2.19
+django==5.1.6
 git+https://gitlab.com/potato-oss/djangae/djangae.git#egg=djangae
 GoogleAppEngineCloudStorageClient==1.9.22.1
 google-cloud-tasks>=2.0.0
