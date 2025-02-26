@@ -8,5 +8,5 @@ User-agent: *
 Allow: /
 Crawl-delay: 1
 
-{% for sitemap_url in sitemap_urls %}Sitemap: {{ SITE_DOMAIN }}{{ sitemap_url }}
+{% for sitemap_url in sitemap_urls %}Sitemap: {{ domain }}{{ sitemap_url }}
 {% endfor %}
