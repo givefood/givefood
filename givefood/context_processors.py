@@ -2,7 +2,7 @@ import os, sys
 from django.urls import resolve, translate_url
 from givefood.settings.default import LANGUAGES
 
-from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN, LANGUAGE_FLAGS
+from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN
 
 def context(request):
 
@@ -23,7 +23,6 @@ def context(request):
         languages.append({
             'code': language[0],
             'name': language[1],
-            'flag': LANGUAGE_FLAGS[language[0]],
             'url': url,
         })
 
