@@ -181,6 +181,7 @@ footer {
 .langswitcher img {
     width:16px;
     margin-right:4px;
+    border:1px solid #aaa;
 }
 .langswitcher .arrow {
     width:10px;
