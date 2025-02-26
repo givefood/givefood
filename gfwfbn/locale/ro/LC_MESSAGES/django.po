@@ -1,0 +1,399 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-26 13:33+0000\n"
+"PO-Revision-Date: 2025-02-26 13:47+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ro\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
+"n%100<=19) ? 1 : 2);\n"
+"X-Generator: Poedit 3.5\n"
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:42
+#: gfwfbn/templates/wfbn/constituency/index.html:32
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:47
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:42
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:49
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:48
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:46
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:45
+#: gfwfbn/templates/wfbn/foodbank/locations.html:42
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:42
+#: gfwfbn/templates/wfbn/foodbank/news.html:42
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:41
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:48
+#: gfwfbn/templates/wfbn/foodbank/updates.html:41
+msgid "Home"
+msgstr "Acasă"
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:43
+#: gfwfbn/templates/wfbn/constituency/index.html:33
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:48
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:43
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:50
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:49
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:47
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:46
+#: gfwfbn/templates/wfbn/foodbank/locations.html:43
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:43
+#: gfwfbn/templates/wfbn/foodbank/news.html:43
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:42
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:49
+#: gfwfbn/templates/wfbn/foodbank/updates.html:42
+#: gfwfbn/templates/wfbn/index.html:10
+msgid "What Food Banks Need"
+msgstr "De ce au nevoie băncile alimentare"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:34
+#: gfwfbn/templates/wfbn/constituency/index.html:38
+msgid "Parliamentary Constituencies"
+msgstr "Circumscripții parlamentare"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:44
+msgid ""
+"Find which food banks operate in your parliamentary constituency, then "
+"donate or take action."
+msgstr ""
+"Aflați ce bănci alimentare funcționează în circumscripția dvs. parlamentară, "
+"apoi donați sau luați măsuri."
+
+#: gfwfbn/templates/wfbn/constituency/index.html:48
+msgid "Sorry, we didn't recognise this postcode. Could you try again?"
+msgstr ""
+"Ne pare rău, nu am recunoscut acest cod poștal. Puteți încerca din nou?"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:53
+msgid "Search by postcode"
+msgstr "Căutare după codul poștal"
+
+#: gfwfbn/templates/wfbn/constituency/index.html:54
+#: gfwfbn/templates/wfbn/index.html:65
+msgid "Go"
+msgstr "Mergi"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:50
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:24
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:45
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:49
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
+#: gfwfbn/templates/wfbn/index.html:107
+msgid "Donation points"
+msgstr "Puncte de donație"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:66
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:66
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:65
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:64
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:63
+msgid "This food bank is closed"
+msgstr "Această bancă de alimente este închisă"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:69
+msgid "is a donation point for"
+msgstr "este un punct de donație pentru"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:69
+msgid "Here they are requesting to have donated..."
+msgstr "Aici ei cer să fie donați..."
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:76
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:77
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:75
+msgid "They don't need any more"
+msgstr "Nu mai au nevoie de nimic"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:84
+msgid "Opening hours"
+msgstr "Program de lucru"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:90
+msgid "Hours may vary because of"
+msgstr "Orele pot varia din cauza"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:100
+msgid "Only accepts in-store purchases as donations"
+msgstr "Acceptă doar achiziții din magazin ca donații"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:101
+msgid ""
+"Although, sometimes you can add items marked as not from the store. Best to "
+"check."
+msgstr ""
+"Deși, uneori puteți adăuga articole marcate ca nefiind din magazin. Cel mai "
+"bine să verificați."
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:106
+msgid "Wheelchair accessible"
+msgstr "Acces în scaun cu rotile"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:124
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:97
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:110
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:101
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:114
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:96
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:100
+msgid "Directions"
+msgstr "Instrucțiuni"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:66
+#: gfwfbn/templates/wfbn/foodbank/locations.html:69
+msgid "Main"
+msgstr "Principal"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:74
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:109
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:113
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:106
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:110
+#: gfwfbn/templates/wfbn/foodbank/locations.html:78
+msgid "Delivery"
+msgstr "Livrare"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
+msgid "Charity Registration"
+msgstr "Înregistrare de caritate"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
+#: gfwfbn/templates/wfbn/index.html:120
+msgid "Part of"
+msgstr "Parte din"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:13
+msgid "is a registered charity in England &amp; Wales"
+msgstr "este o organizație caritabilă înregistrată în Anglia &amp; Wales"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
+msgid "Donate"
+msgstr "Donează"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:6
+msgid "Food, money or your time"
+msgstr "Mâncare, bani sau timpul tău"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:12
+msgid "Donate using "
+msgstr "Donează folosind "
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:18
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:19
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:10
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:30
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:51
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:55
+msgid "Get updates"
+msgstr "Obțineți actualizări"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:19
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:4
+msgid "Get an email when items are needed"
+msgstr "Primiți un e-mail când sunt necesare articole"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+msgid "Organisation"
+msgstr "Organizație"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+msgid "marker"
+msgstr "marker"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+msgid "Location"
+msgstr "Locatie"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+msgid "Donation point"
+msgstr "Punct de donație"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
+msgid "Details"
+msgstr "Detalii"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:6
+#: gfwfbn/templates/wfbn/foodbank/locations.html:24
+#: gfwfbn/templates/wfbn/foodbank/locations.html:45
+#: gfwfbn/templates/wfbn/foodbank/locations.html:49
+msgid "Locations"
+msgstr "Locații"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
+#: gfwfbn/templates/wfbn/foodbank/news.html:24
+#: gfwfbn/templates/wfbn/foodbank/news.html:45
+#: gfwfbn/templates/wfbn/foodbank/news.html:49
+msgid "News"
+msgstr "Noutăți"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:23
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:44
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:48
+msgid "Social media"
+msgstr "Retele sociale"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:17
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:24
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:45
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:49
+msgid "Nearby"
+msgstr "Adauga distanta pentru locaţia din apropiere"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
+msgid "Email address"
+msgstr "Adresă email"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:13
+msgid ""
+"We'll never use your email address for anything else, and you can "
+"unsubscribe at any time."
+msgstr ""
+"Nu vom folosi niciodată adresa dvs. de e-mail pentru nimic altceva și vă "
+"puteți dezabona în orice moment."
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:70
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:121
+msgid "Website"
+msgstr "Website"
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:72
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:119
+#: gfwfbn/templates/wfbn/index.html:132
+msgid "Phone"
+msgstr "Telefon"
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:74
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:125
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:121
+#: gfwfbn/templates/wfbn/index.html:135
+msgid "Email"
+msgstr "E-mail"
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:95
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:99
+msgid "Administrative"
+msgstr "Administrativ"
+
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:69
+msgid "You can find out what being to have donated on Facebook:"
+msgstr "Poți afla ce ființă ai donat pe Facebook:"
+
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:72
+msgid "is currently requesting the following items to be donated:"
+msgstr "solicită în prezent să fie donate următoarele articole:"
+
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:68
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:79
+msgid "This location accepts donations"
+msgstr "Această locație acceptă donații"
+
+#: gfwfbn/templates/wfbn/foodbank/locations.html:67
+msgid "Administration"
+msgstr "Administrare"
+
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:68
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:70
+#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:163
+msgid "away"
+msgstr "plecat"
+
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:72
+msgid "Here is what the email you'll get looks like..."
+msgstr "Iată cum arată e-mailul pe care îl veți primi..."
+
+#: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
+#: gfwfbn/views.py:283
+msgid ""
+"Use Give Food's tool to find what food banks near you are requesting to have "
+"donated"
+msgstr ""
+"Utilizați instrumentul Give Food pentru a găsi ce bănci alimentare din "
+"apropiere solicită să fi donat"
+
+#: gfwfbn/templates/wfbn/index.html:14
+msgid "Map of UK food banks"
+msgstr "Harta băncilor alimentare din Marea Britanie"
+
+#: gfwfbn/templates/wfbn/index.html:34
+msgid "Find a food bank & see what they need"
+msgstr "Găsiți o bancă de alimente și vedeți de ce au nevoie"
+
+#: gfwfbn/templates/wfbn/index.html:37 gfwfbn/templates/wfbn/index.html:39
+msgid "food banks"
+msgstr "bănci alimentare"
+
+#: gfwfbn/templates/wfbn/index.html:57
+msgid ""
+"Find a food bank near you, see what they need and how you can help by "
+"donating or volunteering."
+msgstr ""
+"Găsiți o bancă de alimente în apropierea dvs., vedeți de ce au nevoie și cum "
+"le puteți ajuta prin donație sau voluntariat."
+
+#: gfwfbn/templates/wfbn/index.html:60
+msgid "Use my location"
+msgstr "Folosește locația mea"
+
+#: gfwfbn/templates/wfbn/index.html:62
+msgid "Postcode or town"
+msgstr "Cod poștal sau oraș"
+
+#: gfwfbn/templates/wfbn/index.html:63
+msgid "e.g. EX4 6PX or Sheffield"
+msgstr "de ex. EX4 6PX sau Sheffield"
+
+#: gfwfbn/templates/wfbn/index.html:69
+msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
+msgstr ""
+"Ne pare rău, nu am putut folosi locația respectivă. Este în interiorul "
+"Regatului Unit?"
+
+#: gfwfbn/templates/wfbn/index.html:75
+msgid "Browse by parliamentary constituency"
+msgstr "Căutați după circumscripția parlamentară"
+
+#: gfwfbn/templates/wfbn/index.html:76
+msgid "Register a food bank"
+msgstr "Înregistrați o bancă de alimente"
+
+#: gfwfbn/templates/wfbn/index.html:77
+msgid "About us"
+msgstr "Despre noi"
+
+#: gfwfbn/templates/wfbn/index.html:80
+msgid "Recently updated"
+msgstr "Actualizat recent"
+
+#: gfwfbn/templates/wfbn/index.html:86
+msgid "Most viewed this week"
+msgstr "Cele mai vizionate saptamana aceasta"
+
+#: gfwfbn/templates/wfbn/index.html:102
+msgid "Food banks"
+msgstr "Băncile alimentare"
+
+#: gfwfbn/templates/wfbn/index.html:127 gfwfbn/templates/wfbn/index.html:167
+msgid "Nothing right now, thanks"
+msgstr "Nimic acum, mulțumesc"
+
+#: gfwfbn/templates/wfbn/index.html:129 gfwfbn/templates/wfbn/index.html:169
+msgid "Sorry. We don't know what's needed here, please contact the food bank"
+msgstr ""
+"Îmi pare rău. Nu știm de ce este nevoie aici, vă rugăm să contactați banca "
+"alimentară"
+
+#: gfwfbn/templates/wfbn/index.html:162
+msgid "For"
+msgstr "Pentru"

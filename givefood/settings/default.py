@@ -151,6 +151,8 @@ LANGUAGES = [
     ("en", "English"),
     ("cy", "Cymraeg"),
     ("gd", "Gàidhlig"),
+    ("pl", "Polski"),
+    ("ro", "Română"),
 ]
 
 
