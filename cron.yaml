@@ -30,7 +30,7 @@ cron:
 
 - description: discrepancy check
   url: /offline/discrepancy_check/
-  schedule: every 30 minutes
+  schedule: every 10 minutes
 
 - description: decache donation points with opening hours
   url: /offline/decache_donationpoints/
