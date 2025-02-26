@@ -290,7 +290,7 @@ def sitemap(request):
 
 
 
-# @cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_DAY)
 def robotstxt(request):
     """
     /robots.txt
