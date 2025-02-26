@@ -52,7 +52,8 @@ urlpatterns += i18n_patterns(
     # WFBN
     path("needs/", include('gfwfbn.urls.i18n', namespace="wfbn")),
 
-    # Sitemaps
+    # Root
+    path("robots.txt", givefood.views.robotstxt, name="robotstxt"),
     path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
 
     prefix_default_language=False,

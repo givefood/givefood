@@ -24,10 +24,6 @@ handlers:
   static_files: givefood/static/img/favicon.ico
   upload: givefood/static/img/favicon.ico
 
-- url: /robots.txt
-  static_files: givefood/static/root/robots.txt
-  upload: givefood/static/root/robots.txt
-
 - url: /security.txt
   static_files: givefood/static/root/security.txt
   upload: givefood/static/root/security.txt

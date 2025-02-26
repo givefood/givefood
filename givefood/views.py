@@ -3,7 +3,7 @@ import requirements, requests
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.db.models import Sum
@@ -18,7 +18,8 @@ from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
 from givefood.const.general import SITE_DOMAIN
-from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
+from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
+from givefood.settings.default import LANGUAGES
 
 
 @cache_page(SECONDS_IN_HOUR)
@@ -286,6 +287,33 @@ def sitemap(request):
         "top_places":top_places,
     }
     return render(request, "public/sitemap.xml", template_vars, content_type='text/xml')
+
+
+
+# @cache_page(SECONDS_IN_DAY)
+def robotstxt(request):
+    """
+    /robots.txt
+    """
+    
+    get_location_url = reverse("wfbn:get_location")
+    flag_url = reverse("flag")
+    sitemap_url = reverse("sitemap")
+
+    disallowed_urls = []
+    sitemap_urls = []
+    for language in LANGUAGES:
+        disallowed_urls.append(translate_url(get_location_url, language[0]))
+        disallowed_urls.append(translate_url(flag_url, language[0]))
+        sitemap_urls.append(translate_url(sitemap_url, language[0]))
+
+    template_vars = {
+        "domain":SITE_DOMAIN,
+        "disallowed_urls":disallowed_urls,
+        "sitemap_urls":sitemap_urls,
+    }
+
+    return render(request, "public/robots.txt", template_vars, content_type='text/plain')
 
 
 @cache_page(SECONDS_IN_WEEK)
