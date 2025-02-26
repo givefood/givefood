@@ -6,7 +6,7 @@
                     <span>
                         {% for language in languages %}
                             {% if language.code == LANGUAGE_CODE %}
-                                <img src="/static/img/langflags/{{ language.code }}.svg" alt="{{ language.name }}" aria-hidden="true"> {{ language.name }}
+                                {{ language.name }}
                             {% endif %}
                         {% endfor %}
                     </span>
@@ -17,7 +17,7 @@
                 <div class="dropdown-content">
                     {% for language in languages %}
                         <a href="{{ language.url }}" class="dropdown-item">
-                            <img src="/static/img/langflags/{{ language.code }}.svg" alt="{{ language.name }}" aria-hidden="true"> {{ language.name }} {% if language.code != 'en' %}<span class="beta is-size-7">beta</span>{% endif %}
+                            {{ language.name }} {% if language.code != 'en' %}<span class="beta is-size-7">beta</span>{% endif %}
                         </a>
                     {% endfor %}
                 </div>
