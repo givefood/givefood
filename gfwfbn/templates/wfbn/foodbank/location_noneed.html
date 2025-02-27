@@ -121,8 +121,8 @@
   <script>
     var gf_map_config = {
       geojson: "{% url 'wfbn:foodbank_geojson' foodbank.slug %}",
-      lat: {{ location.latt }},
-      lng: {{ location.long }},
+      lat: {{ location.latt|stringformat:'f' }},
+      lng: {{ location.long|stringformat:'f' }},
       zoom: 15,
       location_marker: false,
     }

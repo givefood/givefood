@@ -198,8 +198,8 @@
     var gf_map_config = {
       geojson: "{% url 'wfbn:geojson' %}",
       {% if lat and lng %}
-        lat: {{ lat }},
-        lng: {{ lng }},
+        lat: {{ lat|stringformat:'f' }},
+        lng: {{ lng|stringformat:'f' }},
         zoom: 13,
         location_marker: true,
       {% else %}

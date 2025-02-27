@@ -85,8 +85,8 @@
   <script>
     var gf_map_config = {
       geojson: "{% url 'wfbn:geojson' %}",
-      lat: {{ foodbank.latt }},
-      lng: {{ foodbank.long }},
+      lat: {{ foodbank.latt|stringformat:'f' }},
+      lng: {{ foodbank.long|stringformat:'f' }},
       zoom: 12,
     }
   </script>
