@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:33+0000\n"
-"PO-Revision-Date: 2025-02-26 13:47+0000\n"
+"PO-Revision-Date: 2025-02-27 19:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ro\n"
@@ -248,7 +248,7 @@ msgstr "Retele sociale"
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:45
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:49
 msgid "Nearby"
-msgstr "Adauga distanta pentru locaţia din apropiere"
+msgstr "Aproape"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
 msgid "Email address"
