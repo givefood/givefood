@@ -96,7 +96,7 @@
                 <div style="clear:both">
                   {% if donation_point.place_has_photo %}
                     <a href="{% url 'wfbn:foodbank_donationpoint' foodbank.slug donation_point.slug %}">
-                      <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donation_point.slug %}" alt="{{ donation_point.name }}" loading="lazy" class="placephoto is-pulled-right" style="width:150px;clear:left">
+                      <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donation_point.slug %}" alt="{{ donation_point.name }}" loading="lazy" class="placephoto {% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %}" style="width:150px;clear:left">
                     </a>
                   {% endif %}
                   {% if donation_point.company %}
