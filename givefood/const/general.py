@@ -204,3 +204,13 @@ QUERYSTRING_RUBBISH = [
     "extcam",
     "utm_content",
 ]
+
+FACEBOOK_LOCALES = {
+    "en": "en_GB",
+    "cy": "cy_GB",
+    "gd": "gd_GB",
+    "pl": "pl_PL",
+    "ro": "ro_RO",
+    "pa": "pa_IN",
+    "ur": "ur_PK",
+}

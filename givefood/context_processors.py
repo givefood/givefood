@@ -4,7 +4,7 @@ from givefood.settings.default import LANGUAGES
 from django.utils.translation import get_language_info
 
 
-from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN
+from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN, FACEBOOK_LOCALES
 
 def context(request):
 
@@ -16,6 +16,7 @@ def context(request):
     querystring = request.META['QUERY_STRING']
     instance_id = os.environ.get('GAE_INSTANCE')
     version = os.environ.get('GAE_VERSION')
+    facebook_locale = FACEBOOK_LOCALES.get(language_code, "en_GB")
 
     page_translatable = "/cy/" == translate_url(path, "cy")[:4]
     languages = []
@@ -38,7 +39,6 @@ def context(request):
     except:
         app_name = "unknown"
 
-
     context = {
         'canonical_path': canonical_path,
         'flag_path': flag_path,
@@ -51,6 +51,7 @@ def context(request):
         'languages': languages,
         'language_code': language_code,
         'language_direction': language_direction,
+        'facebook_locale': facebook_locale,
     }
 
     return context
