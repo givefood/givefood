@@ -14,6 +14,8 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse, translate_url
 from requests import PreparedRequest
 
+from givefood.settings.default import LANGUAGES
+
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import geocode, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode, validate_postcode
@@ -507,8 +509,8 @@ class Foodbank(models.Model):
 
             translated_urls = []
             for url in page_urls:
-                translated_urls.append(translate_url(url, "cy"))
-                translated_urls.append(translate_url(url, "gd"))
+                for language in LANGUAGES:
+                    translated_urls.append(translate_url(url, language[0]))
 
             api_urls = [
                 reverse("sitemap"),
