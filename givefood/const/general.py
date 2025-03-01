@@ -214,3 +214,13 @@ FACEBOOK_LOCALES = {
     "pa": "pa_IN",
     "ur": "ur_PK",
 }
+
+DAYS_OF_WEEK = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+]
