@@ -13,32 +13,37 @@
     <div class="columns is-centered">
         <div class="column is-half">
             <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+            {% include 'public/includes/langswitcher.html' %}
         </div>
     </div>
 
     <div class="columns is-centered">
         <div class="column is-half content">
             <h1>{% trans "About us" %}</h1>
-            <p>{% blocktrans %}Give Food is a UK charity that uses data to highlight local and structural food insecurity, then provides tools to help alleviate it.{% endblocktrans %}</p>
 
-            <p>We run the only <a href="/needs/">national public database of food banks</a>, tracking in realtime what they are requesting to have donated.</p>
+            {% blocktrans %}
+                <p>Give Food is a UK charity that uses data to highlight local and structural food insecurity, then provides tools to help alleviate it.</p>
 
-            <p>Working with a wide variety of public and private organisations, including many other charities, we share our data with millions of users each year, helping people learn about and engage with food poverty causes.</p>
+                <p>We run the only <a href="/needs/">national public database of food banks</a>, tracking in realtime what they are requesting to have donated.</p>
 
-            <p>We became a <a href="https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5147019">charity</a> in February 2020, just weeks before the UK entered COVID-19 lockdowns, and since then we've worked with hundreds of local food insecurity alleviation organisations delivering hundreds of tonnes of vitally needed supplies.</p>
+                <p>Working with a wide variety of public and private organisations, including many other charities, we share our data with millions of users each year, helping people learn about and engage with food poverty causes.</p>
 
-            <p>For example, during the pandemic we delivered <a href="/2020/#ppe-supplies">1.2m items of PPE</a> to help keep food banks from Penzance to Lerwick as safe as possible whilst continuing to support their communities.</p>
+                <p>We became a <a href="https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5147019">charity</a> in February 2020, just weeks before the UK entered COVID-19 lockdowns, and since then we've worked with hundreds of local food insecurity alleviation organisations delivering hundreds of tonnes of vitally needed supplies.</p>
 
-            <p>We help our users act on food insecurity by using our data to show which food banks are in their parliamentary constituency, and provide a <a href="/write/">tool to easily email their Member of Parliament</a> asking what action they are taking to remedy it.</p>
+                <p>For example, during the pandemic we delivered <a href="/2020/#ppe-supplies">1.2m items of PPE</a> to help keep food banks from Penzance to Lerwick as safe as possible whilst continuing to support their communities.</p>
 
-            <p>Our operations are open source and transparent, with almost all of our current and historical <a href="https://github.com/givefood/givefood">code</a>, <a href="/api/">data</a> and <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/accounts-and-annual-returns">financial accounts</a> available to view.</p>
+                <p>We help our users act on food insecurity by using our data to show which food banks are in their parliamentary constituency, and provide a <a href="/write/">tool to easily email their Member of Parliament</a> asking what action they are taking to remedy it.</p>
 
-            <p>Please don't hesitate to contact us with any suggestions, comments, criticism or encouragement.</p>
+                <p>Our operations are open source and transparent, with almost all of our current and historical <a href="https://github.com/givefood/givefood">code</a>, <a href="/api/">data</a> and <a href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/accounts-and-annual-returns">financial accounts</a> available to view.</p>
 
-            <p>
-                <em>Give Food Trustees</em>
-            </p>
-            <p><a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></p>
+                <p>Please don't hesitate to contact us with any suggestions, comments, criticism or encouragement.</p>
+
+                <p>
+                    <em>Give Food Trustees</em>
+                </p>
+                <p><a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></p>
+
+            {% endblocktrans %}
         </div>
     </div>
 
