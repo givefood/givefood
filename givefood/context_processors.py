@@ -9,6 +9,7 @@ from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN, FACEBOOK_LOCALES
 def context(request):
 
     language_code = request.LANGUAGE_CODE
+    language_name = get_language_info(language_code)['name_local']
     language_direction = "rtl" if get_language_info(language_code)['bidi'] else "ltr"
     path = request.path
     translated_path = translate_url(path, language_code)
@@ -50,6 +51,7 @@ def context(request):
         'page_translatable': page_translatable,
         'languages': languages,
         'language_code': language_code,
+        'language_name': language_name,
         'language_direction': language_direction,
         'facebook_locale': facebook_locale,
     }
