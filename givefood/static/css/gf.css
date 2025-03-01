@@ -212,6 +212,13 @@ footer {
     }
 }
 
-.menu-list a:dir(rtl) {
+.text-direction-rtl .menu-list a {
     text-align:right;
+}
+.text-direction-rtl .dropdown.is-right .dropdown-menu {
+    left: 0;
+    right: auto;
+}
+.text-direction-rtl .dropdown .dropdown-menu {
+    left: auto;
 }
