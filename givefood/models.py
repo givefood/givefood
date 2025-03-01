@@ -903,6 +903,7 @@ class FoodbankDonationPoint(models.Model):
         opening_hours = self.opening_hours
         for day_of_week in DAYS_OF_WEEK:
             opening_hours = opening_hours.replace(day_of_week, _(day_of_week))
+        opening_hours = opening_hours.replace("Closed", _("Closed"))
 
         days = opening_hours.split("\n")
         
