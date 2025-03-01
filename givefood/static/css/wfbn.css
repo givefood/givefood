@@ -125,6 +125,11 @@ p.needs {
     border-left:2px solid #eee;
     padding:7px 0 7px 15px;
 }
+.text-direction-rtl p.needs {
+    border-left:0;
+    border-right:2px solid #eee;
+    padding:7px 15px 7px 0;
+}
 .cta {
     margin-bottom: 1.3rem;
 }
