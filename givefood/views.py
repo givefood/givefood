@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-import requirements, requests
+import requirements, requests, json
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
@@ -195,6 +195,15 @@ def managed_donation(request, slug, key):
         calories += order.calories
         cost += order.cost
 
+    map_config = {
+        "geojson":reverse("managed_donation_geojson", kwargs={"slug":slug, "key":key}),
+        "lat": 55.4,
+        "lng": -4,
+        "zoom": 6,
+        "location_marker": False,
+    }
+    map_config = json.dumps(map_config)
+
     template_vars = {
         "order_group":order_group,
         "items":items,
@@ -202,6 +211,7 @@ def managed_donation(request, slug, key):
         "calories":calories,
         "cost":cost/100,
         "meals":int(calories/500),
+        "map_config":map_config,
     }
     return render(request, "public/managed_donation.html", template_vars)
 

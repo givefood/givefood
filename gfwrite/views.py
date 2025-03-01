@@ -1,5 +1,4 @@
-import csv
-import os
+import json
 from django.shortcuts import render, get_object_or_404
 from django.template.defaultfilters import slugify
 from django.template.loader import render_to_string
@@ -39,11 +38,17 @@ def constituency(request, slug):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
     postcode = request.GET.get("postcode", None)
+    map_config = {
+        "geojson":reverse("wfbn:constituency_geojson", kwargs={"parlcon_slug":constituency.slug}),
+        "max_zoom":14,
+    }
+    map_config = json.dumps(map_config)
 
     template_vars = {
         "constituency":constituency,
         "postcode":postcode,
         "form":ConstituentDetailsForm,
+        "map_config":map_config,
     }
 
     return render(request, "write/constituency.html", template_vars)

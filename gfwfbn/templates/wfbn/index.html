@@ -194,23 +194,7 @@
 
 {% block script %}
 
-  <script>
-    var gf_map_config = {
-      geojson: "{% url 'wfbn:geojson' %}",
-      {% if lat and lng %}
-        lat: {{ lat|stringformat:'f' }},
-        lng: {{ lng|stringformat:'f' }},
-        zoom: 13,
-        location_marker: true,
-      {% else %}
-        lat: 55.4,
-        lng: -4,
-        zoom: 6,
-        location_marker: false,
-      {% endif %}
-    }
-  </script>
-
+  {% include 'public/includes/mapconfig.html' %}
   <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
   <script src="/static/js/tabber.js?v={{ version }}" defer></script>
   <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places&loading=async&callback=init&region=GB&language={{ language_code }}" defer></script>

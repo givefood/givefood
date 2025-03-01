@@ -92,6 +92,23 @@ def index(request):
                 donationpoint.photo_url = reverse("wfbn-generic:foodbank_donationpoint_photo", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
             donationpoint.distance_mi = miles(donationpoint.distance)
 
+    map_config = {
+        "geojson":reverse("wfbn:geojson"),
+    }
+    if lat_lng:
+        map_config["lat"] = lat_lng.split(",")[0]
+        map_config["lng"] = lat_lng.split(",")[1]
+        map_config["zoom"] = 13
+        map_config["location_marker"] = True
+    else:
+        map_config["lat"] = 55.4
+        map_config["lng"] = -4
+        map_config["zoom"] = 6
+        map_config["location_marker"] = False
+
+    map_config = json.dumps(map_config)
+    
+
     # Need the Google Maps API key too
     gmap_key = get_cred("gmap_key")
 
@@ -106,6 +123,7 @@ def index(request):
         "locations":locations,
         "donationpoints":donationpoints,
         "is_uk":lat_lng_is_uk,
+        "map_config":map_config,
     }
     return render(request, "wfbn/index.html", template_vars)
 
@@ -331,9 +349,16 @@ def foodbank(request, slug):
     else:
         template = "withneed"
 
+    map_config = {
+        "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
+        "max_zoom":14,
+    }
+    map_config = json.dumps(map_config)
+
     template_vars = {
         "section":"foodbank",
         "foodbank":foodbank,
+        "map_config":map_config,
     }
 
     return render(request, "wfbn/foodbank/index_%s.html" % (template), template_vars)
@@ -424,9 +449,15 @@ def foodbank_locations(request,slug):
     if foodbank.no_locations == 0:
         return HttpResponseNotFound()
 
+    map_config = {
+        "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
+    }
+    map_config = json.dumps(map_config)
+
     template_vars = {
         "section":"locations",
         "foodbank":foodbank,
+        "map_config":map_config,
     }
 
     return render(request, "wfbn/foodbank/locations.html", template_vars)
@@ -441,10 +472,16 @@ def foodbank_donationpoints(request,slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     if foodbank.no_donation_points == 0:
         return HttpResponseNotFound()
+    
+    map_config = {
+        "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
+    }
+    map_config = json.dumps(map_config)
 
     template_vars = {
         "section":"donationpoints",
         "foodbank":foodbank,
+        "map_config":map_config,
     }
 
     return render(request, "wfbn/foodbank/donationpoints.html", template_vars)
@@ -493,10 +530,20 @@ def foodbank_nearby(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     nearby_locations = find_locations(foodbank.latt_long, 20, True)
 
+    map_config = {
+        "geojson":reverse("wfbn:geojson"),
+        "lat": foodbank.latt(),
+        "lng": foodbank.long(),
+        "zoom": 12,
+        "location_marker": False,
+    }
+    map_config = json.dumps(map_config)
+
     template_vars = {
         "section":"nearby",
         "foodbank":foodbank,
         "nearby":nearby_locations,
+        "map_config":map_config,
     }
 
     return render(request, "wfbn/foodbank/nearby.html", template_vars)
@@ -554,10 +601,20 @@ def foodbank_location(request, slug, locslug):
     else:
         template = "withneed"
 
+    map_config = {
+        "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
+        "lat": location.latt(),
+        "lng": location.long(),
+        "zoom": 15,
+        "location_marker": False,
+    }
+    map_config = json.dumps(map_config)
+
     template_vars = {
         "section":"locations",
         "foodbank":foodbank,
         "location":location,
+        "map_config":map_config,
     }
 
     return render(request, "wfbn/foodbank/location_%s.html" % (template), template_vars)
@@ -611,12 +668,22 @@ def foodbank_donationpoint(request, slug, dpslug):
         has_need = False
     else:
         has_need = True
+    
+    map_config = {
+        "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
+        "lat": donationpoint.latt(),
+        "lng": donationpoint.long(),
+        "zoom": 15,
+        "location_marker": False,
+    }
+    map_config = json.dumps(map_config)
 
     template_vars = {
         "section":"donationpoints",
         "foodbank":foodbank,
         "has_need":has_need,
         "donationpoint":donationpoint,
+        "map_config":map_config,
     }
 
     return render(request, "wfbn/foodbank/donationpoint.html", template_vars)
@@ -671,8 +738,15 @@ def constituency(request, slug):
 
     constituency = get_object_or_404(ParliamentaryConstituency, slug = slug)
 
+    map_config = {
+        "geojson":reverse("wfbn:constituency_geojson", kwargs={"parlcon_slug":constituency.slug}),
+        "max_zoom":14,
+    }
+    map_config = json.dumps(map_config)
+
     template_vars = {
         "constituency":constituency,
+        "map_config":map_config,
     }
 
     return render(request, "wfbn/constituency/constituency.html", template_vars)

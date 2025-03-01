@@ -80,16 +80,7 @@
 
 {% block script %}
 
-    <script>
-        var gf_map_config = {
-            geojson: "{% url 'managed_donation_geojson' order_group.slug order_group.key %}",
-            lat: 55.4,
-            lng: -4,
-            zoom: 6,
-            location_marker: false,
-        }
-    </script>
-
+    {% include 'public/includes/mapconfig.html' %}
     <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places&loading=async&callback=init&region=GB&language={{ language_code }}" defer></script>
 
