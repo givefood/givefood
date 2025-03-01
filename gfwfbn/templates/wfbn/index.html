@@ -19,10 +19,10 @@
   {% if locations %}
     {% for location in locations|slice:"5" %}
       {% if location.type == "organisation" %}  
-        <link rel="preload" href="{% url 'wfbn:foodbank' location.foodbank_slug %}" as="document">
+        <link rel="prefetch" href="{% url 'wfbn:foodbank' location.foodbank_slug %}">
       {% endif %}
       {% if location.type == "location" %}  
-        <link rel="preload" href="{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}" as="document">
+        <link rel="prefetch" href="{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}">
       {% endif %}
     {% endfor %}
   {% endif %}
