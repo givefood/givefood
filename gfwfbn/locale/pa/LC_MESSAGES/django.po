@@ -197,21 +197,21 @@ msgstr "ਅੱਪਡੇਟ ਪ੍ਰਾਪਤ ਕਰੋ"
 msgid "Get an email when items are needed"
 msgstr "ਜਦੋਂ ਚੀਜ਼ਾਂ ਦੀ ਲੋੜ ਹੋਵੇ ਤਾਂ ਈਮੇਲ ਪ੍ਰਾਪਤ ਕਰੋ"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "ਸੰਗਠਨ"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "marker"
 msgstr "ਮਾਰਕਰ"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:5
 msgid "Location"
 msgstr "ਟਿਕਾਣਾ"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "Donation point"
 msgstr "ਦਾਨ ਬਿੰਦੂ"
 

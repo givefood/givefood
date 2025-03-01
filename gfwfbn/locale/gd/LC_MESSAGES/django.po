@@ -201,21 +201,21 @@ msgstr "Faigh ùrachaidhean"
 msgid "Get an email when items are needed"
 msgstr "Faigh post-d nuair a tha feum air nithean"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "Eagrachadh"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "marker"
 msgstr "momharra"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:5
 msgid "Location"
 msgstr "Ionad"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "Donation point"
 msgstr "Puing tabhartais"
 

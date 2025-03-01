@@ -201,21 +201,21 @@ msgstr "Aktualizacje"
 msgid "Get an email when items are needed"
 msgstr "Otrzymuj wiadomości e-mail, gdy potrzebne są przedmioty"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "Organizacja"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "marker"
 msgstr "znacznik"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:5
 msgid "Location"
 msgstr "Lokalizacja"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "Donation point"
 msgstr "Punkt darowizny"
 

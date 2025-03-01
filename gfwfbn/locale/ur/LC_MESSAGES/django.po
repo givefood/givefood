@@ -199,21 +199,21 @@ msgstr "اپ ڈیٹس حاصل کریں۔"
 msgid "Get an email when items are needed"
 msgstr "جب اشیاء کی ضرورت ہو تو ای میل حاصل کریں۔"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "تنظیم"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "marker"
 msgstr "مارکر"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:5
 msgid "Location"
 msgstr "مقام"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "Donation point"
 msgstr "عطیہ پوائنٹ"
 

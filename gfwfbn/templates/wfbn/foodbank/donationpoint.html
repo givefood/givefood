@@ -119,7 +119,7 @@
             {% endif %}
 
             <div id="map" class="sidemap"></div>
-            {% include "wfbn/foodbank/includes/maplegend.html" %}
+            {% include "public/includes/maplegend.html" %}
 
             <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donationpoint.latt_long }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
             <address>

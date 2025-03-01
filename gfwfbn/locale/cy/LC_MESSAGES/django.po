@@ -201,21 +201,21 @@ msgstr "Cael diweddariadau"
 msgid "Get an email when items are needed"
 msgstr "Cael e-bost pan fydd angen eitemau"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "Sefydliad"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:4
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:4
+#: gfwfbn/templates/public/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "marker"
 msgstr "marciwr"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:5
+#: gfwfbn/templates/public/includes/maplegend.html:5
 msgid "Location"
 msgstr "Lleoliad"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/maplegend.html:6
+#: gfwfbn/templates/public/includes/maplegend.html:6
 msgid "Donation point"
 msgstr "Pwynt rhoi"
 
