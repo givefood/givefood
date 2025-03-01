@@ -157,6 +157,9 @@ p.needs {
 .table td.foodbank_name {
     padding-left:0;
 }
+.fb_needs p {
+    margin-bottom:0;
+}
 textarea[name='address'] {
     height:200px !important;
 }
