@@ -13,6 +13,7 @@ from django.template.defaultfilters import slugify
 from django.core.exceptions import ValidationError
 from django.urls import reverse, translate_url
 from django.utils.translation import gettext as _
+from django.utils.translation import get_language
 
 from requests import PreparedRequest
 
@@ -20,7 +21,7 @@ from givefood.settings.default import LANGUAGES
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
-from givefood.func import geocode, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode, validate_postcode
+from givefood.func import geocode, get_translation, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode, validate_postcode
 
 
 class Foodbank(models.Model):
@@ -1504,8 +1505,34 @@ class FoodbankChange(models.Model):
                 last_need[0].excess_list(),
                 self.excess_list()
             )
+        
+    def get_text(self, text_type = "change"):
 
-    def save(self, *args, **kwargs):
+        current_language = get_language()
+        if self.change_text in ["Facebook", "Unknown", "Nothing"]:
+            return self.change_text
+        if current_language == "en":
+            if text_type == "change":
+                return self.change_text
+            if text_type == "excess":
+                return self.excess_change_text
+        else:
+            tranlated_text = FoodbankChangeTranslation.objects.get(need = self, language = current_language)
+            if text_type == "change":
+                return tranlated_text.change_text
+            if text_type == "excess":
+                return tranlated_text.excess_change_text
+
+    def get_change_text(self):
+        return self.get_text("change")
+
+    def get_excess_text(self):
+        return self.get_text("excess")
+    
+    def get_excess_text_list(self):
+        return self.get_excess_text().split("\n")
+
+    def save(self, do_translate=False, *args, **kwargs):
 
         if not self.input_method:
             self.input_method = self.set_input_method()
@@ -1527,10 +1554,30 @@ class FoodbankChange(models.Model):
 
         if self.foodbank and self.published:
             self.foodbank.save(do_geoupdate=False)
+        
+        if self.published and do_translate:
+            FoodbankChangeTranslation.objects.filter(need = self).delete()
+            for language in LANGUAGES:
+                if language[0] != "en":
+                    translated_change = get_translation(language, self.change_text)
+                    if self.excess_change_text:
+                        translated_excess = get_translation(language, self.excess_change_text)
+                    else:
+                        translated_excess = None
+
+                    translated_change = FoodbankChangeTranslation(
+                        need = self,
+                        foodbank = self.foodbank,
+                        language = language[0],
+                        change_text = translated_change,
+                        excess_change_text = translated_excess,
+                    )
+                    translated_change.save()
     
     def delete(self, *args, **kwargs):
 
         FoodbankChangeLine.objects.filter(need = self).delete()
+        FoodbankChangeTranslation.objects.filter(need = self).delete()
         super(FoodbankChange, self).delete(*args, **kwargs)
         if self.foodbank:
             if self.published:
@@ -1540,6 +1587,19 @@ class FoodbankChange(models.Model):
 
     class Meta:
         app_label = 'givefood'
+
+
+class FoodbankChangeTranslation(models.Model):
+
+    need = models.ForeignKey(FoodbankChange, editable=False, on_delete=models.DO_NOTHING)
+    foodbank = models.ForeignKey(Foodbank, editable=False, on_delete=models.DO_NOTHING)
+    language = models.CharField(max_length = 2)
+    change_text = models.TextField()
+    excess_change_text = models.TextField(null=True, blank=True)
+
+    class Meta:
+        app_label = 'givefood'
+
 
 
 class FoodbankChangeLine(models.Model):

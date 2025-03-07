@@ -650,7 +650,7 @@ def need_publish(request, id, action):
         need.published = True
     if action == "unpublish":
         need.published = False
-    need.save()
+    need.save(do_translate = True)
     return redirect("admin:need", id = need.need_id)
 
 

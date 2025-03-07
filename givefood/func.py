@@ -1171,13 +1171,13 @@ def chatgpt(prompt, temperature):
     return response["choices"][0]["message"]["content"]
 
 
-def gemini(prompt, temperature):
+def gemini(prompt, temperature, response_mime_type = "application/json"):
 
     genai.configure(api_key=get_cred("gemini_api_key"))
     generation_config = {
         "temperature": temperature,
         "max_output_tokens": 8192,
-        "response_mime_type": "application/json",
+        "response_mime_type": response_mime_type,
     }
     safety_settings = {
         'HATE': 'BLOCK_NONE',
@@ -1203,7 +1203,26 @@ def htmlbodytext(html):
         return soup.body.get_text()
     else:
         return False
-    
+
+
+def get_translation(language, text):
+
+    logging.warn("translating %s", (text))
+
+    translation_prompt = render_to_string(
+        "admin/translation_prompt.txt",
+        {
+            "language":language,
+            "text":text,
+        }
+    )
+    translation_response = gemini(
+            prompt = translation_prompt,
+            temperature = 0,
+            response_mime_type = "text/plain",
+    )
+    return translation_response
+
 
 def do_foodbank_need_check(foodbank):
 
