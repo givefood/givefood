@@ -69,11 +69,12 @@
             <p>{{ donationpoint }} {% blocktrans %}is a donation point for{% endblocktrans %} <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a>. {% if has_need %}{% blocktrans %}Here they are requesting to have donated...{% endblocktrans %}{% endif %}</p>
 
             {% if has_need %}
+            
                 <p class="needs">
-                    {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
+                    {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.get_change_text  %}
                 </p>
                 {% if foodbank.latest_need.excess_change_text %}
-                  <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+                  <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.get_excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
                 {% endif %}
 
                 {% include 'wfbn/foodbank/includes/subscribe.html' %}

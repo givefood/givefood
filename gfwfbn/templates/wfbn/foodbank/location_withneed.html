@@ -63,24 +63,26 @@
               <p class="tag is-danger is-large">>{% blocktrans %}This food bank is closed{% endblocktrans %}</p>
             {% endif %}
 
-            {% if foodbank.latest_need.change_text == "Facebook" %}
-              <p>You can find out what {{ foodbank.full_name }} is requesting to have donated on their Facebook page:</p>
-              {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
-            {% else %}
-              <p>{{ foodbank.full_name }} is currently requesting the following items to be donated:</p>
-              <p class="needs">
-                {% include "wfbn/includes/need_text.html" with need_text=foodbank.latest_need.change_text  %}
-              </p>
-              {% if foodbank.latest_need.excess_change_text %}
-                <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
-              {% endif %}
+            {% with change_text=foodbank.latest_need.get_change_text %}
+              {% if change_text == "Facebook" %}
+                <p>You can find out what {{ foodbank.full_name }} is requesting to have donated on their Facebook page:</p>
+                {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
+              {% else %}
+                <p>{{ foodbank.full_name }} is currently requesting the following items to be donated:</p>
+                <p class="needs">
+                  {% include "wfbn/includes/need_text.html" with need_text=change_text  %}
+                </p>
+                {% if foodbank.latest_need.excess_text %}
+                  <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.get_excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+                {% endif %}
 
-              {% if location.is_donation_point %}
-                <p>🛒 {% blocktrans %}This location accepts donations{% endblocktrans %}</p>
+                {% if location.is_donation_point %}
+                  <p>🛒 {% blocktrans %}This location accepts donations{% endblocktrans %}</p>
+                {% endif %}
+                
+                {% include 'wfbn/foodbank/includes/subscribe.html' %}
               {% endif %}
-              
-              {% include 'wfbn/foodbank/includes/subscribe.html' %}
-            {% endif %}
+            {% endwith %}
 
           </div>
 

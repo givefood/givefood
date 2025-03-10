@@ -123,21 +123,23 @@
                   </td>
                   <td class="need_detail">
                     <div class="fb_needs">
-                      {% if location.latest_need.change_text == "Nothing" %}
-                        {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
-                      {% elif location.latest_need.change_text == "Unknown" %}
-                        {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
-                        <br>
-                        {% if location.phone_number %}
-                          <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ location.phone_number|full_phone }}">{{ location.phone_number|friendly_phone }}</a>
+                      {% with change_text=location.latest_need.get_change_text %}
+                        {% if change_text == "Nothing" %}
+                          {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
+                        {% elif change_text == "Unknown" %}
+                          {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
                           <br>
+                          {% if location.phone_number %}
+                            <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ location.phone_number|full_phone }}">{{ location.phone_number|friendly_phone }}</a>
+                            <br>
+                          {% endif %}
+                          <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ location.contact_email }}" id="email_link">{{ location.contact_email }}</a>
+                        {% elif change_text == "Facebook" %}
+                          Check the food bank's <a href="https://www.facebook.com/{% if location.type == 'organisation' %}{{ location.facebook_page }}{% endif %}{% if location.type == 'location' %}{{ location.foodbank.facebook_page }}{% endif %}?ref=givefood.org.uk">Facebook page</a> for what they need
+                        {% else %}
+                          {{ change_text|linebreaks }}
                         {% endif %}
-                        <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ location.contact_email }}" id="email_link">{{ location.contact_email }}</a>
-                      {% elif location.latest_need.change_text == "Facebook" %}
-                        Check the food bank's <a href="https://www.facebook.com/{% if location.type == 'organisation' %}{{ location.facebook_page }}{% endif %}{% if location.type == 'location' %}{{ location.foodbank.facebook_page }}{% endif %}?ref=givefood.org.uk">Facebook page</a> for what they need
-                      {% else %}
-                        {{ location.latest_need.change_text|linebreaks }}
-                      {% endif %}
+                      {% endwith %}
                       <script src="{% url 'wfbn-generic:foodbank_hit' location.foodbank_slug %}" defer></script>
                     </div>
                   </td>
@@ -163,16 +165,18 @@
                     <div class="distance">{{ donationpoint.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
                   </td>
                   <td>
-                    {% if donationpoint.foodbank.latest_need.change_text == "Nothing" %}
-                        {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
-                      {% elif donationpoint.foodbank.latest_need.change_text == "Unknown" %}
-                        {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
-                      {% elif donationpoint.foodbank.latest_need.change_text == "Facebook" %}
-                        Check the food bank's <a href="https://www.facebook.com/{{ donationpoint.foodbank.facebook_page }}?ref=givefood.org.uk">Facebook page</a> for what they need
-                      {% else %}
-                        {{ donationpoint.foodbank.latest_need.change_text|linebreaks }}
-                      {% endif %}
-                      <script src="{% url 'wfbn-generic:foodbank_hit' donationpoint.foodbank_slug %}" defer></script>
+                    {% with change_text=donationpoint.foodbank.latest_need.get_change_text %}
+                      {% if change_text == "Nothing" %}
+                          {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
+                        {% elif change_text == "Unknown" %}
+                          {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
+                        {% elif change_text == "Facebook" %}
+                          Check the food bank's <a href="https://www.facebook.com/{{ donationpoint.foodbank.facebook_page }}?ref=givefood.org.uk">Facebook page</a> for what they need
+                        {% else %}
+                          {{ change_text|linebreaks }}
+                        {% endif %}
+                    {% endwith %}
+                    <script src="{% url 'wfbn-generic:foodbank_hit' donationpoint.foodbank_slug %}" defer></script>
                   </td>
                 </tr>
               {% endfor %}
