@@ -119,6 +119,9 @@ h2 {
 .fcdo {
     width:150px;
 }
+.mars {
+    width:100px;
+}
 @media screen and (min-width: 769px) {
     .trussell {
         height:80px;
@@ -145,6 +148,9 @@ h2 {
         height:50px;
     }
     .fcdo {
+        width:100px;
+    }
+    .mars {
         width:100px;
     }
 }
