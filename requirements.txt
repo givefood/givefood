@@ -14,7 +14,7 @@ dicttoxml
 feedparser
 psycopg2-binary
 google-cloud-secret-manager
-openai==0.28
+openai==1.65.5
 furl
 beautifulsoup4
 google-generativeai
