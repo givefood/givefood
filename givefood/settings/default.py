@@ -63,6 +63,7 @@ MIDDLEWARE = [
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'csp.middleware.CSPMiddleware',
+    'givefood.middleware.rendertime',
 ]
 
 ROOT_URLCONF = 'givefood.urls'
