@@ -21,6 +21,8 @@
   <dd>Gàidhlig (Gaelic, in Gaelic)</dd>
   <dt>mp</dt>
   <dd>Member of Parliament</dd>
+  <dt>parlcon</dt>
+  <dd>Parliamentary constituency</dd>
   <dt>tt</dt>
   <dd>Trussell Trust</dd>
   <dt>uml</dt>
