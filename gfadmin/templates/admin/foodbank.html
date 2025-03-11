@@ -110,6 +110,14 @@
         {% endif %}
         <dt>Network</dt>
         <dd>{{ foodbank.network }}</dd>
+        <dt>FSA ID</dt>
+        <dd>
+          {% if foodbank.fsa_id %}
+            {{ foodbank.fsa_id }}
+          {% else %}
+            None (<a href="https://ratings.food.gov.uk/business-search?address-search={{ foodbank.postcode|urlencode }}" target="_blank">Search</a>)
+          {% endif %}
+        </dd>
       </dl>
 
       <h3>Contacts</h3>
