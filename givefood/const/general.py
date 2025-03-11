@@ -171,6 +171,7 @@ OLD_FOODBANK_SLUGS = {
     "falkirk/donationpoint/asda-superstore-stenhousemuir":"klsb/donationpoint/asda-stenhousemuir",
     "newcastle-west-end":"newcastle",
     "kings-centre-honiton":"honiton",
+    "helston-lizard":"helston-the-lizard",
 }
 
 FOODBANK_SUBPAGES = [
