@@ -170,6 +170,7 @@ OLD_FOODBANK_SLUGS = {
     "east-ayrshire":"ayrshire-east",
     "falkirk/donationpoint/asda-superstore-stenhousemuir":"klsb/donationpoint/asda-stenhousemuir",
     "newcastle-west-end":"newcastle",
+    "kings-centre-honiton":"honiton",
 }
 
 FOODBANK_SUBPAGES = [
