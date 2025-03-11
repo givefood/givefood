@@ -441,6 +441,27 @@ def foodbank_rfi(request, slug):
 
 
 @require_POST
+def foodbank_resave(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    for location in FoodbankLocation.objects.filter(foodbank = foodbank):
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+    for donationpoint in FoodbankDonationPoint.objects.filter(foodbank = foodbank):
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+    for need in FoodbankChange.objects.filter(foodbank = foodbank):
+        need.save(do_translate=False, do_foodbank_save=False)
+    for order in Order.objects.filter(foodbank = foodbank):
+        order.save(do_foodbank_save=False)
+    for subscriber in FoodbankSubscriber.objects.filter(foodbank = foodbank):
+        subscriber.save()
+    
+    foodbank.save(do_geoupdate=False)
+    
+    return redirect("admin:foodbank", slug = foodbank.slug)
+
+
+@require_POST
 def foodbank_delete(request, slug):
     
     foodbank = get_object_or_404(Foodbank, slug = slug)

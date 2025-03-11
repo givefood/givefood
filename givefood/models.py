@@ -1086,7 +1086,7 @@ class Order(models.Model):
             order_line.delete()
         super(Order, self).delete(*args, **kwargs)
 
-    def save(self, *args, **kwargs):
+    def save(self, do_foodbank_save = True, *args, **kwargs):
         # Generate ID
         self.order_id = "gf-%s-%s-%s" % (
             self.foodbank.slug,
@@ -1179,8 +1179,9 @@ class Order(models.Model):
         super(Order, self).save(*args, **kwargs)
 
         # Update last order date on foodbank
-        self.foodbank.last_order = Order.objects.filter(foodbank = self.foodbank).order_by("-delivery_date")[0].delivery_date
-        self.foodbank.save()
+        if do_foodbank_save:
+            self.foodbank.last_order = Order.objects.filter(foodbank = self.foodbank).order_by("-delivery_date")[0].delivery_date
+            self.foodbank.save(do_geoupdate=False)
 
     def lines(self):
         return OrderLine.objects.filter(order = self).order_by("-weight")
@@ -1532,7 +1533,7 @@ class FoodbankChange(models.Model):
     def get_excess_text_list(self):
         return self.get_excess_text().split("\n")
 
-    def save(self, do_translate=False, *args, **kwargs):
+    def save(self, do_translate=False, do_foodbank_save=True, *args, **kwargs):
 
         if not self.input_method:
             self.input_method = self.set_input_method()
@@ -1552,7 +1553,7 @@ class FoodbankChange(models.Model):
 
         super(FoodbankChange, self).save(*args, **kwargs)
 
-        if self.foodbank and self.published:
+        if self.foodbank and self.published and do_foodbank_save:
             self.foodbank.save(do_geoupdate=False)
         
         if self.published and do_translate:
