@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+{% include 'public/includes/debugcomment.html' %}
 <rss version="2.0">
         <channel>
                 <title>{% if foodbank %}{{ foodbank.full_name }}{% else %}Give Food{% endif %}</title>
