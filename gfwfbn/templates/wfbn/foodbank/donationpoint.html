@@ -96,6 +96,10 @@
                 </p>
             {% endif %}
 
+            {% if donationpoint.notes %}
+              <p>📝 {{ donationpoint.notes|linebreaksbr }}</p>
+            {% endif %}
+
             {% if donationpoint.in_store_only %}
                 <p>
                   ⚠️ {% blocktrans %}Only accepts in-store purchases as donations{% endblocktrans %}

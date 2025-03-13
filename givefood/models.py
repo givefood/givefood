@@ -792,6 +792,7 @@ class FoodbankDonationPoint(models.Model):
     url = models.URLField(max_length=1024, verbose_name="URL", null=True, blank=True)
     in_store_only = models.BooleanField(default=False)
     company = models.CharField(max_length=100, null=True, blank=True, choices=DONATION_POINT_COMPANIES_CHOICES)
+    notes = models.TextField(null=True, blank=True, help_text="These notes are public")
 
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)
