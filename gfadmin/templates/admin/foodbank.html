@@ -332,6 +332,7 @@
             <th>Company</th>
             <th>Has Open Hrs</th>
             <th>In Store Only?</th>
+            <th>Notes</th>
             <th></th>
           </tr>
           {% for donation_point in foodbank.donation_points %}
@@ -349,6 +350,10 @@
               </td>
               <td>{% if donation_point.opening_hours %}Y{% endif %}</td>
               <td>{% if donation_point.in_store_only %}Y{% endif %}</td>
+              <td>
+                {% if donation_point.notes %}
+                  {{ donation_point.notes|linebreaksbr }}
+                {% endif %}
               <td>
                 <a href="{% url 'admin:donationpoint_edit' foodbank.slug donation_point.slug %}" class="button is-small is-link is-light">Edit</a>
                 <form action="{% url 'admin:donationpoint_delete' foodbank.slug donation_point.slug %}" method="post">
