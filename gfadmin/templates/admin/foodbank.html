@@ -73,7 +73,10 @@
       <h3>Links</h3>
       <dl>
         <dt>GF Info</dt>
-        <dd><a href="{% url 'wfbn:foodbank' foodbank.slug %}" data-turbo="false">{{ foodbank.slug }}</a></dd>
+        <dd>
+          <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.slug }}</a>
+          <a href="{% url 'wfbn:foodbank' foodbank.slug %}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+        </dd>
         <dt>Website</dt>
         <dd>
           <a href="{{ foodbank.url }}">{{ foodbank.friendly_url }}</a>
