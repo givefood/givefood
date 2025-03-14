@@ -221,10 +221,12 @@
         {% endif %}
       </dl>
 
-      <h3>⚠️ Danger Zone</h3>
+      <h3>⚠️ Mild Danger Zone</h3>
       <form action="{% url 'admin:foodbank_resave' foodbank.slug %}" method="post">
         <input type="submit" class="button is-warning" value="Resave Everything" onclick="return confirm('Resave {{ foodbank.name}}?')">
       </form>
+
+      <h3>⚠️ Danger Zone</h3>
       <form action="{% url 'admin:foodbank_rfi' foodbank.slug %}" method="post">
         <input type="submit" class="button is-danger" value="Send RFI" onclick="return confirm('Send RFI to {{ foodbank.name}}?')">
       </form>
