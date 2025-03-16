@@ -1,38 +1,38 @@
-{% load i18n %}<!--
+{% load i18n %}{% if not inrobotstxt %}<!--
+{% endif %}
+{% if inrobotstxt %}#{% else %}👋{% endif %} {% trans "Hello" %}!
 
-👋 {% trans "Hello" %}!
+{% if inrobotstxt %}#{% else %}🕰️{% endif %} Generated at {% now "r" %}
 
-🕰️ Generated at {% now "r" %}
+{% if inrobotstxt %}#{% else %}🖥️{% endif %} By machine {{ instance_id }}
+{% if inrobotstxt %}#{% else %}💾{% endif %} Using code v{{ version }}
+{% if inrobotstxt %}#{% else %}🔩{% endif %} By app {{ app_name }}
+{% if inrobotstxt %}#{% else %}⏱️{% endif %} Took PUTTHERENDERTIMEHEREms
 
-🖥️ By machine {{ instance_id }}
-💾 Using code v{{ version }}
-🔩 By app {{ app_name }}
-⏱️ Took PUTTHERENDERTIMEHEREms
+{% if inrobotstxt %}#{% else %}🌍{% endif %} Language {{ language_name }}
+{% if inrobotstxt %}#{% else %}🌍{% endif %} Language code {{ language_code }}
+{% if inrobotstxt %}#{% else %}🔣{% endif %} Language direction {{ language_direction }}
 
-🌍 Language {{ language_name }}
-🌍 Language code {{ language_code }}
-🔣 Language direction {{ language_direction }}
+{% if inrobotstxt %}# {% endif %}============================================
+{% if inrobotstxt %}# {% endif %}|  ,dP""8a "888888b,  d8b    "888b  ,888"  |
+{% if inrobotstxt %}# {% endif %}|  88b   "  888  d88 dPY8b    88Y8b,8888   |
+{% if inrobotstxt %}# {% endif %}|  `"Y8888a 888ad8P'dPaaY8b   88 Y88P888   |
+{% if inrobotstxt %}# {% endif %}|  a    Y88 888    dP    Y8b  88  YP 888   |
+{% if inrobotstxt %}# {% endif %}|  `"8ad8P'a888a  a88a;*a888aa88a   a888a  |
+{% if inrobotstxt %}# {% endif %}|                                          |
+{% if inrobotstxt %}# {% endif %}|                 ;*;;;;*;;;*;;;*,,        |
+{% if inrobotstxt %}# {% endif %}|         _,,-''':::';*;;;*;;;*;;*d;,      |
+{% if inrobotstxt %}# {% endif %}|      .-'      ::::::::::';*;;*;dII;      |
+{% if inrobotstxt %}# {% endif %}|    .' ,<<<,.  :::::::::::::::ffffff`.    |
+{% if inrobotstxt %}# {% endif %}|   / ,<<<<<<<<,::::::::::::::::fffffI,\   |
+{% if inrobotstxt %}# {% endif %}|  .,<<<<<<<<<<I;:::::::::::::::ffffKIP",  |
+{% if inrobotstxt %}# {% endif %}|  |<<<<<<<<<<dP;,?>;,::::::::::fffKKIP |  |
+{% if inrobotstxt %}# {% endif %}|  ``<<<<<<<dP;;;;;\>>>>>;,::::fffKKIPf '  |
+{% if inrobotstxt %}# {% endif %}|   \ `mYMMV?;;;;;;;\>>>>>>>>>,YIIPP"` /   |
+{% if inrobotstxt %}# {% endif %}|    `. "":;;;;;;;;;i>>>>>>>>>>>>>,  ,'    |
+{% if inrobotstxt %}# {% endif %}|      `-._``":;;;sP'`"?>>>>>>>  _.-       |
+{% if inrobotstxt %}# {% endif %}|            -...._______....-             |
+{% if inrobotstxt %}# {% endif %}|                                          |
+{% if inrobotstxt %}# {% endif %}============================================
 
-============================================
-|  ,dP""8a "888888b,  d8b    "888b  ,888"  |
-|  88b   "  888  d88 dPY8b    88Y8b,8888   |
-|  `"Y8888a 888ad8P'dPaaY8b   88 Y88P888   |
-|  a    Y88 888    dP    Y8b  88  YP 888   |
-|  `"8ad8P'a888a  a88a;*a888aa88a   a888a  |
-|                                          |
-|                 ;*;;;;*;;;*;;;*,,        |
-|         _,,-''':::';*;;;*;;;*;;*d;,      |
-|      .-'      ::::::::::';*;;*;dII;      |
-|    .' ,<<<,.  :::::::::::::::ffffff`.    |
-|   / ,<<<<<<<<,::::::::::::::::fffffI,\   |
-|  .,<<<<<<<<<<I;:::::::::::::::ffffKIP",  |
-|  |<<<<<<<<<<dP;,?>;,::::::::::fffKKIP |  |
-|  ``<<<<<<<dP;;;;;\>>>>>;,::::fffKKIPf '  |
-|   \ `mYMMV?;;;;;;;\>>>>>>>>>,YIIPP"` /   |
-|    `. "":;;;;;;;;;i>>>>>>>>>>>>>,  ,'    |
-|      `-._``":;;;sP'`"?>>>>>>>  _.-       |
-|            -...._______....-             |
-|                                          |
-============================================
-
--->
+{% if not inrobotstxt %}-->{% endif %}

@@ -1,3 +1,4 @@
+{% include 'public/includes/debugcomment.html' with inrobotstxt=True %}
 User-agent: *{% for disallowed_url in disallowed_urls %}
 Disallow: {{ disallowed_url }}{% endfor %}
 
