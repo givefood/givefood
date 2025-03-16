@@ -1,9 +1,6 @@
 User-agent: *{% for disallowed_url in disallowed_urls %}
 Disallow: {{ disallowed_url }}{% endfor %}
 
-User-agent: BLEXBot
-Disallow: /
-
 User-agent: *
 Allow: /
 Crawl-delay: 5
