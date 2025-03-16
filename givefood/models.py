@@ -205,12 +205,23 @@ class Foodbank(models.Model):
 
     def schema_org_str(self):
         return json.dumps(self.schema_org(), indent=4, sort_keys=True)
-
-    def full_name(self):
+    
+    def full_name_en(self):
         if self.name in DONT_APPEND_FOOD_BANK:
             return self.name
         else:
-            return "%s Food Bank" % (self.name)
+            return "%s %s" % (self.name, _("Food Bank"))
+
+    def full_name(self):
+        current_language = get_language()
+        if current_language == "cy":
+            if self.alt_name:
+                return self.alt_name
+            else:
+                return self.full_name_en()
+        else:
+            return self.full_name_en()
+                
 
     def friendly_url(self):
         return make_url_friendly(self.url)

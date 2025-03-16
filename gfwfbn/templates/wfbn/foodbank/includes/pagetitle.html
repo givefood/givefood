@@ -2,18 +2,10 @@
     {% if prefix %}
         {{ prefix }} -
     {% endif %}
-    {% if language_code == "cy" %}
-        {% if foodbank.alt_name %}
-            {{ foodbank.alt_name }}
-        {% else %}
-            {{ foodbank.full_name }}
-        {% endif %}
-    {% else %}
-        {{ foodbank.full_name }}
-    {% endif %}
+    {{ foodbank.full_name }}
 </h1>
 {% if foodbank.alt_name %}
     {% if language_code == "cy" %}
-        <p class="altname" lang="en">{{ foodbank.full_name }}</p>
+        <p class="altname" lang="en">{{ foodbank.full_name_en }}</p>
     {% endif %}
 {% endif %}
