@@ -108,6 +108,11 @@
     margin-bottom:10px;
     max-height:400px;
     border-radius: 0.25rem;
+    margin-left:5px;
+}
+.text-direction-rtl .placephoto {
+    margin-right:5px;
+    margin-left:0;
 }
 address {
     font-style:normal;
