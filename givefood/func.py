@@ -335,9 +335,9 @@ def parse_sainsburys_order_text(order_text):
     for order_item_line in order_items:
         if sub_line == 1:
             item_name = order_item_line
-        if sub_line == 5:
+        if sub_line == 3:
             item_quantity = order_item_line
-        if sub_line == 7:
+        if sub_line == 5:
             item_cost = int(order_item_line.replace("£","").replace(".",""))
         if sub_line == 9:
             order_lines.append({
@@ -351,7 +351,7 @@ def parse_sainsburys_order_text(order_text):
                     int(item_quantity)
                 ),
             })
-        if sub_line == 10:
+        if sub_line == 9:
             sub_line = 0
 
         sub_line = sub_line + 1
