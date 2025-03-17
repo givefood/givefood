@@ -432,7 +432,12 @@ def flag(request):
         turnstile_is_valid = validate_turnstile(request.POST.get("cf-turnstile-response"))
 
         if form.is_valid() and turnstile_is_valid:
-            email_body = render_to_string("public/flag_email.txt",{"form":request.POST.items()})
+
+            fields = request.POST.copy()
+            fields.pop("csrfmiddlewaretoken", None)
+            fields.pop("cf-turnstile-response", None)
+
+            email_body = render_to_string("public/flag_email.txt",{"form":fields.items()})
             send_email(
                 to = "mail@givefood.org.uk",
                 subject = "Flagged Page",
