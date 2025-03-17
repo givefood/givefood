@@ -1073,23 +1073,6 @@ def post_to_subscriber(need, subscriber):
     )
 
 
-def post_to_email(post, extra = {}, header = None):
-
-    body_str = ""
-    fields = post.copy()
-    fields.update(extra)
-
-    fields.pop("csrfmiddlewaretoken", None)
-
-    for fieldname, fieldvalue in fields.items():
-        body_str += "%s: %s\n" % (fieldname, fieldvalue)
-
-    if header:
-        body_str = header + "\n\n" + body_str
-
-    send_email("mail@givefood.org.uk", "Food Bank Data Amendment", body_str)
-
-
 def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None):
 
     api_url = "https://api.postmarkapp.com/email"
