@@ -212,6 +212,9 @@ footer {
     }
 }
 
+.text-direction-rtl .breadcrumb.has-arrow-separator li+li:before {
+    content:"←"
+}
 .text-direction-rtl .menu-list a {
     text-align:right;
 }
