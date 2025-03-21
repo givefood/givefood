@@ -72,8 +72,8 @@
                 <p class="needs">
                   {% include "wfbn/includes/need_text.html" with need_text=change_text  %}
                 </p>
-                {% if foodbank.latest_need.excess_text %}
-                  <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.get_excess_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+                {% if foodbank.latest_need.excess_change_text %}
+                  <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.get_excess_text_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
                 {% endif %}
 
                 {% if location.is_donation_point %}
