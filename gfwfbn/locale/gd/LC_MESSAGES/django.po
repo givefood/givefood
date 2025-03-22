@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-25 13:03+0000\n"
+"POT-Creation-Date: 2025-03-22 09:12+0000\n"
 "PO-Revision-Date: 2025-02-25 13:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -108,25 +108,25 @@ msgstr "tha e a 'toirt taic do"
 msgid "Here they are requesting to have donated..."
 msgstr "Tha iad ag iarraidh gun tèid tabhartas a thoirt seachad..."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:76
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:77
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:75
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:77
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:78
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:76
 msgid "They don't need any more"
 msgstr "Chan eil feum air tuilleadh"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:84
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:85
 msgid "Opening hours"
 msgstr "Uairean fosglaidh"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:90
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
 msgid "Hours may vary because of"
 msgstr "Dh'fhaoidte gum bi na h - uairean ag atharrachadh air sgàth"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:100
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:105
 msgid "Only accepts in-store purchases as donations"
 msgstr "A 'ceannach a - steach mar thabhartasan a - mhàin"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:101
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:106
 msgid ""
 "Although, sometimes you can add items marked as not from the store. Best to "
 "check."
@@ -134,17 +134,17 @@ msgstr ""
 "Ach, uaireannan faodaidh tu rudan a chuir ris a tha air an comharrachadh mar "
 "nach eil bhon bhùth. An rud as fheàrr airson sgrùdadh."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:106
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:111
 msgid "Wheelchair accessible"
 msgstr "Ruigsinneach do chathraichean - cuibhle"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:124
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:129
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:97
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:110
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:101
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:114
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:103
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:116
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:96
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:100
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:102
 msgid "Directions"
 msgstr "Stiùireadh"
 
@@ -155,9 +155,9 @@ msgstr "Prìomh"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:74
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:109
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:113
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:115
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:106
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:110
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:112
 #: gfwfbn/templates/wfbn/foodbank/locations.html:78
 msgid "Delivery"
 msgstr "Lìbhrigeadh"
@@ -200,24 +200,6 @@ msgstr "Faigh ùrachaidhean"
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:4
 msgid "Get an email when items are needed"
 msgstr "Faigh post-d nuair a tha feum air nithean"
-
-#: gfwfbn/templates/public/includes/maplegend.html:4
-msgid "Organisation"
-msgstr "Eagrachadh"
-
-#: gfwfbn/templates/public/includes/maplegend.html:4
-#: gfwfbn/templates/public/includes/maplegend.html:5
-#: gfwfbn/templates/public/includes/maplegend.html:6
-msgid "marker"
-msgstr "momharra"
-
-#: gfwfbn/templates/public/includes/maplegend.html:5
-msgid "Location"
-msgstr "Ionad"
-
-#: gfwfbn/templates/public/includes/maplegend.html:6
-msgid "Donation point"
-msgstr "Puing tabhartais"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
 msgid "Details"
@@ -264,39 +246,39 @@ msgstr ""
 "faodaidh tu dì - chlàradh aig àm sam bith."
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:70
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:121
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
 msgid "Website"
 msgstr "Làrach-lìn"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:72
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:119
-#: gfwfbn/templates/wfbn/index.html:132
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:125
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:121
+#: gfwfbn/templates/wfbn/index.html:133
 msgid "Phone"
 msgstr "Fòn"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:74
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:125
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:121
-#: gfwfbn/templates/wfbn/index.html:135
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:127
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:123
+#: gfwfbn/templates/wfbn/index.html:136
 msgid "Email"
 msgstr "Post-d"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:95
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:99
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:101
 msgid "Administrative"
 msgstr "Ver"
 
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:69
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:70
 msgid "You can find out what being to have donated on Facebook:"
 msgstr "Faodaidh tu faighinn a - mach dè a th 'ann an tabhartas air Facebook:"
 
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:72
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:73
 msgid "is currently requesting the following items to be donated:"
 msgstr "tha na duilleagan a leanas a 'ceangal ri Tabhartas:"
 
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:68
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:79
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:80
 msgid "This location accepts donations"
 msgstr "Tha an t - àite seo a 'gabhail ri tabhartasan"
 
@@ -306,7 +288,7 @@ msgstr "Rianachd"
 
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:68
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:70
-#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:163
+#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:165
 msgid "away"
 msgstr "air falbh"
 
@@ -315,7 +297,7 @@ msgid "Here is what the email you'll get looks like..."
 msgstr "Seo mar a gheibh thu an iPhone agad..."
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: gfwfbn/views.py:283
+#: gfwfbn/views.py:301
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -384,19 +366,31 @@ msgstr "A 'mhòr - chuid den t - seachdain seo"
 msgid "Food banks"
 msgstr "Bancaichean bìdh"
 
-#: gfwfbn/templates/wfbn/index.html:127 gfwfbn/templates/wfbn/index.html:167
+#: gfwfbn/templates/wfbn/index.html:128 gfwfbn/templates/wfbn/index.html:170
 msgid "Nothing right now, thanks"
 msgstr "No big deal, thanks"
 
-#: gfwfbn/templates/wfbn/index.html:129 gfwfbn/templates/wfbn/index.html:169
+#: gfwfbn/templates/wfbn/index.html:130 gfwfbn/templates/wfbn/index.html:172
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr ""
 "Duilich. Chan eil fios againn dè a tha a dhìth an seo, cuir fios chun bhanca "
 "bìdh"
 
-#: gfwfbn/templates/wfbn/index.html:162
+#: gfwfbn/templates/wfbn/index.html:164
 msgid "For"
 msgstr ""
+
+#~ msgid "Organisation"
+#~ msgstr "Eagrachadh"
+
+#~ msgid "marker"
+#~ msgstr "momharra"
+
+#~ msgid "Location"
+#~ msgstr "Ionad"
+
+#~ msgid "Donation point"
+#~ msgstr "Puing tabhartais"
 
 #~ msgid "Edit"
 #~ msgstr "Deasaichvector-mode"

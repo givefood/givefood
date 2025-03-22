@@ -207,10 +207,14 @@ class Foodbank(models.Model):
         return json.dumps(self.schema_org(), indent=4, sort_keys=True)
     
     def full_name_en(self):
+        current_language = get_language()
         if self.name in DONT_APPEND_FOOD_BANK:
             return self.name
         else:
-            return "%s %s" % (self.name, _("Food Bank"))
+            if current_language == "cy" or current_language == "gd":
+                return "%s %s" % (_("Food Bank"), self.name)
+            else:
+                return "%s %s" % (self.name, _("Food Bank"))
 
     def full_name(self):
         current_language = get_language()

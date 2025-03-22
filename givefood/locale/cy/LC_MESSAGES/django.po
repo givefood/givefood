@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-01 14:23+0000\n"
-"PO-Revision-Date: 2025-03-01 14:24+0000\n"
+"POT-Creation-Date: 2025-03-22 09:12+0000\n"
+"PO-Revision-Date: 2025-03-22 09:13+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: cy\n"
@@ -19,14 +19,22 @@ msgstr ""
 "3 : n==6 ? 4 : 5);\n"
 "X-Generator: Poedit 3.5\n"
 
+#: givefood/models.py:213
+msgid "Food Bank"
+msgstr "Banc Bwyd"
+
+#: givefood/models.py:919
+msgid "Closed"
+msgstr "Wedi cau"
+
 #: givefood/templates/public/about_us.html:5
-#: givefood/templates/public/about_us.html:21
+#: givefood/templates/public/about_us.html:22
 #: givefood/templates/public/index.html:52
 #: givefood/templates/public/page.html:52
 msgid "About us"
 msgstr "Amdanom ni"
 
-#: givefood/templates/public/about_us.html:23
+#: givefood/templates/public/about_us.html:24
 msgid ""
 "\n"
 "                <p>Give Food is a UK charity that uses data to highlight "
@@ -244,6 +252,24 @@ msgstr "Mae'n ddrwg gennym, ond mae'n rhaid i ni wirio eich bod yn ddyn..."
 msgid "Hello"
 msgstr "Helo"
 
+#: givefood/templates/public/includes/maplegend.html:4
+msgid "Organisation"
+msgstr "Sefydliad"
+
+#: givefood/templates/public/includes/maplegend.html:4
+#: givefood/templates/public/includes/maplegend.html:5
+#: givefood/templates/public/includes/maplegend.html:6
+msgid "marker"
+msgstr "marciwr"
+
+#: givefood/templates/public/includes/maplegend.html:5
+msgid "Location"
+msgstr "Lleoliad"
+
+#: givefood/templates/public/includes/maplegend.html:6
+msgid "Donation point"
+msgstr "Pwynt rhoi"
+
 #: givefood/templates/public/index.html:9
 msgid ""
 "Give Food a UK charity uses data to highlight local and structural food "
@@ -432,15 +458,15 @@ msgstr "Dangosfyrddau"
 msgid "Privacy policy"
 msgstr "Polisi preifatrwydd"
 
-#: givefood/views.py:371
+#: givefood/views.py:381
 msgid "minutes"
 msgstr "munudau"
 
-#: givefood/views.py:372
+#: givefood/views.py:382
 msgid "Under a minute ago"
 msgstr "O dan funud yn ôl"
 
-#: givefood/views.py:374
+#: givefood/views.py:384
 msgid "ago"
 msgstr "yn ôl"
 
