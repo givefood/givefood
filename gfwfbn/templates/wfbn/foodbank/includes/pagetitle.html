@@ -4,8 +4,3 @@
     {% endif %}
     {{ foodbank.full_name }}
 </h1>
-{% if foodbank.alt_name %}
-    {% if language_code == "cy" %}
-        <p class="altname" lang="en">{{ foodbank.full_name_en }}</p>
-    {% endif %}
-{% endif %}
