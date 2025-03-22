@@ -196,6 +196,8 @@ class Foodbank(models.Model):
             schema_dict["sameAs"].append("https://www.google.co.uk/maps/place/%s/" % quote_plus(self.plus_code_global))
         if self.charity_number:
             schema_dict["sameAs"].append(self.charity_register_url())
+        if self.fsa_id:
+            schema_dict["sameAs"].append(self.fsa_url())
         
         if not as_sub_property:
             schema_dict["@context"] = "https://schema.org"
@@ -276,6 +278,12 @@ class Foodbank(models.Model):
                 return "https://register-of-charities.charitycommission.gov.uk/charity-details/?regid=%s&subid=0" % (self.charity_number)
             if self.country == "Isle of Man":
                 return "https://www.gov.im/about-the-government/offices/attorney-generals-chambers/crown-office/charities/index-of-charities-registered-in-the-isle-of-man/"
+
+    def fsa_url(self):
+        if not self.fsa_id:
+            return None
+        else:
+            return "https://ratings.food.gov.uk/business/%s" % self.fsa_id
 
     def network_url(self):
         if self.network == "Trussell":

@@ -116,7 +116,7 @@
         <dt>FSA ID</dt>
         <dd>
           {% if foodbank.fsa_id %}
-            <a href="https://ratings.food.gov.uk/business/{{ foodbank.fsa_id }}">{{ foodbank.fsa_id }}</a>
+            <a href="{{ foodbank.fsa_url }}">{{ foodbank.fsa_id }}</a>
           {% else %}
             None (<a href="https://ratings.food.gov.uk/business-search?address-search={{ foodbank.postcode|urlencode }}" target="_blank">Search</a>)
           {% endif %}
