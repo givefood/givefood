@@ -144,7 +144,7 @@ def rss(request):
     for need in needs:
         items.append({
             "title":"%s items requested at %s" % (need.no_items(), need.foodbank.full_name()),
-            "url":"https://www.givefood.org.uk/needs/at/%s/history/#need-%s" % (need.foodbank.slug, need.need_id),
+            "url":"https://www.givefood.org.uk/needs/at/%s/#need-%s" % (need.foodbank.slug, need.need_id),
             "date":need.created,
             "description":need.change_text,
         })
@@ -379,7 +379,7 @@ def foodbank_rss(request, slug):
     for need in needs:
         items.append({
             "title":"%s items requested at %s" % (need.no_items(), foodbank.full_name()),
-            "url":"https://www.givefood.org.uk/needs/at/%s/history/#need-%s" % (foodbank.slug, need.need_id),
+            "url":"https://www.givefood.org.uk/needs/at/%s/#need-%s" % (foodbank.slug, need.need_id),
             "date":need.created,
             "description":need.clean_change_text()
         })
