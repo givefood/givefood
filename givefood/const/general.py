@@ -173,6 +173,7 @@ OLD_FOODBANK_SLUGS = {
     "kings-centre-honiton":"honiton",
     "helston-lizard":"helston-the-lizard",
     "restore-northampton":"northampton",
+    "wells-vineyard":"wells",
 }
 
 FOODBANK_SUBPAGES = [
