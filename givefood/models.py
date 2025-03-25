@@ -1970,9 +1970,9 @@ class Changelog(models.Model):
     def save(self, *args, **kwargs):
 
         super(Changelog, self).save(*args, **kwargs)
-        decache(reverse("colophon"))
+        decache([reverse("colophon")])
 
     def delete(self, *args, **kwargs):
 
         super(Changelog, self).delete(*args, **kwargs)
-        decache(reverse("colophon"))
+        decache([reverse("colophon")])
