@@ -20,3 +20,4 @@ beautifulsoup4
 google-generativeai
 django-earthdistance
 requirements-parser
+google-cloud-translate

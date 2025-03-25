@@ -1188,23 +1188,12 @@ def htmlbodytext(html):
         return False
 
 
-def get_translation(language, text):
+def get_translation(language, text, source="en"):
 
-    logging.warn("translating %s", (text))
-
-    translation_prompt = render_to_string(
-        "admin/translation_prompt.txt",
-        {
-            "language":language,
-            "text":text,
-        }
-    )
-    translation_response = gemini(
-            prompt = translation_prompt,
-            temperature = 0,
-            response_mime_type = "text/plain",
-    )
-    return translation_response
+    from google.cloud import translate_v2 as translate
+    translate_client = translate.Client()
+    result = translate_client.translate(text, target_language=language, source_language=source, format_="text")
+    return result["translatedText"]
 
 
 def do_foodbank_need_check(foodbank):

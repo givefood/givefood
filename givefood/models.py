@@ -1584,9 +1584,9 @@ class FoodbankChange(models.Model):
             FoodbankChangeTranslation.objects.filter(need = self).delete()
             for language in LANGUAGES:
                 if language[0] != "en":
-                    translated_change = get_translation(language, self.change_text)
+                    translated_change = get_translation(language[0], self.change_text)
                     if self.excess_change_text:
-                        translated_excess = get_translation(language, self.excess_change_text)
+                        translated_excess = get_translation(language[0], self.excess_change_text)
                     else:
                         translated_excess = None
 
