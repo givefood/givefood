@@ -19,7 +19,7 @@ from django.db.models import Sum, Q
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_cred, distance_meters
-from givefood.models import Changelog, Foodbank, FoodbankArticle, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy
+from givefood.models import Changelog, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy
 from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
@@ -696,6 +696,18 @@ def need_notifications(request, id):
         post_to_subscriber(need, subscriber)
 
     return redirect("admin:need", id = need.need_id)
+
+
+def need_translations(request, id):
+    
+    need = get_object_or_404(FoodbankChange, need_id = id)
+    translations = FoodbankChangeTranslation.objects.filter(need = need)
+
+    template_vars = {
+        "need":need,
+        "translations":translations,
+    }
+    return render(request, "admin/need_translations.html", template_vars)
 
 
 def need_email(request, id):

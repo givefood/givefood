@@ -1,0 +1,70 @@
+{% extends "admin/page.html" %}
+
+{% block title %}{{ need }} - GF Admin{% endblock %}
+
+{% block body %}
+
+
+  <div class="columns">
+
+    <div class="column">
+      <dl>
+        <dt>ID</dt>
+        <dd>
+            <a href="{% url 'admin:need' need.need_id%}">
+                {{ need.need_id }}
+            </a>
+        </dd>
+        <dt>Food Bank</dt>
+        <dd>
+          {% if need.foodbank %}
+            <a href="{% url 'admin:foodbank' need.foodbank.slug %}">{{ need.foodbank }}</a>
+          {% else %}
+            Unknown
+          {% endif %}
+        </dd>
+        <dt>Input Method</dt>
+        <dd>
+          {{ need.input_method_emoji }} {{ need.input_method_human }}
+        </dd>
+        <dt>Created</dt>
+        <dd><time datetime="{{ need.created|date:'c' }}" title="{{ need.created }}">{{ need.created|timesince }} ago</time></dd>
+        <dt>Modified</dt>
+        <dd><time datetime="{{ need.modified|date:'c' }}" title="{{ need.modified }}">{{ need.modified|timesince }} ago</time></dd>
+      </dl>
+
+    </div>
+
+    <div class="column is-three-quarters">
+
+        <h2>English</h2>
+        <dl>
+          <dt>Needs</dt>
+          <dd>{{ need.change_text|linebreaksbr  }}</dd><br>
+          <dt>Excess</dt>
+          <dd>{{ need.excess_change_text|linebreaksbr  }}</dd>
+        </dl>
+        
+        <h2>Translations</h2>
+
+        {% for translation in translations %}
+        <h3>{{ translation.language }}</h3>
+        <dl>
+            <dt>Needs</dt>
+            <dd>{{ translation.change_text|linebreaksbr  }}</dd><br>
+            <dt>Excess</dt>
+            <dd>{{ translation.excess_change_text|linebreaksbr  }}</dd>
+        </dl>
+        {% endfor %}
+
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+
+{% block script %}
+  <script src="/static/js/tabber.js" defer></script>
+{% endblock %}

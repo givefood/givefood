@@ -57,6 +57,7 @@ urlpatterns = (
     re_path(r'^need/(?P<id>\b[0-9a-f]{8}\b)/delete/$', need_delete, name="need_delete"),
     re_path(r'^need/(?P<id>\b[0-9a-f]{8}\b)/(?P<action>publish|unpublish)/$', need_publish, name="need_publish"),
     re_path(r'^need/(?P<id>\b[0-9a-f]{8}\b)/notifications/$', need_notifications, name="need_notifications"),
+    re_path(r'^need/(?P<id>\b[0-9a-f]{8}\b)/translations/$', need_translations, name="need_translations"),
     re_path(r'^need/(?P<id>\b[0-9a-f]{8}\b)/email/$', need_email, name="need_email"),
     re_path(r'^need/(?P<id>\b[0-9a-f]{8}\b)/categorise/$', need_categorise, name="need_categorise"),
     re_path(r'^need/(?P<id>\b[0-9a-f]{8}\b)/line/(?P<line_id>\d+)/$', needline_form, name="needline_form"),

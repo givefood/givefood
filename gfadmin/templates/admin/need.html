@@ -112,6 +112,10 @@
           </td>
         </tr>
       </table>
+
+      {% if need.published %}
+        <a href="{% url 'admin:need_translations' need.need_id %}">Translations</a>
+      {% endif %}
       
       <h3>Notification Preview</h3>
       <ul>
