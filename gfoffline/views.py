@@ -290,7 +290,7 @@ def resaver(request):
     #         instance.save()
 
     for foodbank in Foodbank.objects.all():
-        foodbank.save(do_decache=False, do_geoupdate=False)
+        foodbank.latest_need.save(do_foodbank_save=False, do_translate=True)
     # for location in FoodbankLocation.objects.all():
     #     location.save(do_foodbank_resave=False, do_geoupdate=False)
     # for donationpoint in FoodbankDonationPoint.objects.all():
