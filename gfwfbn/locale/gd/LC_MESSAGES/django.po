@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-27 07:57+0000\n"
-"PO-Revision-Date: 2025-02-25 13:03+0000\n"
+"PO-Revision-Date: 2025-03-27 18:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: gd\n"
@@ -308,10 +308,8 @@ msgid "Map of UK food banks"
 msgstr "Bancaichean Biadh Bhreatainn"
 
 #: gfwfbn/templates/wfbn/index.html:34
-#, fuzzy
-#| msgid "What Food Banks Need"
 msgid "Find Food Banks To Help"
-msgstr "Dè na bancaichean bìdh a dh 'fheumas"
+msgstr "Lorg Bancaichean Bidhe airson Cuideachadh"
 
 #: gfwfbn/templates/wfbn/index.html:37 gfwfbn/templates/wfbn/index.html:39
 msgid "food banks"

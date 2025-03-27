@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-27 07:57+0000\n"
-"PO-Revision-Date: 2025-03-27 07:59+0000\n"
+"POT-Creation-Date: 2025-03-27 18:02+0000\n"
+"PO-Revision-Date: 2025-03-27 18:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ur\n"
@@ -69,10 +69,10 @@ msgid ""
 "\n"
 "                <p>Our operations are open source and transparent, with "
 "almost all of our current and historical <a href=\"https://github.com/"
-"givefood/givefood\">code</a>, <a href=\"/api/\">data</a> and <a "
-"href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
-"search/-/charity-details/5147019/accounts-and-annual-returns\">financial "
-"accounts</a> available to view.</p>\n"
+"givefood/givefood\">code</a> and <a href=\"/api/\">data</a> published, plus "
+"<a href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
+"search/-/charity-details/5147019/accounts-and-annual-returns\">accounts</a> "
+"and <a href=\"/annual-reports/\">annual reports</a> available to view.</p>\n"
 "\n"
 "                <p>Please don't hesitate to contact us with any suggestions, "
 "comments, criticism or encouragement.</p>\n"
@@ -80,8 +80,10 @@ msgid ""
 "                <p>\n"
 "                    <em>Give Food Trustees</em>\n"
 "                </p>\n"
-"                <p><a href=\"mailto:mail@givefood.org.uk\">mail@givefood.org."
-"uk</a></p>\n"
+"                <p>\n"
+"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
+"org.uk</a>\n"
+"                </p>\n"
 "\n"
 "            "
 msgstr ""
@@ -111,15 +113,15 @@ msgstr ""
 "ٹول</a> فراہم کرتے ہیں کہ وہ اس کے تدارک کے لیے کیا کارروائی کر رہے ہیں۔</"
 "p><p style=\";text-align:right;direction:rtl\"> ہمارے آپریشنز اوپن سورس اور "
 "شفاف ہیں، ہمارے تقریباً تمام موجودہ اور تاریخی <a href=\"https://github.com/"
-"givefood/givefood\">کوڈ</a> ، <a href=\"/api/\">ڈیٹا</a> اور <a "
-"href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
-"search/-/charity-details/5147019/accounts-and-annual-returns\">مالیاتی "
-"اکاؤنٹس</a> دیکھنے کے لیے دستیاب ہیں۔</p><p style=\";text-align:right;"
-"direction:rtl\"> براہ کرم کسی بھی مشورے، تبصرے، تنقید یا حوصلہ افزائی کے "
-"ساتھ ہم سے رابطہ کرنے میں سنکوچ نہ کریں۔</p><p style=\";text-align:right;"
-"direction:rtl\"> <em>فوڈ ٹرسٹیز دیں۔</em></p><p style=\";text-align:right;"
-"direction:rtl\"> <a href=\"mailto:mail@givefood.org.uk\">mail@givefood.org."
-"uk</a></p>\n"
+"givefood/givefood\">کوڈ</a> اور <a href=\"/api/\">ڈیٹا</a> شائع کیے گئے ہیں، "
+"نیز <a href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
+"search/-/charity-details/5147019/accounts-and-annual-returns\">اکاؤنٹس</a> "
+"اور <a href=\"/annual-reports/\">سالانہ رپورٹیں</a> دیکھنے کے لیے دستیاب ہیں۔"
+"</p><p style=\";text-align:right;direction:rtl\"> براہ کرم کسی بھی مشورے، "
+"تبصرے، تنقید یا حوصلہ افزائی کے ساتھ ہم سے رابطہ کرنے میں سنکوچ نہ کریں۔</"
+"p><p style=\";text-align:right;direction:rtl\"> <em>فوڈ ٹرسٹیز دیں۔</em></"
+"p><p style=\";text-align:right;direction:rtl\"> <a href=\"mailto:"
+"mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
 "\n"
 "            "
 
@@ -254,19 +256,47 @@ msgstr "انسانی جانچ"
 msgid "Sorry, but we just have to check you are a human..."
 msgstr "معذرت، لیکن ہمیں صرف یہ دیکھنا ہے کہ آپ انسان ہیں..."
 
+#: givefood/templates/public/includes/country.html:2
+msgid "England"
+msgstr "انگلینڈ"
+
+#: givefood/templates/public/includes/country.html:3
+msgid "Wales"
+msgstr "ویلز"
+
+#: givefood/templates/public/includes/country.html:4
+msgid "Scotland"
+msgstr "سکاٹ لینڈ"
+
+#: givefood/templates/public/includes/country.html:5
+msgid "Northern Ireland"
+msgstr "شمالی آئرلینڈ"
+
+#: givefood/templates/public/includes/country.html:6
+msgid "Isle of Man"
+msgstr "آئل آف مین"
+
+#: givefood/templates/public/includes/country.html:7
+msgid "Jersey"
+msgstr "جرسی"
+
+#: givefood/templates/public/includes/country.html:8
+msgid "Guernsey"
+msgstr "گرنسی"
+
 #: givefood/templates/public/includes/debugcomment.html:3
 msgid "Hello"
 msgstr "ہیلو"
 
 #: givefood/templates/public/includes/maplegend.html:4
 msgid "Organisation"
-msgstr ""
+msgstr "تنظیم"
 
 #: givefood/templates/public/includes/maplegend.html:4
 #: givefood/templates/public/includes/maplegend.html:5
 #: givefood/templates/public/includes/maplegend.html:6
 msgid "marker"
-msgstr ""
+msgstr "مارکر"
 
 #: givefood/templates/public/includes/maplegend.html:5
 msgid "Location"

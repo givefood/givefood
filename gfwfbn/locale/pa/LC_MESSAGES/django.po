@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-27 07:57+0000\n"
-"PO-Revision-Date: 2025-02-26 16:05+0000\n"
+"PO-Revision-Date: 2025-03-27 18:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pa\n"
@@ -27,12 +27,9 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:48
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:46
 #: gfwfbn/templates/wfbn/foodbank/location_withneed.html:45
-#: gfwfbn/templates/wfbn/foodbank/locations.html:42
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:42
-#: gfwfbn/templates/wfbn/foodbank/news.html:42
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:41
-#: gfwfbn/templates/wfbn/foodbank/subscribe.html:48
-#: gfwfbn/templates/wfbn/foodbank/updates.html:41
+#: gfwfbn/templates/wfbn/foodbank/locations.html:42 gfwfbn/templates/wfbn/foodbank/nearby.html:42
+#: gfwfbn/templates/wfbn/foodbank/news.html:42 gfwfbn/templates/wfbn/foodbank/socialmedia.html:41
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:48 gfwfbn/templates/wfbn/foodbank/updates.html:41
 msgid "Home"
 msgstr "ਮੁੱਖ"
 
@@ -44,12 +41,9 @@ msgstr "ਮੁੱਖ"
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:49
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:47
 #: gfwfbn/templates/wfbn/foodbank/location_withneed.html:46
-#: gfwfbn/templates/wfbn/foodbank/locations.html:43
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:43
-#: gfwfbn/templates/wfbn/foodbank/news.html:43
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:42
-#: gfwfbn/templates/wfbn/foodbank/subscribe.html:49
-#: gfwfbn/templates/wfbn/foodbank/updates.html:42
+#: gfwfbn/templates/wfbn/foodbank/locations.html:43 gfwfbn/templates/wfbn/foodbank/nearby.html:43
+#: gfwfbn/templates/wfbn/foodbank/news.html:43 gfwfbn/templates/wfbn/foodbank/socialmedia.html:42
+#: gfwfbn/templates/wfbn/foodbank/subscribe.html:49 gfwfbn/templates/wfbn/foodbank/updates.html:42
 #: gfwfbn/templates/wfbn/index.html:10
 msgid "What Food Banks Need"
 msgstr "ਫੂਡ ਬੈਂਕਾਂ ਨੂੰ ਕੀ ਚਾਹੀਦਾ ਹੈ"
@@ -61,10 +55,8 @@ msgstr "ਸੰਸਦੀ ਹਲਕੇ"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:44
 msgid ""
-"Find which food banks operate in your parliamentary constituency, then "
-"donate or take action."
-msgstr ""
-"ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਸੰਸਦੀ ਹਲਕੇ ਵਿੱਚ ਕਿਹੜੇ ਫੂਡ ਬੈਂਕ ਕੰਮ ਕਰਦੇ ਹਨ, ਫਿਰ ਦਾਨ ਕਰੋ ਜਾਂ ਕਾਰਵਾਈ ਕਰੋ।"
+"Find which food banks operate in your parliamentary constituency, then donate or take action."
+msgstr "ਪਤਾ ਕਰੋ ਕਿ ਤੁਹਾਡੇ ਸੰਸਦੀ ਹਲਕੇ ਵਿੱਚ ਕਿਹੜੇ ਫੂਡ ਬੈਂਕ ਕੰਮ ਕਰਦੇ ਹਨ, ਫਿਰ ਦਾਨ ਕਰੋ ਜਾਂ ਕਾਰਵਾਈ ਕਰੋ।"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:48
 msgid "Sorry, we didn't recognise this postcode. Could you try again?"
@@ -74,8 +66,7 @@ msgstr "ਮਾਫ਼ ਕਰਨਾ, ਅਸੀਂ ਇਸ ਪੋਸਟਕੋਡ ਨ
 msgid "Search by postcode"
 msgstr "ਪੋਸਟਕੋਡ ਦੁਆਰਾ ਖੋਜ ਕਰੋ"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:54
-#: gfwfbn/templates/wfbn/index.html:65
+#: gfwfbn/templates/wfbn/constituency/index.html:54 gfwfbn/templates/wfbn/index.html:65
 msgid "Go"
 msgstr "ਜਾਓ"
 
@@ -83,8 +74,7 @@ msgstr "ਜਾਓ"
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:24
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:45
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:49
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
-#: gfwfbn/templates/wfbn/index.html:107
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9 gfwfbn/templates/wfbn/index.html:107
 msgid "Donation points"
 msgstr "ਦਾਨ ਬਿੰਦੂ"
 
@@ -123,12 +113,8 @@ msgid "Only accepts in-store purchases as donations"
 msgstr "ਸਿਰਫ਼ ਸਟੋਰ ਵਿੱਚ ਖਰੀਦਦਾਰੀ ਨੂੰ ਦਾਨ ਵਜੋਂ ਸਵੀਕਾਰ ਕੀਤਾ ਜਾਂਦਾ ਹੈ"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:106
-msgid ""
-"Although, sometimes you can add items marked as not from the store. Best to "
-"check."
-msgstr ""
-"ਹਾਲਾਂਕਿ, ਕਈ ਵਾਰ ਤੁਸੀਂ ਸਟੋਰ ਤੋਂ ਨਹੀਂ ਵਜੋਂ ਚਿੰਨ੍ਹਿਤ ਚੀਜ਼ਾਂ ਸ਼ਾਮਲ ਕਰ ਸਕਦੇ ਹੋ। ਜਾਂਚ ਕਰਨਾ ਸਭ ਤੋਂ "
-"ਵਧੀਆ ਹੈ।"
+msgid "Although, sometimes you can add items marked as not from the store. Best to check."
+msgstr "ਹਾਲਾਂਕਿ, ਕਈ ਵਾਰ ਤੁਸੀਂ ਸਟੋਰ ਤੋਂ ਨਹੀਂ ਵਜੋਂ ਚਿੰਨ੍ਹਿਤ ਚੀਜ਼ਾਂ ਸ਼ਾਮਲ ਕਰ ਸਕਦੇ ਹੋ। ਜਾਂਚ ਕਰਨਾ ਸਭ ਤੋਂ ਵਧੀਆ ਹੈ।"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:111
 msgid "Wheelchair accessible"
@@ -209,8 +195,7 @@ msgid "Locations"
 msgstr "ਸਥਾਨ"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
-#: gfwfbn/templates/wfbn/foodbank/news.html:24
-#: gfwfbn/templates/wfbn/foodbank/news.html:45
+#: gfwfbn/templates/wfbn/foodbank/news.html:24 gfwfbn/templates/wfbn/foodbank/news.html:45
 #: gfwfbn/templates/wfbn/foodbank/news.html:49
 msgid "News"
 msgstr "ਖ਼ਬਰਾਂ"
@@ -223,8 +208,7 @@ msgid "Social media"
 msgstr "ਸੋਸ਼ਲ ਮੀਡੀਆ"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:17
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:24
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:45
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:24 gfwfbn/templates/wfbn/foodbank/nearby.html:45
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:49
 msgid "Nearby"
 msgstr "ਨੇੜੇ"
@@ -234,12 +218,8 @@ msgid "Email address"
 msgstr "ਈਮੇਲ ਪਤਾ"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:13
-msgid ""
-"We'll never use your email address for anything else, and you can "
-"unsubscribe at any time."
-msgstr ""
-"ਅਸੀਂ ਤੁਹਾਡੇ ਈਮੇਲ ਪਤੇ ਦੀ ਵਰਤੋਂ ਕਦੇ ਵੀ ਕਿਸੇ ਹੋਰ ਚੀਜ਼ ਲਈ ਨਹੀਂ ਕਰਾਂਗੇ, ਅਤੇ ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਗਾਹਕੀ "
-"ਰੱਦ ਕਰ ਸਕਦੇ ਹੋ।"
+msgid "We'll never use your email address for anything else, and you can unsubscribe at any time."
+msgstr "ਅਸੀਂ ਤੁਹਾਡੇ ਈਮੇਲ ਪਤੇ ਦੀ ਵਰਤੋਂ ਕਦੇ ਵੀ ਕਿਸੇ ਹੋਰ ਚੀਜ਼ ਲਈ ਨਹੀਂ ਕਰਾਂਗੇ, ਅਤੇ ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਸਮੇਂ ਗਾਹਕੀ ਰੱਦ ਕਰ ਸਕਦੇ ਹੋ।"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:70
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
@@ -248,15 +228,13 @@ msgstr "ਵੈੱਬਸਾਈਟ"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:72
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:125
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:121
-#: gfwfbn/templates/wfbn/index.html:133
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:121 gfwfbn/templates/wfbn/index.html:133
 msgid "Phone"
 msgstr "ਫ਼ੋਨ"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:74
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:127
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:123
-#: gfwfbn/templates/wfbn/index.html:136
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:123 gfwfbn/templates/wfbn/index.html:136
 msgid "Email"
 msgstr "ਈਮੇਲ"
 
@@ -282,8 +260,7 @@ msgstr "ਇਹ ਸਥਾਨ ਦਾਨ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ"
 msgid "Administration"
 msgstr "ਪ੍ਰਸ਼ਾਸਨ"
 
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:68
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:70
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:68 gfwfbn/templates/wfbn/foodbank/nearby.html:70
 #: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:165
 msgid "away"
 msgstr "ਦੂਰ"
@@ -292,14 +269,9 @@ msgstr "ਦੂਰ"
 msgid "Here is what the email you'll get looks like..."
 msgstr "ਤੁਹਾਨੂੰ ਮਿਲਣ ਵਾਲੀ ਈਮੇਲ ਇਸ ਤਰ੍ਹਾਂ ਦੀ ਦਿਖਾਈ ਦੇਵੇਗੀ..."
 
-#: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: gfwfbn/views.py:301
-msgid ""
-"Use Give Food's tool to find what food banks near you are requesting to have "
-"donated"
-msgstr ""
-"ਤੁਹਾਡੇ ਨੇੜੇ ਦੇ ਕਿਹੜੇ ਫੂਡ ਬੈਂਕ ਦਾਨ ਕਰਨ ਲਈ ਬੇਨਤੀ ਕਰ ਰਹੇ ਹਨ, ਇਹ ਪਤਾ ਲਗਾਉਣ ਲਈ Give Food ਦੇ "
-"ਟੂਲ ਦੀ ਵਰਤੋਂ ਕਰੋ।"
+#: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12 gfwfbn/views.py:301
+msgid "Use Give Food's tool to find what food banks near you are requesting to have donated"
+msgstr "ਤੁਹਾਡੇ ਨੇੜੇ ਦੇ ਕਿਹੜੇ ਫੂਡ ਬੈਂਕ ਦਾਨ ਕਰਨ ਲਈ ਬੇਨਤੀ ਕਰ ਰਹੇ ਹਨ, ਇਹ ਪਤਾ ਲਗਾਉਣ ਲਈ Give Food ਦੇ ਟੂਲ ਦੀ ਵਰਤੋਂ ਕਰੋ।"
 
 #: gfwfbn/templates/wfbn/index.html:14
 msgid "Map of UK food banks"
@@ -317,11 +289,9 @@ msgstr "ਫੂਡ ਬੈਂਕ"
 
 #: gfwfbn/templates/wfbn/index.html:57
 msgid ""
-"Find a food bank near you, see what they need and how you can help by "
-"donating or volunteering."
+"Find a food bank near you, see what they need and how you can help by donating or volunteering."
 msgstr ""
-"ਆਪਣੇ ਨੇੜੇ ਇੱਕ ਫੂਡ ਬੈਂਕ ਲੱਭੋ, ਦੇਖੋ ਕਿ ਉਹਨਾਂ ਨੂੰ ਕੀ ਚਾਹੀਦਾ ਹੈ ਅਤੇ ਤੁਸੀਂ ਦਾਨ ਕਰਕੇ ਜਾਂ ਸਵੈ-ਇੱਛਾ ਨਾਲ "
-"ਕਿਵੇਂ ਮਦਦ ਕਰ ਸਕਦੇ ਹੋ।"
+"ਆਪਣੇ ਨੇੜੇ ਇੱਕ ਫੂਡ ਬੈਂਕ ਲੱਭੋ, ਦੇਖੋ ਕਿ ਉਹਨਾਂ ਨੂੰ ਕੀ ਚਾਹੀਦਾ ਹੈ ਅਤੇ ਤੁਸੀਂ ਦਾਨ ਕਰਕੇ ਜਾਂ ਸਵੈ-ਇੱਛਾ ਨਾਲ ਕਿਵੇਂ ਮਦਦ ਕਰ ਸਕਦੇ ਹੋ।"
 
 #: gfwfbn/templates/wfbn/index.html:60
 msgid "Use my location"

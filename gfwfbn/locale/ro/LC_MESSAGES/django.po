@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-27 07:57+0000\n"
-"PO-Revision-Date: 2025-02-27 19:23+0000\n"
+"PO-Revision-Date: 2025-03-27 18:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ro\n"
@@ -309,10 +309,8 @@ msgid "Map of UK food banks"
 msgstr "Harta băncilor alimentare din Marea Britanie"
 
 #: gfwfbn/templates/wfbn/index.html:34
-#, fuzzy
-#| msgid "What Food Banks Need"
 msgid "Find Food Banks To Help"
-msgstr "De ce au nevoie băncile alimentare"
+msgstr "Găsiți bănci alimentare pentru a vă ajuta"
 
 #: gfwfbn/templates/wfbn/index.html:37 gfwfbn/templates/wfbn/index.html:39
 msgid "food banks"
