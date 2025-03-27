@@ -99,7 +99,7 @@
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
               {{ foodbank.postcode }}<br>
-              {{ foodbank.country }}
+              {% include "public/includes/country.html" with country=foodbank.country%}
             </address>
             <div class="pluscode">
               <img src="/static/img/pluscode.svg" alt="Plus Code" class="contact-icon"> <a href="https://www.google.co.uk/maps/place/{{ foodbank.plus_code_global|urlencode }}/">{{ foodbank.plus_code_global }}</a>
