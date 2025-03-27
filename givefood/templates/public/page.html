@@ -18,7 +18,7 @@
   {% block head %}{% endblock %}
   <title>{% block title %}{% endblock %}</title>
 </head>
-<body>
+<body data-instant-allow-query-string data-instant-allow-external-links>
   <div class="container{% block container_class %}{% endblock %}">
     {% block body %}{% endblock %}
   </div>
