@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-22 09:12+0000\n"
+"POT-Creation-Date: 2025-03-27 07:57+0000\n"
 "PO-Revision-Date: 2025-02-25 13:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -310,8 +310,10 @@ msgid "Map of UK food banks"
 msgstr "Map o fanciau bwyd y DU"
 
 #: gfwfbn/templates/wfbn/index.html:34
-msgid "Find a food bank & see what they need"
-msgstr "Dewch o hyd i fanc bwyd a gweld beth sydd ei angen arnynt"
+#, fuzzy
+#| msgid "What Food Banks Need"
+msgid "Find Food Banks To Help"
+msgstr "Beth sydd ei angen ar Fanciau Bwyd"
 
 #: gfwfbn/templates/wfbn/index.html:37 gfwfbn/templates/wfbn/index.html:39
 msgid "food banks"
@@ -380,6 +382,9 @@ msgstr ""
 #: gfwfbn/templates/wfbn/index.html:164
 msgid "For"
 msgstr "Canys"
+
+#~ msgid "Find a food bank & see what they need"
+#~ msgstr "Dewch o hyd i fanc bwyd a gweld beth sydd ei angen arnynt"
 
 #~ msgid "Organisation"
 #~ msgstr "Sefydliad"

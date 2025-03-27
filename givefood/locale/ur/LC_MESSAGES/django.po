@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-01 14:27+0000\n"
-"PO-Revision-Date: 2025-03-01 14:28+0000\n"
+"POT-Creation-Date: 2025-03-27 07:57+0000\n"
+"PO-Revision-Date: 2025-03-27 07:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ur\n"
@@ -19,14 +19,22 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.5\n"
 
+#: givefood/models.py:217 givefood/models.py:219
+msgid "Food Bank"
+msgstr "فوڈ بینک"
+
+#: givefood/models.py:931
+msgid "Closed"
+msgstr ""
+
 #: givefood/templates/public/about_us.html:5
-#: givefood/templates/public/about_us.html:21
+#: givefood/templates/public/about_us.html:22
 #: givefood/templates/public/index.html:52
 #: givefood/templates/public/page.html:52
 msgid "About us"
 msgstr "ہمارے بارے میں"
 
-#: givefood/templates/public/about_us.html:23
+#: givefood/templates/public/about_us.html:24
 msgid ""
 "\n"
 "                <p>Give Food is a UK charity that uses data to highlight "
@@ -250,6 +258,24 @@ msgstr "معذرت، لیکن ہمیں صرف یہ دیکھنا ہے کہ آپ �
 msgid "Hello"
 msgstr "ہیلو"
 
+#: givefood/templates/public/includes/maplegend.html:4
+msgid "Organisation"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:4
+#: givefood/templates/public/includes/maplegend.html:5
+#: givefood/templates/public/includes/maplegend.html:6
+msgid "marker"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:5
+msgid "Location"
+msgstr "مقام"
+
+#: givefood/templates/public/includes/maplegend.html:6
+msgid "Donation point"
+msgstr "عطیہ پوائنٹ"
+
 #: givefood/templates/public/index.html:9
 msgid ""
 "Give Food a UK charity uses data to highlight local and structural food "
@@ -440,15 +466,15 @@ msgstr "ڈیش بورڈز"
 msgid "Privacy policy"
 msgstr "رازداری کی پالیسی"
 
-#: givefood/views.py:371
+#: givefood/views.py:381
 msgid "minutes"
 msgstr "منٹ"
 
-#: givefood/views.py:372
+#: givefood/views.py:382
 msgid "Under a minute ago"
 msgstr "ایک منٹ پہلے"
 
-#: givefood/views.py:374
+#: givefood/views.py:384
 msgid "ago"
 msgstr "پہلے"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-26 16:33+0000\n"
+"POT-Creation-Date: 2025-03-27 07:57+0000\n"
 "PO-Revision-Date: 2025-02-26 16:43+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -106,25 +106,25 @@ msgstr "کے لئے ایک عطیہ نقطہ ہے"
 msgid "Here they are requesting to have donated..."
 msgstr "یہاں وہ عطیہ کرنے کی درخواست کر رہے ہیں..."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:76
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:77
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:75
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:77
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:78
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:76
 msgid "They don't need any more"
 msgstr "انہیں مزید ضرورت نہیں ہے۔"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:84
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:85
 msgid "Opening hours"
 msgstr "کھلنے کے اوقات"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:90
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
 msgid "Hours may vary because of"
 msgstr "کی وجہ سے گھنٹے مختلف ہو سکتے ہیں۔"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:100
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:105
 msgid "Only accepts in-store purchases as donations"
 msgstr "صرف ان اسٹور خریداریوں کو بطور عطیہ قبول کرتا ہے۔"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:101
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:106
 msgid ""
 "Although, sometimes you can add items marked as not from the store. Best to "
 "check."
@@ -132,17 +132,17 @@ msgstr ""
 "اگرچہ، بعض اوقات آپ اسٹور سے نشان زدہ آئٹمز شامل کر سکتے ہیں۔ چیک کرنا "
 "بہترین ہے۔"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:106
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:111
 msgid "Wheelchair accessible"
 msgstr "وہیل چیئر قابل رسائی"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:124
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:129
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:97
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:110
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:101
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:114
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:103
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:116
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:96
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:100
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:102
 msgid "Directions"
 msgstr "ہدایات"
 
@@ -153,9 +153,9 @@ msgstr "مین"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:74
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:109
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:113
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:115
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:106
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:110
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:112
 #: gfwfbn/templates/wfbn/foodbank/locations.html:78
 msgid "Delivery"
 msgstr "ڈیلیوری"
@@ -198,24 +198,6 @@ msgstr "اپ ڈیٹس حاصل کریں۔"
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:4
 msgid "Get an email when items are needed"
 msgstr "جب اشیاء کی ضرورت ہو تو ای میل حاصل کریں۔"
-
-#: gfwfbn/templates/public/includes/maplegend.html:4
-msgid "Organisation"
-msgstr "تنظیم"
-
-#: gfwfbn/templates/public/includes/maplegend.html:4
-#: gfwfbn/templates/public/includes/maplegend.html:5
-#: gfwfbn/templates/public/includes/maplegend.html:6
-msgid "marker"
-msgstr "مارکر"
-
-#: gfwfbn/templates/public/includes/maplegend.html:5
-msgid "Location"
-msgstr "مقام"
-
-#: gfwfbn/templates/public/includes/maplegend.html:6
-msgid "Donation point"
-msgstr "عطیہ پوائنٹ"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
 msgid "Details"
@@ -262,39 +244,39 @@ msgstr ""
 "کسی بھی وقت ان سبسکرائب کر سکتے ہیں۔"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:70
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:121
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
 msgid "Website"
 msgstr "ویب سائٹ"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:72
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:119
-#: gfwfbn/templates/wfbn/index.html:132
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:125
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:121
+#: gfwfbn/templates/wfbn/index.html:133
 msgid "Phone"
 msgstr "فون"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:74
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:125
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:121
-#: gfwfbn/templates/wfbn/index.html:135
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:127
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:123
+#: gfwfbn/templates/wfbn/index.html:136
 msgid "Email"
 msgstr "ای میل"
 
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:95
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:99
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:101
 msgid "Administrative"
 msgstr "انتظامی"
 
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:69
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:70
 msgid "You can find out what being to have donated on Facebook:"
 msgstr "آپ فیس بک پر جان سکتے ہیں کہ کیا عطیہ کرنا ہے:"
 
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:72
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:73
 msgid "is currently requesting the following items to be donated:"
 msgstr "فی الحال درج ذیل اشیاء کو عطیہ کرنے کی درخواست کر رہا ہے:"
 
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:68
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:79
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:80
 msgid "This location accepts donations"
 msgstr "یہ مقام عطیات قبول کرتا ہے۔"
 
@@ -304,7 +286,7 @@ msgstr "انتظامیہ"
 
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:68
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:70
-#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:163
+#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:165
 msgid "away"
 msgstr "دور"
 
@@ -313,7 +295,7 @@ msgid "Here is what the email you'll get looks like..."
 msgstr "یہ ہے جو ای میل آپ کو ملے گا وہ کیسا لگتا ہے..."
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: gfwfbn/views.py:283
+#: gfwfbn/views.py:301
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -326,8 +308,10 @@ msgid "Map of UK food banks"
 msgstr "برطانیہ کے فوڈ بینکوں کا نقشہ"
 
 #: gfwfbn/templates/wfbn/index.html:34
-msgid "Find a food bank & see what they need"
-msgstr "فوڈ بینک تلاش کریں اور دیکھیں کہ انہیں کیا ضرورت ہے۔"
+#, fuzzy
+#| msgid "What Food Banks Need"
+msgid "Find Food Banks To Help"
+msgstr "فوڈ بینکوں کو کیا ضرورت ہے۔"
 
 #: gfwfbn/templates/wfbn/index.html:37 gfwfbn/templates/wfbn/index.html:39
 msgid "food banks"
@@ -381,16 +365,31 @@ msgstr "اس ہفتے سب سے زیادہ دیکھا گیا۔"
 msgid "Food banks"
 msgstr "فوڈ بینکس"
 
-#: gfwfbn/templates/wfbn/index.html:127 gfwfbn/templates/wfbn/index.html:167
+#: gfwfbn/templates/wfbn/index.html:128 gfwfbn/templates/wfbn/index.html:170
 msgid "Nothing right now, thanks"
 msgstr "ابھی کچھ نہیں، شکریہ"
 
-#: gfwfbn/templates/wfbn/index.html:129 gfwfbn/templates/wfbn/index.html:169
+#: gfwfbn/templates/wfbn/index.html:130 gfwfbn/templates/wfbn/index.html:172
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr ""
 "معذرت ہمیں نہیں معلوم کہ یہاں کس چیز کی ضرورت ہے، براہ کرم فوڈ بینک سے رابطہ "
 "کریں۔"
 
-#: gfwfbn/templates/wfbn/index.html:162
+#: gfwfbn/templates/wfbn/index.html:164
 msgid "For"
 msgstr "کے لیے"
+
+#~ msgid "Organisation"
+#~ msgstr "تنظیم"
+
+#~ msgid "marker"
+#~ msgstr "مارکر"
+
+#~ msgid "Location"
+#~ msgstr "مقام"
+
+#~ msgid "Donation point"
+#~ msgstr "عطیہ پوائنٹ"
+
+#~ msgid "Find a food bank & see what they need"
+#~ msgstr "فوڈ بینک تلاش کریں اور دیکھیں کہ انہیں کیا ضرورت ہے۔"

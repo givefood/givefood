@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-01 14:27+0000\n"
-"PO-Revision-Date: 2025-03-01 14:27+0000\n"
+"POT-Creation-Date: 2025-03-27 07:57+0000\n"
+"PO-Revision-Date: 2025-03-27 07:59+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pa\n"
@@ -19,12 +19,20 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.5\n"
 
-#: givefood/templates/public/about_us.html:5 givefood/templates/public/about_us.html:21
+#: givefood/models.py:217 givefood/models.py:219
+msgid "Food Bank"
+msgstr "ਫੂਡ ਬੈਂਕ"
+
+#: givefood/models.py:931
+msgid "Closed"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:5 givefood/templates/public/about_us.html:22
 #: givefood/templates/public/index.html:52 givefood/templates/public/page.html:52
 msgid "About us"
 msgstr "ਸਾਡੇ ਬਾਰੇ"
 
-#: givefood/templates/public/about_us.html:23
+#: givefood/templates/public/about_us.html:24
 msgid ""
 "\n"
 "                <p>Give Food is a UK charity that uses data to highlight local and structural food "
@@ -211,6 +219,24 @@ msgstr "ਮਾਫ਼ ਕਰਨਾ, ਪਰ ਸਾਨੂੰ ਸਿਰਫ਼ ਇਹ
 msgid "Hello"
 msgstr "ਸਤ ਸ੍ਰੀ ਅਕਾਲ"
 
+#: givefood/templates/public/includes/maplegend.html:4
+msgid "Organisation"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:4
+#: givefood/templates/public/includes/maplegend.html:5
+#: givefood/templates/public/includes/maplegend.html:6
+msgid "marker"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:5
+msgid "Location"
+msgstr "ਟਿਕਾਣਾ"
+
+#: givefood/templates/public/includes/maplegend.html:6
+msgid "Donation point"
+msgstr "ਦਾਨ ਬਿੰਦੂ"
+
 #: givefood/templates/public/index.html:9
 msgid ""
 "Give Food a UK charity uses data to highlight local and structural food insecurity then provides "
@@ -383,15 +409,15 @@ msgstr "ਡੈਸ਼ਬੋਰਡ"
 msgid "Privacy policy"
 msgstr "ਪਰਾਈਵੇਟ ਨੀਤੀ"
 
-#: givefood/views.py:371
+#: givefood/views.py:381
 msgid "minutes"
 msgstr "ਮਿੰਟ"
 
-#: givefood/views.py:372
+#: givefood/views.py:382
 msgid "Under a minute ago"
 msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਸਮਾਂ ਪਹਿਲਾਂ"
 
-#: givefood/views.py:374
+#: givefood/views.py:384
 msgid "ago"
 msgstr "ਪਹਿਲਾਂ"
 
