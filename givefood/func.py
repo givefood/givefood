@@ -1007,9 +1007,12 @@ def make_friendly_phone(phone):
 
 
 def make_full_phone(phone):
-    if phone.startswith("0"):
-        phone = "+44%s" % (phone[1:])
-    return phone
+    if phone:
+        if phone.startswith("0"):
+            phone = "+44%s" % (phone[1:])
+        return phone
+    else:
+        return phone
 
 
 def get_cred(cred_name):
