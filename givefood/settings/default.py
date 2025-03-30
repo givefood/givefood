@@ -159,6 +159,10 @@ LANGUAGES = [
     ("ur", "اردو"),
 ]
 
+LOCALE_PATHS = (
+    os.path.abspath(os.path.join(BASE_DIR, "locale")),
+)
+
 
 
 # Static files (CSS, JavaScript, Images)
