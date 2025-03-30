@@ -157,6 +157,9 @@ LANGUAGES = [
     ("ro", "Română"),
     ("pa", "ਪੰਜਾਬੀ"),
     ("ur", "اردو"),
+    ("pt", "Português"),
+    ("es", "Español"),
+    ("ar", "العربية"),
 ]
 
 LOCALE_PATHS = (
