@@ -1584,7 +1584,7 @@ class FoodbankChange(models.Model):
             for language in LANGUAGES:
                 language_code = language[0]
                 if language_code != "en":
-                    translate_need(self, language_code)
+                    translate_need(language_code, self)
     
     def delete(self, *args, **kwargs):
 
