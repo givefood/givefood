@@ -1199,6 +1199,27 @@ def get_translation(language, text, source="en"):
     return result["translatedText"]
 
 
+def translate_need(language, need):
+
+    from givefood.models import FoodbankChangeTranslation
+
+    FoodbankChangeTranslation.objects.filter(need = need, language = language).delete()
+    translated_change = get_translation(language, need.change_text)
+    if need.excess_change_text:
+        translated_excess = get_translation(language, need.excess_change_text)
+    else:
+        translated_excess = None
+
+    translated_need = FoodbankChangeTranslation(
+        need = need,
+        language = language,
+        change_text = translated_change,
+        excess_change_text = translated_excess,
+    )
+    translated_need.save()
+    return translated_need
+
+
 def do_foodbank_need_check(foodbank):
 
     from givefood.models import FoodbankChange, FoodbankDiscrepancy
