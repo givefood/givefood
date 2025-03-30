@@ -13,7 +13,7 @@ from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, clean_foodbank_need_text, decache, do_foodbank_need_check, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison
+from givefood.func import chatgpt, clean_foodbank_need_text, decache, do_foodbank_need_check, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison, translate_need
 from django.template.loader import render_to_string
 
 
@@ -289,8 +289,10 @@ def resaver(request):
     #         logging.info("Resaving %s %s" % (model, instance))
     #         instance.save()
 
+    languages_to_translate = ["pt", "es", "ar"]
     for foodbank in Foodbank.objects.all():
-        foodbank.latest_need.save(do_foodbank_save=False, do_translate=True)
+        for language in languages_to_translate:
+            translated_need = translate_need(language, foodbank.latest_need)
     # for location in FoodbankLocation.objects.all():
     #     location.save(do_foodbank_resave=False, do_geoupdate=False)
     # for donationpoint in FoodbankDonationPoint.objects.all():
