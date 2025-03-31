@@ -174,6 +174,7 @@ OLD_FOODBANK_SLUGS = {
     "helston-lizard":"helston-the-lizard",
     "restore-northampton":"northampton",
     "wells-vineyard":"wells",
+    "lambeth-south-croydon":"lambeth-croydon",
 }
 
 FOODBANK_SUBPAGES = [
