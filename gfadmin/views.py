@@ -451,8 +451,8 @@ def foodbank_resave(request, slug):
         donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
     for need in FoodbankChange.objects.filter(foodbank = foodbank):
         need.save(do_translate=False, do_foodbank_save=False)
-    for order in Order.objects.filter(foodbank = foodbank):
-        order.save(do_foodbank_save=False)
+    # for order in Order.objects.filter(foodbank = foodbank):
+    #     order.save(do_foodbank_save=False)
     for subscriber in FoodbankSubscriber.objects.filter(foodbank = foodbank):
         subscriber.save()
     
