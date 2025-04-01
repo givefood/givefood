@@ -176,6 +176,7 @@ OLD_FOODBANK_SLUGS = {
     "wells-vineyard":"wells",
     "lambeth-south-croydon":"lambeth-croydon",
     "ivybridge":"ivybridge-district",
+    "waterloo":"lambeth-croydon",
 }
 
 FOODBANK_SUBPAGES = [
