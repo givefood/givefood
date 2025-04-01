@@ -760,7 +760,7 @@ def need_categorise(request, id):
                     need_line.save()
 
         need.is_categorised = True
-        need.save()
+        need.save(do_foodbank_save = False)
 
         return redirect("admin:need", id = need.need_id)
     
