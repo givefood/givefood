@@ -83,16 +83,44 @@ def get_all_constituencies():
     return all_parlcon
 
 
-def decache(urls):
+def decache(urls = None, prefixes = None):
+
+    domain = "www.givefood.org.uk"
+
+    cf_zone_id = get_cred("cf_zone_id")
+    cf_api_key = get_cred("cf_api_key")
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer %s" % (cf_api_key),
+    }
+    api_url = "https://api.cloudflare.com/client/v4/zones/%s/purge_cache" % (cf_zone_id)
+
+    full_prefixes = []
+    for prefix in prefixes:
+        full_prefixes.append("%s%s" % (domain, prefix))
+
+    logging.warn("Decaching %s prefixes" % (len(prefixes)))
+    logging.warn(prefixes)
+
+    requests.post(api_url, headers = headers, json = {
+        "prefixes": full_prefixes,
+    })
     
+    full_urls = []
+    for url in urls:
+        full_urls.append("%s%s%s" % ("https://", domain, url))
+
+    logging.warn("Decaching %s URLs" % (len(urls)))
+    logging.warn(urls)
+
     # We can only uncache 30 URLs at a time
     url_limit = 30
-    url_lists = [urls[x:x+url_limit] for x in range(0, len(urls), url_limit)]
+    url_lists = [full_urls[x:x+url_limit] for x in range(0, len(full_urls), url_limit)]
 
     for urls in url_lists:
-        url_params = "&url=".join(urls)
-        remote_cache_purge_url = "http://www.givefood.org.uk/purgecache/?url=%s" % (url_params)
-        request = requests.get(remote_cache_purge_url)
+        requests.post(api_url, headers = headers, json = {
+            "files": urls,
+        })
     cache.clear()
     return True
 

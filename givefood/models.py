@@ -513,27 +513,20 @@ class Foodbank(models.Model):
         super(Foodbank, self).save(*args, **kwargs)
 
         if do_decache:
+
+            # FB URLs
+            foodbank_prefix = reverse("wfbn:foodbank", kwargs={"slug":self.slug})
+            prefixes = []
+            for language in LANGUAGES:
+                prefixes.append(translate_url(foodbank_prefix, language[0]))
+
+            # Individual URLs
             page_urls = [
                 reverse("wfbn:index"),
                 reverse("wfbn:rss"),
                 reverse("wfbn:geojson"),
-                
-                reverse("wfbn:foodbank", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_rss", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_geojson", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_locations", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_donationpoints", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_socialmedia", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_nearby", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_news", kwargs={"slug":self.slug}),
-                reverse("wfbn:foodbank_subscribe", kwargs={"slug":self.slug}),
                 reverse("api_foodbanks"),
             ]
-
-            for location in self.locations():
-                page_urls.append(reverse("wfbn:foodbank_location", kwargs={"slug":self.slug, "locslug":location.slug}))
-            for donationpoint in self.donation_points():
-                page_urls.append(reverse("wfbn:foodbank_donationpoint", kwargs={"slug":self.slug, "dpslug":donationpoint.slug}))
 
             translated_urls = []
             for url in page_urls:
@@ -564,8 +557,8 @@ class Foodbank(models.Model):
                 "%s?format=geojson" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
             ]
 
-            urls = page_urls + translated_urls + api_urls
-            decache(urls)
+            urls = translated_urls + api_urls
+            decache(urls, prefixes)
 
 
 class FoodbankLocation(models.Model):
