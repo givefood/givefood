@@ -99,9 +99,6 @@ def decache(urls = None, prefixes = None):
     for prefix in prefixes:
         full_prefixes.append("%s%s" % (domain, prefix))
 
-    logging.warn("Decaching %s prefixes" % (len(prefixes)))
-    logging.warn(prefixes)
-
     requests.post(api_url, headers = headers, json = {
         "prefixes": full_prefixes,
     })
@@ -109,9 +106,6 @@ def decache(urls = None, prefixes = None):
     full_urls = []
     for url in urls:
         full_urls.append("%s%s%s" % ("https://", domain, url))
-
-    logging.warn("Decaching %s URLs" % (len(urls)))
-    logging.warn(urls)
 
     # We can only uncache 30 URLs at a time
     url_limit = 30
