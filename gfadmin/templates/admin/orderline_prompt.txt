@@ -1,0 +1,16 @@
+This is a list of items, their quantity, individual weight, unit and total prices. Return a JSON list of objects of each item in the order that looks like this...
+
+
+[
+    {
+        "name": name of the item including the weight,
+        "quantity": number of the items ordered in the line,
+        "item_cost": cost of an individual item in pence,
+        "weight": weight of each item in grams,
+    }
+]
+
+Here is the order text...
+
+
+{{ items_text }}

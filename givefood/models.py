@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import html
 import hashlib, unicodedata, logging, json
 from datetime import date, datetime, timedelta
 from string import capwords
@@ -14,6 +15,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse, translate_url
 from django.utils.translation import gettext as _
 from django.utils.translation import get_language
+from django.template.loader import render_to_string
 
 from requests import PreparedRequest
 
@@ -21,7 +23,7 @@ from givefood.settings.default import LANGUAGES
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
-from givefood.func import geocode, get_translation, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode, translate_need, validate_postcode
+from givefood.func import gemini, geocode, get_calories, get_translation, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode, translate_need, validate_postcode
 
 
 class Foodbank(models.Model):
@@ -1140,18 +1142,21 @@ class Order(models.Model):
         super(Order, self).save(*args, **kwargs)
 
         # Delete all the existing orderlines
-        order_lines = OrderLine.objects.filter(order = self)
-        for order_line in order_lines:
-            order_line.delete()
+        order_lines = OrderLine.objects.filter(order = self).delete()
 
         # Parse the order text
-        if self.delivery_provider == "Tesco" or self.delivery_provider == "Costco" or self.delivery_provider == "Pedal Me":
-            order_lines = parse_tesco_order_text(self.items_text)
-        elif self.delivery_provider == "Sainsbury's":
-            if self.delivery_date < date(2023, 1, 23):
-                order_lines = parse_old_sainsburys_order_text(self.items_text)
-            else:
-                order_lines = parse_sainsburys_order_text(self.items_text)
+        prompt = render_to_string(
+            "admin/orderline_prompt.txt",
+            {
+                "items_text":self.items_text,
+            }
+        )
+        order_lines = gemini(
+            prompt = prompt,
+            temperature = 0.1,
+        )
+        order_lines = json.loads(order_lines)
+        logging.warning("Order lines: %s" % order_lines)
 
         # Order aggregated stats
         order_weight = 0
@@ -1161,35 +1166,32 @@ class Order(models.Model):
 
         for order_line in order_lines:
 
-            line_calories = 0
             line_weight = 0
             line_cost = 0
 
-            line_weight = order_line.get("weight") * order_line.get("quantity")
-            order_weight = order_weight + line_weight
+            line_weight = order_line["weight"] * order_line["quantity"]
+            line_cost = order_line["item_cost"] * order_line["quantity"]
+            order_line["name"] = html.unescape(order_line["name"])
 
-            if order_line.get("calories"):
-                line_calories = order_line.get("calories")
-                order_calories = order_calories + line_calories
-
-            if self.delivery_provider == "Tesco":
-                line_cost = order_line.get("item_cost") * order_line.get("quantity")
-            elif self.delivery_provider == "Sainsbury's":
-                line_cost = order_line.get("item_cost")
+            try:
+                order_line["calories"] = get_calories(order_line["name"], order_line["weight"], order_line["quantity"])
+            except OrderLine.DoesNotExist:
+                order_line["calories"] = 0
             
             order_cost = order_cost + line_cost
-
-            order_items = order_items + order_line.get("quantity")
+            order_items = order_items + order_line["quantity"]
+            order_calories = order_calories + order_line["calories"]
+            order_weight = order_weight + line_weight
 
             new_order_line = OrderLine(
                 foodbank = self.foodbank,
                 order = self,
                 name = order_line.get("name"),
-                quantity = order_line.get("quantity"),
-                item_cost = order_line.get("item_cost"),
+                quantity = order_line["quantity"],
+                item_cost = order_line["item_cost"],
                 line_cost = line_cost,
                 weight = line_weight,
-                calories = order_line.get("calories"),
+                calories = order_line["calories"],
             )
             new_order_line.save()
 
