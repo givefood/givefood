@@ -1003,7 +1003,10 @@ def make_url_friendly(url):
 
 
 def make_friendly_phone(phone):
-    return phone[0:5] + " " + phone[5:8] + " " + phone[8:]
+    if phone:
+        return phone[0:5] + " " + phone[5:8] + " " + phone[8:]
+    else:
+        return phone
 
 
 def make_full_phone(phone):
