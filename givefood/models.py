@@ -236,6 +236,12 @@ class Foodbank(models.Model):
 
     def friendly_shopping_list_url(self):
         return make_url_friendly(self.shopping_list_url)
+    
+    def friendly_rss_url(self):
+        if self.rss_url:
+            return make_url_friendly(self.rss_url)
+        else:
+            return None
 
     def latt(self):
         return float(self.latt_long.split(",")[0])
