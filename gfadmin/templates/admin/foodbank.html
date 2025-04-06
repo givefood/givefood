@@ -89,7 +89,10 @@
         </dd>
         {% if foodbank.rss_url %}
           <dt>RSS</dt>
-          <dd><a href="{{ foodbank.rss_url }}">RSS</a></dd>
+          <dd>
+            <a href="{{ foodbank.rss_url }}">{{ foodbank.rss_url }}</a>
+            <a href="{{ foodbank.rss_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+          </dd>
         {% endif %}
         {% if foodbank.facebook_page %}
           <dt>Facebook</dt>
