@@ -200,6 +200,8 @@ class Foodbank(models.Model):
             schema_dict["sameAs"].append(self.charity_register_url())
         if self.fsa_id:
             schema_dict["sameAs"].append(self.fsa_url())
+        if self.facebook_page:
+            schema_dict["sameAs"].append("https://www.facebook.com/%s" % self.facebook_page)
         
         if not as_sub_property:
             schema_dict["@context"] = "https://schema.org"
