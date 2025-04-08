@@ -108,7 +108,9 @@
     margin-bottom:10px;
     max-height:450px;
     border-radius: 0.25rem;
-    margin-left:5px;
+}
+.placephoto.is-pulled-right {
+    margin-left:10px;
 }
 .text-direction-rtl .placephoto {
     margin-right:5px;
