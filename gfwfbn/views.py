@@ -185,6 +185,12 @@ def geojson(request, slug = None, parlcon_slug = None):
     # All items
     all_items = not slug and not parlcon_slug
 
+    # Number of decimal places for coordinates
+    if all_items:
+        decimal_places = 4
+    else:
+        decimal_places = 6
+
     # Handle bad fb slug
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -216,7 +222,7 @@ def geojson(request, slug = None, parlcon_slug = None):
             "type":"Feature",
             "geometry":{
                 "type":"Point",
-                "coordinates":[foodbank.long(), foodbank.latt()],
+                "coordinates":[round(foodbank.long(), decimal_places), round(foodbank.latt(), decimal_places)],
             },
             "properties":{
                 "type":"f",
@@ -230,7 +236,7 @@ def geojson(request, slug = None, parlcon_slug = None):
                 "type":"Feature",
                 "geometry":{
                     "type":"Point",
-                    "coordinates":[foodbank.delivery_long(), foodbank.delivery_latt()],
+                    "coordinates":[round(foodbank.delivery_long(), decimal_places), round(foodbank.delivery_latt(), decimal_places)],
                 },
                 "properties":{
                     "type":"f",
@@ -245,7 +251,7 @@ def geojson(request, slug = None, parlcon_slug = None):
             "type":"Feature",
             "geometry":{
                 "type":"Point",
-                "coordinates":[location.long(), location.latt()],
+                "coordinates":[round(location.long(), decimal_places), round(location.latt(), decimal_places)],
             },
             "properties":{
                 "type":"l",
@@ -261,7 +267,7 @@ def geojson(request, slug = None, parlcon_slug = None):
             "type":"Feature",
             "geometry":{
                 "type":"Point",
-                "coordinates":[donationpoint.long(), donationpoint.latt()],
+                "coordinates":[round(donationpoint.long(), decimal_places), round(donationpoint.latt(), decimal_places)],
             },
             "properties":{
                 "type":"d",
