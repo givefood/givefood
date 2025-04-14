@@ -122,6 +122,9 @@ address {
 .pluscode {
     margin-bottom:10px;
 }
+.contacts {
+    margin-top:10px;
+}
 .contact-icon {
     width:16px;
     display:inline-block;
