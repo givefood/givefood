@@ -445,6 +445,33 @@ def foodbank_photo(request, slug):
     return HttpResponse(photo, content_type='image/jpeg')
 
 
+def foodbank_screenshot(request, slug):
+    """
+    Food bank webpage screenshot
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    cf_account_id = get_cred("cf_account_id")
+    cf_api_key = get_cred("gf_browser_api")
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer %s" % (cf_api_key),
+    }
+    api_url = "https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/screenshot" % (cf_account_id)
+
+    response = requests.post(api_url, headers = headers, json = {
+        "url": foodbank.url,
+    })
+    
+    if response.status_code != 200:
+        return HttpResponseBadRequest()
+    else:
+        photo = response.content
+
+    return HttpResponse(photo, content_type='image/png')
+
+
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_locations(request,slug):
     """
