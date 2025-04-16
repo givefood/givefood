@@ -445,6 +445,7 @@ def foodbank_photo(request, slug):
     return HttpResponse(photo, content_type='image/jpeg')
 
 
+@cache_page(SECONDS_IN_WEEK)
 def foodbank_screenshot(request, slug):
     """
     Food bank webpage screenshot
