@@ -541,28 +541,19 @@ class Foodbank(models.Model):
                 for language in LANGUAGES:
                     translated_urls.append(translate_url(url, language[0]))
 
+            prefixes.append(reverse("api2:foodbanks"))
+            prefixes.append(reverse("api2:locations"))
+            prefixes.append(reverse("api2:foodbank", kwargs={"slug":self.slug}))
+            prefixes.append(reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug}))
+
             api_urls = [
                 reverse("sitemap"),
                 "%s?format=csv" % (reverse("api_foodbanks")),
-                reverse("api2:foodbanks"),
-                "%s?format=xml" % (reverse("api2:foodbanks")),
-                "%s?format=yaml" % (reverse("api2:foodbanks")),
-                "%s?format=geojson" % (reverse("api2:foodbanks")),
                 reverse("api2:locations"),
-                "%s?format=xml" % (reverse("api2:locations")),
-                "%s?format=yaml" % (reverse("api2:locations")),
-                "%s?format=geojson" % (reverse("api2:locations")),
                 "%s?format=geojson" % (reverse("api2:donationpoints")),
                 reverse("api_foodbank", kwargs={"slug":self.slug}),
-                reverse("api2:foodbank", kwargs={"slug":self.slug}),
-                "%s?format=xml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
-                "%s?format=yaml" % (reverse("api2:foodbank", kwargs={"slug":self.slug})),
                 reverse("wfbn:constituency", kwargs={"slug":self.parliamentary_constituency_slug}),
                 reverse("wfbn:constituency_geojson", kwargs={"parlcon_slug":self.parliamentary_constituency_slug}),
-                reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug}),
-                "%s?format=xml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
-                "%s?format=yaml" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
-                "%s?format=geojson" % (reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug})),
             ]
 
             urls = translated_urls + api_urls
