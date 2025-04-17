@@ -463,6 +463,15 @@ def foodbank_screenshot(request, slug):
 
     response = requests.post(api_url, headers = headers, json = {
         "url": foodbank.url,
+        "viewport": {
+            "width": 1280,
+            "height": 1280,
+        },
+        "addStyleTag": [
+            {
+                "content": "#ccc {display:none};",
+            }
+        ],
     })
     
     if response.status_code != 200:
