@@ -178,6 +178,7 @@ OLD_FOODBANK_SLUGS = {
     "ivybridge":"ivybridge-district",
     "waterloo":"lambeth-croydon",
     "lowestoft":"lowestoft-district",
+    "skelmersdale":"skelmersdale-district",
 }
 
 FOODBANK_SUBPAGES = [
