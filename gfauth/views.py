@@ -5,8 +5,10 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from google.oauth2 import id_token
 from google.auth.transport import requests
+from django.views.decorators.cache import never_cache
 
 @csrf_exempt
+@never_cache
 def sign_in(request):
     return render(request, 'auth/sign_in.html')
 
