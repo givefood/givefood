@@ -21,3 +21,4 @@ google-generativeai
 django-earthdistance
 requirements-parser
 google-cloud-translate
+google-api-python-client

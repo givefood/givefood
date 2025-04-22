@@ -89,4 +89,5 @@ urlpatterns += [
     path('offline/', include('gfoffline.urls', namespace="offline")),
     path('write/', include('gfwrite.urls', namespace="write")),
     path('appfe/', include('gfapp.urls', namespace="app")),
+    path('auth/', include('gfauth.urls', namespace="auth")),
 ]

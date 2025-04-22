@@ -38,7 +38,6 @@ handlers:
 
 - url: /admin.*
   script: auto
-  login: admin
 
 - url: /.*
   script: auto

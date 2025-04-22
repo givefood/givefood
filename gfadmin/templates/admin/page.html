@@ -45,6 +45,11 @@
             <input name="q" class="input" type="text" placeholder="Search everything...">
           </form>
         </div>
+        <div class="navbar-item">
+          <img src="{{ request.session.user_data.picture }}" alt="{{ request.session.user_data.given_name }}" />
+          {{ request.session.user_data.email }}
+          <a href="{% url 'auth:sign_out' %}">Sign out</a>
+        </div>
       </div>
 
     </nav>
