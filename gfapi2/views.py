@@ -28,7 +28,7 @@ def docs(request):
     eg_foodbanks = [
         "Sid Valley",
         "Kingsbridge",
-        "Norwood & Brixton",
+        "Meon Valley",
         "Black Country",
     ]
 
