@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import resolve
 
 # Inject the render time into the response content
-def rendertime(get_response):
+def RenderTime(get_response):
     def middleware(request):
         t1 = time.time()
         response = get_response(request)
