@@ -1,11 +1,13 @@
 import os, logging
 
 from pathlib import Path
-from djangae.contrib.secrets import get
-from djangae.environment import project_id
 from djangae.settings_base import *  # noqa
 from givefood.func import get_secret
 from django.utils.translation import gettext_lazy as _
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
@@ -15,12 +17,15 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # See https://docs.djangoproject.com/en/{{ docs_version }}/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get().secret_key
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "www.givefood.org.uk",
+]
 
 # Application definition
 
@@ -31,11 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-
-    'djangae',
-    'djangae.tasks',
-    'djangae.contrib.googleauth',
-    'djangae.contrib.security',
 
     'cspreports',
     'bulma',
@@ -53,13 +53,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'djangae.contrib.common.middleware.RequestStorageMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
-    'djangae.contrib.googleauth.middleware.LocalIAPLoginMiddleware',
-    'djangae.contrib.googleauth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -95,22 +92,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'givefood.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#databases
-
-DATASTORE_INDEX_YAML = os.path.join(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-    "dsindex.yaml"
-)
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'givefood',
-        'USER': 'postgres',
-        'PASSWORD': get_secret("postgres_pw"),
-        'HOST': get_secret("postgres_host"),
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASS"),
+        'HOST': os.getenv("DB_HOST"),
         'PORT': '5432',
     }
 }
@@ -135,11 +123,11 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Enable the Djangae IAP backend, but not Django's username/password one by default
-AUTHENTICATION_BACKENDS = (
-    "djangae.contrib.googleauth.backends.iap.IAPBackend",
-)
+# AUTHENTICATION_BACKENDS = (
+#     "djangae.contrib.googleauth.backends.iap.IAPBackend",
+# )
 
-AUTH_USER_MODEL = 'googleauth.User'
+# AUTH_USER_MODEL = 'googleauth.User'
 
 
 # Internationalization
