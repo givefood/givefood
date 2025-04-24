@@ -25,6 +25,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "www.givefood.org.uk",
+    os.getenv("COOLIFY_FQDN"),
 ]
 
 # Application definition
