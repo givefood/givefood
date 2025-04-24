@@ -65,7 +65,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'csp.middleware.CSPMiddleware',
     'givefood.middleware.LoginRequiredAccess',
-    'givefood.middleware.rendertime',
+    'givefood.middleware.RenderTime',
 ]
 
 ROOT_URLCONF = 'givefood.urls'
