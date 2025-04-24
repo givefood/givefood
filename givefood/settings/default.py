@@ -65,6 +65,7 @@ MIDDLEWARE = [
     'django.middleware.locale.LocaleMiddleware',
     'csp.middleware.CSPMiddleware',
     'givefood.middleware.LoginRequiredAccess',
+    'givefood.middleware.OfflineKeyCheck',
     'givefood.middleware.RenderTime',
 ]
 
