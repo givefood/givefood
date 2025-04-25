@@ -177,8 +177,6 @@ def approx_rev_geocode(lat_lng):
     lng = lat_lng.split(",")[1]
 
     address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&latlng=%s,%s" % (gmap_geocode_key, lat, lng)
-    logging.warning("JASON")
-    logging.warning(address_api_url)
     request = requests.get(address_api_url)
 
     if request.status_code == 200:
