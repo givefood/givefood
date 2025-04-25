@@ -166,7 +166,7 @@ LOCALE_PATHS = (
 # https://docs.djangoproject.com/en/{{ docs_version }}/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "static"))
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "givefood", "static"))
 
 # Djangae Specific settings
 
