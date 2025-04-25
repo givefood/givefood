@@ -15,8 +15,8 @@ def context(request):
     translated_path = translate_url(path, language_code)
     canonical_path = "%s%s" % (SITE_DOMAIN, translated_path)
     querystring = request.META['QUERY_STRING']
-    instance_id = os.environ.get('GAE_INSTANCE')
-    version = os.environ.get('GAE_VERSION')
+    instance_id = os.environ.get('COOLIFY_CONTAINER_NAME')
+    version = os.environ.get('SOURCE_COMMIT')
     facebook_locale = FACEBOOK_LOCALES.get(language_code, "en_GB")
 
     page_translatable = "/cy/" == translate_url(path, "cy")[:4]
