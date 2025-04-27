@@ -1216,10 +1216,17 @@ def htmlbodytext(html):
 
 def get_translation(language, text, source="en"):
 
-    from google.cloud import translate_v2 as translate
-    translate_client = translate.Client()
-    result = translate_client.translate(text, target_language=language, source_language=source, format_="text")
-    return result["translatedText"]
+    key = get_cred("gcp_translate_key")
+
+    translate_url = "https://translation.googleapis.com/language/translate/v2?key=%s" % (key)
+    translate_url = "%s&source=%s&target=%s&q=%s&format=text" % (translate_url, source, language, urllib.parse.quote(text))
+    request = requests.get(translate_url)
+    if request.status_code == 200:
+        translate_json = request.json()
+        if "data" in translate_json:
+            if "translations" in translate_json["data"]:
+                if len(translate_json["data"]["translations"]) > 0:
+                    return translate_json["data"]["translations"][0]["translatedText"]
 
 
 def translate_need(language, need):
