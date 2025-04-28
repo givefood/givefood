@@ -130,11 +130,10 @@ def discrepancy_check(request):
     return HttpResponse("OK")
 
 
-def need_check(request, hours):
+def need_check(request):
 
     foodbanks = Foodbank.objects.filter(
         is_closed = False,
-        hours_between_need_check = hours
     ).order_by("?")
 
     for foodbank in foodbanks:
