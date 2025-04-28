@@ -96,8 +96,9 @@ def decache(urls = None, prefixes = None):
     api_url = "https://api.cloudflare.com/client/v4/zones/%s/purge_cache" % (cf_zone_id)
 
     full_prefixes = []
-    for prefix in prefixes:
-        full_prefixes.append("%s%s" % (domain, prefix))
+    if prefixes:
+        for prefix in prefixes:
+            full_prefixes.append("%s%s" % (domain, prefix))
 
     requests.post(api_url, headers = headers, json = {
         "prefixes": full_prefixes,
