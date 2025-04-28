@@ -132,9 +132,7 @@ def discrepancy_check(request):
 
 def need_check(request):
 
-    foodbanks = Foodbank.objects.filter(
-        is_closed = False,
-    ).order_by("?")
+    foodbanks = Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").order_by("?")
 
     for foodbank in foodbanks:
         do_foodbank_need_check(foodbank)
