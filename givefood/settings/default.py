@@ -46,7 +46,7 @@ LOGGING = {
 ALLOWED_HOSTS = [
     "localhost",
     "www.givefood.org.uk",
-    "stage.givefood.org.uk",
+    "origin.givefood.org.uk",
     os.getenv("COOLIFY_FQDN"),
 ]
 
