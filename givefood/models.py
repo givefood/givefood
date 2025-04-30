@@ -1148,7 +1148,6 @@ class Order(models.Model):
             temperature = 0.1,
         )
         order_lines = json.loads(order_lines)
-        logging.warning("Order lines: %s" % order_lines)
 
         # Order aggregated stats
         order_weight = 0
