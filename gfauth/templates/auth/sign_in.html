@@ -1,87 +1,48 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Login</title>
-    <script src="https://accounts.google.com/gsi/client" async></script>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-      }
+{% extends "public/page.html" %}
 
-      .container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-      }
+{% block title %}Give Food{% endblock %}
 
-      img {
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        margin-top: 10px;
-      }
+{% block head %}
+  <script src="https://accounts.google.com/gsi/client" async></script>
+{% endblock %}
 
-      p {
-        color: #333;
-        margin: 10px 0;
-      }
+{% block body %}
 
-      a {
-        color: #007bff;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
-      .g_id_signin {
-        margin-top: 20px;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="container">
+  <div class="columns is-centered">
+    <div class="column is-one-quarter" style="margin-top:50px">
+    
       {% if request.session.user_data %}
-      <div>
-        <p>{{ request.session.user_data.given_name }}</p>
-        <p>{{ request.session.user_data.email }}</p>
-        <p>{{ request.session.user_data.hd }}</p>
-        <img src="{{ request.session.user_data.picture }}" alt="User picture" />
-        <p><a href="{% url 'admin:index' %}">Admin</a></p>
-        <p><a href="{% url 'auth:sign_out' %}">Sign out</a></p>
-      </div>
+        <div>
+          <img src="{{ request.session.user_data.picture }}" alt="User picture" />
+          <p>
+            <strong>{{ request.session.user_data.given_name }}</strong>
+            <br>{{ request.session.user_data.email }}
+          </p>
+          <p><a href="{% url 'admin:index' %}">Admin</a></p>
+          <p><a href="{% url 'auth:sign_out' %}">Sign out</a></p>
+        </div>
       {% else %}
-      <div>
-        <div id="g_id_onload"
-            data-client_id="927281004707-tboi1tsphl4bgtqn72e76rmc7r2q22tk.apps.googleusercontent.com"
-            data-context="signin"
-            data-ux_mode="redirect"
-            data-login_uri="https://www.givefood.org.uk/auth/receiver/"
-            data-auto_prompt="false">
-        </div>
+        <div>
+          <div id="g_id_onload"
+              data-client_id="927281004707-tboi1tsphl4bgtqn72e76rmc7r2q22tk.apps.googleusercontent.com"
+              data-context="signin"
+              data-ux_mode="redirect"
+              data-login_uri="https://www.givefood.org.uk/auth/receiver/"
+              data-auto_prompt="false">
+          </div>
 
-        <div class="g_id_signin"
-            data-type="standard"
-            data-shape="rectangular"
-            data-theme="outline"
-            data-text="signin_with"
-            data-size="large"
-            data-logo_alignment="left">
+          <div class="g_id_signin"
+              data-type="standard"
+              data-shape="rectangular"
+              data-theme="outline"
+              data-text="signin_with"
+              data-size="large"
+              data-logo_alignment="left">
+          </div>
         </div>
-      </div>
       {% endif %}
+
+      </div>
     </div>
-  </body>
-</html>
+
+{% endblock %}
