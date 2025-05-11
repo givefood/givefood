@@ -35,7 +35,13 @@
           </div>
         </div>
         <a class="navbar-item{% if section == "orders" %} is-active{% endif %}" href="{% url 'admin:orders' %}">Orders</a>
-        <a class="navbar-item{% if section == "finder" %} is-active{% endif %}" href="{% url 'admin:finder' %}">Finder</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link{% if section == "needs" %} is-active{% endif %}" href="{% url 'admin:finder' %}" >Finder</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{% url 'admin:finder_trussell' %}">Trussell</a>
+            <a class="navbar-item" href="{% url 'admin:finder_fsa' %}">FSA</a>
+          </div>
+        </div>
         <a class="navbar-item{% if section == "settings" %} is-active{% endif %}" href="{% url 'admin:settings' %}">Settings</a>
       </div>
 
