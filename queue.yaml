@@ -1,5 +1,0 @@
-queue:
-- name: default
-  rate: 3/s
-- name: socialpost
-  rate: 6/h
