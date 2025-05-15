@@ -1,7 +1,6 @@
 import os, logging
 
 from pathlib import Path
-from djangae.settings_base import *  # noqa
 from givefood.func import get_secret
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
@@ -10,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -146,16 +145,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Enable the Djangae IAP backend, but not Django's username/password one by default
-# AUTHENTICATION_BACKENDS = (
-#     "djangae.contrib.googleauth.backends.iap.IAPBackend",
-# )
-
-# AUTH_USER_MODEL = 'googleauth.User'
-
 
 # Internationalization
-# https://docs.djangoproject.com/en/{{ docs_version }}/topics/i18n/
 
 LANGUAGE_CODE = 'en'
 TIME_ZONE = 'UTC'
@@ -188,12 +179,6 @@ LOCALE_PATHS = (
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "givefood", "static"))
-
-# Djangae Specific settings
-
-# Set this to the location where your app is deployed.
-# Available on the App Engine dashboard.
-CLOUD_TASKS_LOCATION = "europe-west"
 
 
 # CSP Configuration

@@ -6,11 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault(
-        'DJANGO_SETTINGS_MODULE',
-        'givefood.settings.default'
-    )
-
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'givefood.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -19,16 +15,7 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-
-    from djangae.sandbox import start_emulators, stop_emulators
-
-    try:
-        # Start all emulators, persisting data if we're not testing
-        # start_emulators(persist_data="test" not in sys.argv)
-        execute_from_command_line(sys.argv)
-    finally:
-        # Stop all emulators
-        stop_emulators()
+    execute_from_command_line(sys.argv)
 
 
 if __name__ == '__main__':

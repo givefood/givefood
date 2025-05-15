@@ -1,6 +1,6 @@
 import os, sys
 from django.urls import resolve, translate_url
-from givefood.settings.default import LANGUAGES
+from givefood.settings import LANGUAGES
 from django.utils.translation import get_language_info
 
 

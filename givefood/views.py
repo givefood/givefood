@@ -19,7 +19,7 @@ from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
 from givefood.const.general import SITE_DOMAIN
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
-from givefood.settings.default import LANGUAGES
+from givefood.settings import LANGUAGES
 
 
 @cache_page(SECONDS_IN_HOUR)
