@@ -83,17 +83,7 @@
 
             {% if donationpoint.opening_hours %}
                 <h3>{% blocktrans %}Opening hours{% endblocktrans %}</h3>
-                <p>
-                  {% for day in donationpoint.opening_hours_days %}
-                      {{ day.text }}
-                      {% if not day.is_closed %}
-                        {% if day.holiday %}
-                          <span class="is-size-7">{% blocktrans %}Hours may vary because of{% endblocktrans %} {{ day.holiday.title }}</span>
-                        {% endif %}
-                      {% endif %}
-                      <br>
-                  {% endfor %}
-                </p>
+                <p data-include="{% url 'wfbn:foodbank_donationpoint_openinghours' foodbank.slug donationpoint.slug %}"></p>
             {% endif %}
 
             {% if donationpoint.notes %}

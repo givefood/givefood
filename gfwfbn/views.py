@@ -731,6 +731,25 @@ def foodbank_donationpoint(request, slug, dpslug):
 
     return render(request, "wfbn/foodbank/donationpoint.html", template_vars)
 
+@cache_page(SECONDS_IN_HOUR)
+def foodbank_donationpoint_openinghours(request, slug, dpslug):
+    """
+    Food bank donation point opening hours
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
+    if not donationpoint.opening_hours:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "donationpoint":donationpoint,
+    }
+
+    response = render(request, "wfbn/foodbank/donationpoint_openinghours.html", template_vars)
+    response["X-Robots-Tag"] = "noindex"
+    return response
+
 
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_donationpoint_photo(request, slug, dpslug):

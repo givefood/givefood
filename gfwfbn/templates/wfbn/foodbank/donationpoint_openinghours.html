@@ -1,0 +1,10 @@
+{% load i18n %}
+{% for day in donationpoint.opening_hours_days %}
+    {{ day.text }}
+    {% if not day.is_closed %}
+        {% if day.holiday %}
+            <span class="is-size-7">{% blocktrans %}Hours may vary because of{% endblocktrans %} {{ day.holiday.title }}</span>
+        {% endif %}
+    {% endif %}
+    <br>
+{% endfor %}

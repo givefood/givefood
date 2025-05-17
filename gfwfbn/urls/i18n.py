@@ -27,6 +27,7 @@ urlpatterns = [
     # Donation Points
     path("at/<slug:slug>/donationpoints/", foodbank_donationpoints, name="foodbank_donationpoints"),
     path("at/<slug:slug>/donationpoint/<slug:dpslug>/", foodbank_donationpoint, name="foodbank_donationpoint"),
+    path("at/<slug:slug>/donationpoint/<slug:dpslug>/openinghours/", foodbank_donationpoint_openinghours, name="foodbank_donationpoint_openinghours"),
     
     # Locations
     path("at/<slug:slug>/locations/", foodbank_locations, name="foodbank_locations"),

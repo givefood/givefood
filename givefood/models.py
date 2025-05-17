@@ -936,6 +936,8 @@ class FoodbankDonationPoint(models.Model):
             bank_holidays = bank_holidays["scotland"]
         if self.country == "Northern Ireland":
             bank_holidays = bank_holidays["northern-ireland"]
+        if not bank_holidays:
+            bank_holidays = {}
 
         bank_holidays = bank_holidays.get("events", None)
         if bank_holidays:
@@ -943,19 +945,24 @@ class FoodbankDonationPoint(models.Model):
                 bank_holidays[idx]["date"] = datetime.strptime(holiday["date"], "%Y-%m-%d").date()
 
         today = date.today()
-        monday_date = today + timedelta(days = -today.weekday())
+        day_dates = []
+        for day_offset in range(7):
+            day_date = today + timedelta(days=day_offset)
+            day_dates.append(day_date)
 
-        for idx, day in enumerate(days):
-            day_date = monday_date + timedelta(days = idx)
-            days[idx] = {
-                "text": day,
+        relative_days = []
+
+        for idx, day_date in enumerate(day_dates):
+            day_of_week = day_date.weekday()
+            relative_days.append({
+                "text": days[day_of_week],
                 "date": day_date,
-                "is_closed": "Closed" in day,
-            }
+                "is_closed": "Closed" in days[day_of_week],
+            })
             if bank_holidays:
-                days[idx]["holiday"] = next((holiday for holiday in bank_holidays if holiday["date"] == day_date), None)
+                relative_days[idx]["holiday"] = next((holiday for holiday in bank_holidays if holiday["date"] == day_date), None)
 
-        return days
+        return relative_days
         
     def clean(self):
         if self.postcode:
