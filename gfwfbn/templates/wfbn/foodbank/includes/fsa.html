@@ -1,0 +1,5 @@
+{% if foodbank.fsa_id %}
+    <div id="fsarating">
+        <script src="https://ratings.food.gov.uk/embed/embed-badge.js" data-business-id="{{ foodbank.fsa_id }}" data-rating-style="3" data-welsh="{% if language_code == 'cy' %}true{% else %}false{% endif %}"></script>
+    </div>
+{% endif %}
