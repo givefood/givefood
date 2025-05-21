@@ -219,6 +219,11 @@ footer {
 .text-direction-rtl .menu-list a {
     text-align:right;
 }
+@media screen and (max-width: 769px) {
+    .text-direction-rtl .menu-list a.is-active {
+        padding-right:40px;
+    }
+}
 .text-direction-rtl .dropdown.is-right .dropdown-menu {
     left: 0;
     right: auto;
