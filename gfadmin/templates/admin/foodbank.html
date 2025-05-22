@@ -62,10 +62,6 @@
         <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Order</a>
       {% endif %}
 
-      {% if not foodbank.needs %}
-        <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Need</a>
-      {% endif %}
-
       {% if foodbank.notes %}
         <p class="box" style="margin-top:20px;">{{ foodbank.notes|linebreaksbr }}</p>
       {% endif %}
@@ -321,6 +317,39 @@
           </td>
         {% endfor %}
       </table>
+    </div>
+
+    {# Last need #}
+    <div class="column tabcontent generallocations">
+
+      <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Need</a>
+      <br><br>
+
+      {% if foodbank.last_need %}
+        <strong>
+          <a href="{% url 'admin:need' foodbank.latest_need.need_id %}">{{ foodbank.latest_need.need_id }}</a>
+        </strong>
+        {{ foodbank.latest_need.created|timesince }} ago
+        <br><br>
+        <div class="columns">
+          <div class="column">
+            <h4>Need</h4>
+            <p>
+              {{ foodbank.latest_need.change_text|linebreaksbr }}
+            </p>
+          </div>
+          <div class="column">
+            <h4>Excess</h4>
+            <p>
+              {{ foodbank.latest_need.excess_change_text|linebreaksbr }}
+            </p>
+          </div>
+        </div>
+
+      {% else %}
+        <p style="margin-top:20px;">No needs yet</p>
+      {% endif %}
+      
     </div>
 
     {# Donation Points #}

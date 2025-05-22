@@ -74,6 +74,9 @@ h3, .content h3 {
     font-size:1em;
     margin:0 0 2px 0;
 }
+h4 {
+    font-style:italic
+}
 p {
     margin-bottom:1.3rem;
 }
