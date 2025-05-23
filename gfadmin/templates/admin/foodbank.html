@@ -326,6 +326,7 @@
       <br><br>
 
       {% if foodbank.last_need %}
+        {{ foodbank.latest_need.input_method_emoji }}
         <strong>
           <a href="{% url 'admin:need' foodbank.latest_need.need_id %}">{{ foodbank.latest_need.need_id }}</a>
         </strong>
