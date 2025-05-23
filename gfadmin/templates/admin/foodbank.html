@@ -203,7 +203,7 @@
         <dt>Last Need Check</dt>
         <dd>
           {{ foodbank.last_need_check }}<br>
-          <a href="{% url 'offline:foodbank_need_check' foodbank.slug %}" class="button is-info is-small">Force Check</a>
+          <a href="{% url 'offline:foodbank_need_check' foodbank.slug %}?key={{ offline_key }}" class="button is-info is-small">Force Check</a>
         </dd>
         <dt>Last RFI</dt>
         <dd>{{ foodbank.last_rfi }}</dd>
