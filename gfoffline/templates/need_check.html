@@ -38,9 +38,6 @@
             <h2>Nonpert Excess</h2>
             {{ last_nonpertinent_need.excess_change_text|linebreaks }}
         </div>
-        <div class="column">
-            <iframe class="preview-frame" src="{% url 'admin:proxy' %}?url={{ foodbank.shopping_list_url|urlencode }}" loading="lazy"></iframe>
-        </div> 
     </div>
 
 {% endblock %}
