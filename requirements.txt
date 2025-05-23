@@ -21,3 +21,4 @@ google-api-python-client
 python-dotenv
 gunicorn
 whitenoise
+setuptools
