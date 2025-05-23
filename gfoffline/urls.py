@@ -10,7 +10,6 @@ urlpatterns = (
     path("discrepancy_check/", discrepancy_check, name="discrepancy_check"),
     path("need_check/", need_check, name="need_check"),
     path("foodbank_need_check/<slug:slug>/", foodbank_need_check, name="foodbank_need_check"),
-    path("decache_donationpoints/", decache_donationpoints, name="decache_donationpoints"),
     path("cleanup_subs/", cleanup_subs, name="cleanup_subs"),
     path("days_between_needs/", days_between_needs, name="days_between_needs"),
     path("resaver/", resaver, name="resaver"),

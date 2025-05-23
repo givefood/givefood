@@ -147,18 +147,6 @@ def foodbank_need_check(request, slug):
     return render(request, "need_check.html", template_vars)
 
 
-def decache_donationpoints(request):
-
-    urls = []
-    donationpoints = FoodbankDonationPoint.objects.filter(opening_hours__isnull=False).exclude(opening_hours = "")
-    for donationpoint in donationpoints:
-        urls.append(reverse("wfbn:foodbank_donationpoint", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug}))
-    
-    decache(urls)
-
-    return HttpResponse("OK")
-
-
 def cleanup_subs(request):
 
     unconfirmed_subscribers = FoodbankSubscriber.objects.filter(
