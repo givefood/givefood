@@ -21,8 +21,6 @@ from django.core.cache import cache
 from django.contrib.humanize.templatetags.humanize import apnumber
 from django.db.models import Value
 
-from google.cloud import secretmanager
-
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
@@ -1145,14 +1143,6 @@ def group_list(lst):
       
     res =  [(el, lst.count(el)) for el in lst]
     return list(OrderedDict(res).items())
-
-
-def get_secret(secret_id, version_id="latest"):
-    
-    client = secretmanager.SecretManagerServiceClient()
-    name = f"projects/givefood/secrets/{secret_id}/versions/{version_id}"
-    response = client.access_secret_version(name=name)
-    return response.payload.data.decode('UTF-8')
 
 
 def filter_change_text(change_text, filter_list):

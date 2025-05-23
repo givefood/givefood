@@ -1,7 +1,6 @@
 import os, logging
 
 from pathlib import Path
-from givefood.func import get_secret
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
 
