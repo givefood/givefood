@@ -300,7 +300,7 @@ def sitemap(request):
 
 
 
-@cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_WEEK)
 def robotstxt(request):
     """
     /robots.txt
@@ -419,6 +419,7 @@ def human(request):
     return render(request, "public/human.html", tempate_vars)
 
 
+@cache_page(SECONDS_IN_DAY)
 def flag(request):
     """
     Flag a page
