@@ -55,11 +55,6 @@
             {% include "wfbn/foodbank/includes/menu.html" %}
           </div>
 
-          <div class="column is-6">
-            <div id="map" class="mainmap"></div>
-            {% include "public/includes/maplegend.html" %}
-          </div>
-
           <div class="column locations">
 
             <a href="{% url 'wfbn:foodbank' foodbank.slug %}">
@@ -97,6 +92,12 @@
             {% endfor %}
 
           </div>
+
+          <div class="column is-6">
+            <div id="map" class="mainmap"></div>
+            {% include "public/includes/maplegend.html" %}
+          </div>
+
       </div>
 
     </div>

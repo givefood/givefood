@@ -55,11 +55,6 @@
             {% include "wfbn/foodbank/includes/menu.html" %}
           </div>
 
-          <div class="column is-6">
-            <div id="map" class="mainmap"></div>
-            {% include "public/includes/maplegend.html" %}
-          </div>
-
           <div class="column donationpoints">
 
             {% if not foodbank.address_is_administrative %}
@@ -111,6 +106,12 @@
             {% endfor %}
 
           </div>
+
+          <div class="column is-6">
+            <div id="map" class="mainmap"></div>
+            {% include "public/includes/maplegend.html" %}
+          </div>
+          
       </div>
 
     </div>
