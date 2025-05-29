@@ -820,6 +820,40 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
     return foodbanksandlocations[first_item:quantity]
 
 
+def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
+
+    from givefood.models import FoodbankLocation, FoodbankDonationPoint
+
+    lat = lat_lng.split(",")[0]
+    lng = lat_lng.split(",")[1]
+
+    donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).annotate(
+    distance=EarthDistance([
+        LlToEarth([lat, lng]),
+        LlToEarth(['latitude', 'longitude'])
+    ])).annotate(type=Value("donationpoint")).order_by("distance")[:quantity]
+
+    location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).annotate(
+    distance=EarthDistance([
+        LlToEarth([lat, lng]),
+        LlToEarth(['latitude', 'longitude'])
+    ])).annotate(type=Value("location")).order_by("distance")[:quantity]
+
+    donationpoints = list(chain(donationpoints,location_donationpoints))
+    donationpoints = sorted(donationpoints, key=lambda k: k.distance)[:quantity]
+
+    for donationpoint in donationpoints:
+        if donationpoint.type == "location":
+            donationpoint.url = reverse("wfbn:foodbank_location", kwargs={"slug":donationpoint.foodbank_slug, "locslug":donationpoint.slug})
+            donationpoint.photo_url = reverse("wfbn-generic:foodbank_location_photo", kwargs={"slug":donationpoint.foodbank_slug, "locslug":donationpoint.slug})
+        if donationpoint.type == "donationpoint":
+            donationpoint.url = reverse("wfbn:foodbank_donationpoint", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
+            donationpoint.photo_url = reverse("wfbn-generic:foodbank_donationpoint_photo", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
+        donationpoint.distance_mi = miles(donationpoint.distance)
+
+    return donationpoints
+
+
 def find_parlcons(lattlong, quantity = 10, skip_first = False):
 
     parlcons = get_all_constituencies()

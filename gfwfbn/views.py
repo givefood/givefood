@@ -19,7 +19,7 @@ from django_earthdistance.models import EarthDistance, LlToEarth
 from givefood.const.general import SITE_DOMAIN
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import approx_rev_geocode, geocode, find_locations, admin_regions_from_postcode, get_cred, is_uk, miles, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
+from givefood.func import approx_rev_geocode, geocode, find_locations, find_donationpoints, admin_regions_from_postcode, get_cred, is_uk, miles, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 
 
@@ -67,30 +67,8 @@ def index(request):
 
         if lat_lng_is_uk:
             locations = find_locations(lat_lng, 20)
+            donationpoints = find_donationpoints(lat_lng, 20)
 
-        donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).annotate(
-        distance=EarthDistance([
-            LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("donationpoint")).order_by("distance")[:20]
-
-        location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).annotate(
-        distance=EarthDistance([
-            LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("location")).order_by("distance")[:20]
-
-        donationpoints = list(chain(donationpoints,location_donationpoints))
-        donationpoints = sorted(donationpoints, key=lambda k: k.distance)[:20]
-
-        for donationpoint in donationpoints:
-            if donationpoint.type == "location":
-                donationpoint.url = reverse("wfbn:foodbank_location", kwargs={"slug":donationpoint.foodbank_slug, "locslug":donationpoint.slug})
-                donationpoint.photo_url = reverse("wfbn-generic:foodbank_location_photo", kwargs={"slug":donationpoint.foodbank_slug, "locslug":donationpoint.slug})
-            if donationpoint.type == "donationpoint":
-                donationpoint.url = reverse("wfbn:foodbank_donationpoint", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
-                donationpoint.photo_url = reverse("wfbn-generic:foodbank_donationpoint_photo", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
-            donationpoint.distance_mi = miles(donationpoint.distance)
 
     map_config = {
         "geojson":reverse("wfbn:geojson"),
