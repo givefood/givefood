@@ -404,6 +404,10 @@ class Foodbank(models.Model):
     def donation_points(self):
         return FoodbankDonationPoint.objects.filter(foodbank = self).order_by("name")
     
+    def donation_point_companies(self):
+        companies = FoodbankDonationPoint.objects.filter(foodbank = self, company__isnull=False).values_list("company", flat=True).distinct()
+        return sorted(companies)
+    
     def get_absolute_url(self):
         return "/admin/foodbank/%s/" % (self.slug)
 
