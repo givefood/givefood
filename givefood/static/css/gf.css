@@ -96,7 +96,7 @@ tfoot {
     background-size: cover;
     content: '';
 }
-.text-direction-rtl #usemylocationbtn:before {
+.txt-dir-rtl #usemylocationbtn:before {
     margin:0 0 0 7px;
 }
 .working:before {
@@ -216,24 +216,24 @@ footer {
     }
 }
 
-.text-direction-rtl .breadcrumb.has-arrow-separator li+li:before {
+.txt-dir-rtl .breadcrumb.has-arrow-separator li+li:before {
     content:"←"
 }
-.text-direction-rtl .menu-list a {
+.txt-dir-rtl .menu-list a {
     text-align:right;
 }
 @media screen and (max-width: 769px) {
-    .text-direction-rtl .menu-list a.is-active {
+    .txt-dir-rtl .menu-list a.is-active {
         padding-right:40px;
     }
 }
-.text-direction-rtl .dropdown.is-right .dropdown-menu {
+.txt-dir-rtl .dropdown.is-right .dropdown-menu {
     left: 0;
     right: auto;
 }
-.text-direction-rtl .dropdown .dropdown-menu {
+.txt-dir-rtl .dropdown .dropdown-menu {
     left: auto;
 }
-.text-direction-rtl .langswitcher .arrow {
+.txt-dir-rtl .langswitcher .arrow {
     margin:2px 10px 0 0;
 }
