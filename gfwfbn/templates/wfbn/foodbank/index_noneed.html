@@ -66,12 +66,13 @@
               <p class="tag is-danger is-large">{% blocktrans %}This food bank is closed{% endblocktrans %}</p>
             {% endif %}
 
-            <div class="contacts is-size-6">
-              <img src="/static/img/web.svg" alt="{% blocktrans %}Website{% endblocktrans %}" class="contact-icon"> <a href="{{ foodbank.url_with_ref }}" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
+            <div class="contacts">
+              <a href="{{ foodbank.url_with_ref }}" class="website">{{ foodbank.friendly_url|truncatechars:40 }}</a>
               {% if foodbank.phone_number %}
-                <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ foodbank.phone_number|full_phone }}">{{ foodbank.phone_number|friendly_phone }}</a>{% if foodbank.secondary_phone_number %} or <a href="tel:{{ foodbank.secondary_phone_number|full_phone }}">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}<br>
+                <a href="tel:{{ foodbank.phone_number|full_phone }}" class="phone">{{ foodbank.phone_number|friendly_phone }}</a>
+                {% if foodbank.secondary_phone_number %}<a href="tel:{{ foodbank.secondary_phone_number|full_phone }}"  class="phone">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}
               {% endif %}
-              <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}" id="email_link">{{ foodbank.contact_email|truncatechars:40 }}</a>
+              <a href="mailto:{{ foodbank.contact_email }}" class="email">{{ foodbank.contact_email|truncatechars:40 }}</a>
             </div>
 
             {% include "wfbn/foodbank/includes/charitynetwork.html" %}
@@ -103,7 +104,7 @@
               {% include "public/includes/country.html" with country=foodbank.country%}
             </address>
             <div class="pluscode">
-              <img src="/static/img/pluscode.svg" alt="Plus Code" class="contact-icon"> <a href="https://www.google.co.uk/maps/place/{{ foodbank.plus_code_global|urlencode }}/">{{ foodbank.plus_code_global }}</a>
+              <a href="https://www.google.co.uk/maps/place/{{ foodbank.plus_code_global|urlencode }}/" class="pluscode">{{ foodbank.plus_code_global }}</a>
             </div>
 
             {% if foodbank.delivery_address %}

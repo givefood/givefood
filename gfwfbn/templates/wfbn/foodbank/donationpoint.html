@@ -123,15 +123,15 @@
               {% include "public/includes/country.html" with country=donationpoint.country%}
             </address>
             <div class="pluscode">
-              <img src="/static/img/pluscode.svg" alt="Plus Code" class="contact-icon"> <a href="https://www.google.co.uk/maps/place/{{ donationpoint.plus_code_global|urlencode }}/">{{ donationpoint.plus_code_global }}</a>
+              <a href="https://www.google.co.uk/maps/place/{{ donationpoint.plus_code_global|urlencode }}/" class="pluscode">{{ donationpoint.plus_code_global }}</a>
             </div>
 
-            <div class="contacts is-size-6">
+            <div class="contacts">
               {% if donationpoint.url %}
-                <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ donationpoint.url_with_ref }}" id="website_link">{{ donationpoint.friendly_url|truncatechars:40 }}</a><br>
+                <a href="{{ donationpoint.url_with_ref }}" class="website">{{ donationpoint.friendly_url|truncatechars:40 }}</a>
               {% endif %}
               {% if donationpoint.phone_number %}
-                <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ donationpoint.phone_number|full_phone }}">{{ donationpoint.phone_number|friendly_phone }}</a><br>
+                <a href="tel:{{ donationpoint.phone_number|full_phone }}" class="phone">{{ donationpoint.phone_number|friendly_phone }}</a>
               {% endif %}
             </div>
 

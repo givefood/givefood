@@ -119,11 +119,29 @@
 address {
     font-style:normal;
 }
-.pluscode {
+div.pluscode {
     margin-bottom:10px;
 }
 .contacts {
     margin-top:10px;
+}
+.contacts a, a.pluscode {
+    display:block;
+    padding:0 0 2px 21px;
+    background:no-repeat left center;
+    background-size:16px;
+}
+a.pluscode {
+    background-image:url(/static/img/pluscode.svg);
+}
+.contacts .website {
+    background-image:url(/static/img/web.svg);
+}
+.contacts .phone {
+    background-image:url(/static/img/phone.svg);
+}
+.contacts .email {
+    background-image:url(/static/img/email.svg);
 }
 .contact-icon {
     width:16px;

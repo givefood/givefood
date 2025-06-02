@@ -68,13 +68,13 @@
               <p>🛒 {% blocktrans %}This location accepts donations{% endblocktrans %}</p>
             {% endif %}
 
-            <div class="contacts is-size-6">
-                <img src="/static/img/web.svg" alt="Website" class="contact-icon"> <a href="{{ foodbank.url_with_ref }}" id="website_link">{{ foodbank.friendly_url|truncatechars:40 }}</a><br>
+            <div class="contacts">
+                <a href="{{ foodbank.url_with_ref }}" class="website">{{ foodbank.friendly_url|truncatechars:40 }}</a>
                 {% if foodbank.phone_number %}
-                  <img src="/static/img/phone.svg" alt="Phone" class="contact-icon"> <a href="tel:{{ location.phone_or_foodbank_phone|full_phone }}">{{ location.phone_or_foodbank_phone|friendly_phone }}</a><br>
+                  <a href="tel:{{ location.phone_or_foodbank_phone|full_phone }}" class="phone">{{ location.phone_or_foodbank_phone|friendly_phone }}</a>
                 {% endif %}
-                <img src="/static/img/email.svg" alt="Email" class="contact-icon"> <a href="mailto:{{ location.email_or_foodbank_email }}">{{ location.email_or_foodbank_email|truncatechars:40 }}</a><br>
-              </div>
+                <a href="mailto:{{ location.email_or_foodbank_email }}" class="email">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
+            </div>
 
               {% include "wfbn/foodbank/includes/charitynetwork.html" %}
 
@@ -99,7 +99,7 @@
               {{ location.postcode }}
             </address>
             <div class="pluscode">
-              <img src="/static/img/pluscode.svg" alt="Plus Code" class="contact-icon"> <a href="https://www.google.co.uk/maps/place/{{ location.plus_code_global|urlencode }}/">{{ location.plus_code_global }}</a>
+              <a href="https://www.google.co.uk/maps/place/{{ location.plus_code_global|urlencode }}/" class="pluscode">{{ location.plus_code_global }}</a>
             </div>
 
             {% if foodbank.delivery_address %}
