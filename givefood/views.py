@@ -352,7 +352,7 @@ def privacy(request):
 @cache_page(SECONDS_IN_WEEK)
 def colophon(request):
     """
-    colophon
+    Colophon
     """
     requirements_url = "https://raw.githubusercontent.com/givefood/givefood/refs/heads/main/requirements.txt"
     requirements_text = requests.get(requirements_url).content.decode("utf-8")
@@ -360,6 +360,7 @@ def colophon(request):
     requirement_names = []
     for requirement in requirements_dict:
         requirement_names.append(requirement.name)
+    requirement_names.sort()
 
     changelog = Changelog.objects.all().order_by("-date")
     template_vars = {
