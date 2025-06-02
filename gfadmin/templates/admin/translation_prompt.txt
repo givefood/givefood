@@ -1,3 +1,0 @@
-Translate this text into the language '{{ language.0 }}' represents in ISO 639, returning just the translated text retaining the case, like Titlecase:
-
-{{ text }}
