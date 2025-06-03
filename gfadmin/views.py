@@ -493,6 +493,26 @@ def foodbank_politics_form(request, slug = None):
     return render(request, "admin/form.html", template_vars)
 
 
+def foodbank_addsub(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "Add Subscriber to %s Food Bank" % (foodbank.name)
+
+    if request.POST:
+        emails = request.POST.get("emails")
+        emails = emails.splitlines()
+        for email in emails:
+            new_sub = FoodbankSubscriber(
+                foodbank = foodbank,
+                email = email,
+                confirmed = True,
+            )
+            new_sub.save()
+        return redirect("admin:foodbank", slug = foodbank.slug)
+
+    template_vars = {}
+    return render(request, "admin/addsub.html", template_vars)
+
 def fblocation_form(request, slug = None, loc_slug = None):
 
     if slug:

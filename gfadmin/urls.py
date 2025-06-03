@@ -45,6 +45,7 @@ urlpatterns = (
     path("foodbank/<slug:slug>/location/<slug:loc_slug>/politics/edit/", fblocation_politics_edit, name="fblocation_politics_edit"),
 
     path("foodbank/<slug:slug>/politics/edit/", foodbank_politics_form, name="foodbank_politics_edit"),
+    path("foodbank/<slug:slug>/addsub/", foodbank_addsub, name="foodbank_addsub"),
     path("foodbank/<slug:slug>/crawl/", foodbank_crawl, name="foodbank_crawl"),
     path("foodbank/<slug:slug>/sendrfi/", foodbank_rfi, name="foodbank_rfi"),
     path("foodbank/<slug:slug>/resave/", foodbank_resave, name="foodbank_resave"),

@@ -1,0 +1,21 @@
+{% extends "admin/page.html" %}
+{% load bulma_tags %}
+
+{% block title %}Addsub Give Food Admin{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+
+    <div class="column">
+      <h2>Add Sub</h2>
+      <form method="post" action="" class="form-{{ page_title|slugify }}">
+        <textarea name="emails" class="textarea"></textarea>
+        <input type="submit" class="button is-link" value="Submit" onclick="this.form.submit();this.disabled = true;">
+        {% csrf_token %}
+      </form>
+    </div>
+
+  </div>
+
+{% endblock %}
