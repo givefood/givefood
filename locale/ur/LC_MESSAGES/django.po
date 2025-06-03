@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-30 11:36+0000\n"
-"PO-Revision-Date: 2025-03-30 12:36+0100\n"
+"POT-Creation-Date: 2025-06-03 17:00+0000\n"
+"PO-Revision-Date: 2025-06-03 18:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ur\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:42
 #: gfwfbn/templates/wfbn/constituency/index.html:32
@@ -118,15 +118,11 @@ msgstr "انہیں مزید ضرورت نہیں ہے۔"
 msgid "Opening hours"
 msgstr "کھلنے کے اوقات"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
-msgid "Hours may vary because of"
-msgstr "کی وجہ سے گھنٹے مختلف ہو سکتے ہیں۔"
-
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:105
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:95
 msgid "Only accepts in-store purchases as donations"
 msgstr "صرف ان اسٹور خریداریوں کو بطور عطیہ قبول کرتا ہے۔"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:106
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:96
 msgid ""
 "Although, sometimes you can add items marked as not from the store. Best to "
 "check."
@@ -134,13 +130,13 @@ msgstr ""
 "اگرچہ، بعض اوقات آپ اسٹور سے نشان زدہ آئٹمز شامل کر سکتے ہیں۔ چیک کرنا "
 "بہترین ہے۔"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:111
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:101
 msgid "Wheelchair accessible"
 msgstr "وہیل چیئر قابل رسائی"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:129
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:97
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:110
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:119
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:99
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:112
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:103
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:116
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:96
@@ -148,17 +144,21 @@ msgstr "وہیل چیئر قابل رسائی"
 msgid "Directions"
 msgstr "ہدایات"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:66
-#: gfwfbn/templates/wfbn/foodbank/locations.html:69
+#: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:6
+msgid "Hours may vary because of"
+msgstr "کی وجہ سے گھنٹے مختلف ہو سکتے ہیں۔"
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:61
+#: gfwfbn/templates/wfbn/foodbank/locations.html:64
 msgid "Main"
 msgstr "مین"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:74
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:109
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:69
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:111
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:115
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:106
 #: gfwfbn/templates/wfbn/foodbank/location_withneed.html:112
-#: gfwfbn/templates/wfbn/foodbank/locations.html:78
+#: gfwfbn/templates/wfbn/foodbank/locations.html:73
 msgid "Delivery"
 msgstr "ڈیلیوری"
 
@@ -249,27 +249,9 @@ msgstr ""
 "ہم آپ کا ای میل پتہ کبھی بھی کسی اور چیز کے لیے استعمال نہیں کریں گے، اور آپ "
 "کسی بھی وقت ان سبسکرائب کر سکتے ہیں۔"
 
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:70
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
-msgid "Website"
-msgstr "ویب سائٹ"
-
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:72
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:125
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:121
-#: gfwfbn/templates/wfbn/index.html:133
-msgid "Phone"
-msgstr "فون"
-
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:74
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:127
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:123
-#: gfwfbn/templates/wfbn/index.html:136
-msgid "Email"
-msgstr "ای میل"
-
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:95
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:97
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:101
+#: gfwfbn/templates/wfbn/foodbank/locations.html:62
 msgid "Administrative"
 msgstr "انتظامی"
 
@@ -286,10 +268,6 @@ msgstr "فی الحال درج ذیل اشیاء کو عطیہ کرنے کی د�
 msgid "This location accepts donations"
 msgstr "یہ مقام عطیات قبول کرتا ہے۔"
 
-#: gfwfbn/templates/wfbn/foodbank/locations.html:67
-msgid "Administration"
-msgstr "انتظامیہ"
-
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:68
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:70
 #: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:165
@@ -301,7 +279,7 @@ msgid "Here is what the email you'll get looks like..."
 msgstr "یہ ہے جو ای میل آپ کو ملے گا وہ کیسا لگتا ہے..."
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: gfwfbn/views.py:301
+#: gfwfbn/views.py:285
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -388,15 +366,23 @@ msgstr ""
 "معذرت ہمیں نہیں معلوم کہ یہاں کس چیز کی ضرورت ہے، براہ کرم فوڈ بینک سے رابطہ "
 "کریں۔"
 
+#: gfwfbn/templates/wfbn/index.html:133
+msgid "Phone"
+msgstr "فون"
+
+#: gfwfbn/templates/wfbn/index.html:136
+msgid "Email"
+msgstr "ای میل"
+
 #: gfwfbn/templates/wfbn/index.html:164
 msgid "For"
 msgstr "کے لیے"
 
-#: givefood/models.py:217 givefood/models.py:219
+#: givefood/models.py:221 givefood/models.py:223
 msgid "Food Bank"
 msgstr "فوڈ بینک"
 
-#: givefood/models.py:931
+#: givefood/models.py:929
 msgid "Closed"
 msgstr "بند"
 
@@ -416,17 +402,17 @@ msgid ""
 "millions of users each year, helping people learn about and engage with food "
 "poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">charity</a> in February 2020, just weeks before the UK "
-"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
-"local food insecurity alleviation organisations delivering hundreds of "
-"tonnes of vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">charity</a> in February 2020, just weeks before the UK entered "
+"COVID-19 lockdowns, and since then we've worked with hundreds of local food "
+"insecurity alleviation organisations delivering hundreds of tonnes of "
+"vitally needed supplies.</p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a "
-"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
-"from Penzance to Lerwick as safe as possible whilst continuing to support "
-"their communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a href=\"/"
+"2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks from "
+"Penzance to Lerwick as safe as possible whilst continuing to support their "
+"communities.</p>\n"
 "\n"
 "                <p>We help our users act on food insecurity by using our "
 "data to show which food banks are in their parliamentary constituency, and "
@@ -447,8 +433,8 @@ msgid ""
 "                    <em>Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
-"org.uk</a>\n"
+"                    <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
@@ -463,31 +449,32 @@ msgstr ""
 "style=\";text-align:right;direction:rtl\"> بہت سے دوسرے خیراتی اداروں سمیت "
 "متعدد سرکاری اور نجی تنظیموں کے ساتھ کام کرتے ہوئے، ہم ہر سال لاکھوں صارفین "
 "کے ساتھ اپنا ڈیٹا شیئر کرتے ہیں، لوگوں کو غذائی غربت کے اسباب کے بارے میں "
-"جاننے اور ان میں مشغول ہونے میں مدد کرتے ہیں۔</p><p style=\";text-align:"
-"right;direction:rtl\"> ہم فروری 2020 میں ایک <a href=\"https://register-of-"
-"charities.charitycommission.gov.uk/en/charity-search/-/charity-"
+"جاننے اور ان میں مشغول ہونے میں مدد کرتے ہیں۔</p><p style=\";text-"
+"align:right;direction:rtl\"> ہم فروری 2020 میں ایک <a href=\"https://"
+"register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-"
 "details/5147019\">چیریٹی</a> بن گئے، یوکے کے COVID-19 لاک ڈاؤن میں داخل ہونے "
 "سے چند ہفتے پہلے، اور اس کے بعد سے ہم نے سینکڑوں ٹن انتہائی ضروری سامان "
 "فراہم کرنے والی مقامی فوڈ انسیکیوریٹی ایلیویشن تنظیموں کے ساتھ کام کیا ہے۔</"
 "p><p style=\";text-align:right;direction:rtl\"> مثال کے طور پر، وبائی مرض کے "
 "دوران ہم نے <a href=\"/2020/#ppe-supplies\">پی پی ای کی 1.2 ملین اشیاء</a> "
 "فراہم کیں تاکہ Penzance سے Lerwick تک فوڈ بینکوں کو ان کی کمیونٹیز کی مدد "
-"جاری رکھتے ہوئے ممکنہ حد تک محفوظ رہے۔</p><p style=\";text-align:right;"
-"direction:rtl\"> ہم اپنے صارفین کو یہ بتانے کے لیے کہ کون سے فوڈ بینک ان کے "
-"پارلیمانی حلقے میں ہیں، خوراک کے عدم تحفظ پر کارروائی کرنے میں مدد کرتے ہیں، "
-"اور <a href=\"/write/\">اپنے رکن پارلیمنٹ کو آسانی سے ای میل کرنے کے لیے ایک "
-"ٹول</a> فراہم کرتے ہیں کہ وہ اس کے تدارک کے لیے کیا کارروائی کر رہے ہیں۔</"
-"p><p style=\";text-align:right;direction:rtl\"> ہمارے آپریشنز اوپن سورس اور "
-"شفاف ہیں، ہمارے تقریباً تمام موجودہ اور تاریخی <a href=\"https://github.com/"
-"givefood/givefood\">کوڈ</a> اور <a href=\"/api/\">ڈیٹا</a> شائع کیے گئے ہیں، "
-"نیز <a href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
-"search/-/charity-details/5147019/accounts-and-annual-returns\">اکاؤنٹس</a> "
-"اور <a href=\"/annual-reports/\">سالانہ رپورٹیں</a> دیکھنے کے لیے دستیاب ہیں۔"
-"</p><p style=\";text-align:right;direction:rtl\"> براہ کرم کسی بھی مشورے، "
-"تبصرے، تنقید یا حوصلہ افزائی کے ساتھ ہم سے رابطہ کرنے میں سنکوچ نہ کریں۔</"
-"p><p style=\";text-align:right;direction:rtl\"> <em>فوڈ ٹرسٹیز دیں۔</em></"
-"p><p style=\";text-align:right;direction:rtl\"> <a href=\"mailto:"
-"mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
+"جاری رکھتے ہوئے ممکنہ حد تک محفوظ رہے۔</p><p style=\";text-"
+"align:right;direction:rtl\"> ہم اپنے صارفین کو یہ بتانے کے لیے کہ کون سے فوڈ "
+"بینک ان کے پارلیمانی حلقے میں ہیں، خوراک کے عدم تحفظ پر کارروائی کرنے میں "
+"مدد کرتے ہیں، اور <a href=\"/write/\">اپنے رکن پارلیمنٹ کو آسانی سے ای میل "
+"کرنے کے لیے ایک ٹول</a> فراہم کرتے ہیں کہ وہ اس کے تدارک کے لیے کیا کارروائی "
+"کر رہے ہیں۔</p><p style=\";text-align:right;direction:rtl\"> ہمارے آپریشنز "
+"اوپن سورس اور شفاف ہیں، ہمارے تقریباً تمام موجودہ اور تاریخی <a "
+"href=\"https://github.com/givefood/givefood\">کوڈ</a> اور <a href=\"/api/"
+"\">ڈیٹا</a> شائع کیے گئے ہیں، نیز <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/"
+"accounts-and-annual-returns\">اکاؤنٹس</a> اور <a href=\"/annual-reports/"
+"\">سالانہ رپورٹیں</a> دیکھنے کے لیے دستیاب ہیں۔</p><p style=\";text-"
+"align:right;direction:rtl\"> براہ کرم کسی بھی مشورے، تبصرے، تنقید یا حوصلہ "
+"افزائی کے ساتھ ہم سے رابطہ کرنے میں سنکوچ نہ کریں۔</p><p style=\";text-"
+"align:right;direction:rtl\"> <em>فوڈ ٹرسٹیز دیں۔</em></p><p style=\";text-"
+"align:right;direction:rtl\"> <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
 "\n"
 "            "
 
@@ -582,12 +569,19 @@ msgid "Managed donations"
 msgstr "منظم عطیات"
 
 #: givefood/templates/public/donate.html:41
+#, fuzzy
+#| msgid ""
+#| "For donations or grants of £500 or more we can provide a managed service. "
+#| "Leveraging our data and logistical expertise we can ensure your donation "
+#| "is used to effectively deliver the required items to food banks that "
+#| "match your charitable aims. Realtime reports and tracking of how your "
+#| "donation is used can also be provided."
 msgid ""
 "For donations or grants of £500 or more we can provide a managed service. "
 "Leveraging our data and logistical expertise we can ensure your donation is "
 "used to effectively deliver the required items to food banks that match your "
 "charitable aims. Realtime reports and tracking of how your donation is used "
-"can also be provided."
+"are provided."
 msgstr ""
 "£500 یا اس سے زیادہ کے عطیات یا گرانٹس کے لیے ہم ایک منظم سروس فراہم کر سکتے "
 "ہیں۔ اپنے ڈیٹا اور لاجسٹک مہارت کا فائدہ اٹھاتے ہوئے ہم یہ یقینی بنا سکتے "
@@ -819,14 +813,20 @@ msgstr "ڈیش بورڈز"
 msgid "Privacy policy"
 msgstr "رازداری کی پالیسی"
 
-#: givefood/views.py:381
+#: givefood/views.py:382
 msgid "minutes"
 msgstr "منٹ"
 
-#: givefood/views.py:382
+#: givefood/views.py:383
 msgid "Under a minute ago"
 msgstr "ایک منٹ پہلے"
 
-#: givefood/views.py:384
+#: givefood/views.py:385
 msgid "ago"
 msgstr "پہلے"
+
+#~ msgid "Website"
+#~ msgstr "ویب سائٹ"
+
+#~ msgid "Administration"
+#~ msgstr "انتظامیہ"
