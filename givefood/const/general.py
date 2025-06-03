@@ -179,6 +179,9 @@ OLD_FOODBANK_SLUGS = {
     "waterloo":"lambeth-croydon",
     "lowestoft":"lowestoft-district",
     "skelmersdale":"skelmersdale-district",
+    "keynsham":"bath-keynsham-somer-valley",
+    "bath":"bath-keynsham-somer-valley",
+    "somer-valley":"bath-keynsham-somer-valley",
 }
 
 FOODBANK_SUBPAGES = [
