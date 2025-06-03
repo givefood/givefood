@@ -159,6 +159,7 @@ LANGUAGES = [
     ("en", "English"),
     ("cy", "Cymraeg"),
     ("gd", "Gàidhlig"),
+    ("ga", "Gaeilge"),
     ("pl", "Polski"),
     ("ro", "Română"),
     ("pa", "ਪੰਜਾਬੀ"),
