@@ -361,14 +361,20 @@ class Foodbank(models.Model):
         return FoodbankSubscriber.objects.filter(foodbank = self).count()
 
     def get_no_locations(self):
-        return FoodbankLocation.objects.filter(foodbank = self).count()
+        if not self.pk:
+            return 0
+        else:
+            return FoodbankLocation.objects.filter(foodbank = self).count()
         
     def get_no_donation_points(self):
-        no_donation_points = FoodbankDonationPoint.objects.filter(foodbank = self).count()
-        no_location_donation_points = FoodbankLocation.objects.filter(foodbank = self, is_donation_point = True).count()
-        no_donation_points = no_donation_points + no_location_donation_points
-        if self.delivery_address:
-            no_donation_points = no_donation_points + 1
+        if not self.pk:
+            return 0
+        else:
+            no_donation_points = FoodbankDonationPoint.objects.filter(foodbank = self).count()
+            no_location_donation_points = FoodbankLocation.objects.filter(foodbank = self, is_donation_point = True).count()
+            no_donation_points = no_donation_points + no_location_donation_points
+            if self.delivery_address:
+                no_donation_points = no_donation_points + 1
         
         return no_donation_points
 
@@ -510,15 +516,21 @@ class Foodbank(models.Model):
 
         # Cache last need date
         try:
-            last_need = FoodbankChange.objects.filter(foodbank = self).latest("created")
-            self.last_need = last_need.created
+            if self.pk:
+                last_need = FoodbankChange.objects.filter(foodbank = self).latest("created")
+                self.last_need = last_need.created
+            else:
+                self.last_need = None
         except FoodbankChange.DoesNotExist:
             self.last_need = None
 
         # Cache latest need
         try:
-            need = FoodbankChange.objects.filter(foodbank = self, published = True).latest("created")
-            self.latest_need = need
+            if self.pk:
+                need = FoodbankChange.objects.filter(foodbank = self, published = True).latest("created")
+                self.latest_need = need
+            else:
+                self.latest_need = None
         except FoodbankChange.DoesNotExist:
             self.latest_need = None
 
