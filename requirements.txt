@@ -1,4 +1,4 @@
-django==5.2.1
+django==5.2.2
 django-csp==3.7
 django-csp-reports
 django-session-csrf
