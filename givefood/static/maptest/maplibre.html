@@ -1,0 +1,162 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MapLibre</title>
+    <link href="https://unpkg.com/maplibre-gl@^5.5.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/css/gf.css">
+    <link rel="stylesheet" href="/static/css/wfbn.css">
+    <style>
+        #map {
+            width:700px;
+            height:1000px;
+            border-radius: 0.25rem;
+        }
+        .maplibregl-popup {
+            max-width: 400px;
+        }
+        .maplibregl-popup-content {
+            font-family:"Soehne Buch","Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size:16px;
+            font-weight: 400;
+            color:rgb(53, 55, 64);
+        }
+        .maplibregl-popup-content .button {
+            margin-top:10px;
+        }
+        .maplibregl-popup-close-button {
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <p>Some sample text before the map.</p>
+    <div id="map"></div>
+    <script src="https://unpkg.com/maplibre-gl@^5.5.0/dist/maplibre-gl.js"></script>
+    <script>
+
+        function slugify(str) {
+            str = str.replace(/^\s+|\s+$/g, ''); // trim
+            str = str.toLowerCase();
+        
+            // remove accents, swap ñ for n, etc
+            var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+            var to   = "aaaaeeeeiiiioooouuuunc------";
+            for (var i=0, l=from.length ; i<l ; i++) {
+                str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+            }
+        
+            str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+                .replace(/\s+/g, '-') // collapse whitespace and replace by -
+                .replace(/-+/g, '-'); // collapse dashes
+        
+            return str;
+        }
+
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: 'https://tiles.openfreemap.org/styles/bright',
+            center: [-4, 55.4], 
+            zoom: 5,
+        });
+
+        const nav = new maplibregl.NavigationControl();
+        map.addControl(nav, 'top-right');
+
+        map.on('load', async () => {
+
+            const orgimg = await map.loadImage('/static/img/mapmarkers/red.png');
+            const locimg = await map.loadImage('/static/img/mapmarkers/yellow.png');
+            const dpimg = await map.loadImage('/static/img/mapmarkers/blue.png');
+
+            map.addImage('orgmrkr', orgimg.data);
+            map.addImage('locmrkr', locimg.data);
+            map.addImage('dpmrkr', dpimg.data);
+
+            map.addSource('givefood', {
+                type: 'geojson',
+                data: '/needs/geo.json',
+            });
+
+            map.addLayer({
+                'id': 'donationpoints',
+                'type': 'symbol',
+                'source': 'givefood',
+                'layout': {
+                    'icon-image': 'dpmrkr',
+                    'icon-size': 0.15,
+                    'icon-allow-overlap': true,
+                },
+                'filter': ['==', 'type', 'd'],
+            });
+
+            map.addLayer({
+                'id': 'locations',
+                'type': 'symbol',
+                'source': 'givefood',
+                'layout': {
+                    'icon-image': 'locmrkr',
+                    'icon-size': 0.2,
+                    'icon-allow-overlap': true,
+                },
+                'filter': ['==', 'type', 'l'],
+            });
+
+            map.addLayer({
+                'id': 'foodbanks',
+                'type': 'symbol',
+                'source': 'givefood',
+                'layout': {
+                    'icon-image': 'orgmrkr',
+                    'icon-size': 0.25,
+                    'icon-allow-overlap': true,
+                },
+                'filter': ['==', 'type', 'f'],
+            });
+
+        });
+
+        layers = ['foodbanks', 'locations', 'donationpoints'];
+
+        map.on('mouseenter', layers, () => {
+            map.getCanvas().style.cursor = 'pointer';
+        });
+
+        map.on('mouseleave', layers, () => {
+            map.getCanvas().style.cursor = '';
+        });
+
+        map.on('click', layers, (e) => {
+            coordinates = e.features[0].geometry.coordinates.slice();
+            name = e.features[0].properties.name;
+            type = e.features[0].properties.type;
+            address = e.features[0].properties.address;
+            url = e.features[0].properties.url;
+            foodbank = e.features[0].properties.foodbank;
+
+            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            }
+
+            html = "<div>" + name + "</div>"
+            if (address) {
+                html += "<br><address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>"
+            }
+            if (type != "f") {
+                if (type == "l") {
+                    html += "<p>Part of "
+                } else {
+                    html += "<p>Donation point for "
+                }
+                html += "<a href='/needs/at/" + slugify(foodbank) + "/'>" + foodbank + "</a> Food Bank.</p>"
+            }
+            html += "<a href='" + url + "' class='button is-info is-small'>More Information</a>"
+
+            new maplibregl.Popup()
+                .setLngLat(coordinates)
+                .setHTML(html)
+                .addTo(map);
+        });
+    </script>
+</body>
