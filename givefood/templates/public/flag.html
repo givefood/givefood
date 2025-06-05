@@ -42,5 +42,12 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block script %}
+
+  <script>
+    document.getElementById("id_our_page").value = window.location.hash.replace("#", "");
+  </script>
 
 {% endblock %}

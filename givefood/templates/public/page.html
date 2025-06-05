@@ -28,7 +28,7 @@
         <div class="columns">
           <div class="column {% if language_direction == 'ltr' %}has-text-left{% else %}has-text-right{% endif %}">
             {% if not is_flag_page %}
-              <a href="{% url 'flag' %}?url={{ flag_path|urlencode }}" rel="nofollow" class="flag"><svg fill="none" height="16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="m4 15s1-1 4-1 5 2 8 2 4-1 4-1v-12s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="m4 22v-7"/></svg> {% trans 'Something wrong in this page?' %}</a>
+              <a href="{% url 'flag' %}#{{ flag_path }}" rel="nofollow" class="flag"><svg fill="none" height="16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="m4 15s1-1 4-1 5 2 8 2 4-1 4-1v-12s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="m4 22v-7"/></svg> {% trans 'Something wrong in this page?' %}</a>
               <br><br>
             {% endif %}
             <p>

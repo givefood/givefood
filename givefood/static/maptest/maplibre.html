@@ -64,6 +64,25 @@
         const nav = new maplibregl.NavigationControl();
         map.addControl(nav, 'top-right');
 
+        layers = {
+            'donationpoints': {
+                'icon': 'dpmrkr',
+                'size': 0.15,
+                'filter': 'd',
+            },
+            'locations': {
+                'icon': 'locmrkr',
+                'size': 0.2,
+                'filter': 'l',
+            },
+            'foodbanks': {
+                'icon': 'orgmrkr',
+                'size': 0.25,
+                'filter': 'f',
+            },
+        }
+        layer_list = Object.keys(layers);
+
         map.on('load', async () => {
 
             const orgimg = await map.loadImage('/static/img/mapmarkers/red.png');
@@ -79,55 +98,31 @@
                 data: '/needs/geo.json',
             });
 
-            map.addLayer({
-                'id': 'donationpoints',
-                'type': 'symbol',
-                'source': 'givefood',
-                'layout': {
-                    'icon-image': 'dpmrkr',
-                    'icon-size': 0.15,
-                    'icon-allow-overlap': true,
-                },
-                'filter': ['==', 'type', 'd'],
-            });
-
-            map.addLayer({
-                'id': 'locations',
-                'type': 'symbol',
-                'source': 'givefood',
-                'layout': {
-                    'icon-image': 'locmrkr',
-                    'icon-size': 0.2,
-                    'icon-allow-overlap': true,
-                },
-                'filter': ['==', 'type', 'l'],
-            });
-
-            map.addLayer({
-                'id': 'foodbanks',
-                'type': 'symbol',
-                'source': 'givefood',
-                'layout': {
-                    'icon-image': 'orgmrkr',
-                    'icon-size': 0.25,
-                    'icon-allow-overlap': true,
-                },
-                'filter': ['==', 'type', 'f'],
-            });
+            for (const [layer, props] of Object.entries(layers)) {
+                map.addLayer({
+                    'id': layer,
+                    'type': 'symbol',
+                    'source': 'givefood',
+                    'layout': {
+                        'icon-image': props.icon,
+                        'icon-size': props.size,
+                        'icon-allow-overlap': true,
+                    },
+                    'filter': ['==', 'type', props.filter],
+                });
+            }
 
         });
 
-        layers = ['foodbanks', 'locations', 'donationpoints'];
-
-        map.on('mouseenter', layers, () => {
+        map.on('mouseenter', layer_list, () => {
             map.getCanvas().style.cursor = 'pointer';
         });
 
-        map.on('mouseleave', layers, () => {
+        map.on('mouseleave', layer_list, () => {
             map.getCanvas().style.cursor = '';
         });
 
-        map.on('click', layers, (e) => {
+        map.on('click', layer_list, (e) => {
             coordinates = e.features[0].geometry.coordinates.slice();
             name = e.features[0].properties.name;
             type = e.features[0].properties.type;
