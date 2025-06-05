@@ -425,7 +425,6 @@ def flag(request):
     """
     Flag a page
     """
-    url = request.GET.get("url")
     done = request.GET.get("thanks", False)
 
     if request.POST:
@@ -448,11 +447,7 @@ def flag(request):
             completed_url = "%s%s" % (reverse("flag"),"?thanks=1")
             return redirect(completed_url)
     else:
-        form = FlagForm(
-            initial = {
-                "our_page":url,
-            }
-        )
+        form = FlagForm()
 
     template_vars = {
         "is_flag_page":True,
