@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-03 17:00+0000\n"
+"POT-Creation-Date: 2025-06-09 13:17+0000\n"
 "PO-Revision-Date: 2025-06-03 18:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -382,10 +382,12 @@ msgid "For"
 msgstr "Pentru"
 
 #: givefood/models.py:221 givefood/models.py:223
-msgid "Food Bank"
-msgstr "Banca de alimente"
+#, fuzzy
+#| msgid "Food banks"
+msgid "Foodbank"
+msgstr "Băncile alimentare"
 
-#: givefood/models.py:929
+#: givefood/models.py:941
 msgid "Closed"
 msgstr "Închis"
 
@@ -832,6 +834,9 @@ msgstr "Mai puțin de un minut în urmă"
 #: givefood/views.py:385
 msgid "ago"
 msgstr "în urmă"
+
+#~ msgid "Food Bank"
+#~ msgstr "Banca de alimente"
 
 #~ msgid "Website"
 #~ msgstr "Website"

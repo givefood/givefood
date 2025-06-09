@@ -218,9 +218,9 @@ class Foodbank(models.Model):
             return self.name
         else:
             if current_language == "cy" or current_language == "gd":
-                return "%s %s" % (_("Food Bank"), self.name)
+                return "%s %s" % (_("Foodbank"), self.name)
             else:
-                return "%s %s" % (self.name, _("Food Bank"))
+                return "%s %s" % (self.name, _("Foodbank"))
 
     def full_name(self):
         current_language = get_language()
