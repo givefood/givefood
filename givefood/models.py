@@ -202,6 +202,8 @@ class Foodbank(models.Model):
             schema_dict["sameAs"].append(self.fsa_url())
         if self.facebook_page:
             schema_dict["sameAs"].append("https://www.facebook.com/%s" % self.facebook_page)
+        if self.twitter_handle:
+            schema_dict["sameAs"].append("https://x.com/%s" % self.twitter_handle)
         
         if not as_sub_property:
             schema_dict["@context"] = "https://schema.org"
