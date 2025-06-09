@@ -100,7 +100,13 @@ def index(request):
             "slug":"mars",
             "url":"https://www.mars.com/en-gb",
             "format":"svg",
-        }
+        },
+        {
+            "name":"Citizens Advice",
+            "slug":"ca",
+            "url":"https://www.citizensadvice.org.uk/",
+            "format":"svg",
+        },
     ]
 
     stats = {

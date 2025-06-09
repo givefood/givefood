@@ -122,6 +122,9 @@ h2 {
 .mars {
     width:100px;
 }
+.ca {
+    width:80px;
+}
 @media screen and (min-width: 769px) {
     .trussell {
         height:80px;
