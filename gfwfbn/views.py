@@ -143,14 +143,18 @@ def rss(request):
     return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
 
 
+@never_cache
 def get_location(request):
     """
     Handle non-javascript location requests
     """
 
-    lat_lng = request.META.get("HTTP_X_APPENGINE_CITYLATLONG")
+    response = requests.get("https://freeipapi.com/api/json/%s" % (request.META.get("CF-Connecting-IP", None)))
+    if response.status_code != 200:
+        return HttpResponseBadRequest()
+    response_json = response.json()
     url = reverse("wfbn:index")
-    redirect_url = "%s?lat_lng=%s" % (url, lat_lng)
+    redirect_url = "%s?lat_lng=%s%s" % (url, response_json["latitude"], response_json["longitude"])
     return redirect(redirect_url)
 
 
