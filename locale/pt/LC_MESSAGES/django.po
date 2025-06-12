@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-09 13:17+0000\n"
-"PO-Revision-Date: 2025-06-03 18:08+0100\n"
+"PO-Revision-Date: 2025-06-12 11:26+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt\n"
@@ -380,10 +380,8 @@ msgid "For"
 msgstr "Para"
 
 #: givefood/models.py:221 givefood/models.py:223
-#, fuzzy
-#| msgid "Food banks"
 msgid "Foodbank"
-msgstr "Bancos de alimentos"
+msgstr "Banco de alimentos"
 
 #: givefood/models.py:941
 msgid "Closed"
@@ -574,13 +572,6 @@ msgid "Managed donations"
 msgstr "Doações gerenciadas"
 
 #: givefood/templates/public/donate.html:41
-#, fuzzy
-#| msgid ""
-#| "For donations or grants of £500 or more we can provide a managed service. "
-#| "Leveraging our data and logistical expertise we can ensure your donation "
-#| "is used to effectively deliver the required items to food banks that "
-#| "match your charitable aims. Realtime reports and tracking of how your "
-#| "donation is used can also be provided."
 msgid ""
 "For donations or grants of £500 or more we can provide a managed service. "
 "Leveraging our data and logistical expertise we can ensure your donation is "
@@ -588,12 +579,12 @@ msgid ""
 "charitable aims. Realtime reports and tracking of how your donation is used "
 "are provided."
 msgstr ""
-"Para doações ou subsídios de £ 500 ou mais, podemos fornecer um serviço "
+"Para doações ou subsídios de £ 500 ou mais, podemos oferecer um serviço "
 "gerenciado. Aproveitando nossos dados e expertise logística, podemos "
-"garantir que sua doação seja usada para entregar efetivamente os itens "
-"necessários aos bancos de alimentos que correspondem aos seus objetivos de "
-"caridade. Relatórios em tempo real e rastreamento de como sua doação é usada "
-"também podem ser fornecidos."
+"garantir que sua doação seja usada para entregar com eficácia os itens "
+"necessários aos bancos de alimentos que atendem aos seus objetivos de "
+"caridade. Fornecemos relatórios em tempo real e acompanhamento de como sua "
+"doação é usada."
 
 #: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"

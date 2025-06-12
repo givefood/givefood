@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-09 13:17+0000\n"
-"PO-Revision-Date: 2025-06-03 18:08+0100\n"
+"PO-Revision-Date: 2025-06-12 11:28+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -383,10 +383,8 @@ msgid "For"
 msgstr "Dla"
 
 #: givefood/models.py:221 givefood/models.py:223
-#, fuzzy
-#| msgid "Food banks"
 msgid "Foodbank"
-msgstr "Banki żywności"
+msgstr "Bank żywności"
 
 #: givefood/models.py:941
 msgid "Closed"
@@ -578,13 +576,6 @@ msgid "Managed donations"
 msgstr "Zarządzane darowizny"
 
 #: givefood/templates/public/donate.html:41
-#, fuzzy
-#| msgid ""
-#| "For donations or grants of £500 or more we can provide a managed service. "
-#| "Leveraging our data and logistical expertise we can ensure your donation "
-#| "is used to effectively deliver the required items to food banks that "
-#| "match your charitable aims. Realtime reports and tracking of how your "
-#| "donation is used can also be provided."
 msgid ""
 "For donations or grants of £500 or more we can provide a managed service. "
 "Leveraging our data and logistical expertise we can ensure your donation is "
@@ -596,8 +587,8 @@ msgstr ""
 "zapewnić usługę zarządzaną. Wykorzystując nasze dane i wiedzę logistyczną, "
 "możemy zapewnić, że Twoja darowizna zostanie wykorzystana do skutecznego "
 "dostarczenia wymaganych artykułów do banków żywności, które odpowiadają "
-"Twoim celom charytatywnym. Możemy również zapewnić raporty w czasie "
-"rzeczywistym i śledzenie sposobu wykorzystania Twojej darowizny."
+"Twoim celom charytatywnym. Dostarczane są raporty w czasie rzeczywistym i "
+"śledzenie sposobu wykorzystania Twojej darowizny."
 
 #: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"

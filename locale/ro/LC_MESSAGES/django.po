@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-09 13:17+0000\n"
-"PO-Revision-Date: 2025-06-03 18:08+0100\n"
+"PO-Revision-Date: 2025-06-12 11:31+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ro\n"
@@ -382,10 +382,8 @@ msgid "For"
 msgstr "Pentru"
 
 #: givefood/models.py:221 givefood/models.py:223
-#, fuzzy
-#| msgid "Food banks"
 msgid "Foodbank"
-msgstr "Băncile alimentare"
+msgstr "Bancă de alimente"
 
 #: givefood/models.py:941
 msgid "Closed"
@@ -575,13 +573,6 @@ msgid "Managed donations"
 msgstr "Donații gestionate"
 
 #: givefood/templates/public/donate.html:41
-#, fuzzy
-#| msgid ""
-#| "For donations or grants of £500 or more we can provide a managed service. "
-#| "Leveraging our data and logistical expertise we can ensure your donation "
-#| "is used to effectively deliver the required items to food banks that "
-#| "match your charitable aims. Realtime reports and tracking of how your "
-#| "donation is used can also be provided."
 msgid ""
 "For donations or grants of £500 or more we can provide a managed service. "
 "Leveraging our data and logistical expertise we can ensure your donation is "
@@ -589,12 +580,12 @@ msgid ""
 "charitable aims. Realtime reports and tracking of how your donation is used "
 "are provided."
 msgstr ""
-"Pentru donații sau granturi de 500 GBP sau mai mult, putem oferi un serviciu "
-"gestionat. Folosind datele și expertiza noastră logistică, ne putem asigura "
-"că donația dvs. este utilizată pentru a livra în mod eficient articolele "
-"necesare băncilor alimentare care se potrivesc obiectivelor dvs. caritabile. "
-"De asemenea, pot fi furnizate rapoarte în timp real și urmărirea modului în "
-"care este utilizată donația dvs."
+"Pentru donații sau granturi de 500 de lire sterline sau mai mult, putem "
+"oferi un serviciu gestionat. Valorificând datele și expertiza noastră "
+"logistică, ne putem asigura că donația dumneavoastră este utilizată pentru a "
+"livra eficient articolele necesare către băncile de alimente care corespund "
+"scopurilor dumneavoastră caritabile. Sunt furnizate rapoarte în timp real și "
+"urmărirea modului în care este utilizată donația dumneavoastră."
 
 #: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-09 13:17+0000\n"
-"PO-Revision-Date: 2025-06-03 18:08+0100\n"
+"PO-Revision-Date: 2025-06-12 11:28+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ur\n"
@@ -379,10 +379,8 @@ msgid "For"
 msgstr "کے لیے"
 
 #: givefood/models.py:221 givefood/models.py:223
-#, fuzzy
-#| msgid "Food banks"
 msgid "Foodbank"
-msgstr "فوڈ بینکس"
+msgstr "فوڈ بینک"
 
 #: givefood/models.py:941
 msgid "Closed"
@@ -571,13 +569,6 @@ msgid "Managed donations"
 msgstr "منظم عطیات"
 
 #: givefood/templates/public/donate.html:41
-#, fuzzy
-#| msgid ""
-#| "For donations or grants of £500 or more we can provide a managed service. "
-#| "Leveraging our data and logistical expertise we can ensure your donation "
-#| "is used to effectively deliver the required items to food banks that "
-#| "match your charitable aims. Realtime reports and tracking of how your "
-#| "donation is used can also be provided."
 msgid ""
 "For donations or grants of £500 or more we can provide a managed service. "
 "Leveraging our data and logistical expertise we can ensure your donation is "
@@ -586,10 +577,10 @@ msgid ""
 "are provided."
 msgstr ""
 "£500 یا اس سے زیادہ کے عطیات یا گرانٹس کے لیے ہم ایک منظم سروس فراہم کر سکتے "
-"ہیں۔ اپنے ڈیٹا اور لاجسٹک مہارت کا فائدہ اٹھاتے ہوئے ہم یہ یقینی بنا سکتے "
-"ہیں کہ آپ کے عطیہ کا استعمال مؤثر طریقے سے مطلوبہ اشیاء کو فوڈ بینکوں تک "
-"پہنچانے کے لیے کیا جائے جو آپ کے خیراتی مقاصد سے مماثل ہوں۔ ریئل ٹائم رپورٹس "
-"اور آپ کا عطیہ کیسے استعمال ہوتا ہے اس کی ٹریکنگ بھی فراہم کی جا سکتی ہے۔"
+"ہیں۔ اپنے ڈیٹا اور لاجسٹک مہارت سے فائدہ اٹھاتے ہوئے ہم اس بات کو یقینی بنا "
+"سکتے ہیں کہ آپ کے عطیہ کو مؤثر طریقے سے فوڈ بینکوں کو مطلوبہ اشیاء کی فراہمی "
+"کے لیے استعمال کیا جائے جو آپ کے خیراتی مقاصد سے مماثل ہیں۔ ریئل ٹائم رپورٹس "
+"اور ٹریکنگ فراہم کی جاتی ہے کہ آپ کا عطیہ کیسے استعمال ہوتا ہے۔"
 
 #: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-06-09 13:17+0000\n"
-"PO-Revision-Date: 2025-06-03 18:14+0100\n"
+"PO-Revision-Date: 2025-06-12 11:25+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ga\n"
@@ -384,10 +384,8 @@ msgid "For"
 msgstr "Do"
 
 #: givefood/models.py:221 givefood/models.py:223
-#, fuzzy
-#| msgid "Food banks"
 msgid "Foodbank"
-msgstr "Bainceanna bia"
+msgstr "Banc Bia"
 
 #: givefood/models.py:941
 msgid "Closed"
