@@ -149,7 +149,7 @@ def get_location(request):
     Handle non-javascript location requests
     """
 
-    response = requests.get("https://freeipapi.com/api/json/%s" % (request.META.get("CF-Connecting-IP", None)))
+    response = requests.get("https://freeipapi.com/api/json/%s" % (request.META.get("HTTP_CF_CONNECTING_IP", None)))
     if response.status_code != 200:
         return HttpResponseBadRequest()
     response_json = response.json()
