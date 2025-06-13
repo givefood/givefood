@@ -154,7 +154,7 @@ def get_location(request):
         return HttpResponseBadRequest()
     response_json = response.json()
     url = reverse("wfbn:index")
-    redirect_url = "%s?lat_lng=%s%s" % (url, response_json["latitude"], response_json["longitude"])
+    redirect_url = "%s?lat_lng=%s,%s" % (url, response_json["latitude"], response_json["longitude"])
     return redirect(redirect_url)
 
 
