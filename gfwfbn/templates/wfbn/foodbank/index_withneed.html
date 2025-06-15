@@ -82,6 +82,10 @@
                 {% endif %}
               {% endwith %}
 
+              {% if foodbank.is_school %}
+                <p>🏫 {% blocktrans %}This food bank is located at a school, so may not be open to the public.{% endblocktrans %}</p>
+              {% endif %}
+
           </div>
 
           <div class="column">

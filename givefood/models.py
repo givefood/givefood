@@ -90,6 +90,7 @@ class Foodbank(models.Model):
     rss_url = models.URLField(max_length=200, verbose_name="RSS feed URL", null=True, blank=True)
     address_is_administrative = models.BooleanField(default=False, verbose_name="Is the main address just used for administrative purposes?")
     is_closed = models.BooleanField(default=False)
+    is_school = models.BooleanField(default=False)
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)

@@ -75,6 +75,10 @@
               <a href="mailto:{{ foodbank.contact_email }}" class="email">{{ foodbank.contact_email|truncatechars:40 }}</a>
             </div>
 
+            {% if foodbank.is_school %}
+              <br><p>🏫 {% blocktrans %}This food bank is located at a school, so may not be open to the public.{% endblocktrans %}</p>
+            {% endif %}
+
             {% include "wfbn/foodbank/includes/charitynetwork.html" %}
             {% include "wfbn/foodbank/includes/fsa.html" %}
 
