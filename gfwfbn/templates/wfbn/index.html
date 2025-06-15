@@ -127,8 +127,6 @@
                         {% if change_text == "Nothing" %}
                           {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
                         {% elif change_text == "Unknown" %}
-                          {% blocktrans %}Sorry. We don't know what's needed here, please contact the food bank{% endblocktrans %}
-                          <br>
                           {% if location.phone_number %}
                             <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ location.phone_number|full_phone }}">{{ location.phone_number|friendly_phone }}</a>
                             <br>
