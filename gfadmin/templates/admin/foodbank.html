@@ -120,6 +120,10 @@
             None (<a href="https://ratings.food.gov.uk/business-search?address-search={{ foodbank.postcode|urlencode }}" target="_blank">Search</a>)
           {% endif %}
         </dd>
+        {% if foodbank.is_school %}
+            <dt>Is school</dt>
+            <dd>✅ Yes</dd>
+        {% endif %}
       </dl>
 
       <h3>Contacts</h3>
