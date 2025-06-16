@@ -41,7 +41,7 @@ def index(request):
     lat = lng = approx_address = locations = donationpoints = None
 
     # Recently updated food banks
-    recently_updated = FoodbankChange.objects.filter(published = True).order_by("-created")[:10]
+    recently_updated = FoodbankChange.objects.filter(published = True).exclude(change_text = "Unknown").order_by("-created")[:10]
 
     # Most viewed food banks
     most_viewed = FoodbankHit.objects.raw("SELECT 1 as id, (select name from givefood_foodbank where id = foodbank_id) as name, (select slug from givefood_foodbank where id = foodbank_id) as slug, SUM(hits) as sumhits FROM givefood_foodbankhit WHERE day >= CURRENT_DATE - 7 and day <= CURRENT_DATE GROUP BY foodbank_id ORDER BY sumhits DESC LIMIT 10")
