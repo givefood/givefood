@@ -447,7 +447,7 @@ def flag(request):
             email_body = render_to_string("public/flag_email.txt",{"form":fields.items()})
             send_email(
                 to = "mail@givefood.org.uk",
-                subject = "Flagged Page",
+                subject = "Give Food - Flagged Page",
                 body = email_body,
             )
             completed_url = "%s%s" % (reverse("flag"),"?thanks=1")
