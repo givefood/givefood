@@ -443,7 +443,7 @@ def foodbank_screenshot(request, slug):
         return HttpResponseNotFound()
 
 
-
+@cache_page(SECONDS_IN_WEEK)
 def foodbank_shoppinglist_screenshot(request, slug):
     """
     Food bank shopping list screenshot
