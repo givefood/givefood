@@ -130,19 +130,29 @@ del {
     overflow:hidden;
     zoom:0;
 }
-footer {
+.footer {
     margin-top:3rem;
+    background: #3b3b3b;
+    background: linear-gradient(0deg,rgba(59, 59, 59, 1) 100%, rgba(0, 0, 0, 1) 0%);
+    color:#fff;
+}
+.footer a {
+    color:#fff;
+    text-decoration:underline;
+}
+.footer a:hover {
+    color:#D3D3D3;
 }
 .lastupdated {
     text-transform:lowercase;
 }
 .flag svg {
-    stroke:#007BC7;
+    stroke:#fff;
     vertical-align:middle;
     margin:0 2px 2px 0;
 }
 .flag:hover svg {
-    stroke:rgb(53, 55, 64);
+    stroke:#D3D3D3
 }
 .tabs li.is-active a {
     color: rgb(53, 55, 64);
