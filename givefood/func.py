@@ -1239,6 +1239,36 @@ def htmlbodytext(html):
         return False
 
 
+def get_screenshot(url, width=1280, height=1280):
+
+    cf_account_id = get_cred("cf_account_id")
+    cf_api_key = get_cred("gf_browser_api")
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer %s" % (cf_api_key),
+    }
+    api_url = "https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/screenshot" % (cf_account_id)
+
+    response = requests.post(api_url, headers = headers, json = {
+        "url": url,
+        "viewport": {
+            "width": width,
+            "height": height,
+        },
+        "addStyleTag": [
+            {
+                "content": "#ccc {display:none};",
+            }
+        ],
+    })
+    
+    if response.status_code != 200:
+        return False
+    else:
+        return response.content
+
+
 def get_translation(language, text, source="en"):
 
     key = get_cred("gcp_translate_key")

@@ -19,7 +19,7 @@ from django_earthdistance.models import EarthDistance, LlToEarth
 from givefood.const.general import SITE_DOMAIN
 
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
-from givefood.func import approx_rev_geocode, geocode, find_locations, find_donationpoints, admin_regions_from_postcode, get_cred, is_uk, miles, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
+from givefood.func import approx_rev_geocode, geocode, find_locations, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, is_uk, miles, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 
 
@@ -434,34 +434,30 @@ def foodbank_screenshot(request, slug):
     """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    cf_account_id = get_cred("cf_account_id")
-    cf_api_key = get_cred("gf_browser_api")
 
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer %s" % (cf_api_key),
-    }
-    api_url = "https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/screenshot" % (cf_account_id)
+    photo = get_screenshot(foodbank.url)
 
-    response = requests.post(api_url, headers = headers, json = {
-        "url": foodbank.url,
-        "viewport": {
-            "width": 1280,
-            "height": 1280,
-        },
-        "addStyleTag": [
-            {
-                "content": "#ccc {display:none};",
-            }
-        ],
-    })
-    
-    if response.status_code != 200:
-        return HttpResponseBadRequest()
+    if photo:
+        return HttpResponse(photo, content_type='image/png')
     else:
-        photo = response.content
+        return HttpResponseNotFound()
 
-    return HttpResponse(photo, content_type='image/png')
+
+
+def foodbank_shoppinglist_screenshot(request, slug):
+    """
+    Food bank shopping list screenshot
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    # Get the shopping list screenshot
+    photo = get_screenshot(foodbank.shopping_list_url)
+
+    if photo:
+        return HttpResponse(photo, content_type='image/png')
+    else:
+        return HttpResponseNotFound()
 
 
 @cache_page(SECONDS_IN_WEEK)
