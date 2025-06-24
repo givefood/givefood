@@ -322,7 +322,7 @@ def manifest(request):
     return HttpResponse(json.dumps(manifest_content), content_type="application/json")
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def foodbank(request, slug):
     """
     Food bank index
@@ -352,7 +352,7 @@ def foodbank(request, slug):
     return render(request, "wfbn/foodbank/index_%s.html" % (template), template_vars)
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def foodbank_rss(request, slug):
     """
     Food bank RSS feed
@@ -460,7 +460,7 @@ def foodbank_shoppinglist_screenshot(request, slug):
         return HttpResponseNotFound()
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def foodbank_locations(request,slug):
     """
     Food bank locations index
@@ -484,7 +484,7 @@ def foodbank_locations(request,slug):
     return render(request, "wfbn/foodbank/locations.html", template_vars)
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def foodbank_donationpoints(request,slug):
     """
     Food bank donation points index
@@ -525,7 +525,7 @@ def foodbank_news(request,slug):
     return render(request, "wfbn/foodbank/news.html", template_vars)
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def foodbank_socialmedia(request, slug):
     """
     Food bank social media links
@@ -607,7 +607,7 @@ def foodbank_subscribe_sample(request, slug):
     return render(request, "wfbn/emails/notification.html", template_vars)
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def foodbank_location(request, slug, locslug):
     """
     Food bank individual location
@@ -675,7 +675,7 @@ def foodbank_location_photo(request, slug, locslug):
     return HttpResponse(photo, content_type='image/jpeg')
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def foodbank_donationpoint(request, slug, dpslug):
     """
     Food bank donation point
