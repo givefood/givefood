@@ -139,6 +139,7 @@ del {
 .footer a {
     color:#fff;
     text-decoration:underline;
+    text-underline-offset: 0.2em;
 }
 .footer a:hover {
     color:#D3D3D3;
