@@ -1,0 +1,130 @@
+{% extends "public/page.html" %}
+{% load i18n %}
+{% load humanize %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFoodCharity">
+  <meta property="og:title" content="{{ foodbank.full_name }}">
+  <meta property="og:description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
+  <meta name="description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
+  <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn-generic:foodbank_map' foodbank.slug %}">
+  <meta property="og:image:alt" content="Map of {{ foodbank.full_name }}">
+  <link rel="manifest" href="{% url 'wfbn:manifest' %}">
+  <meta name="geo.placename" content="{{ foodbank.full_name }}">
+  <meta name="geo.position" content="{{ foodbank.latt_long }}">
+  <meta property="place:location:latitude" content="{{ foodbank.latt }}">
+  <meta property="place:location:longitude" content="{{ foodbank.long }}">
+  {% if foodbank.is_closed %}
+    <meta name="robots" content="noindex">
+  {% endif %}
+{% endblock %}
+
+{% block title %}{% blocktrans %}Charity{% endblocktrans %} - {{ foodbank.full_name }} - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+
+      <div class="columns">
+
+        <div class="column">
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+          {% include 'public/includes/langswitcher.html' %}
+        </div>
+
+      </div>
+
+      <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+        <ul>
+            <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+            <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
+            <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
+            <li class="is-active"><a href="#" aria-current="page">{% blocktrans %}Charity{% endblocktrans %}</a></li>
+        </ul>
+  </nav>
+
+      {% trans "Charity" as prefix %}
+      {% include "wfbn/foodbank/includes/pagetitle.html" with prefix=prefix %}
+
+      <div class="columns is-8 is-variable">
+
+          <div class="column is-2 menu-col">
+            {% include "wfbn/foodbank/includes/menu.html" %}
+          </div>
+
+            <div class="column is-4 content">
+              <p>{{ foodbank.full_name }} {% if foodbank.charity_just_foodbank %} is {% else %} operates under {% endif %} a registered charity.</p>
+              <dl>
+                <dt>{% blocktrans %}Charity name{% endblocktrans %}</dt>
+                <dd>{{ foodbank.charity_name|title }}</dd>
+                <dt>Regulator</dt>
+                <dd>
+                    {% if foodbank.country == 'England' or foodbank.country == 'Wales' %}Charity Commission for England &amp; Wales{% endif %}
+                    {% if foodbank.country == 'Scotland' %}Office of the Scottish Charity Regulator{% endif %}
+                    {% if foodbank.country == 'Northern Ireland' %}The Charity Commission for Northern Ireland{% endif %}
+                </dd>
+                <dt>{% blocktrans %}Charity number{% endblocktrans %}</dt>
+                <dd>{{ foodbank.charity_number }}</dd>
+                {% if foodbank.charity_type %}
+                    <dt>{% blocktrans %}Charity type{% endblocktrans %}</dt>
+                    <dd>{{ foodbank.charity_type }}</dd>
+                {% endif %}
+                {% if foodbank.charity_reg_date %}
+                    <dt>{% blocktrans %}Registration date{% endblocktrans %}</dt>
+                    <dd>{{ foodbank.charity_reg_date|date:'jS F Y' }}</dd>
+                {% endif %}
+              </dl>
+              {% if foodbank.charity_objectives %}
+                <h3>{% blocktrans %}Charity objectives{% endblocktrans %}</h3>
+                <p>{{ foodbank.charity_objectives|linebreaksbr }}</p>
+              {% endif %}
+              {% if foodbank.charity_purpose %}
+                <h3>{% blocktrans %}Charity purposes{% endblocktrans %}</h3>
+                <ul>
+                  {% for purpose in foodbank.charity_purpose_list %}
+                    <li>{{ purpose }}</li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+
+            <div class="column is-4">
+                {% if charity_years %}
+                    <table class="table is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th>{% blocktrans %}Year{% endblocktrans %}</th>
+                                <th>{% blocktrans %}Income{% endblocktrans %}</th>
+                                <th>{% blocktrans %}Expenditure{% endblocktrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for year in charity_years %}
+                                <tr>
+                                    <td>{{ year.date|date:"Y" }}</td>
+                                    <td>£{{ year.income|intcomma }}</td>
+                                    <td>£{{ year.expenditure|intcomma }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
+<script src="/static/js/wfbn.js?v={{ version }}" defer></script>
+
+{% endblock %}
+

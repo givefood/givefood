@@ -18,4 +18,5 @@ urlpatterns = (
     path("need_categorisation/", need_categorisation, name="need_categorisation"),
     path("load_mps/", load_mps, name="load_mps"),
     path("refresh_mps/", refresh_mps, name="refresh_mps"),
+    path("get_charity_info/", get_charity_info, name="get_charity_info"),
 )

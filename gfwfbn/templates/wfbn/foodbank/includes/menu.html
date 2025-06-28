@@ -11,6 +11,9 @@
         {% if foodbank.rss_url %}
             <li><a {% if section == 'news' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_news' foodbank.slug %}">{% blocktrans %}News{% endblocktrans %}</a></li>
         {% endif %}
+        {% if foodbank.charity_name %}
+            <li><a {% if section == 'charity' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_charity' foodbank.slug %}">{% blocktrans %}Charity{% endblocktrans %}</a></li>
+        {% endif %}
         {% if foodbank.facebook_page or foodbank.twitter_handle %}
             <li><a  {% if section == 'socialmedia' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}">{% blocktrans %}Social media{% endblocktrans %}</a></li>
         {% endif %}

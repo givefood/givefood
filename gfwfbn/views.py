@@ -18,7 +18,7 @@ from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.const.general import SITE_DOMAIN
 
-from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
+from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
 from givefood.func import approx_rev_geocode, geocode, find_locations, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, is_uk, miles, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 
@@ -523,6 +523,27 @@ def foodbank_news(request,slug):
     }
 
     return render(request, "wfbn/foodbank/news.html", template_vars)
+
+
+@cache_page(SECONDS_IN_DAY)
+def foodbank_charity(request, slug):
+    """
+    Food bank charity information
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    charity_years = CharityYear.objects.filter(foodbank = foodbank).order_by("-date")
+
+    if not foodbank.charity_name:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "section":"charity",
+        "foodbank":foodbank,
+        "charity_years":charity_years,
+    }
+
+    return render(request, "wfbn/foodbank/charity.html", template_vars)
 
 
 @cache_page(SECONDS_IN_DAY)

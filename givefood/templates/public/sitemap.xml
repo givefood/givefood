@@ -19,6 +19,9 @@
 		{% if foodbank.rss_url %}
 			<url><loc>{{ domain }}{% url 'wfbn:foodbank_news' foodbank.slug %}</loc></url>
 		{% endif %}
+		{% if foodbank.charity_name %}
+			<url><loc>{{ domain }}{% url 'wfbn:foodbank_charity' foodbank.slug %}</loc></url>
+		{% endif %}
 		{% if foodbank.facebook_page or foodbank.twitter_handle %}
 			<url><loc>{{ domain }}{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}</loc></url>
 		{% endif %}

@@ -28,9 +28,12 @@ from givefood.func import gemini, geocode, get_calories, get_translation, parse_
 
 class Foodbank(models.Model):
 
+    # Name
     name = models.CharField(max_length=100)
     alt_name = models.CharField(max_length=100, null=True, blank=True, help_text="E.g. Welsh version of the name")
     slug = models.CharField(max_length=100, editable=False)
+
+    # Address
     address = models.TextField()
     postcode = models.CharField(max_length=9, validators=[
         RegexValidator(
@@ -39,7 +42,9 @@ class Foodbank(models.Model):
             code = "invalid_postcode",
         ),
     ])
+    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
 
+    # Location
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)
     longitude = models.FloatField(editable=False)
@@ -47,15 +52,37 @@ class Foodbank(models.Model):
     plus_code_compound = models.CharField(max_length=200, verbose_name="Plus Code (Compound)", null=True, blank=True, editable=False)
     plus_code_global = models.CharField(max_length=200, verbose_name="Plus Code (Global)", null=True, blank=True, editable=False)
     place_has_photo = models.BooleanField(default=False, editable=False)
+    county = models.CharField(max_length=75, null=True, blank=True, editable=False)
+    district = models.CharField(max_length=75, null=True, blank=True, editable=False)
+    ward = models.CharField(max_length=75, null=True, blank=True, editable=False)
+    lsoa = models.CharField(max_length=75, null=True, blank=True, editable=False)
+    msoa = models.CharField(max_length=75, null=True, blank=True, editable=False)
 
+    # Etc
     delivery_address = models.TextField(null=True, blank=True)
     delivery_latt_long = models.CharField(max_length=50, verbose_name="Delivery latitude, longitude", editable=False, null=True, blank=True)
-    country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
     network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
+
+    # Charity 
     charity_number = models.CharField(max_length=50,null=True, blank=True)
     charity_just_foodbank = models.BooleanField(default=False, verbose_name="Charity just foodbank", help_text="Tick this if the charity is purely used for the foodbank, rather than other uses such as a church")
+    charity_id = models.CharField(max_length=250, editable=False, null=True, blank=True)
+    charity_name = models.CharField(max_length=250, editable=False, null=True, blank=True)
+    charity_type = models.CharField(max_length=250, editable=False, null=True, blank=True)
+    charity_reg_date = models.DateField(editable=False, null=True, blank=True)
+    charity_postcode = models.CharField(max_length=9, editable=False, null=True, blank=True, validators=[
+        RegexValidator(
+            regex = POSTCODE_REGEX,
+            message = "Not a valid charity postcode",
+            code = "invalid_postcode",
+        ),
+    ])
+    charity_website = models.URLField(max_length=500, editable=False, null=True, blank=True)
+    charity_objectives = models.TextField(editable=False, null=True, blank=True)
+    charity_purpose = models.TextField(editable=False, null=True, blank=True)
 
+    # Political
     parliamentary_constituency = models.ForeignKey("ParliamentaryConstituency", null=True, blank=True, editable=False, on_delete=models.DO_NOTHING)
     parliamentary_constituency_name = models.CharField(max_length=50, null=True, blank=True, editable=False)
     parliamentary_constituency_slug = models.CharField(max_length=50, null=True, blank=True, editable=False)
@@ -63,39 +90,41 @@ class Foodbank(models.Model):
     mp_party = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP's party", editable=False)
     mp_parl_id = models.IntegerField(verbose_name="MP's ID", null=True, blank=True, editable=False)
 
-    county = models.CharField(max_length=75, null=True, blank=True, editable=False)
-    district = models.CharField(max_length=75, null=True, blank=True, editable=False)
-    ward = models.CharField(max_length=75, null=True, blank=True, editable=False)
-    lsoa = models.CharField(max_length=75, null=True, blank=True, editable=False)
-    msoa = models.CharField(max_length=75, null=True, blank=True, editable=False)
-
+    # Social IDs
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
     twitter_handle = models.CharField(max_length=50, null=True, blank=True)
     bankuet_slug = models.CharField(max_length=50, null=True, blank=True)
     fsa_id = models.CharField(max_length=50, null=True, blank=True, verbose_name="Food Standards Agency Business ID")
     hours_between_need_check = models.IntegerField(default=3, verbose_name="Hours between need checks", choices=((0,0),(3,3),(6,6),(12,12),(48,48)))
 
+    # Food bank group
     foodbank_group = models.ForeignKey("FoodbankGroup", null=True, blank=True, on_delete=models.DO_NOTHING)
     foodbank_group_name = models.CharField(max_length=100, null=True, blank=True, editable=False)
     foodbank_group_slug = models.CharField(max_length=100, null=True, blank=True, editable=False)
 
+    # Contact details
     contact_email = models.EmailField()
     notification_email = models.EmailField(null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     secondary_phone_number = models.CharField(max_length=20, null=True, blank=True)
     delivery_phone_number = models.CharField(max_length=20, null=True, blank=True)
 
+    # URLs
     url = models.URLField(max_length=200, verbose_name="URL")
     shopping_list_url = models.URLField(max_length=200, verbose_name="Shopping list URL")
     rss_url = models.URLField(max_length=200, verbose_name="RSS feed URL", null=True, blank=True)
+
+    # Booleans
     address_is_administrative = models.BooleanField(default=False, verbose_name="Is the main address just used for administrative purposes?")
     is_closed = models.BooleanField(default=False)
     is_school = models.BooleanField(default=False)
 
+    # Foodbank dates
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     edited = models.DateTimeField(editable=False, null=True)
 
+    # Stored dates
     last_order = models.DateField(editable=False, null=True)
     last_social_media_check = models.DateTimeField(editable=False, null=True)
     last_need = models.DateTimeField(editable=False, null=True)
@@ -104,7 +133,9 @@ class Foodbank(models.Model):
     last_discrepancy_check = models.DateTimeField(editable=False, null=True)
     last_need_check = models.DateTimeField(editable=False, null=True)
     latest_need = models.ForeignKey("FoodbankChange", null=True, blank=True, editable=False, on_delete=models.DO_NOTHING, related_name="latest_need")
+    last_charity_check = models.DateTimeField(editable=False, null=True, blank=True)
 
+    # Metadata
     no_locations = models.IntegerField(editable=False, default=0)
     no_donation_points = models.IntegerField(editable=False, default=0)
     days_between_needs = models.IntegerField(editable=False, default=0)
@@ -350,6 +381,12 @@ class Foodbank(models.Model):
             return False
         else:
             return True
+        
+    def charity_purpose_list(self):
+        if not self.charity_purpose:
+            return []
+        else:
+            return self.charity_purpose.splitlines()
 
     def orders(self):
         return Order.objects.filter(foodbank = self).order_by("-delivery_datetime")
@@ -1986,3 +2023,12 @@ class Changelog(models.Model):
 
         super(Changelog, self).delete(*args, **kwargs)
         decache([reverse("colophon")])
+
+
+class CharityYear(models.Model):
+
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    date = models.DateField()
+    income = models.IntegerField(null=True, blank=True, help_text="Income in pounds")
+    expenditure = models.IntegerField(null=True, blank=True, help_text="Expenditure in pounds")
