@@ -62,9 +62,9 @@
                 <dd>{{ foodbank.charity_name|title }}</dd>
                 <dt>Regulator</dt>
                 <dd>
-                    {% if foodbank.country == 'England' or foodbank.country == 'Wales' %}Charity Commission for England &amp; Wales{% endif %}
-                    {% if foodbank.country == 'Scotland' %}Office of the Scottish Charity Regulator{% endif %}
-                    {% if foodbank.country == 'Northern Ireland' %}The Charity Commission for Northern Ireland{% endif %}
+                    {% if foodbank.country == 'England' or foodbank.country == 'Wales' %}<a href="https://www.gov.uk/government/organisations/charity-commission?ref=givefood.org.uk">Charity Commission for England &amp; Wales</a>{% endif %}
+                    {% if foodbank.country == 'Scotland' %}<a href="https://www.oscr.org.uk/?ref=givefood.org.uk">Office of the Scottish Charity Regulator</a>{% endif %}
+                    {% if foodbank.country == 'Northern Ireland' %}<a href="https://www.charitycommissionni.org.uk/?ref=givefood.org.uk">The Charity Commission for Northern Ireland</a>{% endif %}
                 </dd>
                 <dt>{% blocktrans %}Charity number{% endblocktrans %}</dt>
                 <dd>{{ foodbank.charity_number }}</dd>
