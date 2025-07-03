@@ -1,5 +1,7 @@
 import csv
+from io import StringIO
 import json
+import re
 from django.shortcuts import get_object_or_404, render
 import logging, requests
 
@@ -516,7 +518,25 @@ def get_charity_info(request):
         
 
     for foodbank in ni_charities:
-        logging.info("Getting NI charity info for %s" % foodbank.name)
+        logging.warn("Getting NI charity info for %s" % foodbank.name)
+        reg_id = foodbank.charity_number.replace("NIC","")
+        url = "https://www.charitycommissionni.org.uk/umbraco/api/CharityApi/ExportDetailsToCsv?regid=%s&subid=0" % (reg_id)
+        response = requests.get(url)
+        if response.status_code == 200:
+            csv_input = csv.reader(StringIO(response.text))
+            headers = next(csv_input)
+            data_row = next(csv_input)
+            data = dict(zip(headers, data_row))
+            foodbank.charity_name = data.get("Charity name")
+            foodbank.charity_reg_date = data.get("Date registered")
+            foodbank.charity_website = data.get("Website")
+            # Objectives and purposes are reversed in NI
+            foodbank.charity_objectives = data.get("Charitable purposes")
+            objectives = data.get("What the charity does")
+            if objectives:
+                objectives = re.sub(r",(?!\s)", "\n", objectives)
+            foodbank.charity_purpose = objectives
+            foodbank.save()
 
     return HttpResponse("OK")
     
