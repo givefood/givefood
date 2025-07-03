@@ -80,11 +80,11 @@
                 {% endif %}
               </dl>
               {% if foodbank.charity_objectives %}
-                <h3>{% blocktrans %}Charity objectives{% endblocktrans %}</h3>
+                <h3>{% blocktrans %}Objectives{% endblocktrans %}</h3>
                 <p>{{ foodbank.charity_objectives|linebreaksbr }}</p>
               {% endif %}
               {% if foodbank.charity_purpose %}
-                <h3>{% blocktrans %}Charity purposes{% endblocktrans %}</h3>
+                <h3>{% blocktrans %}Purposes{% endblocktrans %}</h3>
                 <ul>
                   {% for purpose in foodbank.charity_purpose_list %}
                     <li>{{ purpose }}</li>
