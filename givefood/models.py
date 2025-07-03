@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import html
+import math
 import hashlib, unicodedata, logging, json
 from datetime import date, datetime, timedelta
 from string import capwords
@@ -16,6 +17,7 @@ from django.urls import reverse, translate_url
 from django.utils.translation import gettext as _
 from django.utils.translation import get_language
 from django.template.loader import render_to_string
+from django.db.models import Max, Min
 
 from requests import PreparedRequest
 
@@ -139,6 +141,7 @@ class Foodbank(models.Model):
     no_locations = models.IntegerField(editable=False, default=0)
     no_donation_points = models.IntegerField(editable=False, default=0)
     days_between_needs = models.IntegerField(editable=False, default=0)
+    footprint = models.IntegerField(editable=False, default=0)
 
     def __str__(self):
         return self.name
@@ -399,6 +402,46 @@ class Foodbank(models.Model):
 
     def number_subscribers(self):
         return FoodbankSubscriber.objects.filter(foodbank = self).count()
+    
+    def get_footprint(self):
+        if self.no_locations == 0 and self.no_donation_points == 0:
+            return 0
+        
+        # FB
+        fb_max_lat = float(self.latitude)
+        fb_min_lat = float(self.latitude)
+        fb_max_lng = float(self.longitude)
+        fb_min_lng = float(self.longitude)
+
+        # Locations
+        loc_max_lat = FoodbankLocation.objects.filter(foodbank = self).aggregate(Max('latitude'))['latitude__max']
+        loc_min_lat = FoodbankLocation.objects.filter(foodbank = self).aggregate(Min('latitude'))['latitude__min']
+        loc_max_lng = FoodbankLocation.objects.filter(foodbank = self).aggregate(Max('longitude'))['longitude__max']
+        loc_min_lng = FoodbankLocation.objects.filter(foodbank = self).aggregate(Min('longitude'))['longitude__min']
+
+        # Donation Points
+        dp_max_lat = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Max('latitude'))['latitude__max']
+        dp_min_lat = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Min('latitude'))['latitude__min']
+        dp_max_lng = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Max('longitude'))['longitude__max']
+        dp_min_lng = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Min('longitude'))['longitude__min']
+
+        logging.warn("here")
+        logging.warn([fb_max_lat, loc_max_lat, dp_max_lat])
+        max_lat = max(x for x in [fb_max_lat, loc_max_lat, dp_max_lat] if x is not None)
+        min_lat = min(x for x in [fb_min_lat, loc_min_lat, dp_min_lat] if x is not None)
+        max_lng = max(x for x in [fb_max_lng, loc_max_lng, dp_max_lng] if x is not None)
+        min_lng = min(x for x in [fb_min_lng, loc_min_lng, dp_min_lng] if x is not None)
+
+        meters_per_degree_lat = 111_320  # meters per degree latitude
+        avg_lat = (max_lat + min_lat) / 2
+        meters_per_degree_lng = 40075000 * math.cos(math.radians(avg_lat)) / 360  # meters per degree longitude at avg_lat
+
+        height_m = abs(max_lat - min_lat) * meters_per_degree_lat
+        width_m = abs(max_lng - min_lng) * meters_per_degree_lng
+
+        area_m2 = height_m * width_m
+        return int(area_m2)
+    
 
     def get_no_locations(self):
         if not self.pk:
@@ -499,6 +542,9 @@ class Foodbank(models.Model):
         # LatLong
         self.latitude = self.latt_long.split(",")[0]
         self.longitude = self.latt_long.split(",")[1]
+
+        # Footprint
+        self.footprint = self.get_footprint()
 
         # Cleanup phone numbers
         if self.phone_number:
