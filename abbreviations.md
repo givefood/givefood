@@ -21,6 +21,8 @@
   <dd>Gàidhlig (Gaelic, in Gaelic)</dd>
   <dt>mp</dt>
   <dd>Member of Parliament</dd>
+  <dt>NI<dt>
+  <dd>Northern Ireland</dd>
   <dt>parlcon</dt>
   <dd>Parliamentary constituency</dd>
   <dt>tt</dt>
