@@ -89,6 +89,11 @@ def foodbanks(request):
         "district",
         "charity_number",
         "charity_register_url",
+        "charity_name",
+        "charity_type",
+        "charity_reg_date",
+        "charity_postcode",
+        "charity_website",
         "food_standards_agency_id",
         "food_standards_agency_url",
         "network",
@@ -99,6 +104,7 @@ def foodbanks(request):
         "needed_items",
         "excess_items",
         "need_found",
+        "footprintsqm",
     ])
 
     for foodbank in foodbanks:
@@ -132,6 +138,11 @@ def foodbanks(request):
             foodbank.district,
             foodbank.charity_number,
             foodbank.charity_register_url(),
+            foodbank.charity_name,
+            foodbank.charity_type,
+            foodbank.charity_reg_date,
+            foodbank.charity_postcode,
+            foodbank.charity_website,
             foodbank.fsa_id,
             foodbank.fsa_url(),
             foodbank.network,
@@ -142,6 +153,7 @@ def foodbanks(request):
             foodbank.latest_need.change_text,
             foodbank.latest_need.excess_change_text,
             foodbank.latest_need.created,
+            foodbank.footprint,
         ])
 
         for location in foodbank.locations():
@@ -174,6 +186,11 @@ def foodbanks(request):
                 location.district,
                 foodbank.charity_number,
                 foodbank.charity_register_url(),
+                foodbank.charity_name,
+                foodbank.charity_type,
+                foodbank.charity_reg_date,
+                foodbank.charity_postcode,
+                foodbank.charity_website,
                 None,
                 None,
                 foodbank.network,
@@ -184,6 +201,7 @@ def foodbanks(request):
                 foodbank.latest_need.change_text,
                 foodbank.latest_need.excess_change_text,
                 foodbank.latest_need.created,
+                foodbank.footprint,
             ])
 
     return response
