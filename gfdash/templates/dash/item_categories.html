@@ -1,4 +1,5 @@
 {% extends "public/page.html" %}
+{% load humanize %}
 
 {% block title %}Requested items by category - Give Food{% endblock %}
 
@@ -39,7 +40,7 @@
           {% for category in categories %}
               <tr>
                   <td>{{ category.category }}</td>
-                  <td>{{ category.count }}</td>
+                  <td>{{ category.count|intcomma }}</td>
               </tr>
           {% endfor %}
         </tbody>
