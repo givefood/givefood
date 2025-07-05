@@ -203,6 +203,17 @@ def item_categories(request):
     return render(request, "dash/item_categories.html", template_vars)
 
 
+@cache_page(SECONDS_IN_DAY)
+def item_groups(request):
+
+    groups = FoodbankChangeLine.objects.filter(type = "need").values("group").annotate(count=Count("group")).order_by("-count")
+    template_vars = {
+        "groups":groups,
+    }
+
+    return render(request, "dash/item_groups.html", template_vars)
+
+
 @cache_page(SECONDS_IN_HOUR)
 def tt_old_data(request):
 

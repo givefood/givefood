@@ -10,6 +10,7 @@ urlpatterns = (
     re_path(r'^most-requested-items/$', most_requested_items, name="most_requested_items"),
     re_path(r'^most-excess-items/$', most_excess_items, name="most_excess_items"),
     re_path(r'^item-categories/$', item_categories, name="item_categories"),
+    re_path(r'^item-groups/$', item_groups, name="item_groups"),
     re_path(r'^trusselltrust/old-data/$', tt_old_data, name="tt_old_data"),
     re_path(r'^trusselltrust/most-requested-items/$', most_requested_items, name="tt_most_requested_items"),
     re_path(r'^articles/$', articles, name="articles"),
