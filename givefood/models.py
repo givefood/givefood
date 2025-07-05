@@ -425,8 +425,6 @@ class Foodbank(models.Model):
         dp_max_lng = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Max('longitude'))['longitude__max']
         dp_min_lng = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Min('longitude'))['longitude__min']
 
-        logging.warn("here")
-        logging.warn([fb_max_lat, loc_max_lat, dp_max_lat])
         max_lat = max(x for x in [fb_max_lat, loc_max_lat, dp_max_lat] if x is not None)
         min_lat = min(x for x in [fb_min_lat, loc_min_lat, dp_min_lat] if x is not None)
         max_lng = max(x for x in [fb_max_lng, loc_max_lng, dp_max_lng] if x is not None)
