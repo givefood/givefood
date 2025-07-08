@@ -42,9 +42,6 @@ label, strong, b, h3 {
     font-family:"Soehne Kraftig","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-weight:500 !important;
 }
-dt {
-    font-style: italic;
-}
 .logo img {
     margin:30px 0 0 0;
     width:148px;
