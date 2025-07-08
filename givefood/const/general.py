@@ -183,6 +183,7 @@ OLD_FOODBANK_SLUGS = {
     "bath":"bath-keynsham-somer-valley",
     "somer-valley":"bath-keynsham-somer-valley",
     "stretford":"trafford-north",
+    "durham":"county-durham",
 }
 
 FOODBANK_SUBPAGES = [
