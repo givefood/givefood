@@ -131,7 +131,7 @@
                             <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ location.phone_number|full_phone }}">{{ location.phone_number|friendly_phone }}</a>
                             <br>
                           {% endif %}
-                          <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ location.contact_email }}" id="email_link">{{ location.contact_email }}</a>
+                          <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ location.contact_email }}">{{ location.contact_email }}</a>
                         {% elif change_text == "Facebook" %}
                           Check the food bank's <a href="https://www.facebook.com/{% if location.type == 'organisation' %}{{ location.facebook_page }}{% endif %}{% if location.type == 'location' %}{{ location.foodbank.facebook_page }}{% endif %}?ref=givefood.org.uk">Facebook page</a> for what they need
                         {% else %}
