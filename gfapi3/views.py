@@ -18,7 +18,7 @@ def items(request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename="givefood_items.csv"'
 
-    writer = csv.writer(response)
+    writer = csv.writer(response, quoting=csv.QUOTE_ALL)
     writer.writerow([
         "organisation_name",
         "organisation_alt_name",
@@ -59,7 +59,7 @@ def foodbanks(request):
     response = HttpResponse(content_type="text/csv")
     response['Content-Disposition'] = 'attachment; filename="givefood_foodbanks.csv"'
 
-    writer = csv.writer(response)
+    writer = csv.writer(response, quoting=csv.QUOTE_ALL)
     writer.writerow([
         "organisation_name",
         "organisation_alt_name",
@@ -118,7 +118,7 @@ def foodbanks(request):
             foodbank.url,
             foodbank.shopping_list_url,
             foodbank.rss_url,
-            str(foodbank.phone_number),
+            foodbank.phone_number,
             foodbank.secondary_phone_number,
             foodbank.contact_email,
             foodbank.address,
