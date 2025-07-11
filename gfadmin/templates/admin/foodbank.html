@@ -70,24 +70,23 @@
       <dl>
         <dt>GF Info</dt>
         <dd>
-          <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.slug }}</a>
-          <a href="{% url 'wfbn:foodbank' foodbank.slug %}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+          <a href="{% url 'wfbn:foodbank' foodbank.slug %}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.slug }}</a>
         </dd>
         <dt>Website</dt>
         <dd>
-          <a href="{{ foodbank.url }}">{{ foodbank.friendly_url }}</a>
           <a href="{{ foodbank.url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+          <a href="{{ foodbank.url }}">{{ foodbank.friendly_url }}</a>
         </dd>
         <dt>Shopping list</dt>
         <dd>
-          <a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url }}</a>
           <a href="{{ foodbank.shopping_list_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+          <a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url }}</a>
         </dd>
         {% if foodbank.rss_url %}
           <dt>RSS</dt>
           <dd>
-            <a href="{{ foodbank.rss_url }}">{{ foodbank.friendly_rss_url }}</a>
             <a href="{{ foodbank.rss_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+            <a href="{{ foodbank.rss_url }}">{{ foodbank.friendly_rss_url }}</a>
           </dd>
         {% endif %}
         {% if foodbank.facebook_page %}
