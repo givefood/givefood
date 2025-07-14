@@ -1,5 +1,5 @@
 django==5.2.4
-django-csp==3.7
+django-csp==4.0
 django-csp-reports
 django-session-csrf
 python-dateutil
