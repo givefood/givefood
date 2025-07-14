@@ -8,9 +8,9 @@ from functools import reduce
 from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Sum
 
-from givefood.models import Foodbank, FoodbankChange, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, Order
+from givefood.models import CharityYear, Foodbank, FoodbankChange, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, Order
 from givefood.func import group_list, get_all_foodbanks, filter_change_text
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR
 
@@ -429,3 +429,14 @@ def supermarkets(request):
     }
 
     return render(request, "dash/supermarkets.html", template_vars)
+
+
+def charity_income_expenditure(request):
+
+    five_years_ago = date.today().year - 5
+    years = CharityYear.objects.filter(foodbank__charity_just_foodbank = True, date__year__gte=five_years_ago).values("date__year").annotate(income=Sum("income"), expenditure=Sum("expenditure")).order_by("-date__year")
+
+    template_vars = {
+        "years":years,
+    }
+    return render(request, "dash/charity_income_expenditure.html", template_vars)
