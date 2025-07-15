@@ -53,6 +53,7 @@ urlpatterns += i18n_patterns(
     path("needs/", include('gfwfbn.urls.i18n', namespace="wfbn")),
 
     # Root
+    path("<uuid:pk>/", givefood.views.uuid_redir, name="uuid_redir"),
     path("robots.txt", givefood.views.robotstxt, name="robotstxt"),
     path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
 

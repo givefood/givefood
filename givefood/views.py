@@ -5,7 +5,7 @@ from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
-from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
 from django.db.models import Sum
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _
@@ -271,6 +271,35 @@ def api(request):
     API doc index
     """
     return render(request, "public/api.html")
+
+
+def uuid_redir(request, pk):
+    """
+    Redirect to a food bank by UUID
+    """
+
+    try:
+        foodbank = Foodbank.objects.get(uuid=pk)
+        if foodbank:
+            return redirect("wfbn:foodbank", slug=foodbank.slug)
+    except Foodbank.DoesNotExist:
+        pass
+
+    try:
+        foodbank_location = FoodbankLocation.objects.get(uuid=pk)
+        if foodbank_location:
+            return redirect("wfbn:foodbank_location", slug=foodbank_location.foodbank_slug, locslug=foodbank_location.slug)
+    except FoodbankLocation.DoesNotExist:
+        pass
+
+    try:
+        foodbank_donation_point = FoodbankDonationPoint.objects.get(uuid=pk)
+        if foodbank_donation_point:
+            return redirect("wfbn:foodbank_donationpoint", slug=foodbank_donation_point.foodbank_slug, dpslug=foodbank_donation_point.slug)
+    except FoodbankDonationPoint.DoesNotExist:
+        pass
+
+    raise Http404(("UUID %s not found") % pk)
 
 
 @cache_page(SECONDS_IN_WEEK)

@@ -3,7 +3,7 @@
 
 import html
 import math
-import hashlib, unicodedata, logging, json
+import hashlib, unicodedata, logging, json, uuid
 from datetime import date, datetime, timedelta
 from string import capwords
 from urllib.parse import quote_plus
@@ -23,7 +23,7 @@ from requests import PreparedRequest
 
 from givefood.settings import LANGUAGES
 
-from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK
+from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import gemini, geocode, get_calories, get_translation, parse_old_sainsburys_order_text, parse_tesco_order_text, parse_sainsburys_order_text, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode, translate_need, validate_postcode
 
@@ -31,6 +31,7 @@ from givefood.func import gemini, geocode, get_calories, get_translation, parse_
 class Foodbank(models.Model):
 
     # Name
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     alt_name = models.CharField(max_length=100, null=True, blank=True, help_text="E.g. Welsh version of the name")
     slug = models.CharField(max_length=100, editable=False)
@@ -229,6 +230,7 @@ class Foodbank(models.Model):
         # sameAs
         schema_dict["sameAs"] = []
         schema_dict["sameAs"].append(self.url)
+        schema_dict["sameAs"].append("%s%s" % (SITE_DOMAIN, reverse("uuid_redir", kwargs={"pk": self.uuid})))
         if self.place_id:
             schema_dict["sameAs"].append("https://www.google.co.uk/maps/place/%s/" % quote_plus(self.plus_code_global))
         if self.charity_number:
@@ -670,6 +672,7 @@ class FoodbankLocation(models.Model):
     foodbank_email = models.EmailField(editable=False)
     is_closed = models.BooleanField(default=False)
 
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, editable=False)
     address = models.TextField()
@@ -893,6 +896,7 @@ class FoodbankDonationPoint(models.Model):
     foodbank_network = models.CharField(max_length=50, editable=False)
     is_closed = models.BooleanField(default=False)
 
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, editable=False)
     address = models.TextField()

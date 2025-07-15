@@ -74,6 +74,7 @@ def foodbanks(request):
     if format != "geojson":
         for foodbank in foodbanks:
             response_list.append({
+                "id": str(foodbank.uuid),
                 "name":foodbank.full_name(),
                 "alt_name":foodbank.alt_name,
                 "slug":foodbank.slug,
@@ -194,6 +195,7 @@ def foodbank(request, slug):
             )
 
         response_dict = {
+            "id": str(foodbank.uuid),
             "name":foodbank.name,
             "alt_name":foodbank.alt_name,
             "slug":foodbank.slug,
@@ -329,6 +331,7 @@ def foodbank_search(request):
     for foodbank in foodbanks:
         latest_need = foodbank.latest_need
         response_list.append({
+            "id": str(foodbank.uuid),
             "name":foodbank.name,
             "alt_name":foodbank.alt_name,
             "slug":foodbank.slug,
