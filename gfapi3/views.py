@@ -20,6 +20,7 @@ def items(request):
 
     writer = csv.writer(response, quoting=csv.QUOTE_ALL)
     writer.writerow([
+        "organisation_id",
         "organisation_name",
         "organisation_alt_name",
         "organisation_slug",
@@ -35,6 +36,7 @@ def items(request):
 
     for item in items:
         writer.writerow([
+            item.foodbank.uuid,
             item.foodbank.name,
             item.foodbank.alt_name,
             item.foodbank.slug,
@@ -61,6 +63,7 @@ def foodbanks(request):
 
     writer = csv.writer(response, quoting=csv.QUOTE_ALL)
     writer.writerow([
+        "id",
         "organisation_name",
         "organisation_alt_name",
         "organisation_slug",
@@ -110,6 +113,7 @@ def foodbanks(request):
     for foodbank in foodbanks:
 
         writer.writerow([
+            str(foodbank.uuid),
             foodbank.name,
             foodbank.alt_name,
             foodbank.slug,
@@ -158,6 +162,7 @@ def foodbanks(request):
 
         for location in foodbank.locations():
             writer.writerow([
+                str(location.uuid),
                 foodbank.name,
                 foodbank.alt_name,
                 foodbank.slug,
