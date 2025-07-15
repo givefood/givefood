@@ -390,6 +390,7 @@ def locations(request):
         for location in locations:
 
             response_list.append({
+                "id": str(location.uuid),
                 "name":location.name,
                 "slug":location.slug,
                 "phone":location.phone_or_foodbank_phone(),
@@ -480,6 +481,7 @@ def location_search(request):
     for item in foodbanksandlocations:
 
         item_dict = {
+            "id": str(item.uuid),
             "type":item.type,
             "slug":item.slug,
             "name":item.name,
