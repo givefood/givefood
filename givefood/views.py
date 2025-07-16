@@ -275,31 +275,29 @@ def api(request):
 
 def uuid_redir(request, pk):
     """
-    Redirect to a food bank by UUID
+    Redirect to the correct page for a given UUID by checking models in order.
     """
+    foodbank = Foodbank.objects.filter(uuid=pk).first()
+    if foodbank:
+        return redirect("wfbn:foodbank", slug=foodbank.slug)
 
-    try:
-        foodbank = Foodbank.objects.get(uuid=pk)
-        if foodbank:
-            return redirect("wfbn:foodbank", slug=foodbank.slug)
-    except Foodbank.DoesNotExist:
-        pass
+    location = FoodbankLocation.objects.filter(uuid=pk).first()
+    if location:
+        return redirect(
+            "wfbn:foodbank_location",
+            slug=location.foodbank_slug,
+            locslug=location.slug
+        )
 
-    try:
-        foodbank_location = FoodbankLocation.objects.get(uuid=pk)
-        if foodbank_location:
-            return redirect("wfbn:foodbank_location", slug=foodbank_location.foodbank_slug, locslug=foodbank_location.slug)
-    except FoodbankLocation.DoesNotExist:
-        pass
+    donation_point = FoodbankDonationPoint.objects.filter(uuid=pk).first()
+    if donation_point:
+        return redirect(
+            "wfbn:foodbank_donationpoint",
+            slug=donation_point.foodbank_slug,
+            dpslug=donation_point.slug
+        )
 
-    try:
-        foodbank_donation_point = FoodbankDonationPoint.objects.get(uuid=pk)
-        if foodbank_donation_point:
-            return redirect("wfbn:foodbank_donationpoint", slug=foodbank_donation_point.foodbank_slug, dpslug=foodbank_donation_point.slug)
-    except FoodbankDonationPoint.DoesNotExist:
-        pass
-
-    raise Http404(("UUID %s not found") % pk)
+    raise Http404(f"Object with UUID {pk} not found.")
 
 
 @cache_page(SECONDS_IN_WEEK)
