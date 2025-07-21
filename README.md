@@ -3,6 +3,8 @@
 
 The source of https://www.givefood.org.uk - built using Django, hosted at [Mythic Beasts](https://www.mythic-beasts.com/) using [Coolify](https://www.coolify.io/) and fronted by [Cloudflare](https://www.cloudflare.com/).
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/givefood/givefood)
+
 ## Structure 
 | App Name  | Description                         | URL                                    |
 |-----------|-------------------------------------|----------------------------------------|
