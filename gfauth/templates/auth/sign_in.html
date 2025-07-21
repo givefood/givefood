@@ -3,7 +3,7 @@
 {% block title %}Give Food{% endblock %}
 
 {% block head %}
-  <script src="https://accounts.google.com/gsi/client" async></script>
+  <script src="https://accounts.google.com/gsi/client?hl=en" async></script>
 {% endblock %}
 
 {% block body %}
@@ -37,7 +37,8 @@
               data-theme="outline"
               data-text="signin_with"
               data-size="large"
-              data-logo_alignment="left">
+              data-logo_alignment="left"
+              data-locale="en">
           </div>
         </div>
       {% endif %}
