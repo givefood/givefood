@@ -184,6 +184,7 @@ OLD_FOODBANK_SLUGS = {
     "somer-valley":"bath-keynsham-somer-valley",
     "stretford":"trafford-north",
     "durham":"county-durham",
+    "hunstanton-and-district":"hunstanton-district",
 }
 
 FOODBANK_SUBPAGES = [
