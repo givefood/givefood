@@ -195,6 +195,7 @@ FOODBANK_SUBPAGES = [
     "socialmedia",
     "nearby",
     "subscribe",
+    "charity",
 ]
 
 DONT_APPEND_FOOD_BANK = [
