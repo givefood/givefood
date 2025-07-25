@@ -1220,7 +1220,7 @@ def gemini(prompt, temperature, response_mime_type = "application/json"):
         'DANGEROUS' : 'BLOCK_NONE'
     }
     model = genai.GenerativeModel(
-        model_name = "gemini-2.0-flash",
+        model_name = "gemini-2.0-flash-lite",
         generation_config = generation_config,
         safety_settings = safety_settings,
     )
