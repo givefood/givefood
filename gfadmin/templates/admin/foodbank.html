@@ -77,7 +77,7 @@
           <a href="{{ foodbank.url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
           <a href="{{ foodbank.url }}">{{ foodbank.friendly_url }}</a>
         </dd>
-        <dt>Shopping list</dt>
+        <dt>Shopping List URL</dt>
         <dd>
           <a href="{{ foodbank.shopping_list_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
           <a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url }}</a>
@@ -87,6 +87,18 @@
           <dd>
             <a href="{{ foodbank.rss_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
             <a href="{{ foodbank.rss_url }}">{{ foodbank.friendly_rss_url }}</a>
+          </dd>
+        {% endif %}
+        {% if foodbank.locations_url %}
+          <dt>Locations URL</dt>
+          <dd>
+            <a href="{{ foodbank.locations_url }}">{{ foodbank.locations_url }}</a>
+          </dd>
+        {% endif %}
+        {% if foodbank.donation_points_url %}
+          <dt>Donation Points URL</dt>
+          <dd>
+            <a href="{{ foodbank.donation_points_url }}">{{ foodbank.donation_points_url }}</a>
           </dd>
         {% endif %}
         {% if foodbank.facebook_page %}
