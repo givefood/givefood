@@ -1,3 +1,4 @@
+import os
 from givefood.func import get_cred
 
 def gmap_keys(request):
@@ -8,4 +9,5 @@ def gmap_keys(request):
         'gmap_geocode_key':get_cred("gmap_geocode_key"),
         'gmap_places_key':get_cred("gmap_places_key"),
         'offline_key':get_cred("offline_key"),
+        'db_host':os.environ.get('DB_HOST')
     }

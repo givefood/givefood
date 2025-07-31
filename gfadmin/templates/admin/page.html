@@ -63,7 +63,12 @@
       {% block body %}{% endblock %}
     </div>
     <footer class="footer">
-      {{ version }}
+      <dl>
+        <dt>Version</dt>
+        <dd>{{ version }}</dd>
+        <dt>Database</dt>
+        <dd>{{ db_host }}</dd>
+      </dl>
     </footer>
 
     <script>
