@@ -1370,7 +1370,6 @@ def do_foodbank_need_check(foodbank):
             response_schema = response_schema,
             response_mime_type = "application/json",
         )
-        logging.warning(need_response)
     except Exception as e:
         website_discrepancy = FoodbankDiscrepancy(
             foodbank = foodbank,
