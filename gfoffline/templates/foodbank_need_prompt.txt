@@ -2,13 +2,6 @@ You are a data entry clerk for a food bank charity that carefully aggregates inf
 
 It is fine to have no items if you can't find any. There might be multiple lists in the text - you should combine them in order. Sometimes part of the list of items needed is called a shopping list. Don't include emoji in the reply. Correct any obvious spelling mistakes. Keep quantities. Food banks also handle non-food items.
 
-Reply with a valid JSON object containing the following:
-
-{
-    "needed": JSON list of items this food bank is requesting to have donated, are running low on, have low stock of, or need, using linebreaks to separate items. In titlecase. Don't repeat items.
-    "excess": JSON list of items this food bank has too many of, using linebreaks to separate items. In titlecase. Don't repeat items.
-}
-
 From this web page describing the food bank's needed and excess items below:
 
 {% if foodbank.slug == 'haverhill' %}

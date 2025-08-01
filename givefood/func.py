@@ -1205,7 +1205,7 @@ def chatgpt(prompt, temperature):
     return response["choices"][0]["message"]["content"]
 
 
-def gemini(prompt, temperature, response_mime_type = "application/json"):
+def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None):
 
     genai.configure(api_key=get_cred("gemini_api_key"))
     generation_config = {
@@ -1213,6 +1213,8 @@ def gemini(prompt, temperature, response_mime_type = "application/json"):
         "max_output_tokens": 8192,
         "response_mime_type": response_mime_type,
     }
+    if response_schema:
+        generation_config["response_schema"] = response_schema
     safety_settings = {
         'HATE': 'BLOCK_NONE',
         'HARASSMENT': 'BLOCK_NONE',
@@ -1338,11 +1340,37 @@ def do_foodbank_need_check(foodbank):
             "foodbank_html":foodbank_shoppinglist_html,
         }
     )
+
+    response_schema = {
+        "type": "object",
+        "properties": {
+            "needed": {
+                "type": "array",
+                "description": "A list of food items the food bank is requesting or has low stock of. Items should be in Title Case and not repeated.",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "excess": {
+                "type": "array",
+                "description": "A list of food items the food bank has an excess of. Items should be in Title Case and not repeated.",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        # Make both fields required if the source text will always contain both.
+        # If one might be missing, you can make this optional.
+        "required": ["needed", "excess"]
+    }
     try:
         need_response = gemini(
             prompt = need_prompt,
             temperature = 0,
+            response_schema = response_schema,
+            response_mime_type = "application/json",
         )
+        logging.warning(need_response)
     except Exception as e:
         website_discrepancy = FoodbankDiscrepancy(
             foodbank = foodbank,
