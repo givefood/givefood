@@ -1402,7 +1402,7 @@ def do_foodbank_need_check(foodbank):
     excess_text = clean_foodbank_need_text(excess_text)
 
     last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
-    last_nonpublished_needs = FoodbankChange.objects.filter(foodbank = foodbank, published = False)[:10]
+    last_nonpublished_needs = FoodbankChange.objects.filter(foodbank = foodbank, published = False).order_by("-created")[:10]
 
     is_nonpertinent = False
     is_change = False
@@ -1411,7 +1411,8 @@ def do_foodbank_need_check(foodbank):
     for last_nonpublished_need in last_nonpublished_needs:
         if text_for_comparison(need_text) == text_for_comparison(last_nonpublished_need.change_text) and text_for_comparison(excess_text) == text_for_comparison(last_nonpublished_need.excess_change_text):
             is_nonpertinent = True
-            change_state.append("Last nonpert same")
+            last_nonpublished_need.is_nonpertinent = True
+            change_state.append("Nonpub same")
 
     if text_for_comparison(need_text) != text_for_comparison(last_published_need.change_text):
         is_change = True
