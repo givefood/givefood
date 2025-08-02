@@ -19,25 +19,46 @@
 
     <div class="columns">
         <div class="column">
-            <h2>Prompt</h2>
-            {{ need_prompt|linebreaks }}
+            <details>
+                <h2>Prompt</h2>
+                <summary>Full Prompt ({{ need_prompt|length }} characters)</summary>
+                {{ need_prompt|linebreaks }}
+            </details>
+            
         </div>
         <div class="column">
             <h2>Found Need</h2>
             {{ need_text|linebreaks }}
             <h2>Pub Need</h2>
             {{ last_published_need.change_text|linebreaks }}
-            <h2>Nonpert Need</h2>
-            {{ last_nonpertinent_need.change_text|linebreaks }}
         </div> 
         <div class="column">
             <h2>Found Excess</h2>
             {{ excess_text|linebreaks }}
             <h2>Pub Excess</h2>
             {{ last_published_need.excess_change_text|linebreaks }}
-            <h2>Nonpert Excess</h2>
-            {{ last_nonpertinent_need.excess_change_text|linebreaks }}
         </div>
     </div>
+
+    <div class="columns">
+        <div class="column">
+            <h2>Last Non-Published Needs</h2>
+            <table class="table">
+                <tr>
+                    <th>Date</th>
+                    <th>Needed</th>
+                    <th>Excess</th>
+                    <th>Non Pert</th>
+                </tr>
+                {% for last_nonpublished_need in last_nonpublished_needs %}
+                    <tr>
+                        <td>{{ last_nonpublished_need.created }}</td>
+                        <td>{{ last_nonpublished_need.change_text|linebreaks }}</td>
+                        <td>{{ last_nonpublished_need.excess_change_text|linebreaks }}</td>
+                        <td>{{ last_nonpublished_need.is_nonpertinent }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
 
 {% endblock %}
