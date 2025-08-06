@@ -185,6 +185,7 @@ OLD_FOODBANK_SLUGS = {
     "stretford":"trafford-north",
     "durham":"county-durham",
     "hunstanton-and-district":"hunstanton-district",
+    "redcar":"redcar-area",
 }
 
 FOODBANK_SUBPAGES = [
