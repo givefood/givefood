@@ -1,6 +1,6 @@
 {% extends "public/page.html" %}
 
-{% block title %}500 - Give Food{% endblock %}
+{% block title %}{% trans "500 - Internal Server Error" %} - Give Food{% endblock %}
 
 {% block body %}
 
@@ -15,18 +15,18 @@
 
       </div>
 
-      <h1>500 - Internal Server Error</h1>
+      <h1>{% trans "500 - Internal Server Error" %}</h1>
 
       <div class="columns">
 
           <div class="column">
 
-            <p>Sorry, something has gone wrong there and we can't serve that page. This error has been logged and we'll look into it.</p>
+            <p>{% trans "Sorry, something has gone wrong there and we can't serve that page. This error has been logged and we'll look into it." %}</p>
 
             <ul>
-                <li><a href="/">Homepage</a></li>
-                <li><a href="/needs/">Find what food banks need</a></li>
-                <li>Email us at <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></li>
+                <li><a href="/">{% trans "Homepage" %}</a></li>
+                <li><a href="/needs/">{% trans "Find what food banks need" %}</a></li>
+                <li>{% trans "Email" %} <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></li>
             </ul>
            
           </div>

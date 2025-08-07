@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-09 13:17+0000\n"
-"PO-Revision-Date: 2025-06-12 11:25+0100\n"
+"POT-Creation-Date: 2025-08-07 11:56+0000\n"
+"PO-Revision-Date: 2025-08-07 12:59+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ar\n"
@@ -22,6 +22,7 @@ msgstr ""
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:42
 #: gfwfbn/templates/wfbn/constituency/index.html:32
+#: gfwfbn/templates/wfbn/foodbank/charity.html:42
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:47
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:42
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:49
@@ -34,12 +35,13 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:41
 #: gfwfbn/templates/wfbn/foodbank/subscribe.html:48
 #: gfwfbn/templates/wfbn/foodbank/updates.html:41
-#: givefood/templates/public/page.html:46
+#: givefood/templates/public/page.html:50
 msgid "Home"
 msgstr "الرئيسية"
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:43
 #: gfwfbn/templates/wfbn/constituency/index.html:33
+#: gfwfbn/templates/wfbn/foodbank/charity.html:43
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:48
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:43
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:50
@@ -81,6 +83,49 @@ msgstr "البحث حسب الرمز البريدي"
 #: gfwfbn/templates/wfbn/index.html:65 givefood/templates/public/index.html:42
 msgid "Go"
 msgstr "اذهب"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:24
+#: gfwfbn/templates/wfbn/foodbank/charity.html:45
+#: gfwfbn/templates/wfbn/foodbank/charity.html:49
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
+msgid "Charity"
+msgstr "متجر خيري"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:61
+msgid "Charity name"
+msgstr "اسم الجمعية الخيرية"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:69
+msgid "Charity number"
+msgstr "رقم الجمعية الخيرية"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:74
+msgid "Charity type"
+msgstr "نوع الخيرية"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:78
+msgid "Registration date"
+msgstr "تاريخ التسجيل"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:83
+msgid "Objectives"
+msgstr "الأهداف"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:87
+msgid "Purposes"
+msgstr "الأغراض"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:101
+msgid "Year"
+msgstr "السنة"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:102
+msgid "Income"
+msgstr "الدخل"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:103
+msgid "Expenditure"
+msgstr "النفقات"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:50
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:24
@@ -133,10 +178,10 @@ msgid "Wheelchair accessible"
 msgstr "مناسب للكراسي المتحركة"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:119
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:99
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:112
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:103
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:116
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:103
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:116
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:107
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:120
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:96
 #: gfwfbn/templates/wfbn/foodbank/location_withneed.html:102
 msgid "Directions"
@@ -152,8 +197,8 @@ msgid "Main"
 msgstr "الرئيسية"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:69
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:111
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:115
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:115
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:119
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:106
 #: gfwfbn/templates/wfbn/foodbank/location_withneed.html:112
 #: gfwfbn/templates/wfbn/foodbank/locations.html:73
@@ -175,7 +220,7 @@ msgstr "هي مؤسسة خيرية مسجلة في إنجلترا وويلز"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
 #: givefood/templates/public/donate.html:5 givefood/templates/public/donate.html:21
-#: givefood/templates/public/index.html:51 givefood/templates/public/page.html:51
+#: givefood/templates/public/index.html:51 givefood/templates/public/page.html:54
 msgid "Donate"
 msgstr "تبرع"
 
@@ -188,7 +233,7 @@ msgid "Donate using "
 msgstr "التبرع باستخدام "
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:18
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:19
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:22
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:10
 #: gfwfbn/templates/wfbn/foodbank/subscribe.html:30
 #: gfwfbn/templates/wfbn/foodbank/subscribe.html:51
@@ -219,14 +264,14 @@ msgstr "المواقع"
 msgid "News"
 msgstr "الاخبار"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:18
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:23
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:44
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:48
 msgid "Social media"
 msgstr "مواقع التواصل الاجتماعي"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:17
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:20
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:24
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:45
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:49
@@ -244,8 +289,13 @@ msgid ""
 msgstr ""
 "لن نستخدم عنوان بريدك الإلكتروني لأي شيء آخر، ويمكنك إلغاء الاشتراك في أي وقت."
 
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:97
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:101
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:79
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:86
+msgid "This food bank is located at a school, so may not be open to the public."
+msgstr "يقع بنك الطعام هذا في مدرسة، لذا قد لا يكون مفتوحًا للجمهور."
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:101
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:105
 #: gfwfbn/templates/wfbn/foodbank/locations.html:62
 msgid "Administrative"
 msgstr "مكتب إداري"
@@ -265,7 +315,7 @@ msgstr "هذا الموقع يقبل التبرعات"
 
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:68
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:70
-#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:165
+#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:163
 msgid "away"
 msgstr "بعيدا"
 
@@ -274,7 +324,7 @@ msgid "Here is what the email you'll get looks like..."
 msgstr "هذا هو شكل البريد الإلكتروني الذي سوف تتلقاه..."
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: gfwfbn/views.py:285
+#: gfwfbn/views.py:289
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -322,7 +372,6 @@ msgid "Browse by parliamentary constituency"
 msgstr "تصفح حسب الدائرة الانتخابية البرلمانية"
 
 #: gfwfbn/templates/wfbn/index.html:76 givefood/templates/public/index.html:108
-#: givefood/templates/public/page.html:47
 #: givefood/templates/public/register_foodbank.html:9
 #: givefood/templates/public/register_foodbank.html:21
 msgid "Register a food bank"
@@ -330,7 +379,7 @@ msgstr "تسجيل بنك الطعام"
 
 #: gfwfbn/templates/wfbn/index.html:77 givefood/templates/public/about_us.html:5
 #: givefood/templates/public/about_us.html:22
-#: givefood/templates/public/index.html:52 givefood/templates/public/page.html:52
+#: givefood/templates/public/index.html:52 givefood/templates/public/page.html:55
 msgid "About us"
 msgstr "معلومات عنا"
 
@@ -347,33 +396,65 @@ msgstr "الأكثر مشاهدة هذا الأسبوع"
 msgid "Food banks"
 msgstr "بنوك الطعام"
 
-#: gfwfbn/templates/wfbn/index.html:128 gfwfbn/templates/wfbn/index.html:170
+#: gfwfbn/templates/wfbn/index.html:128 gfwfbn/templates/wfbn/index.html:168
 msgid "Nothing right now, thanks"
 msgstr "لا شيء الآن، شكرًا"
 
-#: gfwfbn/templates/wfbn/index.html:130 gfwfbn/templates/wfbn/index.html:172
-msgid "Sorry. We don't know what's needed here, please contact the food bank"
-msgstr "عذراً. لا نعرف ما هو مطلوب هنا، يُرجى التواصل مع بنك الطعام"
-
-#: gfwfbn/templates/wfbn/index.html:133
+#: gfwfbn/templates/wfbn/index.html:131
 msgid "Phone"
 msgstr "الهاتف"
 
-#: gfwfbn/templates/wfbn/index.html:136
+#: gfwfbn/templates/wfbn/index.html:134 givefood/templates/403.html:29
+#: givefood/templates/404.html:29 givefood/templates/500.html:29
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
-#: gfwfbn/templates/wfbn/index.html:164
+#: gfwfbn/templates/wfbn/index.html:162
 msgid "For"
 msgstr "لـ"
 
-#: givefood/models.py:221 givefood/models.py:223
+#: gfwfbn/templates/wfbn/index.html:170
+msgid "Sorry. We don't know what's needed here, please contact the food bank"
+msgstr "عذراً. لا نعرف ما هو مطلوب هنا، يُرجى التواصل مع بنك الطعام"
+
+#: givefood/models.py:262 givefood/models.py:264
 msgid "Foodbank"
 msgstr "بنك الطعام"
 
-#: givefood/models.py:941
+#: givefood/models.py:1031
 msgid "Closed"
 msgstr "مغلق"
+
+#: givefood/templates/403.html:3 givefood/templates/403.html:18
+msgid "403 - Forbidden"
+msgstr "403 - تعذر الوصول"
+
+#: givefood/templates/403.html:24 givefood/templates/404.html:24
+#: givefood/templates/500.html:24
+msgid ""
+"Sorry, something has gone wrong there and we can't serve that page. This error "
+"has been logged and we'll look into it."
+msgstr ""
+"عذرًا، حدث خطأ ما هناك، ولا يمكننا عرض هذه الصفحة. تم تسجيل هذا الخطأ، وسنتحقق "
+"منه."
+
+#: givefood/templates/403.html:27 givefood/templates/404.html:27
+#: givefood/templates/500.html:27
+msgid "Homepage"
+msgstr "الصفحة الرئيسية"
+
+#: givefood/templates/403.html:28 givefood/templates/404.html:28
+#: givefood/templates/500.html:28
+msgid "Find what food banks need"
+msgstr "ابحث عن ما تحتاجه بنوك الطعام"
+
+#: givefood/templates/404.html:3 givefood/templates/404.html:18
+msgid "404 - Not Found"
+msgstr "لا يمكن العثور على الصفحة خطأ رقم - ٤٠٤"
+
+#: givefood/templates/500.html:3 givefood/templates/500.html:18
+msgid "500 - Internal Server Error"
+msgstr "500 - خطأ داخلي في الخادم"
 
 #: givefood/templates/public/about_us.html:24
 msgid ""
@@ -457,15 +538,15 @@ msgstr ""
 "annual-reports/\">والتقارير السنوية</a> المتاحة للعرض.</p><p style=\";text-"
 "align:right;direction:rtl\"> من فضلك لا تتردد في الاتصال بنا بأي اقتراحات أو "
 "تعليقات أو انتقادات أو تشجيع.</p><p style=\";text-align:right;direction:rtl\"> "
-"<em>أمناء التبرعات الغذائية</em></p><p style=\";text-"
-"align:right;direction:rtl\"> <a "
-"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
+"<em>أمناء إعطاء الطعام</em></p><p style=\";text-align:right;direction:rtl\"> <a "
+"href=\"mailto:mail@givefood.org.uk\">البريد الإلكتروني: mail@givefood.org.uk</"
+"a></p>\n"
 "\n"
 "            "
 
 #: givefood/templates/public/ar/index.html:5
 #: givefood/templates/public/ar/index.html:22
-#: givefood/templates/public/page.html:50
+#: givefood/templates/public/page.html:53
 msgid "Annual reports"
 msgstr "التقارير السنوية"
 
@@ -505,7 +586,7 @@ msgstr "التسليمات الأولية، عيد الميلاد"
 
 #: givefood/templates/public/colophon.html:5
 #: givefood/templates/public/colophon.html:18
-#: givefood/templates/public/page.html:53
+#: givefood/templates/public/page.html:56
 msgid "Colophon"
 msgstr "الصفحة الأخيرة"
 
@@ -663,7 +744,7 @@ msgstr "أنك تستطيع المساعدة"
 msgid "Write to your MP"
 msgstr "اكتب إلى عضو البرلمان الخاص بك"
 
-#: givefood/templates/public/index.html:49 givefood/templates/public/page.html:49
+#: givefood/templates/public/index.html:49 givefood/templates/public/page.html:52
 msgid "English"
 msgstr "الانجليزية"
 
@@ -741,7 +822,7 @@ msgstr "العناصر المطلوبة"
 msgid "Meals delivered"
 msgstr "وجبات الطعام المُسلَّمة"
 
-#: givefood/templates/public/index.html:146 givefood/templates/public/page.html:35
+#: givefood/templates/public/index.html:146 givefood/templates/public/page.html:39
 msgid "Last updated"
 msgstr "آخر تحديث"
 
@@ -753,43 +834,43 @@ msgstr "اقرأ مقالاتنا"
 msgid "annual report"
 msgstr "التقرير السنوي"
 
-#: givefood/templates/public/page.html:31
+#: givefood/templates/public/page.html:34
 msgid "Something wrong in this page?"
 msgstr "هل هناك خطأ في هذه الصفحة؟"
 
-#: givefood/templates/public/page.html:36
+#: givefood/templates/public/page.html:40
 msgid "food bank needs viewed this week"
 msgstr "احتياجات بنك الطعام التي تمت مشاهدتها هذا الأسبوع"
 
-#: givefood/templates/public/page.html:39
+#: givefood/templates/public/page.html:43
 msgid "Give Food is a registered charity in England & Wales"
 msgstr "Give Food هي مؤسسة خيرية مسجلة في إنجلترا وويلز"
 
-#: givefood/templates/public/page.html:40
+#: givefood/templates/public/page.html:44
 msgid "Registered with the"
 msgstr "مسجلة لدى"
 
-#: givefood/templates/public/page.html:41
+#: givefood/templates/public/page.html:45
 msgid "ICO Data Protection Registration"
 msgstr "تسجيل حماية البيانات لدى ICO"
 
-#: givefood/templates/public/page.html:48
+#: givefood/templates/public/page.html:51
 msgid "Dashboards"
 msgstr "لوحات البيانات"
 
-#: givefood/templates/public/page.html:54
+#: givefood/templates/public/page.html:57
 msgid "Privacy policy"
 msgstr "سياسة الخصوصية"
 
-#: givefood/views.py:382
+#: givefood/views.py:415
 msgid "minutes"
 msgstr "دقائق"
 
-#: givefood/views.py:383
+#: givefood/views.py:416
 msgid "Under a minute ago"
 msgstr "منذ أقل من دقيقة"
 
-#: givefood/views.py:385
+#: givefood/views.py:418
 msgid "ago"
 msgstr "منذ"
 

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-09 13:17+0000\n"
-"PO-Revision-Date: 2025-06-12 11:29+0100\n"
+"POT-Creation-Date: 2025-08-07 11:56+0000\n"
+"PO-Revision-Date: 2025-08-07 13:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: gd\n"
@@ -22,6 +22,7 @@ msgstr ""
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:42
 #: gfwfbn/templates/wfbn/constituency/index.html:32
+#: gfwfbn/templates/wfbn/foodbank/charity.html:42
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:47
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:42
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:49
@@ -34,12 +35,13 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:41
 #: gfwfbn/templates/wfbn/foodbank/subscribe.html:48
 #: gfwfbn/templates/wfbn/foodbank/updates.html:41
-#: givefood/templates/public/page.html:46
+#: givefood/templates/public/page.html:50
 msgid "Home"
 msgstr "Dachaidh"
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:43
 #: gfwfbn/templates/wfbn/constituency/index.html:33
+#: gfwfbn/templates/wfbn/foodbank/charity.html:43
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:48
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:43
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:50
@@ -83,6 +85,49 @@ msgstr "Lorg le còd-puist"
 #: gfwfbn/templates/wfbn/index.html:65 givefood/templates/public/index.html:42
 msgid "Go"
 msgstr "Rachaibh"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:24
+#: gfwfbn/templates/wfbn/foodbank/charity.html:45
+#: gfwfbn/templates/wfbn/foodbank/charity.html:49
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
+msgid "Charity"
+msgstr "Carthannas"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:61
+msgid "Charity name"
+msgstr "Ainm carthannais"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:69
+msgid "Charity number"
+msgstr "Àireamh carthannais"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:74
+msgid "Charity type"
+msgstr "Seòrsa carthannais"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:78
+msgid "Registration date"
+msgstr "Ceann-latha clàraidh"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:83
+msgid "Objectives"
+msgstr "Amasan"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:87
+msgid "Purposes"
+msgstr "Adhbharan"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:101
+msgid "Year"
+msgstr "Bliadhna"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:102
+msgid "Income"
+msgstr "Teachd-a-steach"
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:103
+msgid "Expenditure"
+msgstr "Cosgaisean"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:50
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:24
@@ -137,10 +182,10 @@ msgid "Wheelchair accessible"
 msgstr "Ruigsinneachd cathair-cuibhle"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:119
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:99
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:112
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:103
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:116
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:103
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:116
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:107
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:120
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:96
 #: gfwfbn/templates/wfbn/foodbank/location_withneed.html:102
 msgid "Directions"
@@ -156,8 +201,8 @@ msgid "Main"
 msgstr "Prìomh"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:69
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:111
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:115
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:115
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:119
 #: gfwfbn/templates/wfbn/foodbank/location_noneed.html:106
 #: gfwfbn/templates/wfbn/foodbank/location_withneed.html:112
 #: gfwfbn/templates/wfbn/foodbank/locations.html:73
@@ -181,7 +226,7 @@ msgstr "na charthannas clàraichte ann an Sasainn &amp; Chuimrigh"
 #: givefood/templates/public/donate.html:5
 #: givefood/templates/public/donate.html:21
 #: givefood/templates/public/index.html:51
-#: givefood/templates/public/page.html:51
+#: givefood/templates/public/page.html:54
 msgid "Donate"
 msgstr "Thoir seachad"
 
@@ -194,7 +239,7 @@ msgid "Donate using "
 msgstr "Thoir seachad a ‘cleachdadh "
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:18
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:19
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:22
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:10
 #: gfwfbn/templates/wfbn/foodbank/subscribe.html:30
 #: gfwfbn/templates/wfbn/foodbank/subscribe.html:51
@@ -225,14 +270,14 @@ msgstr "Àiteachan"
 msgid "News"
 msgstr "Naidheachdan"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:18
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:23
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:44
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:48
 msgid "Social media"
 msgstr "Na meadhanan sòisealta"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:17
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:20
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:24
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:45
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:49
@@ -251,8 +296,16 @@ msgstr ""
 "Cha chleachd sinn do sheòladh puist-d gu bràth airson dad eile, agus "
 "faodaidh tu crìoch a chur air an fho-sgrìobhadh aig àm sam bith."
 
-#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:97
-#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:101
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:79
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:86
+msgid ""
+"This food bank is located at a school, so may not be open to the public."
+msgstr ""
+"Tha am banca bìdh seo suidhichte ann an sgoil, agus mar sin is dòcha nach bi "
+"e fosgailte don phoball."
+
+#: gfwfbn/templates/wfbn/foodbank/index_noneed.html:101
+#: gfwfbn/templates/wfbn/foodbank/index_withneed.html:105
 #: gfwfbn/templates/wfbn/foodbank/locations.html:62
 msgid "Administrative"
 msgstr "Rianachd"
@@ -272,7 +325,7 @@ msgstr "Gabhaidh an t-ionad seo tabhartasan"
 
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:68
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:70
-#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:165
+#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:163
 msgid "away"
 msgstr "air falbh"
 
@@ -281,7 +334,7 @@ msgid "Here is what the email you'll get looks like..."
 msgstr "Seo cò ris a bhios am post-d coltach..."
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: gfwfbn/views.py:285
+#: gfwfbn/views.py:289
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -332,7 +385,6 @@ msgid "Browse by parliamentary constituency"
 msgstr "Dèan brobhsadh a rèir roinn-phàrlamaid"
 
 #: gfwfbn/templates/wfbn/index.html:76 givefood/templates/public/index.html:108
-#: givefood/templates/public/page.html:47
 #: givefood/templates/public/register_foodbank.html:9
 #: givefood/templates/public/register_foodbank.html:21
 msgid "Register a food bank"
@@ -342,7 +394,7 @@ msgstr "Clàraich banca bìdh"
 #: givefood/templates/public/about_us.html:5
 #: givefood/templates/public/about_us.html:22
 #: givefood/templates/public/index.html:52
-#: givefood/templates/public/page.html:52
+#: givefood/templates/public/page.html:55
 msgid "About us"
 msgstr "Mu ar deidhinn"
 
@@ -360,35 +412,68 @@ msgstr "Air fhaicinn as motha an t-seachdain seo"
 msgid "Food banks"
 msgstr "Bancaichean bìdh"
 
-#: gfwfbn/templates/wfbn/index.html:128 gfwfbn/templates/wfbn/index.html:170
+#: gfwfbn/templates/wfbn/index.html:128 gfwfbn/templates/wfbn/index.html:168
 msgid "Nothing right now, thanks"
 msgstr "Chan eil dad an-dràsta, tapadh leat"
 
-#: gfwfbn/templates/wfbn/index.html:130 gfwfbn/templates/wfbn/index.html:172
+#: gfwfbn/templates/wfbn/index.html:131
+msgid "Phone"
+msgstr "Fòn"
+
+#: gfwfbn/templates/wfbn/index.html:134 givefood/templates/403.html:29
+#: givefood/templates/404.html:29 givefood/templates/500.html:29
+msgid "Email"
+msgstr "Post-d"
+
+#: gfwfbn/templates/wfbn/index.html:162
+msgid "For"
+msgstr "Airson"
+
+#: gfwfbn/templates/wfbn/index.html:170
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr ""
 "Duilich. Chan eil fios againn dè a tha a dhìth an seo, cuir fios chun bhanca "
 "bìdh"
 
-#: gfwfbn/templates/wfbn/index.html:133
-msgid "Phone"
-msgstr "Fòn"
-
-#: gfwfbn/templates/wfbn/index.html:136
-msgid "Email"
-msgstr "Post-d"
-
-#: gfwfbn/templates/wfbn/index.html:164
-msgid "For"
-msgstr "Airson"
-
-#: givefood/models.py:221 givefood/models.py:223
+#: givefood/models.py:262 givefood/models.py:264
 msgid "Foodbank"
 msgstr "Banca-bìdh"
 
-#: givefood/models.py:941
+#: givefood/models.py:1031
 msgid "Closed"
 msgstr "Dùinte"
+
+#: givefood/templates/403.html:3 givefood/templates/403.html:18
+msgid "403 - Forbidden"
+msgstr "403 - Toirmisgte"
+
+#: givefood/templates/403.html:24 givefood/templates/404.html:24
+#: givefood/templates/500.html:24
+msgid ""
+"Sorry, something has gone wrong there and we can't serve that page. This "
+"error has been logged and we'll look into it."
+msgstr ""
+"Tha sinn duilich, tha rudeigin air a dhol ceàrr an sin agus chan urrainn "
+"dhuinn an duilleag sin a fhrithealadh. Chaidh a’ mhearachd seo a chlàradh "
+"agus nì sinn sgrùdadh air."
+
+#: givefood/templates/403.html:27 givefood/templates/404.html:27
+#: givefood/templates/500.html:27
+msgid "Homepage"
+msgstr "Duilleag-dhachaigh"
+
+#: givefood/templates/403.html:28 givefood/templates/404.html:28
+#: givefood/templates/500.html:28
+msgid "Find what food banks need"
+msgstr "Faigh a-mach dè a dh’ fheumas bancaichean bìdh"
+
+#: givefood/templates/404.html:3 givefood/templates/404.html:18
+msgid "404 - Not Found"
+msgstr "404 - Cha deach a lorg"
+
+#: givefood/templates/500.html:3 givefood/templates/500.html:18
+msgid "500 - Internal Server Error"
+msgstr "500 - Mearachd Frithealaiche a-staigh"
 
 #: givefood/templates/public/about_us.html:24
 msgid ""
@@ -484,7 +569,7 @@ msgstr ""
 
 #: givefood/templates/public/ar/index.html:5
 #: givefood/templates/public/ar/index.html:22
-#: givefood/templates/public/page.html:50
+#: givefood/templates/public/page.html:53
 msgid "Annual reports"
 msgstr "Aithisgean bliadhnail"
 
@@ -525,7 +610,7 @@ msgstr "Lìbhrigeadh tùsail, Nollaig"
 
 #: givefood/templates/public/colophon.html:5
 #: givefood/templates/public/colophon.html:18
-#: givefood/templates/public/page.html:53
+#: givefood/templates/public/page.html:56
 msgid "Colophon"
 msgstr "Colophon"
 
@@ -696,7 +781,7 @@ msgid "Write to your MP"
 msgstr "Sgrìobh chun BP agad"
 
 #: givefood/templates/public/index.html:49
-#: givefood/templates/public/page.html:49
+#: givefood/templates/public/page.html:52
 msgid "English"
 msgstr "Beurla"
 
@@ -775,7 +860,7 @@ msgid "Meals delivered"
 msgstr "Biadh air a lìbhrigeadh"
 
 #: givefood/templates/public/index.html:146
-#: givefood/templates/public/page.html:35
+#: givefood/templates/public/page.html:39
 msgid "Last updated"
 msgstr "Air ùrachadh mu dheireadh"
 
@@ -787,44 +872,44 @@ msgstr "Leugh ar"
 msgid "annual report"
 msgstr "aithisg bhliadhnail"
 
-#: givefood/templates/public/page.html:31
+#: givefood/templates/public/page.html:34
 msgid "Something wrong in this page?"
 msgstr "A bheil rudeigin ceàrr air an duilleag seo?"
 
-#: givefood/templates/public/page.html:36
+#: givefood/templates/public/page.html:40
 msgid "food bank needs viewed this week"
 msgstr "feumalachdan banca bìdh air fhaicinn an t-seachdain seo"
 
-#: givefood/templates/public/page.html:39
+#: givefood/templates/public/page.html:43
 msgid "Give Food is a registered charity in England & Wales"
 msgstr ""
 "Tha Give Food na charthannas clàraichte ann an Sasainn agus sa Chuimrigh"
 
-#: givefood/templates/public/page.html:40
+#: givefood/templates/public/page.html:44
 msgid "Registered with the"
 msgstr "Air a chlàradh leis a '"
 
-#: givefood/templates/public/page.html:41
+#: givefood/templates/public/page.html:45
 msgid "ICO Data Protection Registration"
 msgstr "Clàradh Dìon Dàta ICO"
 
-#: givefood/templates/public/page.html:48
+#: givefood/templates/public/page.html:51
 msgid "Dashboards"
 msgstr "Dashboards"
 
-#: givefood/templates/public/page.html:54
+#: givefood/templates/public/page.html:57
 msgid "Privacy policy"
 msgstr "Poileasaidh prìobhaideachd"
 
-#: givefood/views.py:382
+#: givefood/views.py:415
 msgid "minutes"
 msgstr "mionaidean"
 
-#: givefood/views.py:383
+#: givefood/views.py:416
 msgid "Under a minute ago"
 msgstr "Nas lugha na mionaid air ais"
 
-#: givefood/views.py:385
+#: givefood/views.py:418
 msgid "ago"
 msgstr "o chionn"
 
