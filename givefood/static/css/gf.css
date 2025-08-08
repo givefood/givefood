@@ -186,6 +186,15 @@ del {
 .help {
     font-size:14px;
 }
+#langswitcher {
+    opacity: 0;
+    animation: langswitcher-fade 0.2s ease-in forwards;
+}
+
+@keyframes langswitcher-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 .langswitcher.is-pulled {
     margin:25px 0 0 0;
     zoom:90%;
