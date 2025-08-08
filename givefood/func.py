@@ -1192,26 +1192,17 @@ def filter_change_text(change_text, filter_list):
     return "\n".join(filtered_change_text_list)
 
 
-def chatgpt(prompt, temperature = None, response_format = None):
+def chatgpt(prompt, temperature):
 
-    from openai import OpenAI
-
-    client = OpenAI(
-        api_key= get_cred("openai_api_key"),
+    openai.api_key = get_cred("openai_api_key")
+    response = openai.ChatCompletion.create(
+        model = 'gpt-3.5-turbo',
+        temperature = temperature,
+        messages = [
+            {"role": "user", "content": prompt}
+        ]
     )
-    completion = client.chat.completions.create(
-        model="gpt-5-nano",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt},
-        ],
-        temperature=temperature,
-        response_format={
-            "type": "json_schema",
-            "json_schema": response_format,
-        },
-    )
-    return completion.choices[0].message.content
+    return response["choices"][0]["message"]["content"]
 
 
 def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None):
@@ -1351,23 +1342,33 @@ def do_foodbank_need_check(foodbank):
     )
 
     response_schema = {
-        "name": "foodbank_need",
-        "strict": True,
-        "schema": {
-            "type": "object",
-            "properties": {
-                "needed": {"type": "array", "items": {"type": "string"}},
-                "excess": {"type": "array", "items": {"type": "string"}},
+        "type": "object",
+        "properties": {
+            "needed": {
+                "type": "array",
+                "description": "A list of food items the food bank is requesting or has low stock of. Items should be in Title Case and not repeated.",
+                "items": {
+                    "type": "string"
+                }
             },
-            "required": ["needed", "excess"],
-            "additionalProperties": False,
+            "excess": {
+                "type": "array",
+                "description": "A list of food items the food bank has an excess of. Items should be in Title Case and not repeated.",
+                "items": {
+                    "type": "string"
+                }
+            }
         },
-    },
+        # Make both fields required if the source text will always contain both.
+        # If one might be missing, you can make this optional.
+        "required": ["needed", "excess"]
+    }
     try:
-        need_response = chatgpt(
+        need_response = gemini(
             prompt = need_prompt,
-            temperature = 1,
-            response_format=response_schema,
+            temperature = 0,
+            response_schema = response_schema,
+            response_mime_type = "application/json",
         )
     except Exception as e:
         website_discrepancy = FoodbankDiscrepancy(
