@@ -1316,7 +1316,7 @@ def do_foodbank_need_check(foodbank):
     }
 
     try:
-        foodbank_shoppinglist_page = requests.get(foodbank.shopping_list_url, headers=headers)
+        foodbank_shoppinglist_page = requests.get(foodbank.shopping_list_url, headers=headers, timeout=10)
     except requests.exceptions.RequestException:
         website_discrepancy = FoodbankDiscrepancy(
             foodbank = foodbank,
