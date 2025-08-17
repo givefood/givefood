@@ -3,6 +3,7 @@ import os, logging
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from dotenv import load_dotenv
+import sentry_sdk
 
 # Load environment variables from .env file
 load_dotenv()
@@ -40,6 +41,11 @@ LOGGING = {
         },
     },
 }
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"),
+    send_default_pii=True,
+)
 
 ALLOWED_HOSTS = [
     "localhost",
