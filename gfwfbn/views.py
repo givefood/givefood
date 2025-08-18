@@ -916,16 +916,15 @@ def foodbank_hit(request, slug):
     """
     Food bank hit counter
     """
-    
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-    day = datetime.datetime.today()
+    foodbank = get_object_or_404(Foodbank, slug=slug)
+    day = datetime.date.today()
 
-    try:
-        hit = FoodbankHit.objects.get(foodbank = foodbank, day = day)
-        hit.hits += 1
-        hit.save()
-    except FoodbankHit.DoesNotExist:
-        hit = FoodbankHit(foodbank = foodbank, day = day, hits = 1)
-        hit.save()
-    
+    hit, created = FoodbankHit.objects.get_or_create(
+        foodbank=foodbank,
+        day=day,
+        defaults={"hits": 1}
+    )
+    if not created:
+        FoodbankHit.objects.filter(pk=hit.pk).update(hits=hit.hits + 1)
+
     return render(request, "wfbn/foodbank/hit.js", content_type="text/javascript")
