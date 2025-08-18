@@ -530,6 +530,7 @@ class Foodbank(models.Model):
         FoodbankSubscriber.objects.filter(foodbank = self).delete()
         FoodbankDonationPoint.objects.filter(foodbank = self).delete()
         FoodbankDiscrepancy.objects.filter(foodbank = self).delete()
+        CharityYear.objects.filter(foodbank = self).delete()
         
         super(Foodbank, self).delete(*args, **kwargs)
 
