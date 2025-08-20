@@ -1317,7 +1317,7 @@ def do_foodbank_need_check(foodbank):
 
     try:
         foodbank_shoppinglist_page = requests.get(foodbank.shopping_list_url, headers=headers, timeout=10)
-    except requests.exceptions.RequestException:
+    except requests.exceptions.RequestException as e:
         website_discrepancy = FoodbankDiscrepancy(
             foodbank = foodbank,
             discrepancy_type = "website",
@@ -1327,7 +1327,7 @@ def do_foodbank_need_check(foodbank):
         website_discrepancy.save()
         foodbank.last_need_check = datetime.now()
         foodbank.save(do_decache=False, do_geoupdate=False)
-        return False
+        return e
     
     foodbank_shoppinglist_html = foodbank_shoppinglist_page.text
     foodbank_shoppinglist_page = htmlbodytext(foodbank_shoppinglist_page.text)
@@ -1380,7 +1380,7 @@ def do_foodbank_need_check(foodbank):
         website_discrepancy.save()
         foodbank.last_need_check = datetime.now()
         foodbank.save(do_decache=False, do_geoupdate=False)
-        return False
+        return e
     
     if need_response:
         need_response = json.loads(need_response)
@@ -1388,7 +1388,7 @@ def do_foodbank_need_check(foodbank):
         website_discrepancy = FoodbankDiscrepancy(
             foodbank = foodbank,
             discrepancy_type = "website",
-            discrepancy_text = "Website need AI parse failed",
+            discrepancy_text = "Website need AI parse failed %s" % (need_response),
             url = foodbank.url,
         )
         website_discrepancy.save()
