@@ -111,9 +111,6 @@ TEMPLATES = [
                 "gfadmin.context_processors.gmap_keys",
                 "givefood.context_processors.context",
             ],
-            'libraries':{
-                'product_image': 'givefood.templatetags.custom_tags',
-            },
         },
     },
 ]

@@ -25,8 +25,6 @@
           <tr>
             <td>{{ item.name }}</td>
             <td>{{ item.calories }}</td>
-            <td>{{ item.tesco_image_id }}</td>
-            <td>{{ item.sainsburys_image_id }}</td>
             <td><a href="{% url "admin:item_form" item.slug %}" class="button is-small">Edit</a></td>
           </tr>
         {% endfor %}

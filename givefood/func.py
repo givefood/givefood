@@ -595,31 +595,6 @@ def get_all_items():
     return all_items
 
 
-def get_image(delivery_provider, text):
-
-    item_id = ""
-    url = None
-
-    if not delivery_provider:
-        delivery_provider = "Tesco"
-
-    all_items = get_all_items()
-
-    for item in all_items:
-        if item.name == text:
-            if delivery_provider == "Sainsbury's":
-                if item.sainsburys_image_id:
-                    url = "https://assets.sainsburys-groceries.co.uk/gol/%s/image.jpg" % (item.sainsburys_image_id)
-            if delivery_provider == "Tesco":
-                if item.tesco_image_id:
-                    url = "https://digitalcontent.api.tesco.com/v1/media/ghs/snapshotimagehandler_%s.jpeg?w=100" % (item.tesco_image_id)
-
-    if url:
-        return url
-    else:
-        return "/static/img/1px.gif"
-
-
 def item_class_count(all_items, item_class_items):
 
     count = 0
