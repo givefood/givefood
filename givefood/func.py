@@ -584,27 +584,6 @@ def get_weight(text):
     return weight
 
 
-def get_all_items():
-
-    from givefood.models import OrderItem
-
-    all_items = cache.get(ITEMS_MC_KEY)
-    if all_items is None:
-        all_items = OrderItem.objects.all()
-        cache.set(ITEMS_MC_KEY, all_items, 3600)
-    return all_items
-
-
-def item_class_count(all_items, item_class_items):
-
-    count = 0
-
-    for class_item in item_class_items:
-        count = count + all_items.get(class_item, 0)
-
-    return count
-
-
 def text_for_comparison(text):
     if text:
         return text.lower().replace(" ", "").replace("\n", "").replace("\r", "").replace("\t", "").replace(".", "")
