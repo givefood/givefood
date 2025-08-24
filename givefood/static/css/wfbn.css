@@ -48,6 +48,9 @@
     padding-top:25px;
     margin:0 !important;
 }
+.needs {
+    width:100%;
+}
 .needs tr:last-child td, .donationpoints tr:last-child td {
     border-bottom:0;
 }
