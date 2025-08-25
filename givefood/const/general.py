@@ -186,6 +186,7 @@ OLD_FOODBANK_SLUGS = {
     "durham":"county-durham",
     "hunstanton-and-district":"hunstanton-district",
     "redcar":"redcar-area",
+    "cpr":"transformation",
 }
 
 FOODBANK_SUBPAGES = [
