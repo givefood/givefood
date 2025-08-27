@@ -3,7 +3,7 @@
 
 {% block body %}
 
-    <p>We've found a new list of items requested by <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">{{ need.foodbank.name }} Food Bank</a>. They are...</p>
+    <p>We've found a new list of items requested by <a href="https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/?utm_source=notificationemail&utm_medium=email&utm_campaign={{ need.foodbank_name_slug }}-{{ need.created|date:"Y-m-d" }}">{{ need.foodbank.full_name }}</a>. They are...</p>
 
     {{ need.change_text|linebreaks }}
 
@@ -12,7 +12,7 @@
     {% endif %}
 
     {% if need.foodbank.articles_month %}
-        <b>News from {{ need.foodbank.name }} Food Bank</b><br>
+        <b>News from {{ need.foodbank.full_name }}</b><br>
         {% for article in need.foodbank.articles_month %}
             <a href="{{ article.url_with_ref }}">{{ article.title_captialised }}</a><br><span class="articledate">{{ article.published_date }}</span>
             <br>
