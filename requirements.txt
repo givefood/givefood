@@ -13,7 +13,7 @@ psycopg2-binary
 openai==1.101.0
 furl
 beautifulsoup4
-google-generativeai
+google-genai
 django-earthdistance
 requirements-parser
 google-cloud-translate

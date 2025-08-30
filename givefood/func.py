@@ -9,7 +9,8 @@ from collections import OrderedDict
 from datetime import datetime
 from time import mktime
 import openai
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from bs4 import BeautifulSoup
 from urllib.parse import quote
 from furl import furl
@@ -1161,29 +1162,37 @@ def chatgpt(prompt, temperature):
 
 def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None):
 
-    genai.configure(api_key=get_cred("gemini_api_key"))
-    generation_config = {
-        "temperature": temperature,
-        "max_output_tokens": 8192,
-        "response_mime_type": response_mime_type,
-    }
-    if response_schema:
-        generation_config["response_schema"] = response_schema
-    safety_settings = {
-        'HATE': 'BLOCK_NONE',
-        'HARASSMENT': 'BLOCK_NONE',
-        'SEXUAL' : 'BLOCK_NONE',
-        'DANGEROUS' : 'BLOCK_NONE'
-    }
-    model = genai.GenerativeModel(
-        model_name = "gemini-2.5-flash",
-        generation_config = generation_config,
-        safety_settings = safety_settings,
+    client = genai.Client(api_key = get_cred("gemini_api_key"))
+
+    response = client.models.generate_content(
+        model = "gemini-2.5-flash",
+        contents = [prompt],
+        config = types.GenerateContentConfig(
+            temperature = temperature,
+            response_mime_type = response_mime_type,
+            response_schema = response_schema,
+            thinking_config = types.ThinkingConfig(thinking_budget = 0),
+            safety_settings = [
+                types.SafetySetting(
+                    category = types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                    threshold = types.HarmBlockThreshold.BLOCK_NONE,
+                ),
+                types.SafetySetting(
+                    category = types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+                    threshold = types.HarmBlockThreshold.BLOCK_NONE,
+                ),
+                types.SafetySetting(
+                    category = types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                    threshold = types.HarmBlockThreshold.BLOCK_NONE,
+                ),
+                types.SafetySetting(
+                    category = types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                    threshold = types.HarmBlockThreshold.BLOCK_NONE,
+                ),
+            ]
+        ),
     )
-    try:
-        return model.generate_content(prompt).text
-    except Exception as e:
-        return False
+    return response.text
 
 
 def htmlbodytext(html):
@@ -1264,7 +1273,6 @@ def translate_need(language, need):
 def do_foodbank_need_check(foodbank):
 
     from givefood.models import FoodbankChange, FoodbankDiscrepancy
-
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
     }
@@ -1317,24 +1325,24 @@ def do_foodbank_need_check(foodbank):
         # If one might be missing, you can make this optional.
         "required": ["needed", "excess"]
     }
-    try:
-        need_response = gemini(
-            prompt = need_prompt,
-            temperature = 0,
-            response_schema = response_schema,
-            response_mime_type = "application/json",
-        )
-    except Exception as e:
-        website_discrepancy = FoodbankDiscrepancy(
-            foodbank = foodbank,
-            discrepancy_type = "website",
-            discrepancy_text = "Website need AI parse failed %s" % (e),
-            url = foodbank.url,
-        )
-        website_discrepancy.save()
-        foodbank.last_need_check = datetime.now()
-        foodbank.save(do_decache=False, do_geoupdate=False)
-        return e
+    # try:
+    need_response = gemini(
+        prompt = need_prompt,
+        temperature = 0,
+        response_schema = response_schema,
+        response_mime_type = "application/json",
+    )
+    # except Exception as e:
+    #     website_discrepancy = FoodbankDiscrepancy(
+    #         foodbank = foodbank,
+    #         discrepancy_type = "website",
+    #         discrepancy_text = "Website need AI parse failed %s" % (e),
+    #         url = foodbank.url,
+    #     )
+    #     website_discrepancy.save()
+    #     foodbank.last_need_check = datetime.now()
+    #     foodbank.save(do_decache=False, do_geoupdate=False)
+    #     return e
     
     if need_response:
         need_response = json.loads(need_response)
