@@ -919,11 +919,18 @@ def foodbank_hit(request, slug):
     foodbank = get_object_or_404(Foodbank, slug=slug)
     day = datetime.date.today()
 
-    hit, created = FoodbankHit.objects.get_or_create(
-        foodbank=foodbank,
-        day=day,
-        defaults={"hits": 1}
-    )
+    try:
+        hit, created = FoodbankHit.objects.get_or_create(
+            foodbank=foodbank,
+            day=day,
+            defaults={"hits": 1}
+        )
+    except FoodbankHit.MultipleObjectsReturned:
+        hits = FoodbankHit.objects.filter(foodbank=foodbank, day=day)
+        total_hits = sum(h.hits for h in hits)
+        hits.delete()
+        hit = FoodbankHit.objects.create(foodbank=foodbank, day=day, hits=total_hits + 1)
+        created = True
     if not created:
         FoodbankHit.objects.filter(pk=hit.pk).update(hits=hit.hits + 1)
 
