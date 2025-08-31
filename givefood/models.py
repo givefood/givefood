@@ -1259,9 +1259,22 @@ class Order(models.Model):
         )
         order_lines = gemini(
             prompt = prompt,
-            temperature = 0.1,
+            temperature = 1,
+            response_mime_type= "application/json",
+            response_schema = {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "quantity": {"type": "integer"},
+                        "item_cost": {"type": "integer"},
+                        "weight": {"type": "integer"},
+                    },
+                    "required": ["name", "quantity", "item_cost", "weight"]
+                }
+            }
         )
-        order_lines = json.loads(order_lines)
 
         # Order aggregated stats
         order_weight = 0
