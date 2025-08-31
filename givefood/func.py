@@ -295,90 +295,6 @@ def foodbank_article_crawl(foodbank):
 
     return True
 
-
-def parse_tesco_order_text(order_text):
-
-    # 10	Tesco Sliced Carrots In Water 300G	£0.30	£3.00
-
-    order_lines = []
-
-    order_items = order_text.splitlines()
-    for order_item_line in order_items:
-        order_item_line_bits = re.split(r'\t+', order_item_line)
-
-        order_lines.append({
-            "quantity":int(order_item_line_bits[0]),
-            "name":order_item_line_bits[1],
-            "item_cost":int(float(order_item_line_bits[2].replace(u"\xA3","").replace(".",""))),
-            "weight":get_weight(order_item_line_bits[1]),
-            "calories":get_calories(
-                order_item_line_bits[1],
-                get_weight(order_item_line_bits[1]),
-                int(order_item_line_bits[0])
-            ),
-        })
-
-    return order_lines
-
-
-def parse_old_sainsburys_order_text(order_text):
-
-    # 50 x Hubbard's Foodstore Chicken Curry 392g - Total Price £29.50
-
-    order_lines = []
-
-    order_items = order_text.splitlines()
-    for order_item_line in order_items:
-        order_item_line_bits = re.split(r'( x | - Total Price )', order_item_line)
-
-        order_lines.append({
-            "quantity":int(order_item_line_bits[0]),
-            "name":order_item_line_bits[2],
-            "item_cost":int(float(order_item_line_bits[4].replace(u"\xA3","").replace(".",""))),
-            "weight":get_weight(order_item_line_bits[2]),
-            "calories":get_calories(
-                order_item_line_bits[2],
-                get_weight(order_item_line_bits[2]),
-                int(order_item_line_bits[0])
-            ),
-        })
-
-    return order_lines
-
-
-def parse_sainsburys_order_text(order_text):
-
-    order_lines = []
-    sub_line = 1
-
-    order_items = order_text.splitlines()
-    for order_item_line in order_items:
-        if sub_line == 1:
-            item_name = order_item_line
-        if sub_line == 3:
-            item_quantity = order_item_line
-        if sub_line == 5:
-            item_cost = int(order_item_line.replace("£","").replace(".",""))
-        if sub_line == 9:
-            order_lines.append({
-                "quantity":int(item_quantity),
-                "name":item_name,
-                "item_cost":item_cost,
-                "weight":get_weight(item_name),
-                "calories":get_calories(
-                    item_name,
-                    get_weight(item_name),
-                    int(item_quantity)
-                ),
-            })
-        if sub_line == 9:
-            sub_line = 0
-
-        sub_line = sub_line + 1
-
-    return order_lines
-
-
 def get_calories(text, weight, quantity):
 
     from givefood.models import OrderItem
@@ -1323,7 +1239,7 @@ def do_foodbank_need_check(foodbank):
         },
         "required": ["needed", "excess"]
     }
-    
+
     need_response = gemini(
         prompt = need_prompt,
         temperature = 0,
