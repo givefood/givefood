@@ -50,9 +50,6 @@ def index(request):
     if address and not lat_lng:
         lat_lng = geocode(address)
 
-    if lat_lng and not address:
-        approx_address = approx_rev_geocode(lat_lng)
-
     if lat_lng:
 
         # Validate lat_lng
@@ -94,7 +91,6 @@ def index(request):
         "address":address,
         "lat":lat,
         "lng":lng,
-        "approx_address":approx_address,
         "gmap_key":gmap_key,
         "recently_updated":recently_updated,
         "most_viewed":most_viewed,
