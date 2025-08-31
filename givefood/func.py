@@ -1192,7 +1192,7 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
             ]
         ),
     )
-    return response.text
+    return response.parsed
 
 
 def htmlbodytext(html):
@@ -1321,42 +1321,15 @@ def do_foodbank_need_check(foodbank):
                 }
             }
         },
-        # Make both fields required if the source text will always contain both.
-        # If one might be missing, you can make this optional.
         "required": ["needed", "excess"]
     }
-    # try:
+    
     need_response = gemini(
         prompt = need_prompt,
         temperature = 0,
         response_schema = response_schema,
         response_mime_type = "application/json",
     )
-    # except Exception as e:
-    #     website_discrepancy = FoodbankDiscrepancy(
-    #         foodbank = foodbank,
-    #         discrepancy_type = "website",
-    #         discrepancy_text = "Website need AI parse failed %s" % (e),
-    #         url = foodbank.url,
-    #     )
-    #     website_discrepancy.save()
-    #     foodbank.last_need_check = datetime.now()
-    #     foodbank.save(do_decache=False, do_geoupdate=False)
-    #     return e
-    
-    if need_response:
-        need_response = json.loads(need_response)
-    else:
-        website_discrepancy = FoodbankDiscrepancy(
-            foodbank = foodbank,
-            discrepancy_type = "website",
-            discrepancy_text = "Website need AI parse failed %s" % (need_response),
-            url = foodbank.url,
-        )
-        website_discrepancy.save()
-        foodbank.last_need_check = datetime.now()
-        foodbank.save(do_decache=False, do_geoupdate=False)
-        return False
     
     need_text = '\n'.join(need_response["needed"])
     need_text = clean_foodbank_need_text(need_text)
