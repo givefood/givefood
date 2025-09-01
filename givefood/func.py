@@ -1246,11 +1246,15 @@ def do_foodbank_need_check(foodbank):
         response_schema = response_schema,
         response_mime_type = "application/json",
     )
-    
-    need_text = '\n'.join(need_response["needed"])
-    need_text = clean_foodbank_need_text(need_text)
-    excess_text = '\n'.join(need_response["excess"])
-    excess_text = clean_foodbank_need_text(excess_text)
+
+    if need_response: 
+        need_text = '\n'.join(need_response["needed"])
+        need_text = clean_foodbank_need_text(need_text)
+        excess_text = '\n'.join(need_response["excess"])
+        excess_text = clean_foodbank_need_text(excess_text)
+    else:
+        need_text = ""
+        excess_text = ""
 
     last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
     last_nonpublished_needs = FoodbankChange.objects.filter(foodbank = foodbank, published = False).order_by("-created")[:10]
