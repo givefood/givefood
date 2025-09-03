@@ -8,24 +8,30 @@ from givefood.const.general import ENABLE_WRITE, SITE_DOMAIN, FACEBOOK_LOCALES
 
 def context(request):
 
+    HASH_CHARS = 7
+
     language_code = request.LANGUAGE_CODE
     language_name = get_language_info(language_code)['name_local']
     language_direction = "rtl" if get_language_info(language_code)['bidi'] else "ltr"
+
     path = request.path
     translated_path = translate_url(path, language_code)
     canonical_path = "%s%s" % (SITE_DOMAIN, translated_path)
     querystring = request.META['QUERY_STRING']
+
     if os.environ.get('COOLIFY_CONTAINER_NAME'):
-        instance_id = os.environ.get('COOLIFY_CONTAINER_NAME')[:7]
+        instance_id = os.environ.get('COOLIFY_CONTAINER_NAME')[:HASH_CHARS]
     else:
         instance_id = "LOCALHOST"
     if os.environ.get('SOURCE_COMMIT'):
-        version = os.environ.get('SOURCE_COMMIT')[:7]
+        version = os.environ.get('SOURCE_COMMIT')[:HASH_CHARS]
     else:
         version = "LOCALHOST"
     facebook_locale = FACEBOOK_LOCALES.get(language_code, "en_GB")
 
-    page_translatable = "/cy/" == translate_url(path, "cy")[:4]
+    TRANSLATEABLE_TEST_LANG = "cy"
+    page_translatable = "/%s/" % TRANSLATEABLE_TEST_LANG == translate_url(path, TRANSLATEABLE_TEST_LANG)[:4]
+    
     languages = []
     for language in LANGUAGES:
         url = translate_url(path, language[0])
