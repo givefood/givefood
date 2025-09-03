@@ -27,7 +27,7 @@
               data-client_id="927281004707-tboi1tsphl4bgtqn72e76rmc7r2q22tk.apps.googleusercontent.com"
               data-context="signin"
               data-ux_mode="redirect"
-              data-login_uri="https://www.givefood.org.uk/auth/receiver/"
+              data-login_uri="{% if instance_id == 'LOCALHOST' %}http://localhost:8000/auth/receiver/{% else %}https://www.givefood.org.uk/auth/receiver/{% endif %}"
               data-auto_prompt="false">
           </div>
 
