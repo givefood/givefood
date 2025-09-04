@@ -21,6 +21,7 @@ from django.utils.html import strip_tags
 from django.core.cache import cache
 from django.contrib.humanize.templatetags.humanize import apnumber
 from django.db.models import Value
+from django.contrib.contenttypes.models import ContentType
 
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
 from givefood.const.parlcon_mp import parlcon_mp
@@ -1186,9 +1187,17 @@ def translate_need(language, need):
     return translated_need
 
 
-def do_foodbank_need_check(foodbank):
+def do_foodbank_need_check(foodbank, crawl_set = None):
 
-    from givefood.models import FoodbankChange, FoodbankDiscrepancy
+    from givefood.models import FoodbankChange, FoodbankDiscrepancy, CrawlItem
+
+    crawl_item = CrawlItem(
+        foodbank = foodbank,
+        crawl_set = crawl_set,
+        url = foodbank.shopping_list_url,
+    )
+    crawl_item.save()
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
     }
@@ -1287,10 +1296,17 @@ def do_foodbank_need_check(foodbank):
             input_method = "ai",
         )
         foodbank_change.save()
+        foodbank_change_content_type = ContentType.objects.get_for_model(foodbank_change)
+
+        crawl_item.content_type = foodbank_change_content_type
+        crawl_item.object_id = foodbank_change.id
 
     foodbank.last_need_check = datetime.now()
     foodbank.save(do_decache=False, do_geoupdate=False)
-    
+
+    crawl_item.finish = datetime.now()
+    crawl_item.save()
+
     return {
         "foodbank":foodbank,
         "need_prompt":need_prompt,

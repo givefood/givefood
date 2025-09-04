@@ -1,8 +1,10 @@
 import time
+from datetime import datetime
+
 from django.core.management.base import BaseCommand
 
 from givefood.func import do_foodbank_need_check
-from givefood.models import Foodbank
+from givefood.models import Foodbank, CrawlSet
 
 
 class Command(BaseCommand):
@@ -10,6 +12,11 @@ class Command(BaseCommand):
     help = 'Runs a specific view function from the command line.'
 
     def handle(self, *args, **options):
+
+        crawl_set = CrawlSet(
+            crawl_type = "need",
+        )
+        crawl_set.save()
 
         foodbanks = Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").exclude(hours_between_need_check = 0).order_by("?")
 
@@ -22,10 +29,13 @@ class Command(BaseCommand):
 
             start_time = time.perf_counter()
 
-            do_foodbank_need_check(foodbank)
+            do_foodbank_need_check(foodbank, crawl_set)
 
             end_time = time.perf_counter()
             elapsed_time = end_time - start_time
             self.stdout.write(f"Done  {foodbank.name} ({elapsed_time:.2f} seconds)")
 
             the_counter += 1
+
+        crawl_set.finish = datetime.now()
+        crawl_set.save()
