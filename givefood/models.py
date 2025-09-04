@@ -18,6 +18,8 @@ from django.utils.translation import gettext as _
 from django.utils.translation import get_language
 from django.template.loader import render_to_string
 from django.db.models import Max, Min
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 from requests import PreparedRequest
 
@@ -2094,3 +2096,23 @@ class CharityYear(models.Model):
     date = models.DateField()
     income = models.IntegerField(null=True, blank=True, help_text="Income in pounds")
     expenditure = models.IntegerField(null=True, blank=True, help_text="Expenditure in pounds")
+
+
+class CrawlSet(models.Model):
+
+    start = models.DateTimeField(auto_now_add=True, editable=False)
+    finish = models.DateTimeField(null=True, blank=True, editable=False)
+    crawl_type = models.CharField(max_length=50) # need, article, charity, discrepancy
+
+
+class CrawlItem(models.Model):
+
+    crawl_set = models.ForeignKey(CrawlSet, on_delete=models.DO_NOTHING, null=True, blank=True)
+    start = models.DateTimeField(auto_now_add=True, editable=False)
+    finish = models.DateTimeField(null=True, blank=True, editable=False)
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
+    url = models.URLField(max_length=2000, null=True, blank=True)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
