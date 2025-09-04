@@ -13,6 +13,7 @@ from django.db.models import Q, Count, Sum
 from givefood.models import CharityYear, Foodbank, FoodbankChange, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, Order
 from givefood.func import group_list, get_all_foodbanks, filter_change_text
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR
+from django.db.models.functions import TruncMonth, TruncYear
 
 
 @cache_page(SECONDS_IN_DAY)
@@ -440,3 +441,20 @@ def charity_income_expenditure(request):
         "years":years,
     }
     return render(request, "dash/charity_income_expenditure.html", template_vars)
+
+
+def price_per_kg(request):
+
+    months = Order.objects.annotate(month = TruncMonth('delivery_datetime'), year = TruncYear('delivery_datetime')).values('month', 'year').annotate(total_weight = Sum('weight'),total_cost = Sum('cost')/100,price_per_kg = Sum('cost')*1000/Sum('weight')).order_by('month')
+
+    items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
+    weight = Order.objects.aggregate(Sum("weight"))["weight__sum"]/1000000
+    number_foodbanks = Order.objects.values('foodbank_name').distinct().count()
+
+    template_vars = {
+        "months": months,
+        "items": items,
+        "weight": weight,
+        "number_foodbanks": number_foodbanks,
+    }
+    return render(request, "dash/price_per_kg.html", template_vars)

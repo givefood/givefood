@@ -21,5 +21,6 @@ urlpatterns = (
     re_path(r'^deliveries/(count|items|weight|calories)/$', deliveries, name="deliveries"),
     re_path(r'^donationpoints/supermarkets/$', supermarkets, name="supermarkets"),
     re_path(r'^charity-income-expenditure/$', charity_income_expenditure, name="charity_income_expenditure"),
+    re_path(r'^price-per-kg/$', price_per_kg, name="price_per_kg"),
 
 )

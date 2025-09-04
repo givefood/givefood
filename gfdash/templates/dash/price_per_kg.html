@@ -1,0 +1,88 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}Price Per Kg - Give Food{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+      <div class="column">
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+      </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash:price_per_kg' %}" aria-current="page">Price Per Kg</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+      <h1>Price Per Kg</h1>
+
+     <p>Give Food has been purchasing food for food banks since {{ months.0.month|date:"F" }} {{ months.0.year.year }}, this is the price we've paid for one kilogram of the food requested by them over time. Our data covers {{ items|intcomma }} items bought weighing {{ weight|floatformat:2|intcomma }} tonnes and delivered to {{ number_foodbanks }} different food banks around the UK.</p>
+
+      <div id="chart" style="height:500px"></div>
+
+      <table class="table is-striped is-narrow is-fullwidth">
+          <tr>
+              <th>year-month</th>
+              <th>Price per Kg</th>
+          </tr>
+          {% for month in months %}
+              <tr>
+                  <td>{{ month.year.year }}-{{ month.month.month }}</td>
+                  <td>{{ month.price_per_kg }}p</td>
+              </tr>
+          {% endfor %}
+      </table>
+    </div>
+
+  </div><br><br>
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script>
+    google.charts.load('current', {'packages':['corechart','bar']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Month', "Price per Kg (pence)"],
+        {% for month in months %}
+            [new Date({{ month.year.year }}, {{ month.month.month|add:"-1" }}, 1), {{ month.price_per_kg }}],
+        {% endfor %}
+      ]);
+
+  var options = {
+    legend: { position: 'none' },
+    theme: 'material',
+    trendlines: {
+      0: {}
+    },
+    chartArea: {
+        height: '100%',
+        width: '100%',
+        top: 48,
+        left: 48,
+        right: 16,
+        bottom: 48
+    },
+    height: '100%',
+    width: '100%',
+  };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+  chart.draw(data, options);
+    }
+  </script>
+
+{% endblock %}
