@@ -140,7 +140,7 @@
                           {{ change_text|linebreaks }}
                         {% endif %}
                       {% endwith %}
-                      <script src="{% url 'wfbn-generic:foodbank_hit' location.foodbank_slug %}" defer></script>
+                      <script>navigator.sendBeacon("{% url 'wfbn-generic:foodbank_hit' location.foodbank_slug %}")</script>
                     </div>
                   </td>
                 </tr>
@@ -176,7 +176,7 @@
                           {{ change_text|linebreaks }}
                         {% endif %}
                     {% endwith %}
-                    <script src="{% url 'wfbn-generic:foodbank_hit' donationpoint.foodbank_slug %}" defer></script>
+                    <script>navigator.sendBeacon("{% url 'wfbn-generic:foodbank_hit' donationpoint.foodbank_slug %}")</script>
                   </td>
                 </tr>
               {% endfor %}
