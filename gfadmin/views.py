@@ -328,8 +328,12 @@ def order_send_notification(request, id = None):
     text_body = render_to_string("admin/emails/order.txt",{"order":order})
     html_body = render_to_string("admin/emails/order.html",{"order":order})
 
+    to_email = order.foodbank.contact_email
+    if order.foodbank.notification_email:
+        to_email = order.foodbank.notification_email
+
     send_email(
-        to = order.foodbank.notification_email,
+        to = to_email,
         cc = "deliveries@givefood.org.uk",
         subject = "Food donation from Give Food (%s)" % (order.order_id),
         body = text_body,
