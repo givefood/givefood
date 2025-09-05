@@ -24,12 +24,12 @@
                 <span style="color:red;">Unfinished</span>
             {% endif %}
         </dd>
-        <dt>Time Taken</dt>
-        <dd>
-            {% if crawl_set.time_taken %}
+        {% if crawl_set.finish %}
+            <dt>Time Taken</dt>
+            <dd>
                 {{ crawl_set.time_taken }}
-            {% endif %}
-        </dd>
+            </dd>
+        {% endif %}
         <dt>Items</dt>
         <dd>{{ crawl_set.item_count }}</dd>
         <dt>Objects</dt>
