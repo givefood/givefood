@@ -20,7 +20,7 @@ from django.db.models import Sum, Q
 
 from givefood.const.general import PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_cred, distance_meters
-from givefood.models import Changelog, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy
+from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
 from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
@@ -1770,6 +1770,31 @@ def changelog(request):
         "changelog":changelog,
     }
     return render(request, "admin/changelog.html", template_vars)
+
+
+def crawl_sets(request):
+
+    crawl_sets = CrawlSet.objects.all().order_by("-start")[:100]
+
+    template_vars = {
+        "section":"settings",
+        "crawl_sets":crawl_sets,
+    }
+
+    return render(request, "admin/crawl_sets.html", template_vars)
+
+
+def crawl_set(request, crawl_set_id):
+
+    crawl_set = get_object_or_404(CrawlSet, pk=crawl_set_id)
+    crawl_items = CrawlItem.objects.filter(crawl_set=crawl_set).select_related('foodbank').order_by("object_id", "-start")
+
+    template_vars = {
+        "section":"settings",
+        "crawl_set":crawl_set,
+        "crawl_items":crawl_items
+    }
+    return render(request, "admin/crawl_set.html", template_vars)
 
 
 def proxy(request):

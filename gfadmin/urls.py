@@ -115,6 +115,9 @@ urlpatterns = (
 
     path("changelog/", changelog, name="changelog"),
 
+    path("crawl-sets/", crawl_sets, name="crawl_sets"),
+    path("crawl-set/<int:crawl_set_id>/", crawl_set, name="crawl_set"),
+
     path("stats/quarter/", quarter_stats, name="quarter_stats"),
     path("stats/orders/", order_stats, name="order_stats"),
     path("stats/editing/", edit_stats, name="edit_stats"),

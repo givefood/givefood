@@ -1,0 +1,102 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Crawl Set - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Crawl Set</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+    <dl>
+        <dt>Crawl Type</dt>
+        <dd>{{ crawl_set.crawl_type }}</dd>
+        <dt>Start</dt>
+        <dd>{{ crawl_set.start }}</dd>
+        <dt>Finish</dt>
+        <dd>
+            {% if crawl_set.finish %}
+                {{ crawl_set.finish }}
+            {% else %}
+                <span style="color:red;">Unfinished</span>
+            {% endif %}
+        </dd>
+        <dt>Time Taken</dt>
+        <dd>
+            {% if crawl_set.time_taken %}
+                {{ crawl_set.time_taken }}
+            {% endif %}
+        </dd>
+        <dt>Items</dt>
+        <dd>{{ crawl_set.item_count }}</dd>
+        <dt>Objects</dt>
+        <dd>{{ crawl_set.object_count }}</dd>
+    </dl>
+
+    <br>
+
+    <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>Foodbank</th>
+                <th>Start</th>
+                <th>Finish</th>
+                <th>Time Taken</th>
+                <th>URL</th>
+                <th>Object</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for crawl_item in crawl_items %}
+            <tr>
+                <td>
+                    <a href="{% url 'gfadmin:foodbank' crawl_item.foodbank.slug %}">
+                        {{ crawl_item.foodbank.name }}
+                    </a>
+                </td>
+                <td>{{ crawl_item.start }}</td>
+                <td>
+                    {% if crawl_item.finish %}
+                        {{ crawl_item.finish }}
+                    {% else %}
+                        <span style="color:red;">Unfinished</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if crawl_item.finish %}
+                        {{ crawl_item.time_taken_ms|floatformat:0 }} ms
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ crawl_item.url }}" target="_blank">{{ crawl_item.url|truncatechars:30 }}</a>
+                </td>
+                <td>
+                    {% if crawl_item.content_object %}
+                        <a href="{{ crawl_item.content_object.get_absolute_url }}">
+                            {% if crawl_item.object_class_name == 'FoodbankChange' %}
+                                {{ crawl_item.content_object.need_id }}
+                            {% endif %}
+                        </a><br>
+                        {% if crawl_item.object_class_name == 'FoodbankChange' %}
+                            {% if crawl_item.content_object.nonpertinent %}
+                                Non-Pertinent
+                            {% endif %}
+                            {% if crawl_item.content_object.published %}
+                                <span style="color:darkgreen;">Published</span>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Crawl Sets - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Crawl Sets</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Start</th>
+                <th>Finish</th>
+                <th>Time Taken</th>
+                <th>Items</th>
+                <th>Objects</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for crawl_set in crawl_sets %}
+            <tr>
+              <td>
+                <a href="{% url 'gfadmin:crawl_set' crawl_set.id %}">
+                    {{ crawl_set.crawl_type }}
+                </a>
+              </td>
+              <td>{{ crawl_set.start }}</td>
+              <td>
+                {% if crawl_set.finish %}
+                    {{ crawl_set.finish }}
+                {% else %}
+                    <span style="color:red;">Unfinished</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if crawl_set.time_taken %}
+                    {{ crawl_set.time_taken }}
+                {% endif %}
+              </td>
+              <td>
+                {{ crawl_set.item_count }}
+              </td>
+              <td>
+                {{ crawl_set.object_count }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

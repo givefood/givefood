@@ -1676,6 +1676,9 @@ class FoodbankChange(models.Model):
     
     def get_excess_text_list(self):
         return self.get_excess_text().split("\n")
+    
+    def get_absolute_url(self):
+        return reverse("gfadmin:need", args=[self.need_id])
 
     def save(self, do_translate=False, do_foodbank_save=True, *args, **kwargs):
 
@@ -2104,6 +2107,16 @@ class CrawlSet(models.Model):
     finish = models.DateTimeField(null=True, blank=True, editable=False)
     crawl_type = models.CharField(max_length=50) # need, article, charity, discrepancy
 
+    def time_taken(self):
+        if self.finish:
+            return self.finish - self.start
+        return None
+
+    def item_count(self):
+        return CrawlItem.objects.filter(crawl_set=self).count()
+
+    def object_count(self):
+        return CrawlItem.objects.filter(crawl_set=self, object_id__isnull=False).count()
 
 class CrawlItem(models.Model):
 
@@ -2116,3 +2129,11 @@ class CrawlItem(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
+    def time_taken_ms(self):
+        if self.finish:
+            return int((self.finish - self.start).total_seconds() * 1000)
+        return None
+    
+    def object_class_name(self):
+        return self.content_object.__class__.__name__
