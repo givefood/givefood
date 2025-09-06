@@ -74,6 +74,9 @@
                     <a href="{{ crawl_item.url }}" target="_blank">{{ crawl_item.url|truncatechars:30 }}</a>
                 </td>
                 <td>
+                    {% if crawl_item.object_id and not crawl_item.content_object %}
+                        <span style="color:red;">Deleted</span>
+                    {% endif %}
                     {% if crawl_item.content_object %}
                         <a href="{{ crawl_item.content_object.get_absolute_url }}">
                             {% if crawl_item.object_class_name == 'FoodbankChange' %}
