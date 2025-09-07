@@ -8,7 +8,6 @@ from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
 from datetime import datetime
 from time import mktime
-import openai
 from google import genai
 from google.genai import types
 from bs4 import BeautifulSoup
@@ -1062,19 +1061,6 @@ def filter_change_text(change_text, filter_list):
                 filtered_change_text_list.add(change_text_list_item)
 
     return "\n".join(filtered_change_text_list)
-
-
-def chatgpt(prompt, temperature):
-
-    openai.api_key = get_cred("openai_api_key")
-    response = openai.ChatCompletion.create(
-        model = 'gpt-3.5-turbo',
-        temperature = temperature,
-        messages = [
-            {"role": "user", "content": prompt}
-        ]
-    )
-    return response["choices"][0]["message"]["content"]
 
 
 def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None):

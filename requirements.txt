@@ -10,7 +10,6 @@ unicodecsv
 dicttoxml
 feedparser
 psycopg2-binary
-openai==1.106.1
 furl
 beautifulsoup4
 google-genai
