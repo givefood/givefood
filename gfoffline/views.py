@@ -15,7 +15,7 @@ from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import CharityYear, Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
-from givefood.func import chatgpt, clean_foodbank_need_text, decache, do_foodbank_need_check, gemini, get_cred, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison, translate_need
+from givefood.func import clean_foodbank_need_text, decache, do_foodbank_need_check, gemini, get_cred, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison, translate_need
 from django.template.loader import render_to_string
 
 
