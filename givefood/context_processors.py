@@ -13,6 +13,7 @@ def context(request):
     language_code = request.LANGUAGE_CODE
     language_name = get_language_info(language_code)['name_local']
     language_direction = "rtl" if get_language_info(language_code)['bidi'] else "ltr"
+    language_direction_arrow = "←" if language_direction == "rtl" else "→"
 
     path = request.path
     translated_path = translate_url(path, language_code)
@@ -65,6 +66,7 @@ def context(request):
         'language_code': language_code,
         'language_name': language_name,
         'language_direction': language_direction,
+        'language_direction_arrow': language_direction_arrow,
         'facebook_locale': facebook_locale,
     }
 
