@@ -187,6 +187,7 @@ OLD_FOODBANK_SLUGS = {
     "hunstanton-and-district":"hunstanton-district",
     "redcar":"redcar-area",
     "cpr":"transformation",
+    "belfast-south-west":"south-west-belfast",
 }
 
 FOODBANK_SUBPAGES = [
