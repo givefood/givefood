@@ -930,4 +930,4 @@ def foodbank_hit(request, slug):
     if not created:
         FoodbankHit.objects.filter(pk=hit.pk).update(hits=hit.hits + 1)
 
-    return render(request, "wfbn/foodbank/hit.txt", content_type="text/plain")
+    return render(request, "wfbn/foodbank/hit.js", content_type="text/javascript")

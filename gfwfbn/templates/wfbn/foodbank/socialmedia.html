@@ -77,7 +77,7 @@
 
 {% block script %}
 
-<script>navigator.sendBeacon("{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}")</script>
+<script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
 
 {% endblock %}
