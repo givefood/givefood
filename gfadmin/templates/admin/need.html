@@ -35,13 +35,11 @@
         <dd>{{ need.foodbank.number_subscribers }}</dd>
       </dl>
 
-      <h3>Crawl Set</h3>
       {% if need.crawl_set %}
+        <h3>Crawl Set</h3>
         <time datetime="{{ need.crawl_set.start|date:'c' }}" title="{{ need.crawl_set.start }}">{{ need.crawl_set.start|timesince }} ago</time>
         <br>
         <a href="{% url 'admin:crawl_set' need.crawl_set.id %}">{{ need.crawl_set.start }}</a>
-      {% else %}
-          <p>Not in crawl set</p>
       {% endif %}
 
       <h3>Previous</h3>
