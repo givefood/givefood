@@ -1679,6 +1679,17 @@ class FoodbankChange(models.Model):
     
     def get_absolute_url(self):
         return reverse("gfadmin:need", args=[self.need_id])
+    
+    def crawl_set(self):
+        try:
+            content_type = ContentType.objects.get_for_model(self)
+            crawl_item = CrawlItem.objects.filter(content_type = content_type, object_id = self.id).first()
+            if crawl_item:
+                return crawl_item.crawl_set
+            else:
+                return None
+        except CrawlItem.DoesNotExist:
+            return None
 
     def save(self, do_translate=False, do_foodbank_save=True, *args, **kwargs):
 
