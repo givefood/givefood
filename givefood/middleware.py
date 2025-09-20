@@ -7,6 +7,7 @@ from django.urls import resolve
 
 from givefood.func import get_cred
 
+
 # Inject the render time into the response content
 def RenderTime(get_response):
     def middleware(request):
@@ -20,6 +21,7 @@ def RenderTime(get_response):
     return middleware
 
 
+# Check for a valid offline key in the URL for offline apps
 class OfflineKeyCheck:
 
     key_check_apps = ["gfoffline",]
@@ -39,7 +41,7 @@ class OfflineKeyCheck:
         return self.get_response(request)
 
 
-# Middleware to check if the user is logged in for specific apps
+# Check if the user is logged in for specific apps
 class LoginRequiredAccess:
 
    login_apps = ["gfadmin",]
@@ -60,5 +62,20 @@ class LoginRequiredAccess:
             
             if not email_verified or hosted_domain != "givefood.org.uk":
                 return redirect("auth:sign_in")
+
+        return self.get_response(request)
+   
+
+# Redirect origin.givefood.org.uk to www.givefood.org.uk if the appname is not gfoffline
+class RedirectToWWW:
+    
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+
+        if request.get_host() == "origin.givefood.org.uk" and resolve(request.path).app_name != "gfoffline":
+            new_url = request.build_absolute_uri().replace("origin.givefood.org.uk", "www.givefood.org.uk", 1)
+            return redirect(new_url, permanent=True)
 
         return self.get_response(request)

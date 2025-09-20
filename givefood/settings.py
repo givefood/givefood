@@ -92,6 +92,7 @@ MIDDLEWARE = [
     'givefood.middleware.LoginRequiredAccess',
     'givefood.middleware.OfflineKeyCheck',
     'givefood.middleware.RenderTime',
+    'givefood.middleware.RedirectToWWW',
 ]
 
 ROOT_URLCONF = 'givefood.urls'
