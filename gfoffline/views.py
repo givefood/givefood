@@ -51,16 +51,6 @@ def do_oc_geocode(foodbank):
     foodbank.save()
 
 
-def crawl_articles(request):
-
-    foodbanks_with_rss = Foodbank.objects.filter(rss_url__isnull=False)
-
-    for foodbank in foodbanks_with_rss:
-        foodbank_article_crawl(foodbank)
-
-    return HttpResponse("OK")
-
-
 def discrepancy_check(request):
 
     foodbanks = Foodbank.objects.filter(is_closed = False).order_by("last_discrepancy_check", "edited")[:1]
@@ -130,16 +120,6 @@ def discrepancy_check(request):
         foodbank.save(do_decache=False, do_geoupdate=False)
     
     return HttpResponse("OK")
-
-
-def need_check(request):
-
-    foodbanks = Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").exclude(hours_between_need_check = 0).order_by("?")
-
-    for foodbank in foodbanks:
-        do_foodbank_need_check(foodbank)
-    return HttpResponse("%s foodbank needs checked" % len(foodbanks))
-
 
 def foodbank_need_check(request, slug):
 
@@ -409,134 +389,6 @@ def refresh_mps(request):
         file.write(image_response.content)
         file.close()
         print("Wrote image %s" % mp_parl_id)
-
-    return HttpResponse("OK")
-
-
-def get_charity_info(request):
-
-    ew_charities = Foodbank.objects.filter(country__in=["England", "Wales"], charity_number__isnull=False, is_closed=False)
-    sc_charities = Foodbank.objects.filter(country="Scotland", charity_number__isnull=False, is_closed=False)
-    ni_charities = Foodbank.objects.filter(country="Northern Ireland", charity_number__isnull=False, is_closed=False)
-
-    ew_charity_api_key = get_cred("ew_charity_api_key")
-    sc_charity_api_key = get_cred("scot_charity_api_key")
-    
-    for foodbank in ew_charities:
-        logging.info("Getting EW charity info for %s" % foodbank.name)
-        url = "https://api.charitycommission.gov.uk/register/api/allcharitydetailsV2/%s/0" % foodbank.charity_number
-        headers = {
-            "Cache-Control": "no-cache",
-            "Ocp-Apim-Subscription-Key": ew_charity_api_key,
-        }
-        response = requests.get(url, headers=headers)
-        logging.warn("url: %s" % url)
-        logging.warn("Charity API response: %s" % response.status_code)
-        if response.status_code == 200:
-            data = response.json()
-            if data:
-                foodbank.charity_id = data["organisation_number"]
-                foodbank.charity_name = data["charity_name"]
-                foodbank.charity_type = data["charity_type"]
-                foodbank.charity_reg_date = data["date_of_registration"].replace("T00:00:00", "")
-                foodbank.charity_postcode = data["address_post_code"]
-                foodbank.charity_website = data["web"]
-                foodbank.charity_purpose = ""
-                for item in data["who_what_where"]:
-                    if item["classification_type"] == "What":
-                        foodbank.charity_purpose += item["classification_desc"] + "\n"
-
-
-        url = "https://api.charitycommission.gov.uk/register/api/charityoverview/%s/0" % foodbank.charity_number
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            if data:
-                foodbank.charity_objectives = data["activities"]
-
-        deleted_charity_years = CharityYear.objects.filter(foodbank=foodbank).delete()
-
-        url = "https://api.charitycommission.gov.uk/register/api/charityfinancialhistory/%s/0" % foodbank.charity_number
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            if data:
-                for year in data:
-                    charity_year = CharityYear(
-                        foodbank=foodbank,
-                        date=year.get("financial_period_end_date").replace("T00:00:00", ""),
-                        income=year.get("income", 0),
-                        expenditure=year.get("expenditure", 0),
-                    )
-                    charity_year.save()
-        
-        foodbank.last_charity_check = datetime.now(timezone.utc)
-        foodbank.save(do_decache=False, do_geoupdate=False)
-
-
-    for foodbank in sc_charities:
-        logging.warn("Getting SC charity info for %s" % foodbank.name)
-
-        url = "https://oscrapi.azurewebsites.net/api/all_charities/?charitynumber=%s" % foodbank.charity_number
-        headers = {
-            "x-functions-key": sc_charity_api_key,
-        }
-        response = requests.get(url, headers=headers)
-        logging.warn("url: %s" % url)
-        logging.warn("Charity API response: %s" % response.status_code)
-        if response.status_code == 200:
-            data = response.json()
-            logging.warn("Charity API data: %s" % data)
-            if data:
-                foodbank.charity_id = data["id"]
-                foodbank.charity_name = data["charityName"]
-                foodbank.charity_reg_date = data["registeredDate"]
-                foodbank.charity_postcode = data["postcode"]
-                foodbank.charity_website = data["website"]
-                foodbank.charity_purpose = ""
-                for item in data["purposes"]:
-                    foodbank.charity_purpose += item + "\n"
-                foodbank.charity_objectives = data["objectives"]
-
-        deleted_charity_years = CharityYear.objects.filter(foodbank=foodbank).delete()
-        url = "https://oscrapi.azurewebsites.net/api/annualreturns?charityid=%s" % foodbank.charity_id
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            if data:
-                for year in data:
-                    charity_year = CharityYear(
-                        foodbank=foodbank,
-                        date=year.get("AccountingReferenceDate"),
-                        income=year.get("GrossIncome", 0),
-                        expenditure=year.get("GrossExpenditure", 0),
-                    )
-                    charity_year.save()
-
-        foodbank.last_charity_check = datetime.now(timezone.utc)
-        foodbank.save(do_decache=False, do_geoupdate=False)
-        
-
-    for foodbank in ni_charities:
-        logging.warn("Getting NI charity info for %s" % foodbank.name)
-        reg_id = foodbank.charity_number.replace("NIC","")
-        url = "https://www.charitycommissionni.org.uk/umbraco/api/CharityApi/ExportDetailsToCsv?regid=%s&subid=0" % (reg_id)
-        response = requests.get(url)
-        if response.status_code == 200:
-            csv_input = csv.reader(StringIO(response.text))
-            headers = next(csv_input)
-            data_row = next(csv_input)
-            data = dict(zip(headers, data_row))
-            foodbank.charity_name = data.get("Charity name")
-            foodbank.charity_reg_date = data.get("Date registered")
-            foodbank.charity_website = data.get("Website")
-            # Objectives and purposes are reversed in NI
-            foodbank.charity_objectives = data.get("Charitable purposes")
-            objectives = data.get("What the charity does")
-            if objectives:
-                objectives = re.sub(r",(?!\s)", "\n", objectives)
-            foodbank.charity_purpose = objectives
-            foodbank.save()
 
     return HttpResponse("OK")
     

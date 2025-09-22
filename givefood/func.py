@@ -261,11 +261,16 @@ def oc_geocode(address):
     return lat_lng
 
 
-def foodbank_article_crawl(foodbank):
+def foodbank_article_crawl(foodbank, crawl_set = None):
 
-    from givefood.models import FoodbankArticle
+    from givefood.models import FoodbankArticle, CrawlItem
 
-    logging.info("Scraping %s" % (foodbank.name))
+    crawl_item = CrawlItem(
+        foodbank = foodbank,
+        crawl_set = crawl_set,
+        url = foodbank.rss_url,
+    )
+    crawl_item.save()
 
     found_new_article = False
 
@@ -293,7 +298,11 @@ def foodbank_article_crawl(foodbank):
     else:
         foodbank.save(do_decache=False, do_geoupdate=False)
 
+    crawl_item.finish = datetime.now()
+    crawl_item.save()
+
     return True
+
 
 def get_calories(text, weight, quantity):
 
@@ -709,6 +718,10 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
         LlToEarth([lat, lng]),
         LlToEarth(['latitude', 'longitude'])
     ])).annotate(type=Value("location")).order_by("distance")[:quantity]
+
+    if foodbank:
+        donationpoints = donationpoints.filter(foodbank = foodbank)
+        location_donationpoints = location_donationpoints.filter(foodbank = foodbank)
 
     donationpoints = list(chain(donationpoints,location_donationpoints))
     donationpoints = sorted(donationpoints, key=lambda k: k.distance)[:quantity]
