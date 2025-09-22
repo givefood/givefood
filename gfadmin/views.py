@@ -35,16 +35,20 @@ def index(request):
 
     # Stats
     yesterday = datetime.now() - timedelta(days=1)
+    week_ago = datetime.now() - timedelta(days=7)
+    
     stats = {
         "oldest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0],
         "latest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("-edited")[:1][0],
-        "sub_count_24":FoodbankSubscriber.objects.filter(created__gte=yesterday).count(),
-        "need_count_24":FoodbankChangeLine.objects.filter(created__gte=yesterday).count(),
-        "need_check_24":Foodbank.objects.filter(last_need_check__gte=yesterday).count(),
+        "sub_count_24h":FoodbankSubscriber.objects.filter(created__gte=yesterday).count(),
+        "sub_count_7d":FoodbankSubscriber.objects.filter(created__gte=week_ago).count(),
+        "need_count_24h":FoodbankChangeLine.objects.filter(created__gte=yesterday).count(),
+        "need_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="need", finish__gte=yesterday).count(),
         "oldest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").exclude(hours_between_need_check = 0).order_by("last_need_check")[:1][0],
         "latest_need_check":Foodbank.objects.all().exclude(is_closed = True).exclude(hours_between_need_check = 0).exclude(last_need_check__isnull=True).order_by("-last_need_check")[:1][0],
+        "article_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="article", finish__gte=yesterday).count(),
+        "charity_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="charity", finish__gte=yesterday).count(),
     }
-
 
     # Articles
     articles = FoodbankArticle.objects.all().order_by("-published_date")[:20]

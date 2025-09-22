@@ -64,8 +64,9 @@
 
     <div class="column">
 
-      <h2>Stats</h2>
+      <h2>Metrics</h2>
 
+      <h3>Edits</h3>
       <dl>
         <dt>Oldest Edit</dt>
         <dd>
@@ -77,6 +78,9 @@
           {{ stats.latest_edit.edited|timesince }} ago
           <br><span class="is-size-7">{{ stats.latest_edit.edited }} </span>
         </dd>
+      </dl>
+      <h3>Offline</h3>
+      <dl>
         <dt>Oldest Need Check</dt>
         <dd>
           {{ stats.oldest_need_check.last_need_check|timesince }} ago
@@ -87,12 +91,21 @@
           {{ stats.latest_need_check.last_need_check|timesince }} ago
           <br><span class="is-size-7">{{ stats.latest_need_check.last_need_check }} </span>
         </dd>
-        <dt>24hr AI Need Checks</dt>
-        <dd>{{ stats.need_check_24 }}</dd>
-        <dt>24hr Pub. Need Lines</dt>
-        <dd>{{ stats.need_count_24 }}</dd>
-        <dt>24hr Subs</dt>
-        <dd>{{ stats.sub_count_24 }}</dd>
+        <dt>24h Need Checks</dt>
+        <dd>{{ stats.need_check_24h }}</dd>
+        <dt>24h Pub. Need Lines</dt>
+        <dd>{{ stats.need_count_24h }}</dd>
+        <dt>24h Article Checks</dt>
+        <dd>{{ stats.article_check_24h }}</dd>
+        <dt>24h Charity Checks</dt>
+        <dd>{{ stats.charity_check_24h }}</dd>
+      </dl>
+      <h3>Subscribers</h3>
+      <dl>
+        <dt>24h Subscribers</dt>
+        <dd>{{ stats.sub_count_24h }}</dd>
+        <dt>7d Subscribers</dt>
+        <dd>{{ stats.sub_count_7d }}</dd>
       </dl>
 
 
