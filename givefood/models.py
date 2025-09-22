@@ -275,7 +275,6 @@ class Foodbank(models.Model):
         else:
             return self.full_name_en()
                 
-
     def friendly_url(self):
         return make_url_friendly(self.url)
 
