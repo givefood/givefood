@@ -2126,6 +2126,7 @@ class CrawlSet(models.Model):
     def object_count(self):
         return CrawlItem.objects.filter(crawl_set=self, object_id__isnull=False).count()
 
+
 class CrawlItem(models.Model):
 
     crawl_set = models.ForeignKey(CrawlSet, on_delete=models.DO_NOTHING, null=True, blank=True)
