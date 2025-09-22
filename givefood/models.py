@@ -408,6 +408,9 @@ class Foodbank(models.Model):
     def number_subscribers(self):
         return FoodbankSubscriber.objects.filter(foodbank = self).count()
     
+    def crawl_items(self):
+        return CrawlItem.objects.filter(foodbank = self).order_by("-finish")[:100]
+    
     def get_footprint(self):
         if self.no_locations == 0 and self.no_donation_points == 0:
             return 0

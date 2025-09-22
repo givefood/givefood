@@ -368,6 +368,7 @@ def foodbank(request, slug):
         "donation_points":FoodbankDonationPoint.objects.filter(foodbank = foodbank).count(),
         "articles":FoodbankArticle.objects.filter(foodbank = foodbank).count(),
         "subscribers":FoodbankSubscriber.objects.filter(foodbank = foodbank).count(),
+        "crawls":CrawlItem.objects.filter(foodbank = foodbank).count(),
     }
 
     template_vars = {

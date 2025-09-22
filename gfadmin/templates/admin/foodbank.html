@@ -44,6 +44,11 @@
           <span>Subscribers <span class="tag is-info is-normal is-light">{{ counts.subscribers }}</span></span>
         </a>
       </li>
+      <li>
+        <a data-tab="crawls">
+          <span>Crawls <span class="tag is-info is-normal is-light">{{ counts.crawls }}</span></span>
+        </a>
+      </li>
     </ul>
   </div>
 
@@ -540,6 +545,67 @@
           </tr>
         {% endfor %}
       </table>
+    </div>
+
+    {# Crawls #}
+    <div class="column tabcontent crawls is-hidden">
+
+      <table class="table is-fullwidth is-hoverable">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Start</th>
+                <th>Finish</th>
+                <th>Time Taken</th>
+                <th>URL</th>
+                <th>Object</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for crawl_item in foodbank.crawl_items %}
+            <tr>
+                <td>{{ crawl_item.crawl_set.crawl_type }}</td>
+                <td>{{ crawl_item.start }}</td>
+                <td>
+                    {% if crawl_item.finish %}
+                        {{ crawl_item.finish }}
+                    {% else %}
+                        <span style="color:red;">Unfinished</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if crawl_item.finish %}
+                        {{ crawl_item.time_taken_ms|floatformat:0 }} ms
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ crawl_item.url }}" target="_blank">{{ crawl_item.url|truncatechars:30 }}</a>
+                </td>
+                <td>
+                    {% if crawl_item.object_id and not crawl_item.content_object %}
+                        <span style="color:red;">Deleted</span>
+                    {% endif %}
+                    {% if crawl_item.content_object %}
+                        <a href="{{ crawl_item.content_object.get_absolute_url }}">
+                            {% if crawl_item.object_class_name == 'FoodbankChange' %}
+                                {{ crawl_item.content_object.need_id }}
+                            {% endif %}
+                        </a><br>
+                        {% if crawl_item.object_class_name == 'FoodbankChange' %}
+                            {% if crawl_item.content_object.nonpertinent %}
+                               Nonpertinent
+                            {% endif %}
+                            {% if crawl_item.content_object.published %}
+                                <span style="color:darkgreen;">✓ Published</span>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+      
     </div>
 
   </div>
