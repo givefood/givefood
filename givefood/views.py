@@ -409,7 +409,7 @@ def frag(request, frag):
     Fragments for client side includes
     """
 
-    # last_updated
+    # last-updated"
     if frag == "last-updated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)
         if timesince_text == "0 %s" % (_("minutes")):
@@ -417,7 +417,7 @@ def frag(request, frag):
         else:
             frag_text = "%s %s" % (timesince_text, _("ago"))
 
-    # Need hits
+    # need-hits
     if frag == "need-hits":
         number_hits = FoodbankHit.objects.filter(day__gte=datetime.now() - timedelta(days=7)).aggregate(Sum('hits'))["hits__sum"]
         frag_text = intcomma(number_hits, False)
