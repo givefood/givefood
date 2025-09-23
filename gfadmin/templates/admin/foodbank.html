@@ -558,7 +558,6 @@
                 <th>Finish</th>
                 <th>Time Taken</th>
                 <th>URL</th>
-                <th>Object</th>
             </tr>
         </thead>
         <tbody>
@@ -580,26 +579,6 @@
                 </td>
                 <td>
                     <a href="{{ crawl_item.url }}" target="_blank">{{ crawl_item.url|truncatechars:30 }}</a>
-                </td>
-                <td>
-                    {% if crawl_item.object_id and not crawl_item.content_object %}
-                        <span style="color:red;">Deleted</span>
-                    {% endif %}
-                    {% if crawl_item.content_object %}
-                        <a href="{{ crawl_item.content_object.get_absolute_url }}">
-                            {% if crawl_item.object_class_name == 'FoodbankChange' %}
-                                {{ crawl_item.content_object.need_id }}
-                            {% endif %}
-                        </a><br>
-                        {% if crawl_item.object_class_name == 'FoodbankChange' %}
-                            {% if crawl_item.content_object.nonpertinent %}
-                               Nonpertinent
-                            {% endif %}
-                            {% if crawl_item.content_object.published %}
-                                <span style="color:darkgreen;">✓ Published</span>
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
