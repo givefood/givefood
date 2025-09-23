@@ -1779,7 +1779,7 @@ def changelog(request):
 
 def crawl_sets(request):
 
-    crawl_sets = CrawlSet.objects.all().order_by("-start")[:100]
+    crawl_sets = CrawlSet.objects.all().order_by("-start")[:50]
 
     template_vars = {
         "section":"settings",
