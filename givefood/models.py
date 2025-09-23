@@ -23,6 +23,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 from requests import PreparedRequest
+import requests
 
 from givefood.settings import LANGUAGES
 
@@ -1137,6 +1138,16 @@ class FoodbankDonationPoint(models.Model):
                 self.store_id = int(match.group(1))
             else:
                 self.store_id = None
+
+        if self.company == "Asda" and self.url:
+            page_request = requests.get(self.url)
+            if page_request.status_code == 200:
+                page_html = page_request.text
+                match = re.search(r'id":"(\d+)",', page_html)
+                if match:
+                    self.store_id = int(match.group(1))
+                else:
+                    self.store_id = None
 
         if do_geoupdate:
             # Update politics
