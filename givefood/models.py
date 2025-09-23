@@ -1149,6 +1149,13 @@ class FoodbankDonationPoint(models.Model):
                 else:
                     self.store_id = None
 
+        if self.company == "Morrisons" and self.url:
+            match = re.search(r'/(\d+)', self.url)
+            if match:
+                self.store_id = int(match.group(1))
+            else:
+                self.store_id = None
+
         if do_geoupdate:
             # Update politics
             regions = admin_regions_from_postcode(self.postcode)
