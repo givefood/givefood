@@ -29,6 +29,7 @@
           <th>Location</th>
           <th>Address</th>
           <th>Company</th>
+          <th>Store ID</th>
           <th>Network</th>
           <th>Country</th>
           <th>Closed</th>
@@ -45,6 +46,7 @@
                 <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon"> {{ donation_point.company }}
               {% endif %}
             </td>
+            <td>{{ donation_point.store_id }}</td>
             <td>{{ donation_point.foodbank_network }}</td>
             <td>{{ donation_point.country }}</td>
             <td>{{ donation_point.is_closed }}</td>

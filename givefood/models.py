@@ -3,6 +3,7 @@
 
 import html
 import math
+import re
 import hashlib, unicodedata, logging, json, uuid
 from datetime import date, datetime, timedelta
 from string import capwords
@@ -921,6 +922,7 @@ class FoodbankDonationPoint(models.Model):
     in_store_only = models.BooleanField(default=False)
     company = models.CharField(max_length=100, null=True, blank=True, choices=DONATION_POINT_COMPANIES_CHOICES)
     notes = models.TextField(null=True, blank=True, help_text="These notes are public")
+    store_id = models.IntegerField(null=True, blank=True, help_text="The company's store ID")
 
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)
@@ -1121,6 +1123,20 @@ class FoodbankDonationPoint(models.Model):
         self.foodbank_slug = self.foodbank.slug
         self.foodbank_network = self.foodbank.network
         self.is_closed = self.foodbank.is_closed
+
+        # Populate store id
+        if self.company == "Tesco" and self.url:
+            match = re.search(r'stc\*(\d+)', self.url)
+            if match:
+                self.store_id = int(match.group(1))
+            else:
+                self.store_id = None
+        if self.company == "Sainsbury's" and self.url:
+            match = re.search(r'/(\d+)/', self.url)
+            if match:
+                self.store_id = int(match.group(1))
+            else:
+                self.store_id = None
 
         if do_geoupdate:
             # Update politics
