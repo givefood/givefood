@@ -385,7 +385,7 @@
             <th>Lat Lng</th>
             <th>Place ID</th>
             <th>Company</th>
-            <th>Has Open Hrs</th>
+            <th>Store ID</th>
             <th>In Store Only?</th>
             <th>Notes</th>
             <th></th>
@@ -403,7 +403,11 @@
                   {{ donation_point.company }}
                 {% endif %}
               </td>
-              <td>{% if donation_point.opening_hours %}Y{% endif %}</td>
+              <td>
+                {% if donation_point.store_id %}
+                  {{ donation_point.store_id }}
+                {% endif %}
+              </td>
               <td>{% if donation_point.in_store_only %}Y{% endif %}</td>
               <td>
                 {% if donation_point.notes %}
