@@ -46,7 +46,11 @@
                 <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon"> {{ donation_point.company }}
               {% endif %}
             </td>
-            <td>{{ donation_point.store_id }}</td>
+            <td>
+              {% if donation_point.store_id %}
+                {{ donation_point.store_id }}
+              {% endif %}
+            </td>
             <td>{{ donation_point.foodbank_network }}</td>
             <td>{{ donation_point.country }}</td>
             <td>{{ donation_point.is_closed }}</td>
