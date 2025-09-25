@@ -1,6 +1,6 @@
 ## Need Check
 /opt/venv/bin/python /app/manage.py needcheck<br>
-45 10,13,19 * * *
+45 8,12,18 * * *
 
 ## Articles
 /opt/venv/bin/python /app/manage.py getarticles<br>
