@@ -52,7 +52,6 @@ def items(request):
 
     return response
 
-    
 
 def foodbanks(request):
 
