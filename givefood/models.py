@@ -921,9 +921,12 @@ class FoodbankDonationPoint(models.Model):
     wheelchair_accessible = models.BooleanField(null=True, blank=True)
     url = models.URLField(max_length=1024, verbose_name="URL", null=True, blank=True)
     in_store_only = models.BooleanField(default=False)
+
     company = models.CharField(max_length=100, null=True, blank=True, choices=DONATION_POINT_COMPANIES_CHOICES)
-    notes = models.TextField(null=True, blank=True, help_text="These notes are public")
+    company_slug = models.CharField(max_length=100, null=True, blank=True, editable=False)
     store_id = models.IntegerField(null=True, blank=True, help_text="The company's store ID")
+
+    notes = models.TextField(null=True, blank=True, help_text="These notes are public")
 
     latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)
@@ -1101,8 +1104,10 @@ class FoodbankDonationPoint(models.Model):
     
     def save(self, do_geoupdate=True, do_foodbank_resave=True, do_photo_update=True, *args, **kwargs):
 
-        # Slugify name
+        # Slugify
         self.slug = slugify(self.name)
+        if self.company:
+            self.company_slug = slugify(self.company)
 
         # LatLong
         self.latitude = self.latt_long.split(",")[0]
