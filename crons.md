@@ -9,7 +9,3 @@
 ## Charity info
 /opt/venv/bin/python /app/manage.py charityinfo<br>
 30 4 * * *
-
-# DB Worker
-/opt/venv/bin/python /app/manage.py db_worker<br>
-* * * * *
