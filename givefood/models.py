@@ -29,7 +29,7 @@ from givefood.settings import LANGUAGES
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
-from givefood.func import gemini, geocode, get_calories, get_translation, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, decache, place_has_photo, pluscode, translate_need, validate_postcode
+from givefood.func import decache_async, gemini, geocode, get_calories, get_translation, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, place_has_photo, pluscode, translate_need, validate_postcode
 
 
 class Foodbank(models.Model):
@@ -668,7 +668,7 @@ class Foodbank(models.Model):
             ]
 
             urls = translated_urls + api_urls
-            decache(urls, prefixes)
+            decache_async.enqueue(urls, prefixes)
 
 
 class FoodbankLocation(models.Model):
@@ -2140,12 +2140,12 @@ class Changelog(models.Model):
     def save(self, *args, **kwargs):
 
         super(Changelog, self).save(*args, **kwargs)
-        decache([reverse("colophon")])
+        decache_async([reverse("colophon")])
 
     def delete(self, *args, **kwargs):
 
         super(Changelog, self).delete(*args, **kwargs)
-        decache([reverse("colophon")])
+        decache_async([reverse("colophon")])
 
 
 class CharityYear(models.Model):

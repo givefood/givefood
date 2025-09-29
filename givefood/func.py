@@ -83,6 +83,12 @@ def get_all_constituencies():
     return all_parlcon
 
 
+@task
+def decache_async(urls = None, prefixes = None):
+    decache(urls = urls, prefixes = prefixes)
+    return True
+
+
 def decache(urls = None, prefixes = None):
 
     domain = "www.givefood.org.uk"
