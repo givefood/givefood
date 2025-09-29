@@ -1,10 +1,11 @@
-from django.urls import re_path
+from django.urls import path
 from gfapi3.views import *
 
 app_name = "gfapi3"
 
 urlpatterns = (
-    re_path(r'^$', index, name="index"),
-    re_path(r'^items/$', items, name="items"),
-    re_path(r'^foodbanks/$', foodbanks, name="foodbanks"),
+    path("", index, name="index"),
+    path("items", items, name="items"),
+    path("foodbanks", foodbanks, name="foodbanks"),
+    path("donationpoints/company/<slug:slug>/", company, name="company"),
 )
