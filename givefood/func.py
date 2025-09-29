@@ -966,7 +966,6 @@ def get_cred(cred_name):
         return None
 
 
-
 def post_to_subscriber(need, subscriber):
 
     possible_emoji = [
