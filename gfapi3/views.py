@@ -247,7 +247,7 @@ def company(request, slug):
                     "id": dp.foodbank.latest_need.need_id,
                     "items": dp.foodbank.latest_need.change_list(),
                     "excess": dp.foodbank.latest_need.excess_list(),
-                    "created": str(dp.foodbank.latest_need.created),
+                    "found": str(dp.foodbank.latest_need.created),
                 },
             },
             "address": dp.address,
