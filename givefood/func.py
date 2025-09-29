@@ -1007,7 +1007,7 @@ def post_to_subscriber(need, subscriber):
         }
     )
 
-    send_email.enqueue(
+    send_email_async.enqueue(
         to = subscriber.email,
         subject = subject,
         body = text_body,
@@ -1017,6 +1017,22 @@ def post_to_subscriber(need, subscriber):
 
 
 @task
+def send_email_async(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None):
+    return send_email(
+        to = to,
+        subject = subject,
+        body = body,
+        html_body = html_body,
+        cc = cc,
+        cc_name = cc_name,
+        reply_to = reply_to,
+        reply_to_name = reply_to_name,
+        is_broadcast = is_broadcast,
+        bcc = bcc,
+        bcc_name = bcc_name,
+    )
+
+
 def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None):
 
     api_url = "https://api.postmarkapp.com/email"
