@@ -12,4 +12,4 @@
 
 # DB Worker
 /opt/venv/bin/python /app/manage.py db_worker --batch --max-tasks 50<br>
-* * * * *
+*/5 * * * *
