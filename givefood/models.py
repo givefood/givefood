@@ -2140,12 +2140,12 @@ class Changelog(models.Model):
     def save(self, *args, **kwargs):
 
         super(Changelog, self).save(*args, **kwargs)
-        decache_async([reverse("colophon")])
+        decache_async.enqueue([reverse("colophon")])
 
     def delete(self, *args, **kwargs):
 
         super(Changelog, self).delete(*args, **kwargs)
-        decache_async([reverse("colophon")])
+        decache_async.enqueue([reverse("colophon")])
 
 
 class CharityYear(models.Model):
