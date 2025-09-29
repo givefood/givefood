@@ -25,19 +25,19 @@ APPEND_SLASH = True
 
 TEMPLATE_DEBUG = True
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
         },
     },
-    'loggers': {
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
+    "loggers": {
+        "django.request": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }
@@ -58,44 +58,44 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.humanize',
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.humanize",
 
-    'cspreports',
-    'bulma',
-    'django_tasks',
-    'django_tasks.backends.database',
+    "cspreports",
+    "bulma",
+    "django_tasks",
+    "django_tasks.backends.database",
 
-    'gfadmin',
-    'gfapi1',
-    'gfapi2',
-    'gfdash',
-    'gfoffline',
-    'gfwfbn',
-    'gfwrite',
-    'gfapp',
-    'gfauth',
-    'givefood',
+    "gfadmin",
+    "gfapi1",
+    "gfapi2",
+    "gfdash",
+    "gfoffline",
+    "gfwfbn",
+    "gfwrite",
+    "gfapp",
+    "gfauth",
+    "givefood",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'csp.middleware.CSPMiddleware',
-    'givefood.middleware.LoginRequiredAccess',
-    'givefood.middleware.OfflineKeyCheck',
-    'givefood.middleware.RenderTime',
-    'givefood.middleware.RedirectToWWW',
+    "django.middleware.security.SecurityMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    # "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "csp.middleware.CSPMiddleware",
+    "givefood.middleware.LoginRequiredAccess",
+    "givefood.middleware.OfflineKeyCheck",
+    "givefood.middleware.RenderTime",
+    "givefood.middleware.RedirectToWWW",
 ]
 
 TASKS = {
@@ -104,20 +104,20 @@ TASKS = {
     }
 }
 
-ROOT_URLCONF = 'givefood.urls'
+ROOT_URLCONF = "givefood.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.i18n',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.i18n",
                 "gfadmin.context_processors.gmap_keys",
                 "givefood.context_processors.context",
             ],
@@ -125,19 +125,19 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'givefood.wsgi.application'
+WSGI_APPLICATION = "givefood.wsgi.application"
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PASS"),
-        'HOST': os.getenv("DB_HOST"),
-        'PORT': '5432',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASS"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": "5432",
     }
 }
-DEFAULT_AUTO_FIELD='django.db.models.BigAutoField' 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField" 
 
 
 # Password validation
@@ -145,24 +145,24 @@ DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
 
 # Internationalization
 
-LANGUAGE_CODE = 'en'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = "en"
+TIME_ZONE = "UTC"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = False
@@ -191,7 +191,7 @@ LOCALE_PATHS = (
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/{{ docs_version }}/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "givefood", "static"))
 WHITENOISE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year
 
