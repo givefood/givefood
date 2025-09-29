@@ -67,6 +67,8 @@ INSTALLED_APPS = [
 
     'cspreports',
     'bulma',
+    'django_tasks',
+    'django_tasks.backends.database',
 
     'gfadmin',
     'gfapi1',
@@ -95,6 +97,12 @@ MIDDLEWARE = [
     'givefood.middleware.RenderTime',
     'givefood.middleware.RedirectToWWW',
 ]
+
+TASKS = {
+    "default": {
+        "BACKEND": "django_tasks.backends.database.DatabaseBackend"
+    }
+}
 
 ROOT_URLCONF = 'givefood.urls'
 

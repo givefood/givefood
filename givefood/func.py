@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import quote
 from furl import furl
 from django_earthdistance.models import EarthDistance, LlToEarth
+from django_tasks import task
 
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -1006,7 +1007,7 @@ def post_to_subscriber(need, subscriber):
         }
     )
 
-    send_email(
+    send_email.enqueue(
         to = subscriber.email,
         subject = subject,
         body = text_body,
@@ -1015,6 +1016,7 @@ def post_to_subscriber(need, subscriber):
     )
 
 
+@task
 def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None):
 
     api_url = "https://api.postmarkapp.com/email"
