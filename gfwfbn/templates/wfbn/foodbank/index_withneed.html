@@ -67,7 +67,7 @@
 
               {% with foodbank.latest_need.get_change_text as change_text %}
                 {% if change_text == "Facebook" %}
-                  <p>{% blocktrans %}You can find out what being to have donated on Facebook:{% endblocktrans %}</p>
+                  <p>{% blocktrans %}You can find out what is needed on the foodbank's Facebook page:{% endblocktrans %}</p>
                   {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
                 {% else %}
                   <p>{{ foodbank.full_name }} {% blocktrans %}is currently requesting the following items to be donated:{% endblocktrans %}</p>
