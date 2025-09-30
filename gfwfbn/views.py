@@ -393,17 +393,31 @@ def foodbank_map(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     gmap_static_key = get_cred("gmap_static_key")
 
-    markers = "%s|" % foodbank.latt_long
-    for location in foodbank.locations():
-        markers = "%s%s|" % (markers, location.latt_long)
+    # Main markers
+    main_markers = "&markers=color:red|%s" % foodbank.latt_long
+    if foodbank.delivery_address:
+        main_markers += "|%s" % (foodbank.delivery_latt_long)
 
-    if foodbank.name == "Salvation Army":
-        markers = "&zoom=15"
+    # Location markers
+    loc_markers = ""
+    if foodbank.no_locations != 0:
+        loc_markers += "&markers=color:yellow|size:mid|"
+        for location in foodbank.locations():
+            loc_markers += "%s|" % (location.latt_long)
 
-    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s&markers=%s" % (foodbank.latt_long, gmap_static_key, markers)
+    # Donation point markers
+    dp_markers = ""
+    if foodbank.no_donation_points != 0:
+        dp_markers += "&markers=color:0x0287cf|size:small|"
+        for donationpoint in foodbank.donation_points():
+            dp_markers += "%s|" % (donationpoint.latt_long)
+    
+    markers = main_markers + loc_markers + dp_markers
+
+    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s%s" % (foodbank.latt_long, gmap_static_key, markers)
 
     request = requests.get(url)
-    return HttpResponse(request.content, content_type='image/png')
+    return HttpResponse(request.content, content_type="image/png")
 
 
 @cache_page(SECONDS_IN_WEEK)
