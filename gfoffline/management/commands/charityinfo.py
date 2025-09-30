@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from django.core.management.base import BaseCommand
 import requests
 
+from givefood.const.general import BOT_USER_AGENT
 from givefood.func import get_cred
 from givefood.models import CharityYear, CrawlItem, Foodbank, CrawlSet
 
@@ -44,6 +45,7 @@ class Command(BaseCommand):
             headers = {
                 "Cache-Control": "no-cache",
                 "Ocp-Apim-Subscription-Key": ew_charity_api_key,
+                "User-Agent": BOT_USER_AGENT,
             }
             response = requests.get(url, headers=headers)
             if response.status_code == 200:
@@ -104,6 +106,7 @@ class Command(BaseCommand):
 
             headers = {
                 "x-functions-key": sc_charity_api_key,
+                "User-Agent": BOT_USER_AGENT,
             }
             response = requests.get(url, headers=headers)
             if response.status_code == 200:
@@ -152,7 +155,11 @@ class Command(BaseCommand):
             )
             crawl_item.save()
 
-            response = requests.get(url)
+            headers = {
+                "User-Agent": BOT_USER_AGENT,
+            }
+
+            response = requests.get(url, headers=headers)
             if response.status_code == 200:
                 csv_input = csv.reader(StringIO(response.text))
                 headers = next(csv_input)

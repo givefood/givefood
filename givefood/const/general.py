@@ -245,3 +245,5 @@ DAYS_OF_WEEK = [
     "Saturday",
     "Sunday",
 ]
+
+BOT_USER_AGENT = "Mozilla/5.0 (compatible; GiveFoodBot/1.0; +https://www.givefood.org.uk/bot/)"

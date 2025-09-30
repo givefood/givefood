@@ -23,7 +23,7 @@ from django.contrib.humanize.templatetags.humanize import apnumber
 from django.db.models import Value
 from django.contrib.contenttypes.models import ContentType
 
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
+from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -281,6 +281,7 @@ def foodbank_article_crawl(foodbank, crawl_set = None):
 
     found_new_article = False
 
+    feedparser.USER_AGENT = BOT_USER_AGENT
     feed = feedparser.parse(foodbank.rss_url)
     if feed:
         for item in feed["items"]:
@@ -1221,7 +1222,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
     crawl_item.save()
 
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "User-Agent": BOT_USER_AGENT,
     }
 
     try:

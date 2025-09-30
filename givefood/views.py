@@ -17,7 +17,7 @@ from givefood.models import Changelog, Foodbank, FoodbankChangeLine, FoodbankDon
 from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
-from givefood.const.general import SITE_DOMAIN
+from givefood.const.general import BOT_USER_AGENT, SITE_DOMAIN
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
 from givefood.settings import LANGUAGES
 
@@ -401,6 +401,17 @@ def colophon(request):
         "requirements":requirement_names,
     }
     return render(request, "public/colophon.html", template_vars)
+
+
+# @cache_page(SECONDS_IN_WEEK)
+def bot(request):
+    """
+    Bot user agent info page
+    """
+    template_vars = {
+        "BOT_USER_AGENT": BOT_USER_AGENT,
+    }
+    return render(request, "public/bot.html", template_vars)
 
 
 @cache_page(SECONDS_IN_TWO_MINUTES)

@@ -14,7 +14,7 @@ from django.db.models import F
 from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import CharityYear, Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY
+from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY
 from givefood.func import clean_foodbank_need_text, decache, do_foodbank_need_check, gemini, get_cred, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison, translate_need
 from django.template.loader import render_to_string
 
@@ -60,7 +60,7 @@ def discrepancy_check(request):
         if "facebook.com" not in foodbank.url:
 
             headers = {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+                "User-Agent": BOT_USER_AGENT,
             }
             foodbank_page = False
             try:

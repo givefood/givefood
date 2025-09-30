@@ -18,7 +18,7 @@ from django.core.cache import cache
 from django.db import IntegrityError
 from django.db.models import Sum, Q
 
-from givefood.const.general import PACKAGING_WEIGHT_PC
+from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_cred, distance_meters
 from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
 from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
@@ -1431,7 +1431,10 @@ def finder_trussell(request):
 
     while at_the_end == False:
         page_url = "%s%s&randomthing=%s" % (url, page, randrange(1000))
-        response = requests.get(page_url)
+        headers = {
+            "User-Agent": BOT_USER_AGENT,
+        }
+        response = requests.get(page_url, headers = headers)
         page_text = response.text
         if "Sorry, there are no results which match your location." in page_text:
             at_the_end = True
@@ -1806,7 +1809,7 @@ def proxy(request):
 
     url = request.GET.get("url")
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:100.0) Gecko/20100101 Firefox/100.0",
+        "User-Agent": BOT_USER_AGENT,
     }
     request = requests.get(url, headers=headers)
     if request.status_code == 200:

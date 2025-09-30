@@ -1,0 +1,43 @@
+{% extends "public/page.html" %}
+{% load bulma_tags %}
+{% load i18n %}
+
+{% block title %}Bot - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns is-centered">
+    <div class="column is-three-quarters">
+    <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+  </div>
+  
+
+  <div class="columns is-centered">
+    <div class="column is-three-quarters content">
+        <h1>Bot</h1>
+        
+        <img src="/static/img/givefoodbot.png" alt="Give Food Bot" style="width:250px;float:right; margin-left:20px;">
+
+        <p>GiveFoodBot is a web crawler from the UK charity <a href="/">Give Food</a> that extracts data from food bank websites including:</p>
+
+        <ul>
+            <li>Addresses</li>
+            <li>Email addresses</li>
+            <li>Phone numbers</li>
+            <li>Items needed and have in excess</li>
+            <li>Charity registration data</li>
+            <li>News articles, including RSS/Atom feeds</li>
+        </ul>
+
+        <p>The bot identifies itself with this user agent:</p>
+        <p><code>{{ BOT_USER_AGENT }}</code></p>
+
+        <p>It should never make more than a few unauthenticated requests per hour. If you have a problem with how our bot behaves please do not hesitate to contact us on <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a>.</p>
+
+        <p>You may also be interested in our <a href="/api/">API</a>, <a href="/colophon/">colophon</a>, or <a href="https://github.com/givefood/givefood">code</a>.</p>
+
+    </div>
+  </div>
+
+{% endblock %}
