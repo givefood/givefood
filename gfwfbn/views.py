@@ -1,4 +1,3 @@
-from itertools import chain
 import json, requests, datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
@@ -12,9 +11,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.validators import validate_email
 from django import forms
 from django.utils.translation import gettext
-from django.db.models import Value
-
-from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.const.general import SITE_DOMAIN
 
