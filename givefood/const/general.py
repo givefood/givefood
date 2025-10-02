@@ -189,6 +189,7 @@ OLD_FOODBANK_SLUGS = {
     "redcar":"redcar-area",
     "cpr":"transformation",
     "belfast-south-west":"south-west-belfast",
+    "yarmouth-magdalen": "great-yarmouth",
 }
 
 FOODBANK_SUBPAGES = [
