@@ -24,6 +24,7 @@ urlpatterns = [
     path("at/<slug:slug>/subscribe/", foodbank_subscribe, name="foodbank_subscribe"),
     path("at/<slug:slug>/subscribe/sample/", foodbank_subscribe_sample, name="foodbank_subscribe_sample"),
     re_path(r"^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),
+    path("at/<slug:slug>/map.png", foodbank_map, name="foodbank_map"),
 
     # Donation Points
     path("at/<slug:slug>/donationpoints/", foodbank_donationpoints, name="foodbank_donationpoints"),

@@ -381,39 +381,62 @@ def foodbank_rss(request, slug):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def foodbank_map(request, slug):
+def foodbank_map(request, slug, size=600):
     """
     Food bank map PNG
     """
+    if size not in [600, 1080]:
+        return HttpResponseBadRequest()
+    
+    if size == 600:
+        size = "600x400"
+        scale = 1
+    if size == 1080:
+        size = "540x360"
+        scale = 2
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    gmap_static_key = get_cred("gmap_static_key")
 
     # Main markers
-    main_markers = "&markers=color:red|%s" % foodbank.latt_long
+    main_markers = "icon:https://www.givefood.org.uk/static/img/mapmarkers/32/red.png|%s" % foodbank.latt_long
     if foodbank.delivery_address:
         main_markers += "|%s" % (foodbank.delivery_latt_long)
 
     # Location markers
     loc_markers = ""
     if foodbank.no_locations != 0:
-        loc_markers += "&markers=color:yellow|size:mid|"
+        loc_markers += "icon:https://www.givefood.org.uk/static/img/mapmarkers/16/yellow.png|"
         for location in foodbank.locations():
             loc_markers += "%s|" % (location.latt_long)
 
     # Donation point markers
     dp_markers = ""
     if foodbank.no_donation_points != 0:
-        dp_markers += "&markers=color:0x0287cf|size:small|"
+        dp_markers += "icon:https://www.givefood.org.uk/static/img/mapmarkers/16/blue.png|"
         for donationpoint in foodbank.donation_points():
             dp_markers += "%s|" % (donationpoint.latt_long)
-    
-    markers = main_markers + loc_markers + dp_markers
 
-    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s%s" % (foodbank.latt_long, gmap_static_key, markers)
+    base_url = "https://maps.googleapis.com/maps/api/staticmap"
+    params = [
+        ("center", foodbank.latt_long),
+        ("size", size),
+        ("scale", scale),
+        ("maptype", "roadmap"),
+        ("format", "png"),
+        ("language", request.LANGUAGE_CODE),
+        ("key", get_cred("gmap_static_key")),
+    ]
+    if dp_markers:
+        params.append(("markers", dp_markers))
+    if loc_markers:
+        params.append(("markers", loc_markers))
+    params.append(("markers", main_markers))
 
-    request = requests.get(url)
-    return HttpResponse(request.content, content_type="image/png")
+    response = requests.get(base_url, params=params)
+    if response.status_code != 200:
+        return HttpResponseBadRequest()
+
+    return HttpResponse(response.content, content_type="image/png")
 
 
 @cache_page(SECONDS_IN_WEEK)
