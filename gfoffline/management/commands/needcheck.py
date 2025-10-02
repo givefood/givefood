@@ -18,7 +18,7 @@ class Command(BaseCommand):
         )
         crawl_set.save()
 
-        foodbanks = Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").exclude(hours_between_need_check = 0).order_by("?")
+        foodbanks = Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").order_by("?")
 
         the_counter = 1
         foodbank_count = foodbanks.count()
