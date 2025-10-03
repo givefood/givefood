@@ -1225,27 +1225,43 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         "User-Agent": BOT_USER_AGENT,
     }
 
-    try:
-        foodbank_shoppinglist_page = requests.get(foodbank.shopping_list_url, headers=headers, timeout=10)
-    except requests.exceptions.RequestException as e:
-        website_discrepancy = FoodbankDiscrepancy(
-            foodbank = foodbank,
-            discrepancy_type = "website",
-            discrepancy_text = "Website %s connection failed" % (foodbank.url),
-            url = foodbank.url,
-        )
-        website_discrepancy.save()
-        foodbank.last_need_check = datetime.now()
-        foodbank.save(do_decache=False, do_geoupdate=False)
-        return e
-    
-    foodbank_shoppinglist_html = foodbank_shoppinglist_page.text
-    foodbank_shoppinglist_page = htmlbodytext(foodbank_shoppinglist_page.text)
+    scrape_type = "web"
+    if "facebook.com" in foodbank.shopping_list_url:
+        scrape_type = "facebook"
+
+    if scrape_type == "web":
+        try:
+            foodbank_shoppinglist_page = requests.get(foodbank.shopping_list_url, headers=headers, timeout=10)
+        except requests.exceptions.RequestException as e:
+            website_discrepancy = FoodbankDiscrepancy(
+                foodbank = foodbank,
+                discrepancy_type = "website",
+                discrepancy_text = "Website %s connection failed" % (foodbank.url),
+                url = foodbank.url,
+            )
+            website_discrepancy.save()
+            foodbank.last_need_check = datetime.now()
+            foodbank.save(do_decache=False, do_geoupdate=False)
+            return e
+        
+        foodbank_shoppinglist_html = foodbank_shoppinglist_page.text
+        foodbank_shoppinglist_page = htmlbodytext(foodbank_shoppinglist_page.text)
+
+    if scrape_type == "facebook":
+
+        url = f"https://www.facebook.com/v16.0/plugins/page.php?adapt_container_width=true&app_id=224169065968597&container_width=538&height=1000&hide_cover=false&href=https%3A%2F%2Fwww.facebook.com%2F{ foodbank.facebook_page }&lazy=true&locale=en_GB&sdk=joey&show_facepile=true&show_posts=true&small_header=false&width="
+
+        request = requests.get(url, headers=headers, timeout=10)
+        if request.status_code == 200:
+            foodbank_shoppinglist_html = request.text
+            foodbank_shoppinglist_page = htmlbodytext(request.text)
+            
 
     need_prompt = render_to_string(
         "foodbank_need_prompt.txt",
         {
             "foodbank":foodbank,
+            "scrape_type":scrape_type,
             "foodbank_page":foodbank_shoppinglist_page,
             "foodbank_html":foodbank_shoppinglist_html,
         }

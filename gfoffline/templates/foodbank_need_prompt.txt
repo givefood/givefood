@@ -4,8 +4,14 @@ It is fine to have no items if you can't find any. There might be multiple lists
 
 From this web page describing the food bank's needed and excess items below:
 
-{% if foodbank.slug == 'haverhill' %}
-    {{ foodbank_html }}
-{% else %}
+{% if scrape_type == "web" %}
+    {% if foodbank.slug == 'haverhill' %}
+        {{ foodbank_html }}
+    {% else %}
+        {{ foodbank_page }}
+    {% endif %}
+{% endif %}
+
+{% if scrape_type == "facebook" %}
     {{ foodbank_page }}
 {% endif %}
