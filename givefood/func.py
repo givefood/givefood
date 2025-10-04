@@ -1268,8 +1268,12 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             request = requests.post(token_url, json=request_payload, headers=headers, timeout=10)
         token = request.json()["Data"]["Tokens"]["Token"]
 
+        key_match = re.search(r"/(\d+)/", foodbank.shopping_list_url)
+        if key_match:
+            foodbank_key = key_match.group(1)
+
         request_payload = {
-            "Key1":"1079",
+            "Key1":foodbank_key,
             "HTMLVersion":"1.0.6",
             "AppVersion":"1",
             "MainVersion":"1",
