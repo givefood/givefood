@@ -15,3 +15,7 @@ From this web page describing the food bank's needed and excess items below:
 {% if scrape_type == "facebook" %}
     {{ foodbank_page }}
 {% endif %}
+
+{% if scrape_type == "bankthefood" %}
+    {{ foodbank_page}}
+{% endif %}

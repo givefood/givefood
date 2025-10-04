@@ -1228,6 +1228,8 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
     scrape_type = "web"
     if "facebook.com" in foodbank.shopping_list_url:
         scrape_type = "facebook"
+    if "bankthefood.org" in foodbank.shopping_list_url:
+        scrape_type = "bankthefood"
 
     if scrape_type == "web":
         try:
@@ -1255,17 +1257,36 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         if request.status_code == 200:
             foodbank_shoppinglist_html = request.text
             foodbank_shoppinglist_page = htmlbodytext(request.text)
-            
+        
+    if scrape_type == "bankthefood":
 
-    need_prompt = render_to_string(
-        "foodbank_need_prompt.txt",
-        {
-            "foodbank":foodbank,
-            "scrape_type":scrape_type,
-            "foodbank_page":foodbank_shoppinglist_page,
-            "foodbank_html":foodbank_shoppinglist_html,
+        # Get token
+        request_payload = {"Key1":"{\"DeviceID\":\"widget_c678503d-fdfa-47d9-a1f3-7ea60fc477b2\",\"Token\":\"\",\"RefreshToken\":\"\",\"AffiliateID\":0,\"Code\":\"widget\"}","HTMLVersion":"1.0.6","AppVersion":"1","MainVersion":"1","Platform":2,"AffiliateID":0,"Language":"EN","Country":"GB","Currency":"GBP","TimeZone":"Europe/London"}
+        token_url = "https://api.bankthefood.org/api/auth/hello/"
+        request = requests.post(token_url, json=request_payload, headers=headers, timeout=10)
+        if request.json()["Status"] == "EXPIRED":
+            request = requests.post(token_url, json=request_payload, headers=headers, timeout=10)
+        token = request.json()["Data"]["Tokens"]["Token"]
+
+        request_payload = {
+            "Key1":"1079",
+            "HTMLVersion":"1.0.6",
+            "AppVersion":"1",
+            "MainVersion":"1",
+            "Platform":2,
+            "AffiliateID":0,
+            "Language":"EN",
+            "Country":"GB",
+            "Currency":"GBP",
+            "TimeZone":"Europe/London"
         }
-    )
+        headers["Authorization"] = "Bearer %s" % (token)
+
+        request = requests.post("https://api.bankthefood.org/api/foodbank/GetWidgetFoodbank/", json=request_payload, headers=headers, timeout=10)
+
+        if request.status_code == 200:
+            foodbank_shoppinglist_html = request.text
+            foodbank_shoppinglist_page = request.text
 
     response_schema = {
         "type": "object",
@@ -1283,10 +1304,20 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
                 "items": {
                     "type": "string"
                 }
-            }
+            },
         },
         "required": ["needed", "excess"]
     }
+
+    need_prompt = render_to_string(
+        "foodbank_need_prompt.txt",
+        {
+            "foodbank":foodbank,
+            "scrape_type":scrape_type,
+            "foodbank_page":foodbank_shoppinglist_page,
+            "foodbank_html":foodbank_shoppinglist_html,
+        }
+    )
 
     need_response = gemini(
         prompt = need_prompt,
