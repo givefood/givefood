@@ -171,17 +171,6 @@ p.needs {
     vertical-align: middle;
     margin-right:5px;
 }
-#donate_btn:hover {
-    animation: jiggle 0.4s ease-in-out;
-}
-@keyframes jiggle {
-    0% { transform: scale(1) rotate(0deg); }
-    20% { transform: scale(1.05) rotate(-5deg); }
-    40% { transform: scale(1.05) rotate(5deg); }
-    60% { transform: scale(1.03) rotate(-3deg); }
-    80% { transform: scale(1.03) rotate(3deg); }
-    100% { transform: scale(1) rotate(0deg); }
-}
 #fsarating img[style] {
     min-width:150px !important;
     width:150px;
