@@ -44,8 +44,8 @@ def index(request):
         "sub_count_7d":FoodbankSubscriber.objects.filter(created__gte=week_ago).count(),
         "need_count_24h":FoodbankChangeLine.objects.filter(created__gte=yesterday).count(),
         "need_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="need", finish__gte=yesterday).count(),
-        "oldest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").exclude(hours_between_need_check = 0).order_by("last_need_check")[:1][0],
-        "latest_need_check":Foodbank.objects.all().exclude(is_closed = True).exclude(hours_between_need_check = 0).exclude(last_need_check__isnull=True).order_by("-last_need_check")[:1][0],
+        "oldest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").order_by("last_need_check")[:1][0],
+        "latest_need_check":Foodbank.objects.all().exclude(is_closed = True).exclude(last_need_check__isnull=True).order_by("-last_need_check")[:1][0],
         "article_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="article", finish__gte=yesterday).count(),
         "charity_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="charity", finish__gte=yesterday).count(),
     }
