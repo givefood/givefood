@@ -403,7 +403,7 @@ def colophon(request):
     return render(request, "public/colophon.html", template_vars)
 
 
-# @cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_WEEK)
 def bot(request):
     """
     Bot user agent info page
