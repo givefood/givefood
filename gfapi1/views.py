@@ -48,7 +48,7 @@ def api_foodbanks(request):
             "charity_number":foodbank.charity_number,
             "charity_register_url":foodbank.charity_register_url(),
             "closed":foodbank.is_closed,
-            "lat_lng":foodbank.lat_lng,
+            "latt_long":foodbank.lat_lng,
             "network":foodbank.network,
             "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
         })
@@ -78,7 +78,7 @@ def api_foodbanks(request):
             "charity_number",
             "charity_register_url",
             "closed",
-            "lat_lng",
+            "latt_long",
             "network",
         ])
         writer_output = []
@@ -101,7 +101,7 @@ def api_foodbanks(request):
                 foodbank["charity_number"],
                 foodbank["charity_register_url"],
                 foodbank["closed"],
-                foodbank["lat_lng"],
+                foodbank["latt_long"],
                 foodbank["network"],
             ])
         writer.writerows(writer_output)
@@ -149,7 +149,7 @@ def api_foodbank_search(request):
             "need_id":foodbank.latest_need.need_id,
             "updated":str(foodbank.latest_need.created),
             "updated_text":timesince(foodbank.latest_need.created),
-            "lat_lng":foodbank.lat_lng,
+            "latt_long":foodbank.lat_lng,
             "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
         })
 
@@ -168,7 +168,7 @@ def api_foodbank(request, slug):
             "name":location.name,
             "address":location.address,
             "postcode":location.postcode,
-            "lat_lng":location.lat_lng,
+            "latt_long":location.lat_lng,
             "phone":location.phone_number,
             "parliamentary_constituency":location.parliamentary_constituency_name,
             "mp":location.mp,
@@ -195,7 +195,7 @@ def api_foodbank(request, slug):
         "charity_number":foodbank.charity_number,
         "charity_register_url":foodbank.charity_register_url(),
         "closed":foodbank.is_closed,
-        "lat_lng":foodbank.lat_lng,
+        "latt_long":foodbank.lat_lng,
         "network":foodbank.network,
         "needs":foodbank.latest_need.change_text,
         "number_needs":foodbank.latest_need.no_items(),
