@@ -16,7 +16,7 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
 from django.db import IntegrityError
-from django.db.models import Sum, Q, Count, Case, When, IntegerField
+from django.db.models import Sum, Q, Count
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_cred, distance_meters
