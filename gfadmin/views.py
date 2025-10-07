@@ -1787,9 +1787,13 @@ def crawl_sets(request):
         object_count=Count('crawlitem', filter=Q(crawlitem__object_id__isnull=False))
     ).order_by("-start")[:50]
 
+    # Get CrawlItems without CrawlSets
+    orphaned_crawl_items = CrawlItem.objects.filter(crawl_set__isnull=True).select_related('foodbank').order_by("-start")[:50]
+
     template_vars = {
         "section":"settings",
         "crawl_sets":crawl_sets,
+        "orphaned_crawl_items":orphaned_crawl_items,
     }
 
     return render(request, "admin/crawl_sets.html", template_vars)

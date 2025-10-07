@@ -9,7 +9,7 @@
 
   <div class="columns">
 
-    <div class="column">
+    <div class="column is-three-quarters">
 
       <table class="table is-fullwidth is-hoverable">
         <thead>
@@ -49,6 +49,33 @@
               <td>
                 {{ crawl_set.object_count }}
               </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+
+    <div class="column is-one-quarter">
+      <h3>Orphaned Items</h3>
+      <p style="font-size:0.9em; color:#666;">CrawlItems without CrawlSets</p>
+      
+      <table class="table is-fullwidth is-hoverable" style="font-size:0.9em;">
+        <thead>
+            <tr>
+                <th>Foodbank</th>
+                <th>Start</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for crawl_item in orphaned_crawl_items %}
+            <tr>
+              <td>
+                <a href="{% url 'gfadmin:foodbank' crawl_item.foodbank.slug %}">
+                    {{ crawl_item.foodbank.name|truncatewords:3 }}
+                </a>
+              </td>
+              <td>{{ crawl_item.start|date:"Y-m-d H:i" }}</td>
             </tr>
           {% endfor %}
         </tbody>
