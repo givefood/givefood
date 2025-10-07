@@ -56,7 +56,7 @@ function address_cleanup(str) {
 }
 
 const name_field = document.querySelector("#id_name");
-const lattlong_field = document.querySelector("#id_latt_long");
+const lat_lng_field = document.querySelector("#id_lat_lng");
 const place_id_field = document.querySelector("#id_place_id");
 const address_field = document.querySelector("#id_address");
 const postcode_field = document.querySelector("#id_postcode");
@@ -158,11 +158,11 @@ if (dp_name_field) {
   })
 }
 
-// LATTLONG
-if (lattlong_field) {
+// LAT_LNG
+if (lat_lng_field) {
   var get_latlng_btn = document.createElement('div');
   get_latlng_btn.innerHTML = "<a href='#' id='get_latlng_btn' class='extra-form-button button is-info'>Get Lat/Lng &amp; Place ID</a>";
-  insertAfter(get_latlng_btn, lattlong_field);
+  insertAfter(get_latlng_btn, lat_lng_field);
   latlng_btn = document.querySelector("#get_latlng_btn");
   latlng_btn.addEventListener("click", function(event) {
     address = name_field.value + ", " + address_field.value.replace(/\n/g,", ") + ", " + postcode_field.value;
@@ -173,7 +173,7 @@ if (lattlong_field) {
       lng = this.response.results[0].geometry.location.lng
       place_id = this.response.results[0].place_id
       lat_lng = lat + "," + lng
-      lattlong_field.value = lat_lng
+      lat_lng_field.value = lat_lng
       place_id_field.value = place_id
       map_img = document.createElement('img');
       map_img.src = map_url + lat_lng

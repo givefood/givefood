@@ -52,7 +52,7 @@ class Foodbank(models.Model):
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES)
 
     # Location
-    latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    lat_lng = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)
     longitude = models.FloatField(editable=False)
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
@@ -67,7 +67,7 @@ class Foodbank(models.Model):
 
     # Etc
     delivery_address = models.TextField(null=True, blank=True)
-    delivery_latt_long = models.CharField(max_length=50, verbose_name="Delivery latitude, longitude", editable=False, null=True, blank=True)
+    delivery_lat_lng = models.CharField(max_length=50, verbose_name="Delivery latitude, longitude", editable=False, null=True, blank=True)
     network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
 
@@ -289,22 +289,22 @@ class Foodbank(models.Model):
             return None
 
     def latt(self):
-        return float(self.latt_long.split(",")[0])
+        return float(self.lat_lng.split(",")[0])
 
     def long(self):
-        return float(self.latt_long.split(",")[1])
+        return float(self.lat_lng.split(",")[1])
 
     def full_address(self):
         return "%s\r\n%s" % (self.address, self.postcode)
     
     def delivery_latt(self):
-        return float(self.delivery_latt_long.split(",")[0])
+        return float(self.delivery_lat_lng.split(",")[0])
     
     def delivery_long(self):
-        return float(self.delivery_latt_long.split(",")[1])
+        return float(self.delivery_lat_lng.split(",")[1])
 
     def nearby(self):
-        return find_foodbanks(self.latt_long, 10, True)
+        return find_foodbanks(self.lat_lng, 10, True)
 
     def articles(self):
         return FoodbankArticle.objects.filter(foodbank = self).order_by("-published_date")[:20]
@@ -549,8 +549,8 @@ class Foodbank(models.Model):
         self.slug = slugify(self.name)
 
         # LatLong
-        self.latitude = self.latt_long.split(",")[0]
-        self.longitude = self.latt_long.split(",")[1]
+        self.latitude = self.lat_lng.split(",")[0]
+        self.longitude = self.lat_lng.split(",")[1]
 
         # Footprint
         self.footprint = self.get_footprint()
@@ -562,9 +562,9 @@ class Foodbank(models.Model):
             self.secondary_phone_number = self.secondary_phone_number.replace(" ","")
 
         if self.delivery_address:
-            self.delivery_latt_long = geocode(self.delivery_address)
+            self.delivery_lat_lng = geocode(self.delivery_address)
         else:
-            self.delivery_latt_long = None
+            self.delivery_lat_lng = None
 
         if do_geoupdate:
 
@@ -601,7 +601,7 @@ class Foodbank(models.Model):
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
 
-            pluscodes = pluscode(self.latt_long)
+            pluscodes = pluscode(self.lat_lng)
             self.plus_code_compound = pluscodes["compound"]
             self.plus_code_global = pluscodes["global"]
 
@@ -695,7 +695,7 @@ class FoodbankLocation(models.Model):
 
     is_donation_point = models.BooleanField(default=False)
     
-    latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    lat_lng = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)
     longitude = models.FloatField(editable=False)
 
@@ -822,10 +822,10 @@ class FoodbankLocation(models.Model):
         return "%s\r\n%s" % (self.address, self.postcode)
 
     def latt(self):
-        return float(self.latt_long.split(",")[0])
+        return float(self.lat_lng.split(",")[0])
 
     def long(self):
-        return float(self.latt_long.split(",")[1])
+        return float(self.lat_lng.split(",")[1])
 
     def delete(self, *args, **kwargs):
 
@@ -841,8 +841,8 @@ class FoodbankLocation(models.Model):
         self.slug = slugify(self.name)
 
         # LatLong
-        self.latitude = self.latt_long.split(",")[0]
-        self.longitude = self.latt_long.split(",")[1]
+        self.latitude = self.lat_lng.split(",")[0]
+        self.longitude = self.lat_lng.split(",")[1]
 
         # Cache foodbank details
         self.foodbank_name = self.foodbank.name
@@ -886,7 +886,7 @@ class FoodbankLocation(models.Model):
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
 
-            pluscodes = pluscode(self.latt_long)
+            pluscodes = pluscode(self.lat_lng)
             self.plus_code_compound = pluscodes["compound"]
             self.plus_code_global = pluscodes["global"]
 
@@ -928,7 +928,7 @@ class FoodbankDonationPoint(models.Model):
 
     notes = models.TextField(null=True, blank=True, help_text="These notes are public")
 
-    latt_long = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    lat_lng = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)
     longitude = models.FloatField(editable=False)
 
@@ -981,10 +981,10 @@ class FoodbankDonationPoint(models.Model):
         return "%s\r\n%s" % (self.address, self.postcode)
     
     def latt(self):
-        return float(self.latt_long.split(",")[0])
+        return float(self.lat_lng.split(",")[0])
 
     def long(self):
-        return float(self.latt_long.split(",")[1])
+        return float(self.lat_lng.split(",")[1])
     
     def schema_org(self):
 
@@ -1085,11 +1085,11 @@ class FoodbankDonationPoint(models.Model):
         if self.postcode:
             lat_lngs = []
             for location in self.foodbank.locations():
-                lat_lngs.append(location.latt_long)
-            lat_lngs.append(self.foodbank.latt_long)
-            lat_lngs.append(self.foodbank.delivery_latt_long)
+                lat_lngs.append(location.lat_lng)
+            lat_lngs.append(self.foodbank.lat_lng)
+            lat_lngs.append(self.foodbank.delivery_lat_lng)
 
-            if self.latt_long in lat_lngs:
+            if self.lat_lng in lat_lngs:
                 raise ValidationError("Location can't be the same as the food bank or one of it's locations")
 
             if not validate_postcode(self.postcode):
@@ -1110,8 +1110,8 @@ class FoodbankDonationPoint(models.Model):
             self.company_slug = slugify(self.company)
 
         # LatLong
-        self.latitude = self.latt_long.split(",")[0]
-        self.longitude = self.latt_long.split(",")[1]
+        self.latitude = self.lat_lng.split(",")[0]
+        self.longitude = self.lat_lng.split(",")[1]
 
         # Photo?
         if do_photo_update:
@@ -1191,7 +1191,7 @@ class FoodbankDonationPoint(models.Model):
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
 
-            pluscodes = pluscode(self.latt_long)
+            pluscodes = pluscode(self.lat_lng)
             self.plus_code_compound = pluscodes["compound"]
             self.plus_code_global = pluscodes["global"]
 
@@ -1906,7 +1906,7 @@ class ParliamentaryConstituency(models.Model):
                 "type":"organisation",
                 "name":foodbank.name,
                 "slug":foodbank.slug,
-                "lat_lng":foodbank.latt_long,
+                "lat_lng":foodbank.lat_lng,
                 "needs":foodbank.latest_need,
                 "url":foodbank.url,
                 "shopping_list_url":foodbank.shopping_list_url,
@@ -1919,7 +1919,7 @@ class ParliamentaryConstituency(models.Model):
                 "name":location.name,
                 "foodbank_name":location.foodbank_name,
                 "slug":location.slug,
-                "lat_lng":location.latt_long,
+                "lat_lng":location.lat_lng,
                 "needs":location.latest_need(),
                 "url":location.foodbank.url,
                 "shopping_list_url":location.foodbank.shopping_list_url,
@@ -2090,7 +2090,7 @@ class Place(models.Model):
 
     gbpnid = models.IntegerField(unique=True)
     name = models.CharField(max_length=100, null=True, blank=True)
-    latt_long = models.CharField(max_length=100, null=True, blank=True)
+    lat_lng = models.CharField(max_length=100, null=True, blank=True)
     histcounty = models.CharField(max_length=100, null=True, blank=True)
     adcounty = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True)
@@ -2103,10 +2103,10 @@ class Place(models.Model):
         return "%s - %s" % (self.gbpnid, self.name)
 
     def lat(self):
-        return float(self.latt_long.split(",")[0])
+        return float(self.lat_lng.split(",")[0])
     
     def lng(self):
-        return float(self.latt_long.split(",")[1])
+        return float(self.lat_lng.split(",")[1])
 
     class Meta:
         app_label = 'givefood'

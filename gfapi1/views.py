@@ -48,7 +48,7 @@ def api_foodbanks(request):
             "charity_number":foodbank.charity_number,
             "charity_register_url":foodbank.charity_register_url(),
             "closed":foodbank.is_closed,
-            "latt_long":foodbank.latt_long,
+            "lat_lng":foodbank.lat_lng,
             "network":foodbank.network,
             "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
         })
@@ -78,7 +78,7 @@ def api_foodbanks(request):
             "charity_number",
             "charity_register_url",
             "closed",
-            "latt_long",
+            "lat_lng",
             "network",
         ])
         writer_output = []
@@ -101,7 +101,7 @@ def api_foodbanks(request):
                 foodbank["charity_number"],
                 foodbank["charity_register_url"],
                 foodbank["closed"],
-                foodbank["latt_long"],
+                foodbank["lat_lng"],
                 foodbank["network"],
             ])
         writer.writerows(writer_output)
@@ -112,16 +112,16 @@ def api_foodbanks(request):
 @cache_page(SECONDS_IN_DAY)
 def api_foodbank_search(request):
 
-    latt_long = request.GET.get("lattlong")
+    lat_lng = request.GET.get("lattlong")
     address = request.GET.get("address")
 
-    if not latt_long and not address:
+    if not lat_lng and not address:
         return HttpResponseBadRequest()
 
-    if address and not latt_long:
-        latt_long = geocode(address)
+    if address and not lat_lng:
+        lat_lng = geocode(address)
 
-    foodbanks = find_foodbanks(latt_long, 10)
+    foodbanks = find_foodbanks(lat_lng, 10)
     response_list = []
 
     for foodbank in foodbanks:
@@ -149,7 +149,7 @@ def api_foodbank_search(request):
             "need_id":foodbank.latest_need.need_id,
             "updated":str(foodbank.latest_need.created),
             "updated_text":timesince(foodbank.latest_need.created),
-            "latt_long":foodbank.latt_long,
+            "lat_lng":foodbank.lat_lng,
             "self":"%s%s" % (API_DOMAIN, reverse("api_foodbank", kwargs={"slug":foodbank.slug})),
         })
 
@@ -168,7 +168,7 @@ def api_foodbank(request, slug):
             "name":location.name,
             "address":location.address,
             "postcode":location.postcode,
-            "latt_long":location.latt_long,
+            "lat_lng":location.lat_lng,
             "phone":location.phone_number,
             "parliamentary_constituency":location.parliamentary_constituency_name,
             "mp":location.mp,
@@ -195,7 +195,7 @@ def api_foodbank(request, slug):
         "charity_number":foodbank.charity_number,
         "charity_register_url":foodbank.charity_register_url(),
         "closed":foodbank.is_closed,
-        "latt_long":foodbank.latt_long,
+        "lat_lng":foodbank.lat_lng,
         "network":foodbank.network,
         "needs":foodbank.latest_need.change_text,
         "number_needs":foodbank.latest_need.no_items(),

@@ -47,7 +47,7 @@ def fire_oc_geocode(request):
 
 def do_oc_geocode(foodbank):
 
-    foodbank.latt_long = oc_geocode(foodbank.full_address())
+    foodbank.lat_lng = oc_geocode(foodbank.full_address())
     foodbank.save()
 
 
@@ -272,14 +272,14 @@ def pluscodes(request):
 
     foodbanks = Foodbank.objects.filter(plus_code_global__isnull=True)
     for foodbank in foodbanks:
-        pluscodes = pluscode(foodbank.latt_long)
+        pluscodes = pluscode(foodbank.lat_lng)
         foodbank.plus_code_compound = pluscodes["compound"]
         foodbank.plus_code_global = pluscodes["global"]
         foodbank.save(do_decache=False, do_geoupdate=False)
 
     locations = FoodbankLocation.objects.filter(plus_code_global__isnull=True)
     for location in locations:
-        pluscodes = pluscode(location.latt_long)
+        pluscodes = pluscode(location.lat_lng)
         location.plus_code_compound = pluscodes["compound"]
         location.plus_code_global = pluscodes["global"]
         location.save(do_geoupdate=False)

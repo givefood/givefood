@@ -877,7 +877,7 @@ def locations_loader_sa(request):
                     postcode = postcode,
                     email = email,
                     phone_number = phone,
-                    latt_long = lat_lng,
+                    lat_lng = lat_lng,
                 )
                 foodbank_location.save()
 
@@ -1355,7 +1355,7 @@ def places_loader(request):
                 new_place = Place(
                     gbpnid = row[0],
                     name = row[1],
-                    latt_long = "%s,%s" % (row[2], row[3]),
+                    lat_lng = "%s,%s" % (row[2], row[3]),
                     histcounty = row[4],
                     adcounty = row[5],
                     district = row[6],
@@ -1375,7 +1375,7 @@ def finder(request):
 
     place = Place.objects.filter(checked__isnull=True).order_by('?').first()
         
-    search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food bank&location=%s&radius=5000&region=uk&key=%s" % (place.latt_long, get_cred("gmap_places_key"))
+    search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food bank&location=%s&radius=5000&region=uk&key=%s" % (place.lat_lng, get_cred("gmap_places_key"))
     response = requests.get(search_url)
     if response.status_code == 200:
         search_results = response.json()["results"]

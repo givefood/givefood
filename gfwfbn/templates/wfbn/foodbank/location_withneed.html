@@ -12,7 +12,7 @@
   <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn-generic:foodbank_location_map' foodbank.slug location.slug %}">
   <link rel="manifest" href="{% url 'wfbn:manifest' %}">
   <meta name="geo.placename" content="{{ location }} - {{ foodbank.full_name }}">
-  <meta name="geo.position" content="{{ location.latt_long }}">
+  <meta name="geo.position" content="{{ location.lat_lng }}">
   <meta property="place:location:latitude" content="{{ location.latt }}">
   <meta property="place:location:longitude" content="{{ location.long }}">
   <link rel="preload" href="{% url 'wfbn:foodbank_geojson' foodbank.slug %}" as="fetch" crossorigin="anonymous">
@@ -99,7 +99,7 @@
             <div id="map" class="sidemap"></div>
             {% include "public/includes/maplegend.html" %}
             
-            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.latt_long }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
+            <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
             <address>
               {{ location.address|linebreaksbr }}<br>
               {{ location.postcode }}

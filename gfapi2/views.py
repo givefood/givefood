@@ -85,7 +85,7 @@ def foodbanks(request):
                 "postcode":foodbank.postcode,
                 "closed":foodbank.is_closed,
                 "country":foodbank.country,
-                "lat_lng":foodbank.latt_long,
+                "lat_lng":foodbank.lat_lng,
                 "network":foodbank.network,
                 "created":datetime.datetime.fromtimestamp(foodbank.created.timestamp()),
                 "urls": {
@@ -119,7 +119,7 @@ def foodbanks(request):
                     "type": "Feature",
                     "geometry": {
                         "type": "Point",
-                        "coordinates": [float(foodbank.latt_long.split(",")[1]), float(foodbank.latt_long.split(",")[0])]
+                        "coordinates": [float(foodbank.lat_lng.split(",")[1]), float(foodbank.lat_lng.split(",")[0])]
                     },
                     "properties": {
                         "name": foodbank.name,
@@ -160,7 +160,7 @@ def foodbank(request, slug):
                     "slug":location.slug,
                     "address":location.full_address(),
                     "postcode":location.postcode,
-                    "lat_lng":location.latt_long,
+                    "lat_lng":location.lat_lng,
                     "phone":location.phone_number,
                     "politics": {
                         "parliamentary_constituency":location.parliamentary_constituency_name,
@@ -190,7 +190,7 @@ def foodbank(request, slug):
                         "shopping_list":nearby_foodbank.shopping_list_url,
                     },
                     "address":nearby_foodbank.full_address(),
-                    "lat_lng":nearby_foodbank.latt_long,
+                    "lat_lng":nearby_foodbank.lat_lng,
                 }
             )
 
@@ -205,7 +205,7 @@ def foodbank(request, slug):
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
             "closed":foodbank.is_closed,
-            "lat_lng":foodbank.latt_long,
+            "lat_lng":foodbank.lat_lng,
             "network":foodbank.network,
             "created":datetime.datetime.fromtimestamp(foodbank.created.timestamp()),
             "urls": {
@@ -247,7 +247,7 @@ def foodbank(request, slug):
                     "type": "Feature",
                     "geometry": {
                         "type": "Point",
-                        "coordinates": [float(foodbank.latt_long.split(",")[1]), float(foodbank.latt_long.split(",")[0])]
+                        "coordinates": [float(foodbank.lat_lng.split(",")[1]), float(foodbank.lat_lng.split(",")[0])]
                     },
                     "properties": {
                         "name": foodbank.name,
@@ -267,7 +267,7 @@ def foodbank(request, slug):
                     "type": "Feature",
                     "geometry": {
                         "type": "Point",
-                        "coordinates": [float(location.latt_long.split(",")[1]), float(location.latt_long.split(",")[0])]
+                        "coordinates": [float(location.lat_lng.split(",")[1]), float(location.lat_lng.split(",")[0])]
                     },
                     "properties": {
                         "name": location.name,
@@ -340,7 +340,7 @@ def foodbank_search(request):
             "email":foodbank.contact_email,
             "address":foodbank.full_address(),
             "postcode":foodbank.postcode,
-            "lat_lng":foodbank.latt_long,
+            "lat_lng":foodbank.lat_lng,
             "distance_m":int(foodbank.distance),
             "distance_mi":round(miles(foodbank.distance),2),
             "needs": {
@@ -397,7 +397,7 @@ def locations(request):
                 "email":location.email_or_foodbank_email(),
                 "address":location.full_address(),
                 "postcode":location.postcode,
-                "lat_lng":location.latt_long,
+                "lat_lng":location.lat_lng,
                 "urls": {
                     "html":"https://www.givefood.org.uk/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
                 },
@@ -432,7 +432,7 @@ def locations(request):
                     "type": "Feature",
                     "geometry": {
                         "type": "Point",
-                        "coordinates": [float(location.latt_long.split(",")[1]), float(location.latt_long.split(",")[0])]
+                        "coordinates": [float(location.lat_lng.split(",")[1]), float(location.lat_lng.split(",")[0])]
                     },
                     "properties": {
                         "name": location.full_name(),
@@ -485,7 +485,7 @@ def location_search(request):
             "type":item.type,
             "slug":item.slug,
             "name":item.name,
-            "lat_lng":item.latt_long,
+            "lat_lng":item.lat_lng,
             "distance_m":int(item.distance),
             "distance_mi":round(miles(item.distance),2),
             "address":item.full_address(),

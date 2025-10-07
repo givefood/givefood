@@ -398,27 +398,27 @@ def foodbank_map(request, slug, size=600):
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
     # Main markers
-    main_markers = "icon:https://www.givefood.org.uk/static/img/mapmarkers/32/red.png|%s" % foodbank.latt_long
+    main_markers = "icon:https://www.givefood.org.uk/static/img/mapmarkers/32/red.png|%s" % foodbank.lat_lng
     if foodbank.delivery_address:
-        main_markers += "|%s" % (foodbank.delivery_latt_long)
+        main_markers += "|%s" % (foodbank.delivery_lat_lng)
 
     # Location markers
     loc_markers = ""
     if foodbank.no_locations != 0:
         loc_markers += "icon:https://www.givefood.org.uk/static/img/mapmarkers/16/yellow.png|"
         for location in foodbank.locations():
-            loc_markers += "%s|" % (location.latt_long)
+            loc_markers += "%s|" % (location.lat_lng)
 
     # Donation point markers
     dp_markers = ""
     if foodbank.no_donation_points != 0:
         dp_markers += "icon:https://www.givefood.org.uk/static/img/mapmarkers/16/blue.png|"
         for donationpoint in foodbank.donation_points():
-            dp_markers += "%s|" % (donationpoint.latt_long)
+            dp_markers += "%s|" % (donationpoint.lat_lng)
 
     base_url = "https://maps.googleapis.com/maps/api/staticmap"
     params = [
-        ("center", foodbank.latt_long),
+        ("center", foodbank.lat_lng),
         ("size", size),
         ("scale", scale),
         ("maptype", "roadmap"),
@@ -599,7 +599,7 @@ def foodbank_nearby(request, slug):
     """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    nearby_locations = find_locations(foodbank.latt_long, 20, True)
+    nearby_locations = find_locations(foodbank.lat_lng, 20, True)
 
     map_config = {
         "geojson":reverse("wfbn:geojson"),
@@ -701,7 +701,7 @@ def foodbank_location_map(request, slug, locslug):
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
     gmap_static_key = get_cred("gmap_static_key")
 
-    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.latt_long, gmap_static_key)
+    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.lat_lng, gmap_static_key)
     request = requests.get(url)
 
     return HttpResponse(request.content, content_type='image/png')

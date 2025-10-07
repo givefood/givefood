@@ -16,7 +16,7 @@
   <meta property="og:image:alt" content="Map of {{ foodbank.full_name }}">
   <link rel="manifest" href="{% url 'wfbn:manifest' %}">
   <meta name="geo.placename" content="{{ foodbank.full_name }}">
-  <meta name="geo.position" content="{{ foodbank.latt_long }}">
+  <meta name="geo.position" content="{{ foodbank.lat_lng }}">
   <meta property="place:location:latitude" content="{{ foodbank.latt }}">
   <meta property="place:location:longitude" content="{{ foodbank.long }}">
   <link rel="preload" href="{% url 'wfbn:foodbank_geojson' foodbank.slug %}" as="fetch" crossorigin="anonymous">
@@ -100,7 +100,7 @@
             {% if foodbank.address_is_administrative%}
               <h3>{% blocktrans %}Administrative{% endblocktrans %}</h3>
             {% else %}
-              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.latt_long }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
+              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
             {% endif %}
             <address>
               {{ foodbank.address|linebreaksbr }}<br>
@@ -113,7 +113,7 @@
 
             {% if foodbank.delivery_address %}
               <h3>{% blocktrans %}Delivery{% endblocktrans %}</h3>
-              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.delivery_latt_long }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
+              <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.delivery_lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
               <address>
                 {{ foodbank.delivery_address|linebreaksbr }}
               </address>
