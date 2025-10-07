@@ -65,7 +65,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
 
-    "cspreports",
     "bulma",
     "django_tasks",
     "django_tasks.backends.database",
@@ -91,7 +90,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     # "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-    "csp.middleware.CSPMiddleware",
     "givefood.middleware.LoginRequiredAccess",
     "givefood.middleware.OfflineKeyCheck",
     "givefood.middleware.RenderTime",
@@ -194,19 +192,3 @@ LOCALE_PATHS = (
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "givefood", "static"))
 WHITENOISE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year
-
-# CSP Configuration
-# https://django-csp.readthedocs.io/en/latest/configuration.html
-
-CSP_REPORT_ONLY = True
-
-# sensible default CSP settings, feel free to modify them
-CSP_DEFAULT_SRC = ("'self'", "*.gstatic.com", "syndication.twitter.com")
-# Inline styles are unsafe, but Django error pages use them. We later remove
-# `unsafe-inline` in settings_live.py
-CSP_STYLE_SRC = ("'self'", "'unsafe-inline'", "fonts.googleapis.com", "*.gstatic.com", "cdnjs.cloudflare.com", "platform.twitter.com", "ton.twimg.com", "*.foodbank.org.uk", "accounts.google.com")
-CSP_FONT_SRC = ("'self'", "themes.googleusercontent.com", "*.gstatic.com", "maps.googleapis.com")
-CSP_FRAME_SRC = ("'self'", "*")
-CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "'unsafe-eval'", "*.googleanalytics.com", "*.google-analytics.com", "ajax.googleapis.com", "*.cloudflare.com", "www.gstatic.com", "www.googletagmanager.com", "maps.googleapis.com", "connect.facebook.net", "platform.twitter.com", "cdn.syndication.twimg.com", "syndication.twitter.com", "www.googleadservices.com", "googleads.g.doubleclick.net", "plausible.io", "c.bing.com", "static.cloudflareinsights.com", "instant.page", "ratings.food.gov.uk", "accounts.google.com")
-CSP_IMG_SRC = ("'self'", "data:", "s.ytimg.com", "*.googleusercontent.com", "*.gstatic.com", "*.google-analytics.com", "www.googletagmanager.com", "abs.twimg.com", "platform.twitter.com", "syndication.twitter.com", "pbs.twimg.com", "ton.twimg.com", "digitalcontent.api.tesco.com", "*.googleapis.com", "storage.googleapis.com", "www.google.com", "www.google.co.uk", "assets.sainsburys-groceries.co.uk", "*.ggpht.com", "googleads.g.doubleclick.net", "c.bing.com", "photos.givefood.org.uk", "ratings.food.gov.uk")
-CSP_CONNECT_SRC = ("'self'", "*.google-analytics.com", "maps.googleapis.com", "stats.g.doubleclick.net", "plausible.io", "c.bing.com", "api.ratings.food.gov.uk", "www.google.com")

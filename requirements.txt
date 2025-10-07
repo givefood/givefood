@@ -1,6 +1,4 @@
 django==5.2.7
-django-csp==3.7
-django-csp-reports
 django-session-csrf
 python-dateutil
 requests-toolbelt
