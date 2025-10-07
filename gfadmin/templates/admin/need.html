@@ -247,9 +247,11 @@
     </div>
 
     {% if need.uri %}
-      <div class="column">
-        <iframe class="preview-frame" src="{% url 'admin:proxy' %}?url={{ need.uri|urlencode }}"></iframe>
-      </div>
+      {% if "facebook.com" not in need.uri and "bankthefood.org" not in need.uri %}
+        <div class="column">
+          <iframe class="preview-frame" src="{% url 'admin:proxy' %}?url={{ need.uri|urlencode }}"></iframe>
+        </div>
+      {% endif %}
     {% endif %}
 
   </div>
