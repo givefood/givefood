@@ -16,7 +16,7 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
 from django.db import IntegrityError
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, Count, Case, When, IntegerField
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_cred, distance_meters
@@ -1782,7 +1782,10 @@ def changelog(request):
 
 def crawl_sets(request):
 
-    crawl_sets = CrawlSet.objects.all().order_by("-start")[:50]
+    crawl_sets = CrawlSet.objects.annotate(
+        item_count=Count('crawlitem'),
+        object_count=Count('crawlitem', filter=Q(crawlitem__object_id__isnull=False))
+    ).order_by("-start")[:50]
 
     template_vars = {
         "section":"settings",
