@@ -50,11 +50,14 @@
   </div><br><br>
 
   <script src="/static/js/echarts.js"></script>
+  <script src="/static/js/chart-colors.js"></script>
 
   <script>
     var chartDom = document.getElementById('chart');
     var myChart = echarts.init(chartDom);
+    
     var option = {
+      color: gfChartColors,
       tooltip: {
         trigger: 'item'
       },
