@@ -9,26 +9,27 @@ function move_map(lat,lng) {
 }
 
 function add_potential_marker(lat, lng, the_name) {
-    var marker = new google.maps.Marker({
+    const pinElement = new google.maps.marker.PinElement({
+        background: '#5384ED',
+        borderColor: '#ffffff',
+        glyphColor: '#5384ED',
+        scale: 0.8,
+    });
+
+    const marker = new google.maps.marker.AdvancedMarkerElement({
         position: {"lat": lat, "lng": lng},
         map: map_main,
         title: the_name,
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 6,
-          fillOpacity: 1,
-          strokeWeight: 2,
-          fillColor: '#5384ED',
-          strokeColor: '#ffffff',
-        },
-      });
+        content: pinElement.element,
+    });
 }
 
 function init_map() {
     map_main = new google.maps.Map(document.getElementById("map"), {
         center: new google.maps.LatLng(55,-4),
         zoom: 6,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapId: 'DEMO_MAP_ID'
     });
 
     map_main.data.loadGeoJson(foodbank_geojson_url);
