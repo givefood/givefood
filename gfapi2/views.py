@@ -297,6 +297,10 @@ def foodbank_search(request):
     lat_lng = request.GET.get("lat_lng")
     address = request.GET.get("address")
 
+    # Check format is not geojson
+    if format == "geojson":
+        return HttpResponseBadRequest()
+
     # Check we either have lat_lng or address
     if not lat_lng and not address:
         return HttpResponseBadRequest()
@@ -464,6 +468,10 @@ def location_search(request):
     format = request.GET.get("format", DEFAULT_FORMAT)
     lat_lng = request.GET.get("lat_lng")
     address = request.GET.get("address")
+
+    # Check format is not geojson
+    if format == "geojson":
+        return HttpResponseBadRequest()
 
     if not lat_lng and not address:
         return HttpResponseBadRequest()
