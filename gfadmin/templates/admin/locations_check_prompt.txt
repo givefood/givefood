@@ -1,0 +1,16 @@
+You are analyzing a food bank locations page to extract structured information about distribution locations.
+
+Reply with a single valid JSON array of location objects. Each location object should have:
+
+{
+    "name": The location name (e.g., "City Centre Distribution Point"),
+    "address": The postal address as a multiline string (line separated, without commas at the end of lines). Do NOT include the postcode here.
+    "postcode": The UK postcode.
+    "phone_number": The phone number for this specific location (if different from main). Return null if not provided.
+    "email": The email for this specific location (if different from main). Return null if not provided.
+}
+
+If no locations are found, return an empty array [].
+
+HTML Content:
+{{ html_content }}

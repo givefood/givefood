@@ -34,6 +34,7 @@ urlpatterns = (
     path("foodbank/new/", foodbank_form, name="foodbank_new"),
     path("foodbank/<slug:slug>/", foodbank, name="foodbank"),
     path("foodbank/<slug:slug>/edit/", foodbank_form, name="foodbank_edit"),
+    path("foodbank/<slug:slug>/check/", foodbank_check, name="foodbank_check"),
 
     path("foodbank/<slug:slug>/donationpoint/new/", donationpoint_form, name="donationpoint_new"),
     path("foodbank/<slug:slug>/donationpoint/<slug:dp_slug>/edit/", donationpoint_form, name="donationpoint_edit"),

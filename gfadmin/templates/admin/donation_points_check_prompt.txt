@@ -1,0 +1,15 @@
+You are analyzing a food bank donation points page to extract structured information about places where people can donate food.
+
+Reply with a single valid JSON array of donation point objects. Each donation point object should have:
+
+{
+    "name": The donation point name (e.g., "Tesco Extra", "Sainsbury's Local"),
+    "address": The postal address as a multiline string (line separated, without commas at the end of lines). Do NOT include the postcode here.
+    "postcode": The UK postcode.
+    "phone_number": The phone number for this donation point. Return null if not provided.
+}
+
+If no donation points are found, return an empty array [].
+
+HTML Content:
+{{ html_content }}

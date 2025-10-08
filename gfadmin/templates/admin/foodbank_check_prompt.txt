@@ -1,0 +1,19 @@
+You are analyzing a food bank website to extract structured information. Reply with a single valid JSON object (not in a list).
+
+Extract the following information from the provided HTML content:
+
+{
+    "address": The food bank's postal address as a multiline string (line separated, without commas at the end of lines). Include street name, building name, etc., but do NOT include the postcode here. Return null if not found.
+    "postcode": The food bank's postcode (UK format). Return null if not found.
+    "phone_number": The food bank's primary phone number without spaces. Return null if not found.
+    "email": The food bank's primary email address. Return null if not found.
+    "facebook_page": The Facebook page username (just the username, not the full URL). Return null if not found.
+    "twitter_handle": The Twitter/X handle (just the handle without @). Return null if not found.
+    "url": The main website URL. Return null if not found or if it's the same as the current URL.
+    "shopping_list_url": The URL to the shopping list or what they need page. Return null if not found.
+    "donation_points_url": The URL to the donation points or where to donate page. Return null if not found.
+    "locations_url": The URL to locations or distribution points page. Return null if not found.
+}
+
+HTML Content:
+{{ html_content }}

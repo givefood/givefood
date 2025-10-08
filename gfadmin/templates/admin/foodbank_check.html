@@ -1,0 +1,258 @@
+{% extends "admin/page.html" %}
+{% load bulma_tags %}
+
+{% block title %}Check {{ foodbank.name }} - GF Admin{% endblock %}
+
+{% block body %}
+
+<h1>Check Data for {{ foodbank.name }}</h1>
+
+<nav class="breadcrumb" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="{% url 'admin:index' %}">Admin</a></li>
+    <li><a href="{% url 'admin:foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
+    <li class="is-active"><a href="#" aria-current="page">Check</a></li>
+  </ul>
+</nav>
+
+{% if errors %}
+  <div class="notification is-danger">
+    <h3>Errors encountered:</h3>
+    <ul>
+      {% for error in results.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% if results.discovered_urls %}
+  <div class="notification is-info">
+    <h3>Discovered URLs:</h3>
+    <p>The following URLs were discovered from the main website and were previously missing:</p>
+    <ul>
+      {% for field, url in results.discovered_urls.items %}
+        <li><strong>{{ field }}:</strong> {{ url }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% if discrepancies %}
+  <div class="box">
+    <h2 class="title is-4">🔍 Discrepancies Found</h2>
+    <p class="subtitle is-6">The following differences were detected between the current data and what was found on the website:</p>
+    
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th>Field</th>
+          <th>Current Value</th>
+          <th>Extracted Value</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for discrepancy in discrepancies %}
+          <tr>
+            <td><strong>{{ discrepancy.display_name }}</strong></td>
+            <td>
+              {% if discrepancy.current_value %}
+                <code>{{ discrepancy.current_value }}</code>
+              {% else %}
+                <em class="has-text-grey-light">Not set</em>
+              {% endif %}
+            </td>
+            <td class="has-background-warning-light">
+              {% if discrepancy.extracted_value %}
+                <code>{{ discrepancy.extracted_value }}</code>
+              {% else %}
+                <em class="has-text-grey-light">Not found</em>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-small is-link">
+                Edit Manually
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <div class="buttons">
+      <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link">
+        Edit Food Bank Details
+      </a>
+    </div>
+  </div>
+{% else %}
+  <div class="notification is-success">
+    <p><strong>✅ No discrepancies found!</strong></p>
+    <p>The current food bank data appears to match the information on the website.</p>
+  </div>
+{% endif %}
+
+{% if results.foodbank_data %}
+  <div class="box">
+    <h2 class="title is-4">📋 Extracted Food Bank Data</h2>
+    <p class="subtitle is-6">Raw data extracted from {{ foodbank.url }}</p>
+    
+    <dl>
+      {% if results.foodbank_data.address %}
+        <dt><strong>Address:</strong></dt>
+        <dd><pre>{{ results.foodbank_data.address }}</pre></dd>
+      {% endif %}
+      
+      {% if results.foodbank_data.postcode %}
+        <dt><strong>Postcode:</strong></dt>
+        <dd>{{ results.foodbank_data.postcode }}</dd>
+      {% endif %}
+      
+      {% if results.foodbank_data.phone_number %}
+        <dt><strong>Phone:</strong></dt>
+        <dd>{{ results.foodbank_data.phone_number }}</dd>
+      {% endif %}
+      
+      {% if results.foodbank_data.email %}
+        <dt><strong>Email:</strong></dt>
+        <dd>{{ results.foodbank_data.email }}</dd>
+      {% endif %}
+      
+      {% if results.foodbank_data.facebook_page %}
+        <dt><strong>Facebook:</strong></dt>
+        <dd>{{ results.foodbank_data.facebook_page }}</dd>
+      {% endif %}
+      
+      {% if results.foodbank_data.twitter_handle %}
+        <dt><strong>Twitter:</strong></dt>
+        <dd>{{ results.foodbank_data.twitter_handle }}</dd>
+      {% endif %}
+    </dl>
+  </div>
+{% endif %}
+
+{% if results.locations_data %}
+  <div class="box">
+    <h2 class="title is-4">📍 Extracted Locations</h2>
+    <p class="subtitle is-6">
+      Found {{ results.locations_data|length }} location(s) from 
+      {% if foodbank.locations_url %}{{ foodbank.locations_url }}{% else %}discovered URL{% endif %}
+    </p>
+    
+    <div class="columns is-multiline">
+      {% for location in results.locations_data %}
+        <div class="column is-half">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-6">{{ location.name }}</p>
+              <p class="content is-size-7">
+                {{ location.address|linebreaksbr }}<br>
+                {{ location.postcode }}
+                {% if location.phone_number %}
+                  <br><strong>Phone:</strong> {{ location.phone_number }}
+                {% endif %}
+                {% if location.email %}
+                  <br><strong>Email:</strong> {{ location.email }}
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <h3 class="title is-5">Current Locations in Database ({{ current_locations.count }})</h3>
+    {% if current_locations %}
+      <div class="columns is-multiline">
+        {% for location in current_locations %}
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-content">
+                <p class="title is-6">{{ location.name }}</p>
+                <p class="content is-size-7">
+                  {{ location.address|linebreaksbr }}<br>
+                  {{ location.postcode }}
+                  {% if location.phone_number %}
+                    <br><strong>Phone:</strong> {{ location.phone_number }}
+                  {% endif %}
+                  {% if location.email %}
+                    <br><strong>Email:</strong> {{ location.email }}
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="has-text-grey-light">No locations in database</p>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% if results.donation_points_data %}
+  <div class="box">
+    <h2 class="title is-4">🏪 Extracted Donation Points</h2>
+    <p class="subtitle is-6">
+      Found {{ results.donation_points_data|length }} donation point(s) from 
+      {% if foodbank.donation_points_url %}{{ foodbank.donation_points_url }}{% else %}discovered URL{% endif %}
+    </p>
+    
+    <div class="columns is-multiline">
+      {% for dp in results.donation_points_data %}
+        <div class="column is-half">
+          <div class="card">
+            <div class="card-content">
+              <p class="title is-6">{{ dp.name }}</p>
+              <p class="content is-size-7">
+                {{ dp.address|linebreaksbr }}<br>
+                {{ dp.postcode }}
+                {% if dp.phone_number %}
+                  <br><strong>Phone:</strong> {{ dp.phone_number }}
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <h3 class="title is-5">Current Donation Points in Database ({{ current_donation_points.count }})</h3>
+    {% if current_donation_points %}
+      <div class="columns is-multiline">
+        {% for dp in current_donation_points %}
+          <div class="column is-half">
+            <div class="card">
+              <div class="card-content">
+                <p class="title is-6">{{ dp.name }}</p>
+                <p class="content is-size-7">
+                  {{ dp.address|linebreaksbr }}<br>
+                  {{ dp.postcode }}
+                  {% if dp.phone_number %}
+                    <br><strong>Phone:</strong> {{ dp.phone_number }}
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="has-text-grey-light">No donation points in database</p>
+    {% endif %}
+  </div>
+{% endif %}
+
+<div class="buttons">
+  <a href="{% url 'admin:foodbank' foodbank.slug %}" class="button">Back to Food Bank</a>
+  <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link">Edit Food Bank</a>
+  {% if results.locations_data %}
+    <a href="{% url 'admin:fblocation_new' foodbank.slug %}" class="button is-info">Add New Location</a>
+  {% endif %}
+  {% if results.donation_points_data %}
+    <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-info">Add New Donation Point</a>
+  {% endif %}
+</div>
+
+{% endblock %}

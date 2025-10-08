@@ -19,7 +19,7 @@ from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_cred, distance_meters
+from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_cred, distance_meters, gemini, htmlbodytext
 from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
 from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
@@ -420,6 +420,175 @@ def foodbank_form(request, slug = None):
         "foodbank":foodbank,
     }
     return render(request, "admin/form.html", template_vars)
+
+
+def foodbank_check(request, slug):
+    """
+    Check foodbank data for discrepancies by downloading URLs and using AI to extract information.
+    """
+    foodbank = get_object_or_404(Foodbank, slug=slug)
+    
+    headers = {
+        "User-Agent": BOT_USER_AGENT,
+    }
+    
+    # Initialize results
+    results = {
+        "foodbank_data": None,
+        "locations_data": [],
+        "donation_points_data": [],
+        "errors": [],
+        "discovered_urls": {}
+    }
+    
+    # URLs to check
+    urls_to_check = {
+        "url": foodbank.url,
+        "shopping_list_url": foodbank.shopping_list_url,
+        "donation_points_url": foodbank.donation_points_url,
+        "locations_url": foodbank.locations_url,
+    }
+    
+    # Download and process main URL
+    if foodbank.url:
+        try:
+            response = requests.get(foodbank.url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                html_content = htmlbodytext(response.text)
+                
+                # Use gemini to extract foodbank details
+                prompt = render_to_string(
+                    "admin/foodbank_check_prompt.txt",
+                    {"html_content": html_content}
+                )
+                
+                foodbank_details = gemini(
+                    prompt=prompt,
+                    temperature=0.2,
+                )
+                
+                if foodbank_details:
+                    try:
+                        results["foodbank_data"] = json.loads(foodbank_details)
+                        
+                        # Check for discovered URLs
+                        for url_field in ["shopping_list_url", "donation_points_url", "locations_url"]:
+                            discovered_url = results["foodbank_data"].get(url_field)
+                            if discovered_url and not getattr(foodbank, url_field):
+                                results["discovered_urls"][url_field] = discovered_url
+                                urls_to_check[url_field] = discovered_url
+                    except json.JSONDecodeError:
+                        results["errors"].append(f"Failed to parse JSON from main URL analysis")
+        except requests.exceptions.RequestException as e:
+            results["errors"].append(f"Failed to fetch main URL: {str(e)}")
+    
+    # Download and process locations URL
+    if urls_to_check.get("locations_url"):
+        try:
+            response = requests.get(urls_to_check["locations_url"], headers=headers, timeout=10)
+            if response.status_code == 200:
+                html_content = htmlbodytext(response.text)
+                
+                prompt = render_to_string(
+                    "admin/locations_check_prompt.txt",
+                    {"html_content": html_content}
+                )
+                
+                locations_details = gemini(
+                    prompt=prompt,
+                    temperature=0.2,
+                )
+                
+                if locations_details:
+                    try:
+                        results["locations_data"] = json.loads(locations_details)
+                    except json.JSONDecodeError:
+                        results["errors"].append(f"Failed to parse JSON from locations URL analysis")
+        except requests.exceptions.RequestException as e:
+            results["errors"].append(f"Failed to fetch locations URL: {str(e)}")
+    
+    # Download and process donation points URL
+    if urls_to_check.get("donation_points_url"):
+        try:
+            response = requests.get(urls_to_check["donation_points_url"], headers=headers, timeout=10)
+            if response.status_code == 200:
+                html_content = htmlbodytext(response.text)
+                
+                prompt = render_to_string(
+                    "admin/donation_points_check_prompt.txt",
+                    {"html_content": html_content}
+                )
+                
+                donation_points_details = gemini(
+                    prompt=prompt,
+                    temperature=0.2,
+                )
+                
+                if donation_points_details:
+                    try:
+                        results["donation_points_data"] = json.loads(donation_points_details)
+                    except json.JSONDecodeError:
+                        results["errors"].append(f"Failed to parse JSON from donation points URL analysis")
+        except requests.exceptions.RequestException as e:
+            results["errors"].append(f"Failed to fetch donation points URL: {str(e)}")
+    
+    # Compare extracted data with current data
+    discrepancies = []
+    
+    if results["foodbank_data"]:
+        fb_data = results["foodbank_data"]
+        
+        # Check each field
+        fields_to_check = [
+            ("address", "Address"),
+            ("postcode", "Postcode"),
+            ("phone_number", "Phone number"),
+            ("email", "Email address"),
+            ("facebook_page", "Facebook page"),
+            ("twitter_handle", "Twitter handle"),
+        ]
+        
+        for field_name, display_name in fields_to_check:
+            extracted_value = fb_data.get(field_name)
+            current_value = getattr(foodbank, field_name if field_name != "email" else "contact_email")
+            
+            # Normalize for comparison
+            if extracted_value and current_value:
+                extracted_str = str(extracted_value).strip()
+                current_str = str(current_value).strip()
+                
+                if extracted_str != current_str:
+                    discrepancies.append({
+                        "type": "foodbank",
+                        "field": field_name,
+                        "display_name": display_name,
+                        "current_value": current_value,
+                        "extracted_value": extracted_value,
+                    })
+            elif extracted_value and not current_value:
+                discrepancies.append({
+                    "type": "foodbank",
+                    "field": field_name,
+                    "display_name": display_name,
+                    "current_value": current_value,
+                    "extracted_value": extracted_value,
+                })
+    
+    # Get current locations for comparison
+    current_locations = FoodbankLocation.objects.filter(foodbank=foodbank)
+    
+    # Get current donation points for comparison
+    current_donation_points = FoodbankDonationPoint.objects.filter(foodbank=foodbank)
+    
+    template_vars = {
+        "foodbank": foodbank,
+        "results": results,
+        "discrepancies": discrepancies,
+        "current_locations": current_locations,
+        "current_donation_points": current_donation_points,
+    }
+    
+    return render(request, "admin/foodbank_check.html", template_vars)
 
 
 @require_POST
