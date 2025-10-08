@@ -29,7 +29,7 @@ from givefood.settings import LANGUAGES
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
-from givefood.func import decache_async, gemini, geocode, get_calories, get_translation, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, place_has_photo, pluscode, translate_need, validate_postcode
+from givefood.func import decache_async, gemini, geocode, get_calories, get_translation, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, mp_contact_details, find_parlcons, place_has_photo, pluscode, translate_need_async, validate_postcode
 
 
 class Foodbank(models.Model):
@@ -1763,7 +1763,7 @@ class FoodbankChange(models.Model):
             for language in LANGUAGES:
                 language_code = language[0]
                 if language_code != "en":
-                    translate_need(language_code, self)
+                    translate_need_async.enqueue(language_code, self.need_id)
     
     def delete(self, *args, **kwargs):
 
