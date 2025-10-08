@@ -48,41 +48,73 @@
 
   </div><br><br>
 
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="/static/js/echarts.js"></script>
 
   <script>
-    google.charts.load('current', {'packages':['corechart','bar']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Month', "Price per Kg (pence)"],
-        {% for month in months %}
-            [new Date({{ month.year.year }}, {{ month.month.month|add:"-1" }}, 1), {{ month.price_per_kg }}],
-        {% endfor %}
-      ]);
-
-  var options = {
-    legend: { position: 'none' },
-    theme: 'material',
-    trendlines: {
-      0: {}
-    },
-    chartArea: {
-        height: '100%',
-        width: '100%',
-        top: 48,
-        left: 48,
-        right: 16,
-        bottom: 48
-    },
-    height: '100%',
-    width: '100%',
-  };
-
-      var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
-  chart.draw(data, options);
-    }
+    var chartDom = document.getElementById('chart');
+    var myChart = echarts.init(chartDom);
+    
+    // Prepare data
+    var dates = [];
+    var values = [];
+    {% for month in months %}
+      dates.push(new Date({{ month.year.year }}, {{ month.month.month|add:"-1" }}, 1));
+      values.push({{ month.price_per_kg }});
+    {% endfor %}
+    
+    var option = {
+      tooltip: {
+        trigger: 'axis'
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        top: '10%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'time'
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Price per Kg (pence)'
+      },
+      series: [
+        {
+          name: 'Price per Kg (pence)',
+          type: 'bar',
+          data: dates.map((date, index) => [date, values[index]])
+        },
+        {
+          name: 'Trend',
+          type: 'line',
+          smooth: true,
+          showSymbol: false,
+          lineStyle: {
+            width: 2,
+            type: 'dashed'
+          },
+          data: (function() {
+            // Calculate linear regression
+            var n = values.length;
+            var sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+            for (var i = 0; i < n; i++) {
+              sumX += i;
+              sumY += values[i];
+              sumXY += i * values[i];
+              sumX2 += i * i;
+            }
+            var slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            var intercept = (sumY - slope * sumX) / n;
+            
+            // Generate trend line points
+            return dates.map((date, index) => [date, slope * index + intercept]);
+          })()
+        }
+      ]
+    };
+    myChart.setOption(option);
   </script>
 
 {% endblock %}

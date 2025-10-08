@@ -46,28 +46,67 @@
 
   </div><br><br>
 
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="/static/js/echarts.js"></script>
 
   <script>
-    google.charts.load('current', {'packages':['bar']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Week', {% for year in years %}'{{ year }}', {% endfor %}],
-        {% for week in week_year_needs.items %}
-            ['{{ week.0 }}', {% for year in week.1.items %}{{ year.1 }},{% endfor %}],
+    var chartDom = document.getElementById('chart');
+    var myChart = echarts.init(chartDom);
+    
+    // Color palette for years
+    var colors = ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#3B3EAC", "#0099C6", "#DD4477", "#66AA00", "#B82E2E", "#316395", "#994499", "#22AA99", "#AAAA11", "#6633CC", "#E67300", "#8B0707", "#329262", "#5574A6", "#651067"];
+    
+    var option = {
+      color: colors,
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {
+        data: [{% for year in years %}'{{ year }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+        orient: 'vertical',
+        right: 10,
+        top: 'center'
+      },
+      grid: {
+        left: '3%',
+        right: '10%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: [
+          {% for week in week_year_needs.items %}
+            '{{ week.0 }}'{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+        axisLabel: {
+          rotate: 45
+        }
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Items requested'
+      },
+      series: [
+        {% for year in years %}
+        {
+          name: '{{ year }}',
+          type: 'bar',
+          data: [
+            {% for week in week_year_needs.items %}
+              {% for year_data in week.1.items %}
+                {% if year_data.0 == year %}{{ year_data.1 }}{% endif %}
+              {% endfor %}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ]
+        }{% if not forloop.last %},{% endif %}
         {% endfor %}
-      ]);
-
-      var options = {
-        bars: 'verticle',
-      };
-
-      var chart = new google.charts.Bar(document.getElementById('chart'));
-
-      chart.draw(data, google.charts.Bar.convertOptions(options));
-    }
+      ]
+    };
+    myChart.setOption(option);
   </script>
 
 {% endblock %}
