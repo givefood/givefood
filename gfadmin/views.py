@@ -6,6 +6,8 @@ from random import randrange
 import re
 import requests
 from datetime import datetime, timedelta
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin, quote
 
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
@@ -1818,11 +1820,27 @@ def proxy(request):
     headers = {
         "User-Agent": BOT_USER_AGENT,
     }
-    request = requests.get(url, headers=headers)
-    if request.status_code == 200:
-        return HttpResponse(request.text)
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        # Parse the HTML content
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Rewrite all anchor links to go through the proxy
+        for a_tag in soup.find_all('a', href=True):
+            original_href = a_tag['href']
+            # Convert relative URLs to absolute URLs
+            absolute_url = urljoin(url, original_href)
+            # Rewrite the href to go through the proxy
+            proxy_url = reverse('admin:proxy') + '?url=' + quote(absolute_url, safe='')
+            a_tag['href'] = proxy_url
+            
+            # Remove target attribute to keep navigation inside iframe
+            if a_tag.has_attr('target'):
+                del a_tag['target']
+        
+        return HttpResponse(str(soup))
     else:
-        return HttpResponse("%s returned %s. You should check the URL" % (url, request.status_code))
+        return HttpResponse("%s returned %s. You should check the URL" % (url, response.status_code))
 
 
 def gmap_proxy(request, type):
