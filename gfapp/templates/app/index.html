@@ -14,7 +14,7 @@
             <label id="address_label" for="address_field" class="label">Postcode or town</label>
             <div class="field has-addons">
                 <div class="control">
-                    <input id="address_field" class="input" type="text" name="address" class="input" placeholder="e.g. EX4 6PX or Sheffield" required aria-required="true">
+                    <gmp-place-autocomplete id="address_field" type="text" name="address" class="input" placeholder="e.g. EX4 6PX or Sheffield" required aria-required="true"></gmp-place-autocomplete>
                 </div>
                 <div class="control">
                     <input type="submit" class="button is-light is-info" value="Go">
@@ -45,11 +45,13 @@
 
         address_field = document.getElementById("address_field");
 
-        autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
-        autocomplete.setComponentRestrictions({'country': ['gb', 'im', 'je', 'gg']});
-        autocomplete.addListener("place_changed", () => {
-            lat_lng_field.value = autocomplete.getPlace().geometry.location.lat() + "," + autocomplete.getPlace().geometry.location.lng();
-        })
+        address_field.addEventListener("gmp-placeselect", async ({ place }) => {
+            await place.fetchFields({ fields: ["location"] });
+            lat_lng_field.value = place.location.lat() + "," + place.location.lng();
+        });
+        
+        address_field.componentRestrictions = {'country': ['gb', 'im', 'je', 'gg']};
+        address_field.types = ["geocode"];
     </script>
 
 

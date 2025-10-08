@@ -10,11 +10,14 @@ function init() {
       init_map()
     }
     if (addressform) {
-      autocomplete = new google.maps.places.Autocomplete(address_field, {types:["geocode"]});
-      autocomplete.setComponentRestrictions({'country': ['gb', 'im', 'je', 'gg']});
-      autocomplete.addListener("place_changed", () => {
-        lat_lng_field.value = autocomplete.getPlace().geometry.location.lat() + "," + autocomplete.getPlace().geometry.location.lng();
-      })
+      address_field.addEventListener("gmp-placeselect", async ({ place }) => {
+        await place.fetchFields({ fields: ["location"] });
+        lat_lng_field.value = place.location.lat() + "," + place.location.lng();
+      });
+      
+      address_field.componentRestrictions = {'country': ['gb', 'im', 'je', 'gg']};
+      address_field.types = ["geocode"];
+      
       if (uml_btn) {
         uml_btn.addEventListener("click", function(event){
             event.preventDefault();
