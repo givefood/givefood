@@ -1,0 +1,16 @@
+{% extends "admin/page.html" %}
+
+{% block title %}500 - Internal Server Error - Give Food Admin{% endblock %}
+
+{% block body %}
+
+  <h2>500 - Internal Server Error</h2>
+
+  <div class="columns">
+    <div class="column">
+      <p>Sorry, something has gone wrong. This error has been logged and we'll look into it.</p>
+      <p><a href="{% url 'admin:index' %}">Return to Admin Dashboard</a></p>
+    </div>
+  </div>
+
+{% endblock %}

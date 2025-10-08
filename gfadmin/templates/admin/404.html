@@ -1,0 +1,16 @@
+{% extends "admin/page.html" %}
+
+{% block title %}404 - Not Found - Give Food Admin{% endblock %}
+
+{% block body %}
+
+  <h2>404 - Not Found</h2>
+
+  <div class="columns">
+    <div class="column">
+      <p>Sorry, the page you're looking for doesn't exist.</p>
+      <p><a href="{% url 'admin:index' %}">Return to Admin Dashboard</a></p>
+    </div>
+  </div>
+
+{% endblock %}

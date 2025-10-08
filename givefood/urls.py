@@ -7,6 +7,10 @@ from django.urls import path, re_path
 import givefood.views
 from givefood.const.general import RICK_ASTLEY, OLD_FOODBANK_SLUGS, FOODBANK_SUBPAGES
 
+# Custom error handlers
+handler404 = 'givefood.views.handler404'
+handler500 = 'givefood.views.handler500'
+
 urlpatterns = []
 
 # Old food bank slug redirects
