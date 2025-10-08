@@ -13,30 +13,30 @@ class Migration(migrations.Migration):
     operations = [
         # Rename Foodbank fields
         migrations.RenameField(
-            model_name='foodbank',
+            model_name='Foodbank',
             old_name='latt_long',
             new_name='lat_lng',
         ),
         migrations.RenameField(
-            model_name='foodbank',
+            model_name='Foodbank',
             old_name='delivery_latt_long',
             new_name='delivery_lat_lng',
         ),
         # Rename FoodbankLocation field
         migrations.RenameField(
-            model_name='foodbanklocation',
+            model_name='FoodbankLocation',
             old_name='latt_long',
             new_name='lat_lng',
         ),
         # Rename FoodbankDonationPoint field
         migrations.RenameField(
-            model_name='foodbankdonationpoint',
+            model_name='FoodbankDonationPoint',
             old_name='latt_long',
             new_name='lat_lng',
         ),
         # Rename Place field
         migrations.RenameField(
-            model_name='place',
+            model_name='Place',
             old_name='latt_long',
             new_name='lat_lng',
         ),
