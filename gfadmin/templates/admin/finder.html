@@ -37,7 +37,7 @@
             <dt>Type</dt>
             <dd>{{ place.type }}&nbsp;</dd>
             <dt>Lat/Lng</dt>
-            <dd><a href="https://www.google.com/maps/search/{{ place.latt_long }}" target="_blank">{{ place.latt_long }}</a>&nbsp;</dd>
+            <dd><a href="https://www.google.com/maps/search/{{ place.lat_lng }}" target="_blank">{{ place.lat_lng }}</a>&nbsp;</dd>
         </dl>
         
     </div>
@@ -78,7 +78,7 @@
 
 {% block script %}
     <script>
-        initial_lat_lng = "{{ place.latt_long }}";
+        initial_lat_lng = "{{ place.lat_lng }}";
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places"></script>
     <script src="/static/js/finder.js"></script>

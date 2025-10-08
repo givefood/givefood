@@ -270,7 +270,7 @@
             {{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}
             <dl class="is-size-7">
               <dt>Lat Lng</dt>
-              <dd><a href="https://www.google.co.uk/maps/?q={{ foodbank.latt_long }}">{{ foodbank.latt_long }}</a></dd>
+              <dd><a href="https://www.google.co.uk/maps/?q={{ foodbank.lat_lng }}">{{ foodbank.lat_lng }}</a></dd>
               <dt>Place ID</dt>
               <dd>{% if foodbank.place_id %}{{ foodbank.place_id|truncatechars:25 }}{% else %}None{% endif %}</dd>
               {% if foodbank.address_is_administrative %}
@@ -294,7 +294,7 @@
               {{ foodbank.delivery_address|linebreaksbr }}
               <dl class="is-size-7">
                 <dt>Lat Lng</dt>
-                <dd><a href="https://www.google.co.uk/maps/?q={{ foodbank.delivery_latt_long }}">{{ foodbank.delivery_latt_long }}</a></dd>
+                <dd><a href="https://www.google.co.uk/maps/?q={{ foodbank.delivery_lat_lng }}">{{ foodbank.delivery_lat_lng }}</a></dd>
               </dl>
             </td>
             <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-link is-small is-pulled-right">Edit</a></td>
@@ -315,7 +315,7 @@
                 <dd>{{ location.email }}</dd>
               {% endif %}
               <dt>Lat Lng</dt>
-              <dd><a href="https://www.google.co.uk/maps/?q={{ location.latt_long }}">{{ location.latt_long }}</a></dd>
+              <dd><a href="https://www.google.co.uk/maps/?q={{ location.lat_lng }}">{{ location.lat_lng }}</a></dd>
               <dt>Place ID</dt>
               <dd>{% if location.place_id %}{{ location.place_id|truncatechars:25 }}{% else %}None{% endif %}</dd>
               {% if location.place_has_photo %}
@@ -395,7 +395,7 @@
               <td>{{ donation_point.name }}</td>
               <td>{{ donation_point.address|linebreaksbr }}</td>
               <td>{{ donation_point.postcode }}</td>
-              <td>{{ donation_point.latt_long }}</td>
+              <td>{{ donation_point.lat_lng }}</td>
               <td>{% if donation_point.place_id %}{{ donation_point.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
               <td>
                 {% if donation_point.company %}
