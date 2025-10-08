@@ -40,17 +40,17 @@ function move_map(lat,lng,zoom) {
       map.panTo(new google.maps.LatLng(lat,lng));
       map.setZoom(zoom);
       if (gf_map_config.location_marker == true) {
-        var marker = new google.maps.Marker({
+        const pinElement = new google.maps.marker.PinElement({
+          background: '#5384ED',
+          borderColor: '#ffffff',
+          glyphColor: '#5384ED',
+          scale: 0.8,
+        });
+
+        const marker = new google.maps.marker.AdvancedMarkerElement({
           position: {"lat": lat, "lng": lng},
           map: map,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 6,
-            fillOpacity: 1,
-            strokeWeight: 2,
-            fillColor: '#5384ED',
-            strokeColor: '#ffffff',
-          },
+          content: pinElement.element,
         });
       }
     }
@@ -84,6 +84,7 @@ function init_map() {
         mapTypeControl: false,
         fullscreenControl: false,
         streetViewControl: false,
+        mapId: 'DEMO_MAP_ID'
     });
   
     var data = new google.maps.Data();
