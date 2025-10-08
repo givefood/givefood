@@ -1,16 +1,35 @@
-{% extends "admin/page.html" %}
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/static/css/bulma.min.css">
+  <link rel="stylesheet" href="/static/css/gf.css">
+  <link rel="stylesheet" href="/static/css/admin.css">
+  <meta name="theme-color" content="#F2DECB">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
+  <title>500 - Internal Server Error - Give Food Admin</title>
+</head>
+<body>
 
-{% block title %}500 - Internal Server Error - Give Food Admin{% endblock %}
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/admin/">
+          <img src="/static/img/logo.svg" alt="Give Food" class="logo">
+        </a>
+      </div>
+    </nav>
+    
+    <div class="main">
+      <h2>500 - Internal Server Error</h2>
 
-{% block body %}
-
-  <h2>500 - Internal Server Error</h2>
-
-  <div class="columns">
-    <div class="column">
-      <p>Sorry, something has gone wrong. This error has been logged and we'll look into it.</p>
-      <p><a href="{% url 'admin:index' %}">Return to Admin Dashboard</a></p>
+      <div class="columns">
+        <div class="column">
+          <p>Sorry, something has gone wrong. This error has been logged and we'll look into it.</p>
+          <p><a href="/admin/">Return to Admin Dashboard</a></p>
+        </div>
+      </div>
     </div>
-  </div>
 
-{% endblock %}
+</body>
+</html>
