@@ -45,29 +45,52 @@
 
   </div><br><br>
 
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="/static/js/echarts.js"></script>
 
   <script>
-    google.charts.load('current', {'packages':['bar']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Month', "Beans or Pasta Requests"],
-        {% for month in months %}
-            ['{{ month.the_month }}', {{ month.count }}],
-        {% endfor %}
-      ]);
-
-      var options = {
-        bars: 'verticle',
-        legend:{position:'none'},
-      };
-
-      var chart = new google.charts.Bar(document.getElementById('chart'));
-
-      chart.draw(data, google.charts.Bar.convertOptions(options));
-    }
+    var chartDom = document.getElementById('chart');
+    var myChart = echarts.init(chartDom);
+    var option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: [
+          {% for month in months %}
+            '{{ month.the_month }}'{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+        axisLabel: {
+          rotate: 45
+        }
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Beans or Pasta Requests'
+      },
+      series: [
+        {
+          name: 'Beans or Pasta Requests',
+          type: 'bar',
+          data: [
+            {% for month in months %}
+              {{ month.count }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ]
+        }
+      ]
+    };
+    myChart.setOption(option);
   </script>
 
 {% endblock %}

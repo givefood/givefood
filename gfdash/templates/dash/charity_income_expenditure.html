@@ -50,28 +50,60 @@
 
   </div><br><br>
 
-  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="/static/js/echarts.js"></script>
 
   <script>
-    google.charts.load('current', {'packages':['bar']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Year', 'Income', 'Expenditure'],
-        {% for year in years reversed %}
-            ['{{ year.date__year }}', {{ year.income }}, {{ year.expenditure }}],
-        {% endfor %}
-      ]);
-
-      var options = {
-        bars: 'verticle',
-      };
-
-      var chart = new google.charts.Bar(document.getElementById('chart'));
-
-      chart.draw(data, google.charts.Bar.convertOptions(options));
-    }
+    var chartDom = document.getElementById('chart');
+    var myChart = echarts.init(chartDom);
+    var option = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      legend: {
+        data: ['Income', 'Expenditure']
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: [
+          {% for year in years reversed %}
+            '{{ year.date__year }}'{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ]
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: 'Income',
+          type: 'bar',
+          data: [
+            {% for year in years reversed %}
+              {{ year.income }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ]
+        },
+        {
+          name: 'Expenditure',
+          type: 'bar',
+          data: [
+            {% for year in years reversed %}
+              {{ year.expenditure }}{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ]
+        }
+      ]
+    };
+    myChart.setOption(option);
   </script>
 
 {% endblock %}
