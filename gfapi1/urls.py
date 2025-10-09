@@ -9,6 +9,6 @@ urlpatterns = (
     re_path(r'^foodbanks/search/$', api_foodbank_search, name="api_foodbank_search"),
     re_path(r'^foodbank/(?P<slug>[-\w]+)/$', api_foodbank, name="api_foodbank"),
     re_path(r'^needs/$', api_needs, name="api_needs"),
-    re_path(r'^need/(?P<id>[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/$', api_need, name="api_need"),
+    path("need/<uuid:id>/", api_need, name="api_need"),
 
 )
