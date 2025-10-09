@@ -1749,9 +1749,7 @@ class FoodbankChange(models.Model):
             self.excess_change_text = clean_foodbank_need_text(self.excess_change_text)
 
         if not self.need_id:
-            str_to_hash = "%s%s" % (self.uri, datetime.now())
-            str_to_hash = str_to_hash.encode('utf-8')
-            need_id = hashlib.sha256(str_to_hash).hexdigest()[:8]
+            need_id = uuid.uuid4().hex[:8]
             self.need_id = need_id
 
         super(FoodbankChange, self).save(*args, **kwargs)
