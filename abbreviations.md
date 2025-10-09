@@ -3,6 +3,8 @@
   <dd>Annual report</dd>
   <dt>cta</dt>
   <dd>Call to action</dd>
+  <dt>csi</dt>
+  <dd>Client Side Include</dd>
   <dt>cy</dt>
   <dd>Cymru (Welsh, in Welsh)</dd>
   <dt>dash</dt>
