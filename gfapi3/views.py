@@ -252,6 +252,7 @@ def company(request, slug):
             },
             "address": dp.address,
             "postcode": dp.postcode,
+            "country": dp.country,
             "lat_lng": dp.lat_lng,
             "place_id": dp.place_id,
             "store_id": dp.store_id,
