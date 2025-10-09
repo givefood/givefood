@@ -45,7 +45,7 @@ def docs(request):
     eg_needs_obj = FoodbankChange.objects.filter(published=True).order_by("-created")[:5]
     eg_needs = []
     for eg_need in eg_needs_obj:
-        eg_needs.append(eg_need.need_id)
+        eg_needs.append(eg_need_id)
 
     eg_parl_cons_obj = ParliamentaryConstituency.objects.all().order_by("?")[:5]
     eg_parl_cons = []
@@ -232,11 +232,11 @@ def foodbank(request, slug):
                 },
             },
             "need": {
-                "id":foodbank.latest_need.need_id,
+                "id":foodbank.latest_need.need_id_str,
                 "needs":foodbank.latest_need.change_text,
                 "excess":foodbank.latest_need.excess_change_text,
                 "created":datetime.datetime.fromtimestamp(foodbank.latest_need.created.timestamp()),
-                "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need.need_id),
+                "self":"https://www.givefood.org.uk/api/2/need/%s/" % (foodbank.latest_need.need_id_str),
             },
             "nearby_foodbanks": nearby_foodbank_list,
         }
@@ -348,7 +348,7 @@ def foodbank_search(request):
             "distance_m":int(foodbank.distance),
             "distance_mi":round(miles(foodbank.distance),2),
             "needs": {
-                "id":latest_need.need_id,
+                "id":latest_need.need_id_str,
                 "needs":latest_need.change_text,
                 "excess":latest_need.excess_change_text,
                 "found":datetime.datetime.fromtimestamp(latest_need.created.timestamp()),
@@ -513,7 +513,7 @@ def location_search(request):
             "phone":item.phone_number,
             "email":item.contact_email,
             "needs": {
-                "id":item.latest_need.need_id,
+                "id":item.latest_need.need_id_str,
                 "needs":item.latest_need.change_text,
                 "excess":item.latest_need.excess_change_text,
                 "number":item.latest_need.no_items(),
@@ -617,7 +617,7 @@ def needs(request):
 
     for need in needs:
         response_list.append({
-            "id":need.need_id,
+            "id":need.need_id_str,
             "found":datetime.datetime.fromtimestamp(need.created.timestamp()),
             "foodbank": {
                 "name":need.foodbank_name,
@@ -630,7 +630,7 @@ def needs(request):
             },
             "needs":need.change_text,
             "excess":need.excess_change_text,
-            "self":"https://www.givefood.org.uk/api/2/need/%s/" % (need.need_id),
+            "self":"https://www.givefood.org.uk/api/2/need/%s/" % (need.need_id_str),
         })
 
     return ApiResponse(response_list, "needs", format)
@@ -643,7 +643,7 @@ def need(request, id):
     need = get_object_or_404(FoodbankChange, need_id = id)
 
     response_dict = {
-        "id":need.need_id,
+        "id":need.need_id_str,
         "found":datetime.datetime.fromtimestamp(need.created.timestamp()),
         "foodbank": {
             "name":need.foodbank_name,
@@ -655,7 +655,7 @@ def need(request, id):
         },
         "needs":need.change_text,
         "excess":need.excess_change_text,
-        "self":"https://www.givefood.org.uk/api/2/need/%s/" % (need.need_id),
+        "self":"https://www.givefood.org.uk/api/2/need/%s/" % (need.need_id_str),
     }
 
     return ApiResponse(response_dict, "need", format)
