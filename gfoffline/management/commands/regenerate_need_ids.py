@@ -5,7 +5,7 @@ from givefood.models import FoodbankChange
 
 class Command(BaseCommand):
 
-    help = 'Regenerates all need_ids using UUID instead of SHA256 hash'
+    help = 'Regenerates all need_ids using UUID'
 
     def handle(self, *args, **options):
 
@@ -17,7 +17,7 @@ class Command(BaseCommand):
         updated_count = 0
         for need in needs:
             # Generate new UUID-based need_id
-            new_need_id = uuid.uuid4().hex[:8]
+            new_need_id = uuid.uuid4()
             
             # Update without triggering auto_now on modified field
             # Using queryset.update() to bypass model save() and auto_now
