@@ -244,7 +244,7 @@ def company(request, slug):
                 "charity_register_url": dp.foodbank.charity_register_url(),
                 "network": dp.foodbank.network,
                 "need": {
-                    "id": dp.foodbank.latest_need.need_id,
+                    "id": dp.foodbank.latest_need.need_id_str,
                     "items": dp.foodbank.latest_need.change_list(),
                     "excess": dp.foodbank.latest_need.excess_list(),
                     "found": str(dp.foodbank.latest_need.created),
