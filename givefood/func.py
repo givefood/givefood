@@ -1125,9 +1125,9 @@ def get_translation(language, text, source="en"):
 
 
 @task
-def translate_need_async(language, need_id):
+def translate_need_async(language, need_id_str):
     from givefood.models import FoodbankChange
-    need = FoodbankChange.objects.get(need_id=need_id)
+    need = FoodbankChange.objects.get(need_id_str=need_id_str)
     return translate_need(language, need)
 
 

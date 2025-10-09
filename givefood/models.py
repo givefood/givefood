@@ -1542,6 +1542,7 @@ class FoodbankChange(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
     need_id = models.UUIDField(default=uuid.uuid4, editable=False)
+    need_id_str = models.CharField(max_length=36, editable=False)
 
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.DO_NOTHING)
     foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
@@ -1738,6 +1739,8 @@ class FoodbankChange(models.Model):
 
     def save(self, do_translate=False, do_foodbank_save=True, *args, **kwargs):
 
+        self.need_id_str = str(self.need_id)
+
         if not self.input_method:
             self.input_method = self.set_input_method()
 
@@ -1757,7 +1760,7 @@ class FoodbankChange(models.Model):
             for language in LANGUAGES:
                 language_code = language[0]
                 if language_code != "en":
-                    translate_need_async.enqueue(language_code, self.need_id)
+                    translate_need_async.enqueue(language_code, self.need_id_str)
     
     def delete(self, *args, **kwargs):
 

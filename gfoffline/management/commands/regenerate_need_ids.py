@@ -17,11 +17,11 @@ class Command(BaseCommand):
         updated_count = 0
         for need in needs:
             # Generate new UUID-based need_id
-            new_need_id = uuid.uuid4()
+            # new_need_id = uuid.uuid4()
             
             # Update without triggering auto_now on modified field
             # Using queryset.update() to bypass model save() and auto_now
-            FoodbankChange.objects.filter(pk=need.pk).update(need_id=new_need_id)
+            FoodbankChange.objects.filter(pk=need.pk).update(need_id_str=str(need.need_id))
             
             updated_count += 1
             if updated_count % 100 == 0:
