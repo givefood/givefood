@@ -1541,7 +1541,7 @@ class FoodbankChange(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     modified = models.DateTimeField(auto_now=True, editable=False)
-    need_id = models.CharField(max_length=8, editable=False)
+    need_id = models.UUIDField(default=uuid.uuid4, editable=False)
 
     foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.DO_NOTHING)
     foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
@@ -1747,12 +1747,6 @@ class FoodbankChange(models.Model):
         self.change_text = clean_foodbank_need_text(self.change_text)
         if self.excess_change_text:
             self.excess_change_text = clean_foodbank_need_text(self.excess_change_text)
-
-        if not self.need_id:
-            str_to_hash = "%s%s" % (self.uri, datetime.now())
-            str_to_hash = str_to_hash.encode('utf-8')
-            need_id = hashlib.sha256(str_to_hash).hexdigest()[:8]
-            self.need_id = need_id
 
         super(FoodbankChange, self).save(*args, **kwargs)
 
