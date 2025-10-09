@@ -218,7 +218,7 @@ def company(request, slug):
     if slug not in allowed_slugs:
         return HttpResponse(json.dumps({"error": "Company not found"}), content_type="application/json", status=404)
     
-    donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").select_related("foodbank__latest_need").filter(company_slug=slug)
+    donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").select_related("foodbank__latest_need").filter(company_slug=slug).order_by("name")
 
     response_list = []
     
