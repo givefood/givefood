@@ -1736,6 +1736,9 @@ class FoodbankChange(models.Model):
             return crawl_item.crawl_set
         else:
             return None
+        
+    def translation_count(self):
+        return FoodbankChangeTranslation.objects.filter(need = self).count()
 
     def save(self, do_translate=False, do_foodbank_save=True, *args, **kwargs):
 

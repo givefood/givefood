@@ -121,7 +121,7 @@
       </table>
 
       {% if need.published %}
-        <a href="{% url 'admin:need_translations' need.need_id %}">Translations</a>
+        <a href="{% url 'admin:need_translations' need.need_id %}">Translations <span class="tag is-info is-normal is-light">{{ need.translation_count }}</span></a>
       {% endif %}
       
       <h3>Notification Preview</h3>
