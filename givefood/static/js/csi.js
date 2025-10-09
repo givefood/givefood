@@ -16,8 +16,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
         
         // Set up auto-update if data-update attribute is present
         if (updateInterval) {
-            const intervalMs = parseInt(updateInterval) * 1000;
-            setInterval(loadContent, intervalMs);
+            const intervalSeconds = parseInt(updateInterval, 10);
+            if (intervalSeconds > 0) {
+                setInterval(loadContent, intervalSeconds * 1000);
+            }
         }
     });
 });
