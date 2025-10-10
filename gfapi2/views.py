@@ -45,7 +45,7 @@ def docs(request):
     eg_needs_obj = FoodbankChange.objects.filter(published=True).order_by("-created")[:5]
     eg_needs = []
     for eg_need in eg_needs_obj:
-        eg_needs.append(eg_need_id)
+        eg_needs.append(eg_need.need_id_str)
 
     eg_parl_cons_obj = ParliamentaryConstituency.objects.all().order_by("?")[:5]
     eg_parl_cons = []
