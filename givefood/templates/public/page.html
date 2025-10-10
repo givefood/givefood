@@ -72,20 +72,7 @@
   </script>
   <script src="/static/js/instantpage-5.2.0.js" type="module"></script>
   <script type="speculationrules">
-    {
-      "prerender": [
-        {
-          "where": { "selector_matches": ".menu a, .langswitcher a" },
-          "eagerness": "eager"
-        }
-      ],
-      "prefetch": [
-        {
-          "where": { "selector_matches": ".cta a" },
-          "eagerness": "eager"
-        }
-      ]
-    }
+    {{ speculation_rules_json|safe }}
   </script>
 </body>
 </html>
