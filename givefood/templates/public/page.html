@@ -62,7 +62,6 @@
     </footer>
   {% endif %}
   {% block script %}{% endblock %}
-  <script src="/static/js/gf.js?v={{ version }}" defer></script>
   <script src="/static/js/csi.js?v={{ version }}" defer></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153866507-1"></script>
   <script>
@@ -79,5 +78,21 @@
     gtag('config', 'AW-448372895');
   </script>
   <script src="/static/js/instantpage-5.2.0.js" type="module"></script>
+  <script type="speculationrules">
+    {
+      "prerender": [
+        {
+          "where": { "selector_matches": ".menu a, .langswitcher a" },
+          "eagerness": "eager"
+        }
+      ],
+      "prefetch": [
+        {
+          "where": { "selector_matches": ".cta a" },
+          "eagerness": "eager"
+        }
+      ]
+    }
+  </script>
 </body>
 </html>
