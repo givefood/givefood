@@ -121,6 +121,7 @@ class Foodbank(models.Model):
     rss_url = models.URLField(max_length=200, verbose_name="RSS feed URL", null=True, blank=True)
     donation_points_url = models.URLField(max_length=200, verbose_name="Donation points URL", null=True, blank=True)
     locations_url = models.URLField(max_length=200, verbose_name="Locations URL", null=True, blank=True)
+    contacts_url = models.URLField(max_length=200, verbose_name="Contacts URL", null=True, blank=True)
 
     # Booleans
     address_is_administrative = models.BooleanField(default=False, verbose_name="Is the main address just used for administrative purposes?")
