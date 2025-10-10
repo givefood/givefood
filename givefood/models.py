@@ -1302,7 +1302,7 @@ class Order(models.Model):
 
         # Parse the order text
         prompt = render_to_string(
-            "admin/orderline_prompt.txt",
+            "admin/prompts/orderline_prompt.txt",
             {
                 "items_text":self.items_text,
             }
