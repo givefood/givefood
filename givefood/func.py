@@ -1035,12 +1035,12 @@ def filter_change_text(change_text, filter_list):
     return "\n".join(filtered_change_text_list)
 
 
-def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None):
+def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "gemini-2.5-flash"):
 
     client = genai.Client(api_key = get_cred("gemini_api_key"))
 
     response = client.models.generate_content(
-        model = "gemini-2.5-flash",
+        model = model,
         contents = [prompt],
         config = types.GenerateContentConfig(
             temperature = temperature,
