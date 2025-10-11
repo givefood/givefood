@@ -155,7 +155,11 @@
                   <td style="min-width:100px;">
                     {% if donationpoint.place_has_photo %}
                       <a href="{{ donationpoint.url }}">
-                        <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{{ donationpoint.photo_url }}" alt="{{ donationpoint.name }}" loading="lazy" class="placephoto" style="width:150px;">
+                        <picture>
+                          <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=avif{{ donationpoint.photo_url }} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=avif{{ donationpoint.photo_url }} 300w" type="image/avif">
+                          <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=webp{{ donationpoint.photo_url }} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=webp{{ donationpoint.photo_url }} 300w" type="image/webp">
+                          <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{{ donationpoint.photo_url }}" alt="{{ donationpoint.name }}" loading="lazy" class="placephoto" style="width:150px;" sizes="150px">
+                        </picture>
                       </a>
                     {% endif %}
                   </td>

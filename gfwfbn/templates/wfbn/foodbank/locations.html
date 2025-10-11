@@ -80,7 +80,11 @@
               <div style="clear:both">
                 {% if location.place_has_photo %}
                   <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">
-                    <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %}" alt="{{ location.name }}" loading="lazy" class="placephoto {% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %}" style="width:150px;clear:left">
+                    <picture>
+                      <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=avif{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=avif{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 300w" type="image/avif" sizes="150px">
+                      <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=webp{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=webp{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 300w" type="image/webp" sizes="150px">
+                      <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %}" alt="{{ location.name }}" loading="lazy" class="placephoto {% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %}" style="width:150px;clear:left">
+                    </picture>
                   </a>
                 {% endif %}
                 <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location.name }}</a>

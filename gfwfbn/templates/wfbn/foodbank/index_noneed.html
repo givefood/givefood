@@ -93,7 +93,11 @@
 
             {% if foodbank.place_has_photo and not foodbank.address_is_administrative %}
               <div>
-                <img src="{% url 'wfbn-generic:foodbank_photo' foodbank.slug %}" alt="{{ foodbank.name }}" loading="lazy" class="placephoto">
+                <picture>
+                  <source type="image/avif" srcset="https://www.givefood.org.uk/cdn-cgi/image/width=540,format=avif{% url 'wfbn-generic:foodbank_photo' foodbank.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/width=1080,format=avif{% url 'wfbn-generic:foodbank_photo' foodbank.slug %} 1080w" sizes="(max-width: 540px) 540px, 1080px">
+                  <source type="image/webp" srcset="https://www.givefood.org.uk/cdn-cgi/image/width=540,format=webp{% url 'wfbn-generic:foodbank_photo' foodbank.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/width=1080,format=webp{% url 'wfbn-generic:foodbank_photo' foodbank.slug %} 1080w" sizes="(max-width: 540px) 540px, 1080px">
+                  <img src="{% url 'wfbn-generic:foodbank_photo' foodbank.slug %}" alt="{{ foodbank.name }}" loading="lazy" class="placephoto">
+                </picture>
               </div>
             {% endif %}
             

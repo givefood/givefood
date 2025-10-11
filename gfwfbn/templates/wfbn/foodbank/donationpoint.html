@@ -109,7 +109,11 @@
 
             {% if donationpoint.place_has_photo %}
               <div>
-                <img src="{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}" alt="{{ donationpoint.name }}" loading="lazy" class="placephoto">
+                <picture>
+                  <source srcset="https://www.givefood.org.uk/cdn-cgi/image/format=avif,width=540{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/format=avif,width=1080{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %} 1080w" type="image/avif">
+                  <source srcset="https://www.givefood.org.uk/cdn-cgi/image/format=webp,width=540{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/format=webp,width=1080{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %} 1080w" type="image/webp">
+                  <img src="https://www.givefood.org.uk/cdn-cgi/image/format=auto{% url 'wfbn-generic:foodbank_donationpoint_photo' foodbank.slug donationpoint.slug %}" alt="{{ donationpoint.name }}" loading="lazy" class="placephoto">
+                </picture>
               </div>
             {% endif %}
 
