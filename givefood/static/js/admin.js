@@ -120,7 +120,7 @@ if (dp_name_field) {
       lng = this.response.results[0].geometry.location.lng
       place_id = this.response.results[0].place_id
       lat_lng = lat + "," + lng
-      lattlong_field.value = lat_lng
+      lat_lng_field.value = lat_lng
       place_id_field.value = place_id
 
       map_img = document.createElement('img');
