@@ -7,6 +7,7 @@ __pycache__/
 /.*
 !/.gitignore
 !/.gitmodules
+!/.flake8
 
 # C extensions
 *.so
