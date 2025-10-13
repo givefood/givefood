@@ -64,6 +64,10 @@ def context(request):
             {
                 "where": {"selector_matches": ".cta a"},
                 "eagerness": "eager"
+            },
+            {
+                "where": {"selector_matches": "a"},
+                "eagerness": "moderate"
             }
         ]
     }
