@@ -1,0 +1,33 @@
+[flake8]
+# --- Core Settings ---
+# Set line length to 88 to match Black's default.
+max-line-length = 88
+
+# Extend the default ignore list with codes that conflict with Black or are too noisy.
+# E203: whitespace before ':' - conflicts with Black
+# W503: line break before binary operator - conflicts with Black
+extend-ignore =
+    E203,
+    W503
+
+# --- Files & Directories ---
+# Exclude common directories and auto-generated Django files.
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    env,
+    build,
+    dist,
+    migrations/,
+    manage.py,
+    locale/,
+    gunicorn.conf.py,
+    main.py
+
+# --- Per-file Ignores ---
+# Django's __init__.py files often have unused imports for convenient module-level exports.
+per-file-ignores =
+    */__init__.py:F401
+    givefood/settings.py:E501
