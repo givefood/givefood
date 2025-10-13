@@ -3,8 +3,6 @@
 
 The source of https://www.givefood.org.uk - built using Django, hosted at [Mythic Beasts](https://www.mythic-beasts.com/) in Shoreditch, London using [Coolify](https://www.coolify.io/) and fronted by [Cloudflare](https://www.cloudflare.com/).
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/givefood/givefood)
-
 ## Structure 
 | App Name  | Description                         | URL                                    |
 |-----------|-------------------------------------|----------------------------------------|
@@ -20,7 +18,7 @@ The source of https://www.givefood.org.uk - built using Django, hosted at [Mythi
 
 [/givefood/static/img/photos/](https://github.com/givefood/givefood/tree/main/givefood/static/img/photos) is deployed to https://photos.givefood.org.uk via [CloudFlare R2](https://developers.cloudflare.com/r2/)
 
-There is a useful list of abbreviations used in [abbreviations.md](abbreviations.md)
+There is a useful list of abbreviations used in [abbreviations.md](abbreviations.md), Copilot instructions at [copilot-instructions.md](/.github/copilot-instructions.md) and Deepwiki repository summary at [https://deepwiki.com/givefood/givefood](https://deepwiki.com/givefood/givefood).
 
 ## About Us
 
