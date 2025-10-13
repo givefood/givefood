@@ -37,6 +37,7 @@ class Command(BaseCommand):
 
             crawl_item = CrawlItem(
                 foodbank = foodbank,
+                crawl_type = "charity",
                 crawl_set = crawl_set,
                 url = url,
             )
@@ -99,6 +100,7 @@ class Command(BaseCommand):
 
             crawl_item = CrawlItem(
                 foodbank = foodbank,
+                crawl_type = "charity",
                 crawl_set = crawl_set,
                 url = url,
             )
@@ -150,6 +152,7 @@ class Command(BaseCommand):
 
             crawl_item = CrawlItem(
                 foodbank = foodbank,
+                crawl_type = "charity",
                 crawl_set = crawl_set,
                 url = url,
             )

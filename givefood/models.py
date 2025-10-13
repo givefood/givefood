@@ -2179,6 +2179,7 @@ class CrawlSet(models.Model):
 class CrawlItem(models.Model):
 
     crawl_set = models.ForeignKey(CrawlSet, on_delete=models.DO_NOTHING, null=True, blank=True)
+    crawl_type = models.CharField(max_length=50) # need, article, charity, discrepancy
     start = models.DateTimeField(auto_now_add=True, editable=False)
     finish = models.DateTimeField(null=True, blank=True, editable=False)
     foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)

@@ -274,6 +274,7 @@ def foodbank_article_crawl(foodbank, crawl_set = None):
 
     crawl_item = CrawlItem(
         foodbank = foodbank,
+        crawl_type = "article",
         crawl_set = crawl_set,
         url = foodbank.rss_url,
     )
@@ -1158,6 +1159,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
 
     crawl_item = CrawlItem(
         foodbank = foodbank,
+        crawl_type = "need",
         crawl_set = crawl_set,
         url = foodbank.shopping_list_url,
     )
