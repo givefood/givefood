@@ -64,6 +64,7 @@
             <tr>
                 <th>Foodbank</th>
                 <th>Start</th>
+                <th>Type</th>
                 <th></th>
             </tr>
         </thead>
@@ -76,6 +77,7 @@
                 </a>
               </td>
               <td>{{ crawl_item.start|date:"Y-m-d H:i" }}</td>
+              <td>{{ crawl_item.crawl_type }}</td>
               <td>
                 {% if crawl_item.content_object %}
                   <a href="{{ crawl_item.content_object.get_absolute_url }}">🔗</a>
