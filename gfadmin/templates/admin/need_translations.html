@@ -41,8 +41,10 @@
         <dl>
           <dt>Needs</dt>
           <dd>{{ need.change_text|linebreaksbr  }}</dd>
-          <dt>Excess</dt>
-          <dd>{{ need.excess_change_text|linebreaksbr  }}</dd>
+          {% if need.excess_change_text %}
+            <dt>Excess</dt>
+            <dd>{{ need.excess_change_text|linebreaksbr  }}</dd>
+          {% endif %}
         </dl>
         
         <h2>Translations</h2>
@@ -52,8 +54,10 @@
         <dl>
             <dt>Needs</dt>
             <dd>{{ translation.change_text|linebreaksbr  }}</dd>
-            <dt>Excess</dt>
-            <dd>{{ translation.excess_change_text|linebreaksbr  }}</dd>
+            {% if translation.excess_change_text %}
+              <dt>Excess</dt>
+              <dd>{{ translation.excess_change_text|linebreaksbr  }}</dd>
+            {% endif %}
         </dl>
         {% endfor %}
 
