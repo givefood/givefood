@@ -1,6 +1,5 @@
 import time
 
-from django.contrib.auth.views import redirect_to_login
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.urls import resolve
@@ -54,7 +53,7 @@ class LoginRequiredAccess:
         if resolve(request.path).app_name in self.login_apps:
 
             try:
-                user_email = request.session.get("user_data").get("email")
+                request.session.get("user_data").get("email")
                 email_verified = request.session.get("user_data").get("email_verified")
                 hosted_domain = request.session.get("user_data").get("hd")
             except AttributeError:

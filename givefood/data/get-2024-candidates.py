@@ -1,4 +1,6 @@
-import requests, csv, time, os.path, random
+import requests
+import csv
+import random
 from PIL import Image
 
 random_number = random.randrange(1000000)
