@@ -1,21 +1,17 @@
 import csv
-from io import StringIO
 import json
-import re
 from django.shortcuts import get_object_or_404, render
 import logging, requests
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 
 from django.http import HttpResponse
 from django.core.cache import cache
-from django.urls import reverse
-from django.db.models import F
 from givefood.const.item_types import ITEM_CATEGORIES
 
-from givefood.models import CharityYear, Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankDonationPoint, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
+from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY
-from givefood.func import clean_foodbank_need_text, decache, do_foodbank_need_check, gemini, get_cred, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, foodbank_article_crawl, get_place_id, pluscode, text_for_comparison, translate_need
+from givefood.func import do_foodbank_need_check, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, get_place_id, pluscode, translate_need
 from django.template.loader import render_to_string
 
 

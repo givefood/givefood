@@ -2,7 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from django.urls import reverse
-import re, logging, operator, urllib, difflib, requests, feedparser, random, json
+import re
+import logging
+import operator
+import urllib
+import difflib
+import requests
+import feedparser
+import random
 from itertools import chain
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
@@ -23,7 +30,7 @@ from django.contrib.humanize.templatetags.humanize import apnumber
 from django.db.models import Value
 from django.contrib.contenttypes.models import ContentType
 
-from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY, ITEMS_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
+from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
