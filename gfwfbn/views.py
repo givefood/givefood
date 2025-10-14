@@ -17,6 +17,7 @@ from givefood.const.general import SITE_DOMAIN
 from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
 from givefood.func import geocode, find_locations, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, is_uk, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
+from django.db.models import Sum
 
 
 @cache_page(SECONDS_IN_HOUR)
@@ -37,10 +38,24 @@ def index(request):
     lat = lng = approx_address = locations = donationpoints = None
 
     # Recently updated food banks
-    recently_updated = FoodbankChange.objects.filter(published = True).exclude(change_text = "Unknown").order_by("-created")[:10]
+    exclude_change_text = ["Unknown", "Facebook", "Nothing"]
+    recently_updated = (
+        FoodbankChange.objects
+        .filter(published=True)
+        .exclude(change_text__in=exclude_change_text)
+        .order_by("-created")[:10]
+    )
 
     # Most viewed food banks
-    most_viewed = FoodbankHit.objects.raw("SELECT 1 as id, (select name from givefood_foodbank where id = foodbank_id) as name, (select slug from givefood_foodbank where id = foodbank_id) as slug, SUM(hits) as sumhits FROM givefood_foodbankhit WHERE day >= CURRENT_DATE - 7 and day <= CURRENT_DATE GROUP BY foodbank_id ORDER BY sumhits DESC LIMIT 10")
+    most_viewed = (
+        Foodbank.objects
+        .filter(
+            foodbankhit__day__gte=datetime.date.today() - datetime.timedelta(days=7),
+            foodbankhit__day__lte=datetime.date.today()
+        )
+        .annotate(total_hits=Sum('foodbankhit__hits'))
+        .order_by('-total_hits')[:10]
+    )
 
     # Geocode address if no lat_lng
     if address and not lat_lng:
