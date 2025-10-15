@@ -34,10 +34,11 @@
               {% for location in locations %}
                   <h3>{{ location.name }}</h3>
                   <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">Directions</a>
-                  <address>
-                      {{ location.address|linebreaksbr }}<br>
-                      {{ location.postcode }}
-                  </address>
+                  {% if location.address or location.postcode %}
+                      <address>
+                          {% if location.address %}{{ location.address|linebreaksbr }}{% endif %}{% if location.address and location.postcode %}<br>{% endif %}{% if location.postcode %}{{ location.postcode }}{% endif %}
+                      </address>
+                  {% endif %}
                   <br>
               {% endfor %}
           </details>

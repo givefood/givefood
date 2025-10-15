@@ -304,7 +304,9 @@
         <tr>
           <td>{{ location.name }}</td>
           <td>
-            {{ location.address|linebreaksbr }}<br>{{ location.postcode }}
+            {% if location.address or location.postcode %}
+              {% if location.address %}{{ location.address|linebreaksbr }}{% endif %}{% if location.address and location.postcode %}<br>{% endif %}{% if location.postcode %}{{ location.postcode }}{% endif %}
+            {% endif %}
             <dl class="is-size-7">
               {% if location.phone_number %}
                 <dt>Phone</dt>

@@ -87,10 +87,11 @@
                   </a>
                 {% endif %}
                 <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location.name }}</a>
-                <address>
-                  {{ location.address|linebreaksbr }}<br>
-                  {{ location.postcode }}
-                </address>
+                {% if location.address or location.postcode %}
+                  <address>
+                    {% if location.address %}{{ location.address|linebreaksbr }}{% endif %}{% if location.address and location.postcode %}<br>{% endif %}{% if location.postcode %}{{ location.postcode }}{% endif %}
+                  </address>
+                {% endif %}
               </div>
             {% endfor %}
 
