@@ -40,7 +40,6 @@
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
         <ul>
             <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
-            <li><a href="{% url 'wfbn:index' %}">{% blocktrans %}What Food Banks Need{% endblocktrans %}</a></li>
             <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a></li>
             <li class="is-active"><a href="#" aria-current="page">{% blocktrans %}Nearby{% endblocktrans %}</a></li>
         </ul>
