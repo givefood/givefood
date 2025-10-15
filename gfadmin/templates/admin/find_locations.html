@@ -14,7 +14,9 @@
         <dl>
           {% for location in foodbank.locations %}
             <dt>{{ location.name }}</dt>
-            <dd>{{ location.address }}</dd>
+            {% if location.address or location.postcode %}
+              <dd>{% if location.address %}{{ location.address }}{% endif %}{% if location.address and location.postcode %}, {% endif %}{% if location.postcode %}{{ location.postcode }}{% endif %}</dd>
+            {% endif %}
           {% endfor %}
         </dl>
       {% else %}

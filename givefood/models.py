@@ -685,8 +685,8 @@ class FoodbankLocation(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     slug = models.CharField(max_length=100, editable=False)
-    address = models.TextField()
-    postcode = models.CharField(max_length=9, validators=[
+    address = models.TextField(null=True, blank=True)
+    postcode = models.CharField(max_length=9, null=True, blank=True, validators=[
         RegexValidator(
             regex = POSTCODE_REGEX,
             message = "Not a valid postcode",
@@ -775,12 +775,6 @@ class FoodbankLocation(models.Model):
             "url": self.foodbank.url,
             "email": self.email_or_foodbank_email(),
             "telephone": self.phone_or_foodbank_phone(),
-            "address": {
-                "@type": "PostalAddress",
-                "postalCode": self.postcode,
-                "addressCountry": self.country,
-                "streetAddress": self.address,
-            },
             "location": {
                 "geo": {
                     "@type": "GeoCoordinates",
@@ -792,6 +786,19 @@ class FoodbankLocation(models.Model):
             "memberOf":member_of,
             "parentOrganization":self.foodbank.schema_org(as_sub_property = True)
         }
+        
+        # Only add address if we have address or postcode
+        if self.address or self.postcode:
+            address_dict = {
+                "@type": "PostalAddress",
+                "addressCountry": self.country,
+            }
+            if self.postcode:
+                address_dict["postalCode"] = self.postcode
+            if self.address:
+                address_dict["streetAddress"] = self.address
+            schema_dict["address"] = address_dict
+        
         if not as_sub_property:
             schema_dict["@context"] = "https://schema.org"
             if seeks:
@@ -820,7 +827,14 @@ class FoodbankLocation(models.Model):
         return self.foodbank.latest_need
 
     def full_address(self):
-        return "%s\r\n%s" % (self.address, self.postcode)
+        if self.address and self.postcode:
+            return "%s\r\n%s" % (self.address, self.postcode)
+        elif self.address:
+            return self.address
+        elif self.postcode:
+            return self.postcode
+        else:
+            return ""
 
     def latt(self):
         return float(self.lat_lng.split(",")[0])
@@ -865,27 +879,31 @@ class FoodbankLocation(models.Model):
             else:
                 self.place_has_photo = False
 
-            # Update politics
-            regions = admin_regions_from_postcode(self.postcode)
-            self.country = regions.get("country", None)
-            self.county = regions.get("county", None)
-            self.ward = regions.get("ward", None)
-            self.district = regions.get("district", None)
-            self.lsoa = regions.get("lsoa", None)
-            self.msoa = regions.get("msoa", None)
+            # Update politics - only if postcode is provided
+            if self.postcode:
+                regions = admin_regions_from_postcode(self.postcode)
+                self.country = regions.get("country", None)
+                self.county = regions.get("county", None)
+                self.ward = regions.get("ward", None)
+                self.district = regions.get("district", None)
+                self.lsoa = regions.get("lsoa", None)
+                self.msoa = regions.get("msoa", None)
 
-            try:
-                parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
-                logging.info("Got parl_con %s" % parl_con)
-                self.parliamentary_constituency = parl_con
-                self.parliamentary_constituency_name = self.parliamentary_constituency.name
-                self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
-                # self.mp = self.parliamentary_constituency.mp
-                # self.mp_party = self.parliamentary_constituency.mp_party
-                # self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
-            except ParliamentaryConstituency.DoesNotExist: 
-                logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
-                self.parliamentary_constituency = None
+                try:
+                    parl_con = ParliamentaryConstituency.objects.get(name = regions.get("parliamentary_constituency", None))
+                    logging.info("Got parl_con %s" % parl_con)
+                    self.parliamentary_constituency = parl_con
+                    self.parliamentary_constituency_name = self.parliamentary_constituency.name
+                    self.parliamentary_constituency_slug = slugify(self.parliamentary_constituency_name)
+                    # self.mp = self.parliamentary_constituency.mp
+                    # self.mp_party = self.parliamentary_constituency.mp_party
+                    # self.mp_parl_id = self.parliamentary_constituency.mp_parl_id
+                except ParliamentaryConstituency.DoesNotExist: 
+                    logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
+                    self.parliamentary_constituency = None
+            else:
+                # If no postcode, set country from foodbank
+                self.country = self.foodbank.country
 
             pluscodes = pluscode(self.lat_lng)
             self.plus_code_compound = pluscodes["compound"]

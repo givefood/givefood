@@ -97,10 +97,11 @@
             {% include "public/includes/maplegend.html" %}
 
             <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
-            <address>
-              {{ location.address|linebreaksbr }}<br>
-              {{ location.postcode }}
-            </address>
+            {% if location.address or location.postcode %}
+              <address>
+                {% if location.address %}{{ location.address|linebreaksbr }}{% endif %}{% if location.address and location.postcode %}<br>{% endif %}{% if location.postcode %}{{ location.postcode }}{% endif %}
+              </address>
+            {% endif %}
             <div class="pluscode">
               <a href="https://www.google.co.uk/maps/place/{{ location.plus_code_global|urlencode }}/" class="pluscode">{{ location.plus_code_global }}</a>
             </div>

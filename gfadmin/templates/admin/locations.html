@@ -42,7 +42,7 @@
           <tr>
             <td><a href="{% url "admin:foodbank" location.foodbank_slug %}">{{ location.foodbank_name }}</a></td>
             <td><a href="{% url 'admin:fblocation_edit' location.foodbank_slug location.slug %}">{{ location.name }}</a></td>
-            <td>{{ location.address }} {{ location.postcode }}</td>
+            <td>{% if location.address %}{{ location.address }}{% endif %}{% if location.address and location.postcode %} {% endif %}{% if location.postcode %}{{ location.postcode }}{% endif %}</td>
             <td>{{ location.parliamentary_constituency_name }}</td>
             <td>{{ location.mp }}</td>
             <td>{{ location.mp_parl_id }}</td>
