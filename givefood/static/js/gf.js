@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Remove text fragment identifier from URL after page load
     // Text fragments (#:~:text=) are used by browsers for scroll-to-text
     // but we want to clean them from the URL after the browser has processed them
-    if (window.location.hash.includes(':~:')) {
+    // Text fragments follow the format: #[fragment]:~:text= where :~: is the delimiter
+    if (window.location.hash.includes(':~:text=')) {
         // Extract any standard hash (before :~:) to preserve it
         const hashParts = window.location.hash.split(':~:');
         let standardHash = hashParts[0];
