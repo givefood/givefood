@@ -37,32 +37,11 @@ def index(request):
     lat_lng_is_uk = True
     lat = lng = approx_address = locations = donationpoints = None
 
-    # Recently updated food banks
-    exclude_change_text = ["Unknown", "Facebook", "Nothing"]
-    recently_updated = (
-        FoodbankChange.objects
-        .filter(published=True)
-        .exclude(change_text__in=exclude_change_text)
-        .order_by("-created")[:10]
-    )
-
-    # Most viewed food banks
-    most_viewed = (
-        Foodbank.objects
-        .filter(
-            foodbankhit__day__gte=datetime.date.today() - datetime.timedelta(days=7),
-            foodbankhit__day__lte=datetime.date.today()
-        )
-        .annotate(total_hits=Sum('foodbankhit__hits'))
-        .order_by('-total_hits')[:10]
-    )
-
     # Geocode address if no lat_lng
     if address and not lat_lng:
         lat_lng = geocode(address)
 
     if lat_lng:
-
         # Validate lat_lng
         try:
             lat = lat_lng.split(",")[0]
@@ -76,22 +55,17 @@ def index(request):
         if lat_lng_is_uk:
             locations = find_locations(lat_lng, 20)
             donationpoints = find_donationpoints(lat_lng, 20)
+    else:
+        return redirect(reverse("index"), permanent=True)
 
 
     map_config = {
         "geojson":reverse("wfbn:geojson"),
+        "lat":lat_lng.split(",")[0],
+        "lng":lat_lng.split(",")[1],
+        "zoom":13,
+        "location_marker":True
     }
-    if lat_lng:
-        map_config["lat"] = lat_lng.split(",")[0]
-        map_config["lng"] = lat_lng.split(",")[1]
-        map_config["zoom"] = 13
-        map_config["location_marker"] = True
-    else:
-        map_config["lat"] = 55.4
-        map_config["lng"] = -4
-        map_config["zoom"] = 6
-        map_config["location_marker"] = False
-
     map_config = json.dumps(map_config)
     
 
@@ -103,8 +77,6 @@ def index(request):
         "lat":lat,
         "lng":lng,
         "gmap_key":gmap_key,
-        "recently_updated":recently_updated,
-        "most_viewed":most_viewed,
         "locations":locations,
         "donationpoints":donationpoints,
         "is_uk":lat_lng_is_uk,

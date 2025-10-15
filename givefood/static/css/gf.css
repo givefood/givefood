@@ -97,6 +97,12 @@ tfoot {
     background-size: cover;
     content: '';
 }
+#postcode_field, #address_field {
+    width:245px;
+}
+#addressform {
+    margin-bottom:1rem;
+}
 .txt-dir-rtl #usemylocationbtn:before {
     margin:0 0 0 7px;
 }
@@ -219,9 +225,19 @@ del {
     rotate: 90deg;
     margin:2px 0 0 10px;
 }
-.
 .dropdown-item {
     font-size:inherit;
+}
+#legend {
+    display:none;
+    background:#fff;
+    padding:5px;
+    margin:5px;
+    border:1px solid rgb(53, 55, 64);
+}
+#legend img {
+    width:22px;
+    vertical-align:middle;
 }
 
 @page {

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import requirements, requests, json
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
@@ -13,7 +13,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 
 from givefood.const.topplaces import TOP_PLACES
-from givefood.models import Changelog, Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
+from givefood.models import Changelog, Foodbank, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency
 from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
@@ -115,10 +115,43 @@ def index(request):
         "items":FoodbankChangeLine.objects.count(),
         "meals":int(Order.objects.aggregate(Sum("calories"))["calories__sum"]/500),
     }
+
+    # Recently updated food banks
+    exclude_change_text = ["Unknown", "Facebook", "Nothing"]
+    recently_updated = (
+        FoodbankChange.objects
+        .filter(published=True)
+        .exclude(change_text__in=exclude_change_text)
+        .order_by("-created")[:10]
+    )
+
+    # Most viewed food banks
+    most_viewed = (
+        Foodbank.objects
+        .filter(
+            foodbankhit__day__gte=date.today() - timedelta(days=7),
+            foodbankhit__day__lte=date.today()
+        )
+        .annotate(total_hits=Sum('foodbankhit__hits'))
+        .order_by('-total_hits')[:10]
+    )
+
+
+    map_config = {
+        "geojson":reverse("wfbn:geojson"),
+        "lat": 55.4,
+        "lng": -4,
+        "zoom": 6,
+        "location_marker": False,
+    }
+    map_config = json.dumps(map_config)
     gmap_key = get_cred("gmap_key")
 
     template_vars = {
+        "recently_updated":recently_updated,
+        "most_viewed":most_viewed,
         "gmap_key":gmap_key,
+        "map_config":map_config,
         "logos":logos,
         "stats":stats,
         "is_home":True,

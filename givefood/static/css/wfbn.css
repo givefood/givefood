@@ -22,12 +22,6 @@
         background-color:#fff;
     }
 }
-#postcode_field, #address_field {
-    width:245px;
-}
-#addressform {
-    margin-bottom:1rem;
-}
 #status-msg img {
     vertical-align: middle;
     margin-right:5px;
@@ -35,14 +29,6 @@
 .altname {
     margin-top:-1.3rem;
     font-style: italic;
-}
-.recently-updated, .most-viewed {
-    column-count:2;
-    column-gap:10px;
-    margin-bottom:2rem;
-}
-.recently-updated {
-    margin-bottom:1rem;
 }
 .tabs {
     padding-top:25px;
@@ -203,17 +189,6 @@ textarea[name='body'] {
 }
 .locations address, .donationpoints address {
     margin-bottom:20px;
-}
-#legend {
-    display:none;
-    background:#fff;
-    padding:5px;
-    margin:5px;
-    border:1px solid rgb(53, 55, 64);
-}
-#legend img {
-    width:22px;
-    vertical-align:middle;
 }
 .companyicon {
     width:16px;

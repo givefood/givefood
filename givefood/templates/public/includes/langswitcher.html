@@ -1,6 +1,6 @@
 {% if page_translatable %}
-    <div class="langswitcher{% if not is_home %} is-pulled {% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %}{% endif %}">
-        <div class="dropdown is-hoverable{% if not is_home %} is-right{% endif %}">
+    <div class="langswitcher is-pulled {% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %}">
+        <div class="dropdown is-hoverable is-right">
             <div class="dropdown-trigger">
                 <button class="button" aria-haspopup="true" aria-controls="langswitcher">
                     <span>
