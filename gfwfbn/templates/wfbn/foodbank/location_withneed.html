@@ -89,7 +89,7 @@
 
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
-            {% if location.place_has_photo %}
+            {% if location.place_has_photo and not location.boundary_geojson %}
               <div>
                 <picture>
                   <source srcset="https://www.givefood.org.uk/cdn-cgi/image/format=avif,width=540{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/format=avif,width=1080{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 1080w" type="image/avif">
@@ -101,6 +101,7 @@
 
             <div id="map" class="sidemap"></div>
             {% include "public/includes/maplegend.html" %}
+            {% include "public/includes/deliveryareadisclaimer.html" %}
             
             <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
             {% if location.address or location.postcode %}

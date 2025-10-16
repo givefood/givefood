@@ -239,6 +239,20 @@ del {
     width:22px;
     vertical-align:middle;
 }
+#legend .deliveryarea {
+    display:inline-block;
+    margin:4px;
+    width:14px;
+    height:14px;
+    vertical-align:middle;
+    background:rgb(247, 167, 35, 0.2);
+    border:1px solid rgb(247, 167, 35);
+    border-radius: 2px;
+}
+.deliveryareadisclaimer {
+    font-size:0.9em;
+    font-style:italic;
+}
 
 @page {
     margin:1cm;

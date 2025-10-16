@@ -118,6 +118,14 @@ function init_map() {
         }
     });
     data.setStyle(function(feature) {
+        if (feature.getProperty("type") == "lb") {
+            return {
+                fillColor: '#f7a723',
+                fillOpacity: 0.2,
+                strokeColor: '#f7a723',
+                strokeWeight: 1,
+            }
+        }
         if (feature.getProperty("type") == "f") {
             marker_colour = "red"
             marker_size = 34
@@ -152,8 +160,12 @@ function init_map() {
             if (type != "f") {
                 if (type == "l") {
                     html += "<p>Location for "
-                } else {
+                }
+                if (type == "d") {
                     html += "<p>Donation point for "
+                }
+                if (type == "lb") {
+                    html += "<p>Delivery area for "
                 }
                 html += "<a href='/needs/at/" + slugify(feat.getProperty('foodbank')) + "/'>" + feat.getProperty('foodbank') + "</a> Food Bank.</p>"
             }

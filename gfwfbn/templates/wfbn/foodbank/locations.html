@@ -77,7 +77,7 @@
 
             {% for location in foodbank.locations %}
               <div style="clear:both">
-                {% if location.place_has_photo %}
+                {% if location.place_has_photo and not location.boundary_geojson %}
                   <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">
                     <picture>
                       <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=avif{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=avif{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 300w" type="image/avif" sizes="150px">
@@ -100,6 +100,7 @@
           <div class="column is-6">
             <div id="map" class="mainmap"></div>
             {% include "public/includes/maplegend.html" %}
+            {% include "public/includes/deliveryareadisclaimer.html" %}
           </div>
 
       </div>

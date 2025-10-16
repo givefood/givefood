@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
 from django.urls import reverse
 import re
 import logging
@@ -273,6 +274,17 @@ def oc_geocode(address):
         except:
             lat_lng = "0,0"
     return lat_lng
+
+
+def geojson_dict(geojson):
+
+    geojson = geojson.strip()
+    # remove last char if a comma
+    if geojson[-1:] == ",":
+        geojson = geojson[:-1]
+    else:
+        geojson = geojson
+    return json.loads(geojson)
 
 
 def foodbank_article_crawl(foodbank, crawl_set = None):

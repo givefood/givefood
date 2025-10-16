@@ -29,7 +29,7 @@ from givefood.settings import LANGUAGES
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
-from givefood.func import decache_async, gemini, geocode, get_calories, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, find_parlcons, place_has_photo, pluscode, translate_need_async, validate_postcode
+from givefood.func import decache_async, gemini, geocode, geojson_dict, get_calories, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, find_parlcons, place_has_photo, pluscode, translate_need_async, validate_postcode
 
 
 class Foodbank(models.Model):
@@ -304,6 +304,14 @@ class Foodbank(models.Model):
     def delivery_long(self):
         return float(self.delivery_lat_lng.split(",")[1])
 
+    def has_delivery_area(self):
+        if self.no_locations == 0:
+            return False
+        locations = FoodbankLocation.objects.filter(foodbank = self, boundary_geojson__isnull = False).count()
+        if locations == 0:
+            return False
+        return True
+    
     def nearby(self):
         return find_foodbanks(self.lat_lng, 10, True)
 
@@ -699,6 +707,7 @@ class FoodbankLocation(models.Model):
     lat_lng = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)
     longitude = models.FloatField(editable=False)
+    boundary_geojson = models.TextField(null=True, blank=True)
 
     place_id = models.CharField(max_length=1024, verbose_name="Place ID", null=True, blank=True)
     place_has_photo = models.BooleanField(default=False, editable=False)
@@ -841,6 +850,9 @@ class FoodbankLocation(models.Model):
 
     def long(self):
         return float(self.lat_lng.split(",")[1])
+    
+    def boundary_geojson_dict(self):
+        return geojson_dict(self.boundary_geojson)
 
     def delete(self, *args, **kwargs):
 
@@ -1899,13 +1911,7 @@ class ParliamentaryConstituency(models.Model):
         return json.dumps(self.schema_org(), indent=4, sort_keys=True)
     
     def boundary_geojson_dict(self):
-        boundary_geojson = self.boundary_geojson.strip()
-        # remove last char if a comma
-        if boundary_geojson[-1:] == ",":
-            boundary_geojson = boundary_geojson[:-1]
-        else:
-            boundary_geojson = boundary_geojson
-        return json.loads(boundary_geojson)
+        return geojson_dict(self.boundary_geojson)
 
 
     def foodbank_obj(self):

@@ -208,20 +208,30 @@ def geojson(request, slug = None, parlcon_slug = None):
             })
     
     for location in locations:
-        features.append({
-            "type":"Feature",
-            "geometry":{
-                "type":"Point",
-                "coordinates":[round(location.long(), decimal_places), round(location.latt(), decimal_places)],
-            },
-            "properties":{
-                "type":"l",
+        if location.boundary_geojson and not all_items:
+            boundary = location.boundary_geojson_dict()
+            boundary["properties"] = {
+                "type":"lb",
                 "name":location.name,
                 "foodbank":location.foodbank_name,
-                "address":location.full_address(),
                 "url":reverse("wfbn:foodbank_location", kwargs={"slug":location.foodbank_slug, "locslug":location.slug}),
             }
-        })
+            features.append(boundary)
+        else:
+            features.append({
+                "type":"Feature",
+                "geometry":{
+                    "type":"Point",
+                    "coordinates":[round(location.long(), decimal_places), round(location.latt(), decimal_places)],
+                },
+                "properties":{
+                    "type":"l",
+                    "name":location.name,
+                    "foodbank":location.foodbank_name,
+                    "address":location.full_address(),
+                    "url":reverse("wfbn:foodbank_location", kwargs={"slug":location.foodbank_slug, "locslug":location.slug}),
+                }
+            })
 
     for donationpoint in donationpoints:
         features.append({
@@ -666,6 +676,8 @@ def foodbank_location(request, slug, locslug):
         "zoom": 15,
         "location_marker": False,
     }
+    if location.boundary_geojson:
+        map_config["zoom"] = 12
     map_config = json.dumps(map_config)
 
     template_vars = {
