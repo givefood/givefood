@@ -650,7 +650,7 @@ class Foodbank(models.Model):
 
             # Individual URLs
             page_urls = [
-                reverse("wfbn:index"),
+                reverse("index"),
                 reverse("wfbn:rss"),
                 reverse("wfbn:geojson"),
                 reverse("api_foodbanks"),
