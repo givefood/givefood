@@ -84,7 +84,7 @@ function init_map() {
         mapTypeControl: false,
         fullscreenControl: false,
         streetViewControl: false,
-        mapId: 'DEMO_MAP_ID'
+        mapId: 'd149d3a77fb8625a',
     });
   
     var data = new google.maps.Data();
@@ -183,17 +183,6 @@ function init_map() {
         }
     });
     data.setMap(map);
-    map.setOptions({styles:[
-        {
-          "featureType": "poi",
-          "stylers": [
-            {
-              "visibility": "off"
-            }
-          ]
-        }
-      ]
-    });
   
     if (typeof gf_map_config.lat !== 'undefined') {
         move_map(
