@@ -1,7 +1,7 @@
 {% extends "public/page.html" %}
 {% load humanize %}
 
-{% block title %}Price Per 2000 Calories - Give Food{% endblock %}
+{% block title %}Price Per Calorie - Give Food{% endblock %}
 
 {% block body %}
 
@@ -17,7 +17,7 @@
             <ul>
                 <li><a href="{% url 'index' %}">Give Food</a></li>
                 <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
-                <li class="is-active"><a href="{% url 'dash:price_per_calorie' %}" aria-current="page">Price Per 2000 Calories</a></li>
+                <li class="is-active"><a href="{% url 'dash:price_per_calorie' %}" aria-current="page">Price Per Calorie</a></li>
             </ul>
             </nav>
         </div>
@@ -26,16 +26,16 @@
   <div class="columns">
 
     <div class="column">
-      <h1>Price Per 2000 Calories</h1>
+      <h1>Price Per Calorie</h1>
 
-     <p>Give Food has been purchasing food for food banks since {{ months.0.month|date:"F" }} {{ months.0.year.year }}, this is the price we've paid per 2000 calories of the food requested by them over time. Our data covers {{ items|intcomma }} items bought providing {{ calories|intcomma }} calories and delivered to {{ number_foodbanks }} different food banks around the UK.</p>
+     <p>Give Food has been purchasing food for food banks since {{ months.0.month|date:"F" }} {{ months.0.year.year }}, this is the price we've paid per calorie of the food requested by them over time. Our data covers {{ items|intcomma }} items bought providing {{ calories|intcomma }} calories and delivered to {{ number_foodbanks }} different food banks around the UK.</p>
 
       <div id="chart" style="height:500px"></div>
 
       <table class="table is-striped is-narrow is-fullwidth">
           <tr>
               <th>year-month</th>
-              <th>Price per 2000 Calories</th>
+              <th>Price for 2000 calories</th>
           </tr>
           {% for month in months %}
               <tr>
@@ -80,11 +80,11 @@
       },
       yAxis: {
         type: 'value',
-        name: 'Price per 2000 Calories (pence)'
+        name: 'Price per calorie (pence)'
       },
       series: [
         {
-          name: 'Price per 2000 Calories (pence)',
+          name: 'Price per calorie (pence)',
           type: 'bar',
           data: dates.map((date, index) => [date, values[index]])
         },

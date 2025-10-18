@@ -460,44 +460,26 @@ def price_per_kg(request):
     return render(request, "dash/price_per_kg.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
 def price_per_calorie(request):
 
-    # Get orders that have order lines with calories
-    # Calculate monthly price per 2000 calories using OrderLine calories
-    from django.db.models import Subquery, OuterRef
-    
-    # Subquery to get sum of calories from OrderLines for each Order
-    order_calories = OrderLine.objects.filter(
-        order=OuterRef('pk'),
+    months = Order.objects.filter(
         calories__gt=0
-    ).values('order').annotate(
-        order_total_calories=Sum('calories')
-    ).values('order_total_calories')
-    
-    months = Order.objects.annotate(
-        orderline_calories=Subquery(order_calories)
-    ).filter(
-        orderline_calories__gt=0
     ).annotate(
         month=TruncMonth('delivery_datetime'),
         year=TruncYear('delivery_datetime')
-    ).values('month', 'year').annotate(
-        total_calories=Sum('orderline_calories'),
-        total_cost=Sum('cost')/100,
-        price_per_calorie=Sum('cost')*2000/Sum('orderline_calories')
+    ).values(
+        'month',
+        'year'
+    ).annotate(
+        total_calories=Sum('calories'),
+        total_cost=Sum('cost') / 100,
+        price_per_calorie=Sum('cost') * 2000 / Sum('calories')
     ).order_by('month')
-
-    # Calculate total items from orders that have orderlines with calories
-    orders_with_calories = Order.objects.filter(
-        pk__in=OrderLine.objects.filter(calories__gt=0).values('order').distinct()
-    )
-    items = orders_with_calories.aggregate(Sum("no_items"))["no_items__sum"]
     
-    # Calculate total calories from OrderLines (excluding zero calories)
-    calories = OrderLine.objects.filter(calories__gt=0).aggregate(Sum("calories"))["calories__sum"]
-    
-    # Count distinct foodbanks from orders with orderlines that have calories
-    number_foodbanks = orders_with_calories.values('foodbank_name').distinct().count()
+    items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
+    calories = Order.objects.aggregate(Sum("calories"))["calories__sum"]
+    number_foodbanks = Order.objects.values('foodbank_name').distinct().count()
 
     template_vars = {
         "months": months,
