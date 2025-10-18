@@ -39,13 +39,7 @@ function init() {
       })
     })
 
-    openurl_btns = document.querySelectorAll(".openurl");
-    openurl_btns.forEach((openurl_btn) => {
-        openurl_btn.addEventListener('click', function(event) {
-            url = document.querySelector(".api_method.active .method_url").value;
-            window.open(url);
-      })
-    })
+
 
     if(window.location.hash) {
         show_method(window.location.hash.replace("#",""));
@@ -105,6 +99,7 @@ function get_api_result() {
 
     full_url = api_domain + url;
     document.querySelector("#" + method_name + " .method_url").value = full_url;
+    document.querySelector("#" + method_name + " .openurl").href = full_url;
 
     console.log("Calling API with " + url);
     method_pane_results = document.querySelector(".api_method.active code");
