@@ -462,7 +462,14 @@ def price_per_kg(request):
 
 def price_per_calorie(request):
 
-    months = Order.objects.annotate(month = TruncMonth('delivery_datetime'), year = TruncYear('delivery_datetime')).values('month', 'year').annotate(total_calories = Sum('calories'),total_cost = Sum('cost')/100,price_per_calorie = Sum('cost')/Sum('calories')).order_by('month')
+    months = Order.objects.filter(calories__gt=0).annotate(
+        month=TruncMonth('delivery_datetime'),
+        year=TruncYear('delivery_datetime')
+    ).values('month', 'year').annotate(
+        total_calories=Sum('calories'),
+        total_cost=Sum('cost')/100,
+        price_per_calorie=Sum('cost')/Sum('calories')
+    ).order_by('month')
 
     items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
     calories = Order.objects.aggregate(Sum("calories"))["calories__sum"]
