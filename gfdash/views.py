@@ -471,9 +471,9 @@ def price_per_calorie(request):
         price_per_calorie=Sum('cost')*2000/Sum('calories')
     ).order_by('month')
 
-    items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
-    calories = Order.objects.aggregate(Sum("calories"))["calories__sum"]
-    number_foodbanks = Order.objects.values('foodbank_name').distinct().count()
+    items = Order.objects.filter(calories__gt=0).aggregate(Sum("no_items"))["no_items__sum"]
+    calories = Order.objects.filter(calories__gt=0).aggregate(Sum("calories"))["calories__sum"]
+    number_foodbanks = Order.objects.filter(calories__gt=0).values('foodbank_name').distinct().count()
 
     template_vars = {
         "months": months,
