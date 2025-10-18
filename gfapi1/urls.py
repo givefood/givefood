@@ -1,14 +1,14 @@
-from django.urls import path, re_path
+from django.urls import path
 from gfapi1.views import *
 from givefood.views import api
 
 urlpatterns = (
 
-    re_path(r'^$', api, name="api_index"),
-    re_path(r'^foodbanks/$', api_foodbanks, name="api_foodbanks"),
-    re_path(r'^foodbanks/search/$', api_foodbank_search, name="api_foodbank_search"),
-    re_path(r'^foodbank/(?P<slug>[-\w]+)/$', api_foodbank, name="api_foodbank"),
-    re_path(r'^needs/$', api_needs, name="api_needs"),
+    path("", api, name="api_index"),
+    path("foodbanks/", api_foodbanks, name="api_foodbanks"),
+    path("foodbanks/search/", api_foodbank_search, name="api_foodbank_search"),
+    path("foodbank/<slug:slug>/", api_foodbank, name="api_foodbank"),
+    path("needs/", api_needs, name="api_needs"),
     path("need/<uuid:id>/", api_need, name="api_need"),
 
 )
