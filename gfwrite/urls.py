@@ -1,14 +1,14 @@
-from django.urls import re_path
+from django.urls import path
 from gfwrite.views import *
 
 app_name = "gfwrite"
 
 urlpatterns = (
 
-    re_path(r'^$', index, name="index"),
-    re_path(r'^to/(?P<slug>[-\w]+)/$', constituency, name="constituency"),
-    re_path(r'^to/(?P<slug>[-\w]+)/email/$', email, name="email"),
-    re_path(r'^to/(?P<slug>[-\w]+)/email/send/$', send, name="send"),
-    re_path(r'^to/(?P<slug>[-\w]+)/email/done/$', done, name="done"),
+    path("", index, name="index"),
+    path("to/<slug:slug>/", constituency, name="constituency"),
+    path("to/<slug:slug>/email/", email, name="email"),
+    path("to/<slug:slug>/email/send/", send, name="send"),
+    path("to/<slug:slug>/email/done/", done, name="done"),
 
 )
