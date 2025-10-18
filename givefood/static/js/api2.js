@@ -99,7 +99,11 @@ function get_api_result() {
 
     full_url = api_domain + url;
     document.querySelector("#" + method_name + " .method_url").value = full_url;
-    document.querySelector("#" + method_name + " .openurl").href = full_url;
+    
+    const openurl_btn = document.querySelector("#" + method_name + " .openurl");
+    if (openurl_btn) {
+        openurl_btn.href = full_url;
+    }
 
     console.log("Calling API with " + url);
     method_pane_results = document.querySelector(".api_method.active code");
