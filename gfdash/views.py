@@ -432,6 +432,7 @@ def supermarkets(request):
     return render(request, "dash/supermarkets.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
 def charity_income_expenditure(request):
 
     five_years_ago = date.today().year - 5
@@ -443,6 +444,7 @@ def charity_income_expenditure(request):
     return render(request, "dash/charity_income_expenditure.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
 def price_per_kg(request):
 
     months = Order.objects.annotate(month = TruncMonth('delivery_datetime'), year = TruncYear('delivery_datetime')).values('month', 'year').annotate(total_weight = Sum('weight'),total_cost = Sum('cost')/100,price_per_kg = Sum('cost')*1000/Sum('weight')).order_by('month')
