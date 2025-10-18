@@ -1425,6 +1425,12 @@ class OrderLine(models.Model):
     weight = models.PositiveIntegerField(editable=False,null=True)
     calories = models.PositiveIntegerField(editable=False,null=True)
 
+    delivery_date = models.DateField(editable=False)
+
+    def save(self, *args, **kwargs):
+        self.delivery_date = self.order.delivery_date
+        super(OrderLine, self).save(*args, **kwargs)
+
     def weight_kg(self):
         return self.weight/1000
 
