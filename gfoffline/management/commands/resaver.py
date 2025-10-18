@@ -38,15 +38,18 @@ class Command(BaseCommand):
         counter = 0
         for instance in instances:
             counter += 1
-            logging.info(
-                "Resaving %s %s (%d of %d)" % (
-                    model_name, instance, counter, instance_count
+
+            # Log and display progress for every 100 instances or key milestones
+            if counter % 100 == 0 or counter == 1 or counter == instance_count:
+                logging.info(
+                    f"Resaving {model_name} {instance} "
+                    f"({counter} of {instance_count})"
                 )
-            )
-            self.stdout.write(
-                f"Resaving {model_name} {instance} "
-                f"({counter} of {instance_count})"
-            )
+                self.stdout.write(
+                    f"Resaving {model_name} {instance} "
+                    f"({counter} of {instance_count})"
+                )
+
             instance.save()
 
         self.stdout.write(
