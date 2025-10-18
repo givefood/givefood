@@ -468,7 +468,7 @@ def price_per_calorie(request):
     ).values('month', 'year').annotate(
         total_calories=Sum('calories'),
         total_cost=Sum('cost')/100,
-        price_per_calorie=Sum('cost')/Sum('calories')
+        price_per_calorie=Sum('cost')*2000/Sum('calories')
     ).order_by('month')
 
     items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
