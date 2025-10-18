@@ -458,3 +458,20 @@ def price_per_kg(request):
         "number_foodbanks": number_foodbanks,
     }
     return render(request, "dash/price_per_kg.html", template_vars)
+
+
+def price_per_calorie(request):
+
+    months = Order.objects.annotate(month = TruncMonth('delivery_datetime'), year = TruncYear('delivery_datetime')).values('month', 'year').annotate(total_calories = Sum('calories'),total_cost = Sum('cost')/100,price_per_calorie = Sum('cost')/Sum('calories')).order_by('month')
+
+    items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
+    calories = Order.objects.aggregate(Sum("calories"))["calories__sum"]
+    number_foodbanks = Order.objects.values('foodbank_name').distinct().count()
+
+    template_vars = {
+        "months": months,
+        "items": items,
+        "calories": calories,
+        "number_foodbanks": number_foodbanks,
+    }
+    return render(request, "dash/price_per_calorie.html", template_vars)

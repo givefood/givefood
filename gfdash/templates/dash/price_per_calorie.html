@@ -1,0 +1,122 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}Price Per Calorie - Give Food{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+      <div class="column">
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+      </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Give Food</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash:price_per_calorie' %}" aria-current="page">Price Per Calorie</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column">
+      <h1>Price Per Calorie</h1>
+
+     <p>Give Food has been purchasing food for food banks since {{ months.0.month|date:"F" }} {{ months.0.year.year }}, this is the price we've paid per calorie of the food requested by them over time. Our data covers {{ items|intcomma }} items bought providing {{ calories|intcomma }} calories and delivered to {{ number_foodbanks }} different food banks around the UK.</p>
+
+      <div id="chart" style="height:500px"></div>
+
+      <table class="table is-striped is-narrow is-fullwidth">
+          <tr>
+              <th>year-month</th>
+              <th>Price per Calorie</th>
+          </tr>
+          {% for month in months %}
+              <tr>
+                  <td>{{ month.year.year }}-{{ month.month.month }}</td>
+                  <td>{{ month.price_per_calorie }}p</td>
+              </tr>
+          {% endfor %}
+      </table>
+    </div>
+
+  </div><br><br>
+
+  <script src="/static/js/echarts.js"></script>
+  <script src="/static/js/chart-colors.js"></script>
+
+  <script>
+    var chartDom = document.getElementById('chart');
+    var myChart = echarts.init(chartDom);
+    
+    // Prepare data
+    var dates = [];
+    var values = [];
+    {% for month in months %}
+      dates.push(new Date({{ month.year.year }}, {{ month.month.month|add:"-1" }}, 1));
+      values.push({{ month.price_per_calorie }});
+    {% endfor %}
+    
+    var option = {
+      color: gfChartColors,
+      tooltip: {
+        trigger: 'axis'
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        top: '10%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'time'
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Price per Calorie (pence)'
+      },
+      series: [
+        {
+          name: 'Price per Calorie (pence)',
+          type: 'bar',
+          data: dates.map((date, index) => [date, values[index]])
+        },
+        {
+          name: 'Trend',
+          type: 'line',
+          smooth: true,
+          showSymbol: false,
+          lineStyle: {
+            width: 2,
+            type: 'dashed'
+          },
+          data: (function() {
+            // Calculate linear regression
+            var n = values.length;
+            var sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0;
+            for (var i = 0; i < n; i++) {
+              sumX += i;
+              sumY += values[i];
+              sumXY += i * values[i];
+              sumX2 += i * i;
+            }
+            var slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            var intercept = (sumY - slope * sumX) / n;
+            
+            // Generate trend line points
+            return dates.map((date, index) => [date, slope * index + intercept]);
+          })()
+        }
+      ]
+    };
+    myChart.setOption(option);
+  </script>
+
+{% endblock %}

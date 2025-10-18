@@ -74,6 +74,7 @@
       <h2>Our Deliveries</h2>
       <ul>
         <li><a href="{% url 'dash:price_per_kg' %}">Price per kg</a> - price Give Food pays per kilogram of food requested by foodbanks</li>
+        <li><a href="{% url 'dash:price_per_calorie' %}">Price per calorie</a> - price Give Food pays per calorie of food requested by foodbanks</li>
       </ul>
       <br>
       <p>Deliveries to food banks from Give Food per month by...</p>
@@ -83,6 +84,7 @@
         <li><a href="{% url 'dash:deliveries' 'weight' %}">Weight</a></li>
         <li><a href="{% url 'dash:deliveries' 'calories' %}">Calories</a></li>
         <li><a href="{% url 'dash:price_per_kg' %}">Price per kg</a></li>
+        <li><a href="{% url 'dash:price_per_calorie' %}">Price per calorie</a></li>
       </ul>
 
     </div>

@@ -1,4 +1,5 @@
 from django.urls import re_path
+from django.views.generic import RedirectView
 from gfdash.views import *
 
 app_name = "gfdash"
@@ -21,6 +22,8 @@ urlpatterns = (
     re_path(r'^deliveries/(count|items|weight|calories)/$', deliveries, name="deliveries"),
     re_path(r'^donationpoints/supermarkets/$', supermarkets, name="supermarkets"),
     re_path(r'^charity-income-expenditure/$', charity_income_expenditure, name="charity_income_expenditure"),
-    re_path(r'^price-per-kg/$', price_per_kg, name="price_per_kg"),
+    re_path(r'^price-per/kg/$', price_per_kg, name="price_per_kg"),
+    re_path(r'^price-per/calorie/$', price_per_calorie, name="price_per_calorie"),
+    re_path(r'^price-per-kg/$', RedirectView.as_view(url='/dashboard/price-per/kg/', permanent=True)),
 
 )
