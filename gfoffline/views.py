@@ -225,45 +225,6 @@ def item_categorisation(line):
     
 
 
-def resaver(request):
-
-    # models = [
-    #     # "ParliamentaryConstituency",
-    #     # "FoodbankGroup",
-    #     # "Foodbank",
-    #     # "FoodbankLocation", 
-    #     "FoodbankDonationPoint",
-    #     # "FoodbankChange",
-    #     # "OrderGroup",
-    #     # "OrderItem",
-    #     # "Order",
-    #     # "OrderLine",
-    #     # "FoodbankArticle",
-    #     # "GfCredential",
-    #     # "FoodbankSubscriber",
-    #     # "ConstituencySubscriber",
-    #     # "Place",
-    # ]
-
-    # for model in models:
-    #     model_class = apps.get_model("givefood", model)
-    #     instances = model_class.objects.all()
-    #     for instance in instances:
-    #         logging.info("Resaving %s %s" % (model, instance))
-    #         instance.save()
-
-    languages_to_translate = ["pt", "es", "ar"]
-    for foodbank in Foodbank.objects.all():
-        for language in languages_to_translate:
-            translated_need = translate_need(language, foodbank.latest_need)
-    # for location in FoodbankLocation.objects.all():
-    #     location.save(do_foodbank_resave=False, do_geoupdate=False)
-    # for donationpoint in FoodbankDonationPoint.objects.all():
-    #     donationpoint.save(do_foodbank_resave=False, do_geoupdate=False, do_photo_update=False)
-
-    return HttpResponse("OK")
-
-
 def pluscodes(request):
 
     foodbanks = Foodbank.objects.filter(plus_code_global__isnull=True)

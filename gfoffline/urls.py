@@ -7,10 +7,13 @@ urlpatterns = (
     path("precacher/", precacher, name="precacher"),
     path("oc_geocode/", fire_oc_geocode, name="fire_oc_geocode"),
     path("discrepancy_check/", discrepancy_check, name="discrepancy_check"),
-    path("foodbank_need_check/<slug:slug>/", foodbank_need_check, name="foodbank_need_check"),
+    path(
+        "foodbank_need_check/<slug:slug>/",
+        foodbank_need_check,
+        name="foodbank_need_check"
+    ),
     path("cleanup_subs/", cleanup_subs, name="cleanup_subs"),
     path("days_between_needs/", days_between_needs, name="days_between_needs"),
-    path("resaver/", resaver, name="resaver"),
     path("pluscodes/", pluscodes, name="pluscodes"),
     path("place_ids/", place_ids, name="place_ids"),
     path("need_categorisation/", need_categorisation, name="need_categorisation"),
