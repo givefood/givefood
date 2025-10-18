@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
 from django.db.models import Q, Count, Sum
 
-from givefood.models import CharityYear, Foodbank, FoodbankChange, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, Order
+from givefood.models import CharityYear, Foodbank, FoodbankChange, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, Order, OrderLine
 from givefood.func import group_list, get_all_foodbanks, filter_change_text
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR
 from django.db.models.functions import TruncMonth, TruncYear
@@ -462,18 +462,42 @@ def price_per_kg(request):
 
 def price_per_calorie(request):
 
-    months = Order.objects.filter(calories__gt=0).annotate(
+    # Get orders that have order lines with calories
+    # Calculate monthly price per 2000 calories using OrderLine calories
+    from django.db.models import Subquery, OuterRef
+    
+    # Subquery to get sum of calories from OrderLines for each Order
+    order_calories = OrderLine.objects.filter(
+        order=OuterRef('pk'),
+        calories__gt=0
+    ).values('order').annotate(
+        order_total_calories=Sum('calories')
+    ).values('order_total_calories')
+    
+    months = Order.objects.annotate(
+        orderline_calories=Subquery(order_calories)
+    ).filter(
+        orderline_calories__gt=0
+    ).annotate(
         month=TruncMonth('delivery_datetime'),
         year=TruncYear('delivery_datetime')
     ).values('month', 'year').annotate(
-        total_calories=Sum('calories'),
+        total_calories=Sum('orderline_calories'),
         total_cost=Sum('cost')/100,
-        price_per_calorie=Sum('cost')*2000/Sum('calories')
+        price_per_calorie=Sum('cost')*2000/Sum('orderline_calories')
     ).order_by('month')
 
-    items = Order.objects.filter(calories__gt=0).aggregate(Sum("no_items"))["no_items__sum"]
-    calories = Order.objects.filter(calories__gt=0).aggregate(Sum("calories"))["calories__sum"]
-    number_foodbanks = Order.objects.filter(calories__gt=0).values('foodbank_name').distinct().count()
+    # Calculate total items from orders that have orderlines with calories
+    orders_with_calories = Order.objects.filter(
+        pk__in=OrderLine.objects.filter(calories__gt=0).values('order').distinct()
+    )
+    items = orders_with_calories.aggregate(Sum("no_items"))["no_items__sum"]
+    
+    # Calculate total calories from OrderLines (excluding zero calories)
+    calories = OrderLine.objects.filter(calories__gt=0).aggregate(Sum("calories"))["calories__sum"]
+    
+    # Count distinct foodbanks from orders with orderlines that have calories
+    number_foodbanks = orders_with_calories.values('foodbank_name').distinct().count()
 
     template_vars = {
         "months": months,
