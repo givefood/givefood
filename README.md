@@ -19,7 +19,7 @@ The source of https://www.givefood.org.uk - built using Django, hosted at [Mythi
 [/givefood/static/img/photos/](https://github.com/givefood/givefood/tree/main/givefood/static/img/photos) is deployed to https://photos.givefood.org.uk via [CloudFlare R2](https://developers.cloudflare.com/r2/)
 
 - Useful list of [abbreviations](abbreviations.md)
-- [Copilot instructions ](/.github/copilot-instructions.md)
+- [Copilot instructions](/.github/copilot-instructions.md)
 - [Deepwiki repository summary](https://deepwiki.com/givefood/givefood)
 
 ## About Us
