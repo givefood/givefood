@@ -17,6 +17,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.core.cache import cache
+from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
 
@@ -120,7 +121,12 @@ def foodbanks(request):
     for sort_option in sort_options:
         display_sort_options[sort_option] = sort_option.replace("_", " ").title()
 
-    foodbanks = Foodbank.objects.all().exclude(is_closed = True).order_by(sort)
+    foodbanks_list = Foodbank.objects.all().exclude(is_closed = True).order_by(sort)
+    
+    # Add pagination - 50 items per page
+    paginator = Paginator(foodbanks_list, 50)
+    page_number = request.GET.get('page', 1)
+    foodbanks = paginator.get_page(page_number)
 
     template_vars = {
         "sort":sort,

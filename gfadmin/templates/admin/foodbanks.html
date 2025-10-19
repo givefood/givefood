@@ -25,6 +25,42 @@
         </div>
       </div>
 
+      {% if foodbanks.has_other_pages %}
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination" style="margin-top: 1rem;">
+        {% if foodbanks.has_previous %}
+          <a href="?page={{ foodbanks.previous_page_number }}&sort={{ sort }}" class="pagination-previous">Previous</a>
+        {% else %}
+          <a class="pagination-previous" disabled>Previous</a>
+        {% endif %}
+        
+        {% if foodbanks.has_next %}
+          <a href="?page={{ foodbanks.next_page_number }}&sort={{ sort }}" class="pagination-next">Next</a>
+        {% else %}
+          <a class="pagination-next" disabled>Next</a>
+        {% endif %}
+        
+        <ul class="pagination-list">
+          {% for page_num in foodbanks.paginator.page_range %}
+            {% if page_num == foodbanks.number %}
+              <li><a class="pagination-link is-current" aria-label="Page {{ page_num }}" aria-current="page">{{ page_num }}</a></li>
+            {% elif page_num > foodbanks.number|add:'-3' and page_num < foodbanks.number|add:'3' %}
+              <li><a href="?page={{ page_num }}&sort={{ sort }}" class="pagination-link" aria-label="Goto page {{ page_num }}">{{ page_num }}</a></li>
+            {% elif page_num == 1 %}
+              <li><a href="?page={{ page_num }}&sort={{ sort }}" class="pagination-link" aria-label="Goto page {{ page_num }}">{{ page_num }}</a></li>
+            {% elif page_num == foodbanks.paginator.num_pages %}
+              <li><a href="?page={{ page_num }}&sort={{ sort }}" class="pagination-link" aria-label="Goto page {{ page_num }}">{{ page_num }}</a></li>
+            {% elif page_num == foodbanks.number|add:'-3' or page_num == foodbanks.number|add:'3' %}
+              <li><span class="pagination-ellipsis">&hellip;</span></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+      
+      <p class="has-text-centered" style="margin-top: 0.5rem;">
+        Showing {{ foodbanks.start_index }}–{{ foodbanks.end_index }} of {{ foodbanks.paginator.count }} foodbanks
+      </p>
+      {% endif %}
+
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Name</th>
@@ -83,6 +119,38 @@
           </tr>
         {% endfor %}
       </table>
+
+      {% if foodbanks.has_other_pages %}
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination" style="margin-bottom: 2rem;">
+        {% if foodbanks.has_previous %}
+          <a href="?page={{ foodbanks.previous_page_number }}&sort={{ sort }}" class="pagination-previous">Previous</a>
+        {% else %}
+          <a class="pagination-previous" disabled>Previous</a>
+        {% endif %}
+        
+        {% if foodbanks.has_next %}
+          <a href="?page={{ foodbanks.next_page_number }}&sort={{ sort }}" class="pagination-next">Next</a>
+        {% else %}
+          <a class="pagination-next" disabled>Next</a>
+        {% endif %}
+        
+        <ul class="pagination-list">
+          {% for page_num in foodbanks.paginator.page_range %}
+            {% if page_num == foodbanks.number %}
+              <li><a class="pagination-link is-current" aria-label="Page {{ page_num }}" aria-current="page">{{ page_num }}</a></li>
+            {% elif page_num > foodbanks.number|add:'-3' and page_num < foodbanks.number|add:'3' %}
+              <li><a href="?page={{ page_num }}&sort={{ sort }}" class="pagination-link" aria-label="Goto page {{ page_num }}">{{ page_num }}</a></li>
+            {% elif page_num == 1 %}
+              <li><a href="?page={{ page_num }}&sort={{ sort }}" class="pagination-link" aria-label="Goto page {{ page_num }}">{{ page_num }}</a></li>
+            {% elif page_num == foodbanks.paginator.num_pages %}
+              <li><a href="?page={{ page_num }}&sort={{ sort }}" class="pagination-link" aria-label="Goto page {{ page_num }}">{{ page_num }}</a></li>
+            {% elif page_num == foodbanks.number|add:'-3' or page_num == foodbanks.number|add:'3' %}
+              <li><span class="pagination-ellipsis">&hellip;</span></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav>
+      {% endif %}
 
     </div>
 
