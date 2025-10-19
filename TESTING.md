@@ -26,8 +26,10 @@ The test suite is organized as follows:
 
 ### Test Files
 
-#### givefood/tests.py
-Unit tests for utility functions in `givefood/func.py`:
+#### givefood/tests/
+The givefood app has multiple test files organized in a tests directory:
+
+**test_utils.py** - Unit tests for utility functions in `givefood/func.py`:
 
 - **TestTextUtilities** (12 tests)
   - Text comparison and normalization functions
@@ -45,8 +47,7 @@ Unit tests for utility functions in `givefood/func.py`:
 - **TestJSONUtilities** (3 tests)
   - GeoJSON parsing and validation
 
-#### givefood/test_views.py
-Integration tests for main application views:
+**test_views.py** - Integration tests for main application views:
 
 - **TestHomepage** (1 test)
   - Homepage accessibility (handles empty database gracefully)
@@ -85,13 +86,13 @@ pytest
 pytest -v
 
 # Run specific test file
-pytest givefood/tests.py
+pytest givefood/tests/test_utils.py
 
 # Run specific test class
-pytest givefood/tests.py::TestTextUtilities
+pytest givefood/tests/test_utils.py::TestTextUtilities
 
 # Run specific test
-pytest givefood/tests.py::TestTextUtilities::test_text_for_comparison_lowercase
+pytest givefood/tests/test_utils.py::TestTextUtilities::test_text_for_comparison_lowercase
 ```
 
 ### Coverage Reports
@@ -157,8 +158,7 @@ Potential areas for test expansion:
 
 When adding new functionality:
 
-1. Write tests first (TDD approach)
-2. Ensure all existing tests pass
-3. Aim for meaningful test coverage
-4. Document complex test scenarios
-5. Keep tests fast and independent
+1. Ensure all existing tests pass
+2. Aim for meaningful test coverage
+3. Document complex test scenarios
+4. Keep tests fast and independent

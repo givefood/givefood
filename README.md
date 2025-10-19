@@ -62,7 +62,7 @@ pytest
 pytest -v
 
 # Run tests for a specific app
-pytest givefood/tests.py
+pytest givefood/tests/
 pytest gfapi2/tests.py
 
 # Run with coverage report
