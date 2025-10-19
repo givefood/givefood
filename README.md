@@ -49,3 +49,29 @@ To set up for local development, run the following:
  - `source .venv/bin/activate`
  - `./pip install -r requirements.txt`
  - `./manage.py runserver`
+
+## Running tests
+
+The project includes a basic test suite using pytest. To run the tests:
+
+```bash
+# Run all tests
+pytest
+
+# Run with verbose output
+pytest -v
+
+# Run tests for a specific app
+pytest givefood/tests.py
+pytest gfapi2/tests.py
+
+# Run with coverage report
+pytest --cov=givefood --cov=gfapi2
+```
+
+The test suite includes:
+- Unit tests for utility functions (text processing, geographic calculations, etc.)
+- Integration tests for API endpoints
+- Basic view tests for the main application
+
+Tests use SQLite in-memory database for speed and simplicity.

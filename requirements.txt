@@ -22,3 +22,6 @@ setuptools
 pyyaml
 sentry-sdk[django]
 django-tasks
+pytest
+pytest-django
+pytest-cov
