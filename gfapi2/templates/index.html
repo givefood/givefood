@@ -25,15 +25,17 @@
         <p>This service allows to to get access to this data over HTTPS in JSON, GeoJSON, XML or YAML.</p>
         <p>Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, food manufacturers, hundreds of national &amp; local news websites, and apps.</p>
 
-        <a href="{% url 'api2:docs' %}" class="button is-light is-info">View Documentation ➔</a>
+        <a href="{% url 'api2:docs' %}" class="button is-light is-info">View documentation</a>
 
         <h2>Dumps</h2>
-        <p>These are infrequently updated CSV bulk dumps of our data.</p>
+        <p>These are daily updated CSV dumps of our data:</p>
         <ul>
-          <li><a href="https://dumps.givefood.org.uk/givefood_foodbanks.csv">Food Banks</a> About 4MB and 3000 rows</li>
-          <li><a href="https://dumps.givefood.org.uk/givefood_items.csv">Needed/Excess Items</a> About 60MB and 290,000 rows</li>
+          {% for dump in dumps %}
+            <li><a href="{% url 'dump_latest' dump_type=dump.dump_type dump_format=dump.dump_format %}">{{ dump.dump_type|title }}</a> {{ dump.size|filesizeformat }} and {{ dump.row_count|intcomma }} rows</li>
+          {% endfor %}
         </ul>
-        <p><em>Last updated October 3, 2025</em></p>
+        <p>Dumps are also available for older data and in different formats.</p>
+        <a href="{% url 'dump_index' %}" class="button is-light is-info">Browse dumps</a>
 
         <h2>Useful Links</h2>
         <nav>

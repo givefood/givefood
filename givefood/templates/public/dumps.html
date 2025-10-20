@@ -1,0 +1,92 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+{% load i18n %}
+
+{% block title %}{% trans "Dumps" %} - Give Food{% endblock %}
+
+{% block head %}
+  <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns is-centered">
+        <div class="column is-half">
+            <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+            {% include 'public/includes/langswitcher.html' %}
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column is-half">
+            <nav class="breadcrumb has-arrow-separator is-half" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
+                    <li {% if stage == "index" %}class="is-active"{% endif %}><a href="{% url 'dump_index' %}" {% if stage == "index" %}aria-current="page"{% endif %}>{% trans "Dumps" %}</a></li>
+                    {% if dump_formats or dumps %}
+                        <li {% if stage == "types" %}class="is-active"{% endif %}><a href="{% url 'dump_type' dump_type=dump_type %}" {% if stage == "types" %}aria-current="page"{% endif %}>{{ dump_type|title }}</a></li>
+                    {% endif %}
+                    {% if dumps %}
+                        <li {% if stage == "format" %}class="is-active"{% endif %}><a href="{% url 'dump_format' dump_type=dump_type dump_format=dump_format %}" {% if stage == "format" %}aria-current="page"{% endif %}>{{ dump_format|upper }}</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="columns is-centered">
+        <div class="column is-half content">
+            
+            <h1>{% trans "Dumps" %}</h1>
+            {% if dump_types %}
+                <ul>
+                    {% for dump_type in dump_types %}
+                        <li><a href="{% url 'dump_type' dump_type=dump_type %}">{{ dump_type|title }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if dump_formats %}
+                <ul>
+                    {% for dump_format in dump_formats %}
+                        <li><a href="{% url 'dump_format' dump_type=dump_type dump_format=dump_format %}">{{ dump_format|upper }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if dumps %}
+                <table class="table is-fullwidth is-striped">
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                            <th>{% trans "Date" %}</th>
+                            <th>{% trans "Size" %}</th>
+                            <th>{% trans "Rows" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="{% url 'dump_latest' dump_type=dump_type dump_format=dump_format %}">{% trans "Latest" %}</a>
+                            </td>
+                            <td colspan="3"></td>
+                        </tr>
+                        {% for dump in dumps %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'dump_serve' dump_type=dump.dump_type dump_format=dump.dump_format year=dump.created.year month=dump.created.month day=dump.created.day %}">
+                                        {{ dump.file_name }}
+                                    </a>
+                                </td>
+                                <td>{{ dump.created|date:"Y-m-d H:i" }}</td>
+                                <td>{{ dump.size|filesizeformat }}</td>
+                                <td>{{ dump.row_count|intcomma }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

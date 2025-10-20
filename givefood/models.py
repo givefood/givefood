@@ -2226,3 +2226,21 @@ class CrawlItem(models.Model):
     
     def object_class_name(self):
         return self.content_object.__class__.__name__
+    
+
+class Dump(models.Model):
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    dump_type = models.CharField(max_length=50)
+    dump_format = models.CharField(max_length=10)
+    the_dump = models.TextField()
+    row_count = models.PositiveIntegerField(null=True, blank=True)
+    size = models.PositiveIntegerField(null=True, blank=True)
+    
+    def file_name(self):
+        return "%s-%s-%s.%s" % (self.dump_type, get_language(), self.created.strftime("%Y%m%d"), self.dump_format)
+    
+    def save(self, *args, **kwargs):
+
+        self.size = len(self.the_dump.encode('utf-8'))
+        super(Dump, self).save(*args, **kwargs)

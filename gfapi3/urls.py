@@ -5,7 +5,5 @@ app_name = "gfapi3"
 
 urlpatterns = (
     path("", index, name="index"),
-    path("items", items, name="items"),
-    path("foodbanks", foodbanks, name="foodbanks"),
     path("donationpoints/company/<slug:slug>/", company, name="company"),
 )

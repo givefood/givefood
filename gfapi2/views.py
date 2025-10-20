@@ -10,13 +10,21 @@ from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, Par
 from .func import ApiResponse
 from givefood.func import find_locations, get_all_open_foodbanks, get_all_open_locations, geocode, is_uk, miles
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
+from givefood.models import Dump
 
 DEFAULT_FORMAT = "json"
 
 
 @cache_page(SECONDS_IN_DAY)
 def index(request):
-    return render(request, "index.html")
+    
+    dumps = Dump.objects.order_by('dump_type', '-created').distinct('dump_type').defer('the_dump')
+
+    template_vars = {
+        "dumps": dumps,
+    }
+    
+    return render(request, "index.html", template_vars)
 
 
 @cache_page(SECONDS_IN_DAY)

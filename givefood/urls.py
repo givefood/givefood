@@ -67,6 +67,13 @@ urlpatterns += [
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
 
+    # Dumps
+    path("dumps/", givefood.views.dump_index, name="dump_index"),
+    path("dumps/<str:dump_type>/", givefood.views.dump_type, name="dump_type"),
+    path("dumps/<str:dump_type>/<str:dump_format>/", givefood.views.dump_format, name="dump_format"),
+    path("dumps/<str:dump_type>/<str:dump_format>/latest/", givefood.views.dump_latest, name="dump_latest"),
+    path("dumps/<str:dump_type>/<str:dump_format>/<int:year>-<int:month>-<int:day>/", givefood.views.dump_serve, name="dump_serve"),
+
     # Rickrolling
     path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),
 
