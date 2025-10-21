@@ -253,6 +253,29 @@ del {
     font-size:0.9em;
     font-style:italic;
 }
+.gm-style-iw {
+    width: auto !important;
+    height: auto !important;
+    left: 0 !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    top: 0 !important;
+    overflow: hidden !important;
+    border-radius: 2px;
+    font-family:'Soehne Buch' !important;
+}
+.gm-style-iw-chr {
+    display:none;
+}
+.infowindow a {
+    outline:0;
+}
+.infowindow h3 {
+    margin-top:10px;
+}
+.infowindow h3, .infowindow p, .infowindow address {
+    margin-bottom:10px;
+}
 
 @page {
     margin:1cm;
