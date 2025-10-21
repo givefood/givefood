@@ -253,6 +253,15 @@ del {
     font-size:0.9em;
     font-style:italic;
 }
+.infowindow a {
+    outline:0;
+}
+.infowindow h3 {
+    margin-top:10px;
+}
+.infowindow h3, .infowindow p, .infowindow address {
+    margin-bottom:10px;
+}
 
 @page {
     margin:1cm;
