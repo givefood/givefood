@@ -63,7 +63,7 @@ const postcode_field = document.querySelector("#id_postcode");
 const change_text_field = document.querySelector("#id_change_text");
 const excess_change_text = document.querySelector("#id_excess_change_text");
 const fb_name_field = document.querySelector(".form-new-food-bank #id_name");
-const dp_name_field = document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name");
+const dp_name_field = document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name, [class*='food-bank-location'] #id_name");
 const company_field = document.querySelector("#id_company");
 
 const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=" + gmap_geocode_key + "&address="
@@ -136,14 +136,20 @@ if (dp_name_field) {
         address_field.value = address
         postcode_field.value = postcode
         if (this.response.result.formatted_phone_number) {
-          document.querySelector("#id_phone_number").value = this.response.result.formatted_phone_number
+          const phone_field = document.querySelector("#id_phone_number");
+          if (phone_field) phone_field.value = this.response.result.formatted_phone_number;
         }
         if (this.response.result.website) {
-          document.querySelector("#id_url").value = this.response.result.website
+          const url_field = document.querySelector("#id_url");
+          if (url_field) url_field.value = this.response.result.website;
         }
-        document.querySelector("#id_opening_hours").value = this.response.result.opening_hours.weekday_text.join("\n")
+        if (this.response.result.opening_hours) {
+          const opening_hours_field = document.querySelector("#id_opening_hours");
+          if (opening_hours_field) opening_hours_field.value = this.response.result.opening_hours.weekday_text.join("\n");
+        }
         if (this.response.result.wheelchair_accessible_entrance) {
-          document.querySelector("#id_wheelchair_accessible").value = this.response.result.wheelchair_accessible_entrance
+          const wheelchair_field = document.querySelector("#id_wheelchair_accessible");
+          if (wheelchair_field) wheelchair_field.value = this.response.result.wheelchair_accessible_entrance;
         }
       });
       placedetail_req.responseType = "json";
