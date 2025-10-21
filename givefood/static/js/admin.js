@@ -63,7 +63,16 @@ const postcode_field = document.querySelector("#id_postcode");
 const change_text_field = document.querySelector("#id_change_text");
 const excess_change_text = document.querySelector("#id_excess_change_text");
 const fb_name_field = document.querySelector(".form-new-food-bank #id_name");
-const dp_name_field = document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name, [class*='food-bank-location'] #id_name");
+// Select name field for donation point or location forms
+// For location forms, we check if the form element has 'location' in its class
+let dp_name_field = document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name");
+if (!dp_name_field && name_field) {
+  // Check if we're on a location form by looking at the form's class
+  const form = name_field.closest('form');
+  if (form && form.className.includes('location')) {
+    dp_name_field = name_field;
+  }
+}
 const company_field = document.querySelector("#id_company");
 
 const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=" + gmap_geocode_key + "&address="
