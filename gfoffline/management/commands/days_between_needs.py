@@ -24,11 +24,17 @@ class Command(BaseCommand):
 
             days_between_needs = 0
 
-            needs = FoodbankChange.objects.filter(foodbank=foodbank).order_by("-created")[:number_of_needs]
+            needs = FoodbankChange.objects.filter(
+                foodbank=foodbank
+            ).order_by("-created")[:number_of_needs]
             if len(needs) == number_of_needs:
                 last_need_date = needs[number_of_needs-1].created
-                days_since_earliest_sample_need = (last_need_date - datetime.now()).days
-                days_between_needs = int(-days_since_earliest_sample_need / number_of_needs)
+                days_since_earliest_sample_need = (
+                    last_need_date - datetime.now()
+                ).days
+                days_between_needs = int(
+                    -days_since_earliest_sample_need / number_of_needs
+                )
 
             foodbank.days_between_needs = days_between_needs
             foodbank.save(do_decache=False, do_geoupdate=False)
@@ -42,6 +48,7 @@ class Command(BaseCommand):
 
         self.stdout.write(
             self.style.SUCCESS(
-                f'Successfully updated days_between_needs for {foodbank_count} foodbanks'
+                f'Successfully updated days_between_needs for '
+                f'{foodbank_count} foodbanks'
             )
         )
