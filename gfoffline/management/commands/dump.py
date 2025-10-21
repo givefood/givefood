@@ -180,7 +180,7 @@ class Command(BaseCommand):
 
         self.stdout.write("Creating items dump...")
 
-        items = FoodbankChangeLine.objects.select_related("foodbank").all().order_by("created")
+        items = FoodbankChangeLine.objects.select_related("foodbank").all().order_by("created").iterator()
 
         item_dump = io.StringIO()
         writer = csv.writer(item_dump, quoting=csv.QUOTE_ALL)
@@ -199,6 +199,7 @@ class Command(BaseCommand):
             "created",
         ])
 
+        row_count = 0
         for item in items:
             writer.writerow([
                 item.foodbank.uuid,
@@ -214,16 +215,17 @@ class Command(BaseCommand):
                 item.group,
                 item.created,
             ])
+            row_count += 1
         
         item_dump = item_dump.getvalue()
         dump_instance = Dump(
             dump_type="items",
             dump_format="csv",
             the_dump=item_dump,
-            row_count=len(items),
+            row_count=row_count,
         )
         dump_instance.save()
 
         del item_dump
 
-        self.stdout.write(f"Created dump {dump_instance.id} with {len(items)} items")
+        self.stdout.write(f"Created dump {dump_instance.id} with {row_count} items")
