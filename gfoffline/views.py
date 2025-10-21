@@ -125,28 +125,6 @@ def foodbank_need_check(request, slug):
     return render(request, "need_check.html", template_vars)
 
 
-def days_between_needs(request):
-
-    number_of_needs = 5
-    foodbanks = get_all_open_foodbanks()
-
-    for foodbank in foodbanks:
-
-        days_between_needs = 0
-
-        needs = FoodbankChange.objects.filter(foodbank = foodbank).order_by("-created")[:number_of_needs]
-        if len(needs) == number_of_needs:
-            last_need_date = needs[number_of_needs-1].created
-            days_since_earliest_sample_need = (last_need_date - datetime.now()).days
-            days_between_needs = int(-days_since_earliest_sample_need / number_of_needs)
-
-        foodbank.days_between_needs = days_between_needs
-        foodbank.save(do_decache=False, do_geoupdate=False)
-
-
-    return HttpResponse("OK")
-
-
 def need_categorisation(request):
 
     needs = FoodbankChange.objects.filter(published=True, is_categorised__isnull = True).order_by("-created").exclude(change_text = "Facebook").exclude(change_text = "Unknown").exclude(change_text = "Nothing")[:500]
