@@ -12,7 +12,6 @@ urlpatterns = (
         foodbank_need_check,
         name="foodbank_need_check"
     ),
-    path("days_between_needs/", days_between_needs, name="days_between_needs"),
     path("pluscodes/", pluscodes, name="pluscodes"),
     path("place_ids/", place_ids, name="place_ids"),
     path("need_categorisation/", need_categorisation, name="need_categorisation"),
