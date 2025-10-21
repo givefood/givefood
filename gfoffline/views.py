@@ -125,19 +125,6 @@ def foodbank_need_check(request, slug):
     return render(request, "need_check.html", template_vars)
 
 
-def cleanup_subs(request):
-
-    unconfirmed_subscribers = FoodbankSubscriber.objects.filter(
-        confirmed = False,
-        created__lte = datetime.now()-timedelta(days=28),
-    )
-
-    for unconfirmed_subscriber in unconfirmed_subscribers:
-        unconfirmed_subscriber.delete()
-
-    return HttpResponse("OK")
-
-
 def days_between_needs(request):
 
     number_of_needs = 5
