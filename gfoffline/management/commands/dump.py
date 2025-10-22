@@ -66,7 +66,11 @@ class Command(BaseCommand):
             "footprintsqm",
         ])
 
+        row_count = 0
+
         for foodbank in foodbanks:
+
+            row_count += 1
 
             writer.writerow([
                 str(foodbank.uuid),
@@ -117,6 +121,8 @@ class Command(BaseCommand):
             ])
 
             for location in foodbank.locations():
+
+                row_count += 1
                 writer.writerow([
                     str(location.uuid),
                     foodbank.name,
@@ -166,7 +172,7 @@ class Command(BaseCommand):
                 ])
 
         foodbank_dump = foodbank_dump.getvalue()
-        row_count = foodbank_dump.count('\n') - 1  # Subtract 1 for header row
+
         dump_instance = Dump(
             dump_type="foodbanks",
             dump_format="csv",
