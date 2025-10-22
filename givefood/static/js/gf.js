@@ -1,22 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Remove text fragment identifier from URL after page load
-    // Text fragments (#:~:text=) are used by browsers for scroll-to-text
-    // but we want to clean them from the URL after the browser has processed them
-    // Text fragments follow the format: #[fragment]:~:text= where :~: is the delimiter
-    if (window.location.hash.includes(':~:text=')) {
-        // Extract any standard hash (before :~:) to preserve it
-        const hashParts = window.location.hash.split(':~:');
-        let standardHash = hashParts[0];
-        
-        // If standardHash is just '#', remove it (no standard hash to preserve)
-        if (standardHash === '#') {
-            standardHash = '';
-        }
-        
-        // Build clean URL
-        const cleanUrl = window.location.pathname + window.location.search + standardHash;
-        
-        // Replace the URL without reloading the page
-        window.history.replaceState(null, '', cleanUrl);
-    }
+window.addEventListener('DOMContentLoaded', () => {
+  // Check if the hash (the part after #) contains the text fragment
+  if (window.location.hash.includes(':~:text=')) {
+    
+    // Create a URL object to easily manipulate the URL
+    const url = new URL(window.location.href);
+    
+    // Find the starting position of the text fragment
+    const textFragmentIndex = url.hash.indexOf(':~:text=');
+    
+    // Set the hash to only be the part *before* the text fragment.
+    // If the fragment was the only thing, url.hash becomes an empty string.
+    url.hash = url.hash.substring(0, textFragmentIndex);
+
+    // Use history.replaceState to update the URL in the browser bar
+    // without reloading the page or adding a new history entry.
+    history.replaceState(null, '', url.toString());
+  }
 });
