@@ -165,7 +165,7 @@ function init_map() {
                     html += "<p>Donation point for "
                 }
                 if (type == "lb") {
-                    html += "<p>Delivery area for "
+                    html += "<p>Service area for "
                 }
                 html += "<a href='/needs/at/" + slugify(feat.getProperty('foodbank')) + "/'>" + feat.getProperty('foodbank') + "</a> Food Bank.</p>"
             }
