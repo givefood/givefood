@@ -453,6 +453,13 @@ def frag(request, frag):
     Fragments for client side includes
     """
 
+    allowed_frags = [
+        "last-updated",
+        "need-hits",
+    ]
+    if frag not in allowed_frags:
+        raise Http404()
+
     # last-updated"
     if frag == "last-updated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)
