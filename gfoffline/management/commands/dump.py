@@ -166,15 +166,14 @@ class Command(BaseCommand):
                 ])
 
         foodbank_dump = foodbank_dump.getvalue()
+        row_count = foodbank_dump.count('\n') - 1  # Subtract 1 for header row
         dump_instance = Dump(
             dump_type="foodbanks",
             dump_format="csv",
             the_dump=foodbank_dump,
-            row_count=len(foodbanks),
+            row_count=row_count,
         )
         dump_instance.save()
-
-        del foodbank_dump
 
         self.stdout.write(f"Created dump {dump_instance.id} with {len(foodbanks)} foodbanks")
 
