@@ -250,4 +250,4 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Deleted {deleted_count} old dumps")
 
-        decache(prefixes=[reverse("dump_index")])
+        decache(prefixes=[reverse("dumps:dump_index")])

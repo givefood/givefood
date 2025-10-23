@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     "gfapi1",
     "gfapi2",
     "gfdash",
+    "gfdumps",
     "gfoffline",
     "gfwfbn",
     "gfwrite",
