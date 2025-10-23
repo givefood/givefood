@@ -14,7 +14,7 @@ The source of https://www.givefood.org.uk - built using Django, hosted at [Mythi
 | gfoffline | Offline tasks                       | N/A                                    | [📖](gfoffline/README.md) |
 | gfwfbn    | What food banks need tool           | https://www.givefood.org.uk/needs/     | [📖](gfwfbn/README.md) |
 | gfwrite   | Allow users to contact their MPs    | https://www.givefood.org.uk/write/     | [📖](gfwrite/README.md) |
-| givefood  | Public app                          | https://www.givefood.org.uk            |      |
+| givefood  | Public app                          | https://www.givefood.org.uk            | [📖](givefood/README.md) |
 
 [/givefood/static/img/photos/](https://github.com/givefood/givefood/tree/main/givefood/static/img/photos) is deployed to https://photos.givefood.org.uk via [CloudFlare R2](https://developers.cloudflare.com/r2/)
 
