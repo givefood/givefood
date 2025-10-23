@@ -22,12 +22,12 @@
             <nav class="breadcrumb has-arrow-separator is-half" aria-label="breadcrumbs">
                 <ul>
                     <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
-                    <li {% if stage == "index" %}class="is-active"{% endif %}><a href="{% url 'dump_index' %}" {% if stage == "index" %}aria-current="page"{% endif %}>{% trans "Dumps" %}</a></li>
+                    <li {% if stage == "index" %}class="is-active"{% endif %}><a href="{% url 'dumps:dump_index' %}" {% if stage == "index" %}aria-current="page"{% endif %}>{% trans "Dumps" %}</a></li>
                     {% if dump_formats or dumps %}
-                        <li {% if stage == "types" %}class="is-active"{% endif %}><a href="{% url 'dump_type' dump_type=dump_type %}" {% if stage == "types" %}aria-current="page"{% endif %}>{{ dump_type|title }}</a></li>
+                        <li {% if stage == "types" %}class="is-active"{% endif %}><a href="{% url 'dumps:dump_type' dump_type=dump_type %}" {% if stage == "types" %}aria-current="page"{% endif %}>{{ dump_type|title }}</a></li>
                     {% endif %}
                     {% if dumps %}
-                        <li {% if stage == "format" %}class="is-active"{% endif %}><a href="{% url 'dump_format' dump_type=dump_type dump_format=dump_format %}" {% if stage == "format" %}aria-current="page"{% endif %}>{{ dump_format|upper }}</a></li>
+                        <li {% if stage == "format" %}class="is-active"{% endif %}><a href="{% url 'dumps:dump_format' dump_type=dump_type dump_format=dump_format %}" {% if stage == "format" %}aria-current="page"{% endif %}>{{ dump_format|upper }}</a></li>
                     {% endif %}
                 </ul>
             </nav>
@@ -42,14 +42,14 @@
             {% if dump_types %}
                 <ul>
                     {% for dump_type in dump_types %}
-                        <li><a href="{% url 'dump_type' dump_type=dump_type %}">{{ dump_type|title }}</a></li>
+                        <li><a href="{% url 'dumps:dump_type' dump_type=dump_type %}">{{ dump_type|title }}</a></li>
                     {% endfor %}
                 </ul>
             {% endif %}
             {% if dump_formats %}
                 <ul>
                     {% for dump_format in dump_formats %}
-                        <li><a href="{% url 'dump_format' dump_type=dump_type dump_format=dump_format %}">{{ dump_format|upper }}</a></li>
+                        <li><a href="{% url 'dumps:dump_format' dump_type=dump_type dump_format=dump_format %}">{{ dump_format|upper }}</a></li>
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -66,14 +66,14 @@
                     <tbody>
                         <tr>
                             <td>
-                                <a href="{% url 'dump_latest' dump_type=dump_type dump_format=dump_format %}">{% trans "Latest" %}</a>
+                                <a href="{% url 'dumps:dump_latest' dump_type=dump_type dump_format=dump_format %}">{% trans "Latest" %}</a>
                             </td>
                             <td colspan="3"></td>
                         </tr>
                         {% for dump in dumps %}
                             <tr>
                                 <td>
-                                    <a href="{% url 'dump_serve' dump_type=dump.dump_type dump_format=dump.dump_format year=dump.created.year month=dump.created.month day=dump.created.day %}">
+                                    <a href="{% url 'dumps:dump_serve' dump_type=dump.dump_type dump_format=dump.dump_format year=dump.created.year month=dump.created.month day=dump.created.day %}">
                                         {{ dump.file_name }}
                                     </a>
                                 </td>

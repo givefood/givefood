@@ -31,11 +31,11 @@
         <p>These are daily updated CSV dumps of our data:</p>
         <ul>
           {% for dump in dumps %}
-            <li><a href="{% url 'dump_latest' dump_type=dump.dump_type dump_format=dump.dump_format %}">{{ dump.dump_type|title }}</a> {{ dump.size|filesizeformat }} and {{ dump.row_count|intcomma }} rows</li>
+            <li><a href="{% url 'dumps:dump_latest' dump_type=dump.dump_type dump_format=dump.dump_format %}">{{ dump.dump_type|title }}</a> {{ dump.size|filesizeformat }} and {{ dump.row_count|intcomma }} rows</li>
           {% endfor %}
         </ul>
         <p>Dumps are also available for older data and in different formats.</p>
-        <a href="{% url 'dump_index' %}" class="button is-light is-info">Browse dumps</a>
+        <a href="{% url 'dumps:dump_index' %}" class="button is-light is-info">Browse dumps</a>
 
         <h2>Useful Links</h2>
         <nav>
