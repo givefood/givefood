@@ -49,7 +49,7 @@ gfadmin is the administrative interface for the Give Food charity, providing sta
 - RSS feed monitoring for food bank news
 - Google Maps integration for location data
 - Email notification system
-- Cache management
+- Cache clearing functionality for performance optimization
 
 ### Statistics & Reporting
 - Quarterly delivery statistics
@@ -125,7 +125,7 @@ Routes are defined in `urls.py` with the `admin` namespace. All URLs are prefixe
 Located in `templates/admin/`, using Django template language with Bulma CSS framework.
 
 ### Access Control
-Protected by the `LoginRequiredAccess` middleware - authentication required for all admin pages.
+Protected by the `LoginRequiredAccess` middleware - authentication required for all admin pages. Unauthenticated users are redirected to the login page. Access is restricted to authorized Give Food staff members.
 
 ### Key Models Used
 - `Foodbank` - Core food bank data
