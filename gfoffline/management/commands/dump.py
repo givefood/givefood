@@ -181,7 +181,7 @@ class Command(BaseCommand):
         )
         dump_instance.save()
 
-        self.stdout.write(f"Created dump {dump_instance.id} with {row_count)} foodbanks")
+        self.stdout.write(f"Created dump {dump_instance.id} with {row_count} foodbanks")
 
         self.stdout.write("Creating items dump...")
 
