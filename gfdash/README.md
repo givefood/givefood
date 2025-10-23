@@ -77,13 +77,17 @@ The dashboards utilize data from multiple Django models:
 
 ## URL Structure
 
-All dashboard URLs are prefixed with `/dashboard/` and follow RESTful patterns where applicable. Some dashboards accept query parameters:
+All dashboard URLs are prefixed with `/dashboard/` and follow RESTful patterns where applicable. 
 
-- `?days=N` - Filter by time period (where N is one of: 7, 30, 60, 90, 120, 365)
+The following dashboards accept a `?days=N` query parameter to filter by time period (where N is one of: 7, 30, 60, 90, 120, 365):
+- `/dashboard/most-requested-items/`
+- `/dashboard/most-excess-items/`
+- `/dashboard/trusselltrust/most-requested-items/`
 
 ## Technical Details
 
 - All views are function-based views using Django's `@cache_page` decorator
 - Templates are located in `gfdash/templates/dash/`
 - Geographic filtering uses Django's Earthdistance extension for location-based queries
-- Some dashboards use raw SQL for complex aggregations and performance optimization
+- Complex aggregations use Django ORM's `annotate()`, `values()`, and aggregate functions
+- Some views use Django's `raw()` method for specific SQL optimizations (e.g., Bean & Pasta Index, Deliveries)
