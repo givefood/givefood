@@ -108,6 +108,12 @@ def index(request):
             "url":"https://www.citizensadvice.org.uk/",
             "format":"svg",
         },
+        {
+            "name":"National Council for the Training of Journalists",
+            "slug":"nctj",
+            "url":"https://www.nctj.com/",
+            "format":"png",
+        },
     ]
 
     stats = {
