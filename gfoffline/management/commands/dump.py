@@ -3,6 +3,8 @@ from django.core.management.base import BaseCommand
 import csv, io
 
 from givefood.models import Dump, Foodbank, FoodbankChangeLine
+from datetime import timedelta
+from django.utils import timezone
 
 
 class Command(BaseCommand):
@@ -234,3 +236,13 @@ class Command(BaseCommand):
         del item_dump
 
         self.stdout.write(f"Created dump {dump_instance.id} with {row_count} items")
+
+
+        self.stdout.write("Deleting old dumps...")
+
+        cutoff_date = timezone.now() - timedelta(days=28)
+        old_dumps = Dump.objects.filter(created__lt=cutoff_date).exclude(created__day=1)
+        deleted_count = old_dumps.count()
+        old_dumps.delete()
+
+        self.stdout.write(f"Deleted {deleted_count} old dumps")
