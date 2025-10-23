@@ -1,10 +1,13 @@
 from django.core.management.base import BaseCommand
 
 import csv, io
-
-from givefood.models import Dump, Foodbank, FoodbankChangeLine
 from datetime import timedelta
+
+from django.urls import reverse
 from django.utils import timezone
+
+from givefood.func import decache
+from givefood.models import Dump, Foodbank, FoodbankChangeLine
 
 
 class Command(BaseCommand):
@@ -246,3 +249,5 @@ class Command(BaseCommand):
         old_dumps.delete()
 
         self.stdout.write(f"Deleted {deleted_count} old dumps")
+
+        decache(prefixes=[reverse("dump_index")])
