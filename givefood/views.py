@@ -547,6 +547,7 @@ def flag(request):
     return render(request, "public/flag.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
 def dump_index(request):
     dump_types = Dump.objects.values_list('dump_type', flat=True).distinct().order_by('dump_type')
 
@@ -557,6 +558,7 @@ def dump_index(request):
     return render(request, "public/dumps.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
 def dump_type(request, dump_type):
     dump_formats = Dump.objects.filter(dump_type=dump_type).values_list('dump_format', flat=True).distinct().order_by('dump_format')
 
@@ -568,6 +570,7 @@ def dump_type(request, dump_type):
     return render(request, "public/dumps.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
 def dump_format(request, dump_type, dump_format):
     dumps = Dump.objects.filter(dump_type=dump_type, dump_format=dump_format).order_by('-created').only('id', 'dump_type', 'dump_format', 'created')
 
@@ -580,12 +583,14 @@ def dump_format(request, dump_type, dump_format):
     return render(request, "public/dumps.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
 def dump_latest(request, dump_type, dump_format):
 
     latest_dump = Dump.objects.filter(dump_type=dump_type, dump_format=dump_format).order_by('-created').defer('the_dump').first()
     return dump_serve(request, dump_type, dump_format, latest_dump.created.year, latest_dump.created.month, latest_dump.created.day)
 
 
+@cache_page(SECONDS_IN_DAY)
 def dump_serve(request, dump_type, dump_format, year=None, month=None, day=None):
     """
     Serve a dump file, either the latest or a specific date
