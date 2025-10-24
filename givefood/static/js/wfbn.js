@@ -48,7 +48,7 @@ function move_map(lat,lng,zoom) {
         });
 
         const marker = new google.maps.marker.AdvancedMarkerElement({
-          position: {"lat": lat, "lng": lng},
+          position: new google.maps.LatLng(lat, lng),
           map: map,
           content: pinElement.element,
         });
