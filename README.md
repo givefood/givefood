@@ -10,7 +10,9 @@ The source of https://www.givefood.org.uk - built using Django, hosted at [Mythi
 | gfapi1    | Deprecated first version of our API | https://www.givefood.org.uk/api/1/     | [📖](gfapi1/README.md) |
 | gfapi2    | Current API                         | https://www.givefood.org.uk/api/       | [📖](gfapi2/README.md) |
 | gfapi3    | Future API                          | https://www.givefood.org.uk/api/3/     |      |
+| gfauth    | Google OAuth authentication         | https://www.givefood.org.uk/auth/      | [📖](gfauth/README.md) |
 | gfdash    | Data dashboards                     | https://www.givefood.org.uk/dashboard/ | [📖](gfdash/README.md) |
+| gfdumps   | Data dumps management               | https://www.givefood.org.uk/dumps/     | [📖](gfdumps/README.md) |
 | gfoffline | Offline tasks                       | N/A                                    | [📖](gfoffline/README.md) |
 | gfwfbn    | What food banks need tool           | https://www.givefood.org.uk/needs/     | [📖](gfwfbn/README.md) |
 | gfwrite   | Allow users to contact their MPs    | https://www.givefood.org.uk/write/     | [📖](gfwrite/README.md) |
