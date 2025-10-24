@@ -35,24 +35,25 @@ function init() {
     }
 }
 
-function move_map(lat,lng,zoom) {
+function move_map(lat, lng, zoom) {
     if (typeof map !== 'undefined') {
-      map.panTo(new google.maps.LatLng(lat,lng));
-      map.setZoom(zoom);
-      if (gf_map_config.location_marker == true) {
-        const pinElement = new google.maps.marker.PinElement({
-          background: '#5384ED',
-          borderColor: '#ffffff',
-          glyphColor: '#5384ED',
-          scale: 0.8,
-        });
-
-        const marker = new google.maps.marker.AdvancedMarkerElement({
-          position: new google.maps.LatLng(lat, lng),
-          map: map,
-          content: pinElement.element,
-        });
-      }
+        map.panTo(new google.maps.LatLng(lat, lng));
+        map.setZoom(zoom);
+        
+        if (gf_map_config.location_marker == true) {
+            const marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lat, lng),
+            map: map,
+            icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 7, // radius in pixels (7px radius = 14px diameter)
+                fillColor: '#5384ED',
+                fillOpacity: 0.8,
+                strokeColor: '#fff',
+                strokeWeight: 2,
+            },
+            });
+        }
     }
 }
 
