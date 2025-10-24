@@ -109,27 +109,29 @@ def decache(urls = None, prefixes = None):
     }
     api_url = "https://api.cloudflare.com/client/v4/zones/%s/purge_cache" % (cf_zone_id)
 
-    full_prefixes = []
     if prefixes:
+        full_prefixes = []
         for prefix in prefixes:
             full_prefixes.append("%s%s" % (domain, prefix))
 
-    requests.post(api_url, headers = headers, json = {
-        "prefixes": full_prefixes,
-    })
-    
-    full_urls = []
-    for url in urls:
-        full_urls.append("%s%s%s" % ("https://", domain, url))
-
-    # We can only uncache 30 URLs at a time
-    url_limit = 30
-    url_lists = [full_urls[x:x+url_limit] for x in range(0, len(full_urls), url_limit)]
-
-    for urls in url_lists:
         requests.post(api_url, headers = headers, json = {
-            "files": urls,
+            "prefixes": full_prefixes,
         })
+    
+    if urls:
+        full_urls = []
+        for url in urls:
+            full_urls.append("%s%s%s" % ("https://", domain, url))
+
+        # We can only uncache 30 URLs at a time
+        url_limit = 30
+        url_lists = [full_urls[x:x+url_limit] for x in range(0, len(full_urls), url_limit)]
+
+        for urls in url_lists:
+            requests.post(api_url, headers = headers, json = {
+                "files": urls,
+            })
+
     cache.clear()
     return True
 
