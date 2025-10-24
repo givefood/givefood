@@ -17,7 +17,7 @@ function add_potential_marker(lat, lng, the_name) {
     });
 
     const marker = new google.maps.marker.AdvancedMarkerElement({
-        position: {"lat": lat, "lng": lng},
+        position: new google.maps.LatLng(lat, lng),
         map: map_main,
         title: the_name,
         content: pinElement.element,

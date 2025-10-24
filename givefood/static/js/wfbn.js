@@ -48,7 +48,7 @@ function move_map(lat,lng,zoom) {
         });
 
         const marker = new google.maps.marker.AdvancedMarkerElement({
-          position: {"lat": lat, "lng": lng},
+          position: new google.maps.LatLng(lat, lng),
           map: map,
           content: pinElement.element,
         });
@@ -174,7 +174,9 @@ function init_map() {
             }
             html += "<a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
             infowindow.setContent(html);
-            infowindow.setPosition(event.latLng);
+            if (event.latLng) {
+                infowindow.setPosition(event.latLng);
+            }
             infowindow.setOptions({
                 maxWidth: 250,
                 pixelOffset: new google.maps.Size(0,-28),

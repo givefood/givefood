@@ -138,7 +138,7 @@
                 const foodbank = foodbanks[i];
 
                 marker = new google.maps.marker.AdvancedMarkerElement({
-                    position: { lat: foodbank.lat, lng: foodbank.lng },
+                    position: new google.maps.LatLng(foodbank.lat, foodbank.lng),
                     map: map_main,
                     title: foodbank.foodbank,
                 });
