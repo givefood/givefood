@@ -1,8 +1,4 @@
-# Supported Languages
-
-This table lists all languages currently supported by Give Food.
-
-| Language name         | Language name (in English) | Language code | Text Direction | Spoken by % of UK population |
+| Language name         | Language name (en) | ISO 639-1 | Text Dir | Spoken by in UK |
 |-----------------------|----------------------------|---------------|----------------|------------------------------|
 | English               | English                    | en            | →              | 98%                          |
 | Cymraeg               | Welsh                      | cy            | →              | 0.9%                         |
@@ -15,13 +11,3 @@ This table lists all languages currently supported by Give Food.
 | Português             | Portuguese                 | pt            | →              | 0.2%                         |
 | Español               | Spanish                    | es            | →              | 0.3%                         |
 | العربية               | Arabic                     | ar            | ←              | 0.4%                         |
-
-**Text Direction Key:**
-- → = Left-to-Right (LTR)
-- ← = Right-to-Left (RTL)
-
-**Notes:**
-- Language codes follow the ISO 639-1 standard (two-character codes)
-- UK population percentages are approximate and based on 2021 census data and language usage surveys
-- English percentage includes native speakers; actual comprehension rates are higher
-- Celtic languages (Welsh, Scottish Gaelic, Irish) represent indigenous languages of the UK
