@@ -47,7 +47,7 @@ function move_map(lat, lng, zoom) {
             icon: {
                 path: google.maps.SymbolPath.CIRCLE,
                 scale: 7, // radius in pixels (7px radius = 14px diameter)
-                fillColor: '#5384ED',
+                fillColor: '#4385F4',
                 fillOpacity: 0.8,
                 strokeColor: '#fff',
                 strokeWeight: 2,
