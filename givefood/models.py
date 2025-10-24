@@ -2194,6 +2194,17 @@ class CrawlSet(models.Model):
     finish = models.DateTimeField(null=True, blank=True, editable=False)
     crawl_type = models.CharField(max_length=50) # need, article, charity, discrepancy
 
+    def crawl_type_icon(self):
+        if self.crawl_type == "need":
+            return "🛒"
+        if self.crawl_type == "article":
+            return "🗞️"
+        if self.crawl_type == "charity":
+            return "🏛️"
+        if self.crawl_type == "discrepancy":
+            return "⚠️"
+        return "❓"
+
     def time_taken(self):
         if self.finish:
             return self.finish - self.start
@@ -2218,6 +2229,17 @@ class CrawlItem(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
+
+    def crawl_type_icon(self):
+        if self.crawl_type == "need":
+            return "🛒"
+        if self.crawl_type == "article":
+            return "🗞️"
+        if self.crawl_type == "charity":
+            return "🏛️"
+        if self.crawl_type == "discrepancy":
+            return "⚠️"
+        return "❓"
 
     def time_taken_ms(self):
         if self.finish:
