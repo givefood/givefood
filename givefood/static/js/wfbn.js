@@ -174,7 +174,9 @@ function init_map() {
             }
             html += "<a href='" + url + "' class='button is-info is-small'>More Information</a></div>"
             infowindow.setContent(html);
-            infowindow.setPosition(event.latLng);
+            if (event.latLng) {
+                infowindow.setPosition(event.latLng);
+            }
             infowindow.setOptions({
                 maxWidth: 250,
                 pixelOffset: new google.maps.Size(0,-28),
