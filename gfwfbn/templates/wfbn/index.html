@@ -133,7 +133,7 @@
                           {% endif %}
                           <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ location.contact_email }}">{{ location.contact_email }}</a>
                         {% elif change_text == "Facebook" %}
-                          {% blocktrans %}Check the food bank's {% endblocktrans %}
+                          {% blocktrans %}Check the foodbank's {% endblocktrans %}
                           <a href="https://www.facebook.com/{% if location.type == 'organisation' %}{{ location.facebook_page }}{% endif %}{% if location.type == 'location' %}{{ location.foodbank.facebook_page }}{% endif %}?ref=givefood.org.uk">{% blocktrans %}Facebook page{% endblocktrans %}</a>
                           {% blocktrans %} for what they need{% endblocktrans %}
                         {% else %}
