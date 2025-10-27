@@ -99,7 +99,6 @@ function loadGoogleMapsAPI() {
     const params = new URLSearchParams({
         key: config.apiKey,
         libraries: config.libraries,
-        loading: 'async',
         region: config.region,
         language: config.language
     });
@@ -109,9 +108,18 @@ function loadGoogleMapsAPI() {
     script.defer = true;
 
     script.onload = () => {
-        googleMapsLoaded = true;
-        googleMapsLoading = false;
-        onGoogleMapsLoaded();
+        // Wait for Google Maps API to be fully initialized
+        const checkGoogleMaps = () => {
+            if (typeof google !== 'undefined' && google.maps && google.maps.Map) {
+                googleMapsLoaded = true;
+                googleMapsLoading = false;
+                onGoogleMapsLoaded();
+            } else {
+                // Retry after a short delay if not yet initialized
+                setTimeout(checkGoogleMaps, 50);
+            }
+        };
+        checkGoogleMaps();
     };
 
     script.onerror = () => {
