@@ -185,7 +185,7 @@ function setLocationFields(lat, lng, placeId) {
  * @param {string} formattedAddress - Address from Google Places
  */
 function setAddressFields(formattedAddress) {
-    let address = address_cleanup(formattedAddress.replaceAll(", ", "\n"));
+    let address = address_cleanup(formattedAddress.replace(/, /g, "\n"));
     const postcodeMatch = address.match(/[A-Za-z]{1,2}\d{1,2}(?:\s?(?:\d?\w{2}))?/);
     const postcode = postcodeMatch ? postcodeMatch[0] : '';
     
@@ -308,7 +308,8 @@ function initLatLngLookup() {
     const getLatLngBtn = createButton('get_latlng_btn', 'Get Lat/Lng &amp; Place ID');
     insertAfter(getLatLngBtn, DOM.lat_lng_field);
 
-    const latlngBtn = document.querySelector("#get_latlng_btn");
+    // Get the button element from the created div
+    const latlngBtn = getLatLngBtn.querySelector("#get_latlng_btn");
     latlngBtn.addEventListener("click", async (event) => {
         event.preventDefault();
 
@@ -372,7 +373,10 @@ function initChangeTextButtons() {
         const replaceText = prompt("Replace with what?");
         if (replaceText === null) return; // User cancelled
 
-        DOM.change_text_field.value = DOM.change_text_field.value.replaceAll(findText, replaceText);
+        // Use regex replace for broader browser compatibility
+        const escapedFindText = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedFindText, 'g');
+        DOM.change_text_field.value = DOM.change_text_field.value.replace(regex, replaceText);
     });
 }
 
