@@ -12,21 +12,115 @@ const mapElement = document.querySelector("#map");
 // Global Variables
 let map;
 let autocomplete;
+let googleMapsLoaded = false;
+let googleMapsLoading = false;
 
 /**
  * Initialize the page functionality
  */
 function init() {
+    // Check if Google Maps is already loaded (via old callback method)
+    if (typeof google !== 'undefined' && google.maps) {
+        googleMapsLoaded = true;
+        onGoogleMapsLoaded();
+        return;
+    }
+
     if (mapElement) {
-        initMap();
+        observeMapElement();
     }
 
     if (addressForm) {
-        initAddressAutocomplete();
+        // For address autocomplete, we need Google Maps API loaded immediately
+        loadGoogleMapsAPI();
     }
 
     if (useMyLocationBtn) {
         initLocationButton();
+    }
+}
+
+/**
+ * Observe map element and load Google Maps when it enters viewport
+ */
+function observeMapElement() {
+    // Check if IntersectionObserver is supported
+    if (!('IntersectionObserver' in window)) {
+        // Fallback: load immediately if IntersectionObserver not supported
+        loadGoogleMapsAPI();
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting && !googleMapsLoaded && !googleMapsLoading) {
+                loadGoogleMapsAPI();
+                // Unobserve after loading starts
+                observer.unobserve(mapElement);
+            }
+        });
+    }, {
+        // Start loading slightly before element enters viewport
+        rootMargin: '50px'
+    });
+
+    observer.observe(mapElement);
+}
+
+/**
+ * Dynamically load Google Maps API
+ */
+function loadGoogleMapsAPI() {
+    if (googleMapsLoaded || googleMapsLoading) {
+        return;
+    }
+
+    // Check if already loaded by script tag
+    if (typeof google !== 'undefined' && google.maps) {
+        googleMapsLoaded = true;
+        onGoogleMapsLoaded();
+        return;
+    }
+
+    googleMapsLoading = true;
+
+    // Get configuration from window object set by template
+    if (typeof window.gfGmapsConfig === 'undefined') {
+        console.error('Google Maps configuration not found');
+        googleMapsLoading = false;
+        return;
+    }
+
+    const config = window.gfGmapsConfig;
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${config.key}&libraries=${config.libraries}&loading=async&region=${config.region}&language=${config.language}`;
+    script.async = true;
+    script.defer = true;
+
+    script.onload = () => {
+        googleMapsLoaded = true;
+        googleMapsLoading = false;
+        onGoogleMapsLoaded();
+    };
+
+    script.onerror = () => {
+        console.error('Failed to load Google Maps API');
+        googleMapsLoading = false;
+    };
+
+    document.head.appendChild(script);
+}
+
+/**
+ * Called when Google Maps API has finished loading
+ */
+function onGoogleMapsLoaded() {
+    if (mapElement) {
+        initMap();
+    }
+
+    if (addressForm && !autocomplete) {
+        initAddressAutocomplete();
     }
 }
 
