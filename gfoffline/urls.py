@@ -17,4 +17,5 @@ urlpatterns = (
     path("need_categorisation/", need_categorisation, name="need_categorisation"),
     path("load_mps/", load_mps, name="load_mps"),
     path("refresh_mps/", refresh_mps, name="refresh_mps"),
+    path("render_proxy/", render_proxy, name="render_proxy")
 )

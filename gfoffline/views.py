@@ -11,7 +11,7 @@ from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY
-from givefood.func import do_foodbank_need_check, gemini, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, get_place_id, pluscode, translate_need
+from givefood.func import do_foodbank_need_check, gemini, get_cred, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, get_place_id, pluscode, translate_need
 from django.template.loader import render_to_string
 
 
@@ -314,3 +314,32 @@ def refresh_mps(request):
 
     return HttpResponse("OK")
     
+
+def render_proxy(request):
+
+    url = request.GET.get("url")
+    if not url:
+        return HttpResponse("No URL provided", status=400)
+    
+    cf_account_id = get_cred("cf_account_id")
+    cf_api_key = get_cred("gf_browser_api")
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer %s" % (cf_api_key),
+    }
+    api_url = "https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/content" % (cf_account_id)
+
+    response = requests.post(api_url, headers = headers, json = {
+        "url": url,
+        "rejectResourceTypes": ["image"],
+        "rejectRequestPattern": ["/^.*\\.(css)"],
+        "gotoOptions": {
+            "waitUntil": "networkidle0",
+            "timeout": 45000
+        },
+    })
+    response_json = response.json()
+    response_html = response_json["result"]
+
+    return HttpResponse(response_html, status=response.status_code, content_type=response.headers.get('Content-Type', 'text/plain'))
