@@ -12,17 +12,28 @@ const mapElement = document.querySelector("#map");
 // Global Variables
 let map;
 let autocomplete;
+let googleMapsLoaded = false;
+let googleMapsLoading = false;
+let autocompleteInitialized = false;
 
 /**
  * Initialize the page functionality
  */
 function init() {
-    if (mapElement) {
-        initMap();
+    // Check if Google Maps is already loaded (via old callback method)
+    if (typeof google !== 'undefined' && google.maps) {
+        googleMapsLoaded = true;
+        onGoogleMapsLoaded();
+        return;
     }
 
     if (addressForm) {
-        initAddressAutocomplete();
+        // For address autocomplete, we need Google Maps API loaded immediately
+        // Load first to avoid race condition with map observer
+        loadGoogleMapsAPI();
+    } else if (mapElement) {
+        // Only use lazy loading if there's no address form
+        observeMapElement();
     }
 
     if (useMyLocationBtn) {
@@ -31,22 +42,134 @@ function init() {
 }
 
 /**
+ * Observe map element and load Google Maps when it enters viewport
+ */
+function observeMapElement() {
+    // Check if IntersectionObserver is supported
+    if (!('IntersectionObserver' in window)) {
+        // Fallback: load immediately if IntersectionObserver not supported
+        loadGoogleMapsAPI();
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting && !googleMapsLoaded && !googleMapsLoading) {
+                loadGoogleMapsAPI();
+                // Unobserve after loading starts
+                observer.unobserve(mapElement);
+            }
+        });
+    }, {
+        // Start loading slightly before element enters viewport
+        rootMargin: '50px'
+    });
+
+    observer.observe(mapElement);
+}
+
+/**
+ * Dynamically load Google Maps API
+ */
+function loadGoogleMapsAPI() {
+    if (googleMapsLoaded || googleMapsLoading) {
+        return;
+    }
+
+    // Check if already loaded by script tag
+    if (typeof google !== 'undefined' && google.maps) {
+        googleMapsLoaded = true;
+        onGoogleMapsLoaded();
+        return;
+    }
+
+    googleMapsLoading = true;
+
+    // Get configuration from window object set by template
+    if (typeof window.gfMapConfig === 'undefined') {
+        console.error('Google Maps configuration not found');
+        googleMapsLoading = false;
+        return;
+    }
+
+    const config = window.gfMapConfig;
+    const script = document.createElement('script');
+    
+    // Properly encode URL parameters to prevent injection and handle special characters
+    const params = new URLSearchParams({
+        key: config.apiKey,
+        libraries: config.libraries,
+        region: config.region,
+        language: config.language
+    });
+    
+    script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
+    script.async = true;
+    script.defer = true;
+
+    script.onload = () => {
+        // Wait for Google Maps API to be fully initialized
+        const checkGoogleMaps = () => {
+            if (typeof google !== 'undefined' && google.maps && google.maps.Map) {
+                googleMapsLoaded = true;
+                googleMapsLoading = false;
+                onGoogleMapsLoaded();
+            } else {
+                // Retry after a short delay if not yet initialized
+                setTimeout(checkGoogleMaps, 50);
+            }
+        };
+        checkGoogleMaps();
+    };
+
+    script.onerror = () => {
+        console.error('Failed to load Google Maps API');
+        googleMapsLoading = false;
+    };
+
+    document.head.appendChild(script);
+}
+
+/**
+ * Called when Google Maps API has finished loading
+ */
+function onGoogleMapsLoaded() {
+    if (mapElement) {
+        initMap();
+    }
+
+    if (addressForm && !autocompleteInitialized) {
+        initAddressAutocomplete();
+    }
+}
+
+/**
  * Initialize Google Places autocomplete
  */
 function initAddressAutocomplete() {
-    autocomplete = new google.maps.places.Autocomplete(addressField, {
-        types: ["geocode"]
-    });
+    if (autocompleteInitialized) {
+        return;
+    }
     
-    autocomplete.setComponentRestrictions({
-        country: ["gb", "im", "je", "gg"]
-    });
-    
-    autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        const location = place.geometry.location;
-        latLngField.value = `${location.lat()},${location.lng()}`;
-    });
+    try {
+        autocomplete = new google.maps.places.Autocomplete(addressField, {
+            types: ["geocode"]
+        });
+        
+        autocomplete.setComponentRestrictions({
+            country: ["gb", "im", "je", "gg"]
+        });
+        
+        autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+            const location = place.geometry.location;
+            latLngField.value = `${location.lat()},${location.lng()}`;
+        });
+        
+        autocompleteInitialized = true;
+    } catch (error) {
+        console.error('Failed to initialize address autocomplete:', error);
+    }
 }
 
 /**
@@ -84,7 +207,7 @@ function move_map(lat, lng, zoom) {
     map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(zoom);
 
-    if (gf_map_config.location_marker === true) {
+    if (window.gfMapConfig.location_marker === true) {
         new google.maps.Marker({
             position: new google.maps.LatLng(lat, lng),
             map: map,
@@ -141,8 +264,8 @@ function initMap() {
 
     const data = new google.maps.Data();
     
-    data.loadGeoJson(gf_map_config.geojson, null, () => {
-        if (typeof gf_map_config.lat === "undefined") {
+    data.loadGeoJson(window.gfMapConfig.geojson, null, () => {
+        if (typeof window.gfMapConfig.lat === "undefined") {
             fitMapToBounds(data);
         }
         
@@ -153,8 +276,8 @@ function initMap() {
     data.addListener("click", (event) => handleMarkerClick(event, infowindow));
     data.setMap(map);
 
-    if (typeof gf_map_config.lat !== "undefined") {
-        move_map(gf_map_config.lat, gf_map_config.lng, gf_map_config.zoom);
+    if (typeof window.gfMapConfig.lat !== "undefined") {
+        move_map(window.gfMapConfig.lat, window.gfMapConfig.lng, window.gfMapConfig.zoom);
     }
 }
 
@@ -173,7 +296,7 @@ function fitMapToBounds(data) {
     });
 
     google.maps.event.addListenerOnce(map, "bounds_changed", () => {
-        const maxZoom = gf_map_config.max_zoom || 15;
+        const maxZoom = window.gfMapConfig.max_zoom || 15;
         if (map.getZoom() > maxZoom) {
             map.setZoom(maxZoom);
         }
