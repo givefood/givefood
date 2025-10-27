@@ -454,31 +454,28 @@ def foodbank_photo(request, slug):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def foodbank_screenshot(request, slug):
+def foodbank_screenshot(request, slug, page_name):
     """
     Food bank webpage screenshot
     """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
-    photo = get_screenshot(foodbank.url)
+    if page_name == "homepage":
+        url = foodbank.url
+    if page_name == "shoppinglist":
+        url = foodbank.shopping_list_url
+    if page_name == "donationpoints":
+        url = foodbank.donation_points_url
+    if page_name == "contacts":
+        url = foodbank.contacts_url
+    if page_name == "locations":
+        url = foodbank.locations_url
 
-    if photo:
-        return HttpResponse(photo, content_type='image/png')
-    else:
+    if not url:
         return HttpResponseNotFound()
-
-
-@cache_page(SECONDS_IN_WEEK)
-def foodbank_shoppinglist_screenshot(request, slug):
-    """
-    Food bank shopping list screenshot
-    """
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-
-    # Get the shopping list screenshot
-    photo = get_screenshot(foodbank.shopping_list_url)
+    
+    photo = get_screenshot(url)
 
     if photo:
         return HttpResponse(photo, content_type='image/png')

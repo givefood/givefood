@@ -1118,6 +1118,10 @@ def get_screenshot(url, width=1280, height=1280):
             "width": width,
             "height": height,
         },
+        "gotoOptions": {
+            "waitUntil": "networkidle0",
+            "timeout": 45000
+        },
         "addStyleTag": [
             {
                 "content": "#ccc {display:none};",
