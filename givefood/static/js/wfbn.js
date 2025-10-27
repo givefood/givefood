@@ -14,6 +14,7 @@ let map;
 let autocomplete;
 let googleMapsLoaded = false;
 let googleMapsLoading = false;
+let autocompleteInitialized = false;
 
 /**
  * Initialize the page functionality
@@ -26,13 +27,13 @@ function init() {
         return;
     }
 
-    if (mapElement) {
-        observeMapElement();
-    }
-
     if (addressForm) {
         // For address autocomplete, we need Google Maps API loaded immediately
+        // Load first to avoid race condition with map observer
         loadGoogleMapsAPI();
+    } else if (mapElement) {
+        // Only use lazy loading if there's no address form
+        observeMapElement();
     }
 
     if (useMyLocationBtn) {
@@ -93,7 +94,17 @@ function loadGoogleMapsAPI() {
 
     const config = window.gfGmapsConfig;
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${config.key}&libraries=${config.libraries}&loading=async&region=${config.region}&language=${config.language}`;
+    
+    // Properly encode URL parameters to prevent injection and handle special characters
+    const params = new URLSearchParams({
+        key: config.key,
+        libraries: config.libraries,
+        loading: 'async',
+        region: config.region,
+        language: config.language
+    });
+    
+    script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
     script.async = true;
     script.defer = true;
 
@@ -119,7 +130,7 @@ function onGoogleMapsLoaded() {
         initMap();
     }
 
-    if (addressForm && !autocomplete) {
+    if (addressForm && !autocompleteInitialized) {
         initAddressAutocomplete();
     }
 }
@@ -128,19 +139,29 @@ function onGoogleMapsLoaded() {
  * Initialize Google Places autocomplete
  */
 function initAddressAutocomplete() {
-    autocomplete = new google.maps.places.Autocomplete(addressField, {
-        types: ["geocode"]
-    });
+    if (autocompleteInitialized) {
+        return;
+    }
     
-    autocomplete.setComponentRestrictions({
-        country: ["gb", "im", "je", "gg"]
-    });
-    
-    autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        const location = place.geometry.location;
-        latLngField.value = `${location.lat()},${location.lng()}`;
-    });
+    try {
+        autocomplete = new google.maps.places.Autocomplete(addressField, {
+            types: ["geocode"]
+        });
+        
+        autocomplete.setComponentRestrictions({
+            country: ["gb", "im", "je", "gg"]
+        });
+        
+        autocomplete.addListener("place_changed", () => {
+            const place = autocomplete.getPlace();
+            const location = place.geometry.location;
+            latLngField.value = `${location.lat()},${location.lng()}`;
+        });
+        
+        autocompleteInitialized = true;
+    } catch (error) {
+        console.error('Failed to initialize address autocomplete:', error);
+    }
 }
 
 /**
