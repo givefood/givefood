@@ -9,12 +9,16 @@
     <div id="map"></div>
 
     <script>
-        var gf_map_config = {
+        window.gfMapConfig = {
             geojson: "{% url 'wfbn:geojson' %}",
             lat: 55.4,
             lng: -4,
             zoom: 6,
             location_marker: false,
+            apiKey: 'AIzaSyCgc052pX0gMcxOF1PKexrTGTu8qQIIuRk',
+            libraries: 'places,marker',
+            region: 'GB',
+            language: '{{ language_code }}'
         }
         document.documentElement.addEventListener('turbo:load', function (e) {
             init()

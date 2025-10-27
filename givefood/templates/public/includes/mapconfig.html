@@ -1,11 +1,9 @@
 <script>
-    var gf_map_config = {{ map_config|safe }};
-    
-    // Google Maps API configuration for lazy loading
-    window.gfGmapsConfig = {
-        key: '{{ gmap_key }}',
+    // Combined map configuration
+    window.gfMapConfig = Object.assign({}, {{ map_config|safe }}, {
+        apiKey: '{{ gmap_key }}',
         libraries: 'places,marker',
         region: 'GB',
         language: '{{ language_code }}'
-    };
+    });
 </script>

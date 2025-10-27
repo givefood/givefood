@@ -86,18 +86,18 @@ function loadGoogleMapsAPI() {
     googleMapsLoading = true;
 
     // Get configuration from window object set by template
-    if (typeof window.gfGmapsConfig === 'undefined') {
+    if (typeof window.gfMapConfig === 'undefined') {
         console.error('Google Maps configuration not found');
         googleMapsLoading = false;
         return;
     }
 
-    const config = window.gfGmapsConfig;
+    const config = window.gfMapConfig;
     const script = document.createElement('script');
     
     // Properly encode URL parameters to prevent injection and handle special characters
     const params = new URLSearchParams({
-        key: config.key,
+        key: config.apiKey,
         libraries: config.libraries,
         loading: 'async',
         region: config.region,
@@ -199,7 +199,7 @@ function move_map(lat, lng, zoom) {
     map.panTo(new google.maps.LatLng(lat, lng));
     map.setZoom(zoom);
 
-    if (gf_map_config.location_marker === true) {
+    if (window.gfMapConfig.location_marker === true) {
         new google.maps.Marker({
             position: new google.maps.LatLng(lat, lng),
             map: map,
@@ -256,8 +256,8 @@ function initMap() {
 
     const data = new google.maps.Data();
     
-    data.loadGeoJson(gf_map_config.geojson, null, () => {
-        if (typeof gf_map_config.lat === "undefined") {
+    data.loadGeoJson(window.gfMapConfig.geojson, null, () => {
+        if (typeof window.gfMapConfig.lat === "undefined") {
             fitMapToBounds(data);
         }
         
@@ -268,8 +268,8 @@ function initMap() {
     data.addListener("click", (event) => handleMarkerClick(event, infowindow));
     data.setMap(map);
 
-    if (typeof gf_map_config.lat !== "undefined") {
-        move_map(gf_map_config.lat, gf_map_config.lng, gf_map_config.zoom);
+    if (typeof window.gfMapConfig.lat !== "undefined") {
+        move_map(window.gfMapConfig.lat, window.gfMapConfig.lng, window.gfMapConfig.zoom);
     }
 }
 
@@ -288,7 +288,7 @@ function fitMapToBounds(data) {
     });
 
     google.maps.event.addListenerOnce(map, "bounds_changed", () => {
-        const maxZoom = gf_map_config.max_zoom || 15;
+        const maxZoom = window.gfMapConfig.max_zoom || 15;
         if (map.getZoom() > maxZoom) {
             map.setZoom(maxZoom);
         }
