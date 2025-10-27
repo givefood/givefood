@@ -1,224 +1,399 @@
+// ===========================
+// Utility Functions
+// ===========================
 
-
+/**
+ * Insert a new DOM node after a reference node
+ * @param {HTMLElement} newNode - The node to insert
+ * @param {HTMLElement} referenceNode - The reference node
+ */
 function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+/**
+ * Convert string to title case
+ * @param {string} str - The string to convert
+ * @returns {string} Title-cased string
+ */
 function titleCase(str) {
-    return str.replace(
-        /\w\S*/g,
-        function(txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        }
-    );
+    return str.replace(/\w\S*/g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
 }
 
+/**
+ * Convert string to title case with food-specific acronyms
+ * @param {string} str - The string to convert
+ * @returns {string} Title-cased string with food acronyms
+ */
 function food_titleCase(str) {
-  str = titleCase(str);
-  str = str.replace(/Uht/g,"UHT");
-  str = str.replace(/Bbq/g,"BBQ");
-  str = str.replace(/Spf/g,"SPF");
-  return str
+    str = titleCase(str);
+    str = str.replace(/Uht/g, "UHT");
+    str = str.replace(/Bbq/g, "BBQ");
+    str = str.replace(/Spf/g, "SPF");
+    return str;
 }
 
+/**
+ * Convert comma-separated values to newline-separated values
+ * @param {string} str - CSV string
+ * @returns {string} Newline-separated string
+ */
 function csvToLines(str) {
-  return str.replace(/, /g, "\n");
+    return str.replace(/, /g, "\n");
 }
 
+/**
+ * Convert string to URL-friendly slug
+ * @param {string} str - The string to slugify
+ * @returns {string} Slugified string
+ */
 function slugify(str) {
-  str = str.replace(/^\s+|\s+$/g, ''); // trim
-  str = str.toLowerCase();
+    str = str.trim().toLowerCase();
 
-  // remove accents, swap ñ for n, etc
-  var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-  var to   = "aaaaeeeeiiiioooouuuunc------";
-  for (var i=0, l=from.length ; i<l ; i++) {
-      str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-  }
-
-  str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-      .replace(/\s+/g, '-') // collapse whitespace and replace by -
-      .replace(/-+/g, '-'); // collapse dashes
-
-  return str;
-}
-
-function address_cleanup(str) {
-  str = str.replace("Rd\n", "Road\n");
-  str = str.replace("St\n", "Street\n");
-  str = str.replace("Ln\n", "Lane\n");
-  str = str.replace("Cl\n", "Close\n");
-  str = str.replace("Ave\n", "Avenue\n");
-  str = str.replace("Ct\n", "Court\n");
-  str = str.replace("Dr\n", "Drive\n");
-  str = str.replace("Pl\n", "Place\n");
-  return str
-}
-
-const name_field = document.querySelector("#id_name");
-const lat_lng_field = document.querySelector("#id_lat_lng");
-const place_id_field = document.querySelector("#id_place_id");
-const address_field = document.querySelector("#id_address");
-const postcode_field = document.querySelector("#id_postcode");
-const change_text_field = document.querySelector("#id_change_text");
-const excess_change_text = document.querySelector("#id_excess_change_text");
-const fb_name_field = document.querySelector(".form-new-food-bank #id_name");
-const dp_name_field = document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name");
-const company_field = document.querySelector("#id_company");
-
-const geolocation_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=" + gmap_geocode_key + "&address="
-const place_url = "/admin/proxy/gmaps/textsearch/?region=uk&key=" + gmap_places_key + "&query="
-const place_detail_url = "/admin/proxy/gmaps/placedetails/?region=uk&key=" + gmap_places_key + "&placeid="
-const map_url = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&key=" + gmap_static_key + "&scale=2&center="
-
-if (company_field) {
-  dp_name_field.addEventListener("keyup", function(event) {
-    for(i=0; i < company_field.options.length;i++) {
-      if (dp_name_field.value.includes(company_field.options[i].value)) {
-        company_field.options[i].selected = "selected";
-      }
+    // Remove accents, swap ñ for n, etc
+    const from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+    const to = "aaaaeeeeiiiioooouuuunc------";
+    for (let i = 0; i < from.length; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
     }
-  });
+
+    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+    return str;
 }
 
-// Check FB slug
-if (fb_name_field) {
-  var fb_name_dupe = document.createElement('div');
-  insertAfter(fb_name_dupe, fb_name_field);
-  fb_name_field.addEventListener("keyup", function(event) {
-    fb_name = fb_name_field.value;
-    fb_slug = slugify(fb_name);
-    api_url = "/api/2/foodbank/" + fb_slug + "/";
-    var fb_slug_req = new XMLHttpRequest();
-    fb_slug_req.addEventListener("load", function(){
-      if (this.status == 404) {
-        fb_name_dupe.className = "notification is-success";
-        fb_name_dupe.innerHTML = "No food bank with the name '" + fb_name + "'";
-      };
-      if (this.status == 200) {
-        fb_name_dupe.className = "notification is-warning";
-        fb_name_dupe.innerHTML = "'" + fb_name + "' food bank already exists";
-      }
+/**
+ * Clean up address abbreviations
+ * @param {string} str - Address string with abbreviations
+ * @returns {string} Address with expanded abbreviations
+ */
+function address_cleanup(str) {
+    const abbreviations = {
+        "Rd\n": "Road\n",
+        "St\n": "Street\n",
+        "Ln\n": "Lane\n",
+        "Cl\n": "Close\n",
+        "Ave\n": "Avenue\n",
+        "Ct\n": "Court\n",
+        "Dr\n": "Drive\n",
+        "Pl\n": "Place\n"
+    };
+
+    Object.entries(abbreviations).forEach(([abbr, full]) => {
+        str = str.replace(abbr, full);
     });
-    fb_slug_req.responseType = "json";
-    fb_slug_req.open("GET", api_url);
-    fb_slug_req.send();
-  })
-};
 
-// Donation point lookup
-if (dp_name_field) {
-  var dp_lookup_btn = document.createElement('div');
-  dp_lookup_btn.innerHTML = "<a href='#' id='dp_lookup_btn' class='extra-form-button button is-info'>Lookup Donation Point</a>";
-  insertAfter(dp_lookup_btn, dp_name_field);
-  dp_lookup_btn.addEventListener("click", function(event) {
-    address = name_field.value + ", UK";
-    url = place_url + encodeURIComponent(address);
-    var place_req = new XMLHttpRequest();
-    place_req.addEventListener("load", function(){
-      lat = this.response.results[0].geometry.location.lat
-      lng = this.response.results[0].geometry.location.lng
-      place_id = this.response.results[0].place_id
-      lat_lng = lat + "," + lng
-      lat_lng_field.value = lat_lng
-      place_id_field.value = place_id
-
-      map_img = document.createElement('img');
-      map_img.src = map_url + lat_lng
-      insertAfter(map_img, place_id_field);
-
-      url = place_detail_url + place_id;
-      var placedetail_req = new XMLHttpRequest();
-      placedetail_req.addEventListener("load", function(){
-        address = address_cleanup(this.response.result.formatted_address.replaceAll(", ", "\n"))
-        postcode = address.match(/[A-Za-z]{1,2}\d{1,2}(?:\s?(?:\d?\w{2}))?/)
-        address = address.replace(" " + postcode, "")
-        address_field.value = address
-        postcode_field.value = postcode
-        if (this.response.result.formatted_phone_number) {
-          document.querySelector("#id_phone_number").value = this.response.result.formatted_phone_number
-        }
-        if (this.response.result.website) {
-          document.querySelector("#id_url").value = this.response.result.website
-        }
-        document.querySelector("#id_opening_hours").value = this.response.result.opening_hours.weekday_text.join("\n")
-        if (this.response.result.wheelchair_accessible_entrance) {
-          document.querySelector("#id_wheelchair_accessible").value = this.response.result.wheelchair_accessible_entrance
-        }
-      });
-      placedetail_req.responseType = "json";
-      placedetail_req.open("GET", url);
-      placedetail_req.send();
-
-    });
-    place_req.responseType = "json";
-    place_req.open("GET", url);
-    place_req.send();
-    event.preventDefault();
-  })
+    return str;
 }
 
-// LAT_LNG
-if (lat_lng_field) {
-  var get_latlng_btn = document.createElement('div');
-  get_latlng_btn.innerHTML = "<a href='#' id='get_latlng_btn' class='extra-form-button button is-info'>Get Lat/Lng &amp; Place ID</a>";
-  insertAfter(get_latlng_btn, lat_lng_field);
-  latlng_btn = document.querySelector("#get_latlng_btn");
-  latlng_btn.addEventListener("click", function(event) {
-    address = name_field.value + ", " + address_field.value.replace(/\n/g,", ") + ", " + postcode_field.value;
-    url = geolocation_url + encodeURIComponent(address);
-    var gl_req = new XMLHttpRequest();
-    gl_req.addEventListener("load", function(){
-      lat = this.response.results[0].geometry.location.lat
-      lng = this.response.results[0].geometry.location.lng
-      place_id = this.response.results[0].place_id
-      lat_lng = lat + "," + lng
-      lat_lng_field.value = lat_lng
-      place_id_field.value = place_id
-      map_img = document.createElement('img');
-      map_img.src = map_url + lat_lng
-      insertAfter(map_img, place_id_field);
+// ===========================
+// DOM Element References
+// ===========================
+
+const DOM = {
+    name_field: document.querySelector("#id_name"),
+    lat_lng_field: document.querySelector("#id_lat_lng"),
+    place_id_field: document.querySelector("#id_place_id"),
+    address_field: document.querySelector("#id_address"),
+    postcode_field: document.querySelector("#id_postcode"),
+    change_text_field: document.querySelector("#id_change_text"),
+    excess_change_text: document.querySelector("#id_excess_change_text"),
+    fb_name_field: document.querySelector(".form-new-food-bank #id_name"),
+    dp_name_field: document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name"),
+    company_field: document.querySelector("#id_company")
+};
+
+// ===========================
+// API Configuration
+// ===========================
+
+const API_URLS = {
+    geolocation: (address) => `https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=${gmap_geocode_key}&address=${encodeURIComponent(address)}`,
+    placeSearch: (query) => `/admin/proxy/gmaps/textsearch/?region=uk&key=${gmap_places_key}&query=${encodeURIComponent(query)}`,
+    placeDetail: (placeId) => `/admin/proxy/gmaps/placedetails/?region=uk&key=${gmap_places_key}&placeid=${placeId}`,
+    staticMap: (latLng) => `https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=300x300&key=${gmap_static_key}&scale=2&center=${latLng}`,
+    foodbankApi: (slug) => `/api/2/foodbank/${slug}/`
+};
+
+// ===========================
+// Helper Functions
+// ===========================
+
+/**
+ * Create a button element with specified properties
+ * @param {string} id - Button ID
+ * @param {string} text - Button text
+ * @param {string} className - Additional CSS classes
+ * @returns {HTMLElement} Button element
+ */
+function createButton(id, text, className = 'button is-info') {
+    const div = document.createElement('div');
+    div.innerHTML = `<a href='#' id='${id}' class='extra-form-button ${className}'>${text}</a>`;
+    return div;
+}
+
+/**
+ * Create and insert a map image
+ * @param {string} latLng - Latitude and longitude string
+ * @param {HTMLElement} referenceElement - Element to insert after
+ * @returns {HTMLElement} Map image element
+ */
+function createMapImage(latLng, referenceElement) {
+    const mapImg = document.createElement('img');
+    mapImg.src = API_URLS.staticMap(latLng);
+    insertAfter(mapImg, referenceElement);
+    return mapImg;
+}
+
+/**
+ * Fetch JSON from a URL using modern fetch API
+ * @param {string} url - URL to fetch
+ * @returns {Promise<any>} Parsed JSON response
+ */
+async function fetchJSON(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+    }
+}
+
+/**
+ * Set location fields (lat/lng and place_id)
+ * @param {number} lat - Latitude
+ * @param {number} lng - Longitude
+ * @param {string} placeId - Google Place ID
+ */
+function setLocationFields(lat, lng, placeId) {
+    const latLng = `${lat},${lng}`;
+    DOM.lat_lng_field.value = latLng;
+    DOM.place_id_field.value = placeId;
+    createMapImage(latLng, DOM.place_id_field);
+}
+
+/**
+ * Parse and set address fields from formatted address
+ * @param {string} formattedAddress - Address from Google Places
+ */
+function setAddressFields(formattedAddress) {
+    let address = address_cleanup(formattedAddress.replace(/, /g, "\n"));
+    const postcodeMatch = address.match(/[A-Za-z]{1,2}\d{1,2}(?:\s?(?:\d?\w{2}))?/);
+    const postcode = postcodeMatch ? postcodeMatch[0] : '';
+    
+    if (postcode) {
+        address = address.replace(" " + postcode, "");
+    }
+    
+    DOM.address_field.value = address;
+    DOM.postcode_field.value = postcode;
+}
+
+// ===========================
+// Feature Implementations
+// ===========================
+
+/**
+ * Initialize company field auto-selection
+ */
+function initCompanyAutoSelect() {
+    if (!DOM.company_field || !DOM.dp_name_field) return;
+
+    DOM.dp_name_field.addEventListener("keyup", () => {
+        for (let i = 0; i < DOM.company_field.options.length; i++) {
+            if (DOM.dp_name_field.value.includes(DOM.company_field.options[i].value)) {
+                DOM.company_field.options[i].selected = true;
+            }
+        }
     });
-    gl_req.responseType = "json";
-    gl_req.open("GET", url);
-    gl_req.send();
-    event.preventDefault();
-  })
-};
+}
 
+/**
+ * Initialize food bank name duplicate checker
+ */
+function initFoodBankNameChecker() {
+    if (!DOM.fb_name_field) return;
 
-// CHANGETEXT
-if (change_text_field) {
-  var titlecase_btn = document.createElement('div');
-  var csvline_btn = document.createElement('div');
-  var findreplace_btn = document.createElement('div');
+    const fbNameDupe = document.createElement('div');
+    insertAfter(fbNameDupe, DOM.fb_name_field);
 
-  titlecase_btn.innerHTML = "<a href='#' id='titlecase_btn' class='extra-form-button button is-info'>Make Titlecase</a>";
-  csvline_btn.innerHTML = "<a href='#' id='csvline_btn' class='extra-form-button button is-info'>CSV to Lines</a>";
-  findreplace_btn.innerHTML = "<a href='#' id='findreplace_btn' class='extra-form-button button is-info'>Find & Replace</a>";
+    DOM.fb_name_field.addEventListener("keyup", async () => {
+        const fbName = DOM.fb_name_field.value;
+        const fbSlug = slugify(fbName);
+        const apiUrl = API_URLS.foodbankApi(fbSlug);
 
-  insertAfter(csvline_btn, change_text_field);
-  insertAfter(findreplace_btn, change_text_field);
-  insertAfter(titlecase_btn, excess_change_text);
+        try {
+            const response = await fetch(apiUrl);
+            if (response.status === 404) {
+                fbNameDupe.className = "notification is-success";
+                fbNameDupe.innerHTML = `No food bank with the name '${fbName}'`;
+            } else if (response.status === 200) {
+                fbNameDupe.className = "notification is-warning";
+                fbNameDupe.innerHTML = `'${fbName}' food bank already exists`;
+            }
+        } catch (error) {
+            console.error('Error checking food bank name:', error);
+        }
+    });
+}
 
-  titlecase_btn = document.querySelector("#titlecase_btn");
-  titlecase_btn.addEventListener("click", function(event) {
-    change_text_field.value = food_titleCase(change_text_field.value)
-    excess_change_text.value = food_titleCase(excess_change_text.value)
-    event.preventDefault();
-  });
+/**
+ * Initialize donation point lookup functionality
+ */
+function initDonationPointLookup() {
+    if (!DOM.dp_name_field) return;
 
-  csvline_btn = document.querySelector("#csvline_btn");
-  csvline_btn.addEventListener("click", function(event) {
-    change_text_field.value = csvToLines(change_text_field.value);
-    event.preventDefault();
-  });
+    const dpLookupBtn = createButton('dp_lookup_btn', 'Lookup Donation Point');
+    insertAfter(dpLookupBtn, DOM.dp_name_field);
 
-  findreplace_btn = document.querySelector("#findreplace_btn");
-  findreplace_btn.addEventListener("click", function(event) {
-    find_text = prompt("Find what?");
-    replace_text = prompt("Replace with what?");
-    change_text_field.value = change_text_field.value.replaceAll(find_text,replace_text)
-    event.preventDefault();
-  });
-};
+    dpLookupBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        try {
+            const address = `${DOM.name_field.value}, UK`;
+            const placeData = await fetchJSON(API_URLS.placeSearch(address));
+
+            if (!placeData.results || placeData.results.length === 0) {
+                console.error('No results found');
+                return;
+            }
+
+            const location = placeData.results[0].geometry.location;
+            const placeId = placeData.results[0].place_id;
+
+            setLocationFields(location.lat, location.lng, placeId);
+
+            // Fetch place details
+            const placeDetails = await fetchJSON(API_URLS.placeDetail(placeId));
+            const result = placeDetails.result;
+
+            setAddressFields(result.formatted_address);
+
+            if (result.formatted_phone_number) {
+                document.querySelector("#id_phone_number").value = result.formatted_phone_number;
+            }
+
+            if (result.website) {
+                document.querySelector("#id_url").value = result.website;
+            }
+
+            if (result.opening_hours && result.opening_hours.weekday_text) {
+                document.querySelector("#id_opening_hours").value = result.opening_hours.weekday_text.join("\n");
+            }
+
+            if (result.wheelchair_accessible_entrance !== undefined) {
+                document.querySelector("#id_wheelchair_accessible").value = result.wheelchair_accessible_entrance;
+            }
+        } catch (error) {
+            console.error('Error looking up donation point:', error);
+            alert('Error looking up donation point. Please try again.');
+        }
+    });
+}
+
+/**
+ * Initialize lat/lng and place ID lookup functionality
+ */
+function initLatLngLookup() {
+    if (!DOM.lat_lng_field) return;
+
+    const getLatLngBtn = createButton('get_latlng_btn', 'Get Lat/Lng &amp; Place ID');
+    insertAfter(getLatLngBtn, DOM.lat_lng_field);
+
+    // Get the button element from the created div
+    const latlngBtn = getLatLngBtn.querySelector("#get_latlng_btn");
+    latlngBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        try {
+            const addressParts = [
+                DOM.name_field.value,
+                DOM.address_field.value.replace(/\n/g, ", "),
+                DOM.postcode_field.value
+            ];
+            const address = addressParts.join(", ");
+
+            const data = await fetchJSON(API_URLS.geolocation(address));
+
+            if (!data.results || data.results.length === 0) {
+                console.error('No results found');
+                alert('No location found for this address. Please check the address and try again.');
+                return;
+            }
+
+            const location = data.results[0].geometry.location;
+            const placeId = data.results[0].place_id;
+
+            setLocationFields(location.lat, location.lng, placeId);
+        } catch (error) {
+            console.error('Error getting lat/lng:', error);
+            alert('Error getting location. Please try again.');
+        }
+    });
+}
+
+/**
+ * Initialize change text manipulation buttons
+ */
+function initChangeTextButtons() {
+    if (!DOM.change_text_field) return;
+
+    const titlecaseBtn = createButton('titlecase_btn', 'Make Titlecase');
+    const csvlineBtn = createButton('csvline_btn', 'CSV to Lines');
+    const findreplaceBtn = createButton('findreplace_btn', 'Find & Replace');
+
+    insertAfter(csvlineBtn, DOM.change_text_field);
+    insertAfter(findreplaceBtn, DOM.change_text_field);
+    insertAfter(titlecaseBtn, DOM.excess_change_text);
+
+    document.querySelector("#titlecase_btn").addEventListener("click", (event) => {
+        event.preventDefault();
+        DOM.change_text_field.value = food_titleCase(DOM.change_text_field.value);
+        DOM.excess_change_text.value = food_titleCase(DOM.excess_change_text.value);
+    });
+
+    document.querySelector("#csvline_btn").addEventListener("click", (event) => {
+        event.preventDefault();
+        DOM.change_text_field.value = csvToLines(DOM.change_text_field.value);
+    });
+
+    document.querySelector("#findreplace_btn").addEventListener("click", (event) => {
+        event.preventDefault();
+        const findText = prompt("Find what?");
+        if (findText === null) return; // User cancelled
+        
+        const replaceText = prompt("Replace with what?");
+        if (replaceText === null) return; // User cancelled
+
+        // Use regex replace for broader browser compatibility
+        const escapedFindText = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedFindText, 'g');
+        DOM.change_text_field.value = DOM.change_text_field.value.replace(regex, replaceText);
+    });
+}
+
+// ===========================
+// Initialization
+// ===========================
+
+/**
+ * Initialize all admin features when DOM is ready
+ */
+function initAdmin() {
+    initCompanyAutoSelect();
+    initFoodBankNameChecker();
+    initDonationPointLookup();
+    initLatLngLookup();
+    initChangeTextButtons();
+}
+
+// Run initialization
+initAdmin();
