@@ -102,10 +102,10 @@ class GeoJSONPreload:
         if (response.status_code == 200 and
                 'text/html' in response.get('Content-Type', '')):
             url_name = None
+            resolved = None
             try:
                 resolved = resolve(request.path)
                 url_name = resolved.url_name
-                slug = resolved.kwargs.get('slug')
             except Exception:
                 pass
 
@@ -120,6 +120,7 @@ class GeoJSONPreload:
                 'foodbank_donationpoints', 'foodbank_location'
             ]:
                 # Foodbank-specific pages use foodbank geojson
+                slug = resolved.kwargs.get('slug') if resolved else None
                 if slug:
                     geojson_url = reverse(
                         'wfbn:foodbank_geojson', kwargs={'slug': slug}
@@ -129,11 +130,12 @@ class GeoJSONPreload:
                 geojson_url = reverse('wfbn:geojson')
             elif url_name == 'constituency':
                 # Constituency page uses constituency geojson
-                parlcon_slug = resolved.kwargs.get('slug')
-                if parlcon_slug:
+                # Extract slug for constituency (not parlcon_slug)
+                slug = resolved.kwargs.get('slug') if resolved else None
+                if slug:
                     geojson_url = reverse(
                         'wfbn:constituency_geojson',
-                        kwargs={'parlcon_slug': parlcon_slug}
+                        kwargs={'parlcon_slug': slug}
                     )
 
             # Add Link header if we have a geojson URL to preload

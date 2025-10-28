@@ -4,7 +4,7 @@ Tests for the givefood middleware.
 import pytest
 from django.test import RequestFactory
 from django.http import HttpResponse
-from unittest.mock import Mock
+from unittest.mock import Mock, patch, MagicMock
 from givefood.middleware import GeoJSONPreload
 
 
@@ -55,8 +55,6 @@ class TestGeoJSONPreloadMiddleware:
 
     def test_middleware_adds_correct_header_format(self):
         """Test that middleware creates the correct Link header format."""
-        from unittest.mock import patch, MagicMock
-
         # Create a mock request and response
         request = RequestFactory().get('/needs/')
         response = HttpResponse(
@@ -92,4 +90,98 @@ class TestGeoJSONPreloadMiddleware:
             # Verify it contains the geojson URL
             assert '/needs/geo.json' in link_header, (
                 "Link header should contain geojson URL"
+            )
+
+    def test_foodbank_page_has_correct_slug_in_link_header(self):
+        """Test that foodbank pages extract slug correctly."""
+        # Create a mock request and response for a foodbank page
+        request = RequestFactory().get('/needs/at/test-foodbank/')
+        response = HttpResponse(
+            '<html><body>Test Foodbank</body></html>',
+            content_type='text/html'
+        )
+
+        # Mock the resolve function to return foodbank URL name with slug
+        mock_resolved = MagicMock()
+        mock_resolved.url_name = 'foodbank'
+        mock_resolved.kwargs = {'slug': 'test-foodbank'}
+
+        with patch('givefood.middleware.resolve', return_value=mock_resolved):
+            # Create middleware instance
+            get_response = Mock(return_value=response)
+            middleware = GeoJSONPreload(get_response)
+
+            # Process the request
+            result = middleware(request)
+
+            # Check that Link header was added
+            assert 'Link' in result
+            link_header = result['Link']
+
+            # Verify it contains the foodbank-specific geojson URL
+            assert '/needs/at/test-foodbank/geo.json' in link_header, (
+                "Link header should contain foodbank-specific geojson URL"
+            )
+
+    def test_constituency_page_has_correct_slug_in_link_header(self):
+        """Test that constituency pages extract slug correctly."""
+        # Create a mock request and response for a constituency page
+        request = RequestFactory().get('/needs/in/constituency/test-constituency/')
+        response = HttpResponse(
+            '<html><body>Test Constituency</body></html>',
+            content_type='text/html'
+        )
+
+        # Mock the resolve function to return constituency URL name with slug
+        mock_resolved = MagicMock()
+        mock_resolved.url_name = 'constituency'
+        mock_resolved.kwargs = {'slug': 'test-constituency'}
+
+        with patch('givefood.middleware.resolve', return_value=mock_resolved):
+            # Create middleware instance
+            get_response = Mock(return_value=response)
+            middleware = GeoJSONPreload(get_response)
+
+            # Process the request
+            result = middleware(request)
+
+            # Check that Link header was added
+            assert 'Link' in result
+            link_header = result['Link']
+
+            # Verify it contains the constituency-specific geojson URL
+            # Note: constituency geojson uses parlcon_slug parameter
+            assert '/needs/in/constituency/test-constituency/geo.json' in link_header, (
+                "Link header should contain constituency-specific geojson URL"
+            )
+
+    def test_foodbank_location_page_has_correct_slug_in_link_header(self):
+        """Test that foodbank location pages extract slug correctly."""
+        # Create a mock request and response for a foodbank location page
+        request = RequestFactory().get('/needs/at/test-foodbank/test-location/')
+        response = HttpResponse(
+            '<html><body>Test Location</body></html>',
+            content_type='text/html'
+        )
+
+        # Mock the resolve function to return foodbank_location URL name
+        mock_resolved = MagicMock()
+        mock_resolved.url_name = 'foodbank_location'
+        mock_resolved.kwargs = {'slug': 'test-foodbank', 'locslug': 'test-location'}
+
+        with patch('givefood.middleware.resolve', return_value=mock_resolved):
+            # Create middleware instance
+            get_response = Mock(return_value=response)
+            middleware = GeoJSONPreload(get_response)
+
+            # Process the request
+            result = middleware(request)
+
+            # Check that Link header was added
+            assert 'Link' in result
+            link_header = result['Link']
+
+            # Verify it contains the foodbank-specific geojson URL
+            assert '/needs/at/test-foodbank/geo.json' in link_header, (
+                "Link header should contain foodbank-specific geojson URL"
             )
