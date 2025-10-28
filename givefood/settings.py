@@ -179,6 +179,7 @@ LANGUAGES = [
     ("pt", "Português"),
     ("es", "Español"),
     ("ar", "العربية"),
+    ("bn", "বাংলা"),
 ]
 
 LOCALE_PATHS = (

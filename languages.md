@@ -11,3 +11,4 @@
 | Português             | Portuguese                 | pt            | →              | 0.2%                         |
 | Español               | Spanish                    | es            | →              | 0.3%                         |
 | العربية               | Arabic                     | ar            | ←              | 0.4%                         |
+| বাংলা                 | Bengali                    | bn            | →              | 0.7%                         |
