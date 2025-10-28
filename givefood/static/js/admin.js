@@ -259,7 +259,7 @@ function initDonationPointLookup() {
         event.preventDefault();
 
         try {
-            const address = `${DOM.name_field.value}, UK`;
+            const address = `${DOM.dp_name_field.value}, UK`;
             const placeData = await fetchJSON(API_URLS.placeSearch(address));
 
             if (!placeData.results || placeData.results.length === 0) {
@@ -279,19 +279,31 @@ function initDonationPointLookup() {
             setAddressFields(result.formatted_address);
 
             if (result.formatted_phone_number) {
-                document.querySelector("#id_phone_number").value = result.formatted_phone_number;
+                const phoneField = document.querySelector("#id_phone_number");
+                if (phoneField) {
+                    phoneField.value = result.formatted_phone_number;
+                }
             }
 
             if (result.website) {
-                document.querySelector("#id_url").value = result.website;
+                const urlField = document.querySelector("#id_url");
+                if (urlField) {
+                    urlField.value = result.website;
+                }
             }
 
             if (result.opening_hours && result.opening_hours.weekday_text) {
-                document.querySelector("#id_opening_hours").value = result.opening_hours.weekday_text.join("\n");
+                const openingHoursField = document.querySelector("#id_opening_hours");
+                if (openingHoursField) {
+                    openingHoursField.value = result.opening_hours.weekday_text.join("\n");
+                }
             }
 
             if (result.wheelchair_accessible_entrance !== undefined) {
-                document.querySelector("#id_wheelchair_accessible").value = result.wheelchair_accessible_entrance;
+                const wheelchairField = document.querySelector("#id_wheelchair_accessible");
+                if (wheelchairField) {
+                    wheelchairField.value = result.wheelchair_accessible_entrance;
+                }
             }
         } catch (error) {
             console.error('Error looking up donation point:', error);
@@ -313,7 +325,7 @@ function initLocationLookup() {
         event.preventDefault();
 
         try {
-            const address = `${DOM.name_field.value}, UK`;
+            const address = `${DOM.loc_name_field.value}, UK`;
             const placeData = await fetchJSON(API_URLS.placeSearch(address));
 
             if (!placeData.results || placeData.results.length === 0) {
