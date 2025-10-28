@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const updateInterval = element.getAttribute("data-update");
         
         const loadContent = () => {
-            fetch(url, {cache: 'default', priority: 'auto', credentials: 'omit'}).then((response) => {
+            fetch(url, {cache: 'default', priority: 'auto', credentials: 'same-origin'}).then((response) => {
                 response.text().then((text) => {
                     element.innerHTML = text;
                 });
