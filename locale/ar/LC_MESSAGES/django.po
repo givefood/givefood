@@ -699,7 +699,7 @@ msgid ""
 "100%% of donations from the public to Give Food are used directly to "
 "efficiently and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
-"يتم استخدام 100% من التبرعات من الجمهور لمؤسسة Give Food بشكل مباشر لتوصيل "
+"يتم استخدام 100%% من التبرعات من الجمهور لمؤسسة Give Food بشكل مباشر لتوصيل "
 "الطعام والإمدادات المطلوبة إلى بنوك الطعام في المملكة المتحدة بكفاءة وسرعة."
 
 #: givefood/templates/public/donate.html:29
