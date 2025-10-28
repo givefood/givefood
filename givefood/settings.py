@@ -169,18 +169,18 @@ LANGUAGE_BIDI = True
 
 LANGUAGES = [
     ("en", "English"),
-    ("cy", "Cymraeg"),
-    ("gd", "Gàidhlig"),
-    ("ga", "Gaeilge"),
     ("pl", "Polski"),
+    ("cy", "Cymraeg"),
+    ("bn", "বাংলা"),
     ("ro", "Română"),
     ("pa", "ਪੰਜਾਬੀ"),
-    ("gu", "ગુજરાતી"),
     ("ur", "اردو"),
-    ("pt", "Português"),
-    ("es", "Español"),
     ("ar", "العربية"),
-    ("bn", "বাংলা"),
+    ("es", "Español"),
+    ("gu", "ગુજરાતી"),
+    ("pt", "Português"),
+    ("gd", "Gàidhlig"),
+    ("ga", "Gaeilge"),
 ]
 
 LOCALE_PATHS = (
