@@ -104,6 +104,9 @@ const DOM = {
     excess_change_text: document.querySelector("#id_excess_change_text"),
     fb_name_field: document.querySelector(".form-new-food-bank #id_name"),
     dp_name_field: document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name"),
+    // Location forms include the foodbank name in the class (e.g., "form-edit-brixton-food-bank-location")
+    // so we use a partial match to capture all variations
+    loc_name_field: document.querySelector("form[class*='food-bank-location'] #id_name"),
     company_field: document.querySelector("#id_company")
 };
 
@@ -258,7 +261,7 @@ function initDonationPointLookup() {
         event.preventDefault();
 
         try {
-            const address = `${DOM.name_field.value}, UK`;
+            const address = `${DOM.dp_name_field.value}, UK`;
             const placeData = await fetchJSON(API_URLS.placeSearch(address));
 
             if (!placeData.results || placeData.results.length === 0) {
@@ -278,23 +281,81 @@ function initDonationPointLookup() {
             setAddressFields(result.formatted_address);
 
             if (result.formatted_phone_number) {
-                document.querySelector("#id_phone_number").value = result.formatted_phone_number;
+                const phoneField = document.querySelector("#id_phone_number");
+                if (phoneField) {
+                    phoneField.value = result.formatted_phone_number;
+                }
             }
 
             if (result.website) {
-                document.querySelector("#id_url").value = result.website;
+                const urlField = document.querySelector("#id_url");
+                if (urlField) {
+                    urlField.value = result.website;
+                }
             }
 
             if (result.opening_hours && result.opening_hours.weekday_text) {
-                document.querySelector("#id_opening_hours").value = result.opening_hours.weekday_text.join("\n");
+                const openingHoursField = document.querySelector("#id_opening_hours");
+                if (openingHoursField) {
+                    openingHoursField.value = result.opening_hours.weekday_text.join("\n");
+                }
             }
 
             if (result.wheelchair_accessible_entrance !== undefined) {
-                document.querySelector("#id_wheelchair_accessible").value = result.wheelchair_accessible_entrance;
+                const wheelchairField = document.querySelector("#id_wheelchair_accessible");
+                if (wheelchairField) {
+                    wheelchairField.value = result.wheelchair_accessible_entrance;
+                }
             }
         } catch (error) {
             console.error('Error looking up donation point:', error);
             alert('Error looking up donation point. Please try again.');
+        }
+    });
+}
+
+/**
+ * Initialize location lookup functionality
+ */
+function initLocationLookup() {
+    if (!DOM.loc_name_field) return;
+
+    const locLookupBtn = createButton('loc_lookup_btn', 'Lookup Location');
+    insertAfter(locLookupBtn, DOM.loc_name_field);
+
+    locLookupBtn.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        try {
+            const address = `${DOM.loc_name_field.value}, UK`;
+            const placeData = await fetchJSON(API_URLS.placeSearch(address));
+
+            if (!placeData.results || placeData.results.length === 0) {
+                console.error('No results found');
+                return;
+            }
+
+            const location = placeData.results[0].geometry.location;
+            const placeId = placeData.results[0].place_id;
+
+            setLocationFields(location.lat, location.lng, placeId);
+
+            // Fetch place details
+            const placeDetails = await fetchJSON(API_URLS.placeDetail(placeId));
+            const result = placeDetails.result;
+
+            setAddressFields(result.formatted_address);
+
+            // Fill phone number if available from Google Places
+            if (result.formatted_phone_number) {
+                const phoneField = document.querySelector("#id_phone_number");
+                if (phoneField) {
+                    phoneField.value = result.formatted_phone_number;
+                }
+            }
+        } catch (error) {
+            console.error('Error looking up location:', error);
+            alert('Error looking up location. Please try again.');
         }
     });
 }
@@ -391,6 +452,7 @@ function initAdmin() {
     initCompanyAutoSelect();
     initFoodBankNameChecker();
     initDonationPointLookup();
+    initLocationLookup();
     initLatLngLookup();
     initChangeTextButtons();
 }
