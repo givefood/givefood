@@ -7,6 +7,7 @@
 | Polski                | Polish                     | pl            | →              | 1%                           |
 | Română                | Romanian                   | ro            | →              | 0.5%                         |
 | ਪੰਜਾਬੀ                | Punjabi                    | pa            | →              | 0.5%                         |
+| ગુજરાતી               | Gujarati                   | gu            | →              | 0.2%                         |
 | اردو                  | Urdu                       | ur            | ←              | 0.4%                         |
 | Português             | Portuguese                 | pt            | →              | 0.2%                         |
 | Español               | Spanish                    | es            | →              | 0.3%                         |
