@@ -55,6 +55,8 @@ class TestGeoJSONPreloadMiddleware:
 
     def test_middleware_adds_correct_header_format(self):
         """Test that middleware creates the correct Link header format."""
+        from unittest.mock import patch, MagicMock
+
         # Create a mock request and response
         request = RequestFactory().get('/needs/')
         response = HttpResponse(
@@ -62,19 +64,32 @@ class TestGeoJSONPreloadMiddleware:
             content_type='text/html'
         )
 
-        # Create middleware instance
-        get_response = Mock(return_value=response)
-        middleware = GeoJSONPreload(get_response)
+        # Mock the resolve function to return a known URL name
+        mock_resolved = MagicMock()
+        mock_resolved.url_name = 'index'
+        mock_resolved.kwargs = {}
 
-        # Process the request
-        result = middleware(request)
+        with patch('givefood.middleware.resolve', return_value=mock_resolved):
+            # Create middleware instance
+            get_response = Mock(return_value=response)
+            middleware = GeoJSONPreload(get_response)
 
-        # Check that Link header was added
-        assert 'Link' in result
-        link_header = result['Link']
+            # Process the request
+            result = middleware(request)
 
-        # Verify format
-        assert link_header.startswith('<'), "Link header should start with <"
-        assert (
-            '>; rel=preload; as=fetch; crossorigin=anonymous' in link_header
-        ), "Link header should have correct format"
+            # Check that Link header was added
+            assert 'Link' in result
+            link_header = result['Link']
+
+            # Verify format
+            assert link_header.startswith('<'), (
+                "Link header should start with <"
+            )
+            assert (
+                '>; rel=preload; as=fetch; crossorigin=anonymous'
+                in link_header
+            ), "Link header should have correct format"
+            # Verify it contains the geojson URL
+            assert '/needs/geo.json' in link_header, (
+                "Link header should contain geojson URL"
+            )
