@@ -104,6 +104,8 @@ const DOM = {
     excess_change_text: document.querySelector("#id_excess_change_text"),
     fb_name_field: document.querySelector(".form-new-food-bank #id_name"),
     dp_name_field: document.querySelector(".form-new-donation-point #id_name, .form-edit-donation-point #id_name"),
+    // Location forms include the foodbank name in the class (e.g., "form-edit-brixton-food-bank-location")
+    // so we use a partial match to capture all variations
     loc_name_field: document.querySelector("form[class*='food-bank-location'] #id_name"),
     company_field: document.querySelector("#id_company")
 };
@@ -344,7 +346,7 @@ function initLocationLookup() {
 
             setAddressFields(result.formatted_address);
 
-            // Location model has phone_number and email fields that can be filled
+            // Fill phone number if available from Google Places
             if (result.formatted_phone_number) {
                 const phoneField = document.querySelector("#id_phone_number");
                 if (phoneField) {
