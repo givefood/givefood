@@ -138,3 +138,64 @@ class TestDonationPointPreloadHeaders:
         
         # Check that Link header is NOT present
         assert 'Link' not in response
+
+
+    def test_donation_point_with_empty_opening_hours_no_preload_header(self, client):
+        """Test that donation point with empty opening hours doesn't include Link preload header."""
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 3",
+            slug="test-food-bank-3",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test3.example.com",
+            shopping_list_url="https://test3.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a need for the food bank
+        need = FoodbankChange.objects.create(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes, Pasta, Rice",
+            published=True,
+        )
+        
+        # Update the foodbank to reference the latest need
+        foodbank.latest_need = need
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a donation point with empty opening hours string
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test Donation Point 3",
+            slug="test-donation-point-3",
+            address="789 Test Blvd",
+            postcode="SW1A 1AA",
+            opening_hours="   ",  # Empty/whitespace only opening hours
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+        
+        # Make request to donation point page
+        url = reverse('wfbn:foodbank_donationpoint', kwargs={
+            'slug': foodbank.slug,
+            'dpslug': donationpoint.slug
+        })
+        response = client.get(url)
+        
+        # Check that response is successful
+        assert response.status_code == 200
+        
+        # Check that Link header is NOT present
+        assert 'Link' not in response

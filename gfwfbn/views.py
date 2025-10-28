@@ -756,7 +756,7 @@ def foodbank_donationpoint(request, slug, dpslug):
     response = render(request, "wfbn/foodbank/donationpoint.html", template_vars)
     
     # Add Link preload header for opening hours if available
-    if donationpoint.opening_hours:
+    if donationpoint.opening_hours and donationpoint.opening_hours.strip():
         openinghours_url = reverse("wfbn:foodbank_donationpoint_openinghours", kwargs={"slug": slug, "dpslug": dpslug})
         response["Link"] = f"<{openinghours_url}>; rel=preload; as=fetch"
     
