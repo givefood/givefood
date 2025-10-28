@@ -753,7 +753,14 @@ def foodbank_donationpoint(request, slug, dpslug):
         "map_config":map_config,
     }
 
-    return render(request, "wfbn/foodbank/donationpoint.html", template_vars)
+    response = render(request, "wfbn/foodbank/donationpoint.html", template_vars)
+    
+    # Add Link preload header for opening hours if available
+    if donationpoint.opening_hours:
+        openinghours_url = reverse("wfbn:foodbank_donationpoint_openinghours", kwargs={"slug": slug, "dpslug": dpslug})
+        response["Link"] = f"<{openinghours_url}>; rel=preload; as=fetch"
+    
+    return response
 
 @cache_page(SECONDS_IN_HOUR)
 def foodbank_donationpoint_openinghours(request, slug, dpslug):
