@@ -353,10 +353,19 @@ def sitemap(request):
         "privacy",
     ]
 
-    foodbanks = Foodbank.objects.all().exclude(is_closed=True)
-    constituencies = ParliamentaryConstituency.objects.all()
-    locations = FoodbankLocation.objects.all().exclude(is_closed=True)
-    donationpoints = FoodbankDonationPoint.objects.all().exclude(is_closed=True)
+    foodbanks = Foodbank.objects.all().exclude(is_closed=True).only(
+        'slug',
+        'days_between_needs',
+        'no_locations',
+        'no_donation_points',
+        'rss_url',
+        'charity_name',
+        'facebook_page',
+        'twitter_handle'
+    )
+    constituencies = ParliamentaryConstituency.objects.all().only('slug')
+    locations = FoodbankLocation.objects.all().exclude(is_closed=True).only('foodbank_slug', 'slug')
+    donationpoints = FoodbankDonationPoint.objects.all().exclude(is_closed=True).only('foodbank_slug', 'slug')
     top_places = TOP_PLACES
 
     template_vars = {
@@ -403,7 +412,7 @@ def sitemap_external(request):
     XML sitemap for external links
     """
 
-    foodbanks = Foodbank.objects.all().exclude(is_closed=True)
+    foodbanks = Foodbank.objects.all().exclude(is_closed=True).only('url', 'shopping_list_url', 'rss_url')
 
     template_vars = {
         "domain":SITE_DOMAIN,
