@@ -128,6 +128,7 @@ def index(request):
         FoodbankChange.objects
         .filter(published=True)
         .exclude(change_text__in=exclude_change_text)
+        .only('foodbank_name')
         .order_by("-created")[:10]
     )
 
@@ -140,6 +141,7 @@ def index(request):
         )
         .annotate(total_hits=Sum('foodbankhit__hits'))
         .order_by('-total_hits')[:10]
+        .only('name', 'slug')
     )
 
 
