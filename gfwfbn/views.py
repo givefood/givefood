@@ -157,17 +157,17 @@ def geojson(request, slug = None, parlcon_slug = None):
         foodbank = get_object_or_404(Foodbank, slug = slug)
 
     if slug:
-        foodbanks = Foodbank.objects.filter(slug = slug)
-        locations = FoodbankLocation.objects.filter(foodbank__slug = slug)
-        donationpoints = FoodbankDonationPoint.objects.filter(foodbank__slug = slug)
+        foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
+        locations = FoodbankLocation.objects.filter(foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng', 'boundary_geojson')
+        donationpoints = FoodbankDonationPoint.objects.filter(foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng')
     elif parlcon_slug:
-        foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False)
-        locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False)
-        donationpoints = FoodbankDonationPoint.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False)
+        foodbanks = Foodbank.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
+        locations = FoodbankLocation.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng', 'boundary_geojson')
+        donationpoints = FoodbankDonationPoint.objects.filter(parliamentary_constituency_slug = parlcon_slug, is_closed=False).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng')
     else:
-        foodbanks = Foodbank.objects.filter(is_closed=False)
-        locations = FoodbankLocation.objects.filter(is_closed=False)
-        donationpoints = FoodbankDonationPoint.objects.filter(is_closed=False)
+        foodbanks = Foodbank.objects.filter(is_closed=False).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
+        locations = FoodbankLocation.objects.filter(is_closed=False).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng', 'boundary_geojson')
+        donationpoints = FoodbankDonationPoint.objects.filter(is_closed=False).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng')
 
     features = []
 
