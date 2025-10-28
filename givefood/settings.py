@@ -175,6 +175,7 @@ LANGUAGES = [
     ("pl", "Polski"),
     ("ro", "Română"),
     ("pa", "ਪੰਜਾਬੀ"),
+    ("gu", "ગુજરાતી"),
     ("ur", "اردو"),
     ("pt", "Português"),
     ("es", "Español"),
