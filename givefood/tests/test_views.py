@@ -3,6 +3,7 @@ Tests for the main givefood views.
 """
 import pytest
 from django.test import Client, override_settings
+from givefood.models import Foodbank, ParliamentaryConstituency, FoodbankLocation, FoodbankDonationPoint
 
 
 @pytest.mark.django_db
@@ -56,3 +57,30 @@ class TestFoodbankPages:
         response = client.get('/needs/at/')
         # Should return something (list, search page, etc.) or redirect
         assert response.status_code in [200, 301, 302, 404]
+
+
+@pytest.mark.django_db
+class TestSitemap:
+    """Test sitemap generation."""
+
+    def test_sitemap_accessible(self, client):
+        """Test that the sitemap is accessible and returns valid XML."""
+        response = client.get('/sitemap.xml')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'text/xml'
+        # Check that the response contains valid XML structure
+        content = response.content.decode('utf-8')
+        assert '<?xml version="1.0" encoding="UTF-8"?>' in content
+        assert '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
+        assert '</urlset>' in content
+
+    def test_sitemap_external_accessible(self, client):
+        """Test that the external sitemap is accessible and returns valid XML."""
+        response = client.get('/sitemap_external.xml')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'text/xml'
+        # Check that the response contains valid XML structure
+        content = response.content.decode('utf-8')
+        assert '<?xml version="1.0" encoding="UTF-8"?>' in content
+        assert '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
+        assert '</urlset>' in content
