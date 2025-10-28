@@ -2,7 +2,7 @@ import time
 
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
-from django.urls import resolve
+from django.urls import resolve, reverse
 
 from givefood.func import get_cred
 
@@ -78,3 +78,49 @@ class RedirectToWWW:
             return redirect(new_url, permanent=True)
 
         return self.get_response(request)
+
+
+# Add Link header for GeoJSON preloading based on the view
+class GeoJSONPreload:
+    
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        
+        # Only add Link header for successful HTML responses
+        if response.status_code == 200 and 'text/html' in response.get('Content-Type', ''):
+            url_name = None
+            try:
+                resolved = resolve(request.path)
+                url_name = resolved.url_name
+                slug = resolved.kwargs.get('slug')
+            except:
+                pass
+            
+            # Determine which geojson URL to preload based on the view
+            geojson_url = None
+            
+            if url_name == 'index':
+                # Main index page uses the general geojson
+                geojson_url = reverse('wfbn:geojson')
+            elif url_name in ['foodbank', 'foodbank_locations', 'foodbank_donationpoints', 'foodbank_location']:
+                # Foodbank-specific pages use foodbank geojson
+                if slug:
+                    geojson_url = reverse('wfbn:foodbank_geojson', kwargs={'slug': slug})
+            elif url_name == 'foodbank_nearby':
+                # Nearby page uses the general geojson
+                geojson_url = reverse('wfbn:geojson')
+            elif url_name == 'constituency':
+                # Constituency page uses constituency geojson
+                parlcon_slug = resolved.kwargs.get('slug')
+                if parlcon_slug:
+                    geojson_url = reverse('wfbn:constituency_geojson', kwargs={'parlcon_slug': parlcon_slug})
+            
+            # Add Link header if we have a geojson URL to preload
+            if geojson_url:
+                link_header = f'<{geojson_url}>; rel=preload; as=fetch; crossorigin=anonymous'
+                response['Link'] = link_header
+        
+        return response
