@@ -4,7 +4,7 @@ Tests for the givefood middleware.
 import pytest
 from django.test import RequestFactory
 from django.http import HttpResponse
-from unittest.mock import Mock
+from unittest.mock import Mock, patch, MagicMock
 from givefood.middleware import GeoJSONPreload
 
 
@@ -55,8 +55,6 @@ class TestGeoJSONPreloadMiddleware:
 
     def test_middleware_adds_correct_header_format(self):
         """Test that middleware creates the correct Link header format."""
-        from unittest.mock import patch, MagicMock
-
         # Create a mock request and response
         request = RequestFactory().get('/needs/')
         response = HttpResponse(
@@ -96,8 +94,6 @@ class TestGeoJSONPreloadMiddleware:
 
     def test_foodbank_page_has_correct_slug_in_link_header(self):
         """Test that foodbank pages extract slug correctly."""
-        from unittest.mock import patch, MagicMock
-
         # Create a mock request and response for a foodbank page
         request = RequestFactory().get('/needs/at/test-foodbank/')
         response = HttpResponse(
@@ -129,8 +125,6 @@ class TestGeoJSONPreloadMiddleware:
 
     def test_constituency_page_has_correct_slug_in_link_header(self):
         """Test that constituency pages extract slug correctly."""
-        from unittest.mock import patch, MagicMock
-
         # Create a mock request and response for a constituency page
         request = RequestFactory().get('/needs/in/constituency/test-constituency/')
         response = HttpResponse(
@@ -163,8 +157,6 @@ class TestGeoJSONPreloadMiddleware:
 
     def test_foodbank_location_page_has_correct_slug_in_link_header(self):
         """Test that foodbank location pages extract slug correctly."""
-        from unittest.mock import patch, MagicMock
-
         # Create a mock request and response for a foodbank location page
         request = RequestFactory().get('/needs/at/test-foodbank/test-location/')
         response = HttpResponse(
