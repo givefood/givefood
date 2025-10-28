@@ -107,6 +107,8 @@ class GeoJSONPreload:
                 resolved = resolve(request.path)
                 url_name = resolved.url_name
             except Exception:
+                # Silently ignore resolution errors (e.g., 404s, invalid paths)
+                # If we can't resolve the URL, we simply won't add a Link header
                 pass
 
             # Determine which geojson URL to preload based on the view

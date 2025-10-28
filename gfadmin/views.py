@@ -1368,6 +1368,8 @@ def places_loader(request):
                 )
                 new_place.save()
             except IntegrityError:
+                # Skip duplicate places (unique constraint on gbpnid)
+                # This allows re-running the loader without errors
                 pass
 
     return HttpResponse("OK")
