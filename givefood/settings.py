@@ -185,11 +185,11 @@ LANGUAGES = [
     ("pa", "ਪੰਜਾਬੀ"),
     ("ur", "اردو"),
     ("ar", "العربية"),
+    ("gu", "ગુજરાતી"),
     ("es", "Español"),
     ("pt", "Português"),
     ("gd", "Gàidhlig"),
     ("ga", "Gaeilge"),
-    ("gu", "ગુજરાતી"),
 ]
 
 LOCALE_PATHS = (
