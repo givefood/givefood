@@ -99,8 +99,8 @@ class TestGeojsonView:
         assert data['type'] == 'FeatureCollection'
         assert 'features' in data
         assert isinstance(data['features'], list)
-        # Should have the foodbank and the specific location
-        assert len(data['features']) >= 1
+        # Should have only the specific location (not the foodbank)
+        assert len(data['features']) == 1
         
         # Verify the location is in the features
         location_features = [f for f in data['features'] if f['properties'].get('type') == 'l']

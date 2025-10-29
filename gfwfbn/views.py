@@ -163,7 +163,8 @@ def geojson(request, slug = None, parlcon_slug = None, locslug = None):
         # Ensure the location exists (404 if not found)
         if not locations.exists():
             raise Http404("Location not found")
-        foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
+        # Only return the location, not the foodbank or donation points
+        foodbanks = Foodbank.objects.none()
         donationpoints = FoodbankDonationPoint.objects.none()
     elif slug:
         foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
