@@ -1,7 +1,7 @@
 import pytest
 from django.test import Client
 from django.urls import reverse
-from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankChange
+from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankChange, FoodbankLocation
 
 
 @pytest.mark.django_db
@@ -21,6 +21,116 @@ class TestGeojsonView:
         assert data['type'] == 'FeatureCollection'
         assert 'features' in data
         assert isinstance(data['features'], list)
+
+    def test_geojson_foodbank_returns_valid_json(self, client):
+        """
+        Test that the geojson endpoint for a specific foodbank returns valid JSON.
+        """
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank",
+            slug="test-food-bank",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        response = client.get(reverse('wfbn:foodbank_geojson', kwargs={'slug': 'test-food-bank'}))
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+        data = response.json()
+        assert 'type' in data
+        assert data['type'] == 'FeatureCollection'
+        assert 'features' in data
+        assert isinstance(data['features'], list)
+        # Should have the foodbank feature
+        assert len(data['features']) >= 1
+        
+    def test_geojson_location_returns_valid_json(self, client):
+        """
+        Test that the geojson endpoint for a specific location returns valid JSON
+        with only that location's data.
+        """
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank",
+            slug="test-food-bank",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            name="Test Location",
+            slug="test-location",
+            address="Location Address",
+            postcode="SW1A 2AA",
+            lat_lng="51.5024,-0.1429",
+            latitude=51.5024,
+            longitude=-0.1429,
+            country="England",
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        response = client.get(reverse('wfbn:foodbank_location_geojson', 
+                                     kwargs={'slug': 'test-food-bank', 'locslug': 'test-location'}))
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+        data = response.json()
+        assert 'type' in data
+        assert data['type'] == 'FeatureCollection'
+        assert 'features' in data
+        assert isinstance(data['features'], list)
+        # Should have only the specific location (not the foodbank)
+        assert len(data['features']) == 1
+        
+        # Verify the location is in the features
+        location_features = [f for f in data['features'] if f['properties'].get('type') == 'l']
+        assert len(location_features) == 1
+        assert location_features[0]['properties']['name'] == 'Test Location'
+        
+    def test_geojson_location_not_found_returns_404(self, client):
+        """
+        Test that requesting geo.json for a non-existent location returns 404.
+        """
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 2",
+            slug="test-food-bank-2",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Request geo.json for a non-existent location
+        response = client.get(reverse('wfbn:foodbank_location_geojson', 
+                                     kwargs={'slug': 'test-food-bank-2', 'locslug': 'non-existent-location'}))
+        assert response.status_code == 404
 
         
 @pytest.mark.django_db

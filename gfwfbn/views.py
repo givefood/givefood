@@ -1,7 +1,7 @@
 import json, requests, datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, Http404
 from django.db import IntegrityError
 from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page, never_cache
@@ -138,13 +138,13 @@ def get_location(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def geojson(request, slug = None, parlcon_slug = None):
+def geojson(request, slug = None, parlcon_slug = None, locslug = None):
     """
-    GeoJSON for everything, a food bank or a parliamentary constituency
+    GeoJSON for everything, a food bank, a parliamentary constituency, or a specific location
     """
 
     # All items
-    all_items = not slug and not parlcon_slug
+    all_items = not slug and not parlcon_slug and not locslug
 
     # Number of decimal places for coordinates
     if all_items:
@@ -156,7 +156,17 @@ def geojson(request, slug = None, parlcon_slug = None):
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
 
-    if slug:
+    # Handle location-specific request
+    if locslug:
+        # Query for the specific location with optimized field selection
+        locations = FoodbankLocation.objects.filter(slug = locslug, foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng', 'boundary_geojson')
+        # Ensure the location exists (404 if not found)
+        if not locations.exists():
+            raise Http404("Location not found")
+        # Only return the location, not the foodbank or donation points
+        foodbanks = Foodbank.objects.none()
+        donationpoints = FoodbankDonationPoint.objects.none()
+    elif slug:
         foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
         locations = FoodbankLocation.objects.filter(foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng', 'boundary_geojson')
         donationpoints = FoodbankDonationPoint.objects.filter(foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng')

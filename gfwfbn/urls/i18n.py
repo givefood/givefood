@@ -33,6 +33,7 @@ urlpatterns = [
     
     # Locations
     path("at/<slug:slug>/locations/", foodbank_locations, name="foodbank_locations"),
+    path("at/<slug:slug>/<slug:locslug>/geo.json", geojson, name="foodbank_location_geojson"),
     path("at/<slug:slug>/<slug:locslug>/", foodbank_location, name="foodbank_location"),
 
     # Constituencies 
