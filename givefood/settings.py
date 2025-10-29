@@ -167,15 +167,25 @@ USE_L10N = True
 USE_TZ = False
 LANGUAGE_BIDI = True
 
+# Add Gujarati language support (not included in Django by default)
+from django.conf.locale import LANG_INFO
+LANG_INFO['gu'] = {
+    'bidi': False,
+    'code': 'gu',
+    'name': 'Gujarati',
+    'name_local': 'ગુજરાતી',
+}
+
 LANGUAGES = [
     ("en", "English"),
     ("pl", "Polski"),
     ("cy", "Cymraeg"),
-    ("bn", "বাংলা"),
+    ("bn", "বাংলા"),
     ("ro", "Română"),
     ("pa", "ਪੰਜਾਬੀ"),
     ("ur", "اردو"),
     ("ar", "العربية"),
+    ("gu", "ગુજરાતી"),
     ("es", "Español"),
     ("pt", "Português"),
     ("gd", "Gàidhlig"),
