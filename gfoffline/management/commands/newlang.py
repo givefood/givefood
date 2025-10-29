@@ -53,9 +53,9 @@ class Command(BaseCommand):
                 )
 
             # Check if foodbank has a latest_need
-            if foodbank.latest_need and foodbank.latest_need.need_id_str:
+            if foodbank.latest_need:
                 # Translate the need asynchronously
-                translate_need(language_code, foodbank.latest_need.need_id_str)
+                translate_need(language_code, foodbank.latest_need)
                 translated_count += 1
             else:
                 skipped_count += 1
