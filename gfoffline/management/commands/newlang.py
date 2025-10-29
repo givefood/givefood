@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from givefood.func import translate_need_async
+from givefood.func import translate_need
 from givefood.models import Foodbank
 from givefood.settings import LANGUAGES
 
@@ -55,14 +55,14 @@ class Command(BaseCommand):
             # Check if foodbank has a latest_need
             if foodbank.latest_need and foodbank.latest_need.need_id_str:
                 # Translate the need asynchronously
-                translate_need_async(language_code, foodbank.latest_need.need_id_str)
+                translate_need(language_code, foodbank.latest_need.need_id_str)
                 translated_count += 1
             else:
                 skipped_count += 1
 
         self.stdout.write(
             self.style.SUCCESS(
-                f'Successfully queued translation for {translated_count} needs. '
+                f'Successfully translated {translated_count} needs. '
                 f'Skipped {skipped_count} foodbanks without needs.'
             )
         )
