@@ -177,7 +177,6 @@ LANGUAGES = [
     ("ur", "اردو"),
     ("ar", "العربية"),
     ("es", "Español"),
-    ("gu", "ગુજરાતી"),
     ("pt", "Português"),
     ("gd", "Gàidhlig"),
     ("ga", "Gaeilge"),

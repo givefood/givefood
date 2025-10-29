@@ -9,7 +9,6 @@
 | اردو                  | Urdu                       | ur            | ←              | 0.4%                         |
 | العربية               | Arabic                     | ar            | ←              | 0.4%                         |
 | Español               | Spanish                    | es            | →              | 0.3%                         |
-| ગુજરાતી               | Gujarati                   | gu            | →              | 0.2%                         |
 | Português             | Portuguese                 | pt            | →              | 0.2%                         |
 | Gàidhlig              | Scottish Gaelic            | gd            | →              | 0.09%                        |
 | Gaeilge               | Irish                      | ga            | →              | 0.02%                        |
