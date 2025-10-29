@@ -698,7 +698,7 @@ def foodbank_location_map(request, slug, locslug):
     gmap_static_key = get_cred("gmap_static_key")
 
     url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.lat_lng, gmap_static_key)
-    
+
     # Add boundary polygon if it exists
     if location.boundary_geojson:
         try:
@@ -714,7 +714,7 @@ def foodbank_location_map(request, slug, locslug):
         except (KeyError, IndexError, json.JSONDecodeError):
             # If there's any error parsing the boundary, just continue without it
             pass
-    
+
     request = requests.get(url)
 
     return HttpResponse(request.content, content_type='image/png')
