@@ -698,6 +698,23 @@ def foodbank_location_map(request, slug, locslug):
     gmap_static_key = get_cred("gmap_static_key")
 
     url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.lat_lng, gmap_static_key)
+    
+    # Add boundary polygon if it exists
+    if location.boundary_geojson:
+        try:
+            boundary_dict = location.boundary_geojson_dict()
+            if boundary_dict and boundary_dict.get("geometry") and boundary_dict["geometry"].get("type") == "Polygon":
+                coordinates = boundary_dict["geometry"]["coordinates"][0]  # Get outer ring
+                # Format: fillcolor:0xf7a72333 (orange with ~20% opacity) | color:0xf7a723ff (orange border) | weight:1
+                path_param = "path=fillcolor:0xf7a72333|color:0xf7a723ff|weight:1"
+                for coord in coordinates:
+                    # GeoJSON uses [lng, lat] order, Google Maps uses lat,lng
+                    path_param += "|%s,%s" % (coord[1], coord[0])
+                url += "&" + path_param
+        except (KeyError, IndexError, json.JSONDecodeError):
+            # If there's any error parsing the boundary, just continue without it
+            pass
+    
     request = requests.get(url)
 
     return HttpResponse(request.content, content_type='image/png')

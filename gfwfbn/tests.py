@@ -1,7 +1,8 @@
 import pytest
+from unittest.mock import patch, Mock
 from django.test import Client
 from django.urls import reverse
-from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankChange
+from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankChange, FoodbankLocation
 
 
 @pytest.mark.django_db
@@ -215,3 +216,142 @@ class TestDonationPointPreloadHeaders:
         
         # Check that Link header is NOT present
         assert 'Link' not in response
+
+
+@pytest.mark.django_db
+class TestFoodbankLocationMap:
+    """Test the foodbank_location_map endpoint with boundary_geojson support"""
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_location_map_without_boundary(self, mock_get_cred, mock_requests_get, client):
+        """Test that location map works without boundary_geojson."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank",
+            slug="test-food-bank",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location without boundary_geojson
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location",
+            slug="test-location",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            boundary_geojson=None,
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        # Make request to location map
+        url = reverse('wfbn-generic:foodbank_location_map', kwargs={
+            'slug': foodbank.slug,
+            'locslug': location.slug
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called
+        assert mock_requests_get.called
+        called_url = mock_requests_get.call_args[0][0]
+        assert "center=51.5014,-0.1419" in called_url
+        assert "zoom=15" in called_url
+        assert "path=" not in called_url  # No boundary path
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_location_map_with_boundary(self, mock_get_cred, mock_requests_get, client):
+        """Test that location map includes boundary_geojson as a path."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 2",
+            slug="test-food-bank-2",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location with boundary_geojson
+        boundary_geojson = '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-0.1419,51.5014],[-0.1420,51.5015],[-0.1418,51.5016],[-0.1419,51.5014]]]},"properties":{}}'
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location 2",
+            slug="test-location-2",
+            address="456 Test Ave",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            boundary_geojson=boundary_geojson,
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        # Make request to location map
+        url = reverse('wfbn-generic:foodbank_location_map', kwargs={
+            'slug': foodbank.slug,
+            'locslug': location.slug
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with boundary path
+        assert mock_requests_get.called
+        called_url = mock_requests_get.call_args[0][0]
+        assert "center=51.5014,-0.1419" in called_url
+        assert "zoom=15" in called_url
+        assert "path=" in called_url
+        assert "fillcolor:0xf7a72333" in called_url  # Orange fill with transparency
+        assert "color:0xf7a723ff" in called_url  # Orange border
+        assert "weight:1" in called_url
+        # Verify coordinates are in lat,lng format (reversed from GeoJSON lng,lat)
+        assert "51.5014,-0.1419" in called_url
