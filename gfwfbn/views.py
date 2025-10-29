@@ -138,13 +138,13 @@ def get_location(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def geojson(request, slug = None, parlcon_slug = None):
+def geojson(request, slug = None, parlcon_slug = None, locslug = None):
     """
-    GeoJSON for everything, a food bank or a parliamentary constituency
+    GeoJSON for everything, a food bank, a parliamentary constituency, or a specific location
     """
 
     # All items
-    all_items = not slug and not parlcon_slug
+    all_items = not slug and not parlcon_slug and not locslug
 
     # Number of decimal places for coordinates
     if all_items:
@@ -156,7 +156,13 @@ def geojson(request, slug = None, parlcon_slug = None):
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
 
-    if slug:
+    # Handle location-specific request
+    if locslug:
+        location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank__slug = slug)
+        foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
+        locations = FoodbankLocation.objects.filter(slug = locslug, foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng', 'boundary_geojson')
+        donationpoints = FoodbankDonationPoint.objects.none()
+    elif slug:
         foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
         locations = FoodbankLocation.objects.filter(foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng', 'boundary_geojson')
         donationpoints = FoodbankDonationPoint.objects.filter(foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng')
