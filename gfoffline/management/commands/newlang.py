@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 
 from givefood.func import translate_need_async
 from givefood.models import Foodbank
+from givefood.settings import LANGUAGES
 
 
 class Command(BaseCommand):
@@ -22,8 +23,16 @@ class Command(BaseCommand):
         if len(language_code) != 2:
             raise CommandError('Language code must be exactly 2 characters')
 
-        foodbanks = Foodbank.objects.all()
-        foodbank_count = foodbanks.count()
+        # Validate language code is supported
+        supported_languages = [lang[0] for lang in LANGUAGES]
+        if language_code not in supported_languages:
+            raise CommandError(
+                f'Language code "{language_code}" is not supported. '
+                f'Supported languages: {", ".join(supported_languages)}'
+            )
+
+        foodbanks = list(Foodbank.objects.all())
+        foodbank_count = len(foodbanks)
 
         self.stdout.write(
             f"Starting translation of latest needs to '{language_code}' "
