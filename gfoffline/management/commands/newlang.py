@@ -31,8 +31,8 @@ class Command(BaseCommand):
                 f'Supported languages: {", ".join(supported_languages)}'
             )
 
-        foodbanks = list(Foodbank.objects.all())
-        foodbank_count = len(foodbanks)
+        foodbanks = Foodbank.objects.all()
+        foodbank_count = foodbanks.count()
 
         self.stdout.write(
             f"Starting translation of latest needs to '{language_code}' "
