@@ -1,7 +1,7 @@
 import json, requests, datetime
 
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, Http404
 from django.db import IntegrityError
 from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page, never_cache
@@ -158,9 +158,12 @@ def geojson(request, slug = None, parlcon_slug = None, locslug = None):
 
     # Handle location-specific request
     if locslug:
-        location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank__slug = slug)
-        foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
+        # Query for the specific location with optimized field selection
         locations = FoodbankLocation.objects.filter(slug = locslug, foodbank__slug = slug).only('name', 'foodbank_name', 'foodbank_slug', 'slug', 'address', 'postcode', 'lat_lng', 'boundary_geojson')
+        # Ensure the location exists (404 if not found)
+        if not locations.exists():
+            raise Http404("Location not found")
+        foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')
         donationpoints = FoodbankDonationPoint.objects.none()
     elif slug:
         foodbanks = Foodbank.objects.filter(slug = slug).only('slug', 'name', 'alt_name', 'address', 'postcode', 'lat_lng', 'delivery_address', 'delivery_lat_lng')

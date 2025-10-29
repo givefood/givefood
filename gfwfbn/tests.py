@@ -106,6 +106,31 @@ class TestGeojsonView:
         location_features = [f for f in data['features'] if f['properties'].get('type') == 'l']
         assert len(location_features) == 1
         assert location_features[0]['properties']['name'] == 'Test Location'
+        
+    def test_geojson_location_not_found_returns_404(self, client):
+        """
+        Test that requesting geo.json for a non-existent location returns 404.
+        """
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 2",
+            slug="test-food-bank-2",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Request geo.json for a non-existent location
+        response = client.get(reverse('wfbn:foodbank_location_geojson', 
+                                     kwargs={'slug': 'test-food-bank-2', 'locslug': 'non-existent-location'}))
+        assert response.status_code == 404
 
         
 @pytest.mark.django_db
