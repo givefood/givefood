@@ -392,13 +392,16 @@ def foodbank_map(request, slug, size=600):
     """
     Food bank map PNG
     """
-    if size not in [600, 1080]:
+    if size not in [300, 600, 1080]:
         return HttpResponseBadRequest()
     
-    if size == 600:
+    if size == 300:
+        size = "150x150"
+        scale = 2
+    elif size == 600:
         size = "600x400"
         scale = 1
-    if size == 1080:
+    elif size == 1080:
         size = "540x360"
         scale = 2
 
@@ -698,10 +701,22 @@ def foodbank_location(request, slug, locslug):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def foodbank_location_map(request, slug, locslug):
+def foodbank_location_map(request, slug, locslug, size=600):
     """
     Food bank location map PNG
     """
+    if size not in [300, 600, 1080]:
+        return HttpResponseBadRequest()
+    
+    if size == 300:
+        map_size = "150x150"
+        scale = 2
+    elif size == 600:
+        map_size = "600x400"
+        scale = 1
+    elif size == 1080:
+        map_size = "540x360"
+        scale = 2
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
@@ -713,7 +728,8 @@ def foodbank_location_map(request, slug, locslug):
     params = [
         ("center", location.lat_lng),
         ("zoom", zoom),
-        ("size", "600x400"),
+        ("size", map_size),
+        ("scale", scale),
         ("maptype", "roadmap"),
         ("format", "png"),
         ("visual_refresh", "true"),
