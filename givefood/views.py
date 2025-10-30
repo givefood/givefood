@@ -409,6 +409,19 @@ def robotstxt(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
+def llmstxt(request):
+    """
+    /llms.txt - LLM-friendly site index
+    """
+    
+    template_vars = {
+        "domain":SITE_DOMAIN,
+    }
+    
+    return render(request, "public/llms.txt", template_vars, content_type='text/plain; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_WEEK)
 def sitemap_external(request):
     """
     XML sitemap for external links
