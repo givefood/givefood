@@ -330,6 +330,8 @@ class Command(BaseCommand):
         )
         dump_instance.save()
 
+        del donationpoint_dump
+
         self.stdout.write(f"Created dump {dump_instance.id} with {row_count} donationpoints")
 
 
