@@ -1,0 +1,64 @@
+# Give Food
+
+> UK charity providing the largest public database of food banks and their current needs, with data used by governments, councils, NHS, media, and apps to help alleviate food insecurity.
+
+Give Food is a registered charity in England & Wales (1188192) that uses data to highlight local and structural food insecurity. We maintain near-realtime data on nearly 3000 food bank locations across the UK, tracking what items they need donated and providing tools to help connect donors with those in need.
+
+## About
+
+- [About Give Food]({{ domain }}/about-us/): Information about the charity, mission, and impact
+- [Privacy Policy]({{ domain }}/privacy/): How we handle data and user privacy
+- [Colophon]({{ domain }}/colophon/): Technical details about the website and infrastructure
+- [Bot Documentation]({{ domain }}/bot/): Information about GiveFoodBot web crawler
+
+## Data & API
+
+- [API Documentation]({{ domain }}/api/): Current production API (v2) for accessing food bank data
+- [API v2 Technical Docs](https://github.com/givefood/givefood/blob/main/gfapi2/README.md): Comprehensive API documentation with endpoints and examples
+- [Open Data Repository](https://github.com/givefood/data): Versioned food bank data available on GitHub
+- [Data Dumps]({{ domain }}/dumps/): Downloadable data exports in multiple formats
+
+## Tools
+
+- [What Food Banks Need]({{ domain }}/needs/): Public tool to search for food banks and see what items they need
+- [Write to Your MP]({{ domain }}/write/): Tool to contact political representatives about food insecurity
+- [Dashboard]({{ domain }}/dashboard/): Data visualizations and analytics about food bank usage
+
+## Documentation
+
+- [Main Repository](https://github.com/givefood/givefood): Source code for the Give Food platform
+- [Project README](https://github.com/givefood/givefood/blob/main/README.md): Repository overview and structure
+- [Testing Guide](https://github.com/givefood/givefood/blob/main/TESTING.md): How to run tests
+- [Project Structure](https://github.com/givefood/givefood/blob/main/README.md#structure): Overview of Django apps and their purposes
+- [Copilot Instructions](https://github.com/givefood/givefood/blob/main/.github/copilot-instructions.md): Development guidelines and conventions
+
+## Technical Components
+
+- [Public App README](https://github.com/givefood/givefood/blob/main/givefood/README.md): Core framework and public-facing features
+- [WFBN App README](https://github.com/givefood/givefood/blob/main/gfwfbn/README.md): What Food Banks Need tool documentation
+- [Admin App README](https://github.com/givefood/givefood/blob/main/gfadmin/README.md): Admin interface documentation
+- [Dashboard README](https://github.com/givefood/givefood/blob/main/gfdash/README.md): Data dashboard documentation
+- [Write App README](https://github.com/givefood/givefood/blob/main/gfwrite/README.md): MP contact tool documentation
+- [Offline Tasks README](https://github.com/givefood/givefood/blob/main/gfoffline/README.md): Background task documentation
+
+## API Endpoints
+
+- [List All Food Banks]({{ domain }}/api/foodbanks/): JSON list of all active food banks
+- [Food Bank Details]({{ domain }}/api/foodbank/{slug}/): Detailed information for a specific food bank
+- [Search Food Banks]({{ domain }}/api/foodbanks/search/): Geographic search by location or postcode
+- [Recent Needs]({{ domain }}/api/needs/): Latest food bank need updates
+- [Parliamentary Constituencies]({{ domain }}/api/constituencies/): UK constituency data with food bank coverage
+- [GeoJSON Data]({{ domain }}/needs/geo.json): Geographic data for mapping food banks
+
+## Reference Materials
+
+- [Abbreviations](https://github.com/givefood/givefood/blob/main/abbreviations.md): List of abbreviations used in the codebase
+- [Languages](https://github.com/givefood/givefood/blob/main/languages.md): Internationalization and translation information
+- [Cron Jobs](https://github.com/givefood/givefood/blob/main/crons.md): Scheduled task documentation
+
+## Contact
+
+- Email: mail@givefood.org.uk
+- Twitter: https://twitter.com/GiveFoodCharity
+- Facebook: https://www.facebook.com/GiveFoodOrgUK
+- Website: {{ domain }}

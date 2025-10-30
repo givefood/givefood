@@ -64,6 +64,7 @@ urlpatterns += i18n_patterns(
 # Untranslated pages
 urlpatterns += [
 
+    path("llms.txt", givefood.views.llmstxt, name="llmstxt"),
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
 
