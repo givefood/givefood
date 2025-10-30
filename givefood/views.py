@@ -414,8 +414,14 @@ def llmstxt(request):
     /llms.txt - LLM-friendly site index
     """
     
+    # Calculate foodbank and donation point counts same as homepage
+    foodbanks_count = Foodbank.objects.count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.count()
+    donationpoints_count = FoodbankDonationPoint.objects.count() + Foodbank.objects.exclude(address_is_administrative = True).count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.filter(is_donation_point = True).count()
+    
     template_vars = {
         "domain":SITE_DOMAIN,
+        "foodbanks_count": foodbanks_count,
+        "donationpoints_count": donationpoints_count,
     }
     
     return render(request, "public/llms.txt", template_vars, content_type='text/plain; charset=utf-8')
