@@ -353,5 +353,87 @@ class TestFoodbankLocationMap:
         assert "fillcolor:0xf7a72333" in called_url  # Orange fill with transparency
         assert "color:0xf7a723ff" in called_url  # Orange border
         assert "weight:1" in called_url
-        # Verify coordinates are in lat,lng format (reversed from GeoJSON lng,lat)
-        assert "51.5014,-0.1419" in called_url
+        # Verify coordinates are in lat,lng format with reduced precision (4 decimal places)
+        # The coordinates should be rounded to 4 decimal places
+        assert "51.5014,-0.1419" in called_url or "51.5014,-0.1420" in called_url
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_location_map_with_large_boundary_downsamples(self, mock_get_cred, mock_requests_get, client):
+        """Test that location map downsamples large boundary polygons to avoid URL length issues."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 3",
+            slug="test-food-bank-3",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location with a large boundary_geojson (150 points)
+        # Generate a polygon with many points to trigger downsampling
+        coords = []
+        for i in range(150):
+            angle = (i / 150.0) * 2 * 3.14159
+            lng = -0.1419 + 0.01 * (0.5 + 0.5 * (angle / 6.28))
+            lat = 51.5014 + 0.01 * (0.5 + 0.5 * ((angle + 1.57) / 6.28))
+            coords.append([lng, lat])
+        coords.append(coords[0])  # Close the polygon
+        
+        boundary_geojson = '{"type":"Feature","geometry":{"type":"Polygon","coordinates":[' + str(coords).replace("'", '"') + ']},"properties":{}}'
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location 3",
+            slug="test-location-3",
+            address="789 Test Blvd",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            boundary_geojson=boundary_geojson,
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        # Make request to location map
+        url = reverse('wfbn-generic:foodbank_location_map', kwargs={
+            'slug': foodbank.slug,
+            'locslug': location.slug
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with downsampled boundary
+        assert mock_requests_get.called
+        called_url = mock_requests_get.call_args[0][0]
+        
+        # Count the number of pipe-separated coordinate pairs in the path
+        if "path=" in called_url:
+            path_section = called_url.split("path=")[1].split("&")[0] if "&" in called_url.split("path=")[1] else called_url.split("path=")[1]
+            # Count pipes after the style parameters
+            coords_section = path_section.split("weight:1|", 1)[1] if "weight:1|" in path_section else ""
+            num_coords = len(coords_section.split("|"))
+            # Should be downsampled to ~100 points (original was 151)
+            assert num_coords <= 105, f"Expected ~100 coords, got {num_coords}"
+            assert num_coords >= 50, f"Too few coords: {num_coords}"

@@ -705,11 +705,26 @@ def foodbank_location_map(request, slug, locslug):
             boundary_dict = location.boundary_geojson_dict()
             if boundary_dict and boundary_dict.get("geometry") and boundary_dict["geometry"].get("type") == "Polygon":
                 coordinates = boundary_dict["geometry"]["coordinates"][0]  # Get outer ring
+                
+                # Simplify coordinates to reduce URL length
+                # 1. Reduce precision to 4 decimal places (~11m accuracy)
+                # 2. Downsample if too many points (keep every Nth point)
+                max_points = 100  # Limit to avoid URL length issues
+                if len(coordinates) > max_points:
+                    # Calculate step to reduce points, ensure step is at least 2
+                    step = max(2, len(coordinates) // max_points)
+                    simplified = [coordinates[i] for i in range(0, len(coordinates), step)]
+                    # Ensure last point is included (closes the polygon)
+                    if coordinates[-1] not in simplified:
+                        simplified.append(coordinates[-1])
+                    coordinates = simplified
+                
                 # Format: fillcolor:0xf7a72333 (orange with ~20% opacity) | color:0xf7a723ff (orange border) | weight:1
                 path_param = "path=fillcolor:0xf7a72333|color:0xf7a723ff|weight:1"
                 for coord in coordinates:
                     # GeoJSON uses [lng, lat] order, Google Maps uses lat,lng
-                    path_param += "|%s,%s" % (coord[1], coord[0])
+                    # Round to 4 decimal places to reduce URL length
+                    path_param += "|%.4f,%.4f" % (coord[1], coord[0])
                 url += "&" + path_param
         except (KeyError, IndexError, json.JSONDecodeError):
             # If there's any error parsing the boundary, just continue without it
