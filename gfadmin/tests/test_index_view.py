@@ -10,16 +10,20 @@ from givefood.models import CrawlSet
 class TestLatestNeedCrawlset:
     """Test the latest need crawlset logic."""
 
+    def _get_latest_need_crawlset_view_logic(self):
+        """Helper method that mimics the view's query logic for consistency."""
+        try:
+            return CrawlSet.objects.filter(crawl_type="need").order_by("-start")[:1][0]
+        except IndexError:
+            return None
+
     def test_latest_need_crawlset_returns_none_when_empty(self):
         """Test that the query returns None when no crawlsets exist."""
         # Ensure no need crawlsets exist
         CrawlSet.objects.filter(crawl_type='need').delete()
         
         # Simulate the view logic
-        try:
-            latest = CrawlSet.objects.filter(crawl_type="need").order_by("-start")[:1][0]
-        except IndexError:
-            latest = None
+        latest = self._get_latest_need_crawlset_view_logic()
         
         # Should return None
         assert latest is None
@@ -34,10 +38,7 @@ class TestLatestNeedCrawlset:
         )
         
         # Simulate the view logic
-        try:
-            latest = CrawlSet.objects.filter(crawl_type="need").order_by("-start")[:1][0]
-        except IndexError:
-            latest = None
+        latest = self._get_latest_need_crawlset_view_logic()
         
         # Should return the crawlset
         assert latest is not None
@@ -62,11 +63,8 @@ class TestLatestNeedCrawlset:
             finish=now
         )
         
-        # Get the latest one directly (simulating the view logic)
-        try:
-            latest = CrawlSet.objects.filter(crawl_type="need").order_by("-start")[:1][0]
-        except IndexError:
-            latest = None
+        # Get the latest one (simulating the view logic)
+        latest = self._get_latest_need_crawlset_view_logic()
         
         # Should return the newer one
         assert latest is not None
@@ -93,10 +91,7 @@ class TestLatestNeedCrawlset:
         )
         
         # Get the latest need crawlset
-        try:
-            latest = CrawlSet.objects.filter(crawl_type="need").order_by("-start")[:1][0]
-        except IndexError:
-            latest = None
+        latest = self._get_latest_need_crawlset_view_logic()
         
         # Should return the need crawlset, not the article one
         assert latest is not None
