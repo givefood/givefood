@@ -387,23 +387,32 @@ def foodbank_rss(request, slug):
     return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
 
 
+def get_map_dimensions_and_scale(size):
+    """
+    Helper function to get map dimensions and scale for a given size parameter.
+    
+    Args:
+        size (int): The size parameter (300, 600, or 1080)
+    
+    Returns:
+        tuple: (dimensions_string, scale_factor) or (None, None) if invalid size
+    """
+    size_map = {
+        300: ("150x150", 2),
+        600: ("600x400", 1),
+        1080: ("540x360", 2),
+    }
+    return size_map.get(size, (None, None))
+
+
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_map(request, slug, size=600):
     """
     Food bank map PNG
     """
-    if size not in [300, 600, 1080]:
+    dimensions, scale = get_map_dimensions_and_scale(size)
+    if dimensions is None:
         return HttpResponseBadRequest()
-    
-    if size == 300:
-        size = "150x150"
-        scale = 2
-    elif size == 600:
-        size = "600x400"
-        scale = 1
-    elif size == 1080:
-        size = "540x360"
-        scale = 2
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
@@ -429,7 +438,7 @@ def foodbank_map(request, slug, size=600):
     base_url = "https://maps.googleapis.com/maps/api/staticmap"
     params = [
         ("center", foodbank.lat_lng),
-        ("size", size),
+        ("size", dimensions),
         ("scale", scale),
         ("maptype", "roadmap"),
         ("format", "png"),
@@ -705,18 +714,9 @@ def foodbank_location_map(request, slug, locslug, size=600):
     """
     Food bank location map PNG
     """
-    if size not in [300, 600, 1080]:
+    dimensions, scale = get_map_dimensions_and_scale(size)
+    if dimensions is None:
         return HttpResponseBadRequest()
-    
-    if size == 300:
-        map_size = "150x150"
-        scale = 2
-    elif size == 600:
-        map_size = "600x400"
-        scale = 1
-    elif size == 1080:
-        map_size = "540x360"
-        scale = 2
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
@@ -728,7 +728,7 @@ def foodbank_location_map(request, slug, locslug, size=600):
     params = [
         ("center", location.lat_lng),
         ("zoom", zoom),
-        ("size", map_size),
+        ("size", dimensions),
         ("scale", scale),
         ("maptype", "roadmap"),
         ("format", "png"),
