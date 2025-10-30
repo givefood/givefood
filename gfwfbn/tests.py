@@ -379,7 +379,7 @@ class TestFoodbankLocationMap:
         location.save(do_geoupdate=False, do_foodbank_resave=False)
         
         # Make request to location map
-        url = reverse('wfbn-generic:foodbank_location_map', kwargs={
+        url = reverse('wfbn:foodbank_location_map', kwargs={
             'slug': foodbank.slug,
             'locslug': location.slug
         })
@@ -444,7 +444,7 @@ class TestFoodbankLocationMap:
         location.save(do_geoupdate=False, do_foodbank_resave=False)
         
         # Make request to location map
-        url = reverse('wfbn-generic:foodbank_location_map', kwargs={
+        url = reverse('wfbn:foodbank_location_map', kwargs={
             'slug': foodbank.slug,
             'locslug': location.slug
         })
@@ -524,7 +524,7 @@ class TestFoodbankLocationMap:
         location.save(do_geoupdate=False, do_foodbank_resave=False)
         
         # Make request to location map
-        url = reverse('wfbn-generic:foodbank_location_map', kwargs={
+        url = reverse('wfbn:foodbank_location_map', kwargs={
             'slug': foodbank.slug,
             'locslug': location.slug
         })
