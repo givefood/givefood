@@ -88,7 +88,13 @@
         </dd>
         <dt>Latest Need Check</dt>
         <dd>
-          {{ stats.latest_need_check.last_need_check|timesince }} ago
+          {% if stats.latest_need_crawlset %}
+            <a href="{% url 'gfadmin:crawl_set' stats.latest_need_crawlset.id %}">
+              {{ stats.latest_need_check.last_need_check|timesince }} ago
+            </a>
+          {% else %}
+            {{ stats.latest_need_check.last_need_check|timesince }} ago
+          {% endif %}
           <br><span class="is-size-7">{{ stats.latest_need_check.last_need_check }} </span>
         </dd>
         <dt>24h Need Checks</dt>
