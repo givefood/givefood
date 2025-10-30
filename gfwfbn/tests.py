@@ -348,7 +348,7 @@ class TestFoodbankLocationMap:
         assert mock_requests_get.called
         called_url = mock_requests_get.call_args[0][0]
         assert "center=51.5014,-0.1419" in called_url
-        assert "zoom=15" in called_url
+        assert "zoom=12" in called_url  # Zoom 12 when boundary exists
         assert "path=" in called_url
         assert "fillcolor:0xf7a72333" in called_url  # Orange fill with transparency
         assert "color:0xf7a723ff" in called_url  # Orange border

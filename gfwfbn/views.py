@@ -697,7 +697,9 @@ def foodbank_location_map(request, slug, locslug):
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
     gmap_static_key = get_cred("gmap_static_key")
 
-    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=15&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.lat_lng, gmap_static_key)
+    # Use zoom 12 if boundary exists to show more area, otherwise zoom 15
+    zoom = 12 if location.boundary_geojson else 15
+    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=%s&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.lat_lng, zoom, gmap_static_key)
 
     # Add boundary polygon if it exists
     if location.boundary_geojson:
