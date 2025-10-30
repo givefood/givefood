@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from givefood.func import decache
-from givefood.models import Dump, Foodbank, FoodbankChangeLine
+from givefood.models import Dump, Foodbank, FoodbankChangeLine, FoodbankDonationPoint
 
 
 class Command(BaseCommand):
@@ -239,6 +239,98 @@ class Command(BaseCommand):
         del item_dump
 
         self.stdout.write(f"Created dump {dump_instance.id} with {row_count} items")
+
+        self.stdout.write("Creating donationpoints dump...")
+
+        donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").filter(is_closed=False).order_by("name")
+
+        donationpoint_dump = io.StringIO()
+        writer = csv.writer(donationpoint_dump, quoting=csv.QUOTE_ALL)
+        writer.writerow([
+            "id",
+            "name",
+            "slug",
+            "address",
+            "postcode",
+            "lat_lng",
+            "phone_number",
+            "opening_hours",
+            "wheelchair_accessible",
+            "url",
+            "in_store_only",
+            "company",
+            "store_id",
+            "place_id",
+            "plus_code_compound",
+            "plus_code_global",
+            "lsoa",
+            "msoa",
+            "parliamentary_constituency_name",
+            "mp_parl_id",
+            "mp",
+            "mp_party",
+            "ward",
+            "district",
+            "organisation_id",
+            "organisation_name",
+            "organisation_alt_name",
+            "organisation_slug",
+            "organisation_network",
+            "organisation_country",
+            "organisation_lat_lng",
+        ])
+
+        row_count = 0
+
+        for donationpoint in donationpoints:
+
+            row_count += 1
+
+            writer.writerow([
+                str(donationpoint.uuid),
+                donationpoint.name,
+                donationpoint.slug,
+                donationpoint.address,
+                donationpoint.postcode,
+                donationpoint.lat_lng,
+                donationpoint.phone_number,
+                donationpoint.opening_hours,
+                donationpoint.wheelchair_accessible,
+                donationpoint.url,
+                donationpoint.in_store_only,
+                donationpoint.company,
+                donationpoint.store_id,
+                donationpoint.place_id,
+                donationpoint.plus_code_compound,
+                donationpoint.plus_code_global,
+                donationpoint.lsoa,
+                donationpoint.msoa,
+                donationpoint.parliamentary_constituency_name,
+                donationpoint.mp_parl_id,
+                donationpoint.mp,
+                donationpoint.mp_party,
+                donationpoint.ward,
+                donationpoint.district,
+                str(donationpoint.foodbank.uuid),
+                donationpoint.foodbank.name,
+                donationpoint.foodbank.alt_name,
+                donationpoint.foodbank.slug,
+                donationpoint.foodbank.network,
+                donationpoint.foodbank.country,
+                donationpoint.foodbank.lat_lng,
+            ])
+
+        donationpoint_dump = donationpoint_dump.getvalue()
+
+        dump_instance = Dump(
+            dump_type="donationpoints",
+            dump_format="csv",
+            the_dump=donationpoint_dump,
+            row_count=row_count,
+        )
+        dump_instance.save()
+
+        self.stdout.write(f"Created dump {dump_instance.id} with {row_count} donationpoints")
 
 
         self.stdout.write("Deleting old dumps...")
