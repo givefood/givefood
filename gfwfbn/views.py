@@ -387,22 +387,44 @@ def foodbank_rss(request, slug):
     return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
 
 
+# Constants for map sizes
+MAP_SIZE_SMALL = 300
+MAP_SIZE_MEDIUM = 600
+MAP_SIZE_LARGE = 1080
+
+# Map size to dimensions and scale configuration
+MAP_SIZE_CONFIG = {
+    MAP_SIZE_SMALL: ("150x150", 2),    # Small: 150x150 at 2x scale (retina)
+    MAP_SIZE_MEDIUM: ("600x400", 1),   # Medium: 600x400 at 1x scale (default)
+    MAP_SIZE_LARGE: ("540x360", 2),    # Large: 540x360 at 2x scale (retina)
+}
+
+
 def get_map_dimensions_and_scale(size):
     """
     Helper function to get map dimensions and scale for a given size parameter.
     
+    This function converts the logical size parameter into Google Maps Static API
+    dimensions and scale values. Higher scale values provide retina-quality images.
+    
     Args:
-        size (int): The size parameter (300, 600, or 1080)
+        size (int): The size parameter, one of MAP_SIZE_SMALL (300), MAP_SIZE_MEDIUM (600), 
+                    or MAP_SIZE_LARGE (1080)
     
     Returns:
         tuple: (dimensions_string, scale_factor) or (None, None) if invalid size
+        
+    Examples:
+        >>> get_map_dimensions_and_scale(300)
+        ('150x150', 2)
+        >>> get_map_dimensions_and_scale(600)
+        ('600x400', 1)
+        >>> get_map_dimensions_and_scale(1080)
+        ('540x360', 2)
+        >>> get_map_dimensions_and_scale(999)
+        (None, None)
     """
-    size_map = {
-        300: ("150x150", 2),
-        600: ("600x400", 1),
-        1080: ("540x360", 2),
-    }
-    return size_map.get(size, (None, None))
+    return MAP_SIZE_CONFIG.get(size, (None, None))
 
 
 @cache_page(SECONDS_IN_WEEK)
