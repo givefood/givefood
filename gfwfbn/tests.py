@@ -394,6 +394,7 @@ class TestFoodbankLocationMap:
         called_url = mock_requests_get.call_args[0][0]
         assert "center=51.5014,-0.1419" in called_url
         assert "zoom=15" in called_url
+        assert "language=en" in called_url  # Check language parameter
         assert "path=" not in called_url  # No boundary path
 
     @patch('gfwfbn.views.requests.get')
@@ -459,6 +460,7 @@ class TestFoodbankLocationMap:
         called_url = mock_requests_get.call_args[0][0]
         assert "center=51.5014,-0.1419" in called_url
         assert "zoom=12" in called_url  # Zoom 12 when boundary exists
+        assert "language=en" in called_url  # Check language parameter
         assert "path=" in called_url
         assert "fillcolor:0xf7a72333" in called_url  # Orange fill with transparency
         assert "color:0xf7a723ff" in called_url  # Orange border
@@ -537,6 +539,7 @@ class TestFoodbankLocationMap:
         # Verify the Google Maps API was called with downsampled boundary
         assert mock_requests_get.called
         called_url = mock_requests_get.call_args[0][0]
+        assert "language=en" in called_url  # Check language parameter
         
         # Count the number of pipe-separated coordinate pairs in the path
         if "path=" in called_url:

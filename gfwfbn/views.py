@@ -709,7 +709,7 @@ def foodbank_location_map(request, slug, locslug):
 
     # Use zoom 12 if boundary exists to show more area, otherwise zoom 15
     zoom = 12 if location.boundary_geojson else 15
-    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=%s&size=600x400&maptype=roadmap&format=png&visual_refresh=true&key=%s" % (location.lat_lng, zoom, gmap_static_key)
+    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=%s&size=600x400&maptype=roadmap&format=png&visual_refresh=true&language=%s&key=%s" % (location.lat_lng, zoom, request.LANGUAGE_CODE, gmap_static_key)
 
     # Add boundary polygon if it exists
     if location.boundary_geojson:
@@ -742,9 +742,9 @@ def foodbank_location_map(request, slug, locslug):
             # If there's any error parsing the boundary, just continue without it
             pass
 
-    request = requests.get(url)
+    response = requests.get(url)
 
-    return HttpResponse(request.content, content_type='image/png')
+    return HttpResponse(response.content, content_type='image/png')
 
 
 @cache_page(SECONDS_IN_WEEK)
