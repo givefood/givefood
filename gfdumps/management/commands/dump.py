@@ -242,7 +242,7 @@ class Command(BaseCommand):
 
         self.stdout.write("Creating donationpoints dump...")
 
-        donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").filter(is_closed=False).order_by("name")
+        donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").filter(is_closed=False).order_by("name").iterator()
 
         donationpoint_dump = io.StringIO()
         writer = csv.writer(donationpoint_dump, quoting=csv.QUOTE_ALL)
