@@ -39,6 +39,12 @@ def index(request):
     yesterday = datetime.now() - timedelta(days=1)
     week_ago = datetime.now() - timedelta(days=7)
     
+    # Get latest need crawlset
+    try:
+        latest_need_crawlset = CrawlSet.objects.filter(crawl_type="need").order_by("-start")[:1][0]
+    except IndexError:
+        latest_need_crawlset = None
+    
     stats = {
         "oldest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0],
         "latest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("-edited")[:1][0],
@@ -48,6 +54,7 @@ def index(request):
         "need_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="need", finish__gte=yesterday).count(),
         "oldest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").order_by("last_need_check")[:1][0],
         "latest_need_check":Foodbank.objects.all().exclude(is_closed = True).exclude(last_need_check__isnull=True).order_by("-last_need_check")[:1][0],
+        "latest_need_crawlset":latest_need_crawlset,
         "article_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="article", finish__gte=yesterday).count(),
         "charity_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="charity", finish__gte=yesterday).count(),
     }
