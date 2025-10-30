@@ -1,8 +1,8 @@
-# Give Food
+{% load humanize %}# Give Food
 
 > UK charity providing the largest public database of food banks and their current needs, with data used by governments, councils, NHS, media, and apps to help alleviate food insecurity.
 
-Give Food is a registered charity in England & Wales (1188192) that uses data to highlight local and structural food insecurity. We maintain near-realtime data on 2,916 food bank locations and 7,000+ donation points across the UK, tracking what items they need donated and providing tools to help connect donors with those in need.
+Give Food is a registered charity in England & Wales (1188192) that uses data to highlight local and structural food insecurity. We maintain near-realtime data on {{ foodbanks_count|floatformat:"0"|intcomma }} food bank locations and {{ donationpoints_count|floatformat:"0"|intcomma }}+ donation points across the UK, tracking what items they need donated and providing tools to help connect donors with those in need.
 
 ## About the Charity
 
@@ -91,7 +91,7 @@ Give Food is a registered charity in England & Wales (1188192) that uses data to
 
 - **AI-Enhanced Data**: Automated categorization of food bank needs and verification of location details
 - **Multi-Language Support**: Website available in English, Welsh, and Scots Gaelic
-- **Comprehensive Coverage**: 2,916 food banks and 7,000+ donation points including supermarkets, phone boxes, and cathedrals
+- **Comprehensive Coverage**: {{ foodbanks_count|floatformat:"0"|intcomma }} food banks and {{ donationpoints_count|floatformat:"0"|intcomma }}+ donation points including supermarkets, phone boxes, and cathedrals
 - **Real-Time Updates**: Multiple updates per day to keep donation needs current
 - **Political Integration**: Parliamentary constituency mapping and MP contact tools
 - **Open Data**: All data freely available via API and GitHub with no registration required

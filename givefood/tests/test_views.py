@@ -84,3 +84,31 @@ class TestSitemap:
         assert '<?xml version="1.0" encoding="UTF-8"?>' in content
         assert '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
         assert '</urlset>' in content
+
+
+@pytest.mark.django_db
+class TestLLMSTxt:
+    """Test llms.txt generation."""
+
+    def test_llmstxt_accessible(self, client):
+        """Test that llms.txt is accessible and returns valid plain text."""
+        response = client.get('/llms.txt')
+        assert response.status_code == 200
+        assert 'text/plain' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        # Check that the response contains expected content
+        assert '# Give Food' in content
+        assert 'UK charity' in content
+        
+    def test_llmstxt_has_dynamic_counts(self, client):
+        """Test that llms.txt includes dynamic foodbank and donation point counts."""
+        response = client.get('/llms.txt')
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        # Check that the content does NOT contain the old hardcoded values
+        assert '2,916 food bank' not in content
+        assert '7,000+ donation points' not in content
+        # The content should have numeric values (at least "0" with empty DB)
+        # Check that the template variable tags are not present (they've been rendered)
+        assert '{{ foodbanks_count' not in content
+        assert '{{ donationpoints_count' not in content
