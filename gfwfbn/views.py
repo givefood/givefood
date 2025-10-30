@@ -705,11 +705,21 @@ def foodbank_location_map(request, slug, locslug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
-    gmap_static_key = get_cred("gmap_static_key")
 
     # Use zoom 12 if boundary exists to show more area, otherwise zoom 15
     zoom = 12 if location.boundary_geojson else 15
-    url = "https://maps.googleapis.com/maps/api/staticmap?center=%s&zoom=%s&size=600x400&maptype=roadmap&format=png&visual_refresh=true&language=%s&key=%s" % (location.lat_lng, zoom, request.LANGUAGE_CODE, gmap_static_key)
+    
+    base_url = "https://maps.googleapis.com/maps/api/staticmap"
+    params = [
+        ("center", location.lat_lng),
+        ("zoom", zoom),
+        ("size", "600x400"),
+        ("maptype", "roadmap"),
+        ("format", "png"),
+        ("visual_refresh", "true"),
+        ("language", request.LANGUAGE_CODE),
+        ("key", get_cred("gmap_static_key")),
+    ]
 
     # Add boundary polygon if it exists
     if location.boundary_geojson:
@@ -732,17 +742,17 @@ def foodbank_location_map(request, slug, locslug):
                     coordinates = simplified
                 
                 # Format: fillcolor:0xf7a72333 (orange with ~20% opacity) | color:0xf7a723ff (orange border) | weight:1
-                path_param = "path=fillcolor:0xf7a72333|color:0xf7a723ff|weight:1"
+                path_param = "fillcolor:0xf7a72333|color:0xf7a723ff|weight:1"
                 for coord in coordinates:
                     # GeoJSON uses [lng, lat] order, Google Maps uses lat,lng
                     # Round to 4 decimal places to reduce URL length
                     path_param += "|%.4f,%.4f" % (coord[1], coord[0])
-                url += "&" + path_param
+                params.append(("path", path_param))
         except (KeyError, IndexError, json.JSONDecodeError):
             # If there's any error parsing the boundary, just continue without it
             pass
 
-    response = requests.get(url)
+    response = requests.get(base_url, params=params)
 
     return HttpResponse(response.content, content_type='image/png')
 

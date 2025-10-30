@@ -392,10 +392,14 @@ class TestFoodbankLocationMap:
         # Verify the Google Maps API was called
         assert mock_requests_get.called
         called_url = mock_requests_get.call_args[0][0]
-        assert "center=51.5014,-0.1419" in called_url
-        assert "zoom=15" in called_url
-        assert "language=en" in called_url  # Check language parameter
-        assert "path=" not in called_url  # No boundary path
+        called_params = mock_requests_get.call_args[1]['params']
+        assert called_url == "https://maps.googleapis.com/maps/api/staticmap"
+        # Convert params list to dict for easier checking
+        params_dict = dict(called_params)
+        assert params_dict['center'] == "51.5014,-0.1419"
+        assert params_dict['zoom'] == 15
+        assert params_dict['language'] == "en"  # Check language parameter
+        assert 'path' not in params_dict  # No boundary path
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -458,16 +462,21 @@ class TestFoodbankLocationMap:
         # Verify the Google Maps API was called with boundary path
         assert mock_requests_get.called
         called_url = mock_requests_get.call_args[0][0]
-        assert "center=51.5014,-0.1419" in called_url
-        assert "zoom=12" in called_url  # Zoom 12 when boundary exists
-        assert "language=en" in called_url  # Check language parameter
-        assert "path=" in called_url
-        assert "fillcolor:0xf7a72333" in called_url  # Orange fill with transparency
-        assert "color:0xf7a723ff" in called_url  # Orange border
-        assert "weight:1" in called_url
+        called_params = mock_requests_get.call_args[1]['params']
+        assert called_url == "https://maps.googleapis.com/maps/api/staticmap"
+        # Convert params list to dict for easier checking
+        params_dict = dict(called_params)
+        assert params_dict['center'] == "51.5014,-0.1419"
+        assert params_dict['zoom'] == 12  # Zoom 12 when boundary exists
+        assert params_dict['language'] == "en"  # Check language parameter
+        assert 'path' in params_dict
+        path_param = params_dict['path']
+        assert "fillcolor:0xf7a72333" in path_param  # Orange fill with transparency
+        assert "color:0xf7a723ff" in path_param  # Orange border
+        assert "weight:1" in path_param
         # Verify coordinates are in lat,lng format with reduced precision (4 decimal places)
         # The coordinates should be rounded to 4 decimal places
-        assert "51.5014,-0.1419" in called_url or "51.5014,-0.1420" in called_url
+        assert "51.5014,-0.1419" in path_param or "51.5014,-0.1420" in path_param
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -539,13 +548,17 @@ class TestFoodbankLocationMap:
         # Verify the Google Maps API was called with downsampled boundary
         assert mock_requests_get.called
         called_url = mock_requests_get.call_args[0][0]
-        assert "language=en" in called_url  # Check language parameter
+        called_params = mock_requests_get.call_args[1]['params']
+        assert called_url == "https://maps.googleapis.com/maps/api/staticmap"
+        # Convert params list to dict for easier checking
+        params_dict = dict(called_params)
+        assert params_dict['language'] == "en"  # Check language parameter
         
         # Count the number of pipe-separated coordinate pairs in the path
-        if "path=" in called_url:
-            path_section = called_url.split("path=")[1].split("&")[0] if "&" in called_url.split("path=")[1] else called_url.split("path=")[1]
+        if 'path' in params_dict:
+            path_param = params_dict['path']
             # Count pipes after the style parameters
-            coords_section = path_section.split("weight:1|", 1)[1] if "weight:1|" in path_section else ""
+            coords_section = path_param.split("weight:1|", 1)[1] if "weight:1|" in path_param else ""
             num_coords = len(coords_section.split("|"))
             # Should be downsampled to ~100 points (original was 151)
             assert num_coords <= 105, f"Expected ~100 coords, got {num_coords}"
