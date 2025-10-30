@@ -2,63 +2,105 @@
 
 > UK charity providing the largest public database of food banks and their current needs, with data used by governments, councils, NHS, media, and apps to help alleviate food insecurity.
 
-Give Food is a registered charity in England & Wales (1188192) that uses data to highlight local and structural food insecurity. We maintain near-realtime data on nearly 3000 food bank locations across the UK, tracking what items they need donated and providing tools to help connect donors with those in need.
+Give Food is a registered charity in England & Wales (1188192) that uses data to highlight local and structural food insecurity. We maintain near-realtime data on 2,916 food bank locations and 7,000+ donation points across the UK, tracking what items they need donated and providing tools to help connect donors with those in need.
 
-## About
+## About the Charity
 
 - [About Give Food]({{ domain }}/about-us/): Information about the charity, mission, and impact
+- [Annual Reports]({{ domain }}/annual-reports/): Yearly reports on activities, innovations, and impact (2019-2024)
+- [2024 Annual Report]({{ domain }}/ga/2024/): Latest report covering AI enhancements, election engagement, and language accessibility
+- [Donate]({{ domain }}/donate/): Information on how to support Give Food
+- [Register a Food Bank]({{ domain }}/register-foodbank/): Form for food banks to join the database
 - [Privacy Policy]({{ domain }}/privacy/): How we handle data and user privacy
 - [Colophon]({{ domain }}/colophon/): Technical details about the website and infrastructure
 - [Bot Documentation]({{ domain }}/bot/): Information about GiveFoodBot web crawler
 
-## Data & API
+## Public Tools
 
-- [API Documentation]({{ domain }}/api/): Current production API (v2) for accessing food bank data
-- [API v2 Technical Docs](https://github.com/givefood/givefood/blob/main/gfapi2/README.md): Comprehensive API documentation with endpoints and examples
-- [Open Data Repository](https://github.com/givefood/data): Versioned food bank data available on GitHub
-- [Data Dumps]({{ domain }}/dumps/): Downloadable data exports in multiple formats
+- [Find Food Banks Near You]({{ domain }}/needs/): Search by postcode, town, or location to find nearby food banks and what they need
+- [Write to Your MP]({{ domain }}/write/): Contact your Member of Parliament about food insecurity issues
+- [Dashboard]({{ domain }}/dashboard/): Data visualizations and statistics about food bank usage and trends
 
-## Tools
+## Dashboard & Visualizations
 
-- [What Food Banks Need]({{ domain }}/needs/): Public tool to search for food banks and see what items they need
-- [Write to Your MP]({{ domain }}/write/): Tool to contact political representatives about food insecurity
-- [Dashboard]({{ domain }}/dashboard/): Data visualizations and analytics about food bank usage
+- [Main Dashboard]({{ domain }}/dashboard/): Overview of food bank statistics and trends
+- [Items Requested Weekly]({{ domain }}/dashboard/items-requested-weekly/): Chart showing weekly demand trends over time
+- [Beans & Pasta Index]({{ domain }}/dashboard/): Unique index tracking staple item demand as a measure of food insecurity
+- [Most Requested Items]({{ domain }}/dashboard/): Analysis of commonly requested food and hygiene items
+- [Food Bank Locations Map]({{ domain }}/dashboard/): Geographic distribution of food banks across the UK
 
-## Documentation
+## API Documentation
 
-- [Main Repository](https://github.com/givefood/givefood): Source code for the Give Food platform
-- [Project README](https://github.com/givefood/givefood/blob/main/README.md): Repository overview and structure
-- [Testing Guide](https://github.com/givefood/givefood/blob/main/TESTING.md): How to run tests
-- [Project Structure](https://github.com/givefood/givefood/blob/main/README.md#structure): Overview of Django apps and their purposes
-- [Copilot Instructions](https://github.com/givefood/givefood/blob/main/.github/copilot-instructions.md): Development guidelines and conventions
+- [API Overview]({{ domain }}/api/): Introduction to the public API for accessing food bank data
+- [API v2 Documentation]({{ domain }}/api/2/docs/): Interactive documentation with all endpoints and examples
+- [API Technical Guide](https://github.com/givefood/givefood/blob/main/gfapi2/README.md): Comprehensive technical documentation
+
+## API Endpoints (v2)
+
+### Food Banks
+- [List All Food Banks]({{ domain }}/api/2/foodbanks/): All active food banks with basic information
+- [Get Food Bank Details]({{ domain }}/api/2/foodbank/{slug}/): Detailed information including needs and nearby locations
+- [Search Food Banks]({{ domain }}/api/2/foodbanks/search/?address={location}): Find food banks by postcode or address
+
+### Locations
+- [List All Locations]({{ domain }}/api/2/locations/): All food bank distribution points
+- [Search Locations]({{ domain }}/api/2/locations/search/?address={location}): Find distribution points near an address
+
+### Needs & Requests
+- [List Recent Needs]({{ domain }}/api/2/needs/): Latest 100 food bank need updates
+- [Get Specific Need]({{ domain }}/api/2/need/{id}/): Individual need request details
+
+### Political Data
+- [List All Constituencies]({{ domain }}/api/2/constituencies/): UK parliamentary constituencies
+- [Get Constituency Details]({{ domain }}/api/2/constituency/{slug}/): Food banks in a specific constituency
+
+### Geographic Data
+- [GeoJSON - All Data]({{ domain }}/needs/geo.json): All food banks, locations, and donation points in GeoJSON format
+- [GeoJSON - Food Bank]({{ domain }}/needs/at/{slug}/geo.json): Geographic data for a specific food bank
+- [GeoJSON - Constituency]({{ domain }}/needs/in/constituency/{slug}/geo.json): Food banks in a constituency
+
+## Data Resources
+
+- [Open Data Repository](https://github.com/givefood/data): Versioned food bank data on GitHub with daily updates
+- [Data Dumps]({{ domain }}/dumps/): Downloadable CSV, JSON, XML, and YAML exports
+- [Food Banks CSV](https://github.com/givefood/data/blob/main/foodbanks.csv): Complete list of food banks with metadata
+- [API Usage Guidelines]({{ domain }}/api/): Best practices for using Give Food data responsibly
+
+## Source Code & Documentation
+
+- [Main Repository](https://github.com/givefood/givefood): Complete source code for the Give Food platform
+- [Project README](https://github.com/givefood/givefood/blob/main/README.md): Repository overview and architecture
+- [Testing Guide](https://github.com/givefood/givefood/blob/main/TESTING.md): How to run tests and contribute
+- [Development Guidelines](https://github.com/givefood/givefood/blob/main/.github/copilot-instructions.md): Coding conventions and best practices
+- [Abbreviations](https://github.com/givefood/givefood/blob/main/abbreviations.md): Common abbreviations used in the codebase
+- [Languages](https://github.com/givefood/givefood/blob/main/languages.md): Internationalization and translation info (Welsh, Scots Gaelic)
+- [Cron Jobs](https://github.com/givefood/givefood/blob/main/crons.md): Scheduled task documentation
 
 ## Technical Components
 
-- [Public App README](https://github.com/givefood/givefood/blob/main/givefood/README.md): Core framework and public-facing features
-- [WFBN App README](https://github.com/givefood/givefood/blob/main/gfwfbn/README.md): What Food Banks Need tool documentation
-- [Admin App README](https://github.com/givefood/givefood/blob/main/gfadmin/README.md): Admin interface documentation
-- [Dashboard README](https://github.com/givefood/givefood/blob/main/gfdash/README.md): Data dashboard documentation
-- [Write App README](https://github.com/givefood/givefood/blob/main/gfwrite/README.md): MP contact tool documentation
-- [Offline Tasks README](https://github.com/givefood/givefood/blob/main/gfoffline/README.md): Background task documentation
+- [Public App](https://github.com/givefood/givefood/blob/main/givefood/README.md): Core framework and public-facing pages
+- [WFBN Tool](https://github.com/givefood/givefood/blob/main/gfwfbn/README.md): What Food Banks Need search tool
+- [Admin Interface](https://github.com/givefood/givefood/blob/main/gfadmin/README.md): Food bank data management
+- [Dashboard](https://github.com/givefood/givefood/blob/main/gfdash/README.md): Data visualization components
+- [Write Tool](https://github.com/givefood/givefood/blob/main/gfwrite/README.md): MP contact functionality
+- [API v2](https://github.com/givefood/givefood/blob/main/gfapi2/README.md): Current production API
+- [API v1](https://github.com/givefood/givefood/blob/main/gfapi1/README.md): Legacy API (deprecated)
+- [Offline Tasks](https://github.com/givefood/givefood/blob/main/gfoffline/README.md): Background processing and automation
 
-## API Endpoints
+## Key Features & Innovations
 
-- [List All Food Banks]({{ domain }}/api/foodbanks/): JSON list of all active food banks
-- [Food Bank Details]({{ domain }}/api/foodbank/{slug}/): Detailed information for a specific food bank
-- [Search Food Banks]({{ domain }}/api/foodbanks/search/): Geographic search by location or postcode
-- [Recent Needs]({{ domain }}/api/needs/): Latest food bank need updates
-- [Parliamentary Constituencies]({{ domain }}/api/constituencies/): UK constituency data with food bank coverage
-- [GeoJSON Data]({{ domain }}/needs/geo.json): Geographic data for mapping food banks
+- **AI-Enhanced Data**: Automated categorization of food bank needs and verification of location details
+- **Multi-Language Support**: Website available in English, Welsh, and Scots Gaelic
+- **Comprehensive Coverage**: 2,916 food banks and 7,000+ donation points including supermarkets, phone boxes, and cathedrals
+- **Real-Time Updates**: Multiple updates per day to keep donation needs current
+- **Political Integration**: Parliamentary constituency mapping and MP contact tools
+- **Open Data**: All data freely available via API and GitHub with no registration required
+- **Trusted by**: Governments, councils, universities, NHS, BBC, major supermarkets, and hundreds of news organizations
 
-## Reference Materials
-
-- [Abbreviations](https://github.com/givefood/givefood/blob/main/abbreviations.md): List of abbreviations used in the codebase
-- [Languages](https://github.com/givefood/givefood/blob/main/languages.md): Internationalization and translation information
-- [Cron Jobs](https://github.com/givefood/givefood/blob/main/crons.md): Scheduled task documentation
-
-## Contact
+## Contact & Social
 
 - Email: mail@givefood.org.uk
 - Twitter: https://twitter.com/GiveFoodCharity
 - Facebook: https://www.facebook.com/GiveFoodOrgUK
 - Website: {{ domain }}
+- Charity Registration: England & Wales 1188192
