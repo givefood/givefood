@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from givefood.func import decache
-from givefood.models import Dump, Foodbank, FoodbankChangeLine, FoodbankDonationPoint
+from givefood.models import Dump, Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation
 
 
 class Command(BaseCommand):
@@ -242,8 +242,6 @@ class Command(BaseCommand):
 
         self.stdout.write("Creating donationpoints dump...")
 
-        donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").filter(is_closed=False).order_by("name").iterator()
-
         donationpoint_dump = io.StringIO()
         writer = csv.writer(donationpoint_dump, quoting=csv.QUOTE_ALL)
         writer.writerow([
@@ -282,6 +280,9 @@ class Command(BaseCommand):
 
         row_count = 0
 
+        # Include FoodbankDonationPoint objects
+        donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").filter(is_closed=False).order_by("name").iterator()
+
         for donationpoint in donationpoints:
 
             row_count += 1
@@ -318,6 +319,47 @@ class Command(BaseCommand):
                 donationpoint.foodbank.network,
                 donationpoint.foodbank.country,
                 donationpoint.foodbank.lat_lng,
+            ])
+
+        # Include FoodbankLocation objects with is_donation_point=True
+        locations = FoodbankLocation.objects.select_related("foodbank").filter(is_closed=False, is_donation_point=True).order_by("name").iterator()
+
+        for location in locations:
+
+            row_count += 1
+
+            writer.writerow([
+                str(location.uuid),
+                location.name,
+                location.slug,
+                location.address,
+                location.postcode,
+                location.lat_lng,
+                location.phone_number,
+                None,  # opening_hours - not available on FoodbankLocation
+                None,  # wheelchair_accessible - not available on FoodbankLocation
+                None,  # url - not available on FoodbankLocation
+                None,  # in_store_only - not available on FoodbankLocation
+                None,  # company - not available on FoodbankLocation
+                None,  # store_id - not available on FoodbankLocation
+                location.place_id,
+                location.plus_code_compound,
+                location.plus_code_global,
+                location.lsoa,
+                location.msoa,
+                location.parliamentary_constituency_name,
+                location.mp_parl_id,
+                location.mp,
+                location.mp_party,
+                location.ward,
+                location.district,
+                str(location.foodbank.uuid),
+                location.foodbank.name,
+                location.foodbank.alt_name,
+                location.foodbank.slug,
+                location.foodbank.network,
+                location.foodbank.country,
+                location.foodbank.lat_lng,
             ])
 
         donationpoint_dump = donationpoint_dump.getvalue()
