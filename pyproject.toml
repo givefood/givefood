@@ -69,7 +69,7 @@ Documentation = "https://www.givefood.org.uk/api/"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["givefood*", "gf*"]
-exclude = ["*.tests", "*.tests.*", "tests.*", "tests"]
+exclude = ["givefood.tests*", "gf*.tests*"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "test_settings"
