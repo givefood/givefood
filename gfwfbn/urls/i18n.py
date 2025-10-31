@@ -25,6 +25,7 @@ urlpatterns = [
     path("at/<slug:slug>/subscribe/sample/", foodbank_subscribe_sample, name="foodbank_subscribe_sample"),
     re_path(r"^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),
     path("at/<slug:slug>/map.png", foodbank_map, name="foodbank_map"),
+    path("at/<slug:slug>/maps/<int:size>.png", foodbank_map, name="foodbank_map_size"),
 
     # Donation Points
     path("at/<slug:slug>/donationpoints/", foodbank_donationpoints, name="foodbank_donationpoints"),
@@ -35,6 +36,7 @@ urlpatterns = [
     path("at/<slug:slug>/locations/", foodbank_locations, name="foodbank_locations"),
     path("at/<slug:slug>/<slug:locslug>/geo.json", geojson, name="foodbank_location_geojson"),
     path("at/<slug:slug>/<slug:locslug>/map.png", foodbank_location_map, name="foodbank_location_map"),
+    path("at/<slug:slug>/<slug:locslug>/maps/<int:size>.png", foodbank_location_map, name="foodbank_location_map_size"),
     path("at/<slug:slug>/<slug:locslug>/", foodbank_location, name="foodbank_location"),
 
     # Constituencies 

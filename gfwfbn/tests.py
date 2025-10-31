@@ -340,6 +340,7 @@ class TestFoodbankLocationMap:
         mock_get_cred.return_value = "test_api_key"
         mock_response = Mock()
         mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
         mock_requests_get.return_value = mock_response
         
         # Create a food bank
@@ -409,6 +410,7 @@ class TestFoodbankLocationMap:
         mock_get_cred.return_value = "test_api_key"
         mock_response = Mock()
         mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
         mock_requests_get.return_value = mock_response
         
         # Create a food bank
@@ -486,6 +488,7 @@ class TestFoodbankLocationMap:
         mock_get_cred.return_value = "test_api_key"
         mock_response = Mock()
         mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
         mock_requests_get.return_value = mock_response
         
         # Create a food bank
@@ -563,3 +566,542 @@ class TestFoodbankLocationMap:
             # Should be downsampled to ~100 points (original was 151)
             assert num_coords <= 105, f"Expected ~100 coords, got {num_coords}"
             assert num_coords >= 50, f"Too few coords: {num_coords}"
+
+
+@pytest.mark.django_db
+class TestFoodbankMapSizes:
+    """Test the foodbank_map endpoint with different sizes"""
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_foodbank_map_size_300(self, mock_get_cred, mock_requests_get, client):
+        """Test that foodbank map with size 300 returns 150x150 at scale 2."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank",
+            slug="test-food-bank",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Make request with size 300
+        url = reverse('wfbn:foodbank_map_size', kwargs={
+            'slug': foodbank.slug,
+            'size': 300
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with correct size and scale
+        assert mock_requests_get.called
+        called_params = mock_requests_get.call_args[1]['params']
+        params_dict = dict(called_params)
+        assert params_dict['size'] == "150x150"
+        assert params_dict['scale'] == 2
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_foodbank_map_size_600(self, mock_get_cred, mock_requests_get, client):
+        """Test that foodbank map with size 600 returns 600x400 at scale 1."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 2",
+            slug="test-food-bank-2",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Make request with size 600
+        url = reverse('wfbn:foodbank_map_size', kwargs={
+            'slug': foodbank.slug,
+            'size': 600
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with correct size and scale
+        assert mock_requests_get.called
+        called_params = mock_requests_get.call_args[1]['params']
+        params_dict = dict(called_params)
+        assert params_dict['size'] == "600x400"
+        assert params_dict['scale'] == 1
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_foodbank_map_size_1080(self, mock_get_cred, mock_requests_get, client):
+        """Test that foodbank map with size 1080 returns 540x360 at scale 2."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 3",
+            slug="test-food-bank-3",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Make request with size 1080
+        url = reverse('wfbn:foodbank_map_size', kwargs={
+            'slug': foodbank.slug,
+            'size': 1080
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with correct size and scale
+        assert mock_requests_get.called
+        called_params = mock_requests_get.call_args[1]['params']
+        params_dict = dict(called_params)
+        assert params_dict['size'] == "540x360"
+        assert params_dict['scale'] == 2
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_foodbank_map_default_size(self, mock_get_cred, mock_requests_get, client):
+        """Test that foodbank map.png (default) returns 600x400 at scale 1."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 4",
+            slug="test-food-bank-4",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Make request with default size (map.png)
+        url = reverse('wfbn:foodbank_map', kwargs={
+            'slug': foodbank.slug,
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with correct size and scale
+        assert mock_requests_get.called
+        called_params = mock_requests_get.call_args[1]['params']
+        params_dict = dict(called_params)
+        assert params_dict['size'] == "600x400"
+        assert params_dict['scale'] == 1
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_foodbank_map_invalid_size(self, mock_get_cred, mock_requests_get, client):
+        """Test that foodbank map with invalid size returns 400."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 5",
+            slug="test-food-bank-5",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Make request with invalid size
+        url = reverse('wfbn:foodbank_map_size', kwargs={
+            'slug': foodbank.slug,
+            'size': 999
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 400
+
+
+@pytest.mark.django_db
+class TestFoodbankLocationMapSizes:
+    """Test the foodbank_location_map endpoint with different sizes"""
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_location_map_size_300(self, mock_get_cred, mock_requests_get, client):
+        """Test that location map with size 300 returns 150x150 at scale 2."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank",
+            slug="test-food-bank",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location",
+            slug="test-location",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            boundary_geojson=None,
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        # Make request with size 300
+        url = reverse('wfbn:foodbank_location_map_size', kwargs={
+            'slug': foodbank.slug,
+            'locslug': location.slug,
+            'size': 300
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with correct size and scale
+        assert mock_requests_get.called
+        called_params = mock_requests_get.call_args[1]['params']
+        params_dict = dict(called_params)
+        assert params_dict['size'] == "150x150"
+        assert params_dict['scale'] == 2
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_location_map_size_600(self, mock_get_cred, mock_requests_get, client):
+        """Test that location map with size 600 returns 600x400 at scale 1."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 2",
+            slug="test-food-bank-2",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location 2",
+            slug="test-location-2",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            boundary_geojson=None,
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        # Make request with size 600
+        url = reverse('wfbn:foodbank_location_map_size', kwargs={
+            'slug': foodbank.slug,
+            'locslug': location.slug,
+            'size': 600
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with correct size and scale
+        assert mock_requests_get.called
+        called_params = mock_requests_get.call_args[1]['params']
+        params_dict = dict(called_params)
+        assert params_dict['size'] == "600x400"
+        assert params_dict['scale'] == 1
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_location_map_size_1080(self, mock_get_cred, mock_requests_get, client):
+        """Test that location map with size 1080 returns 540x360 at scale 2."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 3",
+            slug="test-food-bank-3",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location 3",
+            slug="test-location-3",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            boundary_geojson=None,
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        # Make request with size 1080
+        url = reverse('wfbn:foodbank_location_map_size', kwargs={
+            'slug': foodbank.slug,
+            'locslug': location.slug,
+            'size': 1080
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with correct size and scale
+        assert mock_requests_get.called
+        called_params = mock_requests_get.call_args[1]['params']
+        params_dict = dict(called_params)
+        assert params_dict['size'] == "540x360"
+        assert params_dict['scale'] == 2
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_location_map_default_size(self, mock_get_cred, mock_requests_get, client):
+        """Test that location map.png (default) returns 600x400 at scale 1."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        mock_response = Mock()
+        mock_response.content = b"fake_image_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 4",
+            slug="test-food-bank-4",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location 4",
+            slug="test-location-4",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            boundary_geojson=None,
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        # Make request with default size (map.png)
+        url = reverse('wfbn:foodbank_location_map', kwargs={
+            'slug': foodbank.slug,
+            'locslug': location.slug
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        
+        # Verify the Google Maps API was called with correct size and scale
+        assert mock_requests_get.called
+        called_params = mock_requests_get.call_args[1]['params']
+        params_dict = dict(called_params)
+        assert params_dict['size'] == "600x400"
+        assert params_dict['scale'] == 1
+
+    @patch('gfwfbn.views.requests.get')
+    @patch('gfwfbn.views.get_cred')
+    def test_location_map_invalid_size(self, mock_get_cred, mock_requests_get, client):
+        """Test that location map with invalid size returns 400."""
+        # Setup mocks
+        mock_get_cred.return_value = "test_api_key"
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 5",
+            slug="test-food-bank-5",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a location
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location 5",
+            slug="test-location-5",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            boundary_geojson=None,
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        
+        # Make request with invalid size
+        url = reverse('wfbn:foodbank_location_map_size', kwargs={
+            'slug': foodbank.slug,
+            'locslug': location.slug,
+            'size': 999
+        })
+        response = client.get(url)
+        
+        # Verify response
+        assert response.status_code == 400
