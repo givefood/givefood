@@ -85,6 +85,15 @@
                     </picture>
                   </a>
                 {% endif %}
+                {% if location.boundary_geojson %}
+                  <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">
+                   <picture>
+                      <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=avif{% url 'wfbn:foodbank_location_map_size' foodbank.slug location.slug '300' %} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=avif{% url 'wfbn:foodbank_location_map_size' foodbank.slug location.slug '300' %} 300w" type="image/avif" sizes="150px">
+                      <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=webp{% url 'wfbn:foodbank_location_map_size' foodbank.slug location.slug '300' %} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=webp{% url 'wfbn:foodbank_location_map_size' foodbank.slug location.slug '300'%} 300w" type="image/webp" sizes="150px">
+                      <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{% url 'wfbn:foodbank_location_map_size' foodbank.slug location.slug '300' %}" alt="{{ location.name }}" loading="lazy" class="placephoto {% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %}" style="width:150px;clear:left">
+                    </picture>
+                  </a>
+                {% endif %}
                 <a href="{% url 'wfbn:foodbank_location' foodbank.slug location.slug %}">{{ location.name }}</a>
                 {% if location.address or location.postcode %}
                   <address>
