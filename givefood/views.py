@@ -75,7 +75,7 @@ def index(request):
             "name":"Independent Food Aid Network",
             "slug":"ifan",
             "url":"https://www.foodaidnetwork.org.uk",
-            "format":"png",
+            "format":"svg",
         },
         {
             "name":"Channel 4",
