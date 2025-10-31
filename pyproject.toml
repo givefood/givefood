@@ -66,8 +66,10 @@ Repository = "https://github.com/givefood/givefood"
 "Bug Tracker" = "https://github.com/givefood/givefood/issues"
 Documentation = "https://www.givefood.org.uk/api/"
 
-[tool.setuptools]
-packages = ["givefood", "gfadmin", "gfapi1", "gfapi2", "gfapi3", "gfapp", "gfauth", "gfdash", "gfdumps", "gfoffline", "gfwfbn", "gfwrite"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["givefood*", "gf*"]
+exclude = ["*.tests", "*.tests.*", "tests.*", "tests"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "test_settings"
