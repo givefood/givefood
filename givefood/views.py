@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, date
-import requirements, requests, json
+import requests, json, tomllib
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
@@ -455,12 +455,17 @@ def colophon(request):
     """
     Colophon
     """
-    requirements_url = "https://raw.githubusercontent.com/givefood/givefood/refs/heads/main/requirements.txt"
-    requirements_text = requests.get(requirements_url).content.decode("utf-8")
-    requirements_dict = requirements.parse(requirements_text)
+    pyproject_url = "https://raw.githubusercontent.com/givefood/givefood/refs/heads/main/pyproject.toml"
+    pyproject_text = requests.get(pyproject_url).content
+    pyproject_data = tomllib.loads(pyproject_text.decode("utf-8"))
+    
+    # Extract dependency names from pyproject.toml
     requirement_names = []
-    for requirement in requirements_dict:
-        requirement_names.append(requirement.name)
+    for dep in pyproject_data.get("project", {}).get("dependencies", []):
+        # Parse dependency string to get just the package name
+        # Handle formats like "django==5.2.7", "django-session-csrf", "sentry-sdk[django]"
+        dep_name = dep.split("==")[0].split(">=")[0].split("<=")[0].split("[")[0].strip()
+        requirement_names.append(dep_name)
     requirement_names.sort()
 
     changelog = Changelog.objects.all().order_by("-date")

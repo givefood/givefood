@@ -41,7 +41,6 @@ dependencies = [
     "beautifulsoup4",
     "google-genai",
     "django-earthdistance",
-    "requirements-parser",
     "google-cloud-translate",
     "google-api-python-client",
     "python-dotenv",
