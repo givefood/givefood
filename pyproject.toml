@@ -1,0 +1,77 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "givefood"
+version = "1.0.0"
+description = "Give Food - UK charity using data to highlight and alleviate food insecurity"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "Public Domain"}
+authors = [
+    {name = "Give Food", email = "mail@givefood.org.uk"}
+]
+keywords = ["charity", "food-banks", "django", "uk"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Django",
+    "Framework :: Django :: 5.2",
+    "Intended Audience :: Developers",
+    "License :: Public Domain",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+
+dependencies = [
+    "django==5.2.7",
+    "django-session-csrf",
+    "python-dateutil",
+    "requests-toolbelt",
+    "requests",
+    "django-bulma==0.10.0",
+    "unicodecsv",
+    "dicttoxml",
+    "feedparser",
+    "psycopg2-binary",
+    "furl",
+    "beautifulsoup4",
+    "google-genai",
+    "django-earthdistance",
+    "google-cloud-translate",
+    "google-api-python-client",
+    "python-dotenv",
+    "gunicorn",
+    "whitenoise",
+    "setuptools",
+    "pyyaml",
+    "sentry-sdk[django]",
+    "django-tasks",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-django",
+    "pytest-cov",
+]
+
+[project.urls]
+Homepage = "https://www.givefood.org.uk"
+Repository = "https://github.com/givefood/givefood"
+"Bug Tracker" = "https://github.com/givefood/givefood/issues"
+Documentation = "https://www.givefood.org.uk/api/"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["givefood*", "gf*"]
+exclude = ["givefood.tests*", "gf*.tests*"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "test_settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = "--reuse-db --nomigrations"
+testpaths = ["."]
