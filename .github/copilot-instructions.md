@@ -95,7 +95,7 @@ API responses include food bank data, needs, locations, and parliamentary consti
 ```bash
 virtualenv --python=python3.12 .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -e .
 ./manage.py runserver
 ```
 
@@ -109,7 +109,7 @@ The project uses python-dotenv to load from `.env` file:
 ### Important Files
 
 - `manage.py` - Django management commands
-- `requirements.txt` - Python dependencies
+- `pyproject.toml` - Python dependencies and project metadata
 - `abbreviations.md` - List of abbreviations used in the project
 - `crons.md` - Scheduled task documentation
 
