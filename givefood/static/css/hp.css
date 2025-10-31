@@ -43,6 +43,7 @@ h1 {
     height:1000px;
     border-radius:3px;
     margin-bottom:64px;
+    background:#78D5E9 !important;
 }
 .recently-updated, .most-viewed {
     column-count:2;
