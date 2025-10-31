@@ -98,5 +98,5 @@ Maintains in-memory caches of frequently accessed data to improve API and websit
 
 ## Related Documentation
 
-- [Cron schedule](../../crons.md) - Details of scheduled task timings
+- [Cron schedule](../../docs/crons.md) - Details of scheduled task timings
 - [Main README](../../README.md) - Project overview and structure

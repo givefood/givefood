@@ -110,8 +110,8 @@ The project uses python-dotenv to load from `.env` file:
 
 - `manage.py` - Django management commands
 - `pyproject.toml` - Python dependencies and project metadata
-- `abbreviations.md` - List of abbreviations used in the project
-- `crons.md` - Scheduled task documentation
+- `docs/abbreviations.md` - List of abbreviations used in the project
+- `docs/crons.md` - Scheduled task documentation
 
 ## Key Features
 
@@ -156,7 +156,7 @@ The project uses python-dotenv to load from `.env` file:
 
 ## Useful Abbreviations
 
-See `abbreviations.md` for a list of common abbreviations used throughout the codebase.
+See `docs/abbreviations.md` for a list of common abbreviations used throughout the codebase.
 
 ## Special Considerations
 

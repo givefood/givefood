@@ -72,9 +72,9 @@ Give Food is a registered charity in England & Wales (1188192) that uses data to
 - [Project README](https://github.com/givefood/givefood/blob/main/README.md): Repository overview and architecture
 - [Testing Guide](https://github.com/givefood/givefood/blob/main/TESTING.md): How to run tests and contribute
 - [Development Guidelines](https://github.com/givefood/givefood/blob/main/.github/copilot-instructions.md): Coding conventions and best practices
-- [Abbreviations](https://github.com/givefood/givefood/blob/main/abbreviations.md): Common abbreviations used in the codebase
-- [Languages](https://github.com/givefood/givefood/blob/main/languages.md): Internationalization and translation info (Welsh, Scots Gaelic)
-- [Cron Jobs](https://github.com/givefood/givefood/blob/main/crons.md): Scheduled task documentation
+- [Abbreviations](https://github.com/givefood/givefood/blob/main/docs/abbreviations.md): Common abbreviations used in the codebase
+- [Languages](https://github.com/givefood/givefood/blob/main/docs/languages.md): Internationalization and translation info (Welsh, Scots Gaelic)
+- [Cron Jobs](https://github.com/givefood/givefood/blob/main/docs/crons.md): Scheduled task documentation
 
 ## Technical Components
 
