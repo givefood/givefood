@@ -7,7 +7,7 @@ name = "givefood"
 version = "1.0.0"
 description = "Give Food - UK charity using data to highlight and alleviate food insecurity"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 license = {text = "Public Domain"}
 authors = [
     {name = "Give Food", email = "mail@givefood.org.uk"}
@@ -21,7 +21,7 @@ classifiers = [
     "License :: Public Domain",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
