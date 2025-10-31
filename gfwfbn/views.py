@@ -744,7 +744,7 @@ def foodbank_location_map(request, slug, locslug, size=600):
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
 
     # Use zoom 12 if boundary exists to show more area, otherwise zoom 15
-    zoom = 12 if location.boundary_geojson else 15
+    zoom = 11 if location.boundary_geojson else 15
     
     base_url = "https://maps.googleapis.com/maps/api/staticmap"
     params = [
