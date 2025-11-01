@@ -727,7 +727,7 @@ def need_notifications(request, id):
 
     # Update tweet time
     need.tweet_sent = datetime.now()
-    need.save(do_foodbank_save=False)
+    need.save(do_foodbank_save=False, do_translate=False)
 
     # Email subscriptions
     subscribers = FoodbankSubscriber.objects.filter(foodbank = foodbank, confirmed = True)
