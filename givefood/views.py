@@ -72,6 +72,12 @@ def index(request):
             "format":"svg",
         },
         {
+            "name":"Age UK",
+            "slug":"ageuk",
+            "url":"https://www.ageuk.org.uk",
+            "format":"svg",
+        },
+        {
             "name":"Independent Food Aid Network",
             "slug":"ifan",
             "url":"https://www.foodaidnetwork.org.uk",
