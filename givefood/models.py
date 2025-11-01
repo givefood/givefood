@@ -1777,7 +1777,7 @@ class FoodbankChange(models.Model):
     def translation_count(self):
         return FoodbankChangeTranslation.objects.filter(need = self).count()
 
-    def save(self, do_translate=False, do_foodbank_save=True, *args, **kwargs):
+    def save(self, do_translate=None, do_foodbank_save=True, *args, **kwargs):
 
         self.need_id_str = str(self.need_id)
 
@@ -1795,6 +1795,15 @@ class FoodbankChange(models.Model):
 
         if self.foodbank and self.published and do_foodbank_save:
             self.foodbank.save(do_geoupdate=False)
+        
+        # Translation behavior:
+        # - If do_translate is None (default), automatically translate when published=True
+        # - If do_translate is explicitly True, always translate when published=True
+        # - If do_translate is explicitly False, never translate (used for bulk operations)
+        # This ensures translations are triggered whenever a need is published,
+        # whether via form save or the publish button.
+        if do_translate is None:
+            do_translate = self.published
         
         if self.published and do_translate:
             for language in LANGUAGES:
