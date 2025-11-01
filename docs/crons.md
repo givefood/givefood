@@ -7,4 +7,4 @@
 | Charity Info        | `/opt/venv/bin/python /app/manage.py charityinfo`                | `30 5 * * *`      |
 | Dump                | `/opt/venv/bin/python /app/manage.py dump`                       | `30 4 * * *`      |
 | Days Between Needs  | `/opt/venv/bin/python /app/manage.py days_between_needs`         | `0 4 * * 0`       |
-| Task Worker         | `/opt/venv/bin/python /app/manage.py db_worker --batch --max-tasks 50` | `*/5 * * * *`     |
+| Task Worker         | `/opt/venv/bin/python /app/manage.py db_worker --batch --max-tasks 50 --queue-name *` | `*/5 * * * *`     |
