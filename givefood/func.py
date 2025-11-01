@@ -91,7 +91,7 @@ def get_all_constituencies():
     return all_parlcon
 
 
-@task
+@task(queue_name="decache")
 def decache_async(urls = None, prefixes = None):
     decache(urls = urls, prefixes = prefixes)
     return True
@@ -980,7 +980,7 @@ def post_to_subscriber(need, subscriber):
     )
 
 
-@task
+@task(queue_name="email")
 def send_email_async(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None):
     return send_email(
         to = to,
@@ -1150,7 +1150,7 @@ def get_translation(language, text, source="en"):
                     return translate_json["data"]["translations"][0]["translatedText"]
 
 
-@task
+@task(queue_name="translate")
 def translate_need_async(language, need_id_str):
     from givefood.models import FoodbankChange
     need = FoodbankChange.objects.get(need_id_str=need_id_str)
