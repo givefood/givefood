@@ -99,7 +99,8 @@ MIDDLEWARE = [
 
 TASKS = {
     "default": {
-        "BACKEND": "django_tasks.backends.database.DatabaseBackend"
+        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
+        "QUEUES": [],
     }
 }
 
