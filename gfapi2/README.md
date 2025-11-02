@@ -1,12 +1,12 @@
 # gfapi2
 
-This is the current production API (version 2) for Give Food, providing access to the largest public database of UK food banks and their current needs.
+The current production API (version 2) for Give Food at https://www.givefood.org.uk/api/
 
 ## Overview
 
-The API serves food bank data to governments, councils, universities, supermarkets, political parties, the NHS, broadcasters, food manufacturers, hundreds of national & local news websites, and apps.
+This is the current production API (version 2) for Give Food, providing access to the largest public database of UK food banks and their current needs.
 
-**Live API:** https://www.givefood.org.uk/api/
+The API serves food bank data to governments, councils, universities, supermarkets, political parties, the NHS, broadcasters, food manufacturers, hundreds of national & local news websites, and apps.
 
 ## Features
 

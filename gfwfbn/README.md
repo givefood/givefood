@@ -146,3 +146,18 @@ Aggressive caching is used throughout the app:
 - Email validation on subscriptions
 - Unique keys for subscription management
 - Duplicate prevention via database constraints
+
+
+## Related Apps
+
+- **givefood** - Core models for food banks, locations, needs, and subscriptions
+- **gfapi2** - API providing the same data in machine-readable formats
+- **gfadmin** - Admin interface for managing food bank data and needs
+- **gfapp** - Mobile-optimized PWA alternative interface
+- **gfoffline** - Background tasks for needs checking and data updates
+
+## Contact
+
+For questions or issues with the What Food Banks Need tool:
+- Email: mail@givefood.org.uk
+- Include food bank name or location for faster assistance
