@@ -82,17 +82,13 @@
       </div>
     </div>
 
-    <div class="columns logos">
+    <div class="columns logos is-mobile is-multiline">
       {% for logo in logos %}
-        <div class="column">
+        <div class="column is-half-mobile">
           <a href="{{ logo.url }}">
             <img src="/static/img/hplogos/{{ logo.slug }}.{{ logo.format }}" class="{{ logo.slug }}" alt="{{ logo.name }}" loading="lazy">
           </a>
         </div>
-      {% if forloop.counter == 8 %}
-        </div>
-        <div class="columns logos morelogos">
-      {% endif %}
       {% endfor %}
     </div>
 
