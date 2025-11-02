@@ -1,5 +1,9 @@
 # gfoffline
 
+Background tasks and offline processing for the Give Food project (no public URL - internal processes only)
+
+## Overview
+
 This app manages background tasks and offline processing for the Give Food project. It handles scheduled jobs, data maintenance, and automated updates that run independently of user interactions.
 
 ## Features

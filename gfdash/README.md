@@ -1,12 +1,14 @@
 # gfdash
 
+Data dashboards and analytics for the Give Food project at https://www.givefood.org.uk/dashboard/
+
+## Overview
+
 This app provides data dashboards and analytics for the Give Food project, displaying insights about food banks, their needs, and donation patterns.
 
 ## Purpose
 
 The gfdash app offers a collection of data visualization dashboards primarily aimed at food bank networks, researchers, and partners. These dashboards help understand trends in food bank needs, track donations, and analyze patterns in food insecurity across the UK.
-
-**Public URL**: https://www.givefood.org.uk/dashboard/
 
 ## Features
 
@@ -91,3 +93,11 @@ The following dashboards accept a `?days=N` query parameter to filter by time pe
 - Geographic filtering uses Django's Earthdistance extension for location-based queries
 - Complex aggregations use Django ORM's `annotate()`, `values()`, and aggregate functions
 - Some views use Django's `raw()` method for specific SQL optimizations (e.g., Bean & Pasta Index, Deliveries)
+
+
+## Related Apps
+
+- **givefood** - Core models providing the data (Foodbank, FoodbankChange, Order, etc.)
+- **gfapi2** - API providing programmatic access to the same data
+- **gfadmin** - Admin interface for managing the underlying data
+- **gfoffline** - Background tasks that keep dashboard data fresh

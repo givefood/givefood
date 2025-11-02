@@ -168,3 +168,10 @@ Please use [gfapi2](../gfapi2/) for new applications, which provides:
 - Integrates with the main Give Food models (Foodbank, FoodbankChange)
 - Uses geographic search via the `find_foodbanks()` helper function
 - Geocoding support via the `geocode()` helper function
+
+## Related Apps
+
+- **gfapi2** - Current production API (recommended replacement)
+- **gfapi3** - Future API under development
+- **givefood** - Core models and utilities used by this API
+- **gfadmin** - Admin interface for managing the food bank data
