@@ -2269,7 +2269,7 @@ class Dump(models.Model):
     size = models.PositiveIntegerField(null=True, blank=True)
     
     def file_name(self):
-        return "%s-%s-%s.%s" % (self.dump_type, get_language(), self.created.strftime("%Y%m%d"), self.dump_format)
+        return "%s-%s.%s" % (self.dump_type, self.created.strftime("%Y%m%d"), self.dump_format)
     
     def save(self, *args, **kwargs):
 
