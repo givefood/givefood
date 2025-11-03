@@ -84,7 +84,7 @@
 
     <div class="columns logos is-mobile is-multiline">
       {% for logo in logos %}
-        <div class="column is-half-mobile">
+        <div class="column is-half-mobile is-one-third-tablet is-one-fifth-desktop">
           <a href="{{ logo.url }}">
             <img src="/static/img/hplogos/{{ logo.slug }}.{{ logo.format }}" class="{{ logo.slug }}" alt="{{ logo.name }}" loading="lazy">
           </a>
