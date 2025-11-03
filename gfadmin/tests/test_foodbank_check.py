@@ -1,5 +1,4 @@
 """Tests for the foodbank check comparison functionality."""
-import pytest
 import json
 from gfadmin.views import compare_foodbank_data
 
@@ -23,9 +22,9 @@ class TestCompareFoodbankData:
             "donation_points": []
         }
         check_result = foodbank_json.copy()
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         assert len(differences["details_diff"]["deletions"]) == 0
         assert len(differences["details_diff"]["additions"]) == 0
 
@@ -57,9 +56,9 @@ class TestCompareFoodbankData:
             "locations": [],
             "donation_points": []
         }
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         assert "name" in differences["details_diff"]["deletions"]
         assert differences["details_diff"]["deletions"]["name"] == "Old Name"
         assert differences["details_diff"]["additions"]["name"] == "New Name"
@@ -70,16 +69,24 @@ class TestCompareFoodbankData:
         foodbank_json = {
             "details": {},
             "locations": [
-                {"name": "Location 1", "address": "Address 1", "postcode": "PC1 1AA"},
-                {"name": "Location 2", "address": "Address 2", "postcode": "PC2 2BB"}
+                {
+                    "name": "Location 1",
+                    "address": "Address 1",
+                    "postcode": "PC1 1AA"
+                },
+                {
+                    "name": "Location 2",
+                    "address": "Address 2",
+                    "postcode": "PC2 2BB"
+                }
             ],
             "donation_points": []
         }
         check_result = foodbank_json.copy()
         check_result["locations"] = list(foodbank_json["locations"])
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         assert len(differences["locations_diff"]["deletions"]) == 0
         assert len(differences["locations_diff"]["additions"]) == 0
 
@@ -88,23 +95,38 @@ class TestCompareFoodbankData:
         foodbank_json = {
             "details": {},
             "locations": [
-                {"name": "Location 1", "address": "Address 1", "postcode": "PC1 1AA"}
+                {
+                    "name": "Location 1",
+                    "address": "Address 1",
+                    "postcode": "PC1 1AA"
+                }
             ],
             "donation_points": []
         }
         check_result = {
             "details": {},
             "locations": [
-                {"name": "Location 1", "address": "Address 1", "postcode": "PC1 1AA"},
-                {"name": "Location 2", "address": "Address 2", "postcode": "PC2 2BB"}
+                {
+                    "name": "Location 1",
+                    "address": "Address 1",
+                    "postcode": "PC1 1AA"
+                },
+                {
+                    "name": "Location 2",
+                    "address": "Address 2",
+                    "postcode": "PC2 2BB"
+                }
             ],
             "donation_points": []
         }
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         assert len(differences["locations_diff"]["additions"]) == 1
-        assert differences["locations_diff"]["additions"][0]["name"] == "Location 2"
+        assert (
+            differences["locations_diff"]["additions"][0]["name"]
+            == "Location 2"
+        )
         assert len(differences["locations_diff"]["deletions"]) == 0
 
     def test_location_removed(self):
@@ -112,23 +134,38 @@ class TestCompareFoodbankData:
         foodbank_json = {
             "details": {},
             "locations": [
-                {"name": "Location 1", "address": "Address 1", "postcode": "PC1 1AA"},
-                {"name": "Location 2", "address": "Address 2", "postcode": "PC2 2BB"}
+                {
+                    "name": "Location 1",
+                    "address": "Address 1",
+                    "postcode": "PC1 1AA"
+                },
+                {
+                    "name": "Location 2",
+                    "address": "Address 2",
+                    "postcode": "PC2 2BB"
+                }
             ],
             "donation_points": []
         }
         check_result = {
             "details": {},
             "locations": [
-                {"name": "Location 1", "address": "Address 1", "postcode": "PC1 1AA"}
+                {
+                    "name": "Location 1",
+                    "address": "Address 1",
+                    "postcode": "PC1 1AA"
+                }
             ],
             "donation_points": []
         }
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         assert len(differences["locations_diff"]["deletions"]) == 1
-        assert differences["locations_diff"]["deletions"][0]["name"] == "Location 2"
+        assert (
+            differences["locations_diff"]["deletions"][0]["name"]
+            == "Location 2"
+        )
         assert len(differences["locations_diff"]["additions"]) == 0
 
     def test_donation_point_added(self):
@@ -142,14 +179,21 @@ class TestCompareFoodbankData:
             "details": {},
             "locations": [],
             "donation_points": [
-                {"name": "Tesco", "address": "High Street", "postcode": "PC3 3CC"}
+                {
+                    "name": "Tesco",
+                    "address": "High Street",
+                    "postcode": "PC3 3CC"
+                }
             ]
         }
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         assert len(differences["donation_points_diff"]["additions"]) == 1
-        assert differences["donation_points_diff"]["additions"][0]["name"] == "Tesco"
+        assert (
+            differences["donation_points_diff"]["additions"][0]["name"]
+            == "Tesco"
+        )
         assert len(differences["donation_points_diff"]["deletions"]) == 0
 
     def test_donation_point_removed(self):
@@ -158,7 +202,11 @@ class TestCompareFoodbankData:
             "details": {},
             "locations": [],
             "donation_points": [
-                {"name": "Tesco", "address": "High Street", "postcode": "PC3 3CC"}
+                {
+                    "name": "Tesco",
+                    "address": "High Street",
+                    "postcode": "PC3 3CC"
+                }
             ]
         }
         check_result = {
@@ -166,11 +214,14 @@ class TestCompareFoodbankData:
             "locations": [],
             "donation_points": []
         }
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         assert len(differences["donation_points_diff"]["deletions"]) == 1
-        assert differences["donation_points_diff"]["deletions"][0]["name"] == "Tesco"
+        assert (
+            differences["donation_points_diff"]["deletions"][0]["name"]
+            == "Tesco"
+        )
         assert len(differences["donation_points_diff"]["additions"]) == 0
 
     def test_handles_string_check_result(self):
@@ -185,9 +236,9 @@ class TestCompareFoodbankData:
             "locations": [],
             "donation_points": []
         })
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result_str)
-        
+
         assert len(differences["details_diff"]["deletions"]) == 0
 
     def test_handles_invalid_check_result(self):
@@ -197,9 +248,9 @@ class TestCompareFoodbankData:
             "locations": [],
             "donation_points": []
         }
-        
+
         differences = compare_foodbank_data(foodbank_json, "invalid json")
-        
+
         # Should return empty differences without crashing
         assert len(differences["details_diff"]["deletions"]) == 0
         assert len(differences["locations_diff"]["deletions"]) == 0
@@ -217,9 +268,9 @@ class TestCompareFoodbankData:
             "locations": [],
             "donation_points": []
         }
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         # Should not detect differences due to whitespace
         assert len(differences["details_diff"]["deletions"]) == 0
 
@@ -228,20 +279,28 @@ class TestCompareFoodbankData:
         foodbank_json = {
             "details": {},
             "locations": [
-                {"name": "Location One", "address": "123 Main St", "postcode": "PC1 1AA"}
+                {
+                    "name": "Location One",
+                    "address": "123 Main St",
+                    "postcode": "PC1 1AA"
+                }
             ],
             "donation_points": []
         }
         check_result = {
             "details": {},
             "locations": [
-                {"name": "LOCATION ONE", "address": "123 MAIN ST", "postcode": "pc1 1aa"}
+                {
+                    "name": "LOCATION ONE",
+                    "address": "123 MAIN ST",
+                    "postcode": "pc1 1aa"
+                }
             ],
             "donation_points": []
         }
-        
+
         differences = compare_foodbank_data(foodbank_json, check_result)
-        
+
         # Should not detect differences due to case
         assert len(differences["locations_diff"]["deletions"]) == 0
         assert len(differences["locations_diff"]["additions"]) == 0
