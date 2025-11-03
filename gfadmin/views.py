@@ -21,7 +21,7 @@ from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import find_locations, foodbank_article_crawl, get_all_foodbanks, get_all_locations, post_to_subscriber, send_email, get_cred, distance_meters
+from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters
 from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
 from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
@@ -431,6 +431,178 @@ def foodbank_form(request, slug = None):
     return render(request, "admin/form.html", template_vars)
 
 
+def foodbank_check(request, slug):
+    
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    # Prepare foodbank JSON
+    foodbank_json = {
+        "details":{
+            "name": foodbank.name,
+            "address": foodbank.address,
+            "postcode": foodbank.postcode,
+            "country": foodbank.country,
+            "phone_number": foodbank.phone_number,
+            "contact_email": foodbank.contact_email,
+            "network": foodbank.network,
+        }
+    }
+    foodbank_locations = []
+    for location in FoodbankLocation.objects.filter(foodbank = foodbank):
+        foodbank_locations.append({
+            "name": location.name,
+            "address": location.address,
+            "postcode": location.postcode,
+        })
+    foodbank_json["locations"] = foodbank_locations
+    foodbank_donation_points = []
+    for donation_point in FoodbankDonationPoint.objects.filter(foodbank = foodbank):
+        foodbank_donation_points.append({
+            "name": donation_point.name,
+            "address": donation_point.address,
+            "postcode": donation_point.postcode,
+        })
+    foodbank_json["donation_points"] = foodbank_donation_points
+
+    # Get HTML
+    timeout_sec = 20
+    homepage = shopping_list = locations = contacts = donation_points = None
+    url_blacklist = [
+        "facebook.com",
+        "bankthefood.org",
+    ]
+
+    homepage = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text
+    if foodbank.shopping_list_url and all(x not in foodbank.shopping_list_url for x in url_blacklist):
+        shopping_list = htmlbodytext(requests.get(foodbank.shopping_list_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+    if foodbank.locations_url:
+        locations = htmlbodytext(requests.get(foodbank.locations_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+    if foodbank.contacts_url:
+        contacts = htmlbodytext(requests.get(foodbank.contacts_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+    if foodbank.donation_points_url:
+        donation_points = htmlbodytext(requests.get(foodbank.donation_points_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+
+    foodbank_pages = {
+        "homepage": homepage,
+        "shopping_list": shopping_list,
+        "locations": locations,
+        "contacts": contacts,
+        "donation_points": donation_points,
+    }
+    prompt = render_to_string(
+        "admin/prompts/check.txt",
+        {
+            "foodbank":foodbank,
+            "foodbank_json":json.dumps(foodbank_json, indent=2),
+            "foodbank_pages":foodbank_pages,
+        }
+    )
+    check_result = gemini(
+        prompt,
+        0,
+        response_mime_type = "application/json",
+        model = "gemini-2.5-flash",
+        response_schema = {
+  "type": "object",
+  "properties": {
+    "details": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "postcode": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "phone_number": {
+          "type": "string"
+        },
+        "contact_email": {
+          "type": "string"
+        },
+        "network": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "address",
+        "postcode",
+        "country",
+        "phone_number",
+        "contact_email",
+        "network"
+      ]
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "postcode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "address",
+          "postcode"
+        ]
+      }
+    },
+    "donation_points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "postcode": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "address",
+          "postcode"
+        ]
+      }
+    }
+  },
+  "required": [
+    "details",
+    "locations",
+    "donation_points"
+  ]
+}
+    )
+    logging.warning("Foodbank check result: %s", check_result)
+
+    template_vars = {
+        "foodbank":foodbank,
+        "prompt":prompt,
+        "check_result":check_result,
+    }
+
+    return render(request, "admin/check.html", template_vars)
+
+
 @require_POST
 def foodbank_crawl(request, slug):
 
@@ -711,6 +883,7 @@ def need_publish(request, id, action):
     if action == "unpublish":
         need.published = False
     need.save(do_translate = True)
+    need.save()
     return redirect("admin:need", id = need.need_id)
 
 

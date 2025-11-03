@@ -1,0 +1,66 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+{% load custom_tags %} 
+
+
+{% block title %}Check {{ foodbank.name}} - GF Admin{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <h2>Check {{ foodbank.name }}</h2>
+        </div>
+    </div>
+
+  <div class="columns">
+
+        <div class="column">
+
+            <details>
+                <summary>Prompt</summary>
+                {{ prompt|linebreaksbr }}
+            </details>
+            <br>
+
+            <h3>Details</h3>
+            <dl>
+                <dt>URL</dt>
+                <dd><a href="{{ foodbank.url }}" target="_blank">{{ foodbank.url }}</a></dd>
+            </dl>
+
+            <h3>Locations</h3>
+            <ul>
+                {% for location in foodbank.locations %}
+                    <li>
+                        {{ location.name }}<br>
+                        {{ location.address }}<br>
+                        {{ location.postcode }}
+                        <br><br>
+                    </li>
+                {% endfor %}
+            </ul>
+
+            <h3>Donation Points</h3>
+            <ul>
+                {% for dp in foodbank.donation_points %}
+                    <li>
+                        {{ dp.name }}<br>
+                        {{ dp.address }}<br>
+                        {{ dp.postcode }}
+                        <br><br>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+        <div class="column">
+            <h3>Check Result</h3>
+            {% if check_result %}
+                
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
