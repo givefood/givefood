@@ -98,7 +98,7 @@ def rss(request, slug=None):
         foodbank = get_object_or_404(Foodbank, slug = slug)
 
     # Get needs - filter by foodbank if slug provided
-    needs_query = FoodbankChange.objects.filter(published = True).exclude(change_text = "Nothing").exclude(change_text = "Facebook").exclude(change_text = "Unknown")
+    needs_query = FoodbankChange.objects.filter(published = True).exclude(change_text = "Nothing").exclude(change_text = "Facebook").exclude(change_text = "Unknown").select_related('foodbank')
     if foodbank:
         needs_query = needs_query.filter(foodbank = foodbank)
     needs = needs_query.order_by("-created")[:10]
