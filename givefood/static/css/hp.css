@@ -67,81 +67,81 @@ h1 {
     padding-bottom:2rem;
 }
 .logos img {
-    max-width:120px;
+    max-width:108px;
 }
 .logos div {
     margin:auto;
     text-align:center;
 }
 .trussell {
-    height:40px;
+    height:36px;
 }
 .thetimes {
-    width:110px;
+    width:99px;
 }
 .nhs {
-    height:35px;
+    height:31px;
 }
 .bbc {
-    height:35px;
+    height:31px;
 }
 .scottishgov {
-    width:150px;
+    width:135px;
 }
 .cdrc {
-    height:60px;
+    height:54px;
 }
 .reach {
-    width:75px;
+    width:67px;
 }
 .ifan {
-    height:45px;
+    height:40px;
 }
 .channel4 {
-    height:60px;
+    height:54px;
 }
 .welshgov {
-    height:60px;
+    height:54px;
 }
 .fcdo {
-    width:150px;
+    width:135px;
 }
 .mars {
-    width:100px;
+    width:90px;
 }
 .ca {
-    width:80px;
+    width:72px;
 }
 @media screen and (min-width: 769px) {
     .trussell {
-        height:80px;
+        height:72px;
     }
     .thetimes {
-        width:170px;
+        width:153px;
     }
     .nhs {
-        height:40px;
+        height:36px;
     }
     .bbc {
-        height:35px;
+        height:31px;
     }
     .scottishgov {
-        width:190px;
+        width:171px;
     }
     .cdrc {
-        height:70px;
+        height:63px;
     }
     .reach {
-        width:110px;
+        width:99px;
     }
     .ifan {
-        height:50px;
+        height:45px;
     }
     .fcdo {
-        width:100px;
+        width:90px;
     }
     .mars {
-        width:100px;
+        width:90px;
     }
 }
 
