@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+{% load i18n %}<?xml version="1.0" encoding="utf-8"?>
 {% include 'public/includes/debugcomment.html' %}
 <rss version="2.0">
         <channel>
                 <title>{% if foodbank %}{{ foodbank.full_name }}{% else %}Give Food{% endif %}</title>
-                <description>News &amp; donation requests from {% if foodbank %}{{ foodbank.full_name }}{% else %}UK food banks{% endif %}</description>
-                <link>https://www.givefood.org.uk{% if foodbank %}{% url 'wfbn:foodbank' foodbank.slug %}{% endif %}</link>
+                <description>{% trans "News &amp; donation requests from " %}{% if foodbank %}{{ foodbank.full_name }}{% else %}{% trans "UK food banks" %}{% endif %}</description>
+                <link>{{ SITE_DOMAIN }}{% if foodbank %}{% url 'wfbn:foodbank' foodbank.slug %}{% endif %}</link>
                 <lastBuildDate>{% now "D, d M Y H:i:s O" %}</lastBuildDate>
                 {% for item in items %}
                     <item>

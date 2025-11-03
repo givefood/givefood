@@ -99,11 +99,13 @@ def rss(request):
     # Put them all together
     items = []
     for need in needs:
+        title = "%s %s %s" % (need.no_items(), gettext("items requested at"), need.foodbank.full_name())
+        url = "%s%s#need-%s" % (SITE_DOMAIN, reverse("wfbn:foodbank", args=[need.foodbank.slug]), need.need_id)
         items.append({
-            "title":"%s items requested at %s" % (need.no_items(), need.foodbank.full_name()),
-            "url":"https://www.givefood.org.uk/needs/at/%s/#need-%s" % (need.foodbank.slug, need.need_id),
-            "date":need.created,
-            "description":need.change_text,
+            "title": title,
+            "url": url,
+            "date": need.created,
+            "description": need.get_change_text(),
         })
     for newsitem in news:
         items.append({
@@ -116,6 +118,7 @@ def rss(request):
     items = sorted(items, key=lambda d: d['date'], reverse=True) 
 
     template_vars = {
+        "SITE_DOMAIN":SITE_DOMAIN,
         "items":items,
     }
 
@@ -364,11 +367,13 @@ def foodbank_rss(request, slug):
 
     items = []
     for need in needs:
+        title = "%s %s %s" % (need.no_items(), gettext("items requested at"), need.foodbank.full_name())
+        url = "%s%s#need-%s" % (SITE_DOMAIN, reverse("wfbn:foodbank", args=[need.foodbank.slug]), need.need_id)
         items.append({
-            "title":"%s items requested at %s" % (need.no_items(), foodbank.full_name()),
-            "url":"https://www.givefood.org.uk/needs/at/%s/#need-%s" % (foodbank.slug, need.need_id),
-            "date":need.created,
-            "description":need.clean_change_text()
+            "title": title,
+            "url": url,
+            "date": need.created,
+            "description": need.get_change_text()
         })
     for newsitem in news:
         items.append({
@@ -380,6 +385,7 @@ def foodbank_rss(request, slug):
     items = sorted(items, key=lambda d: d['date'], reverse=True) 
 
     template_vars = {
+        "SITE_DOMAIN":SITE_DOMAIN,
         "foodbank":foodbank,
         "items":items,
     }
