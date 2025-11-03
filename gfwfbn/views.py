@@ -85,7 +85,7 @@ def index(request):
     return render(request, "wfbn/index.html", template_vars)
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_DAY)
 def rss(request, slug=None):
     """
     RSS feed for site-wide updates or a specific food bank
