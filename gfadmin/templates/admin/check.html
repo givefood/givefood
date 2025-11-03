@@ -59,6 +59,87 @@
             <h3>Check Result</h3>
             {% if check_result %}
                 
+                <h4>Details Changes</h4>
+                {% if differences.details_diff.deletions or differences.details_diff.additions %}
+                    <table class="table is-striped is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Current Value</th>
+                                <th>New Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, old_value in differences.details_diff.deletions.items %}
+                                <tr>
+                                    <td><strong>{{ key }}</strong></td>
+                                    <td>{{ old_value }}</td>
+                                    <td>{{ differences.details_diff.additions|get_item:key }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="has-text-success">✓ No changes in details</p>
+                {% endif %}
+
+                <h4>Locations Changes</h4>
+                {% if differences.locations_diff.deletions %}
+                    <h5 class="has-text-danger">Deletions:</h5>
+                    <ul>
+                        {% for location in differences.locations_diff.deletions %}
+                            <li class="has-background-danger-light">
+                                <strong>{{ location.name }}</strong><br>
+                                {{ location.address }}<br>
+                                {{ location.postcode }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if differences.locations_diff.additions %}
+                    <h5 class="has-text-success">Additions:</h5>
+                    <ul>
+                        {% for location in differences.locations_diff.additions %}
+                            <li class="has-background-success-light">
+                                <strong>{{ location.name }}</strong><br>
+                                {{ location.address }}<br>
+                                {{ location.postcode }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if not differences.locations_diff.deletions and not differences.locations_diff.additions %}
+                    <p class="has-text-success">✓ No changes in locations</p>
+                {% endif %}
+
+                <h4>Donation Points Changes</h4>
+                {% if differences.donation_points_diff.deletions %}
+                    <h5 class="has-text-danger">Deletions:</h5>
+                    <ul>
+                        {% for dp in differences.donation_points_diff.deletions %}
+                            <li class="has-background-danger-light">
+                                <strong>{{ dp.name }}</strong><br>
+                                {{ dp.address }}<br>
+                                {{ dp.postcode }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if differences.donation_points_diff.additions %}
+                    <h5 class="has-text-success">Additions:</h5>
+                    <ul>
+                        {% for dp in differences.donation_points_diff.additions %}
+                            <li class="has-background-success-light">
+                                <strong>{{ dp.name }}</strong><br>
+                                {{ dp.address }}<br>
+                                {{ dp.postcode }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if not differences.donation_points_diff.deletions and not differences.donation_points_diff.additions %}
+                    <p class="has-text-success">✓ No changes in donation points</p>
+                {% endif %}
             {% endif %}
         </div>
     </div>

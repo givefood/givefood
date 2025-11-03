@@ -431,6 +431,99 @@ def foodbank_form(request, slug = None):
     return render(request, "admin/form.html", template_vars)
 
 
+def compare_foodbank_data(foodbank_json, check_result):
+    """
+    Compare foodbank_json with check_result and return differences.
+    
+    Returns a dict with three keys: details_diff, locations_diff, donation_points_diff
+    Each containing 'deletions' (old values) and 'additions' (new values).
+    """
+    differences = {
+        "details_diff": {"deletions": {}, "additions": {}},
+        "locations_diff": {"deletions": [], "additions": []},
+        "donation_points_diff": {"deletions": [], "additions": []},
+    }
+    
+    # Parse check_result if it's a string
+    if isinstance(check_result, str):
+        try:
+            check_result = json.loads(check_result)
+        except (json.JSONDecodeError, TypeError):
+            return differences
+    
+    # Compare details (field by field)
+    if "details" in foodbank_json and "details" in check_result:
+        for key in foodbank_json["details"]:
+            old_value = foodbank_json["details"].get(key, "")
+            new_value = check_result["details"].get(key, "")
+            
+            # Normalize values for comparison (strip whitespace, handle None)
+            old_value_normalized = str(old_value).strip() if old_value else ""
+            new_value_normalized = str(new_value).strip() if new_value else ""
+            
+            if old_value_normalized != new_value_normalized:
+                differences["details_diff"]["deletions"][key] = old_value
+                differences["details_diff"]["additions"][key] = new_value
+    
+    # Compare locations (array comparison)
+    if "locations" in foodbank_json and "locations" in check_result:
+        old_locations = foodbank_json["locations"]
+        new_locations = check_result["locations"]
+        
+        # Create normalized versions for comparison
+        def normalize_location(loc):
+            return {
+                "name": str(loc.get("name", "")).strip().lower(),
+                "address": str(loc.get("address", "")).strip().lower(),
+                "postcode": str(loc.get("postcode", "")).strip().lower()
+            }
+        
+        old_normalized = [normalize_location(loc) for loc in old_locations]
+        new_normalized = [normalize_location(loc) for loc in new_locations]
+        
+        # Find deletions (in old but not in new)
+        for i, old_loc in enumerate(old_locations):
+            old_norm = old_normalized[i]
+            if old_norm not in new_normalized:
+                differences["locations_diff"]["deletions"].append(old_loc)
+        
+        # Find additions (in new but not in old)
+        for i, new_loc in enumerate(new_locations):
+            new_norm = new_normalized[i]
+            if new_norm not in old_normalized:
+                differences["locations_diff"]["additions"].append(new_loc)
+    
+    # Compare donation_points (array comparison)
+    if "donation_points" in foodbank_json and "donation_points" in check_result:
+        old_dps = foodbank_json["donation_points"]
+        new_dps = check_result["donation_points"]
+        
+        # Create normalized versions for comparison
+        def normalize_dp(dp):
+            return {
+                "name": str(dp.get("name", "")).strip().lower(),
+                "address": str(dp.get("address", "")).strip().lower(),
+                "postcode": str(dp.get("postcode", "")).strip().lower()
+            }
+        
+        old_normalized = [normalize_dp(dp) for dp in old_dps]
+        new_normalized = [normalize_dp(dp) for dp in new_dps]
+        
+        # Find deletions (in old but not in new)
+        for i, old_dp in enumerate(old_dps):
+            old_norm = old_normalized[i]
+            if old_norm not in new_normalized:
+                differences["donation_points_diff"]["deletions"].append(old_dp)
+        
+        # Find additions (in new but not in old)
+        for i, new_dp in enumerate(new_dps):
+            new_norm = new_normalized[i]
+            if new_norm not in old_normalized:
+                differences["donation_points_diff"]["additions"].append(new_dp)
+    
+    return differences
+
+
 def foodbank_check(request, slug):
     
     foodbank = get_object_or_404(Foodbank, slug = slug)
@@ -594,10 +687,15 @@ def foodbank_check(request, slug):
     )
     logging.warning("Foodbank check result: %s", check_result)
 
+    # Compare foodbank_json with check_result
+    differences = compare_foodbank_data(foodbank_json, check_result)
+
     template_vars = {
         "foodbank":foodbank,
         "prompt":prompt,
         "check_result":check_result,
+        "foodbank_json":foodbank_json,
+        "differences":differences,
     }
 
     return render(request, "admin/check.html", template_vars)
