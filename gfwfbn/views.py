@@ -85,16 +85,29 @@ def index(request):
     return render(request, "wfbn/index.html", template_vars)
 
 
-@cache_page(SECONDS_IN_WEEK)
-def rss(request):
+@cache_page(SECONDS_IN_DAY)
+def rss(request, slug=None):
     """
-    Site-wide RSS feed
+    RSS feed for site-wide updates or a specific food bank
+    If slug is provided, returns feed for that food bank only.
+    Otherwise, returns site-wide feed.
     """ 
 
-    # Get needs
-    needs = FoodbankChange.objects.filter(published = True).exclude(change_text = "Nothing").exclude(change_text = "Facebook").exclude(change_text = "Unknown").order_by("-created")[:10]
-    # Get news
-    news = FoodbankArticle.objects.all().order_by("-published_date")[:10]
+    foodbank = None
+    if slug:
+        foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    # Get needs - filter by foodbank if slug provided
+    needs_query = FoodbankChange.objects.filter(published = True).exclude(change_text = "Nothing").exclude(change_text = "Facebook").exclude(change_text = "Unknown")
+    if foodbank:
+        needs_query = needs_query.filter(foodbank = foodbank)
+    needs = needs_query.order_by("-created")[:10]
+
+    # Get news - filter by foodbank if slug provided
+    news_query = FoodbankArticle.objects.all()
+    if foodbank:
+        news_query = news_query.filter(foodbank = foodbank)
+    news = news_query.order_by("-published_date")[:10]
 
     # Put them all together
     items = []
@@ -121,6 +134,8 @@ def rss(request):
         "SITE_DOMAIN":SITE_DOMAIN,
         "items":items,
     }
+    if foodbank:
+        template_vars["foodbank"] = foodbank
 
     return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
 
@@ -352,45 +367,6 @@ def foodbank(request, slug):
     }
 
     return render(request, "wfbn/foodbank/index_%s.html" % (template), template_vars)
-
-
-@cache_page(SECONDS_IN_DAY)
-def foodbank_rss(request, slug):
-    """
-    Food bank RSS feed
-    """
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-
-    needs = FoodbankChange.objects.filter(foodbank = foodbank, published = True).exclude(change_text = "Nothing").exclude(change_text = "Facebook").exclude(change_text = "Unknown").order_by("-created")[:10]
-    news = FoodbankArticle.objects.filter(foodbank = foodbank).order_by("-published_date")[:10]
-
-    items = []
-    for need in needs:
-        title = "%s %s %s" % (need.no_items(), gettext("items requested at"), need.foodbank.full_name())
-        url = "%s%s#need-%s" % (SITE_DOMAIN, reverse("wfbn:foodbank", args=[need.foodbank.slug]), need.need_id)
-        items.append({
-            "title": title,
-            "url": url,
-            "date": need.created,
-            "description": need.get_change_text()
-        })
-    for newsitem in news:
-        items.append({
-            "title":newsitem.title,
-            "url":newsitem.url,
-            "date":newsitem.published_date,
-        })
-
-    items = sorted(items, key=lambda d: d['date'], reverse=True) 
-
-    template_vars = {
-        "SITE_DOMAIN":SITE_DOMAIN,
-        "foodbank":foodbank,
-        "items":items,
-    }
-
-    return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
 
 
 # Constants for map sizes

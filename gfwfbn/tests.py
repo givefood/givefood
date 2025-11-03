@@ -1105,3 +1105,86 @@ class TestFoodbankLocationMapSizes:
         
         # Verify response
         assert response.status_code == 400
+
+
+@pytest.mark.django_db
+class TestRSSFeeds:
+    """Test the combined RSS feed functionality"""
+
+    def test_site_wide_rss_returns_xml(self, client):
+        """Test that the site-wide RSS feed returns valid XML."""
+        response = client.get(reverse('wfbn:rss'))
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'text/xml'
+        # Check for basic RSS structure
+        content = response.content.decode('utf-8')
+        assert '<?xml version="1.0"' in content
+        assert '<rss version="2.0">' in content
+        assert '<channel>' in content
+        assert '<title>Give Food</title>' in content
+
+    def test_foodbank_specific_rss_returns_xml(self, client):
+        """Test that a food bank-specific RSS feed returns valid XML."""
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank",
+            slug="test-food-bank",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        response = client.get(reverse('wfbn:foodbank_rss', kwargs={'slug': 'test-food-bank'}))
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'text/xml'
+        # Check for basic RSS structure
+        content = response.content.decode('utf-8')
+        assert '<?xml version="1.0"' in content
+        assert '<rss version="2.0">' in content
+        assert '<channel>' in content
+        # Should include foodbank name
+        assert 'Test Food Bank' in content
+
+    def test_foodbank_rss_with_needs(self, client):
+        """Test that a food bank RSS feed includes needs when present."""
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 2",
+            slug="test-food-bank-2",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need for the food bank
+        need = FoodbankChange.objects.create(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes, Pasta, Rice",
+            published=True,
+        )
+
+        response = client.get(reverse('wfbn:foodbank_rss', kwargs={'slug': 'test-food-bank-2'}))
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        # Should include items from the need
+        assert '<item>' in content
+        assert 'items requested at' in content
+
+    def test_foodbank_rss_invalid_slug_returns_404(self, client):
+        """Test that requesting RSS for non-existent food bank returns 404."""
+        response = client.get(reverse('wfbn:foodbank_rss', kwargs={'slug': 'non-existent-foodbank'}))
+        assert response.status_code == 404
