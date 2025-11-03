@@ -1748,11 +1748,17 @@ class FoodbankChange(models.Model):
             if text_type == "excess":
                 return self.excess_change_text
         else:
-            tranlated_text = FoodbankChangeTranslation.objects.get(need = self, language = current_language)
+            try:
+                translated_text = FoodbankChangeTranslation.objects.get(need = self, language = current_language)
+            except FoodbankChangeTranslation.DoesNotExist:
+                if text_type == "change":
+                    return self.change_text
+                if text_type == "excess":
+                    return self.excess_change_text
             if text_type == "change":
-                return tranlated_text.change_text
+                return translated_text.change_text
             if text_type == "excess":
-                return tranlated_text.excess_change_text
+                return translated_text.excess_change_text
 
     def get_change_text(self):
         return self.get_text("change")
