@@ -15,7 +15,7 @@ urlpatterns = [
 
     # Foodbank
     path("at/<slug:slug>/", foodbank, name="foodbank"),
-    path("at/<slug:slug>/rss.xml", foodbank_rss, name="foodbank_rss"),
+    path("at/<slug:slug>/rss.xml", rss, name="foodbank_rss"),
     path("at/<slug:slug>/geo.json", geojson, name="foodbank_geojson"),
     path("at/<slug:slug>/news/", foodbank_news, name="foodbank_news"),
     path("at/<slug:slug>/charity/", foodbank_charity, name="foodbank_charity"),
