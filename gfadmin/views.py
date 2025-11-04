@@ -503,96 +503,110 @@ def foodbank_check(request, slug):
         response_mime_type = "application/json",
         model = "gemini-2.5-flash",
         response_schema = {
-  "type": "object",
-  "properties": {
-    "details": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "address": {
-          "type": "string"
-        },
-        "postcode": {
-          "type": "string"
-        },
-        "country": {
-          "type": "string"
-        },
-        "phone_number": {
-          "type": "string"
-        },
-        "contact_email": {
-          "type": "string"
-        },
-        "network": {
-          "type": "string"
+            "type": "object",
+            "properties": {
+                "details": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                    "type": "string"
+                    },
+                    "address": {
+                    "type": "string"
+                    },
+                    "postcode": {
+                    "type": "string"
+                    },
+                    "country": {
+                    "type": "string"
+                    },
+                    "phone_number": {
+                    "type": "string"
+                    },
+                    "contact_email": {
+                    "type": "string"
+                    },
+                    "network": {
+                    "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "address",
+                    "postcode",
+                    "country",
+                    "phone_number",
+                    "contact_email",
+                    "network"
+                ]
+                },
+                "locations": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "postcode": {
+                        "type": "string"
+                    }
+                    },
+                    "required": [
+                    "name",
+                    "address",
+                    "postcode"
+                    ]
+                }
+                },
+                "donation_points": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "postcode": {
+                        "type": "string"
+                    }
+                    },
+                    "required": [
+                    "name",
+                    "address",
+                    "postcode"
+                    ]
+                }
+                }
+            },
+            "required": [
+                "details",
+                "locations",
+                "donation_points"
+            ]
         }
-      },
-      "required": [
-        "name",
-        "address",
-        "postcode",
-        "country",
-        "phone_number",
-        "contact_email",
-        "network"
-      ]
-    },
-    "locations": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          },
-          "postcode": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "address",
-          "postcode"
-        ]
-      }
-    },
-    "donation_points": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          },
-          "postcode": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "address",
-          "postcode"
-        ]
-      }
-    }
-  },
-  "required": [
-    "details",
-    "locations",
-    "donation_points"
-  ]
-}
     )
-    logging.warning("Foodbank check result: %s", check_result)
+
+    for location in foodbank_json["locations"]:
+        if location["postcode"] not in [x["postcode"] for x in check_result["locations"]]:
+            location["discrepancy"] = True
+    for donation_point in foodbank_json["donation_points"]:
+        if donation_point["postcode"] not in [x["postcode"] for x in check_result["donation_points"]]:
+            donation_point["discrepancy"] = True
+
+    for location in check_result["locations"]:
+        if location["postcode"] not in [x["postcode"] for x in foodbank_json["locations"]]:
+            location["discrepancy"] = True
+    for donation_point in check_result["donation_points"]:
+        if donation_point["postcode"] not in [x["postcode"] for x in foodbank_json["donation_points"]]:
+            if donation_point["postcode"] not in [x["postcode"] for x in foodbank_json["locations"]]:
+                donation_point["discrepancy"] = True
 
     template_vars = {
         "foodbank":foodbank,
@@ -791,6 +805,7 @@ def need(request, id):
 def donationpoint_form(request, slug = None, dp_slug = None):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
+    name = request.GET.get("name", None)
 
     if dp_slug:
         donation_point = get_object_or_404(FoodbankDonationPoint, foodbank = foodbank, slug = dp_slug)
@@ -806,7 +821,7 @@ def donationpoint_form(request, slug = None, dp_slug = None):
             redir_url = "%s#donationpoints" % (reverse("admin:foodbank", kwargs={'slug': foodbank.slug}))
             return redirect(redir_url)
     else:
-        form = FoodbankDonationPointForm(instance=donation_point, initial={"foodbank":foodbank})
+        form = FoodbankDonationPointForm(instance=donation_point, initial={"foodbank":foodbank, "name":name})
 
     template_vars = {
         "form":form,

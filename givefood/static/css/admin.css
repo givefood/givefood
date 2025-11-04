@@ -129,6 +129,9 @@ td.delivery-provider-icon img {
   height:16px;
   vertical-align:middle;
 }
+.checktable li {
+  margin-bottom:10px;
+}
 .footer {
   margin-top:3rem;
 }

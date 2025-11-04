@@ -7,60 +7,94 @@
 
 {% block body %}
 
-    <div class="columns">
-        <div class="column">
-            <h2>Check {{ foodbank.name }}</h2>
-        </div>
-    </div>
-
   <div class="columns">
-
-        <div class="column">
-
-            <details>
-                <summary>Prompt</summary>
-                {{ prompt|linebreaksbr }}
-            </details>
-            <br>
-
-            <h3>Details</h3>
-            <dl>
-                <dt>URL</dt>
-                <dd><a href="{{ foodbank.url }}" target="_blank">{{ foodbank.url }}</a></dd>
-            </dl>
-
-            <h3>Locations</h3>
-            <ul>
-                {% for location in foodbank.locations %}
-                    <li>
-                        {{ location.name }}<br>
-                        {{ location.address }}<br>
-                        {{ location.postcode }}
-                        <br><br>
-                    </li>
-                {% endfor %}
-            </ul>
-
-            <h3>Donation Points</h3>
-            <ul>
-                {% for dp in foodbank.donation_points %}
-                    <li>
-                        {{ dp.name }}<br>
-                        {{ dp.address }}<br>
-                        {{ dp.postcode }}
-                        <br><br>
-                    </li>
-                {% endfor %}
-            </ul>
-
-        </div>
-
-        <div class="column">
-            <h3>Check Result</h3>
-            {% if check_result %}
-                
-            {% endif %}
-        </div>
+    <div class="column">
+        <table class="table is-fullwidth checktable">
+            <tr>
+                <th width="50%">🗄️ Ours</th>
+                <th width="50%">🤖 Found</th>
+            </tr>
+            <tr>
+                <td colspan="2">Details</td>
+            </tr>
+            <tr>
+                <td>
+                    <p>{{ foodbank.name }}</p>
+                    <p>{{ foodbank.address|linebreaksbr }}<br>
+                    {{ foodbank.postcode }}</p>
+                    <p>{{ foodbank.phone_number }}</p>
+                    <p>{{ foodbank.contact_email }}</p>
+                </td>
+                <td>
+                    <p>{{ check_result.details.name }}</p>
+                    <p>{{ check_result.details.address|linebreaksbr }}<br>
+                    {{ check_result.details.postcode }}</p>
+                    <p>{{ check_result.details.phone_number }}</p>
+                    <p>{{ check_result.details.contact_email }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Locations</td>
+            </tr>
+            <tr>
+                <td>
+                    <ul>
+                        {% for location in foodbank.locations %}
+                            {% if location.discrepancy %}Extra{% endif %}
+                            <li>
+                                {{ location.name }}<br>
+                                {{ location.address|linebreaksbr }}<br>
+                                {{ location.postcode }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for location in check_result.locations %}
+                            <li>
+                                {% if location.discrepancy %}New{% endif %}
+                                {{ location.name }}<br>
+                                {{ location.address|linebreaksbr }}<br>
+                                {{ location.postcode }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">Donation Points</td>
+            </tr>
+            <tr>
+                <td>
+                    <ul>
+                        {% for dp in foodbank.donation_points %}
+                            <li>
+                                {% if dp.discrepancy %}Extra{% endif %}
+                                {{ dp.name }}<br>
+                                {{ dp.address|linebreaksbr }}<br>
+                                {{ dp.postcode }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for dp in check_result.donation_points %}
+                            <li>
+                                {% if dp.discrepancy %}
+                                    <a href="{% url 'admin:donationpoint_new' foodbank.slug %}?name={{ dp.name|urlencode }} {{ dp.postcode|urlencode }}" class="button is-link is-small">Add</a>
+                                {% endif %}
+                                {{ dp.name }}<br>
+                                {{ dp.address|linebreaksbr }}<br>
+                                {{ dp.postcode }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </table>
     </div>
+  </div>
 
 {% endblock %}
