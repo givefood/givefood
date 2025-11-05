@@ -448,17 +448,19 @@ def foodbank_check(request, slug):
         }
     }
     foodbank_locations = []
-    for location in FoodbankLocation.objects.filter(foodbank = foodbank):
+    for location in FoodbankLocation.objects.filter(foodbank = foodbank).order_by("name"):
         foodbank_locations.append({
             "name": location.name,
+            "slug": location.slug,
             "address": location.address,
             "postcode": location.postcode,
         })
     foodbank_json["locations"] = foodbank_locations
     foodbank_donation_points = []
-    for donation_point in FoodbankDonationPoint.objects.filter(foodbank = foodbank):
+    for donation_point in FoodbankDonationPoint.objects.filter(foodbank = foodbank).order_by("name"):
         foodbank_donation_points.append({
             "name": donation_point.name,
+            "slug": donation_point.slug,
             "address": donation_point.address,
             "postcode": donation_point.postcode,
         })
@@ -609,7 +611,8 @@ def foodbank_check(request, slug):
 
     for location in check_result["locations"]:
         if location["postcode"] not in [x["postcode"] for x in foodbank_json["locations"]]:
-            location["discrepancy"] = True
+            if location["postcode"] != foodbank_json["details"]["postcode"]:
+                location["discrepancy"] = True
     for donation_point in check_result["donation_points"]:
         if donation_point["postcode"] not in [x["postcode"] for x in foodbank_json["donation_points"]]:
             if donation_point["postcode"] not in [x["postcode"] for x in foodbank_json["locations"]]:
@@ -617,7 +620,7 @@ def foodbank_check(request, slug):
 
     template_vars = {
         "foodbank":foodbank,
-        "prompt":prompt,
+        "foodbank_json":foodbank_json,
         "check_result":check_result,
         "foodbank_urls":foodbank_urls,
     }
