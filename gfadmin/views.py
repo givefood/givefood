@@ -131,11 +131,11 @@ def foodbanks(request):
         # Handle descending sort with clearer labels
         if sort_option.startswith("-"):
             label = label[1:]  # Remove the leading dash
-            if "hits" in sort_option.lower():
+            if sort_option == "-hits_last_28_days":
                 label = "Hits Last 28 Days (Most First)"
             else:
                 label = f"{label} (Desc)"
-        elif "hits" in sort_option.lower():
+        elif sort_option == "hits_last_28_days":
             label = "Hits Last 28 Days (Least First)"
         display_sort_options[sort_option] = label
 
