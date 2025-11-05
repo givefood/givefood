@@ -534,7 +534,6 @@ class Foodbank(models.Model):
     
     def hits_last_28_days(self):
         """Get total hits for this foodbank in the last 28 days"""
-        from datetime import date
         cutoff_date = date.today() - timedelta(days=28)
         total = FoodbankHit.objects.filter(
             foodbank=self, 

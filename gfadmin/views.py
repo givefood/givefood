@@ -5,7 +5,7 @@ import logging
 from random import randrange
 import re
 import requests
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, quote
 
@@ -22,7 +22,7 @@ from django.db.models import Sum, Q, Count
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters
-from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
+from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
 from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
@@ -98,8 +98,6 @@ def search_results(request):
 
 
 def foodbanks(request):
-    from datetime import date, timedelta
-    from givefood.models import FoodbankHit
 
     sort_options = [
         "name",
