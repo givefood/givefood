@@ -460,7 +460,7 @@ def sitemap_places_index(request):
     
     template_vars = {
         "domain": SITE_DOMAIN,
-        "num_sitemaps": num_sitemaps,
+        "sitemap_pages": range(1, num_sitemaps + 1),
     }
     return render(request, "public/sitemap_places_index.xml", template_vars, content_type='text/xml')
 

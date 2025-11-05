@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 {% include 'public/includes/debugcomment.html' %}
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-	{% for i in num_sitemaps|range %}
+	{% for page_num in sitemap_pages %}
 		<sitemap>
-			<loc>{{ domain }}{% url 'sitemap_places_page' i|add:1 %}</loc>
+			<loc>{{ domain }}{% url 'sitemap_places_page' page_num %}</loc>
 		</sitemap>
 	{% endfor %}
 </sitemapindex>
