@@ -57,6 +57,9 @@ urlpatterns += i18n_patterns(
     path("<uuid:pk>/", givefood.views.uuid_redir, name="uuid_redir"),
     path("robots.txt", givefood.views.robotstxt, name="robotstxt"),
     path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
+    path("sitemap_places_index.xml", givefood.views.sitemap_places_index, name="sitemap_places_index"),
+    path("sitemap_places.xml", givefood.views.sitemap_places, name="sitemap_places"),
+    path("sitemap_places_<int:page>.xml", givefood.views.sitemap_places, name="sitemap_places_page"),
 
     prefix_default_language=False,
 )

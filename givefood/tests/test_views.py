@@ -3,7 +3,7 @@ Tests for the main givefood views.
 """
 import pytest
 from django.test import Client, override_settings
-from givefood.models import Foodbank, ParliamentaryConstituency, FoodbankLocation, FoodbankDonationPoint
+from givefood.models import Foodbank, ParliamentaryConstituency, FoodbankLocation, FoodbankDonationPoint, Place
 
 
 @pytest.mark.django_db
@@ -84,6 +84,37 @@ class TestSitemap:
         assert '<?xml version="1.0" encoding="UTF-8"?>' in content
         assert '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
         assert '</urlset>' in content
+
+    def test_sitemap_places_index_accessible(self, client):
+        """Test that the places sitemap index is accessible and returns valid XML."""
+        response = client.get('/sitemap_places_index.xml')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'text/xml'
+        # Check that the response contains valid XML structure
+        content = response.content.decode('utf-8')
+        assert '<?xml version="1.0" encoding="UTF-8"?>' in content
+        assert '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
+        assert '</sitemapindex>' in content
+
+    def test_sitemap_places_accessible(self, client):
+        """Test that the places sitemap is accessible and returns valid XML."""
+        response = client.get('/sitemap_places.xml')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'text/xml'
+        # Check that the response contains valid XML structure
+        content = response.content.decode('utf-8')
+        assert '<?xml version="1.0" encoding="UTF-8"?>' in content
+        assert '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
+        assert '</urlset>' in content
+
+    def test_sitemap_places_paginated_accessible(self, client):
+        """Test that paginated places sitemaps are accessible."""
+        response = client.get('/sitemap_places_1.xml')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'text/xml'
+        content = response.content.decode('utf-8')
+        assert '<?xml version="1.0" encoding="UTF-8"?>' in content
+        assert '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
 
 
 @pytest.mark.django_db

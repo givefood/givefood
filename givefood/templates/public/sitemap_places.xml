@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% include 'public/includes/debugcomment.html' %}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	{% for place in places %}
+		<url><loc>{{ domain }}{% url 'wfbn:place' place.county_slug place.name_slug %}</loc></url>
+	{% endfor %}
+</urlset>
