@@ -69,6 +69,7 @@ class Foodbank(models.Model):
     delivery_address = models.TextField(null=True, blank=True)
     delivery_lat_lng = models.CharField(max_length=50, verbose_name="Delivery latitude, longitude", editable=False, null=True, blank=True)
     network = models.CharField(max_length=50, choices=FOODBANK_NETWORK_CHOICES, null=True, blank=True)
+    network_id = models.CharField(max_length=100, null=True, blank=True)
     notes = models.TextField(null=True, blank=True)
 
     # Charity 
