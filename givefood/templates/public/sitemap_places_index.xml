@@ -3,7 +3,7 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	{% for i in num_sitemaps|range %}
 		<sitemap>
-			<loc>{{ domain }}/sitemap_places_{{ i|add:1 }}.xml</loc>
+			<loc>{{ domain }}{% url 'sitemap_places_page' i|add:1 %}</loc>
 		</sitemap>
 	{% endfor %}
 </sitemapindex>
