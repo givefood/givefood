@@ -667,6 +667,15 @@ def foodbank_resave(request, slug):
 
 
 @require_POST
+def foodbank_touch(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank.edited = datetime.now()
+    foodbank.save(do_geoupdate=False)
+    return redirect("admin:foodbanks")
+
+
+@require_POST
 def foodbank_delete(request, slug):
     
     foodbank = get_object_or_404(Foodbank, slug = slug)

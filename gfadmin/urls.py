@@ -50,6 +50,7 @@ urlpatterns = (
     path("foodbank/<slug:slug>/crawl/", foodbank_crawl, name="foodbank_crawl"),
     path("foodbank/<slug:slug>/sendrfi/", foodbank_rfi, name="foodbank_rfi"),
     path("foodbank/<slug:slug>/resave/", foodbank_resave, name="foodbank_resave"),
+    path("foodbank/<slug:slug>/touch/", foodbank_touch, name="foodbank_touch"),
     path("foodbank/<slug:slug>/delete/", foodbank_delete, name="foodbank_delete"),
 
     path("need/new", need_form, name="newneed"),
