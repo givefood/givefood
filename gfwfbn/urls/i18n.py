@@ -14,7 +14,7 @@ urlpatterns = [
     path("manifest.json", manifest, name="manifest"),
 
     # Place
-    path("place/<slug:county>/<slug:place>/", place, name="place"),
+    path("at/place/<slug:county>/<slug:place>/", place, name="place"),
 
     # Foodbank
     path("at/<slug:slug>/", foodbank, name="foodbank"),
