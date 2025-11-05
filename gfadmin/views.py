@@ -23,7 +23,7 @@ from django.db.models import Sum, Q, Count
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters
 from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
-from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
+from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, FoodbankUrlsForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
 def index(request):
@@ -731,6 +731,27 @@ def foodbank_politics_form(request, slug = None):
     template_vars = {
         "form":form,
         "page_title":page_title,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def foodbank_urls_form(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "Edit %s Food Bank URLs" % (foodbank.name)
+
+    if request.POST:
+        form = FoodbankUrlsForm(request.POST, instance=foodbank)
+        if form.is_valid():
+            foodbank = form.save()
+            return redirect("admin:foodbank", slug = foodbank.slug)
+    else:
+        form = FoodbankUrlsForm(instance=foodbank)
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+        "foodbank":foodbank,
     }
     return render(request, "admin/form.html", template_vars)
 

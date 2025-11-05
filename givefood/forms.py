@@ -41,6 +41,20 @@ class FoodbankForm(ModelForm):
         return foodbank
 
 
+class FoodbankUrlsForm(ModelForm):
+    class Meta:
+        model = Foodbank
+        fields = ["url", "shopping_list_url", "rss_url", "donation_points_url", "locations_url", "contacts_url"]
+
+    def save(self, commit=True): 
+        foodbank = super().save(commit=False)
+        foodbank.edited = datetime.now()
+        
+        if commit:
+            foodbank.save()
+        return foodbank
+
+
 class FoodbankPoliticsForm(ModelForm):
     class Meta:
         model = Foodbank
