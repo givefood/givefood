@@ -98,6 +98,8 @@ def search_results(request):
 
 
 def foodbanks(request):
+    from datetime import date, timedelta
+    from givefood.models import FoodbankHit
 
     sort_options = [
         "name",
@@ -118,6 +120,8 @@ def foodbanks(request):
         "-no_donation_points",
         "last_need_check",
         "-last_need_check",
+        "hits_28d",
+        "-hits_28d",
     ]
     sort = request.GET.get("sort", "edited")
     if sort not in sort_options:
@@ -125,9 +129,21 @@ def foodbanks(request):
     
     display_sort_options = {}
     for sort_option in sort_options:
-        display_sort_options[sort_option] = sort_option.replace("_", " ").title()
+        display_sort_options[sort_option] = sort_option.replace("_", " ").replace("28d", "28 Days").replace("Hits", "Hits Last").title()
 
-    foodbanks = Foodbank.objects.all().exclude(is_closed = True).order_by(sort)
+    # Calculate cutoff date for hits
+    cutoff_date = date.today() - timedelta(days=28)
+    
+    # Annotate foodbanks with hits from last 28 days
+    foodbanks = Foodbank.objects.all().exclude(is_closed = True).annotate(
+        hits_28d=Sum(
+            'foodbankhit__hits',
+            filter=Q(foodbankhit__day__gte=cutoff_date)
+        )
+    )
+    
+    # Apply sorting
+    foodbanks = foodbanks.order_by(sort)
 
     template_vars = {
         "sort":sort,

@@ -532,6 +532,16 @@ class Foodbank(models.Model):
     def articles_month(self):
         return FoodbankArticle.objects.filter(foodbank = self, published_date__gte = datetime.now() - timedelta(days=28)).order_by("-published_date")
     
+    def hits_last_28_days(self):
+        """Get total hits for this foodbank in the last 28 days"""
+        from datetime import date
+        cutoff_date = date.today() - timedelta(days=28)
+        total = FoodbankHit.objects.filter(
+            foodbank=self, 
+            day__gte=cutoff_date
+        ).aggregate(models.Sum('hits'))['hits__sum']
+        return total or 0
+    
     class Meta:
         app_label = 'givefood'
 
