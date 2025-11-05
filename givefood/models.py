@@ -2145,6 +2145,9 @@ class Place(models.Model):
     region = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=100, null=True, blank=True)
 
+    name_slug = models.CharField(max_length=100, editable=False)
+    county_slug = models.CharField(max_length=100, editable=False)
+
     def __str__(self):
         return "%s - %s" % (self.gbpnid, self.name)
 
@@ -2153,6 +2156,16 @@ class Place(models.Model):
     
     def lng(self):
         return float(self.lat_lng.split(",")[1])
+    
+    def save(self, *args, **kwargs):
+
+        self.name_slug = slugify(self.name)
+        if self.uniauth:
+            self.county_slug = slugify(self.uniauth)
+        else:
+            self.county_slug = slugify(self.adcounty)
+
+        super(Place, self).save(*args, **kwargs)
 
     class Meta:
         app_label = 'givefood'

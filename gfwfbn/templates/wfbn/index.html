@@ -35,7 +35,11 @@
     {% if address %}
       {{ address }} {% blocktrans %}food banks{% endblocktrans %}
     {% else %}
-      {% blocktrans %}Find Food Banks To Help{% endblocktrans %}
+      {% if page_title %}
+        {{ page_title }} {% blocktrans %}food banks{% endblocktrans %}
+      {% else %}
+        {% blocktrans %}Find Food Banks To Help{% endblocktrans %}
+      {% endif %}
     {% endif %}
   {% endif %} - Give Food
 {% endblock %}
@@ -52,17 +56,21 @@
   <div class="columns">
     <div class="column {% if locations %}is-three-fifths{% else %}is-half{% endif %}">
 
-      {% if not locations and is_uk %}
         <p>{% blocktrans %}Find a food bank near you, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
       {% endif %}
 
-      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}" data-no-instant>{% blocktrans %}Use my location{% endblocktrans %}</a>
-      <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
-        <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
-        <input id="address_field" type="text" name="address" class="input" placeholder="{% blocktrans %}e.g. EX4 6PX or Sheffield{% endblocktrans %}" value="{{ address }}" required {% if not address %}autofocus{% endif %} aria-required="true">
-        <input id="lat_lng_field" type="hidden" name="lat_lng">
-        <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
-      </form>
+      {% if not page_title %}
+        <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}" data-no-instant>{% blocktrans %}Use my location{% endblocktrans %}</a>
+        <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
+          <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
+          <input id="address_field" type="text" name="address" class="input" placeholder="{% blocktrans %}e.g. EX4 6PX or Sheffield{% endblocktrans %}" value="{{ address }}" required {% if not address %}autofocus{% endif %} aria-required="true">
+          <input id="lat_lng_field" type="hidden" name="lat_lng">
+          <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
+        </form>
+      {% else %}
+        <h1 class="placetitle">Foodbanks in {{ page_title }}</h1>
+        <p>Find a food bank near {{ page_title }}, see what they need and how you can help by donating or volunteering.</p>
+      {% endif %}
 
       {% if not is_uk %}
         <p>{% blocktrans %}Sorry, we couldn't use that location. Is it inside the United Kingdom?{% endblocktrans %}</p>

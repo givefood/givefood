@@ -22,6 +22,10 @@
         background-color:#fff;
     }
 }
+.placetitle {
+    font-size:22px;
+    margin-bottom:0;
+}
 #status-msg img {
     vertical-align: middle;
     margin-right:5px;

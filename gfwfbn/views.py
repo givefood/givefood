@@ -14,14 +14,14 @@ from django.utils.translation import gettext
 
 from givefood.const.general import SITE_DOMAIN
 
-from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle
+from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle, Place
 from givefood.func import geocode, find_locations, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, is_uk, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 from django.db.models import Sum
 
 
 @cache_page(SECONDS_IN_HOUR)
-def index(request):
+def index(request, lat_lng=None, page_title=None):
     """
     The What Food Banks Need index page
     """ 
@@ -32,7 +32,8 @@ def index(request):
 
     # All the vars we'll need
     address = request.GET.get("address", "")
-    lat_lng = request.GET.get("lat_lng", "")
+    if not lat_lng:
+        lat_lng = request.GET.get("lat_lng", "")
 
     lat_lng_is_uk = True
     lat = lng = approx_address = locations = donationpoints = None
@@ -73,6 +74,7 @@ def index(request):
     gmap_key = get_cred("gmap_key")
 
     template_vars = {
+        "page_title":page_title,
         "address":address,
         "lat":lat,
         "lng":lng,
@@ -338,6 +340,25 @@ def manifest(request):
 
     return HttpResponse(json.dumps(manifest_content), content_type="application/json")
 
+
+def place(request, county, place):
+    """
+    Place page
+    """
+
+    try:
+        place = Place.objects.filter(county_slug=county, name_slug=place).first()
+        if not place:
+            raise Http404("Place not found")
+    except Place.DoesNotExist:
+        raise Http404("Place not found")
+    lat_lng = place.lat_lng
+    county = place.uniauth if place.uniauth else place.adcounty
+    title = "%s, %s" % (place.name, county)
+
+    return index(request, lat_lng = lat_lng, page_title = title)
+    
+    
 
 @cache_page(SECONDS_IN_DAY)
 def foodbank(request, slug):

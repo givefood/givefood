@@ -13,6 +13,9 @@ urlpatterns = [
     path("geo.json", geojson, name="geojson"),
     path("manifest.json", manifest, name="manifest"),
 
+    # Place
+    path("place/<slug:county>/<slug:place>/", place, name="place"),
+
     # Foodbank
     path("at/<slug:slug>/", foodbank, name="foodbank"),
     path("at/<slug:slug>/rss.xml", rss, name="foodbank_rss"),
