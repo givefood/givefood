@@ -402,10 +402,11 @@ def robotstxt(request):
     disallowed_urls = []
     sitemap_urls = []
     for language in LANGUAGES:
-        disallowed_urls.append(translate_url(get_location_url, language[0]))
-        disallowed_urls.append(translate_url(flag_url, language[0]))
-        sitemap_urls.append(translate_url(sitemap_url, language[0]))
-        sitemap_urls.append(translate_url(sitemap_places_index_url, language[0]))
+        lang_code = language[0]
+        disallowed_urls.append(translate_url(get_location_url, lang_code))
+        disallowed_urls.append(translate_url(flag_url, lang_code))
+        sitemap_urls.append(translate_url(sitemap_url, lang_code))
+        sitemap_urls.append(translate_url(sitemap_places_index_url, lang_code))
 
     template_vars = {
         "domain":SITE_DOMAIN,
