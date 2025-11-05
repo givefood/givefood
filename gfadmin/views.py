@@ -128,15 +128,10 @@ def foodbanks(request):
     display_sort_options = {}
     for sort_option in sort_options:
         label = sort_option.replace("_", " ").title()
-        # Handle descending sort with clearer labels
+        # Handle descending sort
         if sort_option.startswith("-"):
             label = label[1:]  # Remove the leading dash
-            if sort_option == "-hits_last_28_days":
-                label = "Hits Last 28 Days (Most First)"
-            else:
-                label = f"{label} (Desc)"
-        elif sort_option == "hits_last_28_days":
-            label = "Hits Last 28 Days (Least First)"
+            label = f"{label} (Desc)"
         display_sort_options[sort_option] = label
 
     # Calculate cutoff date for hits
