@@ -120,8 +120,8 @@ def foodbanks(request):
         "-no_donation_points",
         "last_need_check",
         "-last_need_check",
-        "hits_28d",
-        "-hits_28d",
+        "hits_last_28_days",
+        "-hits_last_28_days",
     ]
     sort = request.GET.get("sort", "edited")
     if sort not in sort_options:
@@ -129,11 +129,10 @@ def foodbanks(request):
     
     display_sort_options = {}
     for sort_option in sort_options:
-        label = sort_option.replace("_", " ").replace("28d", "28 Days").replace("Hits", "Hits Last").title()
+        label = sort_option.replace("_", " ").title()
         # Handle descending sort with clearer labels
         if sort_option.startswith("-"):
-            # Remove the dash and add descriptive prefix
-            label = label[1:]  # Remove the dash from the beginning
+            label = label[1:]  # Remove the leading dash
             if "hits" in sort_option.lower():
                 label = "Hits Last 28 Days (Most First)"
             else:
@@ -147,7 +146,7 @@ def foodbanks(request):
     
     # Annotate foodbanks with hits from last 28 days
     foodbanks = Foodbank.objects.all().exclude(is_closed = True).annotate(
-        hits_28d=Sum(
+        hits_last_28_days=Sum(
             'foodbankhit__hits',
             filter=Q(foodbankhit__day__gte=cutoff_date)
         )
