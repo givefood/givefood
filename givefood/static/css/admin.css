@@ -50,6 +50,9 @@ input[type=checkbox] {
   width:18px;
   margin:10px 0;
 }
+.tabs {
+  margin-bottom:10px !important;
+}
 .tabs .tag {
   height:1.6em;
   padding:0 4px;
