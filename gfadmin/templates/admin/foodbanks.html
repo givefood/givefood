@@ -53,7 +53,7 @@
             <td>{{ foodbank.no_locations }}</td>
             <td>{{ foodbank.no_donation_points }}</td>
             <td>{{ foodbank.network }}</td>
-            <td>{{ foodbank.hits_28d|default:"0"|intcomma }}</td>
+            <td>{{ foodbank.hits_last_28_days|default:"0"|intcomma }}</td>
             <td>
               {{ foodbank.last_order }}
               {% if foodbank.last_order %}
