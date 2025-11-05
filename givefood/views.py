@@ -373,7 +373,6 @@ def sitemap(request):
     constituencies = ParliamentaryConstituency.objects.all().only('slug')
     locations = FoodbankLocation.objects.all().exclude(is_closed=True).only('foodbank_slug', 'slug')
     donationpoints = FoodbankDonationPoint.objects.all().exclude(is_closed=True).only('foodbank_slug', 'slug')
-    top_places = TOP_PLACES
 
     template_vars = {
         "domain":SITE_DOMAIN,
@@ -382,7 +381,6 @@ def sitemap(request):
         "constituencies":constituencies,
         "locations":locations,
         "donationpoints":donationpoints,
-        "top_places":top_places,
     }
     return render(request, "public/sitemap.xml", template_vars, content_type='text/xml')
 
