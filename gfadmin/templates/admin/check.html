@@ -9,6 +9,10 @@
 
   <div class="columns">
     <div class="column">
+        <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link" target="_blank">Edit</a>
+        <form method="post" action="{% url 'admin:foodbank_touch' foodbank.slug %}" display="inline">
+            <button type="submit" class="button is-link">Touch</button>
+        </form>
         <table class="table is-fullwidth checktable">
             <tr>
                 <th width="50%">🗄️ Ours</th>
@@ -53,7 +57,9 @@
                     <ul>
                         {% for location in check_result.locations %}
                             <li>
-                                {% if location.discrepancy %}New{% endif %}
+                                {% if location.discrepancy %}
+                                    <a href="{% url 'admin:fblocation_new' foodbank.slug %}?name={{ location.name|urlencode }} {{ location.postcode|urlencode }}" class="button is-link is-small" target="_blank">Add</a>
+                                {% endif %}
                                 {{ location.name }}<br>
                                 {{ location.address|linebreaksbr }}<br>
                                 {{ location.postcode }}
@@ -83,7 +89,7 @@
                         {% for dp in check_result.donation_points %}
                             <li>
                                 {% if dp.discrepancy %}
-                                    <a href="{% url 'admin:donationpoint_new' foodbank.slug %}?name={{ dp.name|urlencode }} {{ dp.postcode|urlencode }}" class="button is-link is-small">Add</a>
+                                    <a href="{% url 'admin:donationpoint_new' foodbank.slug %}?name={{ dp.name|urlencode }} {{ dp.postcode|urlencode }}" class="button is-link is-small" target="_blank">Add</a>
                                 {% endif %}
                                 {{ dp.name }}<br>
                                 {{ dp.address|linebreaksbr }}<br>
@@ -95,6 +101,30 @@
             </tr>
         </table>
     </div>
+    <div class="column is-one-third">
+        <div class="tabs is-boxed">
+            <ul>
+                {% for url_name, url in foodbank_urls.items %}
+                    <li class="{% if forloop.first %}is-active{% endif %}">
+                        <a data-tab="preview-{{ url_name|slugify }}">
+                            <span>{{ url_name }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sections">
+        {% for url_name, url in foodbank_urls.items %}
+            <div class="tabcontent preview-{{ url_name|slugify }} {% if not forloop.first %}is-hidden{% endif %}">
+                <iframe src="{% url 'admin:proxy' %}?url={{ url|urlencode }}" style="width: 100%; height: 1000px; border: none;" loading="lazy"></iframe>
+            </div>
+        {% endfor %}
+        </div>
   </div>
 
+{% endblock %}
+
+
+{% block script %}
+  <script src="/static/js/tabber.js" defer></script>
 {% endblock %}

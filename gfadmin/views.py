@@ -464,6 +464,8 @@ def foodbank_check(request, slug):
         })
     foodbank_json["donation_points"] = foodbank_donation_points
 
+    foodbank_urls = {}
+
     # Get HTML
     timeout_sec = 20
     homepage = shopping_list = locations = contacts = donation_points = None
@@ -473,14 +475,19 @@ def foodbank_check(request, slug):
     ]
 
     homepage = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text
+    foodbank_urls["Home"] = foodbank.url
     if foodbank.shopping_list_url and all(x not in foodbank.shopping_list_url for x in url_blacklist):
         shopping_list = htmlbodytext(requests.get(foodbank.shopping_list_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+        foodbank_urls["Shopping List"] = foodbank.shopping_list_url
     if foodbank.locations_url:
         locations = htmlbodytext(requests.get(foodbank.locations_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+        foodbank_urls["Locations"] = foodbank.locations_url
     if foodbank.contacts_url:
         contacts = htmlbodytext(requests.get(foodbank.contacts_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+        foodbank_urls["Contacts"] = foodbank.contacts_url
     if foodbank.donation_points_url:
         donation_points = htmlbodytext(requests.get(foodbank.donation_points_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+        foodbank_urls["Donation Points"] = foodbank.donation_points_url
 
     foodbank_pages = {
         "homepage": homepage,
@@ -612,6 +619,7 @@ def foodbank_check(request, slug):
         "foodbank":foodbank,
         "prompt":prompt,
         "check_result":check_result,
+        "foodbank_urls":foodbank_urls,
     }
 
     return render(request, "admin/check.html", template_vars)
@@ -728,6 +736,8 @@ def foodbank_addsub(request, slug):
 
 def fblocation_form(request, slug = None, loc_slug = None):
 
+    name = request.GET.get("name", None)
+
     if slug:
         foodbank = get_object_or_404(Foodbank, slug = slug)
         page_title = "Edit %s Food Bank Location" % (foodbank.name)
@@ -745,7 +755,7 @@ def fblocation_form(request, slug = None, loc_slug = None):
             foodbank_location = form.save()
             return redirect("admin:foodbank", slug = foodbank_location.foodbank_slug)
     else:
-        form = FoodbankLocationForm(instance=foodbank_location, initial={"foodbank":foodbank})
+        form = FoodbankLocationForm(instance=foodbank_location, initial={"foodbank":foodbank, "name":name})
 
     template_vars = {
         "form":form,
