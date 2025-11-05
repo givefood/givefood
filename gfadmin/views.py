@@ -127,11 +127,12 @@ def foodbanks(request):
     
     display_sort_options = {}
     for sort_option in sort_options:
-        label = sort_option.replace("_", " ").title()
         # Handle descending sort
         if sort_option.startswith("-"):
-            label = label[1:]  # Remove the leading dash
+            label = sort_option[1:].replace("_", " ").title()  # Remove dash first, then format
             label = f"{label} (Desc)"
+        else:
+            label = sort_option.replace("_", " ").title()
         display_sort_options[sort_option] = label
 
     # Calculate cutoff date for hits
