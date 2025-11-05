@@ -758,7 +758,10 @@ def fblocation_form(request, slug = None, loc_slug = None):
             foodbank_location = form.save()
             return redirect("admin:foodbank", slug = foodbank_location.foodbank_slug)
     else:
-        form = FoodbankLocationForm(instance=foodbank_location, initial={"foodbank":foodbank, "name":name})
+        initial_data = {"foodbank": foodbank}
+        if name is not None:
+            initial_data["name"] = name
+        form = FoodbankLocationForm(instance=foodbank_location, initial=initial_data)
 
     template_vars = {
         "form":form,
@@ -843,7 +846,10 @@ def donationpoint_form(request, slug = None, dp_slug = None):
             redir_url = "%s#donationpoints" % (reverse("admin:foodbank", kwargs={'slug': foodbank.slug}))
             return redirect(redir_url)
     else:
-        form = FoodbankDonationPointForm(instance=donation_point, initial={"foodbank":foodbank, "name":name})
+        initial_data = {"foodbank": foodbank}
+        if name is not None:
+            initial_data["name"] = name
+        form = FoodbankDonationPointForm(instance=donation_point, initial=initial_data)
 
     template_vars = {
         "form":form,
