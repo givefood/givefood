@@ -338,6 +338,17 @@ function getFeatureStyle(feature) {
         };
     }
 
+    // Check if this is a parliamentary constituency polygon (has PCON24NM property)
+    if (feature.getProperty("PCON24NM")) {
+        return {
+            fillColor: "#000",
+            fillOpacity: 0.1,
+            strokeColor: "#000",
+            strokeWeight: 1,
+            cursor: 'pointer',
+        };
+    }
+
     const markerConfig = {
         f: { colour: "red", size: 34 },
         l: { colour: "yellow", size: 28 },
@@ -364,6 +375,13 @@ function getFeatureStyle(feature) {
  */
 function handleMarkerClick(event, infowindow) {
     const feature = event.feature;
+    
+    // Check for custom click handler in config
+    if (window.gfMapConfig.onClick === 'navigate') {
+        handleNavigationClick(event);
+        return;
+    }
+    
     const type = feature.getProperty("type");
 
     if (type === "b") {
@@ -384,6 +402,19 @@ function handleMarkerClick(event, infowindow) {
     });
     
     infowindow.open(map);
+}
+
+/**
+ * Handle navigation click for parliamentary constituencies
+ * @param {object} event - Click event
+ */
+function handleNavigationClick(event) {
+    const feature = event.feature;
+    const name = feature.getProperty('PCON24NM');
+    if (name) {
+        const slug = slugify(name);
+        window.location = '/write/to/' + slug + '/';
+    }
 }
 
 /**

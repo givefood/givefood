@@ -25,8 +25,15 @@ def index(request):
             )
             return HttpResponseRedirect(parl_con_url)
 
+    map_config = {
+        "geojson": "/static/geojson/parlcon.json",
+        "onClick": "navigate",
+    }
+    map_config = json.dumps(map_config)
+
     template_vars = {
-        "postcode":postcode,
+        "postcode": postcode,
+        "map_config": map_config,
     }
     return render(request, "write/index.html", template_vars)
 
