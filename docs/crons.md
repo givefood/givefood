@@ -3,7 +3,7 @@
 | Task Name           | Command                                                           | Schedule          |
 |---------------------|-------------------------------------------------------------------|-------------------|
 | Need Check          | `/opt/venv/bin/python /app/manage.py needcheck`                  | `45 7,11,15,19 * * *` |
-| Articles            | `/opt/venv/bin/python /app/manage.py getarticles`                | `20 7-19/2 * * *   |
+| Articles            | `/opt/venv/bin/python /app/manage.py getarticles`                | `20 8-22/2 * * *   |
 | Charity Info        | `/opt/venv/bin/python /app/manage.py charityinfo`                | `30 5 * * *`      |
 | Dump                | `/opt/venv/bin/python /app/manage.py dump`                       | `30 4 * * *`      |
 | Days Between Needs  | `/opt/venv/bin/python /app/manage.py days_between_needs`         | `0 4 * * 0`       |
