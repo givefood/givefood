@@ -129,16 +129,15 @@ def foodbanks(request):
     for sort_option in sort_options:
         # Handle descending sort
         if sort_option.startswith("-"):
-            label = sort_option[1:].replace("_", " ").title()  # Remove dash first, then format
+            label = sort_option[1:].replace("_", " ").title()  # Strip dash prefix, then format
             label = f"{label} (Desc)"
         else:
             label = sort_option.replace("_", " ").title()
         display_sort_options[sort_option] = label
 
-    # Calculate cutoff date for hits
-    cutoff_date = date.today() - timedelta(days=28)
-    
     # Annotate foodbanks with hits from last 28 days
+    # Note: Annotation is always included because the template displays the hits column
+    cutoff_date = date.today() - timedelta(days=28)
     foodbanks = Foodbank.objects.all().exclude(is_closed = True).annotate(
         hits_last_28_days=Sum(
             'foodbankhit__hits',
