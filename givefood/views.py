@@ -17,7 +17,7 @@ from givefood.models import Changelog, Foodbank, FoodbankChange, FoodbankChangeL
 from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
-from givefood.const.general import BOT_USER_AGENT, SITE_DOMAIN
+from givefood.const.general import BOT_USER_AGENT, SITE_DOMAIN, PLACES_PER_SITEMAP
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
 from givefood.settings import LANGUAGES
 
@@ -405,9 +405,7 @@ def robotstxt(request):
         disallowed_urls.append(translate_url(get_location_url, language[0]))
         disallowed_urls.append(translate_url(flag_url, language[0]))
         sitemap_urls.append(translate_url(sitemap_url, language[0]))
-    
-    # Add places sitemap index (not translated)
-    sitemap_urls.append(sitemap_places_index_url)
+        sitemap_urls.append(translate_url(sitemap_places_index_url, language[0]))
 
     template_vars = {
         "domain":SITE_DOMAIN,
@@ -457,9 +455,8 @@ def sitemap_places_index(request):
     """
     Sitemap index for places - splits 75k places into multiple sitemaps
     """
-    places_per_sitemap = 50000
     total_places = Place.objects.count()
-    num_sitemaps = (total_places + places_per_sitemap - 1) // places_per_sitemap  # ceiling division
+    num_sitemaps = (total_places + PLACES_PER_SITEMAP - 1) // PLACES_PER_SITEMAP  # ceiling division
     
     template_vars = {
         "domain": SITE_DOMAIN,
@@ -473,10 +470,9 @@ def sitemap_places(request, page=1):
     """
     Sitemap for places - paginated to handle 75k places
     """
-    places_per_sitemap = 50000
-    offset = (page - 1) * places_per_sitemap
+    offset = (page - 1) * PLACES_PER_SITEMAP
     
-    places = Place.objects.all().only('county_slug', 'name_slug').order_by('id')[offset:offset + places_per_sitemap]
+    places = Place.objects.all().only('county_slug', 'name_slug').order_by('id')[offset:offset + PLACES_PER_SITEMAP]
     
     template_vars = {
         "domain": SITE_DOMAIN,

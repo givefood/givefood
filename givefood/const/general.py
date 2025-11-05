@@ -247,4 +247,6 @@ DAYS_OF_WEEK = [
     "Sunday",
 ]
 
+PLACES_PER_SITEMAP = 10000
+
 BOT_USER_AGENT = "Mozilla/5.0 (compatible; GiveFoodBot/1.0; +https://www.givefood.org.uk/bot/)"
