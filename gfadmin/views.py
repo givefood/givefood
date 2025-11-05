@@ -488,8 +488,26 @@ def foodbank_check(request, slug):
         contacts = htmlbodytext(requests.get(foodbank.contacts_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
         foodbank_urls["Contacts"] = foodbank.contacts_url
     if foodbank.donation_points_url:
-        donation_points = htmlbodytext(requests.get(foodbank.donation_points_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-        foodbank_urls["Donation Points"] = foodbank.donation_points_url
+        if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
+            if not foodbank.network_id:
+                homepage_text = requests.get(foodbank.url).text
+                network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', homepage_text)
+                foodbank.network_id = network_id_search.group(1)
+                foodbank.save()
+            url = "%s?lat=%s&lng=%s&address=%s"  % (foodbank.donation_points_url, foodbank.latt(), foodbank.long(), foodbank.postcode)
+            headers = {
+                "User-Agent": BOT_USER_AGENT,
+                "Next-Action": "b8d1dab7508947f9e5f96fd1d7ebdbeb402a31ac",
+            }
+            payload = [
+                foodbank.network_id,
+                foodbank.latt(),
+                foodbank.long(),
+            ]
+            donation_points = requests.post(url, headers=headers, timeout=timeout_sec, json=payload).text
+        else:
+            donation_points = htmlbodytext(requests.get(foodbank.donation_points_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+            foodbank_urls["Donation Points"] = foodbank.donation_points_url
 
     foodbank_pages = {
         "homepage": homepage,
