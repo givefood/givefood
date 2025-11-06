@@ -6,7 +6,8 @@ from django.db import migrations
 
 def create_cache_table(apps, schema_editor):
     """Create the cache table using Django's createcachetable command."""
-    call_command("createcachetable", verbosity=0, interactive=False)
+    # Explicitly create the cache table specified in settings
+    call_command("createcachetable", "givefood_cache_table", verbosity=0, interactive=False)
 
 
 def drop_cache_table(apps, schema_editor):
