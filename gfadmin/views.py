@@ -777,20 +777,39 @@ def foodbank_urls_form(request, slug):
                 # Fetch the foodbank's main page
                 response = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=20)
                 if response.status_code == 200:
-                    soup = BeautifulSoup(response.text, 'html.parser')
+                    html_content = response.text
                     
-                    # Extract all URLs from the page
-                    all_links = []
+                    # Extract the base domain from the foodbank URL (without www)
+                    from urllib.parse import urlparse
+                    parsed_foodbank_url = urlparse(foodbank.url)
+                    foodbank_domain = parsed_foodbank_url.netloc.replace('www.', '')
+                    
+                    # Extract all URLs from the page using both BeautifulSoup and regex
+                    all_links = set()
+                    
+                    # Method 1: BeautifulSoup (handles standard HTML links)
+                    soup = BeautifulSoup(html_content, 'html.parser')
                     for link in soup.find_all('a', href=True):
                         href = link['href']
                         # Make URL fully qualified
                         full_url = urljoin(foodbank.url, href)
-                        # Only include URLs from the same domain
-                        if full_url.startswith(foodbank.url.rstrip('/')):
-                            all_links.append(full_url)
+                        parsed_url = urlparse(full_url)
+                        link_domain = parsed_url.netloc.replace('www.', '')
+                        # Only include URLs from the same domain (ignoring www)
+                        if link_domain == foodbank_domain:
+                            all_links.add(full_url)
                     
-                    # Remove duplicates and limit to reasonable number
-                    all_links = list(set(all_links))[:50]
+                    # Method 2: Regex (handles URLs in JavaScript, data attributes, etc.)
+                    # Look for URLs that match the domain
+                    url_pattern = r'https?://(?:www\.)?{}[^\s"\'>]*'.format(re.escape(foodbank_domain))
+                    regex_urls = re.findall(url_pattern, html_content)
+                    for url in regex_urls:
+                        # Clean up any trailing characters
+                        url = url.rstrip('",\';)')
+                        all_links.add(url)
+                    
+                    # Convert to list, remove duplicates and limit to reasonable number
+                    all_links = list(all_links)[:50]
                     
                     if all_links:
                         # Use Gemini to suggest appropriate URLs for each empty field
