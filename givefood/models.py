@@ -277,18 +277,6 @@ class Foodbank(models.Model):
                 return self.full_name_en()
         else:
             return self.full_name_en()
-                
-    def friendly_url(self):
-        return make_url_friendly(self.url)
-
-    def friendly_shopping_list_url(self):
-        return make_url_friendly(self.shopping_list_url)
-    
-    def friendly_rss_url(self):
-        if self.rss_url:
-            return make_url_friendly(self.rss_url)
-        else:
-            return None
 
     def latt(self):
         return float(self.lat_lng.split(",")[0])
@@ -1005,9 +993,6 @@ class FoodbankDonationPoint(models.Model):
             return url.url
         else:
             return False
-    
-    def friendly_url(self):
-        return make_url_friendly(self.url)
 
     def full_address(self):
         return "%s\r\n%s" % (self.address, self.postcode)
