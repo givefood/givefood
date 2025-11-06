@@ -33,6 +33,7 @@ dependencies = [
     "requests-toolbelt",
     "requests",
     "django-bulma==0.10.0",
+    "django-brotli",
     "unicodecsv",
     "dicttoxml",
     "feedparser",

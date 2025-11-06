@@ -189,46 +189,46 @@ class TestGeoJSONPreloadMiddleware:
 
 
 @pytest.mark.django_db
-class TestGZipMiddleware:
-    """Test that GZipMiddleware is properly configured."""
+class TestBrotliMiddleware:
+    """Test that BrotliMiddleware is properly configured."""
 
-    def test_gzip_compression_applied(self, client):
-        """Test that responses are gzip compressed when requested."""
-        # Make a request with Accept-Encoding: gzip header
+    def test_brotli_compression_applied(self, client):
+        """Test that responses are brotli compressed when requested."""
+        # Make a request with Accept-Encoding: br header
         response = client.get(
             '/needs/',
-            HTTP_ACCEPT_ENCODING='gzip'
+            HTTP_ACCEPT_ENCODING='br'
         )
 
         # Check if we got a successful response
         if response.status_code == 200:
-            # Check for Content-Encoding header indicating gzip compression
+            # Check for Content-Encoding header indicating brotli compression
             assert (
-                'gzip' in response.get('Content-Encoding', '')
-            ), "Response should be gzip compressed when requested"
+                'br' in response.get('Content-Encoding', '')
+            ), "Response should be brotli compressed when requested"
 
-    def test_gzip_not_applied_when_not_requested(self, client):
+    def test_brotli_not_applied_when_not_requested(self, client):
         """Test that responses are not compressed without Accept-Encoding."""
-        # Make a request without Accept-Encoding: gzip header
+        # Make a request without Accept-Encoding: br header
         response = client.get('/needs/')
 
         # Check if we got a successful response
         if response.status_code == 200:
-            # Without Accept-Encoding: gzip, response should not be compressed
+            # Without Accept-Encoding: br, response should not be compressed
             # (though middleware may still add the Vary header)
             content_encoding = response.get('Content-Encoding', '')
-            # If there's no content encoding or it's not gzip, that's expected
+            # If there's no content encoding or it's not brotli, that's expected
             assert (
-                content_encoding == '' or 'gzip' not in content_encoding
-            ), "Response should not be gzip compressed when not requested"
+                content_encoding == '' or 'br' not in content_encoding
+            ), "Response should not be brotli compressed when not requested"
 
-    def test_gzip_compression_with_api_endpoint(self, client):
-        """Test that API responses can be gzip compressed."""
+    def test_brotli_compression_with_api_endpoint(self, client):
+        """Test that API responses can be brotli compressed."""
         # Test with an API endpoint that should return JSON
         try:
             response = client.get(
                 '/api/',
-                HTTP_ACCEPT_ENCODING='gzip'
+                HTTP_ACCEPT_ENCODING='br'
             )
         except django.db.utils.NotSupportedError:
             # If the API endpoint fails due to database issues, skip this test
@@ -236,7 +236,7 @@ class TestGZipMiddleware:
 
         # Check if we got a successful response
         if response.status_code == 200:
-            # API responses should also support gzip compression
+            # API responses should also support brotli compression
             # The Vary header should include Accept-Encoding
             vary_header = response.get('Vary', '')
             assert (
