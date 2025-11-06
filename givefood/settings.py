@@ -146,7 +146,7 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
         "LOCATION": "givefood_cache_table",
     }
-} 
+}
 
 
 # Password validation
