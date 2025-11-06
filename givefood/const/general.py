@@ -190,6 +190,7 @@ OLD_FOODBANK_SLUGS = {
     "cpr":"transformation",
     "belfast-south-west":"south-west-belfast",
     "yarmouth-magdalen": "great-yarmouth",
+    "stow-park-community-centre":"newport-district",
 }
 
 FOODBANK_SUBPAGES = [
