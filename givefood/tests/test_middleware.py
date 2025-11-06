@@ -1,8 +1,8 @@
 """
 Tests for the givefood middleware.
 """
-import gzip
 import pytest
+import django.db.utils
 from django.test import RequestFactory
 from django.http import HttpResponse
 from unittest.mock import Mock, patch, MagicMock
@@ -230,7 +230,7 @@ class TestGZipMiddleware:
                 '/api/',
                 HTTP_ACCEPT_ENCODING='gzip'
             )
-        except Exception:
+        except django.db.utils.NotSupportedError:
             # If the API endpoint fails due to database issues, skip this test
             pytest.skip("API endpoint not available in test environment")
 
@@ -240,6 +240,5 @@ class TestGZipMiddleware:
             # The Vary header should include Accept-Encoding
             vary_header = response.get('Vary', '')
             assert (
-                'Accept-Encoding' in vary_header or
-                'accept-encoding' in vary_header.lower()
+                'Accept-Encoding' in vary_header
             ), "Vary header should include Accept-Encoding for proper caching"
