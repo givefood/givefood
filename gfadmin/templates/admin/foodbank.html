@@ -73,12 +73,9 @@
         <p class="box" style="margin-top:20px;">{{ foodbank.notes|linebreaksbr }}</p>
       {% endif %}
 
-      <h3>Links</h3>
+      <h3>URLs</h3>
+      <a href="{% url 'admin:foodbank_urls_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light">Edit</a>
       <dl>
-        <dt>GF Info</dt>
-        <dd>
-          <a href="{% url 'wfbn:foodbank' foodbank.slug %}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.slug }}</a>
-        </dd>
         <dt>Website</dt>
         <dd>
           <a href="{{ foodbank.url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
@@ -99,15 +96,33 @@
         {% if foodbank.locations_url %}
           <dt>Locations URL</dt>
           <dd>
+            <a href="{{ foodbank.locations_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
             <a href="{{ foodbank.locations_url }}">{{ foodbank.locations_url }}</a>
           </dd>
         {% endif %}
         {% if foodbank.donation_points_url %}
           <dt>Donation Points URL</dt>
           <dd>
+            <a href="{{ foodbank.donation_points_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
             <a href="{{ foodbank.donation_points_url }}">{{ foodbank.donation_points_url }}</a>
           </dd>
         {% endif %}
+        {% if foodbank.contacts_url %}
+          <dt>Contacts URL</dt>
+          <dd>
+            <a href="{{ foodbank.contacts_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+            <a href="{{ foodbank.contacts_url }}">{{ foodbank.contacts_url }}</a>
+          </dd>
+        {% endif %}
+      </dl>
+
+      <h3>Info</h3>
+      <dl>
+        <dt>GF Info</dt>
+        <dd>
+          <a href="{% url 'wfbn:foodbank' foodbank.slug %}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.slug }}</a>
+        </dd>
+
         {% if foodbank.facebook_page %}
           <dt>Facebook</dt>
           <dd><a href="https://www.facebook.com/{{ foodbank.facebook_page }}">{{ foodbank.facebook_page }}</a></dd>
