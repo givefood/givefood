@@ -41,7 +41,7 @@ class TestFriendlyUrlTemplateTag:
         template = Template("{% load custom_tags %}{{ url|friendly_url }}")
         context = Context({"url": None})
         result = template.render(context)
-        assert result == "None"
+        assert result == ""
 
     def test_friendly_url_chain_with_truncatechars(self):
         """Test that friendly_url can be chained with other filters."""

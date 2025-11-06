@@ -15,4 +15,4 @@ def full_phone(phone_number):
 def friendly_url(url):
     if url:
         return make_url_friendly(url)
-    return None
+    return ""
