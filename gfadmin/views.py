@@ -23,7 +23,7 @@ from django.db.models import Sum, Q, Count
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters
 from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
-from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
+from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm
 
 
 def index(request):
@@ -750,6 +750,104 @@ def foodbank_politics_form(request, slug = None):
     template_vars = {
         "form":form,
         "page_title":page_title,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def foodbank_urls_form(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "Edit %s Food Bank URLs" % (foodbank.name)
+
+    if request.POST:
+        form = FoodbankUrlsForm(request.POST, instance=foodbank)
+        if form.is_valid():
+            foodbank = form.save()
+            return redirect("admin:foodbank", slug = foodbank.slug)
+    else:
+        # Check which URL fields are empty and need suggestions
+        initial_data = {}
+        suggested_fields = []
+        
+        url_fields = ['shopping_list_url', 'rss_url', 'donation_points_url', 'locations_url', 'contacts_url']
+        empty_fields = [field for field in url_fields if not getattr(foodbank, field)]
+        
+        if empty_fields and foodbank.url:
+            try:
+                # Fetch the foodbank's main page
+                response = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=20)
+                if response.status_code == 200:
+                    html_content = response.text
+                    
+                    # Extract all URLs from the page using both BeautifulSoup and regex
+                    all_links = set()
+                    
+                    # Method 1: BeautifulSoup (handles standard HTML links)
+                    soup = BeautifulSoup(html_content, 'html.parser')
+                    for link in soup.find_all('a', href=True):
+                        href = link['href']
+                        # Make URL fully qualified
+                        full_url = urljoin(foodbank.url, href)
+                        all_links.add(full_url)
+                    
+                    # Method 2: Regex (handles URLs in JavaScript, data attributes, etc.)
+                    # Look for any http/https URLs
+                    url_pattern = r'https?://[^\s"\'<>)]+[^\s"\'<>).,;]'
+                    regex_urls = re.findall(url_pattern, html_content)
+                    for url in regex_urls:
+                        all_links.add(url)
+                    
+                    # Convert to list, remove duplicates and limit to reasonable number
+                    all_links = list(all_links)[:100]
+                    
+                    if all_links:
+                        # Use Gemini to suggest appropriate URLs for each empty field
+                        prompt = f"""Given a food bank's website at {foodbank.url} and the following URLs found on their website:
+
+{chr(10).join(all_links)}
+
+Please analyze these URLs and suggest the best match for each of these fields (return empty string if no good match):
+- shopping_list_url: URL for the shopping list or what items they need
+- rss_url: URL for RSS feed
+- donation_points_url: URL for donation/drop-off points or locations
+- locations_url: URL for locations/where to find them
+- contacts_url: URL for contact information
+
+Only suggest URLs from the list provided. Return as JSON with these exact field names."""
+
+                        response_schema = {
+                            "type": "object",
+                            "properties": {
+                                "shopping_list_url": {"type": "string"},
+                                "rss_url": {"type": "string"},
+                                "donation_points_url": {"type": "string"},
+                                "locations_url": {"type": "string"},
+                                "contacts_url": {"type": "string"},
+                            },
+                            "required": ["shopping_list_url", "rss_url", "donation_points_url", "locations_url", "contacts_url"]
+                        }
+                        
+                        suggestions = gemini(prompt, temperature=0, response_mime_type="application/json", response_schema=response_schema)
+                        
+                        # Apply suggestions to empty fields only
+                        for field in empty_fields:
+                            if field in suggestions and suggestions[field]:
+                                initial_data[field] = suggestions[field]
+                                suggested_fields.append(field)
+            except Exception as e:
+                logging.warning(f"Failed to fetch URL suggestions for {foodbank.slug}: {e}")
+        
+        form = FoodbankUrlsForm(instance=foodbank, initial=initial_data)
+        
+        # Add CSS class to suggested fields
+        for field in suggested_fields:
+            if field in form.fields:
+                form.fields[field].widget.attrs['class'] = 'is-success'
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+        "foodbank":foodbank,
     }
     return render(request, "admin/form.html", template_vars)
 
