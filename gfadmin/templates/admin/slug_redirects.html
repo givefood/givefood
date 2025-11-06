@@ -1,0 +1,37 @@
+{% extends "admin/page.html" %}
+{% load humanize %}
+
+{% block title %}Slug Redirects - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Slug Redirects</h2>
+
+  <a href="{% url "admin:slug_redirect_new" %}" class="button is-link">New Slug Redirect</a>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Old Slug</th>
+          <th>New Slug</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+        {% for slug_redirect in slug_redirects %}
+          <tr>
+            <td>{{ slug_redirect.old_slug }}</td>
+            <td>{{ slug_redirect.new_slug }}</td>
+            <td>{{ slug_redirect.created|naturaltime }}</td>
+            <td><a href="{% url "admin:slug_redirect_form" slug_redirect.id %}" class="button is-small">Edit</a></td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}
