@@ -97,7 +97,7 @@
           <dt>Locations URL</dt>
           <dd>
             <a href="{{ foodbank.locations_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
-            <a href="{{ foodbank.locations_url }}">{{ foodbank.locations_url }}</a>
+            <a href="{{ foodbank.locations_url }}">{{ foodbank.locations_url|friendly_url }}</a>
           </dd>
         {% endif %}
         {% if foodbank.donation_points_url %}
