@@ -135,6 +135,7 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASS"),
         "HOST": os.getenv("DB_HOST"),
         "PORT": "5432",
+        'CONN_MAX_AGE': 600,
     }
 }
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField" 
