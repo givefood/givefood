@@ -20,12 +20,16 @@ def get_slug_redirects():
         # Import here to avoid circular imports at module load time
         from givefood.models import SlugRedirect
         
-        # Fetch all redirects from database
-        slug_redirects = SlugRedirect.objects.all().values_list('old_slug', 'new_slug')
-        redirects = dict(slug_redirects)
-        
-        # Cache for 1 hour (3600 seconds)
-        cache.set(cache_key, redirects, 3600)
+        try:
+            # Fetch all redirects from database
+            slug_redirects = SlugRedirect.objects.all().values_list('old_slug', 'new_slug')
+            redirects = dict(slug_redirects)
+            
+            # Cache for 1 hour (3600 seconds)
+            cache.set(cache_key, redirects, 3600)
+        except Exception:
+            # If table doesn't exist yet (e.g., during initial migration), return empty dict
+            redirects = {}
     
     return redirects
 
