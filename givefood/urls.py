@@ -41,8 +41,6 @@ for old_slug, new_slug in old_foodbank_slugs.items():
     redirectors[("needs/at/%s/" % old_slug)] = ("/needs/at/%s/" % new_slug)
     for subpage in FOODBANK_SUBPAGES:
         redirectors["needs/at/%s/%s/" % (old_slug, subpage)] = "/needs/at/%s/%s/" % (new_slug, subpage)
-for from_url, to_url in redirectors.copy().items():
-    redirectors["cy/%s" % (from_url)] = "/cy%s" % (to_url)
 
 redirect_patterns = []
 for from_url, to_url in redirectors.items():
