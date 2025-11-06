@@ -4,6 +4,7 @@
 import pytest
 from django.test import Client
 from django.core.cache import cache
+from django.db import IntegrityError
 
 from givefood.models import SlugRedirect
 
@@ -46,7 +47,7 @@ class TestSlugRedirectModel:
         """Test that old_slug must be unique."""
         SlugRedirect.objects.create(old_slug="test", new_slug="new1")
         
-        with pytest.raises(Exception):  # IntegrityError
+        with pytest.raises(IntegrityError):
             SlugRedirect.objects.create(old_slug="test", new_slug="new2")
 
     def test_slug_redirects_can_be_queried(self, populate_slug_redirects):

@@ -3,6 +3,7 @@ from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import RedirectView
 from django.urls import path, re_path
 from django.core.cache import cache
+from django.db.utils import ProgrammingError, OperationalError
 
 
 import givefood.views
@@ -27,7 +28,7 @@ def get_slug_redirects():
             
             # Cache for 1 hour (3600 seconds)
             cache.set(cache_key, redirects, 3600)
-        except Exception:
+        except (ProgrammingError, OperationalError):
             # If table doesn't exist yet (e.g., during initial migration), return empty dict
             redirects = {}
     
