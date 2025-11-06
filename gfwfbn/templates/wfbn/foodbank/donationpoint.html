@@ -131,7 +131,7 @@
 
             <div class="contacts">
               {% if donationpoint.url %}
-                <a href="{{ donationpoint.url_with_ref }}" class="website">{{ donationpoint.friendly_url|truncatechars:40 }}</a>
+                <a href="{{ donationpoint.url_with_ref }}" class="website">{{ donationpoint.url|friendly_url|truncatechars:40 }}</a>
               {% endif %}
               {% if donationpoint.phone_number %}
                 <a href="tel:{{ donationpoint.phone_number|full_phone }}" class="phone">{{ donationpoint.phone_number|friendly_phone }}</a>

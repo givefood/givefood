@@ -127,7 +127,7 @@
             {% endif %}
 
             <div class="contacts">
-              <a href="{{ foodbank.url_with_ref }}" class="website">{{ foodbank.friendly_url|truncatechars:40 }}</a>
+              <a href="{{ foodbank.url_with_ref }}" class="website">{{ foodbank.url|friendly_url|truncatechars:40 }}</a>
               {% if foodbank.phone_number %}
                 <a href="tel:{{ foodbank.phone_number|full_phone }}" class="phone">{{ foodbank.phone_number|friendly_phone }}</a>
                 {% if foodbank.secondary_phone_number %}<a href="tel:{{ foodbank.secondary_phone_number|full_phone }}"  class="phone">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}

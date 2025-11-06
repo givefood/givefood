@@ -79,18 +79,18 @@
         <dt>Website</dt>
         <dd>
           <a href="{{ foodbank.url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
-          <a href="{{ foodbank.url }}">{{ foodbank.friendly_url }}</a>
+          <a href="{{ foodbank.url }}">{{ foodbank.url|friendly_url }}</a>
         </dd>
         <dt>Shopping List URL</dt>
         <dd>
           <a href="{{ foodbank.shopping_list_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
-          <a href="{{ foodbank.shopping_list_url }}">{{ foodbank.friendly_shopping_list_url }}</a>
+          <a href="{{ foodbank.shopping_list_url }}">{{ foodbank.shopping_list_url|friendly_url }}</a>
         </dd>
         {% if foodbank.rss_url %}
           <dt>RSS</dt>
           <dd>
             <a href="{{ foodbank.rss_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
-            <a href="{{ foodbank.rss_url }}">{{ foodbank.friendly_rss_url }}</a>
+            <a href="{{ foodbank.rss_url }}">{{ foodbank.rss_url|friendly_url }}</a>
           </dd>
         {% endif %}
         {% if foodbank.locations_url %}
@@ -104,14 +104,14 @@
           <dt>Donation Points URL</dt>
           <dd>
             <a href="{{ foodbank.donation_points_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
-            <a href="{{ foodbank.donation_points_url }}">{{ foodbank.donation_points_url }}</a>
+            <a href="{{ foodbank.donation_points_url }}">{{ foodbank.donation_points_url|friendly_url }}</a>
           </dd>
         {% endif %}
         {% if foodbank.contacts_url %}
           <dt>Contacts URL</dt>
           <dd>
             <a href="{{ foodbank.contacts_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
-            <a href="{{ foodbank.contacts_url }}">{{ foodbank.contacts_url }}</a>
+            <a href="{{ foodbank.contacts_url }}">{{ foodbank.contacts_url|friendly_url }}</a>
           </dd>
         {% endif %}
       </dl>
