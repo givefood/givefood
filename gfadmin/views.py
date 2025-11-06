@@ -5,7 +5,7 @@ import logging
 from random import randrange
 import re
 import requests
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, quote
 
@@ -22,8 +22,8 @@ from django.db.models import Sum, Q, Count
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters
-from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
-from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, FoodbankUrlsForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
+from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
+from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm
 
 
 def index(request):
@@ -118,6 +118,8 @@ def foodbanks(request):
         "-no_donation_points",
         "last_need_check",
         "-last_need_check",
+        "hits_last_28_days",
+        "-hits_last_28_days",
     ]
     sort = request.GET.get("sort", "edited")
     if sort not in sort_options:
@@ -125,9 +127,26 @@ def foodbanks(request):
     
     display_sort_options = {}
     for sort_option in sort_options:
-        display_sort_options[sort_option] = sort_option.replace("_", " ").title()
+        # Handle descending sort
+        if sort_option.startswith("-"):
+            label = sort_option[1:].replace("_", " ").title()  # Strip dash prefix, then format
+            label = f"{label} (Desc)"
+        else:
+            label = sort_option.replace("_", " ").title()
+        display_sort_options[sort_option] = label
 
-    foodbanks = Foodbank.objects.all().exclude(is_closed = True).order_by(sort)
+    # Annotate foodbanks with hits from last 28 days
+    # Note: Annotation is always included because the template displays the hits column
+    cutoff_date = date.today() - timedelta(days=28)
+    foodbanks = Foodbank.objects.all().exclude(is_closed = True).annotate(
+        hits_last_28_days=Sum(
+            'foodbankhit__hits',
+            filter=Q(foodbankhit__day__gte=cutoff_date)
+        )
+    )
+    
+    # Apply sorting
+    foodbanks = foodbanks.order_by(sort)
 
     template_vars = {
         "sort":sort,

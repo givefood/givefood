@@ -10,11 +10,25 @@
   <div class="columns">
     <div class="column">
         <h2>{{ foodbank.name }}</h2>
-        <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-pulled-right" target="_blank">Edit</a>
-        <p>Last edit: {{ foodbank.edited|timesince }} ago</p>
-        <form method="post" action="{% url 'admin:foodbank_touch' foodbank.slug %}" display="inline">
-            <button type="submit" class="button is-link">Touch</button>
-        </form>
+
+        <div class="columns">
+            <div class="column">
+                <ul>
+                    <li><a href="{{ foodbank.url }}" target="_blank">{{ foodbank.url }}</a></li>
+                    <li><a href="{% url 'admin:foodbank' foodbank.slug %}" target="_blank">{{ foodbank.slug }}</a></li>
+                </ul>
+                <p>Last edit: {{ foodbank.edited|timesince }} ago</p>
+            </div>
+            <div class="column" style="text-align: right;">
+                <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link" target="_blank">Edit</a>
+                <form method="post" action="{% url 'admin:foodbank_touch' foodbank.slug %}" style="margin-top:10px;">
+                    <button type="submit" class="button is-link">Touch</button>
+                </form>
+            </div>
+        </div>
+        
+        
+        
         <table class="table is-fullwidth checktable">
             <tr>
                 <th width="50%">🗄️ Ours</th>
