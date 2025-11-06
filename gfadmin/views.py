@@ -779,11 +779,6 @@ def foodbank_urls_form(request, slug):
                 if response.status_code == 200:
                     html_content = response.text
                     
-                    # Extract the base domain from the foodbank URL (without www)
-                    from urllib.parse import urlparse
-                    parsed_foodbank_url = urlparse(foodbank.url)
-                    foodbank_domain = parsed_foodbank_url.netloc.replace('www.', '')
-                    
                     # Extract all URLs from the page using both BeautifulSoup and regex
                     all_links = set()
                     
@@ -793,23 +788,17 @@ def foodbank_urls_form(request, slug):
                         href = link['href']
                         # Make URL fully qualified
                         full_url = urljoin(foodbank.url, href)
-                        parsed_url = urlparse(full_url)
-                        link_domain = parsed_url.netloc.replace('www.', '')
-                        # Only include URLs from the same domain (ignoring www)
-                        if link_domain == foodbank_domain:
-                            all_links.add(full_url)
+                        all_links.add(full_url)
                     
                     # Method 2: Regex (handles URLs in JavaScript, data attributes, etc.)
-                    # Look for URLs that match the domain
-                    url_pattern = r'https?://(?:www\.)?{}[^\s"\'>]*'.format(re.escape(foodbank_domain))
+                    # Look for any http/https URLs
+                    url_pattern = r'https?://[^\s"\'<>)]+[^\s"\'<>).,;]'
                     regex_urls = re.findall(url_pattern, html_content)
                     for url in regex_urls:
-                        # Clean up any trailing characters
-                        url = url.rstrip('",\';)')
                         all_links.add(url)
                     
                     # Convert to list, remove duplicates and limit to reasonable number
-                    all_links = list(all_links)[:50]
+                    all_links = list(all_links)[:100]
                     
                     if all_links:
                         # Use Gemini to suggest appropriate URLs for each empty field
