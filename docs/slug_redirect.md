@@ -98,17 +98,35 @@ The redirects are used to generate URL patterns for:
 
 Where subpages include: locations, news, politics, donationpoints, socialmedia, nearby, subscribe, charity
 
-## Migration
+## Setup
 
-When deploying this change, run:
+When deploying this change:
 
+1. Run migrations to create the table:
 ```bash
 python manage.py migrate
 ```
 
-This will:
-1. Create the `givefood_slugredirect` table
-2. Populate it with the 54 existing slug redirects from OLD_FOODBANK_SLUGS
+2. Populate the table with the 54 existing slug redirects:
+```bash
+python manage.py populate_slug_redirects
+```
+
+### Management Command Options
+
+The `populate_slug_redirects` command supports the following options:
+
+- **Default behavior**: Creates new redirects, updates existing ones if the target changed, skips unchanged redirects
+- **`--clear`**: Delete all existing redirects before populating (useful for a clean slate)
+
+Examples:
+```bash
+# Standard population (safe, won't delete existing redirects)
+python manage.py populate_slug_redirects
+
+# Clear and repopulate (caution: removes all custom redirects)
+python manage.py populate_slug_redirects --clear
+```
 
 ## Benefits
 
