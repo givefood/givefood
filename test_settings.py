@@ -28,3 +28,11 @@ ALLOWED_HOSTS = ['*']
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.MD5PasswordHasher',
 ]
+
+# Use LocMemCache for tests (faster than DatabaseCache)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'test-cache',
+    }
+}

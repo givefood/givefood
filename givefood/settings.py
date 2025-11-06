@@ -138,7 +138,15 @@ DATABASES = {
         'CONN_MAX_AGE': 600,
     }
 }
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField" 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Cache configuration
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "givefood_cache_table",
+    }
+} 
 
 
 # Password validation

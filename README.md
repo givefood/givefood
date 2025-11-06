@@ -58,7 +58,16 @@ To set up for local development, run the following:
  - `virtualenv --python=python3.12 .venv`
  - `source .venv/bin/activate`
  - `pip install -e .`
+ - `./manage.py migrate`  # Create database tables including cache table
  - `./manage.py runserver`
+
+## Caching
+
+The project uses Django's DatabaseCache backend to cache data in the database. The cache table is automatically created when running migrations. The cache is used extensively throughout the application (100+ locations) to improve performance for:
+- Food bank queries
+- API responses
+- Dashboard data
+- Location lookups
 
 ## Running tests
 
