@@ -2,21 +2,45 @@ from django.conf.urls import include
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import RedirectView
 from django.urls import path, re_path
+from django.core.cache import cache
+from django.db.utils import ProgrammingError, OperationalError
 
 
 import givefood.views
-from givefood.const.general import RICK_ASTLEY, OLD_FOODBANK_SLUGS, FOODBANK_SUBPAGES
+from givefood.const.general import RICK_ASTLEY, FOODBANK_SUBPAGES
 
 urlpatterns = []
 
-# Old food bank slug redirects
+# Old food bank slug redirects from database
+def get_slug_redirects():
+    """Get slug redirects from database with caching."""
+    cache_key = 'slug_redirects_dict'
+    redirects = cache.get(cache_key)
+    
+    if redirects is None:
+        # Import here to avoid circular imports at module load time
+        from givefood.models import SlugRedirect
+        
+        try:
+            # Fetch all redirects from database
+            slug_redirects = SlugRedirect.objects.all().values_list('old_slug', 'new_slug')
+            redirects = dict(slug_redirects)
+            
+            # Cache for 1 hour (3600 seconds)
+            cache.set(cache_key, redirects, 3600)
+        except (ProgrammingError, OperationalError):
+            # If table doesn't exist yet (e.g., during initial migration), return empty dict
+            redirects = {}
+    
+    return redirects
+
+old_foodbank_slugs = get_slug_redirects()
+
 redirectors = {}
-for old_slug, new_slug in OLD_FOODBANK_SLUGS.items():
+for old_slug, new_slug in old_foodbank_slugs.items():
     redirectors[("needs/at/%s/" % old_slug)] = ("/needs/at/%s/" % new_slug)
     for subpage in FOODBANK_SUBPAGES:
         redirectors["needs/at/%s/%s/" % (old_slug, subpage)] = "/needs/at/%s/%s/" % (new_slug, subpage)
-for from_url, to_url in redirectors.copy().items():
-    redirectors["cy/%s" % (from_url)] = "/cy%s" % (to_url)
 
 redirect_patterns = []
 for from_url, to_url in redirectors.items():

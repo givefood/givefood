@@ -2280,3 +2280,17 @@ class Dump(models.Model):
 
         self.size = len(self.the_dump.encode('utf-8'))
         super(Dump, self).save(*args, **kwargs)
+
+
+class SlugRedirect(models.Model):
+
+    old_slug = models.CharField(max_length=200, unique=True, db_index=True)
+    new_slug = models.CharField(max_length=200, db_index=True)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    modified = models.DateTimeField(auto_now=True, editable=False)
+
+    class Meta:
+        app_label = 'givefood'
+
+    def __str__(self):
+        return f"{self.old_slug} -> {self.new_slug}"
