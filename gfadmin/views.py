@@ -746,7 +746,76 @@ def foodbank_urls_form(request, slug):
             foodbank = form.save()
             return redirect("admin:foodbank", slug = foodbank.slug)
     else:
-        form = FoodbankUrlsForm(instance=foodbank)
+        # Check which URL fields are empty and need suggestions
+        initial_data = {}
+        suggested_fields = []
+        
+        url_fields = ['shopping_list_url', 'rss_url', 'donation_points_url', 'locations_url', 'contacts_url']
+        empty_fields = [field for field in url_fields if not getattr(foodbank, field)]
+        
+        if empty_fields and foodbank.url:
+            try:
+                # Fetch the foodbank's main page
+                response = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=20)
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    
+                    # Extract all URLs from the page
+                    all_links = []
+                    for link in soup.find_all('a', href=True):
+                        href = link['href']
+                        # Make URL fully qualified
+                        full_url = urljoin(foodbank.url, href)
+                        # Only include URLs from the same domain
+                        if full_url.startswith(foodbank.url.rstrip('/')):
+                            all_links.append(full_url)
+                    
+                    # Remove duplicates and limit to reasonable number
+                    all_links = list(set(all_links))[:50]
+                    
+                    if all_links:
+                        # Use Gemini to suggest appropriate URLs for each empty field
+                        prompt = f"""Given a food bank's website at {foodbank.url} and the following URLs found on their website:
+
+{chr(10).join(all_links)}
+
+Please analyze these URLs and suggest the best match for each of these fields (return empty string if no good match):
+- shopping_list_url: URL for the shopping list or what items they need
+- rss_url: URL for RSS feed
+- donation_points_url: URL for donation/drop-off points or locations
+- locations_url: URL for locations/where to find them
+- contacts_url: URL for contact information
+
+Only suggest URLs from the list provided. Return as JSON with these exact field names."""
+
+                        response_schema = {
+                            "type": "object",
+                            "properties": {
+                                "shopping_list_url": {"type": "string"},
+                                "rss_url": {"type": "string"},
+                                "donation_points_url": {"type": "string"},
+                                "locations_url": {"type": "string"},
+                                "contacts_url": {"type": "string"},
+                            },
+                            "required": ["shopping_list_url", "rss_url", "donation_points_url", "locations_url", "contacts_url"]
+                        }
+                        
+                        suggestions = gemini(prompt, temperature=0, response_mime_type="application/json", response_schema=response_schema)
+                        
+                        # Apply suggestions to empty fields only
+                        for field in empty_fields:
+                            if field in suggestions and suggestions[field]:
+                                initial_data[field] = suggestions[field]
+                                suggested_fields.append(field)
+            except Exception as e:
+                logging.warning(f"Failed to fetch URL suggestions for {foodbank.slug}: {e}")
+        
+        form = FoodbankUrlsForm(instance=foodbank, initial=initial_data)
+        
+        # Add CSS class to suggested fields
+        for field in suggested_fields:
+            if field in form.fields:
+                form.fields[field].widget.attrs['class'] = 'is-success'
 
     template_vars = {
         "form":form,
