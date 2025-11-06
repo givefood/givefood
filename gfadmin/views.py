@@ -22,8 +22,8 @@ from django.db.models import Sum, Q, Count
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters
-from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet
-from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm
+from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect
+from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, SlugRedirectForm
 
 
 def index(request):
@@ -1319,6 +1319,41 @@ def item_form(request, slug = None):
             return redirect("admin:items")
     else:
         form = OrderItemForm(instance=item)
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def slug_redirects(request):
+
+    slug_redirects = SlugRedirect.objects.all().order_by("-created")
+
+    template_vars = {
+        "slug_redirects":slug_redirects,
+        "section":"settings",
+    }
+    return render(request, "admin/slug_redirects.html", template_vars)
+
+
+def slug_redirect_form(request, id = None):
+
+    if id:
+        slug_redirect = get_object_or_404(SlugRedirect, id = id)
+        page_title = "Edit Slug Redirect"
+    else:
+        slug_redirect = None
+        page_title = "New Slug Redirect"
+
+    if request.POST:
+        form = SlugRedirectForm(request.POST, instance=slug_redirect)
+        if form.is_valid():
+            slug_redirect = form.save()
+            return redirect("admin:slug_redirects")
+    else:
+        form = SlugRedirectForm(instance=slug_redirect)
 
     template_vars = {
         "form":form,

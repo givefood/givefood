@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.forms import ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
-from givefood.models import Changelog, FoodbankDonationPoint, OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine
+from givefood.models import Changelog, FoodbankDonationPoint, OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine, SlugRedirect
 from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
@@ -132,6 +132,12 @@ class OrderForm(ModelForm):
 class OrderItemForm(ModelForm):
     class Meta:
         model = OrderItem
+        fields = "__all__"
+
+
+class SlugRedirectForm(ModelForm):
+    class Meta:
+        model = SlugRedirect
         fields = "__all__"
 
 

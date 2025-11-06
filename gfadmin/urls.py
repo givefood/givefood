@@ -31,6 +31,10 @@ urlpatterns = (
     path("item/new/", item_form, name="item_new"),
     path("item/<slug:slug>/edit/", item_form, name="item_form"),
 
+    path("slug-redirects/", slug_redirects, name="slug_redirects"),
+    path("slug-redirect/new/", slug_redirect_form, name="slug_redirect_new"),
+    path("slug-redirect/<int:id>/edit/", slug_redirect_form, name="slug_redirect_form"),
+
     path("foodbank/new/", foodbank_form, name="foodbank_new"),
     path("foodbank/<slug:slug>/", foodbank, name="foodbank"),
     path("foodbank/<slug:slug>/edit/", foodbank_form, name="foodbank_edit"),
