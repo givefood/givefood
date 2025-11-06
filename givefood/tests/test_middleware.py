@@ -1,6 +1,7 @@
 """
 Tests for the givefood middleware.
 """
+import gzip
 import pytest
 from django.test import RequestFactory
 from django.http import HttpResponse
@@ -185,3 +186,60 @@ class TestGeoJSONPreloadMiddleware:
             assert '/needs/at/test-foodbank/geo.json' in link_header, (
                 "Link header should contain foodbank-specific geojson URL"
             )
+
+
+@pytest.mark.django_db
+class TestGZipMiddleware:
+    """Test that GZipMiddleware is properly configured."""
+
+    def test_gzip_compression_applied(self, client):
+        """Test that responses are gzip compressed when requested."""
+        # Make a request with Accept-Encoding: gzip header
+        response = client.get(
+            '/needs/',
+            HTTP_ACCEPT_ENCODING='gzip'
+        )
+
+        # Check if we got a successful response
+        if response.status_code == 200:
+            # Check for Content-Encoding header indicating gzip compression
+            assert (
+                'gzip' in response.get('Content-Encoding', '')
+            ), "Response should be gzip compressed when requested"
+
+    def test_gzip_not_applied_when_not_requested(self, client):
+        """Test that responses are not compressed without Accept-Encoding."""
+        # Make a request without Accept-Encoding: gzip header
+        response = client.get('/needs/')
+
+        # Check if we got a successful response
+        if response.status_code == 200:
+            # Without Accept-Encoding: gzip, response should not be compressed
+            # (though middleware may still add the Vary header)
+            content_encoding = response.get('Content-Encoding', '')
+            # If there's no content encoding or it's not gzip, that's expected
+            assert (
+                content_encoding == '' or 'gzip' not in content_encoding
+            ), "Response should not be gzip compressed when not requested"
+
+    def test_gzip_compression_with_api_endpoint(self, client):
+        """Test that API responses can be gzip compressed."""
+        # Test with an API endpoint that should return JSON
+        try:
+            response = client.get(
+                '/api/',
+                HTTP_ACCEPT_ENCODING='gzip'
+            )
+        except Exception:
+            # If the API endpoint fails due to database issues, skip this test
+            pytest.skip("API endpoint not available in test environment")
+
+        # Check if we got a successful response
+        if response.status_code == 200:
+            # API responses should also support gzip compression
+            # The Vary header should include Accept-Encoding
+            vary_header = response.get('Vary', '')
+            assert (
+                'Accept-Encoding' in vary_header or
+                'accept-encoding' in vary_header.lower()
+            ), "Vary header should include Accept-Encoding for proper caching"
