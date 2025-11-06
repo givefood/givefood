@@ -191,6 +191,7 @@ OLD_FOODBANK_SLUGS = {
     "belfast-south-west":"south-west-belfast",
     "yarmouth-magdalen": "great-yarmouth",
     "stow-park-community-centre":"newport-district",
+    "godmanchester":"godmanchester-huntingdon",
 }
 
 FOODBANK_SUBPAGES = [
