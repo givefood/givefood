@@ -10,13 +10,14 @@ The test suite is organized as follows:
 
 ### Configuration Files
 
-- **pytest.ini** - Main pytest configuration file
+- **pyproject.toml** - Main pytest configuration
   - Uses `test_settings.py` for Django settings
   - Configured for test discovery patterns
   - Uses `--reuse-db` and `--nomigrations` for faster test runs
 
 - **test_settings.py** - Test-specific Django settings
   - Uses SQLite in-memory database instead of PostgreSQL
+  - Uses LocMemCache instead of DatabaseCache for faster tests
   - Disables Sentry for tests
   - Speeds up password hashing for tests
 
@@ -46,6 +47,15 @@ The givefood app has multiple test files organized in a tests directory:
 
 - **TestJSONUtilities** (3 tests)
   - GeoJSON parsing and validation
+
+**test_cache.py** - Unit tests for cache configuration and operations:
+
+- **TestCacheConfiguration** (10 tests)
+  - Cache backend verification
+  - Basic get/set operations
+  - Cache timeout functionality
+  - Batch operations (get_many, set_many, delete_many)
+  - Cache clearing
 
 **test_views.py** - Integration tests for main application views:
 
@@ -107,11 +117,12 @@ pytest --cov=givefood --cov=gfapi2 --cov-report=html
 
 ## Test Statistics
 
-- **Total Tests**: 39
-- **Passing**: 39 (100%)
+- **Total Tests**: 49
+- **Passing**: 49 (100%)
 - **Coverage Areas**:
   - Text processing utilities
   - Geographic calculations
+  - Cache configuration and operations
   - API endpoints
   - View accessibility
   - JSON/GeoJSON handling
