@@ -142,6 +142,17 @@ DATABASES = {
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField" 
 
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'givefoodorguk',
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000,
+        }
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#auth-password-validators
 
