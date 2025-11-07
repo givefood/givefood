@@ -40,7 +40,8 @@ Give Food is a registered charity in England & Wales [1188192](https://register-
 ## Data
 
 * We have an API at https://www.givefood.org.uk/api/
-* Our data is versioned here https://github.com/givefood/data
+* CSV dumps of our data are here https://www.givefood.org.uk/dumps/
+* Our data is versioned in git here https://github.com/givefood/data
 
 ## Contact us
 
