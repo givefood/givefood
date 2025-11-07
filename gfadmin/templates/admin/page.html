@@ -22,8 +22,14 @@
         <a class="navbar-item" href="{% url 'admin:index' %}">
           <img src="/static/img/logo.svg" alt="Give Food" class="logo">
         </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
       </div>
-      <div class="navbar-menu">
+      <div id="navbarMenu" class="navbar-menu">
         <a class="navbar-item{% if section == "foodbanks" %} is-active{% endif %}" href="{% url 'admin:foodbanks' %}">Food Banks</a>
         <a class="navbar-item{% if section == "locations" %} is-active{% endif %}" href="{% url 'admin:locations' %}">Locations</a>
         <a class="navbar-item{% if section == "donationpoints" %} is-active{% endif %}" href="{% url 'admin:donationpoints' %}">Donation Points</a>
