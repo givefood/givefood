@@ -457,7 +457,10 @@ function initNavbarBurger() {
         el.addEventListener('click', () => {
             // Get the target from the "data-target" attribute
             const target = el.dataset.target;
+            if (!target) return;
+            
             const targetElement = document.getElementById(target);
+            if (!targetElement) return;
 
             // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
             el.classList.toggle('is-active');
