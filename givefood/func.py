@@ -36,6 +36,31 @@ from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
 
+def get_slug_redirects():
+    """Get slug redirects from database with caching."""
+    from django.db.utils import ProgrammingError, OperationalError
+    
+    cache_key = 'slug_redirects_dict'
+    redirects = cache.get(cache_key)
+    
+    if redirects is None:
+        # Import here to avoid circular imports at module load time
+        from givefood.models import SlugRedirect
+        
+        try:
+            # Fetch all redirects from database
+            slug_redirects = SlugRedirect.objects.all().values_list('old_slug', 'new_slug')
+            redirects = dict(slug_redirects)
+            
+            # Cache for 1 hour (3600 seconds)
+            cache.set(cache_key, redirects, 3600)
+        except (ProgrammingError, OperationalError):
+            # If table doesn't exist yet (e.g., during initial migration), return empty dict
+            redirects = {}
+    
+    return redirects
+
+
 def get_all_foodbanks():
 
     from givefood.models import Foodbank
