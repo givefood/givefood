@@ -1,4 +1,5 @@
 {% extends "admin/page.html" %}
+{% load custom_tags %}
 
 {% block title %}{{ need }} - GF Admin{% endblock %}
 
@@ -12,7 +13,7 @@
         <dt>ID</dt>
         <dd>
             <a href="{% url 'admin:need' need.need_id%}">
-                {{ need.need_id }}
+                {{ need.need_id|truncate_need_id }}
             </a>
         </dd>
         <dt>Food Bank</dt>

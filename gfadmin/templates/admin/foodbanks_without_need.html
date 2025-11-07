@@ -1,5 +1,6 @@
 {% extends "admin/page.html" %}
 {% load humanize %}
+{% load custom_tags %}
 
 {% block title %}Food Banks - GF Admin{% endblock %}
 
@@ -19,7 +20,7 @@
         {% for foodbank in foodbanks %}
           <tr>
             <td><a href="{% url "admin:foodbank" foodbank.slug %}">{{ foodbank }}</a></td>
-            <td>{{ foodbank.need.need_id }}</td>
+            <td>{{ foodbank.need.need_id|truncate_need_id }}</td>
         {% endfor %}
       </table>
 
