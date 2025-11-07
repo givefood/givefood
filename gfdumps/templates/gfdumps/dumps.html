@@ -38,7 +38,13 @@
     <div class="columns is-centered">
         <div class="column is-half content">
             
-            <h1>{% trans "Dumps" %}</h1>
+            {% if stage == "index" %}
+                <h1>{% trans "Dumps" %}</h1>
+            {% elif stage == "types" %}
+                <h1>{{ dump_type }}</h1>
+            {% elif stage == "format" %}
+                <h1>{{ dump_type }} - {{ dump_format|upper }}</h1>
+            {% endif %}
             {% if dump_types %}
                 <ul>
                     {% for dump_type in dump_types %}
