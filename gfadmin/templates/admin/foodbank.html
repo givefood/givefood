@@ -367,7 +367,7 @@
       {% if foodbank.last_need %}
         {{ foodbank.latest_need.input_method_emoji }}
         <strong>
-          <a href="{% url 'admin:need' foodbank.latest_need.need_id %}">{{ foodbank.latest_need.need_id }}</a>
+          <a href="{% url 'admin:need' foodbank.latest_need.need_id %}">{{ foodbank.latest_need.need_id|truncate_need_id }}</a>
         </strong>
         {{ foodbank.latest_need.created|timesince }} ago
         <br>
@@ -482,7 +482,7 @@
                 {{ need.input_method_emoji }}
               </td>
               <td>
-                <a href="{% url 'admin:need' need.need_id %}">{{ need.need_id }}</a>
+                <a href="{% url 'admin:need' need.need_id %}">{{ need.need_id|truncate_need_id }}</a>
               </td>
               <td class="is-size-7">{{ need.change_text|linebreaksbr }}</td>
               <td class="is-size-7">{{ need.excess_change_text|linebreaksbr }}</td>

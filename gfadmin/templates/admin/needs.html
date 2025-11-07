@@ -1,5 +1,6 @@
 {% extends "admin/page.html" %}
 {% load humanize %}
+{% load custom_tags %}
 
 {% block title %}Needs - GF Admin{% endblock %}
 
@@ -42,7 +43,7 @@
               {% endif %}
             </td>
             <td>
-              <a href="{% url "admin:need" need.need_id %}">{{ need.need_id }}</a>
+              <a href="{% url "admin:need" need.need_id %}">{{ need.need_id|truncate_need_id }}</a>
             </td>
             <td>
               <a href="{% url "admin:foodbank" need.foodbank_name_slug %}">{{ need.foodbank_name }}</a>
