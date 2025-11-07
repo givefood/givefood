@@ -139,66 +139,75 @@ class TestSlugRedirectURLs:
         
         # Test main foodbank page redirect
         response = client.get('/needs/at/angus/', follow=False)
-        assert response.status_code == 302
+        assert response.status_code == 301  # Permanent redirect
         assert response.url == '/needs/at/dundee-angus/'
         
         # Test subpage redirect
         response = client.get('/needs/at/angus/news/', follow=False)
-        assert response.status_code == 302
+        assert response.status_code == 301  # Permanent redirect
         assert response.url == '/needs/at/dundee-angus/news/'
 
     def test_slug_redirect_works_for_polish(self, populate_slug_redirects):
-        """Test that slug redirects work for Polish language."""
+        """Test that slug redirects work for Polish language and preserve language prefix."""
         client = Client()
         
-        # Test main foodbank page redirect with Polish prefix
+        # Test main foodbank page redirect with Polish prefix - should preserve /pl/
         response = client.get('/pl/needs/at/angus/', follow=False)
-        assert response.status_code == 302
-        assert response.url == '/needs/at/dundee-angus/'
+        assert response.status_code == 301  # Permanent redirect
+        assert response.url == '/pl/needs/at/dundee-angus/'
         
-        # Test subpage redirect
+        # Test subpage redirect - should preserve /pl/
         response = client.get('/pl/needs/at/angus/news/', follow=False)
-        assert response.status_code == 302
-        assert response.url == '/needs/at/dundee-angus/news/'
+        assert response.status_code == 301  # Permanent redirect
+        assert response.url == '/pl/needs/at/dundee-angus/news/'
 
     def test_slug_redirect_works_for_spanish(self, populate_slug_redirects):
-        """Test that slug redirects work for Spanish language."""
+        """Test that slug redirects work for Spanish language and preserve language prefix."""
         client = Client()
         
-        # Test main foodbank page redirect with Spanish prefix
+        # Test main foodbank page redirect with Spanish prefix - should preserve /es/
         response = client.get('/es/needs/at/lifeshare/', follow=False)
-        assert response.status_code == 302
-        assert response.url == '/needs/at/lifeshare-manchester/'
+        assert response.status_code == 301  # Permanent redirect
+        assert response.url == '/es/needs/at/lifeshare-manchester/'
         
-        # Test subpage redirect
+        # Test subpage redirect - should preserve /es/
         response = client.get('/es/needs/at/lifeshare/locations/', follow=False)
-        assert response.status_code == 302
-        assert response.url == '/needs/at/lifeshare-manchester/locations/'
+        assert response.status_code == 301  # Permanent redirect
+        assert response.url == '/es/needs/at/lifeshare-manchester/locations/'
 
     def test_slug_redirect_works_for_welsh(self, populate_slug_redirects):
-        """Test that slug redirects work for Welsh language."""
+        """Test that slug redirects work for Welsh language and preserve language prefix."""
         client = Client()
         
-        # Test main foodbank page redirect with Welsh prefix
+        # Test main foodbank page redirect with Welsh prefix - should preserve /cy/
         response = client.get('/cy/needs/at/bath/', follow=False)
-        assert response.status_code == 302
-        assert response.url == '/needs/at/bath-keynsham-somer-valley/'
+        assert response.status_code == 301  # Permanent redirect
+        assert response.url == '/cy/needs/at/bath-keynsham-somer-valley/'
+    
+    def test_slug_redirect_works_for_arabic(self, populate_slug_redirects):
+        """Test that slug redirects work for Arabic language and preserve language prefix."""
+        client = Client()
+        
+        # Test main foodbank page redirect with Arabic prefix - should preserve /ar/
+        response = client.get('/ar/needs/at/dundee/', follow=False)
+        assert response.status_code == 301  # Permanent redirect
+        assert response.url == '/ar/needs/at/dundee-angus/'
 
     def test_slug_redirect_works_for_all_subpages(self, populate_slug_redirects):
-        """Test that slug redirects work for all defined subpages."""
+        """Test that slug redirects work for all defined subpages and preserve language prefix."""
         from givefood.const.general import FOODBANK_SUBPAGES
         client = Client()
         
         # Test all subpages for English
         for subpage in FOODBANK_SUBPAGES:
             response = client.get(f'/needs/at/dundee/{subpage}/', follow=False)
-            assert response.status_code == 302
+            assert response.status_code == 301  # Permanent redirect
             assert response.url == f'/needs/at/dundee-angus/{subpage}/'
         
-        # Test a few subpages with language prefix
+        # Test a few subpages with language prefix - should preserve /pl/
         for subpage in ['news', 'charity', 'nearby']:
             response = client.get(f'/pl/needs/at/dundee/{subpage}/', follow=False)
-            assert response.status_code == 302
-            assert response.url == f'/needs/at/dundee-angus/{subpage}/'
+            assert response.status_code == 301  # Permanent redirect
+            assert response.url == f'/pl/needs/at/dundee-angus/{subpage}/'
 
 

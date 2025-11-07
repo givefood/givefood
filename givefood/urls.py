@@ -11,20 +11,27 @@ from givefood.const.general import RICK_ASTLEY, FOODBANK_SUBPAGES
 
 def generate_slug_redirect_patterns():
     """Generate URL redirect patterns for old food bank slugs."""
+    from functools import partial
+    
     old_foodbank_slugs = get_slug_redirects()
     
     redirect_patterns = []
     for old_slug, new_slug in old_foodbank_slugs.items():
-        # Main foodbank page redirect
+        # Main foodbank page redirect - use custom view that preserves language
         redirect_patterns.append(
-            path(f"needs/at/{old_slug}/", RedirectView.as_view(url=f"/needs/at/{new_slug}/"))
+            path(
+                f"needs/at/{old_slug}/",
+                partial(givefood.views.slug_redirect, old_slug=old_slug, new_slug=new_slug),
+                name=f"redirect_{old_slug}"
+            )
         )
         # Subpage redirects
         for subpage in FOODBANK_SUBPAGES:
             redirect_patterns.append(
                 path(
                     f"needs/at/{old_slug}/{subpage}/",
-                    RedirectView.as_view(url=f"/needs/at/{new_slug}/{subpage}/")
+                    partial(givefood.views.slug_redirect, old_slug=old_slug, new_slug=new_slug, subpage=subpage),
+                    name=f"redirect_{old_slug}_{subpage}"
                 )
             )
     

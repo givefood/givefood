@@ -616,3 +616,27 @@ def flag(request):
         "done":done,
     }
     return render(request, "public/flag.html", template_vars)
+
+
+def slug_redirect(request, old_slug, new_slug, subpage=None):
+    """
+    Redirect old food bank slugs to new ones while preserving language prefix.
+    
+    This view is used for i18n-aware redirects that maintain the current language
+    prefix in the URL. For example, /ar/needs/at/durham/ redirects to 
+    /ar/needs/at/county-durham/ (preserving the 'ar' language code).
+    """
+    from django.utils.translation import get_language
+    
+    # Build the new URL path
+    if subpage:
+        new_path = f"/needs/at/{new_slug}/{subpage}/"
+    else:
+        new_path = f"/needs/at/{new_slug}/"
+    
+    # Get current language and prefix the URL if not English (default)
+    current_language = get_language()
+    if current_language and current_language != 'en':
+        new_path = f"/{current_language}{new_path}"
+    
+    return redirect(new_path, permanent=True)
