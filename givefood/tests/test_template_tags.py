@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import uuid
 import pytest
 from django.template import Context, Template
 
@@ -86,7 +87,6 @@ class TestTruncateNeedIdTemplateTag:
 
     def test_truncate_need_id_with_uuid_object(self):
         """Test that truncate_need_id works with UUID objects."""
-        import uuid
         template = Template("{% load custom_tags %}{{ need_id|truncate_need_id }}")
         test_uuid = uuid.UUID("550e8400-e29b-41d4-a716-446655440000")
         context = Context({"need_id": test_uuid})
