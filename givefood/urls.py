@@ -17,14 +17,14 @@ def generate_slug_redirect_patterns():
     for old_slug, new_slug in old_foodbank_slugs.items():
         # Main foodbank page redirect
         redirect_patterns.append(
-            path("needs/at/%s/" % old_slug, RedirectView.as_view(url="/needs/at/%s/" % new_slug))
+            path(f"needs/at/{old_slug}/", RedirectView.as_view(url=f"/needs/at/{new_slug}/"))
         )
         # Subpage redirects
         for subpage in FOODBANK_SUBPAGES:
             redirect_patterns.append(
                 path(
-                    "needs/at/%s/%s/" % (old_slug, subpage),
-                    RedirectView.as_view(url="/needs/at/%s/%s/" % (new_slug, subpage))
+                    f"needs/at/{old_slug}/{subpage}/",
+                    RedirectView.as_view(url=f"/needs/at/{new_slug}/{subpage}/")
                 )
             )
     
