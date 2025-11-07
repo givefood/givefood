@@ -25,64 +25,69 @@
 
       <p>You may also enjoy our <a href="/api/">API</a> or <a href="https://github.com/givefood/data">data repository</a></p>
       
-      <h2>Items requested</h2>
-      <h3>General</h3>
+      <h2>📊 Food Bank Overview</h2>
       <ul>
-        <li><a href="{% url 'dash:weekly_itemcount' %}">Items requested weekly</a> - Number of items requested by UK food banks per week</li>
-        <li><a href="{% url 'dash:weekly_itemcount_year' %}">Items requested weekly per year</a> - Number of items requested by UK food banks per week per year</li>
-        <li><a href="{% url 'dash:most_requested_items' %}">Most requested items</a> - Most requested items by all food banks we know of</li>
-        <li><a href="{% url 'dash:item_categories' %}">Requested items by item category</a></li>
-        <li><a href="{% url 'dash:item_groups' %}">Requested items by item group</a></li>
-      </ul>
-      <br>
-
-      <h3>Excess</h3>
-      <ul>
-        <li><a href="{% url 'dash:excess' %}">Excess</a> - Most recent food banks declaring excess items</li>
-        <li><a href="{% url 'dash:most_excess_items' %}">Most excess items</a> - Most excess items by all food banks we know of</li>
-      </ul>
-      <br>
-
-      <h3>Specific items</h3>
-      <ul>
-        <li><a href="{% url 'dash:beautybanks' %}">Beauty Bank items</a> - Food banks that we've seen request items that are supplied by <a href="https://www.beautybanks.org.uk/">Beauty Banks</a></li>
-        <li><a href="{% url 'dash:bean_pasta_index' %}">Beans &amp; Pasta Index</a> - using common items as a sign of food bank supply stress</li>
+        <li><a href="{% url 'dash:foodbanks_found' %}">Food banks found over time</a> - Growth in number of food bank organisations we've discovered</li>
+        <li><a href="{% url 'dash:articles' %}">Food bank articles</a> - All articles published by food banks we track</li>
+        <li><a href="{% url 'dash:charity_income_expenditure' %}">Charity financial data</a> - Income and expenditure trends for food bank charities</li>
       </ul>
 
       <br>
-      <h2>Food Banks</h2>
+      <h2>📦 Items & Needs Analysis</h2>
+      
+      <h3>Trends & Patterns</h3>
       <ul>
-        <li><a href="{% url 'dash:foodbanks_found' %}">Food banks found</a> - Number of food bank organisations we've found over time</li>
-        <li><a href="{% url 'dash:articles' %}">Articles</a> - All the articles we've found published by all the food banks we know of</li>
-        <li><a href="{% url 'dash:charity_income_expenditure' %}">Food bank charity income & expenditure</a> - Income and expenditure over time for food bank charities</li>
-      </ul>
-
-      <br>
-      <h2>Trussell Trust</h2>
-      <ul>
-        <li><a href="{% url 'dash:tt_old_data' %}">Trussell Trust - old data</a> - Trussell Trust food banks that haven't updated their shopping lists</li>
-        <li><a href="{% url 'dash:tt_most_requested_items' %}">Trussell Trust - most requested items</a> - Most requested items by Trussell Trust food banks</li>
+        <li><a href="{% url 'dash:weekly_itemcount' %}">Weekly items requested</a> - Total items requested per week across all UK food banks</li>
+        <li><a href="{% url 'dash:weekly_itemcount_year' %}">Weekly items by year</a> - Year-over-year comparison of weekly item requests</li>
+        <li><a href="{% url 'dash:bean_pasta_index' %}">Beans &amp; Pasta Index</a> - Food bank supply stress indicator using common items</li>
       </ul>
       
-      <br>
-      <h2>Donation points</h2>
+      <h3>Most Requested</h3>
       <ul>
-        <li><a href="{% url 'dash:supermarkets' %}">Supermarket donation points</a> - donation points by supermarket chain</li>
+        <li><a href="{% url 'dash:most_requested_items' %}">Most requested items</a> - Top items needed across all food banks</li>
+        <li><a href="{% url 'dash:item_categories' %}">Items by category</a> - Breakdown of requested items by type</li>
+        <li><a href="{% url 'dash:item_groups' %}">Items by group</a> - Requested items organized by food group</li>
+      </ul>
+      
+      <h3>Excess Stock</h3>
+      <ul>
+        <li><a href="{% url 'dash:excess' %}">Recent excess reports</a> - Food banks currently with surplus items</li>
+        <li><a href="{% url 'dash:most_excess_items' %}">Most common excess items</a> - Items most frequently in surplus</li>
+      </ul>
+      
+      <h3>Specialized Items</h3>
+      <ul>
+        <li><a href="{% url 'dash:beautybanks' %}">Beauty & hygiene products</a> - Toiletry needs tracked for <a href="https://www.beautybanks.org.uk/">Beauty Banks</a> partnership</li>
       </ul>
 
       <br>
-      <h2>Our Deliveries</h2>
+      <h2>🏢 Trussell Trust Network</h2>
       <ul>
-        <li><a href="{% url 'dash:price_per_kg' %}">Price per kg</a> - price Give Food pays per kilogram of food requested by foodbanks</li>
-        <li><a href="{% url 'dash:price_per_calorie' %}">Price per calorie</a> - price Give Food pays per calorie of food requested by foodbanks</li>
+        <li><a href="{% url 'dash:tt_most_requested_items' %}">Most requested items</a> - Top items needed by Trussell Trust food banks</li>
+        <li><a href="{% url 'dash:tt_old_data' %}">Data freshness</a> - Food banks with outdated shopping list information</li>
       </ul>
+
       <br>
-      <p>Deliveries to food banks from Give Food per month by...</p>
+      <h2>🚚 Give Food Deliveries</h2>
+      
+      <h3>Delivery Metrics</h3>
       <ul>
-        <li><a href="{% url 'dash:deliveries' 'count' %}">Number of deliveries</a></li>
-        <li><a href="{% url 'dash:deliveries' 'items' %}">Number of items</a></li>
-        <li><a href="{% url 'dash:deliveries' 'weight' %}">Weight</a></li>
-        <li><a href="{% url 'dash:deliveries' 'calories' %}">Calories</a></li>
+        <li><a href="{% url 'dash:deliveries' 'count' %}">Number of deliveries</a> - Monthly delivery count</li>
+        <li><a href="{% url 'dash:deliveries' 'items' %}">Items delivered</a> - Total items per month</li>
+        <li><a href="{% url 'dash:deliveries' 'weight' %}">Weight delivered</a> - Food volume in kilograms</li>
+        <li><a href="{% url 'dash:deliveries' 'calories' %}">Calories delivered</a> - Nutritional value provided</li>
+      </ul>
+      
+      <h3>Cost Analysis</h3>
+      <ul>
+        <li><a href="{% url 'dash:price_per_kg' %}">Price per kilogram</a> - Cost efficiency per kg of food</li>
+        <li><a href="{% url 'dash:price_per_calorie' %}">Price per calorie</a> - Cost efficiency per calorie provided</li>
+      </ul>
+
+      <br>
+      <h2>🏪 Donation Infrastructure</h2>
+      <ul>
+        <li><a href="{% url 'dash:supermarkets' %}">Supermarket donation points</a> - Collection points by retail chain</li>
       </ul>
 
     </div>
