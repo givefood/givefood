@@ -1,6 +1,7 @@
 """Tests for the foodbank URLs edit form."""
 import pytest
 from unittest.mock import patch, Mock
+from datetime import datetime
 from django.urls import reverse
 from django.test import RequestFactory
 
@@ -80,3 +81,68 @@ class TestFoodbankUrlsForm:
         assert crawl_item.crawl_type == 'urls'
         assert crawl_item.url == foodbank.url
         assert crawl_item.foodbank == foodbank
+    
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.requests.get')
+    @patch('gfadmin.views.gemini')
+    def test_crawlitem_finish_time_recorded(self, mock_gemini, mock_requests_get, mock_render):
+        """Test that a CrawlItem finish time is recorded when fetching URLs."""
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Mock the HTTP request
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body><a href="/shopping-list">Shopping List</a></body></html>'
+        mock_requests_get.return_value = mock_response
+        
+        # Mock gemini response
+        mock_gemini.return_value = {
+            'shopping_list_url': '',
+            'rss_url': '',
+            'donation_points_url': '',
+            'locations_url': '',
+            'contacts_url': ''
+        }
+        
+        # Mock render to prevent template rendering
+        mock_render.return_value = Mock(status_code=200)
+        
+        # Record time before the request
+        start_time = datetime.now()
+        
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_urls_form
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/edit/urls/')
+        
+        # Call the view
+        response = foodbank_urls_form(request, slug=foodbank.slug)
+        
+        # Record time after the request
+        end_time = datetime.now()
+        
+        # Verify a CrawlItem was created with finish time
+        crawl_items = CrawlItem.objects.filter(foodbank=foodbank, crawl_type='urls')
+        assert crawl_items.count() == 1
+        
+        crawl_item = crawl_items.first()
+        
+        # Verify finish time exists and is between start and end
+        assert crawl_item.finish is not None
+        # The finish time should be after the item was started
+        assert crawl_item.finish >= crawl_item.start
+        # The finish time should be within the reasonable time window
+        # (comparing without timezone info for simplicity)
+        assert crawl_item.start.replace(tzinfo=None) >= start_time.replace(tzinfo=None, microsecond=0)
+        assert crawl_item.finish.replace(tzinfo=None) <= end_time.replace(tzinfo=None) + datetime.resolution
+
