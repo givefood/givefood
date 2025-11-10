@@ -895,8 +895,16 @@ Only suggest URLs from the list provided. Return as JSON with these exact field 
                             if field in suggestions and suggestions[field]:
                                 initial_data[field] = suggestions[field]
                                 suggested_fields.append(field)
+
+                # Record finish time
+                crawl_item.finish = datetime.now()
+                crawl_item.save()
             except Exception as e:
                 logging.warning(f"Failed to fetch URL suggestions for {foodbank.slug}: {e}")
+                # Record finish time even on error
+                if 'crawl_item' in locals():
+                    crawl_item.finish = datetime.now()
+                    crawl_item.save()
         
         form = FoodbankUrlsForm(instance=foodbank, initial=initial_data)
         
