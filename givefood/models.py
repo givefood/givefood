@@ -2217,6 +2217,10 @@ class CrawlSet(models.Model):
             return "🏛️"
         if self.crawl_type == "discrepancy":
             return "⚠️"
+        if self.crawl_type == "check":
+            return "🗒️"
+        if self.crawl_type == "urls":
+            return "🔗"
         return "❓"
 
     def time_taken(self):
