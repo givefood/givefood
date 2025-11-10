@@ -29,19 +29,22 @@ class TestFoodbankUrlsForm:
         from givefood.models import Foodbank
         assert form._meta.model == Foodbank
     
+    @patch('gfadmin.views.render')
     @patch('gfadmin.views.requests.get')
     @patch('gfadmin.views.gemini')
-    def test_crawlitem_created_when_fetching_urls(self, mock_gemini, mock_requests_get):
+    def test_crawlitem_created_when_fetching_urls(self, mock_gemini, mock_requests_get, mock_render):
         """Test that a CrawlItem with crawl_type='urls' is created when fetching URLs."""
         # Create a test foodbank
-        foodbank = Foodbank.objects.create(
+        foodbank = Foodbank(
             name='Test Foodbank',
-            slug='test-foodbank',
             url='https://example.com',
             address='123 Test St',
             postcode='AB12 3CD',
-            country='England'
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
         )
+        foodbank.save(do_geoupdate=False, do_decache=False)
         
         # Mock the HTTP request
         mock_response = Mock()
@@ -57,6 +60,9 @@ class TestFoodbankUrlsForm:
             'locations_url': '',
             'contacts_url': ''
         }
+        
+        # Mock render to prevent template rendering
+        mock_render.return_value = Mock(status_code=200)
         
         # Make a GET request to the view
         from gfadmin.views import foodbank_urls_form

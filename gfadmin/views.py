@@ -495,17 +495,54 @@ def foodbank_check(request, slug):
         "bankthefood.org",
     ]
 
+    # Fetch homepage
+    crawl_item = CrawlItem(
+        foodbank = foodbank,
+        crawl_type = "check",
+        url = foodbank.url,
+    )
+    crawl_item.save()
     homepage = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text
+    crawl_item.finish = datetime.now()
+    crawl_item.save()
     foodbank_urls["Home"] = foodbank.url
+    
     if foodbank.shopping_list_url and all(x not in foodbank.shopping_list_url for x in url_blacklist):
+        crawl_item = CrawlItem(
+            foodbank = foodbank,
+            crawl_type = "check",
+            url = foodbank.shopping_list_url,
+        )
+        crawl_item.save()
         shopping_list = htmlbodytext(requests.get(foodbank.shopping_list_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+        crawl_item.finish = datetime.now()
+        crawl_item.save()
         foodbank_urls["Shopping List"] = foodbank.shopping_list_url
+        
     if foodbank.locations_url:
+        crawl_item = CrawlItem(
+            foodbank = foodbank,
+            crawl_type = "check",
+            url = foodbank.locations_url,
+        )
+        crawl_item.save()
         locations = htmlbodytext(requests.get(foodbank.locations_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+        crawl_item.finish = datetime.now()
+        crawl_item.save()
         foodbank_urls["Locations"] = foodbank.locations_url
+        
     if foodbank.contacts_url:
+        crawl_item = CrawlItem(
+            foodbank = foodbank,
+            crawl_type = "check",
+            url = foodbank.contacts_url,
+        )
+        crawl_item.save()
         contacts = htmlbodytext(requests.get(foodbank.contacts_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+        crawl_item.finish = datetime.now()
+        crawl_item.save()
         foodbank_urls["Contacts"] = foodbank.contacts_url
+        
     if foodbank.donation_points_url:
         if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
             if not foodbank.network_id:
@@ -523,9 +560,25 @@ def foodbank_check(request, slug):
                 foodbank.latt(),
                 foodbank.long(),
             ]
+            crawl_item = CrawlItem(
+                foodbank = foodbank,
+                crawl_type = "check",
+                url = url,
+            )
+            crawl_item.save()
             donation_points = requests.post(url, headers=headers, timeout=timeout_sec, json=payload).text
+            crawl_item.finish = datetime.now()
+            crawl_item.save()
         else:
+            crawl_item = CrawlItem(
+                foodbank = foodbank,
+                crawl_type = "check",
+                url = foodbank.donation_points_url,
+            )
+            crawl_item.save()
             donation_points = htmlbodytext(requests.get(foodbank.donation_points_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
+            crawl_item.finish = datetime.now()
+            crawl_item.save()
             foodbank_urls["Donation Points"] = foodbank.donation_points_url
 
     foodbank_pages = {
