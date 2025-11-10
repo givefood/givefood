@@ -2240,8 +2240,8 @@ class CrawlItem(models.Model):
     foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
     url = models.URLField(max_length=2000, null=True, blank=True)
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
-    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def crawl_type_icon(self):
