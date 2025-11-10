@@ -774,6 +774,14 @@ def foodbank_urls_form(request, slug):
         
         if empty_fields and foodbank.url:
             try:
+                # Create a CrawlItem to track this URL fetch
+                crawl_item = CrawlItem(
+                    foodbank = foodbank,
+                    crawl_type = "urls",
+                    url = foodbank.url,
+                )
+                crawl_item.save()
+                
                 # Fetch the foodbank's main page
                 response = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=20)
                 if response.status_code == 200:
