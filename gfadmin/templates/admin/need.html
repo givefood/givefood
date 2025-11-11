@@ -161,15 +161,15 @@
         </div>
       </div>
 
-      <div class="tabs is-boxed">
+      <div class="tabs is-boxed" role="tablist" aria-label="Need comparison">
         <ul>
-          <li class="is-active">
-            <a data-tab="published">
+          <li class="is-active" role="presentation">
+            <a data-tab="published" role="tab" aria-selected="true" aria-controls="published-panel" id="published-tab">
               <span>Published</span>
             </a>
           </li>
-          <li>
-            <a data-tab="nonpert">
+          <li role="presentation">
+            <a data-tab="nonpert" role="tab" aria-selected="false" aria-controls="nonpert-panel" id="nonpert-tab">
               <span>Non Pertinent</span>
             </a>
           </li>
@@ -179,7 +179,7 @@
       <div class="columns sections">
 
         {% if prev_published %}
-          <div class="published column is-half tabcontent">
+          <div class="published column is-half tabcontent" role="tabpanel" id="published-panel" aria-labelledby="published-tab">
             <div class="tab-content" data-tab="published">
               <div class="box">
                 {% if need.diff_from_pub %}
@@ -191,7 +191,7 @@
             </div>
           </div>
 
-          <div class="published column is-half tabcontent">
+          <div class="published column is-half tabcontent is-hidden" role="tabpanel" id="nonpert-panel" aria-labelledby="nonpert-tab">
             <div class="tab-content" data-tab="nonpert">
               <div class="box">
                 {% if need.diff_from_pub_excess %}

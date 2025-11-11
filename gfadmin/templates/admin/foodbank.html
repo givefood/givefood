@@ -8,44 +8,44 @@
 
   <h1>{{ foodbank }}</h1>
 
-  <div class="tabs is-boxed">
+  <div class="tabs is-boxed" role="tablist" aria-label="Food bank sections">
     <ul>
-      <li class="is-active">
-        <a data-tab="generallocations">
+      <li class="is-active" role="presentation">
+        <a data-tab="generallocations" role="tab" aria-selected="true" aria-controls="generallocations-panel" id="generallocations-tab">
           <span>General &amp; Locations <span class="tag is-info is-normal is-light">{{ counts.locations }}</span></span>
         </a>
       </li>
-      <li>
-        <a data-tab="needsorders">
+      <li role="presentation">
+        <a data-tab="needsorders" role="tab" aria-selected="false" aria-controls="needsorders-panel" id="needsorders-tab">
           <span>Needs <span class="tag is-info is-normal is-light">{{ counts.needs }}</span> &amp; Orders <span class="tag is-info is-normal is-light">{{ counts.orders }}</span></span>
         </a>
       </li>
-      <li>
-        <a data-tab="donationpoints">
+      <li role="presentation">
+        <a data-tab="donationpoints" role="tab" aria-selected="false" aria-controls="donationpoints-panel" id="donationpoints-tab">
           <span>Donation Points <span class="tag is-info is-normal is-light">{{ counts.donation_points }}</span></span>
         </a>
       </li>
       {% if foodbank.articles %}
-        <li>
-          <a data-tab="articles">
+        <li role="presentation">
+          <a data-tab="articles" role="tab" aria-selected="false" aria-controls="articles-panel" id="articles-tab">
             <span>Articles <span class="tag is-info is-normal is-light">{{ counts.articles }}</span></span>
           </a>
         </li>
       {% endif %}
       {% if foodbank.facebook_page or foodbank.twitter_handle %}
-        <li>
-          <a data-tab="socialmedia">
+        <li role="presentation">
+          <a data-tab="socialmedia" role="tab" aria-selected="false" aria-controls="socialmedia-panel" id="socialmedia-tab">
             <span>Social Media</span>
           </a>
         </li>
       {% endif %}
-      <li>
-        <a data-tab="subscribers">
+      <li role="presentation">
+        <a data-tab="subscribers" role="tab" aria-selected="false" aria-controls="subscribers-panel" id="subscribers-tab">
           <span>Subscribers <span class="tag is-info is-normal is-light">{{ counts.subscribers }}</span></span>
         </a>
       </li>
-      <li>
-        <a data-tab="crawls">
+      <li role="presentation">
+        <a data-tab="crawls" role="tab" aria-selected="false" aria-controls="crawls-panel" id="crawls-tab">
           <span>Crawls <span class="tag is-info is-normal is-light">{{ counts.crawls }}</span></span>
         </a>
       </li>
@@ -55,7 +55,7 @@
   <div class="columns sections">
 
     {# General #}
-    <div class="column tabcontent generallocations">
+    <div class="column tabcontent generallocations" role="tabpanel" id="generallocations-panel" aria-labelledby="generallocations-tab">
 
       {% if foodbank.is_closed %}
         <span class="tag is-danger">Closed</span>
@@ -393,7 +393,7 @@
     </div>
 
     {# Donation Points #}
-    <div class="column tabcontent donationpoints is-hidden">
+    <div class="column tabcontent donationpoints is-hidden" role="tabpanel" id="donationpoints-panel" aria-labelledby="donationpoints-tab">
       <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-link">New Donation Point</a>
       {% if foodbank.donation_points %}
         <table class="table is-fullwidth is-hoverable">
@@ -449,7 +449,7 @@
 
     {# Needs #}
     {% if foodbank.needs %}
-      <div class="column tabcontent needsorders is-hidden">
+      <div class="column tabcontent needsorders is-hidden" role="tabpanel" id="needsorders-panel" aria-labelledby="needsorders-tab">
         <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
@@ -521,7 +521,7 @@
 
     {# Articles #}
     {% if foodbank.articles %}
-      <div class="column tabcontent articles is-hidden">
+      <div class="column tabcontent articles is-hidden" role="tabpanel" id="articles-panel" aria-labelledby="articles-tab">
         <table class="table is-fullwidth is-hoverable">
           {% for article in foodbank.articles %}
             <tr>
@@ -539,7 +539,7 @@
 
     {# Social Media #}
     {% if foodbank.facebook_page %}
-      <div class="column tabcontent socialmedia is-hidden">
+      <div class="column tabcontent socialmedia is-hidden" role="tabpanel" id="socialmedia-panel" aria-labelledby="socialmedia-tab">
         {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
       </div>
     {% endif %}
@@ -553,7 +553,7 @@
     {% endif %}
 
     {# Subscribers #}
-    <div class="column tabcontent subscribers is-hidden">
+    <div class="column tabcontent subscribers is-hidden" role="tabpanel" id="subscribers-panel" aria-labelledby="subscribers-tab">
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Email</th>
@@ -571,7 +571,7 @@
     </div>
 
     {# Crawls #}
-    <div class="column tabcontent crawls is-hidden">
+    <div class="column tabcontent crawls is-hidden" role="tabpanel" id="crawls-panel" aria-labelledby="crawls-tab">
 
       <table class="table is-fullwidth is-hoverable">
         <thead>
