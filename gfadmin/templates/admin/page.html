@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load i18n %}
 <html lang="en-GB">
 {% include 'public/includes/debugcomment.html' %}
 <head>
@@ -53,8 +54,8 @@
 
       <div class="navbar-end">
         <div class="navbar-item">
-          <form action="{% url 'admin:search_results' %}" method="get">
-            <input name="q" class="input" type="text" placeholder="Search everything...">
+          <form action="{% url 'admin:search_results' %}" method="get" role="search" aria-label="{% trans 'Search' %}">
+            <input name="q" class="input" type="text" placeholder="Search everything..." aria-label="Search query">
           </form>
         </div>
         <div class="navbar-item">

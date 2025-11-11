@@ -10,7 +10,7 @@
 
     <div class="column is-one-quarter">
 
-        <nav id="email" class="menu">
+        <nav id="email" class="menu" aria-label="Email templates">
             <ul class="menu-list">
               <li><a href="{% url 'admin:email_tester_test' %}?email=confirm.html" target="tester" class="is-active">Confirm HTML</a></li>
               <li><a href="{% url 'admin:email_tester_test' %}?email=confirm.txt" target="tester">Confirm Text</a></li>

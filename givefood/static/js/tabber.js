@@ -3,13 +3,25 @@ function changetab(section) {
         item.classList.remove("is-active")
     })
     document.querySelector("." + section).parentNode.classList.add("is-active")
+    
+    // Update aria-selected for all tabs
+    document.querySelectorAll(".tabs a[role='tab']").forEach(tab => {
+        tab.setAttribute("aria-selected", "false")
+    })
+    
     document.querySelectorAll(".sections .tabcontent").forEach(item => {
         item.classList.add("is-hidden")
     })
     document.querySelectorAll("." + section).forEach(item => {
         item.classList.remove("is-hidden")
     })
-    document.querySelector("a[data-tab='" + section +   "']").parentNode.classList.add("is-active")
+    
+    const activeTab = document.querySelector("a[data-tab='" + section + "']")
+    if (activeTab) {
+        activeTab.parentNode.classList.add("is-active")
+        activeTab.setAttribute("aria-selected", "true")
+    }
+    
     window.location.hash = section
     return true
 }

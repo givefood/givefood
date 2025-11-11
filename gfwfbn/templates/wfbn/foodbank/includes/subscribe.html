@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="subscribe-form">
     <form action="{% url 'human' %}" method="post">
-        <label class="label">{% blocktrans %}Get an email when items are needed{% endblocktrans %}</label>
+        <label class="label" for="email">{% blocktrans %}Get an email when items are needed{% endblocktrans %}</label>
         <div class="field has-addons">
             <div class="control is-expanded">
                 <input class="input" id="email" maxlength="254" name="email" type="email" value="{% if email %}{{ email }}{% endif %}" placeholder="{% blocktrans %}Email address{% endblocktrans %}" required="required" autocomplete="email"{% if autofocus %} autofocus{% endif %}>
