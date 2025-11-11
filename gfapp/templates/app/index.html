@@ -9,7 +9,7 @@
 
         <a id="usemylocationbtn" href="#" class="button is-light is-info">Use my location</a>
 
-        <form id="addressform" action="{% url 'app:search' %}" method="GET">
+        <form id="addressform" action="{% url 'app:search' %}" method="GET" role="search" aria-label="Find food banks">
 
             <label id="address_label" for="address_field" class="label">Postcode or town</label>
             <div class="field has-addons">

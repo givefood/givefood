@@ -76,22 +76,22 @@
       {% if locations %}
         <div id="theresults" class="sections">
 
-          <div class="tabs is-boxed">
+          <div class="tabs is-boxed" role="tablist" aria-label="{% blocktrans %}Search results{% endblocktrans %}">
             <ul>
-              <li class="is-active">
-                <a data-tab="foodbanks">
+              <li class="is-active" role="presentation">
+                <a data-tab="foodbanks" role="tab" aria-selected="true" aria-controls="foodbanks-panel" id="foodbanks-tab">
                   <span>{% blocktrans %}Food banks{% endblocktrans %}</span>
                 </a>
               </li>
-              <li>
-                <a data-tab="donationpoints">
+              <li role="presentation">
+                <a data-tab="donationpoints" role="tab" aria-selected="false" aria-controls="donationpoints-panel" id="donationpoints-tab">
                   <span>{% blocktrans %}Donation points{% endblocktrans %}</span>
                 </a>
               </li>
             </ul>
           </div>
           
-          <div class="foodbanks tabcontent">
+          <div class="foodbanks tabcontent" role="tabpanel" id="foodbanks-panel" aria-labelledby="foodbanks-tab">
             <table class="table needs">
               {% for location in locations %}
                 <tr>
@@ -129,7 +129,7 @@
             </table>
           </div>
 
-          <div class="donationpoints tabcontent is-hidden">
+          <div class="donationpoints tabcontent is-hidden" role="tabpanel" id="donationpoints-panel" aria-labelledby="donationpoints-tab">
             <table class="table donationpoints">
               {% for donationpoint in donationpoints %}
                 <tr>

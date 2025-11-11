@@ -25,25 +25,25 @@
     <div class="columns">
         <div class="column">
             <h1>Beauty Banks Needs</h1>
-            <div class="tabs is-boxed">
+            <div class="tabs is-boxed" role="tablist" aria-label="Beauty Banks sections">
                 <ul>
-                  <li class="is-active">
-                        <a data-tab="map">
+                  <li class="is-active" role="presentation">
+                        <a data-tab="map" role="tab" aria-selected="true" aria-controls="map-panel" id="map-tab">
                           <span>Map</span>
                         </a>
                   </li>
-                  <li>
-                    <a data-tab="everywhere">
+                  <li role="presentation">
+                    <a data-tab="everywhere" role="tab" aria-selected="false" aria-controls="everywhere-panel" id="everywhere-tab">
                       <span>Everywhere</span>
                     </a>
                   </li>
-                  <li>
-                    <a data-tab="london">
+                  <li role="presentation">
+                    <a data-tab="london" role="tab" aria-selected="false" aria-controls="london-panel" id="london-tab">
                       <span>London</span>
                     </a>
                   </li>
-                  <li>
-                    <a data-tab="settings">
+                  <li role="presentation">
+                    <a data-tab="settings" role="tab" aria-selected="false" aria-controls="settings-panel" id="settings-tab">
                       <span>Settings</span>
                     </a>
                   </li>
@@ -54,12 +54,12 @@
 
     <div class="columns sections">
 
-        <div class="column map tabcontent">
+        <div class="column map tabcontent" role="tabpanel" id="map-panel" aria-labelledby="map-tab">
             <p>Food banks requesting a Beauty Banks item in the last 28 days</p>
             <div id="the-map" style="width:700px;height:1000px;"></div>
         </div>
 
-        <div class="column everywhere tabcontent is-hidden">
+        <div class="column everywhere tabcontent is-hidden" role="tabpanel" id="everywhere-panel" aria-labelledby="everywhere-tab">
             <table class="table is-narrow is-fullwidth">
                 <tr>
                     <th>Foodbank</th>
@@ -79,7 +79,7 @@
             </table>
         </div>
 
-        <div class="column london tabcontent is-hidden">
+        <div class="column london tabcontent is-hidden" role="tabpanel" id="london-panel" aria-labelledby="london-tab">
             <table class="table is-narrow is-fullwidth">
                 <tr>
                     <th>Foodbank</th>
@@ -99,7 +99,7 @@
             </table>
         </div>
 
-        <div class="column settings tabcontent is-hidden">
+        <div class="column settings tabcontent is-hidden" role="tabpanel" id="settings-panel" aria-labelledby="settings-tab">
             <h2>Products</h2>
             <p>List of strings of text we're looking for in a foodbank's need...</p>
             <p>{% for product in products %}{{ product }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>

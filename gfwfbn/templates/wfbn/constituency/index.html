@@ -49,7 +49,7 @@
             {% endif %}
 
             <form id="postcodeform" action="{% url 'wfbn:constituencies' %}" method="get">
-              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="{% blocktrans %}Search by postcode{% endblocktrans %}" value="{% if postcode %}{{ postcode }}{% endif %}" autofocus>
+              <input id="postcode_field" type="text" name="postcode" class="input" placeholder="{% blocktrans %}Search by postcode{% endblocktrans %}" value="{% if postcode %}{{ postcode }}{% endif %}" autofocus aria-label="{% blocktrans %}Postcode{% endblocktrans %}">
               <input type="submit" class="button is-light is-info" value="{% blocktrans %}Go{% endblocktrans %}">
             </form>
 

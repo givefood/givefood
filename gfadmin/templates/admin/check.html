@@ -124,11 +124,11 @@
         </table>
     </div>
     <div class="column is-one-third">
-        <div class="tabs is-boxed">
+        <div class="tabs is-boxed" role="tablist" aria-label="Website previews">
             <ul>
                 {% for url_name, url in foodbank_urls.items %}
-                    <li class="{% if forloop.first %}is-active{% endif %}">
-                        <a data-tab="preview-{{ url_name|slugify }}">
+                    <li class="{% if forloop.first %}is-active{% endif %}" role="presentation">
+                        <a data-tab="preview-{{ url_name|slugify }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="preview-{{ url_name|slugify }}-panel" id="preview-{{ url_name|slugify }}-tab">
                             {{ url_name }}
                         </a>
                         
@@ -138,7 +138,7 @@
         </div>
         <div class="sections">
         {% for url_name, url in foodbank_urls.items %}
-            <div class="tabcontent preview-{{ url_name|slugify }} {% if not forloop.first %}is-hidden{% endif %}">
+            <div class="tabcontent preview-{{ url_name|slugify }} {% if not forloop.first %}is-hidden{% endif %}" role="tabpanel" id="preview-{{ url_name|slugify }}-panel" aria-labelledby="preview-{{ url_name|slugify }}-tab">
                 <a href="{{ url }}" target="_blank" class="newwindow is-pulled-right"><img src="/static/img/newwindow.svg" alt="New window"></a> <a href="{% url 'wfbn:foodbank' foodbank.slug %}"></a>
                 <iframe src="{% url 'admin:proxy' %}?url={{ url|urlencode }}" style="width: 100%; height: 1000px; border: none;" loading="lazy"></iframe>
             </div>

@@ -6,10 +6,10 @@
 
     <div class="columns">
         <div class="column">
-            <form action="{% url 'admin:search_results' %}" method="get">
+            <form action="{% url 'admin:search_results' %}" method="get" role="search" aria-label="Search">
                 <div class="field has-addons">
                     <div class="control">
-                      <input class="input" type="text" name="q" value="{{ query }}">
+                      <input class="input" type="text" name="q" value="{{ query }}" aria-label="Search query">
                     </div>
                     <div class="control">
                       <button class="button is-info">
