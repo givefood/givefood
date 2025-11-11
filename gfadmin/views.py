@@ -546,7 +546,7 @@ def foodbank_check(request, slug):
     if foodbank.donation_points_url:
         if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
             if not foodbank.network_id:
-                homepage_text = requests.get(foodbank.url).text
+                homepage_text = requests.get(foodbank.shopping_list_url).text
                 network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', homepage_text)
                 foodbank.network_id = network_id_search.group(1)
                 foodbank.save()
