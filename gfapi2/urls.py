@@ -12,6 +12,7 @@ urlpatterns = (
     path("locations/", locations, name="locations"),
     path("locations/search/", location_search, name="location_search"),
     path("donationpoints/", donationpoints, name="donationpoints"),
+    path("donationpoints/search/", donationpoint_search, name="donationpoint_search"),
     path("needs/", needs, name="needs"),
     path("need/<uuid:id>/", need, name="need"),
     path("constituencies/", constituencies, name="constituencies"),

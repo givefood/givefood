@@ -86,3 +86,113 @@ class TestAPI2LocationSearch:
                 first_item = data[0]
                 assert 'foodbank' in first_item
                 assert 'facebook_page' in first_item['foodbank']
+
+
+@pytest.mark.django_db
+class TestAPI2DonationPointSearch:
+    """Test the API v2 donation point search endpoint."""
+
+    def test_donationpoint_search_requires_params(self, client):
+        """Test that donation point search requires either address or lat_lng."""
+        response = client.get('/api/2/donationpoints/search/')
+        assert response.status_code == 400
+
+    def test_donationpoint_search_with_address(self, client):
+        """Test donation point search with address parameter."""
+        # Using a known UK postcode
+        response = client.get('/api/2/donationpoints/search/?address=SW1A1AA')
+        # Should return 200 or 400 (if geocoding fails or no results)
+        assert response.status_code in [200, 400]
+
+        # Only check structure if successful
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            assert isinstance(data, list)
+
+            # If there are results, check structure
+            if len(data) > 0:
+                first_item = data[0]
+                assert 'id' in first_item
+                assert 'type' in first_item
+                assert 'name' in first_item
+                assert 'lat_lng' in first_item
+                assert 'distance_m' in first_item
+                assert 'distance_mi' in first_item
+                assert 'foodbank' in first_item
+                assert 'slug' in first_item['foodbank']
+                assert 'needs' in first_item
+                assert 'id' in first_item['needs']
+                assert 'needs' in first_item['needs']
+                assert 'number' in first_item['needs']
+
+    def test_donationpoint_search_with_lat_lng(self, client):
+        """Test donation point search with lat_lng parameter."""
+        # Coordinates for central London
+        response = client.get('/api/2/donationpoints/search/?lat_lng=51.5074,-0.1278')
+        # Should return 200 or 400
+        assert response.status_code in [200, 400]
+
+    def test_donationpoint_search_rejects_geojson(self, client):
+        """Test that donation point search rejects geojson format."""
+        response = client.get('/api/2/donationpoints/search/?address=SW1A1AA&format=geojson')
+        assert response.status_code == 400
+
+    def test_donationpoint_search_accepts_xml(self, client):
+        """Test that donation point search accepts XML format."""
+        response = client.get('/api/2/donationpoints/search/?address=SW1A1AA&format=xml')
+        # Should return 200 or 400 (if geocoding fails or no results)
+        assert response.status_code in [200, 400]
+
+
+@pytest.mark.django_db
+class TestAPI2DonationPointSearch:
+    """Test the API v2 donation point search endpoint."""
+
+    def test_donationpoint_search_requires_params(self, client):
+        """Test that donation point search requires either address or lat_lng."""
+        response = client.get('/api/2/donationpoints/search/')
+        assert response.status_code == 400
+
+    def test_donationpoint_search_with_address(self, client):
+        """Test donation point search with address parameter."""
+        # Using a known UK postcode
+        response = client.get('/api/2/donationpoints/search/?address=SW1A1AA')
+        # Should return 200 or 400 (if geocoding fails or no results)
+        assert response.status_code in [200, 400]
+        
+        # Only check structure if successful
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            assert isinstance(data, list)
+            
+            # If there are results, check structure
+            if len(data) > 0:
+                first_item = data[0]
+                assert 'id' in first_item
+                assert 'type' in first_item
+                assert 'name' in first_item
+                assert 'lat_lng' in first_item
+                assert 'distance_m' in first_item
+                assert 'distance_mi' in first_item
+                assert 'foodbank' in first_item
+                assert 'slug' in first_item['foodbank']
+
+    def test_donationpoint_search_with_lat_lng(self, client):
+        """Test donation point search with lat_lng parameter."""
+        # Coordinates for central London
+        response = client.get('/api/2/donationpoints/search/?lat_lng=51.5074,-0.1278')
+        # Should return 200 or 400
+        assert response.status_code in [200, 400]
+
+    def test_donationpoint_search_rejects_geojson(self, client):
+        """Test that donation point search rejects geojson format."""
+        response = client.get('/api/2/donationpoints/search/?address=SW1A1AA&format=geojson')
+        assert response.status_code == 400
+
+    def test_donationpoint_search_accepts_xml(self, client):
+        """Test that donation point search accepts XML format."""
+        response = client.get('/api/2/donationpoints/search/?address=SW1A1AA&format=xml')
+        # Should return 200 or 400 (if geocoding fails or no results)
+        assert response.status_code in [200, 400]

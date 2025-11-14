@@ -8,7 +8,7 @@ from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import find_locations, get_all_open_foodbanks, get_all_open_locations, geocode, is_uk, miles
+from givefood.func import find_locations, find_donationpoints, get_all_open_foodbanks, get_all_open_locations, geocode, is_uk, miles
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
 from givefood.models import Dump
 
@@ -616,6 +616,98 @@ def donationpoints(request):
         "type": "FeatureCollection",
         "features": features
     }
+
+    return ApiResponse(response_list, "donationpoints", format)
+
+
+@cache_page(SECONDS_IN_DAY)
+def donationpoint_search(request):
+
+    format = request.GET.get("format", DEFAULT_FORMAT)
+    lat_lng = request.GET.get("lat_lng")
+    address = request.GET.get("address")
+
+    # Check format is not geojson
+    if format == "geojson":
+        return HttpResponseBadRequest()
+
+    if not lat_lng and not address:
+        return HttpResponseBadRequest()
+
+    if address and not lat_lng:
+        lat_lng = geocode(address)
+
+    if not is_uk(lat_lng):
+        return HttpResponseBadRequest()
+
+    donationpoints = find_donationpoints(lat_lng, 20)
+
+    response_list = []
+
+    for donationpoint in donationpoints:
+
+        # Get latest need from foodbank
+        if donationpoint.type == "donationpoint":
+            latest_need = donationpoint.foodbank.latest_need
+        else:  # location
+            latest_need = donationpoint.foodbank.latest_need
+
+        item_dict = {
+            "id": str(donationpoint.uuid),
+            "type": donationpoint.type,
+            "slug": donationpoint.slug,
+            "name": donationpoint.name,
+            "lat_lng": donationpoint.lat_lng,
+            "distance_m": int(donationpoint.distance),
+            "distance_mi": round(miles(donationpoint.distance), 2),
+            "address": donationpoint.full_address(),
+            "postcode": donationpoint.postcode,
+            "politics": {
+                "parliamentary_constituency": donationpoint.parliamentary_constituency_name,
+                "mp": donationpoint.mp,
+                "mp_party": donationpoint.mp_party,
+                "mp_parl_id": donationpoint.mp_parl_id,
+                "ward": donationpoint.ward,
+                "district": donationpoint.district,
+                "urls": {
+                    "self": "https://www.givefood.org.uk/api/2/constituency/%s/" % (donationpoint.parliamentary_constituency_slug),
+                    "html": "https://www.givefood.org.uk/needs/in/constituency/%s/" % (donationpoint.parliamentary_constituency_slug),
+                },
+            },
+            "needs": {
+                "id": latest_need.need_id_str,
+                "needs": latest_need.change_text,
+                "excess": latest_need.excess_change_text,
+                "number": latest_need.no_items(),
+                "found": datetime.datetime.fromtimestamp(latest_need.created.timestamp()),
+            },
+            "foodbank": {
+                "name": donationpoint.foodbank_name,
+                "slug": donationpoint.foodbank_slug,
+                "network": donationpoint.foodbank_network,
+                "urls": {
+                    "self": "https://www.givefood.org.uk/api/2/foodbank/%s/" % (donationpoint.foodbank_slug),
+                    "html": "https://www.givefood.org.uk/needs/at/%s/" % (donationpoint.foodbank_slug),
+                }
+            },
+        }
+
+        # Add type-specific fields
+        if donationpoint.type == "donationpoint":
+            item_dict["phone"] = donationpoint.phone_number
+            item_dict["urls"] = {
+                "html": "https://www.givefood.org.uk/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
+            }
+            if hasattr(donationpoint, 'url') and donationpoint.url:
+                item_dict["urls"]["homepage"] = donationpoint.url
+        elif donationpoint.type == "location":
+            item_dict["phone"] = donationpoint.phone_or_foodbank_phone()
+            item_dict["email"] = donationpoint.email_or_foodbank_email()
+            item_dict["urls"] = {
+                "html": "https://www.givefood.org.uk/needs/at/%s/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
+            }
+
+        response_list.append(item_dict)
 
     return ApiResponse(response_list, "donationpoints", format)
 
