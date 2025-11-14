@@ -341,6 +341,7 @@ def manifest(request):
     return HttpResponse(json.dumps(manifest_content), content_type="application/json")
 
 
+@cache_page(SECONDS_IN_DAY)
 def place(request, county, place):
     """
     Place page
