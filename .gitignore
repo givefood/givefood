@@ -52,6 +52,10 @@ docs/_build/
 
 sitepackages/*
 /messages.mo
+
+# Migrations (generated at deployment time)
 */migrations/*.py
-echo ___BEGIN___COMMAND_OUTPUT_MARKER___ ; PS1= ; PS2= ; EC=0 ; echo ___BEGIN___COMMAND_DONE_MARKER___0 ; }/migrations/__init__.py
+!*/migrations/__init__.py
+
+# Compiled translation files (generated at deployment time)
 *.mo
