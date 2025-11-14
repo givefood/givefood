@@ -692,6 +692,7 @@ class FoodbankLocation(models.Model):
     ])
 
     is_donation_point = models.BooleanField(default=False)
+    is_mobile = models.BooleanField(default=False)
     
     lat_lng = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
     latitude = models.FloatField(editable=False)

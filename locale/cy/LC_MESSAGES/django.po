@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-28 20:36+0000\n"
+"POT-Creation-Date: 2025-11-14 10:56+0000\n"
 "PO-Revision-Date: 2025-10-28 13:47-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,9 +20,13 @@ msgstr ""
 "3 : n==6 ? 4 : 5);\n"
 "X-Generator: Poedit 3.8\n"
 
+#: gfadmin/templates/admin/page.html:57
+msgid "Search"
+msgstr ""
+
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
-#: gfdumps/templates/gfdumps/dumps.html:41
+#: gfdumps/templates/gfdumps/dumps.html:42
 msgid "Dumps"
 msgstr "Dympiau"
 
@@ -46,19 +50,19 @@ msgstr "Dympiau"
 msgid "Home"
 msgstr "Cartref"
 
-#: gfdumps/templates/gfdumps/dumps.html:61
+#: gfdumps/templates/gfdumps/dumps.html:67
 msgid "Date"
 msgstr "Dyddiad"
 
-#: gfdumps/templates/gfdumps/dumps.html:62
+#: gfdumps/templates/gfdumps/dumps.html:68
 msgid "Size"
 msgstr "Maint"
 
-#: gfdumps/templates/gfdumps/dumps.html:63
+#: gfdumps/templates/gfdumps/dumps.html:69
 msgid "Rows"
 msgstr "Rhesi"
 
-#: gfdumps/templates/gfdumps/dumps.html:69
+#: gfdumps/templates/gfdumps/dumps.html:75
 msgid "Latest"
 msgstr "Diweddaraf"
 
@@ -85,8 +89,14 @@ msgstr ""
 msgid "Search by postcode"
 msgstr "Chwilio yn ôl cod post"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:52
+#, fuzzy
+#| msgid "Postcode or town"
+msgid "Postcode"
+msgstr "Cod post neu dref"
+
 #: gfwfbn/templates/wfbn/constituency/index.html:53
-#: gfwfbn/templates/wfbn/index.html:64 givefood/templates/public/index.html:39
+#: gfwfbn/templates/wfbn/index.html:65 givefood/templates/public/index.html:39
 msgid "Go"
 msgstr "Mynd"
 
@@ -138,8 +148,7 @@ msgstr "Gwariant"
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:43
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:47
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
-#: gfwfbn/templates/wfbn/index.html:106
-#: givefood/templates/public/index.html:145
+#: gfwfbn/templates/wfbn/index.html:88 givefood/templates/public/index.html:141
 msgid "Donation points"
 msgstr "Pwyntiau rhoi"
 
@@ -190,8 +199,8 @@ msgstr "Hygyrch i gadeiriau olwyn"
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:118
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:110
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
-#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:99
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:105
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:103
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:109
 msgid "Directions"
 msgstr "Cyfarwyddiadau"
 
@@ -207,8 +216,8 @@ msgstr "Prif"
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:67
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:117
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:122
-#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:110
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:116
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:113
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:120
 #: gfwfbn/templates/wfbn/foodbank/locations.html:71
 msgid "Delivery"
 msgstr "Danfoniadau"
@@ -218,7 +227,7 @@ msgid "Charity Registration"
 msgstr "Cofrestru Elusen"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
-#: gfwfbn/templates/wfbn/index.html:119
+#: gfwfbn/templates/wfbn/index.html:101
 msgid "Part of"
 msgstr "Rhan o"
 
@@ -327,9 +336,14 @@ msgstr "ar hyn o bryd yn gofyn i'r eitemau canlynol gael eu rhoi:"
 msgid "This location accepts donations"
 msgstr "Mae'r lleoliad hwn yn derbyn rhoddion"
 
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:69
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:81
+msgid "Mobile food bank location"
+msgstr ""
+
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:66
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:68
-#: gfwfbn/templates/wfbn/index.html:121 gfwfbn/templates/wfbn/index.html:168
+#: gfwfbn/templates/wfbn/index.html:103 gfwfbn/templates/wfbn/index.html:150
 msgid "away"
 msgstr "i ffwrdd"
 
@@ -342,7 +356,7 @@ msgid "What Food Banks Need"
 msgstr "Beth sydd ei angen ar Fanciau Bwyd"
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: gfwfbn/views.py:278
+#: gfwfbn/views.py:308
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -354,112 +368,87 @@ msgstr ""
 msgid "Map of UK food banks"
 msgstr "Map o fanciau bwyd y DU"
 
-#: gfwfbn/templates/wfbn/index.html:33 gfwfbn/templates/wfbn/index.html:38
+#: gfwfbn/templates/wfbn/index.html:33 gfwfbn/templates/wfbn/index.html:41
 msgid "Find Food Banks To Help"
 msgstr "Dod o hyd i Fanciau Bwyd i Helpu"
 
-#: gfwfbn/templates/wfbn/index.html:36
+#: gfwfbn/templates/wfbn/index.html:36 gfwfbn/templates/wfbn/index.html:39
 msgid "food banks"
 msgstr "banciau bwyd"
 
-#: gfwfbn/templates/wfbn/index.html:56 givefood/templates/public/index.html:32
-msgid ""
-"Find a food bank near you, see what they need and how you can help by "
-"donating or volunteering."
-msgstr ""
-"Dewch o hyd i fanc bwyd yn eich ardal chi, gweld beth sydd ei angen arnyn "
-"nhw a sut gallwch chi helpu trwy gyfrannu neu wirfoddoli."
-
-#: gfwfbn/templates/wfbn/index.html:59 givefood/templates/public/index.html:34
+#: gfwfbn/templates/wfbn/index.html:60 givefood/templates/public/index.html:34
 msgid "Use my location"
 msgstr "Defnyddio fy lleoliad"
 
-#: gfwfbn/templates/wfbn/index.html:61 givefood/templates/public/index.html:36
+#: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:36
 msgid "Postcode or town"
 msgstr "Cod post neu dref"
 
-#: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:37
+#: gfwfbn/templates/wfbn/index.html:63 givefood/templates/public/index.html:37
 msgid "e.g. EX4 6PX or Sheffield"
 msgstr "e.e. EX4 6PX neu Sheffield"
 
-#: gfwfbn/templates/wfbn/index.html:68
+#: gfwfbn/templates/wfbn/index.html:73
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
 msgstr ""
 "Mae'n ddrwg gennym, ni allem ddefnyddio'r lleoliad hwnnw. A yw o fewn y "
 "Deyrnas Unedig?"
 
-#: gfwfbn/templates/wfbn/index.html:74
-msgid "Browse by parliamentary constituency"
-msgstr "Pori yn ôl etholaeth seneddol"
+#: gfwfbn/templates/wfbn/index.html:79
+msgid "Search results"
+msgstr ""
 
-#: gfwfbn/templates/wfbn/index.html:75 givefood/templates/public/index.html:119
-#: givefood/templates/public/register_foodbank.html:9
-#: givefood/templates/public/register_foodbank.html:21
-msgid "Register a food bank"
-msgstr "Cofrestru banc bwyd"
-
-#: gfwfbn/templates/wfbn/index.html:76
-#: givefood/templates/public/about_us.html:5
-#: givefood/templates/public/about_us.html:22
-#: givefood/templates/public/index.html:49
-#: givefood/templates/public/page.html:55
-msgid "About us"
-msgstr "Amdanom ni"
-
-#: gfwfbn/templates/wfbn/index.html:79 givefood/templates/public/index.html:52
-msgid "Recently updated"
-msgstr "Diweddarwyd yn ddiweddar"
-
-#: gfwfbn/templates/wfbn/index.html:85 givefood/templates/public/index.html:58
-msgid "Most viewed this week"
-msgstr "Edrychwyd arno fwyaf yr wythnos hon"
-
-#: gfwfbn/templates/wfbn/index.html:101
-#: givefood/templates/public/index.html:117
-#: givefood/templates/public/index.html:141
+#: gfwfbn/templates/wfbn/index.html:83 givefood/templates/public/index.html:113
+#: givefood/templates/public/index.html:137
 msgid "Food banks"
 msgstr "Banciau bwyd"
 
-#: gfwfbn/templates/wfbn/index.html:127 gfwfbn/templates/wfbn/index.html:173
+#: gfwfbn/templates/wfbn/index.html:109 gfwfbn/templates/wfbn/index.html:155
 msgid "Nothing right now, thanks"
 msgstr "Dim byd ar hyn o bryd, diolch"
 
-#: gfwfbn/templates/wfbn/index.html:130
+#: gfwfbn/templates/wfbn/index.html:112
 msgid "Phone"
 msgstr "Ffôn"
 
-#: gfwfbn/templates/wfbn/index.html:133 givefood/templates/403.html:30
+#: gfwfbn/templates/wfbn/index.html:115 givefood/templates/403.html:30
 #: givefood/templates/404.html:30 givefood/templates/500.html:30
 msgid "Email"
 msgstr "E-bost"
 
-#: gfwfbn/templates/wfbn/index.html:135
+#: gfwfbn/templates/wfbn/index.html:117
 msgid "Check the foodbank's "
 msgstr "Gwiriwch y banc bwyd"
 
-#: gfwfbn/templates/wfbn/index.html:136
+#: gfwfbn/templates/wfbn/index.html:118
 msgid "Facebook page"
 msgstr "Tudalen Facebook"
 
-#: gfwfbn/templates/wfbn/index.html:137
+#: gfwfbn/templates/wfbn/index.html:119
 msgid " for what they need"
 msgstr "am yr hyn sydd ei angen arnyn nhw"
 
-#: gfwfbn/templates/wfbn/index.html:167
+#: gfwfbn/templates/wfbn/index.html:149
 msgid "For"
 msgstr "Canys"
 
-#: gfwfbn/templates/wfbn/index.html:175
+#: gfwfbn/templates/wfbn/index.html:157
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr ""
 "Mae'n ddrwg gennyf. Nid ydym yn gwybod beth sydd ei angen yma, cysylltwch "
 "â'r banc bwyd"
 
-#: givefood/models.py:266 givefood/models.py:268
+#: gfwfbn/views.py:117
+#, fuzzy
+#| msgid "Items requested"
+msgid "items requested at"
+msgstr "Eitemau y gofynnwyd amdanynt"
+
+#: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
 msgstr "Banc Bwyd"
 
-#: givefood/models.py:1073
+#: givefood/models.py:1060
 msgid "Closed"
 msgstr "Wedi cau"
 
@@ -502,6 +491,13 @@ msgstr ""
 msgid "500 - Internal Server Error"
 msgstr "500 - Gwall Gweinydd Mewnol"
 
+#: givefood/templates/public/about_us.html:5
+#: givefood/templates/public/about_us.html:22
+#: givefood/templates/public/index.html:49
+#: givefood/templates/public/page.html:55
+msgid "About us"
+msgstr "Amdanom ni"
+
 #: givefood/templates/public/about_us.html:24
 msgid ""
 "\n"
@@ -518,17 +514,17 @@ msgid ""
 "millions of users each year, helping people learn about and engage with food "
 "poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-"
-"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
-"5147019\">charity</a> in February 2020, just weeks before the UK entered "
-"COVID-19 lockdowns, and since then we've worked with hundreds of local food "
-"insecurity alleviation organisations delivering hundreds of tonnes of "
-"vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-charities."
+"charitycommission.gov.uk/en/charity-search/-/charity-"
+"details/5147019\">charity</a> in February 2020, just weeks before the UK "
+"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
+"local food insecurity alleviation organisations delivering hundreds of "
+"tonnes of vitally needed supplies.</p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a href=\"/"
-"2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks from "
-"Penzance to Lerwick as safe as possible whilst continuing to support their "
-"communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a "
+"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
+"from Penzance to Lerwick as safe as possible whilst continuing to support "
+"their communities.</p>\n"
 "\n"
 "                <p>We help the public act on food insecurity by using our "
 "data to show which food banks are in their parliamentary constituency, and "
@@ -549,8 +545,8 @@ msgid ""
 "                    <em>The Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a "
-"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
+"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
+"org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
@@ -564,28 +560,28 @@ msgstr ""
 "amrywiaeth eang o sefydliadau cyhoeddus a phreifat, gan gynnwys llawer o "
 "elusennau eraill, rydym yn rhannu ein data gyda miliynau o ddefnyddwyr bob "
 "blwyddyn, gan helpu pobl i ddysgu am achosion tlodi bwyd ac ymgysylltu â nhw."
-"</p><p> Daethom yn <a href=\"https://register-of-"
-"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
-"5147019\">elusen</a> ym mis Chwefror 2020, ychydig wythnosau cyn i'r DU fynd "
-"i gyfnodau clo COVID-19, ac ers hynny rydym wedi gweithio gyda channoedd o "
-"sefydliadau lleddfu ansicrwydd bwyd lleol gan gyflenwi cannoedd o dunelli o "
-"gyflenwadau hanfodol.</p><p> Er enghraifft, yn ystod y pandemig fe wnaethon "
-"ni ddanfon <a href=\"/2020/#ppe-supplies\">1.2 miliwn o eitemau o PPE</a> i "
-"helpu i gadw banciau bwyd o Penzance i Lerwick mor ddiogel â phosibl wrth "
-"barhau i gefnogi eu cymunedau.</p><p> Rydym yn helpu'r cyhoedd i weithredu "
-"ar ansicrwydd bwyd drwy ddefnyddio ein data i ddangos pa fanciau bwyd sydd "
-"yn eu hetholaeth seneddol, a darparu <a href=\"/write/\">teclyn i anfon e-"
-"bost yn hawdd at eu Haelod Seneddol</a> yn gofyn pa gamau maen nhw'n eu "
-"cymryd i'w unioni.</p><p> Mae ein gweithrediadau'n ffynhonnell agored ac yn "
+"</p><p> Daethom yn <a href=\"https://register-of-charities.charitycommission."
+"gov.uk/en/charity-search/-/charity-details/5147019\">elusen</a> ym mis "
+"Chwefror 2020, ychydig wythnosau cyn i'r DU fynd i gyfnodau clo COVID-19, ac "
+"ers hynny rydym wedi gweithio gyda channoedd o sefydliadau lleddfu "
+"ansicrwydd bwyd lleol gan gyflenwi cannoedd o dunelli o gyflenwadau hanfodol."
+"</p><p> Er enghraifft, yn ystod y pandemig fe wnaethon ni ddanfon <a "
+"href=\"/2020/#ppe-supplies\">1.2 miliwn o eitemau o PPE</a> i helpu i gadw "
+"banciau bwyd o Penzance i Lerwick mor ddiogel â phosibl wrth barhau i "
+"gefnogi eu cymunedau.</p><p> Rydym yn helpu'r cyhoedd i weithredu ar "
+"ansicrwydd bwyd drwy ddefnyddio ein data i ddangos pa fanciau bwyd sydd yn "
+"eu hetholaeth seneddol, a darparu <a href=\"/write/\">teclyn i anfon e-bost "
+"yn hawdd at eu Haelod Seneddol</a> yn gofyn pa gamau maen nhw'n eu cymryd "
+"i'w unioni.</p><p> Mae ein gweithrediadau'n ffynhonnell agored ac yn "
 "dryloyw, gyda bron ein holl <a href=\"https://github.com/givefood/"
 "givefood\">god</a> a <a href=\"/api/\">data</a> cyfredol a hanesyddol wedi'u "
-"cyhoeddi, ynghyd â <a href=\"https://register-of-"
-"charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/"
-"accounts-and-annual-returns\">chyfrifon</a> ac <a href=\"/annual-reports/"
-"\">adroddiadau blynyddol</a> ar gael i'w gweld.</p><p> Mae croeso i chi "
-"gysylltu â ni gydag unrhyw awgrymiadau, sylwadau, beirniadaeth neu anogaeth."
-"</p><p> <em>Ymddiriedolwyr Rhoi Bwyd</em></p><p> <a "
-"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
+"cyhoeddi, ynghyd â <a href=\"https://register-of-charities.charitycommission."
+"gov.uk/charity-search/-/charity-details/5147019/accounts-and-annual-"
+"returns\">chyfrifon</a> ac <a href=\"/annual-reports/\">adroddiadau "
+"blynyddol</a> ar gael i'w gweld.</p><p> Mae croeso i chi gysylltu â ni gydag "
+"unrhyw awgrymiadau, sylwadau, beirniadaeth neu anogaeth.</p><p> "
+"<em>Ymddiriedolwyr Rhoi Bwyd</em></p><p> <a href=\"mailto:mail@givefood.org."
+"uk\">mail@givefood.org.uk</a></p>\n"
 "\n"
 "            "
 
@@ -788,6 +784,14 @@ msgstr ""
 "Rydym yn elusen yn y DU sy'n defnyddio data i amlygu ansicrwydd bwyd lleol a "
 "strwythurol ac yna'n darparu offer i helpu i'w liniaru."
 
+#: givefood/templates/public/index.html:32
+msgid ""
+"Find a food bank near you, see what they need and how you can help by "
+"donating or volunteering."
+msgstr ""
+"Dewch o hyd i fanc bwyd yn eich ardal chi, gweld beth sydd ei angen arnyn "
+"nhw a sut gallwch chi helpu trwy gyfrannu neu wirfoddoli."
+
 #: givefood/templates/public/index.html:45
 msgid "Write to your MP"
 msgstr "Ysgrifennwch at eich AS"
@@ -801,19 +805,27 @@ msgstr "Saesneg"
 msgid "Register a foodbank"
 msgstr "Cofrestru banc bwyd"
 
+#: givefood/templates/public/index.html:52
+msgid "Recently updated"
+msgstr "Diweddarwyd yn ddiweddar"
+
+#: givefood/templates/public/index.html:58
+msgid "Most viewed this week"
+msgstr "Edrychwyd arno fwyaf yr wythnos hon"
+
 #: givefood/templates/public/index.html:81
 msgid "We've worked with"
 msgstr "Rydyn ni wedi gweithio gyda"
 
-#: givefood/templates/public/index.html:106
+#: givefood/templates/public/index.html:102
 msgid "How we can help"
 msgstr "Sut gallwn ni helpu"
 
-#: givefood/templates/public/index.html:112
+#: givefood/templates/public/index.html:108
 msgid "Public"
 msgstr "Cyhoeddus"
 
-#: givefood/templates/public/index.html:113
+#: givefood/templates/public/index.html:109
 msgid ""
 "Use our tool to find your local food banks, then donate, volunteer or take "
 "political action."
@@ -821,11 +833,11 @@ msgstr ""
 "Defnyddiwch ein hofferyn i ddod o hyd i'ch banciau bwyd lleol, yna cyfrannu, "
 "gwirfoddoli neu gymryd camau gwleidyddol."
 
-#: givefood/templates/public/index.html:114
+#: givefood/templates/public/index.html:110
 msgid "Find out how to help"
 msgstr "Darganfyddwch sut i helpu"
 
-#: givefood/templates/public/index.html:118
+#: givefood/templates/public/index.html:114
 msgid ""
 "Register a food bank to be included in our database and allow users to find "
 "you and what you need."
@@ -833,11 +845,17 @@ msgstr ""
 "Cofrestrwch fanc bwyd i'w gynnwys yn ein cronfa ddata a chaniatáu i "
 "ddefnyddwyr ddod o hyd i chi a'r hyn sydd ei angen arnoch."
 
-#: givefood/templates/public/index.html:122
+#: givefood/templates/public/index.html:115
+#: givefood/templates/public/register_foodbank.html:9
+#: givefood/templates/public/register_foodbank.html:21
+msgid "Register a food bank"
+msgstr "Cofrestru banc bwyd"
+
+#: givefood/templates/public/index.html:118
 msgid "Media"
 msgstr "Cyfryngau"
 
-#: givefood/templates/public/index.html:123
+#: givefood/templates/public/index.html:119
 msgid ""
 "Journalists, in particular data journalists, can use our data for stories "
 "around food poverty."
@@ -845,16 +863,16 @@ msgstr ""
 "Gall newyddiadurwyr, yn enwedig newyddiadurwyr data, ddefnyddio ein data ar "
 "gyfer straeon am dlodi bwyd."
 
-#: givefood/templates/public/index.html:124
-#: givefood/templates/public/index.html:129
+#: givefood/templates/public/index.html:120
+#: givefood/templates/public/index.html:125
 msgid "Use our API"
 msgstr "Defnyddiwch ein API"
 
-#: givefood/templates/public/index.html:127
+#: givefood/templates/public/index.html:123
 msgid "Researchers & students"
 msgstr "Ymchwilwyr a myfyrwyr"
 
-#: givefood/templates/public/index.html:128
+#: givefood/templates/public/index.html:124
 msgid ""
 "We can provide our data in bulk, plus advice on how to interpret it, to "
 "researchers. Have a look at our API or email us."
@@ -862,28 +880,28 @@ msgstr ""
 "Gallwn ddarparu ein data mewn swmp, ynghyd â chyngor ar sut i'w ddehongli, i "
 "ymchwilwyr. Edrychwch ar ein API neu e-bostiwch ni."
 
-#: givefood/templates/public/index.html:135
+#: givefood/templates/public/index.html:131
 msgid "Statistics"
 msgstr "Ystadegau"
 
-#: givefood/templates/public/index.html:149
+#: givefood/templates/public/index.html:145
 msgid "Items requested"
 msgstr "Eitemau y gofynnwyd amdanynt"
 
-#: givefood/templates/public/index.html:153
+#: givefood/templates/public/index.html:149
 msgid "Meals delivered"
 msgstr "Prydau wedi'u dosbarthu"
 
-#: givefood/templates/public/index.html:157
+#: givefood/templates/public/index.html:153
 #: givefood/templates/public/page.html:39
 msgid "Last updated"
 msgstr "Diweddarwyd ddiwethaf"
 
-#: givefood/templates/public/index.html:169
+#: givefood/templates/public/index.html:165
 msgid "Read our"
 msgstr "Darllenwch ein"
 
-#: givefood/templates/public/index.html:169
+#: givefood/templates/public/index.html:165
 msgid "annual report"
 msgstr "adroddiad blynyddol"
 
@@ -915,17 +933,20 @@ msgstr "Byrddau Gwaith"
 msgid "Privacy policy"
 msgstr "Polisi preifatrwydd"
 
-#: givefood/views.py:482
+#: givefood/views.py:543
 msgid "minutes"
 msgstr "munud"
 
-#: givefood/views.py:483
+#: givefood/views.py:544
 msgid "Under a minute ago"
 msgstr "O dan funud yn ôl"
 
-#: givefood/views.py:485
+#: givefood/views.py:546
 msgid "ago"
 msgstr "yn ôl"
+
+#~ msgid "Browse by parliamentary constituency"
+#~ msgstr "Pori yn ôl etholaeth seneddol"
 
 #~ msgid "Find out if there is a"
 #~ msgstr "Darganfyddwch a oes a"

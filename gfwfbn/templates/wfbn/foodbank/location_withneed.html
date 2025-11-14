@@ -77,6 +77,9 @@
                 {% if location.is_donation_point %}
                   <p>🛒 {% blocktrans %}This location accepts donations{% endblocktrans %}</p>
                 {% endif %}
+                {% if location.is_mobile %}
+                  <p>🚚 {% blocktrans %}Mobile food bank location{% endblocktrans %}</p>
+                {% endif %}
                 
                 {% include 'wfbn/foodbank/includes/subscribe.html' %}
               {% endif %}
