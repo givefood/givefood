@@ -1,7 +1,7 @@
 from itertools import chain
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.cache import never_cache
-from django.db.models import Value
+from django.db.models import Value, F
 from django.urls import reverse
 
 from django_earthdistance.models import EarthDistance, LlToEarth
@@ -43,13 +43,13 @@ def search(request):
         donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
+            LlToEarth([F('latitude'), F('longitude')])
         ])).annotate(type=Value("donationpoint")).order_by("distance")[:20]
 
         location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
+            LlToEarth([F('latitude'), F('longitude')])
         ])).annotate(type=Value("location")).order_by("distance")[:20]
 
         donationpoints = list(chain(donationpoints,location_donationpoints))
