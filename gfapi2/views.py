@@ -70,7 +70,7 @@ def docs(request):
     return render(request, "docs.html", template_vars)
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_HOUR)
 def foodbanks(request):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
@@ -151,7 +151,7 @@ def foodbanks(request):
     return ApiResponse(response_list, "foodbanks", format)
 
 
-@cache_page(SECONDS_IN_MONTH)
+@cache_page(SECONDS_IN_HOUR)
 def foodbank(request, slug):
 
     format = request.GET.get("format", DEFAULT_FORMAT)
