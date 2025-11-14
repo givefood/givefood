@@ -65,6 +65,9 @@
             {% if location.is_donation_point %}
               <p>🛒 {% blocktrans %}This location accepts donations{% endblocktrans %}</p>
             {% endif %}
+            {% if location.is_mobile %}
+              <p>🚚 {% blocktrans %}Mobile food bank location{% endblocktrans %}</p>
+            {% endif %}
 
             <div class="contacts">
                 <a href="{{ foodbank.url_with_ref }}" class="website">{{ foodbank.url|friendly_url|truncatechars:40 }}</a>

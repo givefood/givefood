@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-28 20:36+0000\n"
+"POT-Creation-Date: 2025-11-14 10:56+0000\n"
 "PO-Revision-Date: 2025-10-28 13:49-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,9 +20,13 @@ msgstr ""
 "n>=7 && n<=10 ? 3 : 4);\n"
 "X-Generator: Poedit 3.8\n"
 
+#: gfadmin/templates/admin/page.html:57
+msgid "Search"
+msgstr ""
+
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
-#: gfdumps/templates/gfdumps/dumps.html:41
+#: gfdumps/templates/gfdumps/dumps.html:42
 msgid "Dumps"
 msgstr "Dumpálacha"
 
@@ -46,19 +50,19 @@ msgstr "Dumpálacha"
 msgid "Home"
 msgstr "Baile"
 
-#: gfdumps/templates/gfdumps/dumps.html:61
+#: gfdumps/templates/gfdumps/dumps.html:67
 msgid "Date"
 msgstr "Dáta"
 
-#: gfdumps/templates/gfdumps/dumps.html:62
+#: gfdumps/templates/gfdumps/dumps.html:68
 msgid "Size"
 msgstr "Méid"
 
-#: gfdumps/templates/gfdumps/dumps.html:63
+#: gfdumps/templates/gfdumps/dumps.html:69
 msgid "Rows"
 msgstr "Sraitheanna"
 
-#: gfdumps/templates/gfdumps/dumps.html:69
+#: gfdumps/templates/gfdumps/dumps.html:75
 msgid "Latest"
 msgstr "Is déanaí"
 
@@ -85,8 +89,14 @@ msgstr ""
 msgid "Search by postcode"
 msgstr "Cuardaigh de réir cód poist"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:52
+#, fuzzy
+#| msgid "Postcode or town"
+msgid "Postcode"
+msgstr "Cód poist nó baile"
+
 #: gfwfbn/templates/wfbn/constituency/index.html:53
-#: gfwfbn/templates/wfbn/index.html:64 givefood/templates/public/index.html:39
+#: gfwfbn/templates/wfbn/index.html:65 givefood/templates/public/index.html:39
 msgid "Go"
 msgstr "Téigh"
 
@@ -138,8 +148,7 @@ msgstr "Caiteachas"
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:43
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:47
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
-#: gfwfbn/templates/wfbn/index.html:106
-#: givefood/templates/public/index.html:145
+#: gfwfbn/templates/wfbn/index.html:88 givefood/templates/public/index.html:141
 msgid "Donation points"
 msgstr "Pointí síntiúis"
 
@@ -190,8 +199,8 @@ msgstr "Inrochtana do chathaoireacha rothaí"
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:118
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:110
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:123
-#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:99
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:105
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:103
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:109
 msgid "Directions"
 msgstr "Treoracha"
 
@@ -207,8 +216,8 @@ msgstr "Príomh"
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:67
 #: gfwfbn/templates/wfbn/foodbank/index_noneed.html:117
 #: gfwfbn/templates/wfbn/foodbank/index_withneed.html:122
-#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:110
-#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:116
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:113
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:120
 #: gfwfbn/templates/wfbn/foodbank/locations.html:71
 msgid "Delivery"
 msgstr "Seachadadh"
@@ -218,7 +227,7 @@ msgid "Charity Registration"
 msgstr "Clárú Carthanachta"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
-#: gfwfbn/templates/wfbn/index.html:119
+#: gfwfbn/templates/wfbn/index.html:101
 msgid "Part of"
 msgstr "Cuid de"
 
@@ -330,9 +339,14 @@ msgstr ""
 msgid "This location accepts donations"
 msgstr "Glacann an suíomh seo le síntiúis"
 
+#: gfwfbn/templates/wfbn/foodbank/location_noneed.html:69
+#: gfwfbn/templates/wfbn/foodbank/location_withneed.html:81
+msgid "Mobile food bank location"
+msgstr ""
+
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:66
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:68
-#: gfwfbn/templates/wfbn/index.html:121 gfwfbn/templates/wfbn/index.html:168
+#: gfwfbn/templates/wfbn/index.html:103 gfwfbn/templates/wfbn/index.html:150
 msgid "away"
 msgstr "ar shiúl"
 
@@ -345,7 +359,7 @@ msgid "What Food Banks Need"
 msgstr "Cad is Riachtanach do Bhainc Bia"
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: gfwfbn/views.py:278
+#: gfwfbn/views.py:308
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -357,112 +371,87 @@ msgstr ""
 msgid "Map of UK food banks"
 msgstr "Léarscáil de bhainc bia sa Ríocht Aontaithe"
 
-#: gfwfbn/templates/wfbn/index.html:33 gfwfbn/templates/wfbn/index.html:38
+#: gfwfbn/templates/wfbn/index.html:33 gfwfbn/templates/wfbn/index.html:41
 msgid "Find Food Banks To Help"
 msgstr "Aimsigh Bainc Bia le Cabhrú"
 
-#: gfwfbn/templates/wfbn/index.html:36
+#: gfwfbn/templates/wfbn/index.html:36 gfwfbn/templates/wfbn/index.html:39
 msgid "food banks"
 msgstr "bainc bia"
 
-#: gfwfbn/templates/wfbn/index.html:56 givefood/templates/public/index.html:32
-msgid ""
-"Find a food bank near you, see what they need and how you can help by "
-"donating or volunteering."
-msgstr ""
-"Aimsigh banc bia in aice leat, féach cad atá de dhíth orthu agus conas is "
-"féidir leat cabhrú trí bhronntanas a thabhairt nó obair dheonach a dhéanamh."
-
-#: gfwfbn/templates/wfbn/index.html:59 givefood/templates/public/index.html:34
+#: gfwfbn/templates/wfbn/index.html:60 givefood/templates/public/index.html:34
 msgid "Use my location"
 msgstr "Úsáid mo shuíomh"
 
-#: gfwfbn/templates/wfbn/index.html:61 givefood/templates/public/index.html:36
+#: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:36
 msgid "Postcode or town"
 msgstr "Cód poist nó baile"
 
-#: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:37
+#: gfwfbn/templates/wfbn/index.html:63 givefood/templates/public/index.html:37
 msgid "e.g. EX4 6PX or Sheffield"
 msgstr "m.sh. EX4 6PX nó Sheffield"
 
-#: gfwfbn/templates/wfbn/index.html:68
+#: gfwfbn/templates/wfbn/index.html:73
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
 msgstr ""
 "Tá brón orainn, ní raibh muid in ann an suíomh sin a úsáid. An bhfuil sé "
 "laistigh den Ríocht Aontaithe?"
 
-#: gfwfbn/templates/wfbn/index.html:74
-msgid "Browse by parliamentary constituency"
-msgstr "Brabhsáil de réir thoghlach parlaiminte"
+#: gfwfbn/templates/wfbn/index.html:79
+msgid "Search results"
+msgstr ""
 
-#: gfwfbn/templates/wfbn/index.html:75 givefood/templates/public/index.html:119
-#: givefood/templates/public/register_foodbank.html:9
-#: givefood/templates/public/register_foodbank.html:21
-msgid "Register a food bank"
-msgstr "Cláraigh banc bia"
-
-#: gfwfbn/templates/wfbn/index.html:76
-#: givefood/templates/public/about_us.html:5
-#: givefood/templates/public/about_us.html:22
-#: givefood/templates/public/index.html:49
-#: givefood/templates/public/page.html:55
-msgid "About us"
-msgstr "Fúinn"
-
-#: gfwfbn/templates/wfbn/index.html:79 givefood/templates/public/index.html:52
-msgid "Recently updated"
-msgstr "Nuashonraithe le déanaí"
-
-#: gfwfbn/templates/wfbn/index.html:85 givefood/templates/public/index.html:58
-msgid "Most viewed this week"
-msgstr "Is mó amharc an tseachtain seo"
-
-#: gfwfbn/templates/wfbn/index.html:101
-#: givefood/templates/public/index.html:117
-#: givefood/templates/public/index.html:141
+#: gfwfbn/templates/wfbn/index.html:83 givefood/templates/public/index.html:113
+#: givefood/templates/public/index.html:137
 msgid "Food banks"
 msgstr "Bainceanna bia"
 
-#: gfwfbn/templates/wfbn/index.html:127 gfwfbn/templates/wfbn/index.html:173
+#: gfwfbn/templates/wfbn/index.html:109 gfwfbn/templates/wfbn/index.html:155
 msgid "Nothing right now, thanks"
 msgstr "Ní raibh aon rud faoi láthair, go raibh maith agat"
 
-#: gfwfbn/templates/wfbn/index.html:130
+#: gfwfbn/templates/wfbn/index.html:112
 msgid "Phone"
 msgstr "Fón"
 
-#: gfwfbn/templates/wfbn/index.html:133 givefood/templates/403.html:30
+#: gfwfbn/templates/wfbn/index.html:115 givefood/templates/403.html:30
 #: givefood/templates/404.html:30 givefood/templates/500.html:30
 msgid "Email"
 msgstr "Ríomhphost"
 
-#: gfwfbn/templates/wfbn/index.html:135
+#: gfwfbn/templates/wfbn/index.html:117
 msgid "Check the foodbank's "
 msgstr "Seiceáil an banc bia"
 
-#: gfwfbn/templates/wfbn/index.html:136
+#: gfwfbn/templates/wfbn/index.html:118
 msgid "Facebook page"
 msgstr "Leathanach Facebook"
 
-#: gfwfbn/templates/wfbn/index.html:137
+#: gfwfbn/templates/wfbn/index.html:119
 msgid " for what they need"
 msgstr "don rud atá de dhíth orthu"
 
-#: gfwfbn/templates/wfbn/index.html:167
+#: gfwfbn/templates/wfbn/index.html:149
 msgid "For"
 msgstr "Do"
 
-#: gfwfbn/templates/wfbn/index.html:175
+#: gfwfbn/templates/wfbn/index.html:157
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr ""
 "Tá brón orm. Níl a fhios againn cad atá ag teastáil anseo, déan teagmháil "
 "leis an mbanc bia le do thoil"
 
-#: givefood/models.py:266 givefood/models.py:268
+#: gfwfbn/views.py:117
+#, fuzzy
+#| msgid "Items requested"
+msgid "items requested at"
+msgstr "Míreanna iarrtha"
+
+#: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
 msgstr "Banc Bia"
 
-#: givefood/models.py:1073
+#: givefood/models.py:1060
 msgid "Closed"
 msgstr "Dúnta"
 
@@ -505,6 +494,13 @@ msgstr ""
 msgid "500 - Internal Server Error"
 msgstr "500 - Earráid Freastalaí Inmheánach"
 
+#: givefood/templates/public/about_us.html:5
+#: givefood/templates/public/about_us.html:22
+#: givefood/templates/public/index.html:49
+#: givefood/templates/public/page.html:55
+msgid "About us"
+msgstr "Fúinn"
+
 #: givefood/templates/public/about_us.html:24
 msgid ""
 "\n"
@@ -521,17 +517,17 @@ msgid ""
 "millions of users each year, helping people learn about and engage with food "
 "poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-"
-"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
-"5147019\">charity</a> in February 2020, just weeks before the UK entered "
-"COVID-19 lockdowns, and since then we've worked with hundreds of local food "
-"insecurity alleviation organisations delivering hundreds of tonnes of "
-"vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-charities."
+"charitycommission.gov.uk/en/charity-search/-/charity-"
+"details/5147019\">charity</a> in February 2020, just weeks before the UK "
+"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
+"local food insecurity alleviation organisations delivering hundreds of "
+"tonnes of vitally needed supplies.</p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a href=\"/"
-"2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks from "
-"Penzance to Lerwick as safe as possible whilst continuing to support their "
-"communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a "
+"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
+"from Penzance to Lerwick as safe as possible whilst continuing to support "
+"their communities.</p>\n"
 "\n"
 "                <p>We help the public act on food insecurity by using our "
 "data to show which food banks are in their parliamentary constituency, and "
@@ -552,8 +548,8 @@ msgid ""
 "                    <em>The Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a "
-"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
+"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
+"org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
@@ -568,11 +564,11 @@ msgstr ""
 "eagraíochtaí poiblí agus príobháideacha, lena n-áirítear go leor "
 "carthanachtaí eile, roinnimid ár sonraí le milliúin úsáideoirí gach bliain, "
 "ag cabhrú le daoine foghlaim faoi chúiseanna bochtaineachta bia agus dul i "
-"ngleic leo.</p><p> Rinneadh <a href=\"https://register-of-"
-"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
-"5147019\">carthanas</a> dínn i mí Feabhra 2020, díreach seachtainí sular "
-"chuaigh an Ríocht Aontaithe isteach i ndianghlasálacha COVID-19, agus ó shin "
-"i leith táimid ag obair le na céadta eagraíocht áitiúil um mhaolú "
+"ngleic leo.</p><p> Rinneadh <a href=\"https://register-of-charities."
+"charitycommission.gov.uk/en/charity-search/-/charity-"
+"details/5147019\">carthanas</a> dínn i mí Feabhra 2020, díreach seachtainí "
+"sular chuaigh an Ríocht Aontaithe isteach i ndianghlasálacha COVID-19, agus "
+"ó shin i leith táimid ag obair le na céadta eagraíocht áitiúil um mhaolú "
 "éiginnteachta bia ag seachadadh na céadta tonna de sholáthairtí "
 "ríthábhachtacha.</p><p> Mar shampla, le linn na paindéime seachadamar <a "
 "href=\"/2020/#ppe-supplies\">1.2m earra trealaimh chosanta pearsanta (PPE)</"
@@ -800,6 +796,14 @@ msgstr ""
 "tharraingt ar éiginnteacht bia áitiúil agus struchtúrtha agus a "
 "sholáthraíonn uirlisí chun cabhrú le faoiseamh a thabhairt di."
 
+#: givefood/templates/public/index.html:32
+msgid ""
+"Find a food bank near you, see what they need and how you can help by "
+"donating or volunteering."
+msgstr ""
+"Aimsigh banc bia in aice leat, féach cad atá de dhíth orthu agus conas is "
+"féidir leat cabhrú trí bhronntanas a thabhairt nó obair dheonach a dhéanamh."
+
 #: givefood/templates/public/index.html:45
 msgid "Write to your MP"
 msgstr "Scríobh chuig do Theachta Parlaiminte"
@@ -813,19 +817,27 @@ msgstr "Béarla"
 msgid "Register a foodbank"
 msgstr "Cláraigh banc bia"
 
+#: givefood/templates/public/index.html:52
+msgid "Recently updated"
+msgstr "Nuashonraithe le déanaí"
+
+#: givefood/templates/public/index.html:58
+msgid "Most viewed this week"
+msgstr "Is mó amharc an tseachtain seo"
+
 #: givefood/templates/public/index.html:81
 msgid "We've worked with"
 msgstr "D'oibrigh muid le"
 
-#: givefood/templates/public/index.html:106
+#: givefood/templates/public/index.html:102
 msgid "How we can help"
 msgstr "Conas is féidir linn cabhrú"
 
-#: givefood/templates/public/index.html:112
+#: givefood/templates/public/index.html:108
 msgid "Public"
 msgstr "Poiblí"
 
-#: givefood/templates/public/index.html:113
+#: givefood/templates/public/index.html:109
 msgid ""
 "Use our tool to find your local food banks, then donate, volunteer or take "
 "political action."
@@ -833,11 +845,11 @@ msgstr ""
 "Bain úsáid as ár n-uirlis chun do bhainc bia áitiúla a aimsiú, ansin síntiús "
 "a thabhairt, obair dheonach a dhéanamh nó gníomh polaitiúil a ghlacadh."
 
-#: givefood/templates/public/index.html:114
+#: givefood/templates/public/index.html:110
 msgid "Find out how to help"
 msgstr "Faigh amach conas cabhrú"
 
-#: givefood/templates/public/index.html:118
+#: givefood/templates/public/index.html:114
 msgid ""
 "Register a food bank to be included in our database and allow users to find "
 "you and what you need."
@@ -845,11 +857,17 @@ msgstr ""
 "Cláraigh banc bia le go mbeidh sé san áireamh inár mbunachar sonraí agus go "
 "mbeidh úsáideoirí in ann tú féin agus a bhfuil uait a aimsiú."
 
-#: givefood/templates/public/index.html:122
+#: givefood/templates/public/index.html:115
+#: givefood/templates/public/register_foodbank.html:9
+#: givefood/templates/public/register_foodbank.html:21
+msgid "Register a food bank"
+msgstr "Cláraigh banc bia"
+
+#: givefood/templates/public/index.html:118
 msgid "Media"
 msgstr "Meáin"
 
-#: givefood/templates/public/index.html:123
+#: givefood/templates/public/index.html:119
 msgid ""
 "Journalists, in particular data journalists, can use our data for stories "
 "around food poverty."
@@ -857,16 +875,16 @@ msgstr ""
 "Is féidir le hiriseoirí, go háirithe iriseoirí sonraí, ár sonraí a úsáid le "
 "haghaidh scéalta faoi bhochtaineacht bia."
 
-#: givefood/templates/public/index.html:124
-#: givefood/templates/public/index.html:129
+#: givefood/templates/public/index.html:120
+#: givefood/templates/public/index.html:125
 msgid "Use our API"
 msgstr "Bain úsáid as ár n-API"
 
-#: givefood/templates/public/index.html:127
+#: givefood/templates/public/index.html:123
 msgid "Researchers & students"
 msgstr "Taighdeoirí & mic léinn"
 
-#: givefood/templates/public/index.html:128
+#: givefood/templates/public/index.html:124
 msgid ""
 "We can provide our data in bulk, plus advice on how to interpret it, to "
 "researchers. Have a look at our API or email us."
@@ -875,28 +893,28 @@ msgstr ""
 "maidir le conas iad a léirmhíniú, do thaighdeoirí. Féach ar ár n-API nó seol "
 "ríomhphost chugainn."
 
-#: givefood/templates/public/index.html:135
+#: givefood/templates/public/index.html:131
 msgid "Statistics"
 msgstr "Staitisticí"
 
-#: givefood/templates/public/index.html:149
+#: givefood/templates/public/index.html:145
 msgid "Items requested"
 msgstr "Míreanna iarrtha"
 
-#: givefood/templates/public/index.html:153
+#: givefood/templates/public/index.html:149
 msgid "Meals delivered"
 msgstr "Béilí seachadta"
 
-#: givefood/templates/public/index.html:157
+#: givefood/templates/public/index.html:153
 #: givefood/templates/public/page.html:39
 msgid "Last updated"
 msgstr "Nuashonraithe go deireanach"
 
-#: givefood/templates/public/index.html:169
+#: givefood/templates/public/index.html:165
 msgid "Read our"
 msgstr "Léigh ár"
 
-#: givefood/templates/public/index.html:169
+#: givefood/templates/public/index.html:165
 msgid "annual report"
 msgstr "tuarascáil bhliantúil"
 
@@ -928,17 +946,20 @@ msgstr "Painéil"
 msgid "Privacy policy"
 msgstr "Polasaí príobháideachta"
 
-#: givefood/views.py:482
+#: givefood/views.py:543
 msgid "minutes"
 msgstr "nóiméad"
 
-#: givefood/views.py:483
+#: givefood/views.py:544
 msgid "Under a minute ago"
 msgstr "Faoi nóiméad ó shin"
 
-#: givefood/views.py:485
+#: givefood/views.py:546
 msgid "ago"
 msgstr "ó shin"
+
+#~ msgid "Browse by parliamentary constituency"
+#~ msgstr "Brabhsáil de réir thoghlach parlaiminte"
 
 #~ msgid "Find out if there is a"
 #~ msgstr "Faigh amach an bhfuil"

@@ -52,3 +52,6 @@ docs/_build/
 
 sitepackages/*
 /messages.mo
+*/migrations/*.py
+echo ___BEGIN___COMMAND_OUTPUT_MARKER___ ; PS1= ; PS2= ; EC=0 ; echo ___BEGIN___COMMAND_DONE_MARKER___0 ; }/migrations/__init__.py
+*.mo
