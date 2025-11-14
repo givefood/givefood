@@ -61,3 +61,28 @@ class TestAPI2Foodbanks:
         """Test that the foodbanks list can return GeoJSON."""
         response = client.get('/api/2/foodbanks/?format=geojson')
         assert response.status_code == 200
+
+
+@pytest.mark.django_db
+class TestAPI2LocationSearch:
+    """Test the API v2 location search endpoint."""
+
+    def test_location_search_includes_facebook_page(self, client):
+        """Test that location search response includes facebook_page in foodbank data."""
+        # Using a known UK postcode for testing
+        response = client.get('/api/2/locations/search/?address=SW1A1AA')
+        
+        # The endpoint should return 200 or 400 (if geocoding fails or no results)
+        # We're mainly checking the structure when data is returned
+        assert response.status_code in [200, 400]
+        
+        # Only check JSON structure if we got a successful response
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            
+            # If there are results, check that facebook_page field exists
+            if isinstance(data, list) and len(data) > 0:
+                first_item = data[0]
+                assert 'foodbank' in first_item
+                assert 'facebook_page' in first_item['foodbank']

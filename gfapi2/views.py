@@ -495,6 +495,12 @@ def location_search(request):
 
     for item in foodbanksandlocations:
 
+        # Get facebook_page based on item type
+        if item.type == "organisation":
+            facebook_page = item.facebook_page
+        else:  # location
+            facebook_page = item.foodbank.facebook_page
+
         item_dict = {
             "id": str(item.uuid),
             "type":item.type,
@@ -530,6 +536,7 @@ def location_search(request):
                 "name":item.foodbank_name,
                 "slug":item.foodbank_slug,
                 "network":item.foodbank_network,
+                "facebook_page":facebook_page,
                 "urls": {
                     "self":"https://www.givefood.org.uk/api/2/foodbank/%s/" % (item.foodbank_slug),
                     "html":"https://www.givefood.org.uk/needs/at/%s/" % (item.foodbank_slug),

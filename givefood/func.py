@@ -648,7 +648,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
             LlToEarth(['latitude', 'longitude'])
         ])).annotate(type=Value("organisation")).order_by("distance")[:quantity]
     
-    locations = FoodbankLocation.objects.filter(is_closed = False).annotate(
+    locations = FoodbankLocation.objects.select_related("foodbank").filter(is_closed = False).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
