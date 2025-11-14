@@ -646,6 +646,12 @@ def donationpoint_search(request):
 
     for donationpoint in donationpoints:
 
+        # Get latest need from foodbank
+        if donationpoint.type == "donationpoint":
+            latest_need = donationpoint.foodbank.latest_need
+        else:  # location
+            latest_need = donationpoint.foodbank.latest_need
+
         item_dict = {
             "id": str(donationpoint.uuid),
             "type": donationpoint.type,
@@ -667,6 +673,13 @@ def donationpoint_search(request):
                     "self": "https://www.givefood.org.uk/api/2/constituency/%s/" % (donationpoint.parliamentary_constituency_slug),
                     "html": "https://www.givefood.org.uk/needs/in/constituency/%s/" % (donationpoint.parliamentary_constituency_slug),
                 },
+            },
+            "needs": {
+                "id": latest_need.need_id_str,
+                "needs": latest_need.change_text,
+                "excess": latest_need.excess_change_text,
+                "number": latest_need.no_items(),
+                "found": datetime.datetime.fromtimestamp(latest_need.created.timestamp()),
             },
             "foodbank": {
                 "name": donationpoint.foodbank_name,

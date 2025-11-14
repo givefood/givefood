@@ -121,6 +121,10 @@ class TestAPI2DonationPointSearch:
                 assert 'distance_mi' in first_item
                 assert 'foodbank' in first_item
                 assert 'slug' in first_item['foodbank']
+                assert 'needs' in first_item
+                assert 'id' in first_item['needs']
+                assert 'needs' in first_item['needs']
+                assert 'number' in first_item['needs']
 
     def test_donationpoint_search_with_lat_lng(self, client):
         """Test donation point search with lat_lng parameter."""
