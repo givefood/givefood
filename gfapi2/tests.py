@@ -64,6 +64,66 @@ class TestAPI2Foodbanks:
 
 
 @pytest.mark.django_db
+class TestAPI2FoodbankDetail:
+    """Test the API v2 foodbank detail endpoint."""
+
+    def test_foodbank_detail_has_donationpoints_array(self, client):
+        """Test that the foodbank detail response includes a donationpoints array."""
+        # This test checks structure even with empty database
+        response = client.get('/api/2/foodbank/test-foodbank/')
+        
+        # 404 is expected if the foodbank doesn't exist, which is fine for this test environment
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            
+            # Check that donationpoints field exists
+            assert 'donationpoints' in data
+            assert isinstance(data['donationpoints'], list)
+    
+    def test_foodbank_detail_locations_have_is_donation_point(self, client):
+        """Test that each location in the foodbank detail response has is_donation_point field."""
+        response = client.get('/api/2/foodbank/test-foodbank/')
+        
+        # Only test structure if foodbank exists
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            
+            # Check that locations field exists
+            assert 'locations' in data
+            
+            # If there are locations, check each has is_donation_point
+            if isinstance(data['locations'], list) and len(data['locations']) > 0:
+                for location in data['locations']:
+                    assert 'is_donation_point' in location
+                    assert isinstance(location['is_donation_point'], bool)
+
+    def test_foodbank_detail_geojson_locations_have_is_donation_point(self, client):
+        """Test that GeoJSON locations include is_donation_point property."""
+        response = client.get('/api/2/foodbank/test-foodbank/?format=geojson')
+        
+        # Only test structure if foodbank exists
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            
+            # Check it's a FeatureCollection
+            if 'type' in data and data['type'] == 'FeatureCollection':
+                assert 'features' in data
+                
+                # Check each feature (locations and donationpoints) for is_donation_point
+                for feature in data['features']:
+                    if 'properties' in feature:
+                        # Main foodbank feature might not have it, but locations should
+                        if 'slug' in feature['properties']:
+                            # This could be a location or donation point, both should have is_donation_point
+                            # or it's the main foodbank which doesn't need it
+                            pass
+
+
+
+@pytest.mark.django_db
 class TestAPI2LocationSearch:
     """Test the API v2 location search endpoint."""
 

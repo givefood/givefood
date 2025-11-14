@@ -169,6 +169,7 @@ def foodbank(request, slug):
                     "postcode":location.postcode,
                     "lat_lng":location.lat_lng,
                     "phone":location.phone_number,
+                    "is_donation_point":location.is_donation_point,
                     "politics": {
                         "parliamentary_constituency":location.parliamentary_constituency_name,
                         "mp":location.mp,
@@ -179,6 +180,31 @@ def foodbank(request, slug):
                         "urls": {
                             "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (location.parliamentary_constituency_slug),
                             "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (location.parliamentary_constituency_slug),
+                        },
+                    }
+                }
+            )
+
+        donationpoint_list = []
+        for donationpoint in foodbank.donation_points():
+            donationpoint_list.append(
+                {
+                    "name":donationpoint.name,
+                    "slug":donationpoint.slug,
+                    "address":donationpoint.full_address(),
+                    "postcode":donationpoint.postcode,
+                    "lat_lng":donationpoint.lat_lng,
+                    "phone":donationpoint.phone_number,
+                    "politics": {
+                        "parliamentary_constituency":donationpoint.parliamentary_constituency_name,
+                        "mp":donationpoint.mp,
+                        "mp_party":donationpoint.mp_party,
+                        "mp_parl_id":donationpoint.mp_parl_id,
+                        "ward":donationpoint.ward,
+                        "district":donationpoint.district,
+                        "urls": {
+                            "self":"https://www.givefood.org.uk/api/2/constituency/%s/" % (donationpoint.parliamentary_constituency_slug),
+                            "html":"https://www.givefood.org.uk/needs/in/constituency/%s/" % (donationpoint.parliamentary_constituency_slug),
                         },
                     }
                 }
@@ -227,6 +253,7 @@ def foodbank(request, slug):
                 "register_url":foodbank.charity_register_url(),
             },
             "locations": location_list,
+            "donationpoints": donationpoint_list,
             "politics": {
                 "parliamentary_constituency":foodbank.parliamentary_constituency_name,
                 "mp":foodbank.mp,
@@ -285,6 +312,28 @@ def foodbank(request, slug):
                         "email": location.email_or_foodbank_email(),
                         "telephone": location.phone_or_foodbank_phone(),
                         "parliamentary_constituency": location.parliamentary_constituency_name,
+                        "is_donation_point": location.is_donation_point,
+                    }
+                }
+            )
+
+        for donationpoint in foodbank.donation_points():
+            features.append(
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [float(donationpoint.lat_lng.split(",")[1]), float(donationpoint.lat_lng.split(",")[0])]
+                    },
+                    "properties": {
+                        "name": donationpoint.name,
+                        "slug": donationpoint.slug,
+                        "address": donationpoint.full_address(),
+                        "url": "https://www.givefood.org.uk/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
+                        "network": donationpoint.foodbank_network,
+                        "telephone": donationpoint.phone_number,
+                        "parliamentary_constituency": donationpoint.parliamentary_constituency_name,
+                        "is_donation_point": True,
                     }
                 }
             )
