@@ -28,7 +28,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.cache import cache
 from django.contrib.humanize.templatetags.humanize import apnumber
-from django.db.models import Value, F
+from django.db.models import Value
 from django.contrib.contenttypes.models import ContentType
 
 from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
@@ -642,16 +642,16 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
 
-    foodbanks = Foodbank.objects.select_related("latest_need").filter(is_closed = False).annotate(
+    foodbanks = Foodbank.objects.filter(is_closed = False).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
-            LlToEarth([F('latitude'), F('longitude')])
+            LlToEarth(['latitude', 'longitude'])
         ])).annotate(type=Value("organisation")).order_by("distance")[:quantity]
     
-    locations = FoodbankLocation.objects.select_related("foodbank").filter(is_closed = False).annotate(
+    locations = FoodbankLocation.objects.filter(is_closed = False).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
-            LlToEarth([F('latitude'), F('longitude')])
+            LlToEarth(['latitude', 'longitude'])
         ])).annotate(type=Value("location")).order_by("distance")[:quantity]
     
     for foodbank in foodbanks:
@@ -700,13 +700,13 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
     donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).annotate(
     distance=EarthDistance([
         LlToEarth([lat, lng]),
-        LlToEarth([F('latitude'), F('longitude')])
+        LlToEarth(['latitude', 'longitude'])
     ])).annotate(type=Value("donationpoint")).order_by("distance")[:quantity]
 
     location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).annotate(
     distance=EarthDistance([
         LlToEarth([lat, lng]),
-        LlToEarth([F('latitude'), F('longitude')])
+        LlToEarth(['latitude', 'longitude'])
     ])).annotate(type=Value("location")).order_by("distance")[:quantity]
 
     if foodbank:

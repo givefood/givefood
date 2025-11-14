@@ -3,7 +3,6 @@ import datetime
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseBadRequest
 from django.views.decorators.cache import cache_page
-from django.db.models import F
 
 from django_earthdistance.models import EarthDistance, LlToEarth
 
@@ -332,10 +331,10 @@ def foodbank_search(request):
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
 
-    foodbanks = Foodbank.objects.select_related("latest_need").filter(is_closed = False).annotate(
+    foodbanks = Foodbank.objects.filter(is_closed = False).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
-            LlToEarth([F('latitude'), F('longitude')])
+            LlToEarth(['latitude', 'longitude'])
         ])).order_by("distance")[:10]
     
     response_list = []
