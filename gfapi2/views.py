@@ -195,6 +195,8 @@ def foodbank(request, slug):
                     "postcode":donationpoint.postcode,
                     "lat_lng":donationpoint.lat_lng,
                     "phone":donationpoint.phone_number,
+                    "opening_hours":donationpoint.opening_hours,
+                    "wheelchair_accessible":donationpoint.wheelchair_accessible,
                     "politics": {
                         "parliamentary_constituency":donationpoint.parliamentary_constituency_name,
                         "mp":donationpoint.mp,
@@ -332,6 +334,8 @@ def foodbank(request, slug):
                         "url": "https://www.givefood.org.uk/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
                         "network": donationpoint.foodbank_network,
                         "telephone": donationpoint.phone_number,
+                        "opening_hours": donationpoint.opening_hours,
+                        "wheelchair_accessible": donationpoint.wheelchair_accessible,
                         "parliamentary_constituency": donationpoint.parliamentary_constituency_name,
                         "is_donation_point": True,
                     }

@@ -121,6 +121,24 @@ class TestAPI2FoodbankDetail:
                             # or it's the main foodbank which doesn't need it
                             pass
 
+    def test_foodbank_detail_donationpoints_have_accessibility_fields(self, client):
+        """Test that donation points include wheelchair_accessible and opening_hours fields."""
+        response = client.get('/api/2/foodbank/test-foodbank/')
+        
+        # Only test structure if foodbank exists
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            
+            # Check that donationpoints field exists
+            assert 'donationpoints' in data
+            
+            # If there are donation points, check each has the accessibility fields
+            if isinstance(data['donationpoints'], list) and len(data['donationpoints']) > 0:
+                for donationpoint in data['donationpoints']:
+                    assert 'wheelchair_accessible' in donationpoint
+                    assert 'opening_hours' in donationpoint
+
 
 
 @pytest.mark.django_db
