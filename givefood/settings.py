@@ -76,7 +76,6 @@ INSTALLED_APPS = [
     "gfoffline",
     "gfwfbn",
     "gfwrite",
-    "gfapp",
     "gfauth",
     "givefood",
 ]

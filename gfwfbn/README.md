@@ -153,7 +153,6 @@ Aggressive caching is used throughout the app:
 - **givefood** - Core models for food banks, locations, needs, and subscriptions
 - **gfapi2** - API providing the same data in machine-readable formats
 - **gfadmin** - Admin interface for managing food bank data and needs
-- **gfapp** - Mobile-optimized PWA alternative interface
 - **gfoffline** - Background tasks for needs checking and data updates
 
 ## Contact
