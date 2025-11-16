@@ -1004,6 +1004,10 @@ def fblocation_delete(request, slug, loc_slug):
     foodbank_location = get_object_or_404(FoodbankLocation, foodbank = foodbank, slug = loc_slug)
     foodbank_location.delete()
 
+    # Return JSON response for AJAX requests
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'success': True, 'message': 'Location deleted successfully'})
+    
     return redirect("admin:foodbank", slug = foodbank.slug)
 
 
@@ -1068,6 +1072,10 @@ def donationpoint_delete(request, slug, dp_slug):
     donation_point = get_object_or_404(FoodbankDonationPoint, foodbank = foodbank, slug = dp_slug)
     donation_point.delete()
 
+    # Return JSON response for AJAX requests
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({'success': True, 'message': 'Donation point deleted successfully'})
+    
     return redirect("admin:foodbank", slug = foodbank.slug)
 
 

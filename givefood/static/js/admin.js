@@ -470,6 +470,127 @@ function initNavbarBurger() {
 }
 
 /**
+ * Initialize AJAX deletion for locations and donation points on check page
+ */
+function initCheckPageDeleteHandlers() {
+    // Handle location deletions
+    const locationDeleteForms = document.querySelectorAll('form[action*="/location/"][action*="/delete/"]');
+    locationDeleteForms.forEach(form => {
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const confirmMessage = 'Are you sure you want to delete this location?';
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            const formAction = form.action;
+            const listItem = form.closest('li');
+            
+            try {
+                const response = await fetch(formAction, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        // Fade out the list item
+                        listItem.style.transition = 'opacity 0.5s';
+                        listItem.style.opacity = '0';
+                        
+                        // Remove from DOM after fade completes
+                        setTimeout(() => {
+                            listItem.remove();
+                        }, 500);
+                    } else {
+                        alert('Failed to delete location: ' + (data.message || 'Unknown error'));
+                    }
+                } else {
+                    alert('Failed to delete location. Server returned an error.');
+                }
+            } catch (error) {
+                console.error('Error deleting location:', error);
+                alert('Failed to delete location. Please try again.');
+            }
+        });
+    });
+    
+    // Handle donation point deletions
+    const donationPointDeleteForms = document.querySelectorAll('form[action*="/donationpoint/"][action*="/delete/"]');
+    donationPointDeleteForms.forEach(form => {
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            const confirmMessage = 'Are you sure you want to delete this donation point?';
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+            
+            const formAction = form.action;
+            const listItem = form.closest('li');
+            
+            try {
+                const response = await fetch(formAction, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        // Fade out the list item
+                        listItem.style.transition = 'opacity 0.5s';
+                        listItem.style.opacity = '0';
+                        
+                        // Remove from DOM after fade completes
+                        setTimeout(() => {
+                            listItem.remove();
+                        }, 500);
+                    } else {
+                        alert('Failed to delete donation point: ' + (data.message || 'Unknown error'));
+                    }
+                } else {
+                    alert('Failed to delete donation point. Server returned an error.');
+                }
+            } catch (error) {
+                console.error('Error deleting donation point:', error);
+                alert('Failed to delete donation point. Please try again.');
+            }
+        });
+    });
+}
+
+/**
+ * Get CSRF token from cookie for AJAX requests
+ * @returns {string} CSRF token
+ */
+function getCsrfToken() {
+    const name = 'csrftoken';
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+/**
  * Initialize all admin features when DOM is ready
  */
 function initAdmin() {
@@ -480,6 +601,7 @@ function initAdmin() {
     initLocationLookup();
     initLatLngLookup();
     initChangeTextButtons();
+    initCheckPageDeleteHandlers();
 }
 
 // Run initialization
