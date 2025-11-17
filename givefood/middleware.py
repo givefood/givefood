@@ -1,5 +1,6 @@
 import time
 
+from django.db import connection, reset_queries
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.urls import resolve, reverse
@@ -10,13 +11,24 @@ from givefood.func import get_cred
 # Inject the render time into the response content
 def RenderTime(get_response):
     def middleware(request):
+        # Enable query tracking and reset query count
+        connection.force_debug_cursor = True
+        reset_queries()
+        
         t1 = time.time()
         response = get_response(request)
         t2 = time.time()
         duration = t2 - t1
         duration = round(duration * 1000, 3)
+        
+        # Get the number of queries
+        query_count = len(connection.queries)
+        
         response.content = response.content.replace(
             b"PUTTHERENDERTIMEHERE", bytes(str(duration), "utf-8"), 1
+        )
+        response.content = response.content.replace(
+            b"PUTTHEQUERIESHERE", bytes(str(query_count), "utf-8"), 1
         )
         return response
     return middleware
