@@ -586,7 +586,7 @@
         <tbody>
             {% for crawl_item in foodbank.crawl_items %}
             <tr>
-                <td>{{ crawl_item.crawl_set.crawl_type_icon }} {{ crawl_item.crawl_set.crawl_type }}</td>
+                <td>{{ crawl_item.crawl_type_icon }} {{ crawl_item.crawl_type }}</td>
                 <td>{{ crawl_item.start }}</td>
                 <td>
                     {% if crawl_item.finish %}
