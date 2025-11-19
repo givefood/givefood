@@ -1,9 +1,6 @@
 <script>
-    // Combined map configuration
+    // Map configuration for MapLibre GL
     window.gfMapConfig = Object.assign({}, {{ map_config|safe }}, {
-        apiKey: '{{ gmap_key }}',
-        libraries: 'places,marker',
-        region: 'GB',
         language: '{{ language_code }}'
     });
 </script>

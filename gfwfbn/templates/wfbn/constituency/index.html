@@ -83,49 +83,7 @@
 {% block script %}
 
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places,marker"></script>
-<script>
-
-const parl_con_geojson_url = "/static/geojson/parlcon.json"
-
-
-var map
-var bounds = new google.maps.LatLngBounds();
-
-function init_map() {
-  var mapOptions = {
-    center: new google.maps.LatLng(55,-4),
-    zoom: 6,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
-  };
-  map = new google.maps.Map(document.getElementById("map"), mapOptions);
-  map.data.loadGeoJson(parl_con_geojson_url);
-  google.maps.event.addListener(map.data,'addfeature',function(e){
-    var bounds = new google.maps.LatLngBounds(); 
-    map.data.forEach(function(feature){
-      feature.getGeometry().forEachLatLng(function(latlng){
-        bounds.extend(latlng);
-      });
-    });
-
-    map.fitBounds(bounds);
-  })
-  map.data.addListener('click', (event) => {
-        const name = event.feature.getProperty('PCON24NM');
-        const slug = slugify(name)
-        window.location = '/needs/in/constituency/'+ slug +'/';
-    });
-
-    map.data.setStyle({
-      fillColor: "#000",
-      strokeWeight: 1,
-    });
-}
-
-
-google.maps.event.addDomListener(window, 'load', init_map);
-
-</script>
+<script src="/static/js/constituency-maplibre.js?v={{ version }}"></script>
 
 {% endblock %}
 
