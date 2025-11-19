@@ -1,0 +1,86 @@
+{% extends "admin2/base.html" %}
+{% load humanize %}
+
+{% block title %}{{ need.foodbank_name }} Need - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <h1 class="title">Need Detail</h1>
+      
+      <div class="box">
+        <div class="columns">
+          <div class="column">
+            <dl>
+              <dt><strong>Foodbank</strong></dt>
+              <dd>
+                <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank_slug %}">
+                  {{ need.foodbank_name }}
+                </a>
+              </dd>
+              
+              <dt><strong>Created</strong></dt>
+              <dd>{{ need.created }} ({{ need.created|timesince }} ago)</dd>
+              
+              <dt><strong>Status</strong></dt>
+              <dd id="need-status">
+                {% if need.published %}
+                  <span class="tag is-success">Published</span>
+                {% else %}
+                  <span class="tag is-warning">Unpublished</span>
+                {% endif %}
+              </dd>
+              
+              <dt><strong>Input Method</strong></dt>
+              <dd>{{ need.input_method }}</dd>
+            </dl>
+          </div>
+          
+          <div class="column">
+            <h3 class="subtitle">Needs</h3>
+            <div class="content">
+              {{ need.change_text|linebreaks }}
+            </div>
+            
+            {% if need.excess_change_text %}
+              <h3 class="subtitle">Excess</h3>
+              <div class="content">
+                {{ need.excess_change_text|linebreaks }}
+              </div>
+            {% endif %}
+          </div>
+          
+          <div class="column">
+            <div class="buttons">
+              {% if not need.published %}
+                <button class="button is-success"
+                        hx-post="{% url 'gfadmin2:need_publish' need.need_id %}"
+                        hx-vals='{"action": "publish"}'
+                        hx-target="#need-status"
+                        hx-swap="innerHTML">
+                  <span>✓ Publish</span>
+                </button>
+              {% else %}
+                <button class="button is-warning"
+                        hx-post="{% url 'gfadmin2:need_publish' need.need_id %}"
+                        hx-vals='{"action": "unpublish"}'
+                        hx-target="#need-status"
+                        hx-swap="innerHTML">
+                  <span>↩ Unpublish</span>
+                </button>
+              {% endif %}
+              
+              <button class="button is-danger"
+                      hx-post="{% url 'gfadmin2:need_delete' need.need_id %}"
+                      hx-confirm="Are you sure you want to delete this need?">
+                <span>✗ Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

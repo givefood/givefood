@@ -1,0 +1,48 @@
+{% extends "admin2/base.html" %}
+{% load humanize %}
+
+{% block title %}Needs - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <h1 class="title">Needs</h1>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <div class="buttons">
+              <button class="button {% if filter == 'unpublished' %}is-primary{% endif %}"
+                      hx-get="{% url 'gfadmin2:needs_list' %}?filter=unpublished"
+                      hx-target="#needs-container"
+                      hx-push-url="true">
+                Unpublished
+              </button>
+              <button class="button {% if filter == 'published' %}is-primary{% endif %}"
+                      hx-get="{% url 'gfadmin2:needs_list' %}?filter=published"
+                      hx-target="#needs-container"
+                      hx-push-url="true">
+                Published
+              </button>
+              <button class="button {% if filter == 'uncategorised' %}is-primary{% endif %}"
+                      hx-get="{% url 'gfadmin2:needs_list' %}?filter=uncategorised"
+                      hx-target="#needs-container"
+                      hx-push-url="true">
+                Uncategorised
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="needs-container">
+        {% include "admin2/includes/needs_table.html" %}
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

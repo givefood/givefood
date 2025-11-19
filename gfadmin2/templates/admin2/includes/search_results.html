@@ -1,0 +1,74 @@
+{% if results %}
+  {% if results.foodbanks %}
+    <div class="box">
+      <h2 class="subtitle">Food Banks</h2>
+      <div class="table-container">
+        <table class="table is-fullwidth is-hoverable">
+          <tbody>
+            {% for foodbank in results.foodbanks %}
+              <tr>
+                <td>
+                  <a href="{% url 'gfadmin2:foodbank_detail' foodbank.slug %}">
+                    {{ foodbank.name }}
+                  </a>
+                </td>
+                <td>{{ foodbank.address }}</td>
+                <td>{{ foodbank.postcode }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if results.needs %}
+    <div class="box">
+      <h2 class="subtitle">Needs</h2>
+      <div class="table-container">
+        <table class="table is-fullwidth is-hoverable">
+          <tbody>
+            {% for need in results.needs %}
+              <tr>
+                <td>
+                  <a href="{% url 'gfadmin2:need_detail' need.need_id %}">
+                    {{ need.created|timesince }} ago
+                  </a>
+                </td>
+                <td>
+                  <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank_slug %}">
+                    {{ need.foodbank_name }}
+                  </a>
+                </td>
+                <td class="is-size-7">{{ need.change_text|truncatewords:15 }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if results.locations %}
+    <div class="box">
+      <h2 class="subtitle">Locations</h2>
+      <div class="table-container">
+        <table class="table is-fullwidth is-hoverable">
+          <tbody>
+            {% for location in results.locations %}
+              <tr>
+                <td>{{ location.name }}</td>
+                <td>{{ location.address }}</td>
+                <td>{{ location.postcode }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+{% elif query %}
+  <div class="notification">
+    No results found for "{{ query }}"
+  </div>
+{% endif %}

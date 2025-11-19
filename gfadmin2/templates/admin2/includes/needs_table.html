@@ -1,0 +1,73 @@
+{% load humanize %}
+
+<div class="table-container">
+  <table class="table is-fullwidth is-hoverable is-striped">
+    <thead>
+      <tr>
+        <th>Created</th>
+        <th>Foodbank</th>
+        <th>Needs</th>
+        <th>Excess</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for need in needs %}
+        <tr id="need-{{ need.need_id }}">
+          <td>
+            <a href="{% url 'gfadmin2:need_detail' need.need_id %}">
+              {{ need.created|timesince }} ago
+            </a>
+          </td>
+          <td>
+            <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank_slug %}">
+              {{ need.foodbank_name }}
+            </a>
+          </td>
+          <td class="is-size-7">{{ need.change_text|truncatewords:15 }}</td>
+          <td class="is-size-7">{{ need.excess_change_text|truncatewords:10|default:"—" }}</td>
+          <td>
+            {% if need.published %}
+              <span class="tag is-success">Published</span>
+            {% else %}
+              <span class="tag is-warning">Unpublished</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="buttons are-small">
+              {% if not need.published %}
+                <button class="button is-success is-light"
+                        hx-post="{% url 'gfadmin2:need_publish' need.need_id %}"
+                        hx-vals='{"action": "publish"}'
+                        hx-target="#need-{{ need.need_id }}"
+                        hx-swap="outerHTML swap:500ms">
+                  ✓
+                </button>
+              {% else %}
+                <button class="button is-warning is-light"
+                        hx-post="{% url 'gfadmin2:need_publish' need.need_id %}"
+                        hx-vals='{"action": "unpublish"}'
+                        hx-target="#need-{{ need.need_id }}"
+                        hx-swap="outerHTML swap:500ms">
+                  ↩
+                </button>
+              {% endif %}
+              <button class="button is-danger is-light"
+                      hx-post="{% url 'gfadmin2:need_delete' need.need_id %}"
+                      hx-confirm="Are you sure you want to delete this need?"
+                      hx-target="#need-{{ need.need_id }}"
+                      hx-swap="outerHTML swap:500ms">
+                ✗
+              </button>
+            </div>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6" class="has-text-grey has-text-centered">No needs found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

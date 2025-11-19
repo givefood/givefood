@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     "django_tasks.backends.database",
 
     "gfadmin",
+    "gfadmin2",
     "gfapi1",
     "gfapi2",
     "gfdash",

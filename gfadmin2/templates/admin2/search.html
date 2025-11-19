@@ -1,0 +1,30 @@
+{% extends "admin2/base.html" %}
+
+{% block title %}Search - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <h1 class="title">Search</h1>
+      
+      <div class="field">
+        <div class="control">
+          <input type="text" 
+                 class="input is-large" 
+                 name="q" 
+                 placeholder="Search for foodbanks, needs, locations..."
+                 hx-get="{% url 'gfadmin2:search' %}"
+                 hx-trigger="keyup changed delay:300ms"
+                 hx-target="#search-results"
+                 value="{{ query }}">
+        </div>
+      </div>
+
+      <div id="search-results">
+        {% include "admin2/includes/search_results.html" %}
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

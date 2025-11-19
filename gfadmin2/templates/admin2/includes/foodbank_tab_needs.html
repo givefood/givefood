@@ -1,0 +1,40 @@
+{% load humanize %}
+
+<h2 class="subtitle">Needs</h2>
+
+{% if needs %}
+  <div class="table-container">
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th>Created</th>
+          <th>Needs</th>
+          <th>Excess</th>
+          <th>Published</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for need in needs %}
+          <tr>
+            <td>
+              <a href="{% url 'gfadmin2:need_detail' need.need_id %}">
+                {{ need.created|timesince }} ago
+              </a>
+            </td>
+            <td>{{ need.change_text|truncatewords:10 }}</td>
+            <td>{{ need.excess_change_text|truncatewords:10|default:"—" }}</td>
+            <td>
+              {% if need.published %}
+                <span class="tag is-success">Published</span>
+              {% else %}
+                <span class="tag is-warning">Unpublished</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="has-text-grey">No needs recorded for this foodbank.</p>
+{% endif %}

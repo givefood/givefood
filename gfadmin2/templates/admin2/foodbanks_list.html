@@ -1,0 +1,74 @@
+{% extends "admin2/base.html" %}
+{% load humanize %}
+
+{% block title %}Food Banks - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <h1 class="title">Food Banks</h1>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <a href="{% url 'gfadmin2:foodbank_new' %}" class="button is-link">
+              <span class="icon">
+                <i>➕</i>
+              </span>
+              <span>New Foodbank</span>
+            </a>
+          </div>
+          <div class="level-item">
+            <div class="field">
+              <div class="control">
+                <div class="select">
+                  <select hx-get="{% url 'gfadmin2:foodbanks_list' %}" 
+                          hx-target="#foodbanks-table tbody"
+                          hx-trigger="change"
+                          hx-include="[name='sort']"
+                          name="sort">
+                    <option value="name" {% if sort == "name" %}selected{% endif %}>Name</option>
+                    <option value="-name" {% if sort == "-name" %}selected{% endif %}>Name (Desc)</option>
+                    <option value="edited" {% if sort == "edited" %}selected{% endif %}>Edited</option>
+                    <option value="-edited" {% if sort == "-edited" %}selected{% endif %}>Edited (Desc)</option>
+                    <option value="last_need" {% if sort == "last_need" %}selected{% endif %}>Last Need</option>
+                    <option value="-last_need" {% if sort == "-last_need" %}selected{% endif %}>Last Need (Desc)</option>
+                    <option value="no_locations" {% if sort == "no_locations" %}selected{% endif %}>Locations</option>
+                    <option value="-no_locations" {% if sort == "-no_locations" %}selected{% endif %}>Locations (Desc)</option>
+                    <option value="hits_last_28_days" {% if sort == "hits_last_28_days" %}selected{% endif %}>28d Hits</option>
+                    <option value="-hits_last_28_days" {% if sort == "-hits_last_28_days" %}selected{% endif %}>28d Hits (Desc)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="table is-fullwidth is-hoverable is-striped" id="foodbanks-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Postcode</th>
+              <th>Locations</th>
+              <th>DPs</th>
+              <th>Network</th>
+              <th>28d Hits</th>
+              <th>Last Need</th>
+              <th>Edited</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% include "admin2/includes/foodbank_rows.html" %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

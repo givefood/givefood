@@ -1,0 +1,28 @@
+{% load humanize %}
+
+<h2 class="subtitle">Donation Points</h2>
+
+{% if donation_points %}
+  <div class="table-container">
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Postcode</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dp in donation_points %}
+          <tr>
+            <td>{{ dp.name }}</td>
+            <td>{{ dp.address }}</td>
+            <td>{{ dp.postcode }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="has-text-grey">No donation points for this foodbank.</p>
+{% endif %}

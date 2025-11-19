@@ -105,6 +105,7 @@ urlpatterns += [
     path('api/3/', include('gfapi3.urls', namespace="api3")),
     path('api/', include('gfapi2.urls')),
     path('admin/', include('gfadmin.urls', namespace="admin")),
+    path('admin2/', include('gfadmin2.urls', namespace="gfadmin2")),
     path('dashboard/', include('gfdash.urls', namespace="dash")),
     path('dumps/', include('gfdumps.urls', namespace="dumps")),
     path('offline/', include('gfoffline.urls', namespace="offline")),

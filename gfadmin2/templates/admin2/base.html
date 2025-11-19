@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+{% load i18n %}
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/static/css/bulma.min.css?v={{ version }}">
+  <link rel="stylesheet" href="/static/css/gf.css?v={{ version }}">
+  <link rel="stylesheet" href="/static/css/admin.css?v={{ version }}">
+  <link rel="preload" href="/static/fonts/soehne-buch.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/static/fonts/soehne-kraftig.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="/static/fonts/soehne-dreiviertelfett.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <meta name="theme-color" content="#F2DECB">
+  <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
+  
+  <!-- htmx -->
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  
+  <title>{% block title %}Give Food Admin2{% endblock %}</title>
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="{% url 'gfadmin2:index' %}">
+          <img src="/static/img/logo.svg" alt="Give Food" class="logo">
+          <span class="tag is-info ml-2">v2</span>
+        </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navbarMenu" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item{% if section == "home" %} is-active{% endif %}" href="{% url 'gfadmin2:index' %}">
+            Dashboard
+          </a>
+          <a class="navbar-item{% if section == "foodbanks" %} is-active{% endif %}" href="{% url 'gfadmin2:foodbanks_list' %}">
+            Food Banks
+          </a>
+          <a class="navbar-item{% if section == "needs" %} is-active{% endif %}" href="{% url 'gfadmin2:needs_list' %}">
+            Needs
+          </a>
+          <a class="navbar-item{% if section == "orders" %} is-active{% endif %}" href="{% url 'gfadmin2:orders_list' %}">
+            Orders
+          </a>
+          <div class="navbar-item">
+            <a href="{% url 'admin:index' %}" class="button is-small is-link is-outlined">
+              <span>Old Admin</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <form hx-get="{% url 'gfadmin2:search' %}" hx-trigger="keyup changed delay:300ms" hx-target="#search-results" 
+                  role="search" aria-label="Search">
+              <input name="q" class="input" type="text" placeholder="Search..." aria-label="Search query">
+            </form>
+            <div id="search-results" class="dropdown-content"></div>
+          </div>
+          <div class="navbar-item">
+            <img src="{{ request.session.user_data.picture }}" alt="{{ request.session.user_data.given_name }}" />
+            {{ request.session.user_data.email }}
+            <a href="{% url 'auth:sign_out' %}">Sign out</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="main">
+      <!-- htmx indicator -->
+      <div class="htmx-indicator" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000;">
+        <progress class="progress is-large is-info" max="100">Loading...</progress>
+      </div>
+      
+      {% block body %}{% endblock %}
+    </div>
+
+    <footer class="footer">
+      <dl>
+        <dt>Version</dt>
+        <dd>{{ version }} (Admin v2 with htmx)</dd>
+        <dt>Database</dt>
+        <dd>{{ db_host }}</dd>
+      </dl>
+    </footer>
+
+    <script>
+      // Toggle navbar burger menu
+      document.addEventListener('DOMContentLoaded', () => {
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        $navbarBurgers.forEach( el => {
+          el.addEventListener('click', () => {
+            const target = el.dataset.target;
+            const $target = document.getElementById(target);
+            el.classList.toggle('is-active');
+            $target.classList.toggle('is-active');
+          });
+        });
+      });
+    </script>
+
+    {% block script %}{% endblock %}
+
+</body>
+</html>

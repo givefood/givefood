@@ -1,0 +1,88 @@
+{% load humanize %}
+
+<div class="content">
+  <h2 class="subtitle">Food Bank Details</h2>
+  
+  <div class="columns">
+    <div class="column">
+      <dl>
+        <dt><strong>Name</strong></dt>
+        <dd>{{ foodbank.name }}</dd>
+        
+        <dt><strong>Full Name</strong></dt>
+        <dd>{{ foodbank.full_name }}</dd>
+        
+        <dt><strong>Address</strong></dt>
+        <dd>{{ foodbank.address }}</dd>
+        
+        <dt><strong>Postcode</strong></dt>
+        <dd>{{ foodbank.postcode }}</dd>
+        
+        <dt><strong>Country</strong></dt>
+        <dd>{{ foodbank.country }}</dd>
+        
+        <dt><strong>Network</strong></dt>
+        <dd>{{ foodbank.network }}</dd>
+      </dl>
+    </div>
+    
+    <div class="column">
+      <dl>
+        <dt><strong>Contact Email</strong></dt>
+        <dd>{{ foodbank.contact_email|default:"—" }}</dd>
+        
+        <dt><strong>Phone Number</strong></dt>
+        <dd>{{ foodbank.phone_number|default:"—" }}</dd>
+        
+        <dt><strong>Website</strong></dt>
+        <dd>
+          {% if foodbank.url %}
+            <a href="{{ foodbank.url }}" target="_blank">{{ foodbank.url }}</a>
+          {% else %}
+            —
+          {% endif %}
+        </dd>
+        
+        <dt><strong>Shopping List URL</strong></dt>
+        <dd>
+          {% if foodbank.shopping_list_url %}
+            <a href="{{ foodbank.shopping_list_url }}" target="_blank">{{ foodbank.shopping_list_url|truncatechars:50 }}</a>
+          {% else %}
+            —
+          {% endif %}
+        </dd>
+      </dl>
+    </div>
+    
+    <div class="column">
+      <dl>
+        <dt><strong>Created</strong></dt>
+        <dd>{{ foodbank.created }} ({{ foodbank.created|timesince }} ago)</dd>
+        
+        <dt><strong>Modified</strong></dt>
+        <dd>{{ foodbank.modified }} ({{ foodbank.modified|timesince }} ago)</dd>
+        
+        <dt><strong>Edited</strong></dt>
+        <dd>{{ foodbank.edited }} ({{ foodbank.edited|timesince }} ago)</dd>
+        
+        <dt><strong>Last Need</strong></dt>
+        <dd>
+          {% if foodbank.last_need %}
+            {{ foodbank.last_need }} ({{ foodbank.last_need|timesince }} ago)
+          {% else %}
+            Never
+          {% endif %}
+        </dd>
+        
+        <dt><strong>Last Order</strong></dt>
+        <dd>
+          {% if foodbank.last_order %}
+            {{ foodbank.last_order }} ({{ foodbank.last_order|timesince }} ago)
+          {% else %}
+            Never
+          {% endif %}
+        </dd>
+      </dl>
+    </div>
+  </div>
+</div>

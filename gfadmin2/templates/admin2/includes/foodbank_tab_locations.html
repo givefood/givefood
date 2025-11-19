@@ -1,0 +1,28 @@
+{% load humanize %}
+
+<h2 class="subtitle">Locations</h2>
+
+{% if locations %}
+  <div class="table-container">
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Postcode</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for location in locations %}
+          <tr>
+            <td>{{ location.name }}</td>
+            <td>{{ location.address }}</td>
+            <td>{{ location.postcode }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="has-text-grey">No locations for this foodbank.</p>
+{% endif %}

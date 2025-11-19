@@ -1,0 +1,73 @@
+{% extends "admin2/base.html" %}
+{% load humanize %}
+
+{% block title %}{{ foodbank.full_name }} - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <div class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <h1 class="title">{{ foodbank.full_name }}</h1>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <a href="{% url 'gfadmin2:foodbank_edit' foodbank.slug %}" class="button is-link">
+              <span>Edit</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs Navigation -->
+      <div class="tabs is-boxed">
+        <ul>
+          <li class="{% if tab == 'overview' %}is-active{% endif %}">
+            <a hx-get="{% url 'gfadmin2:foodbank_detail' foodbank.slug %}?tab=overview"
+               hx-target="#tab-content"
+               hx-push-url="true">
+              <span>Overview</span>
+            </a>
+          </li>
+          <li class="{% if tab == 'needs' %}is-active{% endif %}">
+            <a hx-get="{% url 'gfadmin2:foodbank_detail' foodbank.slug %}?tab=needs"
+               hx-target="#tab-content"
+               hx-push-url="true">
+              <span>Needs ({{ counts.needs }})</span>
+            </a>
+          </li>
+          <li class="{% if tab == 'orders' %}is-active{% endif %}">
+            <a hx-get="{% url 'gfadmin2:foodbank_detail' foodbank.slug %}?tab=orders"
+               hx-target="#tab-content"
+               hx-push-url="true">
+              <span>Orders ({{ counts.orders }})</span>
+            </a>
+          </li>
+          <li class="{% if tab == 'locations' %}is-active{% endif %}">
+            <a hx-get="{% url 'gfadmin2:foodbank_detail' foodbank.slug %}?tab=locations"
+               hx-target="#tab-content"
+               hx-push-url="true">
+              <span>Locations ({{ counts.locations }})</span>
+            </a>
+          </li>
+          <li class="{% if tab == 'donation_points' %}is-active{% endif %}">
+            <a hx-get="{% url 'gfadmin2:foodbank_detail' foodbank.slug %}?tab=donation_points"
+               hx-target="#tab-content"
+               hx-push-url="true">
+              <span>Donation Points ({{ counts.donation_points }})</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Tab Content -->
+      <div id="tab-content" class="box">
+        {% include "admin2/includes/foodbank_tab_"|add:tab|add:".html" %}
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

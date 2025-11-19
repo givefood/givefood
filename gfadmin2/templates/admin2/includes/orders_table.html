@@ -1,0 +1,42 @@
+{% load humanize %}
+
+<div class="table-container">
+  <table class="table is-fullwidth is-hoverable is-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Created</th>
+        <th>Foodbank</th>
+        <th>Delivery</th>
+        <th>Items</th>
+        <th>Weight</th>
+        <th>Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        <tr>
+          <td>
+            <a href="{% url 'gfadmin2:order_detail' order.order_id %}">
+              {{ order.order_id }}
+            </a>
+          </td>
+          <td>{{ order.created|timesince }} ago</td>
+          <td>
+            <a href="{% url 'gfadmin2:foodbank_detail' order.foodbank_slug %}">
+              {{ order.foodbank_name }}
+            </a>
+          </td>
+          <td>{{ order.delivery_datetime }}</td>
+          <td>{{ order.no_items }}</td>
+          <td>{{ order.weight|floatformat:0 }}g</td>
+          <td>£{{ order.cost|floatformat:2 }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7" class="has-text-grey has-text-centered">No orders found</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

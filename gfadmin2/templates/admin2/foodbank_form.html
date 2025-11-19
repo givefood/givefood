@@ -1,0 +1,32 @@
+{% extends "admin2/base.html" %}
+{% load bulma_tags %}
+
+{% block title %}{{ page_title }} - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <h1 class="title">{{ page_title }}</h1>
+      
+      <div class="box">
+        <form method="post" 
+              hx-post="" 
+              hx-target="this"
+              hx-swap="outerHTML">
+          {{ form|bulma }}
+          {% csrf_token %}
+          <div class="field is-grouped">
+            <div class="control">
+              <button type="submit" class="button is-link">Submit</button>
+            </div>
+            <div class="control">
+              <a href="{% url 'gfadmin2:foodbanks_list' %}" class="button is-light">Cancel</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

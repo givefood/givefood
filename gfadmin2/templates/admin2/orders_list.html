@@ -1,0 +1,18 @@
+{% extends "admin2/base.html" %}
+{% load humanize %}
+
+{% block title %}Orders - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <h1 class="title">Orders</h1>
+
+      <div id="orders-container">
+        {% include "admin2/includes/orders_table.html" %}
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

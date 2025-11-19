@@ -1,0 +1,221 @@
+{% extends "admin2/base.html" %}
+{% load humanize %}
+
+{% block title %}Dashboard - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <h1 class="title">Dashboard</h1>
+      
+      <div class="columns">
+        
+        <!-- Needs Column -->
+        <div class="column">
+          <div class="box">
+            <h2 class="subtitle">Unpublished Needs</h2>
+            
+            {% if unpublished_needs %}
+              <div class="table-container">
+                <table class="table is-fullwidth is-hoverable is-narrow">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Foodbank</th>
+                      <th>Preview</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for need in unpublished_needs %}
+                      <tr>
+                        <td>
+                          <a href="{% url 'gfadmin2:need_detail' need.need_id %}">
+                            {{ need.created|timesince }}
+                          </a>
+                        </td>
+                        <td>
+                          <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank_slug %}">
+                            {{ need.foodbank_name }}
+                          </a>
+                        </td>
+                        <td class="is-size-7">
+                          {{ need.change_text|truncatewords:10 }}
+                        </td>
+                        <td>
+                          <div class="buttons are-small">
+                            <button class="button is-success is-light" 
+                                    hx-post="{% url 'gfadmin2:need_publish' need.need_id %}"
+                                    hx-vals='{"action": "publish"}'
+                                    hx-target="closest tr"
+                                    hx-swap="outerHTML swap:500ms">
+                              ✓ Publish
+                            </button>
+                            <button class="button is-danger is-light"
+                                    hx-post="{% url 'gfadmin2:need_delete' need.need_id %}"
+                                    hx-confirm="Are you sure you want to delete this need?"
+                                    hx-target="closest tr"
+                                    hx-swap="outerHTML swap:500ms">
+                              ✗ Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <p class="has-text-grey">No unpublished needs</p>
+            {% endif %}
+            
+            <h2 class="subtitle mt-5">Recently Published</h2>
+            {% if published_needs %}
+              <div class="table-container">
+                <table class="table is-fullwidth is-hoverable is-narrow">
+                  <tbody>
+                    {% for need in published_needs %}
+                      <tr>
+                        <td>
+                          <a href="{% url 'gfadmin2:need_detail' need.need_id %}">
+                            {{ need.created|timesince }}
+                          </a>
+                        </td>
+                        <td>
+                          <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank_slug %}">
+                            {{ need.foodbank_name }}
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Discrepancies Column -->
+        <div class="column">
+          <div class="box">
+            <h2 class="subtitle">Discrepancies</h2>
+            
+            {% if discrepancies %}
+              <div class="table-container">
+                <table class="table is-fullwidth is-hoverable is-narrow">
+                  <thead>
+                    <tr>
+                      <th>Time</th>
+                      <th>Foodbank</th>
+                      <th>Issue</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for discrepancy in discrepancies %}
+                      <tr id="discrepancy-{{ discrepancy.id }}">
+                        <td>{{ discrepancy.created|timesince }}</td>
+                        <td>
+                          <a href="{% url 'gfadmin2:foodbank_detail' discrepancy.foodbank_slug %}">
+                            {{ discrepancy.foodbank_name }}
+                          </a>
+                        </td>
+                        <td class="is-size-7">{{ discrepancy.discrepancy_text|truncatewords:5 }}</td>
+                        <td>
+                          <div class="buttons are-small">
+                            <button class="button is-success is-light"
+                                    hx-post="{% url 'admin:discrepancy_action' discrepancy.id %}"
+                                    hx-vals='{"action": "done"}'
+                                    hx-target="#discrepancy-{{ discrepancy.id }}"
+                                    hx-swap="outerHTML swap:500ms">
+                              ✓
+                            </button>
+                            <button class="button is-danger is-light"
+                                    hx-post="{% url 'admin:discrepancy_action' discrepancy.id %}"
+                                    hx-vals='{"action": "invalid"}'
+                                    hx-target="#discrepancy-{{ discrepancy.id }}"
+                                    hx-swap="outerHTML swap:500ms">
+                              ✗
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% else %}
+              <p class="has-text-grey">No discrepancies</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Stats & Articles Column -->
+        <div class="column">
+          <div class="box">
+            <h2 class="subtitle">Metrics</h2>
+            
+            <div class="content">
+              <h3 class="is-size-6">Edits</h3>
+              <dl>
+                <dt>Oldest Edit</dt>
+                <dd>{{ stats.oldest_edit.edited|timesince }} ago</dd>
+                <dt>Latest Edit</dt>
+                <dd>{{ stats.latest_edit.edited|timesince }} ago</dd>
+              </dl>
+
+              <h3 class="is-size-6">Offline</h3>
+              <dl>
+                <dt>Oldest Need Check</dt>
+                <dd>{{ stats.oldest_need_check.last_need_check|timesince }} ago</dd>
+                <dt>Latest Need Check</dt>
+                <dd>{{ stats.latest_need_check.last_need_check|timesince }} ago</dd>
+                <dt>24h Need Checks</dt>
+                <dd>{{ stats.need_check_24h }}</dd>
+                <dt>24h Pub. Need Lines</dt>
+                <dd>{{ stats.need_count_24h }}</dd>
+              </dl>
+
+              <h3 class="is-size-6">Subscribers</h3>
+              <dl>
+                <dt>24h Subscribers</dt>
+                <dd>{{ stats.sub_count_24h }}</dd>
+                <dt>7d Subscribers</dt>
+                <dd>{{ stats.sub_count_7d }}</dd>
+              </dl>
+            </div>
+          </div>
+
+          <div class="box">
+            <h2 class="subtitle">Recent Articles</h2>
+            {% if articles %}
+              <div class="table-container">
+                <table class="table is-narrow is-fullwidth">
+                  <tbody>
+                    {% for article in articles %}
+                      <tr>
+                        <td>
+                          <a href="{% url 'gfadmin2:foodbank_detail' article.foodbank_name_slug %}">
+                            {{ article.foodbank_name }}
+                          </a>
+                        </td>
+                        <td>
+                          <a href="{{ article.url_with_ref }}" target="_blank">
+                            {{ article.title_captialised|truncatewords:10 }}
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% load humanize %}
+
+<h2 class="subtitle">Orders</h2>
+
+{% if orders %}
+  <div class="table-container">
+    <table class="table is-fullwidth is-hoverable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Created</th>
+          <th>Delivery</th>
+          <th>Items</th>
+          <th>Weight</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>
+              <a href="{% url 'gfadmin2:order_detail' order.order_id %}">
+                {{ order.order_id }}
+              </a>
+            </td>
+            <td>{{ order.created|timesince }} ago</td>
+            <td>{{ order.delivery_datetime }}</td>
+            <td>{{ order.no_items }}</td>
+            <td>{{ order.weight|floatformat:0 }}g</td>
+            <td>£{{ order.cost|floatformat:2 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <p class="has-text-grey">No orders for this foodbank.</p>
+{% endif %}

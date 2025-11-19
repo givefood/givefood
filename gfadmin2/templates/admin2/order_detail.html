@@ -1,0 +1,54 @@
+{% extends "admin2/base.html" %}
+{% load humanize %}
+
+{% block title %}Order {{ order.order_id }} - Give Food Admin2{% endblock %}
+
+{% block body %}
+
+  <section class="section">
+    <div class="container is-fluid">
+      <h1 class="title">Order {{ order.order_id }}</h1>
+      
+      <div class="box">
+        <div class="columns">
+          <div class="column">
+            <dl>
+              <dt><strong>Foodbank</strong></dt>
+              <dd>
+                <a href="{% url 'gfadmin2:foodbank_detail' order.foodbank_slug %}">
+                  {{ order.foodbank_name }}
+                </a>
+              </dd>
+              
+              <dt><strong>Created</strong></dt>
+              <dd>{{ order.created }}</dd>
+              
+              <dt><strong>Delivery Date</strong></dt>
+              <dd>{{ order.delivery_datetime }}</dd>
+              
+              <dt><strong>Delivery Provider</strong></dt>
+              <dd>{{ order.delivery_provider }}</dd>
+            </dl>
+          </div>
+          
+          <div class="column">
+            <dl>
+              <dt><strong>Number of Items</strong></dt>
+              <dd>{{ order.no_items }}</dd>
+              
+              <dt><strong>Weight</strong></dt>
+              <dd>{{ order.weight|floatformat:0 }}g</dd>
+              
+              <dt><strong>Calories</strong></dt>
+              <dd>{{ order.calories|intcomma }}</dd>
+              
+              <dt><strong>Cost</strong></dt>
+              <dd>£{{ order.cost|floatformat:2 }}</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

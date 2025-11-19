@@ -1,0 +1,28 @@
+{% load humanize %}
+{% for foodbank in foodbanks %}
+  <tr>
+    <td>
+      <a href="{% url 'gfadmin2:foodbank_detail' foodbank.slug %}">
+        {{ foodbank.name }}
+      </a>
+      {% if foodbank.is_closed %}
+        <span class="tag is-danger is-light">Closed</span>
+      {% endif %}
+    </td>
+    <td>{{ foodbank.postcode }}</td>
+    <td>{{ foodbank.no_locations }}</td>
+    <td>{{ foodbank.no_donation_points }}</td>
+    <td>{{ foodbank.network }}</td>
+    <td>{{ foodbank.hits_last_28_days|default:"0"|intcomma }}</td>
+    <td>
+      {% if foodbank.last_need %}
+        <span class="is-size-7">{{ foodbank.last_need|timesince }} ago</span>
+      {% else %}
+        <span class="has-text-grey-light">Never</span>
+      {% endif %}
+    </td>
+    <td>
+      <span class="is-size-7">{{ foodbank.edited|timesince }} ago</span>
+    </td>
+  </tr>
+{% endfor %}
