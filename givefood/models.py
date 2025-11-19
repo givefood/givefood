@@ -2225,8 +2225,9 @@ class CrawlSet(models.Model):
         return "❓"
 
     def time_taken(self):
+        """Return the time taken for this crawl set, rounded to the nearest second."""
         if self.finish:
-            return self.finish - self.start
+            return timedelta(seconds=round((self.finish - self.start).total_seconds()))
         return None
 
     def item_count(self):
