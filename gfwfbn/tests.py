@@ -390,17 +390,15 @@ class TestFoodbankLocationMap:
         assert response.status_code == 200
         assert response['Content-Type'] == 'image/png'
         
-        # Verify the Google Maps API was called
+        # Verify the Geoapify API was called
         assert mock_requests_get.called
         called_url = mock_requests_get.call_args[0][0]
         called_params = mock_requests_get.call_args[1]['params']
-        assert called_url == "https://maps.googleapis.com/maps/api/staticmap"
-        # Convert params list to dict for easier checking
-        params_dict = dict(called_params)
-        assert params_dict['center'] == "51.5014,-0.1419"
-        assert params_dict['zoom'] == 15
-        assert params_dict['language'] == "en"  # Check language parameter
-        assert 'path' not in params_dict  # No boundary path
+        assert called_url == "https://maps.geoapify.com/v1/staticmap"
+        # Check key parameters
+        assert called_params['center'] == "lonlat:-0.1419,51.5014"
+        assert called_params['zoom'] == 15
+        assert 'geometry' not in called_params  # No boundary path
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -465,7 +463,7 @@ class TestFoodbankLocationMap:
         assert mock_requests_get.called
         called_url = mock_requests_get.call_args[0][0]
         called_params = mock_requests_get.call_args[1]['params']
-        assert called_url == "https://maps.googleapis.com/maps/api/staticmap"
+        assert called_url == "https://maps.geoapify.com/v1/staticmap"
         # Convert params list to dict for easier checking
         params_dict = dict(called_params)
         assert params_dict['center'] == "51.5014,-0.1419"
@@ -552,7 +550,7 @@ class TestFoodbankLocationMap:
         assert mock_requests_get.called
         called_url = mock_requests_get.call_args[0][0]
         called_params = mock_requests_get.call_args[1]['params']
-        assert called_url == "https://maps.googleapis.com/maps/api/staticmap"
+        assert called_url == "https://maps.geoapify.com/v1/staticmap"
         # Convert params list to dict for easier checking
         params_dict = dict(called_params)
         assert params_dict['language'] == "en"  # Check language parameter

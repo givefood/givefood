@@ -192,55 +192,105 @@ def validate_turnstile(turnstile_response):
 
 
 def geocode(address):
-
-    gmap_geocode_key = get_cred("gmap_geocode_key")
-
+    """
+    Geocode an address using Nominatim (OpenStreetMap) API
+    Returns lat,lng as a string
+    """
     address = "%s,UK" % (address)
-    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&address=%s" % (gmap_geocode_key, requests.utils.quote(address))
-    request = requests.get(address_api_url)
-
-    if request.status_code == 200:
-        try:
-            address_result_json = request.json()
-            lat_lng = "%s,%s" % (
-                address_result_json["results"][0]["geometry"]["location"]["lat"],
-                address_result_json["results"][0]["geometry"]["location"]["lng"]
-            )
-        except:
-            lat_lng = "0,0"
-    return lat_lng
+    
+    # Use Nominatim (OpenStreetMap) geocoding service
+    nominatim_url = "https://nominatim.openstreetmap.org/search"
+    params = {
+        'q': address,
+        'format': 'json',
+        'limit': 1,
+        'countrycodes': 'gb'
+    }
+    headers = {
+        'User-Agent': 'GiveFood/1.0 (https://www.givefood.org.uk; mail@givefood.org.uk)'
+    }
+    
+    try:
+        request = requests.get(nominatim_url, params=params, headers=headers, timeout=10)
+        if request.status_code == 200:
+            results = request.json()
+            if results and len(results) > 0:
+                lat_lng = "%s,%s" % (results[0]['lat'], results[0]['lon'])
+                return lat_lng
+    except Exception as e:
+        logging.error(f"Geocoding error for {address}: {e}")
+    
+    return "0,0"
 
 
 def approx_rev_geocode(lat_lng):
-
-    gmap_geocode_key = get_cred("gmap_geocode_key")
-
+    """
+    Reverse geocode lat/lng to get approximate location using Nominatim
+    """
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
 
-    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&latlng=%s,%s" % (gmap_geocode_key, lat, lng)
-    request = requests.get(address_api_url)
-
-    if request.status_code == 200:
-        address_result_json = request.json()
-        address_components = address_result_json["results"][0]["address_components"]
-        sublocality = address_components[2]["long_name"]
-    return sublocality
+    nominatim_url = "https://nominatim.openstreetmap.org/reverse"
+    params = {
+        'lat': lat,
+        'lon': lng,
+        'format': 'json',
+        'zoom': 14  # City/town level
+    }
+    headers = {
+        'User-Agent': 'GiveFood/1.0 (https://www.givefood.org.uk; mail@givefood.org.uk)'
+    }
+    
+    try:
+        request = requests.get(nominatim_url, params=params, headers=headers, timeout=10)
+        if request.status_code == 200:
+            result = request.json()
+            # Try to get suburb, town, or city from address
+            address = result.get('address', {})
+            sublocality = (
+                address.get('suburb') or 
+                address.get('town') or 
+                address.get('city') or 
+                address.get('village') or 
+                ''
+            )
+            return sublocality
+    except Exception as e:
+        logging.error(f"Reverse geocoding error for {lat_lng}: {e}")
+    
+    return ""
 
 
 def get_place_id(address):
-    
-    gmap_geocode_key = get_cred("gmap_geocode_key")
-
+    """
+    Get a place_id for an address using Nominatim
+    Returns the OSM place_id
+    """
     address = "%s,UK" % (address)
-    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&address=%s" % (gmap_geocode_key, requests.utils.quote(address))
-    request = requests.get(address_api_url)
-
-    if request.status_code == 200:
-        address_result_json = request.json()
-        place_id = address_result_json["results"][0]["place_id"]
-
-    return place_id
+    
+    nominatim_url = "https://nominatim.openstreetmap.org/search"
+    params = {
+        'q': address,
+        'format': 'json',
+        'limit': 1,
+        'countrycodes': 'gb'
+    }
+    headers = {
+        'User-Agent': 'GiveFood/1.0 (https://www.givefood.org.uk; mail@givefood.org.uk)'
+    }
+    
+    try:
+        request = requests.get(nominatim_url, params=params, headers=headers, timeout=10)
+        if request.status_code == 200:
+            results = request.json()
+            if results and len(results) > 0:
+                # Use OSM place_id
+                place_id = str(results[0]['place_id'])
+                return place_id
+    except Exception as e:
+        logging.error(f"Get place_id error for {address}: {e}")
+    
+    return None
 
 
 def photo_from_place_id(place_id, size = 1080):

@@ -434,7 +434,7 @@ def get_map_dimensions_and_scale(size):
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_map(request, slug, size=600):
     """
-    Food bank map PNG
+    Food bank map PNG using MapTiler Static Maps API
     """
     dimensions, scale = get_map_dimensions_and_scale(size)
     if dimensions is None:
@@ -442,46 +442,63 @@ def foodbank_map(request, slug, size=600):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
-    # Main markers
-    main_markers = "icon:https://www.givefood.org.uk/static/img/mapmarkers/32/red.png|%s" % foodbank.lat_lng
+    # Parse dimensions
+    width, height = dimensions.split('x')
+    width = int(width)
+    height = int(height)
+    
+    # Build marker list
+    markers = []
+    
+    # Main foodbank marker (red)
+    lat, lng = foodbank.lat_lng.split(',')
+    markers.append(f"lonlat:{lng},{lat};type:awesome;color:%23ff0000;size:medium")
+    
     if foodbank.delivery_address:
-        main_markers += "|%s" % (foodbank.delivery_lat_lng)
-
-    # Location markers
-    loc_markers = ""
+        lat, lng = foodbank.delivery_lat_lng.split(',')
+        markers.append(f"lonlat:{lng},{lat};type:awesome;color:%23ff0000;size:medium")
+    
+    # Location markers (yellow)
     if foodbank.no_locations != 0:
-        loc_markers += "icon:https://www.givefood.org.uk/static/img/mapmarkers/16/yellow.png|"
         for location in foodbank.locations():
-            loc_markers += "%s|" % (location.lat_lng)
-
-    # Donation point markers
-    dp_markers = ""
+            lat, lng = location.lat_lng.split(',')
+            markers.append(f"lonlat:{lng},{lat};type:awesome;color:%23ffff00;size:small")
+    
+    # Donation point markers (blue)
     if foodbank.no_donation_points != 0:
-        dp_markers += "icon:https://www.givefood.org.uk/static/img/mapmarkers/16/blue.png|"
         for donationpoint in foodbank.donation_points():
-            dp_markers += "%s|" % (donationpoint.lat_lng)
-
-    base_url = "https://maps.googleapis.com/maps/api/staticmap"
-    params = [
-        ("center", foodbank.lat_lng),
-        ("size", dimensions),
-        ("scale", scale),
-        ("maptype", "roadmap"),
-        ("format", "png"),
-        ("language", request.LANGUAGE_CODE),
-        ("key", get_cred("gmap_static_key")),
-    ]
-    if dp_markers:
-        params.append(("markers", dp_markers))
-    if loc_markers:
-        params.append(("markers", loc_markers))
-    params.append(("markers", main_markers))
-
-    response = requests.get(base_url, params=params)
-    if response.status_code != 200:
+            lat, lng = donationpoint.lat_lng.split(',')
+            markers.append(f"lonlat:{lng},{lat};type:awesome;color:%230000ff;size:small")
+    
+    # Use geoapify static maps (free tier available)
+    # Alternative: use maptiler, mapbox, or openfreemap
+    base_url = "https://maps.geoapify.com/v1/staticmap"
+    
+    marker_string = "|".join(markers)
+    center_lat, center_lng = foodbank.lat_lng.split(',')
+    
+    params = {
+        'style': 'osm-bright',
+        'width': width * scale,
+        'height': height * scale,
+        'center': f"lonlat:{center_lng},{center_lat}",
+        'zoom': 12,
+        'marker': marker_string,
+        'scaleFactor': scale,
+        'apiKey': get_cred("geoapify_key") if get_cred("geoapify_key") else 'demo'
+    }
+    
+    try:
+        response = requests.get(base_url, params=params, timeout=30)
+        if response.status_code != 200:
+            # Fallback: return a simple error image or placeholder
+            return HttpResponseBadRequest()
+        
+        return HttpResponse(response.content, content_type="image/png")
+    except Exception as e:
+        logging.error(f"Static map generation error: {e}")
         return HttpResponseBadRequest()
 
-    return HttpResponse(response.content, content_type="image/png")
 
 
 @cache_page(SECONDS_IN_WEEK)
@@ -738,7 +755,7 @@ def foodbank_location(request, slug, locslug):
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_location_map(request, slug, locslug, size=600):
     """
-    Food bank location map PNG
+    Food bank location map PNG using MapTiler Static Maps API
     """
     dimensions, scale = get_map_dimensions_and_scale(size)
     if dimensions is None:
@@ -750,53 +767,65 @@ def foodbank_location_map(request, slug, locslug, size=600):
     # Use zoom 12 if boundary exists to show more area, otherwise zoom 15
     zoom = 11 if location.boundary_geojson else 15
     
-    base_url = "https://maps.googleapis.com/maps/api/staticmap"
-    params = [
-        ("center", location.lat_lng),
-        ("zoom", zoom),
-        ("size", dimensions),
-        ("scale", scale),
-        ("maptype", "roadmap"),
-        ("format", "png"),
-        ("visual_refresh", "true"),
-        ("language", request.LANGUAGE_CODE),
-        ("key", get_cred("gmap_static_key")),
-    ]
-
+    # Parse dimensions
+    width, height = dimensions.split('x')
+    width = int(width)
+    height = int(height)
+    
+    # Build marker
+    lat, lng = location.lat_lng.split(',')
+    marker = f"lonlat:{lng},{lat};type:awesome;color:%23ffff00;size:medium"
+    
+    # Use geoapify static maps
+    base_url = "https://maps.geoapify.com/v1/staticmap"
+    
+    params = {
+        'style': 'osm-bright',
+        'width': width * scale,
+        'height': height * scale,
+        'center': f"lonlat:{lng},{lat}",
+        'zoom': zoom,
+        'marker': marker,
+        'scaleFactor': scale,
+        'apiKey': get_cred("geoapify_key") if get_cred("geoapify_key") else 'demo'
+    }
+    
     # Add boundary polygon if it exists
     if location.boundary_geojson:
         try:
             boundary_dict = location.boundary_geojson_dict()
-            if boundary_dict and boundary_dict.get("geometry") and boundary_dict["geometry"].get("type") == "Polygon":
-                coordinates = boundary_dict["geometry"]["coordinates"][0]  # Get outer ring
+            if boundary_dict and boundary_dict.get("geometry"):
+                geom_type = boundary_dict["geometry"].get("type")
                 
-                # Simplify coordinates to reduce URL length
-                # 1. Reduce precision to 4 decimal places (~11m accuracy)
-                # 2. Downsample if too many points (keep every Nth point)
-                max_points = 100  # Limit to avoid URL length issues
-                if len(coordinates) > max_points:
-                    # Calculate step to reduce points, ensure step is at least 2
-                    step = max(2, len(coordinates) // max_points)
-                    simplified = [coordinates[i] for i in range(0, len(coordinates), step)]
-                    # Ensure last point is included (closes the polygon)
-                    if coordinates[-1] not in simplified:
-                        simplified.append(coordinates[-1])
-                    coordinates = simplified
-                
-                # Format: fillcolor:0xf7a72333 (orange with ~20% opacity) | color:0xf7a723ff (orange border) | weight:1
-                path_param = "fillcolor:0xf7a72333|color:0xf7a723ff|weight:1"
-                for coord in coordinates:
-                    # GeoJSON uses [lng, lat] order, Google Maps uses lat,lng
-                    # Round to 4 decimal places to reduce URL length
-                    path_param += "|%.4f,%.4f" % (coord[1], coord[0])
-                params.append(("path", path_param))
-        except (KeyError, IndexError, json.JSONDecodeError):
-            # If there's any error parsing the boundary, just continue without it
+                if geom_type == "Polygon":
+                    coordinates = boundary_dict["geometry"]["coordinates"][0]
+                    
+                    # Simplify coordinates to reduce URL length
+                    max_points = 100
+                    if len(coordinates) > max_points:
+                        step = max(2, len(coordinates) // max_points)
+                        simplified = [coordinates[i] for i in range(0, len(coordinates), step)]
+                        if coordinates[-1] not in simplified:
+                            simplified.append(coordinates[-1])
+                        coordinates = simplified
+                    
+                    # Format polygon for geoapify: geometry:poly;color:color;linewidth:width|coords
+                    poly_coords = ";".join([f"{coord[0]},{coord[1]}" for coord in coordinates])
+                    params['geometry'] = f"poly;color:%23f7a723;fillcolor:%23f7a72333;linewidth:2|{poly_coords}"
+                    
+        except (KeyError, IndexError, json.JSONDecodeError) as e:
+            logging.error(f"Error parsing boundary for location {locslug}: {e}")
             pass
-
-    response = requests.get(base_url, params=params)
-
-    return HttpResponse(response.content, content_type='image/png')
+    
+    try:
+        response = requests.get(base_url, params=params, timeout=30)
+        if response.status_code != 200:
+            return HttpResponseBadRequest()
+        
+        return HttpResponse(response.content, content_type='image/png')
+    except Exception as e:
+        logging.error(f"Static map generation error for location {locslug}: {e}")
+        return HttpResponseBadRequest()
 
 
 @cache_page(SECONDS_IN_WEEK)
