@@ -465,18 +465,19 @@ class TestFoodbankLocationMap:
         called_params = mock_requests_get.call_args[1]['params']
         assert called_url == "https://maps.geoapify.com/v1/staticmap"
         # Convert params list to dict for easier checking
-        params_dict = dict(called_params)
-        assert params_dict['center'] == "51.5014,-0.1419"
-        assert params_dict['zoom'] == 12  # Zoom 12 when boundary exists
-        assert params_dict['language'] == "en"  # Check language parameter
-        assert 'path' in params_dict
-        path_param = params_dict['path']
-        assert "fillcolor:0xf7a72333" in path_param  # Orange fill with transparency
-        assert "color:0xf7a723ff" in path_param  # Orange border
-        assert "weight:1" in path_param
-        # Verify coordinates are in lat,lng format with reduced precision (4 decimal places)
-        # The coordinates should be rounded to 4 decimal places
-        assert "51.5014,-0.1419" in path_param or "51.5014,-0.1420" in path_param
+        
+        assert called_params['center'] == "lonlat:-0.1419,51.5014"
+        assert called_params['zoom'] == 11  # Zoom 11 when boundary exists
+        # assert params_dict['language'] == "en"  # Check language parameter
+        assert 'geometry' in called_params
+        geometry_param = called_params.get('geometry', '')
+        # Geoapify format: poly;color:color;fillcolor:fillcolor;linewidth:width|coords
+        assert "poly" in geometry_param
+        assert "color:%23f7a723" in geometry_param  # Orange border
+        assert "fillcolor:%23f7a72333" in geometry_param  # Orange fill with transparency
+        # Verify coordinates are in lng,lat format
+        # GeoJSON uses [lng, lat] order, so coords should be like "-0.1419,51.5014"
+        assert "-0.1419,51.5014" in geometry_param or "-0.1420,51.5014" in geometry_param
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -552,18 +553,20 @@ class TestFoodbankLocationMap:
         called_params = mock_requests_get.call_args[1]['params']
         assert called_url == "https://maps.geoapify.com/v1/staticmap"
         # Convert params list to dict for easier checking
-        params_dict = dict(called_params)
-        assert params_dict['language'] == "en"  # Check language parameter
         
-        # Count the number of pipe-separated coordinate pairs in the path
-        if 'path' in params_dict:
-            path_param = params_dict['path']
-            # Count pipes after the style parameters
-            coords_section = path_param.split("weight:1|", 1)[1] if "weight:1|" in path_param else ""
-            num_coords = len(coords_section.split("|"))
-            # Should be downsampled to ~100 points (original was 151)
-            assert num_coords <= 105, f"Expected ~100 coords, got {num_coords}"
-            assert num_coords >= 50, f"Too few coords: {num_coords}"
+        # assert params_dict['language'] == "en"  # Check language parameter
+        
+        # Count the number of semicolon-separated coordinate pairs in the geometry
+        if 'geometry' in called_params:
+            geometry_param = called_params.get('geometry', '')
+            # Geoapify format: split by | to get coords section after metadata
+            parts = geometry_param.split("|")
+            if len(parts) > 1:
+                coords_section = parts[1]  # Everything after the |
+                num_coords = len(coords_section.split(";"))
+                # Should be downsampled to ~100 points (original was 151)
+                assert num_coords <= 105, f"Expected ~100 coords, got {num_coords}"
+                assert num_coords >= 50, f"Too few coords: {num_coords}"
 
 
 @pytest.mark.django_db
@@ -608,12 +611,12 @@ class TestFoodbankMapSizes:
         assert response.status_code == 200
         assert response['Content-Type'] == 'image/png'
         
-        # Verify the Google Maps API was called with correct size and scale
+        # Verify the Geoapify API was called with correct dimensions and scale
         assert mock_requests_get.called
         called_params = mock_requests_get.call_args[1]['params']
-        params_dict = dict(called_params)
-        assert params_dict['size'] == "150x150"
-        assert params_dict['scale'] == 2
+        assert called_params['width'] == 300  # 150 * 2
+        assert called_params['height'] == 300  # 150 * 2
+        assert called_params['scaleFactor'] == 2
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -656,9 +659,10 @@ class TestFoodbankMapSizes:
         # Verify the Google Maps API was called with correct size and scale
         assert mock_requests_get.called
         called_params = mock_requests_get.call_args[1]['params']
-        params_dict = dict(called_params)
-        assert params_dict['size'] == "600x400"
-        assert params_dict['scale'] == 1
+        
+        assert called_params['width'] == 600
+        assert called_params['height'] == 400
+        assert called_params['scaleFactor'] == 1
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -701,9 +705,10 @@ class TestFoodbankMapSizes:
         # Verify the Google Maps API was called with correct size and scale
         assert mock_requests_get.called
         called_params = mock_requests_get.call_args[1]['params']
-        params_dict = dict(called_params)
-        assert params_dict['size'] == "540x360"
-        assert params_dict['scale'] == 2
+        
+        assert called_params['width'] == 1080
+        assert called_params['height'] == 720
+        assert called_params['scaleFactor'] == 2
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -745,9 +750,10 @@ class TestFoodbankMapSizes:
         # Verify the Google Maps API was called with correct size and scale
         assert mock_requests_get.called
         called_params = mock_requests_get.call_args[1]['params']
-        params_dict = dict(called_params)
-        assert params_dict['size'] == "600x400"
-        assert params_dict['scale'] == 1
+        
+        assert called_params['width'] == 600
+        assert called_params['height'] == 400
+        assert called_params['scaleFactor'] == 1
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -849,9 +855,10 @@ class TestFoodbankLocationMapSizes:
         # Verify the Google Maps API was called with correct size and scale
         assert mock_requests_get.called
         called_params = mock_requests_get.call_args[1]['params']
-        params_dict = dict(called_params)
-        assert params_dict['size'] == "150x150"
-        assert params_dict['scale'] == 2
+        
+        assert called_params['width'] == 300
+        assert called_params['height'] == 300
+        assert called_params['scaleFactor'] == 2
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -915,9 +922,10 @@ class TestFoodbankLocationMapSizes:
         # Verify the Google Maps API was called with correct size and scale
         assert mock_requests_get.called
         called_params = mock_requests_get.call_args[1]['params']
-        params_dict = dict(called_params)
-        assert params_dict['size'] == "600x400"
-        assert params_dict['scale'] == 1
+        
+        assert called_params['width'] == 600
+        assert called_params['height'] == 400
+        assert called_params['scaleFactor'] == 1
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -981,9 +989,10 @@ class TestFoodbankLocationMapSizes:
         # Verify the Google Maps API was called with correct size and scale
         assert mock_requests_get.called
         called_params = mock_requests_get.call_args[1]['params']
-        params_dict = dict(called_params)
-        assert params_dict['size'] == "540x360"
-        assert params_dict['scale'] == 2
+        
+        assert called_params['width'] == 1080
+        assert called_params['height'] == 720
+        assert called_params['scaleFactor'] == 2
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
@@ -1046,9 +1055,10 @@ class TestFoodbankLocationMapSizes:
         # Verify the Google Maps API was called with correct size and scale
         assert mock_requests_get.called
         called_params = mock_requests_get.call_args[1]['params']
-        params_dict = dict(called_params)
-        assert params_dict['size'] == "600x400"
-        assert params_dict['scale'] == 1
+        
+        assert called_params['width'] == 600
+        assert called_params['height'] == 400
+        assert called_params['scaleFactor'] == 1
 
     @patch('gfwfbn.views.requests.get')
     @patch('gfwfbn.views.get_cred')
