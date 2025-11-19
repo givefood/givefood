@@ -60,6 +60,26 @@ The givefood app has multiple test files organized in a tests directory:
   - Needs page
   - Food bank search
 
+#### gfadmin2/tests/test_views.py
+Tests for the new admin2 interface with htmx:
+
+- **TestAdmin2Index** (2 tests)
+  - Dashboard accessibility
+  - htmx script loading
+
+- **TestAdmin2Foodbanks** (2 tests)
+  - Food banks list page
+  - htmx requests return fragments (not full page)
+
+- **TestAdmin2Needs** (2 tests)
+  - Needs list page
+  - Filtering functionality
+
+- **TestAdmin2Search** (3 tests)
+  - Search page accessibility
+  - Search with query parameter
+  - htmx live search requests
+
 #### gfapi2/tests.py
 Tests for the API v2 endpoints:
 
@@ -107,14 +127,15 @@ pytest --cov=givefood --cov=gfapi2 --cov-report=html
 
 ## Test Statistics
 
-- **Total Tests**: 39
-- **Passing**: 39 (100%)
+- **Total Tests**: 48 (39 existing + 9 new gfadmin2)
+- **Passing**: 48 (100%)
 - **Coverage Areas**:
   - Text processing utilities
   - Geographic calculations
   - API endpoints
   - View accessibility
   - JSON/GeoJSON handling
+  - Admin2 interface with htmx
 
 ## Test Approach
 

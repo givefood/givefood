@@ -160,17 +160,17 @@
               <h3 class="is-size-6">Edits</h3>
               <dl>
                 <dt>Oldest Edit</dt>
-                <dd>{{ stats.oldest_edit.edited|timesince }} ago</dd>
+                <dd>{% if stats.oldest_edit %}{{ stats.oldest_edit.edited|timesince }} ago{% else %}N/A{% endif %}</dd>
                 <dt>Latest Edit</dt>
-                <dd>{{ stats.latest_edit.edited|timesince }} ago</dd>
+                <dd>{% if stats.latest_edit %}{{ stats.latest_edit.edited|timesince }} ago{% else %}N/A{% endif %}</dd>
               </dl>
 
               <h3 class="is-size-6">Offline</h3>
               <dl>
                 <dt>Oldest Need Check</dt>
-                <dd>{{ stats.oldest_need_check.last_need_check|timesince }} ago</dd>
+                <dd>{% if stats.oldest_need_check %}{{ stats.oldest_need_check.last_need_check|timesince }} ago{% else %}N/A{% endif %}</dd>
                 <dt>Latest Need Check</dt>
-                <dd>{{ stats.latest_need_check.last_need_check|timesince }} ago</dd>
+                <dd>{% if stats.latest_need_check %}{{ stats.latest_need_check.last_need_check|timesince }} ago{% else %}N/A{% endif %}</dd>
                 <dt>24h Need Checks</dt>
                 <dd>{{ stats.need_check_24h }}</dd>
                 <dt>24h Pub. Need Lines</dt>

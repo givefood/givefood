@@ -43,9 +43,34 @@ def index(request):
     except IndexError:
         latest_need_crawlset = None
     
+    # Handle empty database gracefully
+    try:
+        oldest_edit = Foodbank.objects.exclude(is_closed=True).order_by("edited")[:1][0]
+    except IndexError:
+        oldest_edit = None
+    
+    try:
+        latest_edit = Foodbank.objects.exclude(is_closed=True).order_by("-edited")[:1][0]
+    except IndexError:
+        latest_edit = None
+    
+    try:
+        oldest_need_check = Foodbank.objects.exclude(is_closed=True).exclude(
+            shopping_list_url__contains="facebook.com"
+        ).order_by("last_need_check")[:1][0]
+    except IndexError:
+        oldest_need_check = None
+    
+    try:
+        latest_need_check = Foodbank.objects.exclude(is_closed=True).exclude(
+            last_need_check__isnull=True
+        ).order_by("-last_need_check")[:1][0]
+    except IndexError:
+        latest_need_check = None
+    
     stats = {
-        "oldest_edit": Foodbank.objects.exclude(is_closed=True).order_by("edited")[:1][0],
-        "latest_edit": Foodbank.objects.exclude(is_closed=True).order_by("-edited")[:1][0],
+        "oldest_edit": oldest_edit,
+        "latest_edit": latest_edit,
         "sub_count_24h": FoodbankSubscriber.objects.filter(created__gte=yesterday).count(),
         "sub_count_7d": FoodbankSubscriber.objects.filter(created__gte=week_ago).count(),
         "need_count_24h": FoodbankChangeLine.objects.filter(created__gte=yesterday).count(),
@@ -53,12 +78,8 @@ def index(request):
             crawl_set__crawl_type="need", 
             finish__gte=yesterday
         ).count(),
-        "oldest_need_check": Foodbank.objects.exclude(is_closed=True).exclude(
-            shopping_list_url__contains="facebook.com"
-        ).order_by("last_need_check")[:1][0],
-        "latest_need_check": Foodbank.objects.exclude(is_closed=True).exclude(
-            last_need_check__isnull=True
-        ).order_by("-last_need_check")[:1][0],
+        "oldest_need_check": oldest_need_check,
+        "latest_need_check": latest_need_check,
         "latest_need_crawlset": latest_need_crawlset,
         "article_check_24h": CrawlItem.objects.filter(
             crawl_set__crawl_type="article", 
