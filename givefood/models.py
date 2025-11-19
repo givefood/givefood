@@ -2226,7 +2226,7 @@ class CrawlSet(models.Model):
 
     def time_taken(self):
         if self.finish:
-            return self.finish - self.start
+            return timedelta(seconds=round((self.finish - self.start).total_seconds()))
         return None
 
     def item_count(self):
