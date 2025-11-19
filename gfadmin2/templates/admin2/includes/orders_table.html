@@ -23,9 +23,13 @@
           </td>
           <td>{{ order.created|timesince }} ago</td>
           <td>
-            <a href="{% url 'gfadmin2:foodbank_detail' order.foodbank_slug %}">
-              {{ order.foodbank_name }}
-            </a>
+            {% if order.foodbank %}
+              <a href="{% url 'gfadmin2:foodbank_detail' order.foodbank.slug %}">
+                {{ order.foodbank_name }}
+              </a>
+            {% else %}
+              {{ order.foodbank_name|default:"Unknown" }}
+            {% endif %}
           </td>
           <td>{{ order.delivery_datetime }}</td>
           <td>{{ order.no_items }}</td>

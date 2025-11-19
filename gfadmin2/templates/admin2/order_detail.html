@@ -15,9 +15,13 @@
             <dl>
               <dt><strong>Foodbank</strong></dt>
               <dd>
-                <a href="{% url 'gfadmin2:foodbank_detail' order.foodbank_slug %}">
-                  {{ order.foodbank_name }}
-                </a>
+                {% if order.foodbank %}
+                  <a href="{% url 'gfadmin2:foodbank_detail' order.foodbank.slug %}">
+                    {{ order.foodbank_name }}
+                  </a>
+                {% else %}
+                  {{ order.foodbank_name|default:"Unknown" }}
+                {% endif %}
               </dd>
               
               <dt><strong>Created</strong></dt>

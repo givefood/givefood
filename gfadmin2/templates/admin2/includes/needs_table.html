@@ -16,14 +16,22 @@
       {% for need in needs %}
         <tr id="need-{{ need.need_id }}">
           <td>
-            <a href="{% url 'gfadmin2:need_detail' need.need_id %}">
+            {% if need.foodbank %}
+              <a href="{% url 'gfadmin2:need_detail' need.need_id %}">
+                {{ need.created|timesince }} ago
+              </a>
+            {% else %}
               {{ need.created|timesince }} ago
-            </a>
+            {% endif %}
           </td>
           <td>
-            <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank_slug %}">
-              {{ need.foodbank_name }}
-            </a>
+            {% if need.foodbank %}
+              <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank.slug %}">
+                {{ need.foodbank_name }}
+              </a>
+            {% else %}
+              {{ need.foodbank_name|default:"Unknown" }}
+            {% endif %}
           </td>
           <td class="is-size-7">{{ need.change_text|truncatewords:15 }}</td>
           <td class="is-size-7">{{ need.excess_change_text|truncatewords:10|default:"—" }}</td>

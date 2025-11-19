@@ -36,9 +36,13 @@
                           </a>
                         </td>
                         <td>
-                          <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank_slug %}">
-                            {{ need.foodbank_name }}
-                          </a>
+                          {% if need.foodbank %}
+                            <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank.slug %}">
+                              {{ need.foodbank_name }}
+                            </a>
+                          {% else %}
+                            {{ need.foodbank_name|default:"Unknown" }}
+                          {% endif %}
                         </td>
                         <td class="is-size-7">
                           {{ need.change_text|truncatewords:10 }}
@@ -83,9 +87,13 @@
                           </a>
                         </td>
                         <td>
-                          <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank_slug %}">
-                            {{ need.foodbank_name }}
-                          </a>
+                          {% if need.foodbank %}
+                            <a href="{% url 'gfadmin2:foodbank_detail' need.foodbank.slug %}">
+                              {{ need.foodbank_name }}
+                            </a>
+                          {% else %}
+                            {{ need.foodbank_name|default:"Unknown" }}
+                          {% endif %}
                         </td>
                       </tr>
                     {% endfor %}
@@ -117,9 +125,13 @@
                       <tr id="discrepancy-{{ discrepancy.id }}">
                         <td>{{ discrepancy.created|timesince }}</td>
                         <td>
-                          <a href="{% url 'gfadmin2:foodbank_detail' discrepancy.foodbank_slug %}">
-                            {{ discrepancy.foodbank_name }}
-                          </a>
+                          {% if discrepancy.foodbank %}
+                            <a href="{% url 'gfadmin2:foodbank_detail' discrepancy.foodbank.slug %}">
+                              {{ discrepancy.foodbank_name }}
+                            </a>
+                          {% else %}
+                            {{ discrepancy.foodbank_name|default:"Unknown" }}
+                          {% endif %}
                         </td>
                         <td class="is-size-7">{{ discrepancy.discrepancy_text|truncatewords:5 }}</td>
                         <td>
@@ -196,9 +208,13 @@
                     {% for article in articles %}
                       <tr>
                         <td>
-                          <a href="{% url 'gfadmin2:foodbank_detail' article.foodbank_name_slug %}">
-                            {{ article.foodbank_name }}
-                          </a>
+                          {% if article.foodbank %}
+                            <a href="{% url 'gfadmin2:foodbank_detail' article.foodbank.slug %}">
+                              {{ article.foodbank_name }}
+                            </a>
+                          {% else %}
+                            {{ article.foodbank_name|default:"Unknown" }}
+                          {% endif %}
                         </td>
                         <td>
                           <a href="{{ article.url_with_ref }}" target="_blank">
