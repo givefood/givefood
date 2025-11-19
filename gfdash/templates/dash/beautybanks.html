@@ -119,7 +119,8 @@
 {% block script %}
     <script src="/static/js/tabber.js" defer></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=marker"></script>
+    <link href="https://unpkg.com/maplibre-gl@^5.5.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@^5.5.0/dist/maplibre-gl.js"></script>
     <script>
 
         const foodbanks = {{ time_since_json|safe }}
@@ -127,34 +128,40 @@
         var map_main
 
         function init_map() {
-            map_main = new google.maps.Map(document.getElementById("the-map"), {
-                center: new google.maps.LatLng(55,-4),
-                zoom: 6,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                mapId: 'DEMO_MAP_ID'
+            map_main = new maplibregl.Map({
+                container: 'the-map',
+                style: 'https://tiles.openfreemap.org/styles/bright',
+                center: [-4, 55],
+                zoom: 6
             });
 
-            for (let i = 0; i < foodbanks.length; i++) {
-                const foodbank = foodbanks[i];
+            map_main.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-                marker = new google.maps.marker.AdvancedMarkerElement({
-                    position: new google.maps.LatLng(foodbank.lat, foodbank.lng),
-                    map: map_main,
-                    title: foodbank.foodbank,
-                });
-                marker['infowindow'] = new google.maps.InfoWindow({
-                    content: '<strong><a href="/needs/at/' + foodbank.slug + '">' + foodbank.foodbank + '</a></strong><br><br>' + foodbank.change_text.replaceAll("\n", "<br>")
-                });
-                marker.addListener('click', function() {
-                    this['infowindow'].open({
-                        map: map_main,
-                        anchor: this
-                    });
-                });
-            }
+            map_main.on('load', () => {
+                for (let i = 0; i < foodbanks.length; i++) {
+                    const foodbank = foodbanks[i];
+
+                    const popup = new maplibregl.Popup({
+                        offset: 25,
+                        closeButton: true
+                    }).setHTML('<strong><a href="/needs/at/' + foodbank.slug + '">' + foodbank.foodbank + '</a></strong><br><br>' + foodbank.change_text.replaceAll("\n", "<br>"));
+
+                    new maplibregl.Marker({
+                        color: '#FF0000'
+                    })
+                        .setLngLat([foodbank.lng, foodbank.lat])
+                        .setPopup(popup)
+                        .addTo(map_main);
+                }
+            });
         }
 
-        google.maps.event.addDomListener(window, 'load', init_map);
+        // Initialize map when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init_map);
+        } else {
+            init_map();
+        }
     </script>
 
 {% endblock %}
