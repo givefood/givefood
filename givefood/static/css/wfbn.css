@@ -129,6 +129,23 @@ p.needs {
     border-right:2px solid #eee;
     padding:7px 15px 7px 0;
 }
+.txt-dir-rtl .contacts a, .txt-dir-rtl a.pluscode {
+    padding:0 21px 2px 0;
+    background:no-repeat right center;
+    background-size:16px;
+}
+.txt-dir-rtl a.pluscode {
+    background-image:url(/static/img/pluscode.svg);
+}
+.txt-dir-rtl .contacts .website {
+    background-image:url(/static/img/web.svg);
+}
+.txt-dir-rtl .contacts .phone {
+    background-image:url(/static/img/phone.svg);
+}
+.txt-dir-rtl .contacts .email {
+    background-image:url(/static/img/email.svg);
+}
 .cta {
     margin-bottom: 1.3rem;
 }
