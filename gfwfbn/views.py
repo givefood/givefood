@@ -320,13 +320,6 @@ def foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
 
-    change_text = foodbank.latest_need.change_text
-
-    if change_text == "Unknown" or change_text == "Nothing":
-        template = "noneed"
-    else:
-        template = "withneed"
-
     map_config = {
         "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
         "max_zoom":14,
@@ -339,7 +332,7 @@ def foodbank(request, slug):
         "map_config":map_config,
     }
 
-    return render(request, "wfbn/foodbank/index_%s.html" % (template), template_vars)
+    return render(request, "wfbn/foodbank/index.html", template_vars)
 
 
 # Constants for map sizes
@@ -659,12 +652,6 @@ def foodbank_location(request, slug, locslug):
     foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
     location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
 
-    change_text = foodbank.latest_need.change_text
-    if change_text == "Unknown" or change_text == "Nothing":
-        template = "noneed"
-    else:
-        template = "withneed"
-
     map_config = {
         "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
         "lat": location.latt(),
@@ -683,7 +670,7 @@ def foodbank_location(request, slug, locslug):
         "map_config":map_config,
     }
 
-    return render(request, "wfbn/foodbank/location_%s.html" % (template), template_vars)
+    return render(request, "wfbn/foodbank/location.html", template_vars)
 
 
 @cache_page(SECONDS_IN_WEEK)

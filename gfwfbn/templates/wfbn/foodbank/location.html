@@ -4,7 +4,9 @@
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
-  <link rel="alternate" type="application/rss+xml" title="RSS feed for {{ foodbank.full_name }}" href="{% url 'wfbn:foodbank_rss' foodbank.slug %}">
+  {% if foodbank.latest_need.change_text != "Unknown" and foodbank.latest_need.change_text != "Nothing" %}
+    <link rel="alternate" type="application/rss+xml" title="RSS feed for {{ foodbank.full_name }}" href="{% url 'wfbn:foodbank_rss' foodbank.slug %}">
+  {% endif %}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="{{ location }}, {{ foodbank.full_name }}">
@@ -61,26 +63,52 @@
               <p class="tag is-danger is-large">>{% blocktrans %}This food bank is closed{% endblocktrans %}</p>
             {% endif %}
 
-            {% if location.is_donation_point %}
-              <p>🛒 {% blocktrans %}This location accepts donations{% endblocktrans %}</p>
-            {% endif %}
-            {% if location.is_mobile %}
-              <p>🚚 {% blocktrans %}Mobile food bank location{% endblocktrans %}</p>
-            {% endif %}
+            {% if foodbank.latest_need.change_text != "Unknown" and foodbank.latest_need.change_text != "Nothing" %}
+              {% with change_text=foodbank.latest_need.get_change_text %}
+                {% if change_text == "Facebook" %}
+                  <p>You can find out what {{ foodbank.full_name }} is requesting to have donated on their Facebook page:</p>
+                  {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
+                {% else %}
+                  <p>{{ foodbank.full_name }} is currently requesting the following items to be donated:</p>
+                  <p class="needs">
+                    {% include "wfbn/includes/need_text.html" with need_text=change_text  %}
+                  </p>
+                  {% if foodbank.latest_need.excess_change_text %}
+                    <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.get_excess_text_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+                  {% endif %}
 
-            <div class="contacts">
-                <a href="{{ foodbank.url_with_ref }}" class="website">{{ foodbank.url|friendly_url|truncatechars:40 }}</a>
-                {% if foodbank.phone_number %}
-                  <a href="tel:{{ location.phone_or_foodbank_phone|full_phone }}" class="phone">{{ location.phone_or_foodbank_phone|friendly_phone }}</a>
+                  {% if location.is_donation_point %}
+                    <p>🛒 {% blocktrans %}This location accepts donations{% endblocktrans %}</p>
+                  {% endif %}
+                  {% if location.is_mobile %}
+                    <p>🚚 {% blocktrans %}Mobile food bank location{% endblocktrans %}</p>
+                  {% endif %}
+                  
+                  {% include 'wfbn/foodbank/includes/subscribe.html' %}
                 {% endif %}
-                <a href="mailto:{{ location.email_or_foodbank_email }}" class="email">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
-            </div>
+              {% endwith %}
+            {% else %}
+              {% if location.is_donation_point %}
+                <p>🛒 {% blocktrans %}This location accepts donations{% endblocktrans %}</p>
+              {% endif %}
+              {% if location.is_mobile %}
+                <p>🚚 {% blocktrans %}Mobile food bank location{% endblocktrans %}</p>
+              {% endif %}
+
+              <div class="contacts">
+                  <a href="{{ foodbank.url_with_ref }}" class="website">{{ foodbank.url|friendly_url|truncatechars:40 }}</a>
+                  {% if foodbank.phone_number %}
+                    <a href="tel:{{ location.phone_or_foodbank_phone|full_phone }}" class="phone">{{ location.phone_or_foodbank_phone|friendly_phone }}</a>
+                  {% endif %}
+                  <a href="mailto:{{ location.email_or_foodbank_email }}" class="email">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
+              </div>
 
               {% include "wfbn/foodbank/includes/charitynetwork.html" %}
+            {% endif %}
 
           </div>
 
-          <div class="column is-7">
+          <div class="column{% if foodbank.latest_need.change_text == "Unknown" or foodbank.latest_need.change_text == "Nothing" %} is-7{% endif %}">
 
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
@@ -96,8 +124,10 @@
 
             <div id="map" class="sidemap"></div>
             {% include "public/includes/maplegend.html" %}
-            {% include "public/includes/deliveryareadisclaimer.html" %}
-
+            {% if foodbank.latest_need.change_text != "Unknown" and foodbank.latest_need.change_text != "Nothing" %}
+              {% include "public/includes/deliveryareadisclaimer.html" %}
+            {% endif %}
+            
             {% if location.address or location.postcode %}
               <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ location.lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
               <address>
@@ -110,9 +140,24 @@
 
             {% if foodbank.delivery_address %}
               <h3>{% blocktrans %}Delivery{% endblocktrans %}</h3>
+              {% if foodbank.latest_need.change_text != "Unknown" and foodbank.latest_need.change_text != "Nothing" %}
+                <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ foodbank.delivery_lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
+              {% endif %}
               <address>
                 {{ foodbank.delivery_address|linebreaksbr }}
               </address>
+            {% endif %}
+
+            {% if foodbank.latest_need.change_text != "Unknown" and foodbank.latest_need.change_text != "Nothing" %}
+              <div class="contacts">
+                  <a href="{{ foodbank.url_with_ref }}" class="website">{{ foodbank.url|friendly_url|truncatechars:40 }}</a>
+                  {% if foodbank.phone_number %}
+                    <a href="tel:{{ location.phone_or_foodbank_phone|full_phone }}" class="phone">{{ location.phone_or_foodbank_phone|friendly_phone }}</a>
+                  {% endif %}
+                  <a href="mailto:{{ location.email_or_foodbank_email }}" class="email">{{ location.email_or_foodbank_email|truncatechars:40 }}</a>
+              </div>
+
+              {% include "wfbn/foodbank/includes/charitynetwork.html" %}
             {% endif %}
 
           </div>

@@ -93,7 +93,7 @@ address {
 div.pluscode {
     margin-bottom:10px;
 }
-.contacts {
+.contacts:not(:first-child) {
     margin-top:10px;
 }
 .contacts a, a.pluscode {
