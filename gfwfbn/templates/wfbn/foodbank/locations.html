@@ -10,7 +10,6 @@
   <meta name="description" content="Find what {{ foodbank.full_name }} is requesting to have donated">
   <meta property="og:image" content="https://www.givefood.org.uk{% url 'wfbn:foodbank_map' foodbank.slug %}">
   <meta property="og:image:alt" content="Map of {{ foodbank.full_name }}">
-  <link rel="manifest" href="{% url 'wfbn:manifest' %}">
   <meta name="geo.placename" content="{{ foodbank.full_name }}">
   <meta name="geo.position" content="{{ foodbank.lat_lng }}">
   <meta property="place:location:latitude" content="{{ foodbank.latt }}">
