@@ -143,3 +143,38 @@ class TestLLMSTxt:
         # Check that the template variable tags are not present (they've been rendered)
         assert '{{ foodbanks_count' not in content
         assert '{{ donationpoints_count' not in content
+
+
+@pytest.mark.django_db
+class TestManifest:
+    """Test web app manifest generation."""
+
+    def test_manifest_accessible(self, client):
+        """Test that manifest.json is accessible and returns valid JSON."""
+        response = client.get('/manifest.json')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+        
+    def test_manifest_has_valid_json_structure(self, client):
+        """Test that manifest.json contains valid web app manifest structure."""
+        import json
+        response = client.get('/manifest.json')
+        assert response.status_code == 200
+        data = json.loads(response.content.decode('utf-8'))
+        
+        # Check required manifest fields
+        assert 'name' in data
+        assert 'short_name' in data
+        assert 'description' in data
+        assert 'start_url' in data
+        assert 'icons' in data
+        
+        # Verify icons structure
+        assert len(data['icons']) > 0
+        icon = data['icons'][0]
+        assert 'src' in icon
+        assert 'type' in icon
+        assert 'sizes' in icon
+        
+        # Verify correct MIME type for SVG
+        assert icon['type'] == 'image/svg+xml'
