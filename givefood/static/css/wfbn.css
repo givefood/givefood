@@ -129,6 +129,10 @@ p.needs {
     border-right:2px solid #eee;
     padding:7px 15px 7px 0;
 }
+.txt-dir-rtl .contacts a, .txt-dir-rtl a.pluscode {
+    padding:0 21px 2px 0;
+    background-position:right center;
+}
 .cta {
     margin-bottom: 1.3rem;
 }
