@@ -13,7 +13,6 @@
   <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
   <meta property="og:image:alt" content="{% blocktrans %}Map of UK food banks{% endblocktrans %}">
   <link rel="alternate" type="application/rss+xml" title="Give Food RSS" href="{% url 'wfbn:rss' %}">
-  <link rel="manifest" href="{% url 'wfbn:manifest' %}">
 
   {% if locations %}
     {% for location in locations|slice:"5" %}

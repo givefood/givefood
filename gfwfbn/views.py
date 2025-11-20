@@ -293,55 +293,6 @@ def geojson(request, slug = None, parlcon_slug = None, locslug = None):
 
 
 @cache_page(SECONDS_IN_DAY)
-def manifest(request):
-    """
-    Web app manifest
-    """
-
-    scope = reverse("wfbn:index")
-    start_url = "%s%s" % (SITE_DOMAIN, reverse("wfbn:index"))
-    lang = request.LANGUAGE_CODE
-
-    manifest_content = {
-        "name" : "Give Food",
-        "short_name" : "Give Food",
-        "description" : gettext("Use Give Food's tool to find what food banks near you are requesting to have donated"),
-        "start_url" : start_url,
-        "scope" : scope,
-        "display" : "minimal-ui",
-        "lang" : lang,
-        "icons": [
-            {
-                "src": "/static/img/favicon.svg",
-                "type": "image/svg",
-                "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
-                "type": "image/svg+xml",
-                "purpose": "any"
-            }
-        ],
-        "screenshots": [
-            {
-                "src": "/static/img/manifestscreens/index.png",
-                "type": "image/png",
-                "sizes": "1402x2356"
-            },
-            {
-                "src": "/static/img/manifestscreens/search.png",
-                "type": "image/png",
-                "sizes": "1402x2356"
-            },
-            {
-                "src": "/static/img/manifestscreens/foodbank.png",
-                "type": "image/png",
-                "sizes": "1402x2356"
-            }
-        ]
-    }
-
-    return HttpResponse(json.dumps(manifest_content), content_type="application/json")
-
-
-@cache_page(SECONDS_IN_DAY)
 def place(request, county, place):
     """
     Place page

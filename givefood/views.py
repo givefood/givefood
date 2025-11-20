@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
 from django.db.models import Sum
 from django.utils.timesince import timesince
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 
@@ -412,6 +412,53 @@ def robotstxt(request):
     }
 
     return render(request, "public/robots.txt", template_vars, content_type='text/plain')
+
+
+@cache_page(SECONDS_IN_DAY)
+def manifest(request):
+    """
+    Web app manifest
+    """
+
+    start_url = SITE_DOMAIN
+    lang = request.LANGUAGE_CODE
+
+    manifest_content = {
+        "name" : "Give Food",
+        "short_name" : "Give Food",
+        "description" : gettext("Use Give Food's tool to find what food banks near you are requesting to have donated"),
+        "start_url" : start_url,
+        "display" : "minimal-ui",
+        "lang" : lang,
+        "icons": [
+            {
+                "src": "/static/img/favicon.svg",
+                "type": "image/svg",
+                "sizes": "48x48 72x72 96x96 128x128 256x256 512x512",
+                "type": "image/svg+xml",
+                "purpose": "any"
+            }
+        ],
+        "screenshots": [
+            {
+                "src": "/static/img/manifestscreens/index.png",
+                "type": "image/png",
+                "sizes": "1402x2356"
+            },
+            {
+                "src": "/static/img/manifestscreens/search.png",
+                "type": "image/png",
+                "sizes": "1402x2356"
+            },
+            {
+                "src": "/static/img/manifestscreens/foodbank.png",
+                "type": "image/png",
+                "sizes": "1402x2356"
+            }
+        ]
+    }
+
+    return HttpResponse(json.dumps(manifest_content), content_type="application/json")
 
 
 @cache_page(SECONDS_IN_WEEK)

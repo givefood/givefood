@@ -11,7 +11,7 @@ urlpatterns = [
     path("rss.xml", rss, name="rss"),
     path("getlocation/", get_location, name="get_location"),
     path("geo.json", geojson, name="geojson"),
-    path("manifest.json", manifest, name="manifest"),
+    path("manifest.json", RedirectView.as_view(url='/manifest.json', permanent=True)),
 
     # Place
     path("at/place/<slug:county>/<slug:place>/", place, name="place"),

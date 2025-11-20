@@ -75,6 +75,7 @@ urlpatterns += i18n_patterns(
     # Root
     path("<uuid:pk>/", givefood.views.uuid_redir, name="uuid_redir"),
     path("robots.txt", givefood.views.robotstxt, name="robotstxt"),
+    path("manifest.json", givefood.views.manifest, name="manifest"),
     path("sitemap.xml", givefood.views.sitemap, name="sitemap"),
     path("sitemap_places_index.xml", givefood.views.sitemap_places_index, name="sitemap_places_index"),
     path("sitemap_places.xml", givefood.views.sitemap_places, name="sitemap_places"),
