@@ -164,6 +164,14 @@ del {
 .footer a:hover {
     color:#D3D3D3;
 }
+.flag svg {
+    stroke:#fff;
+    vertical-align:middle;
+    margin:0 2px 2px 0;
+}
+.flag:hover svg {
+    stroke:#D3D3D3
+}
 .lastupdated {
     text-transform:lowercase;
 }
