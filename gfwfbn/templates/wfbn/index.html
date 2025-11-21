@@ -64,8 +64,8 @@
           <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
         </form>
       {% else %}
-        <h1 class="placetitle">Foodbanks in {{ page_title }}</h1>
-        <p>Find a food bank near {{ page_title }}, see what they need and how you can help by donating or volunteering.</p>
+        <h1 class="placetitle">{% blocktrans with location=page_title %}Foodbanks in {{ location }}{% endblocktrans %}</h1>
+        <p>{% blocktrans with location=page_title %}Find a food bank near {{ location }}, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
       {% endif %}
 
       {% if not is_uk %}
