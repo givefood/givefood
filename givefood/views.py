@@ -341,8 +341,7 @@ def country_geojson(request, country_slug):
             "properties": {
                 "type": "f",
                 "name": foodbank.full_name(),
-                "address": foodbank.address,
-                "postcode": foodbank.postcode,
+                "address": foodbank.full_address(),
                 "url": reverse(
                     "wfbn:foodbank",
                     kwargs={"slug": foodbank.slug}
@@ -390,9 +389,8 @@ def country_geojson(request, country_slug):
             "properties": {
                 "type": "l",
                 "name": location.name,
-                "foodbank_name": location.foodbank_name,
-                "address": location.address,
-                "postcode": location.postcode,
+                "foodbank": location.foodbank_name,
+                "address": location.full_address(),
                 "url": reverse(
                     "wfbn:foodbank_location",
                     kwargs={
@@ -419,9 +417,8 @@ def country_geojson(request, country_slug):
             "properties": {
                 "type": "d",
                 "name": dp.name,
-                "foodbank_name": dp.foodbank_name,
-                "address": dp.address,
-                "postcode": dp.postcode,
+                "foodbank": dp.foodbank_name,
+                "address": dp.full_address(),
                 "url": reverse(
                     "wfbn:foodbank_donationpoint",
                     kwargs={
