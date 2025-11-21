@@ -450,7 +450,7 @@ function buildInfoWindowContent(feature) {
         html += `<address>${formattedAddress}</address>`;
     }
 
-    html += `<a href='${url}' class='button is-info is-small'>More Information</a>`;
+    html += `<a href='${url}' class='button is-info is-small is-light'>More Information</a>`;
     html += "</div>";
 
     return html;

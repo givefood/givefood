@@ -133,7 +133,7 @@ const API_URLS = {
  * @param {string} className - Additional CSS classes
  * @returns {HTMLElement} Button element
  */
-function createButton(id, text, className = 'button is-info') {
+function createButton(id, text, className = 'button is-info is-light') {
     const div = document.createElement('div');
     div.innerHTML = `<a href='#' id='${id}' class='extra-form-button ${className}'>${text}</a>`;
     return div;
