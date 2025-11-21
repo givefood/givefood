@@ -39,7 +39,7 @@
             <td>
               {% if need.is_categorised %}🪣{% endif %}
               {% if uncategorised %}
-                <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
+                <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small is-light">Categorise</a>
               {% endif %}
             </td>
             <td>

@@ -39,7 +39,7 @@
               <form action="{% url 'admin:delete_subscription' %}" method="post">
                 <input type="hidden" name="email" value="{{ subscription.email }}">
                 <input type="hidden" name="foodbank" value="{{ subscription.foodbank_name|slugify }}">
-                <input type="submit" value="Delete" onclick="return confirm('Delete {{ subscription.email }}?')" class="button is-danger is-small">
+                <input type="submit" value="Delete" onclick="return confirm('Delete {{ subscription.email }}?')" class="button is-danger is-small is-light">
                 {% csrf_token %}
               </form>
             </td>

@@ -15,10 +15,10 @@
 
         <form action="{% url 'admin:finder_check' %}" method="post">
             <input type="hidden" name="place" value="{{ place.gbpnid }}">
-            <input type="submit" value="Checked" class="button is-link">
+            <input type="submit" value="Checked" class="button is-link is-light">
         </form>
         <form action="{% url 'admin:finder' %}">
-            <a href="{% url 'admin:finder' %}" class="button is-warning">Skip</a>
+            <a href="{% url 'admin:finder' %}" class="button is-warning is-light">Skip</a>
         </form>
 
         <dl>
@@ -63,8 +63,8 @@
                         <span class="tag is-light">Closest</span> {{ result.closest_foodbank.name }}, {{ result.closest_foodbank.distance_km|floatformat:1 }}km
                     {% endif %}
                     <div class="actions">
-                        <a href="{% url 'admin:foodbank_new' %}?name={{ result.name }}&address={{ result.formatted_address }}&postcode={{ result.postcode }}" class="button is-small" target="_blank">Add</a>
-                        <a href="https://www.google.co.uk/search?q={{ result.name|urlencode }}, {{ result.postcode|urlencode }}" class="button is-small" target="_blank">Search</a>
+                        <a href="{% url 'admin:foodbank_new' %}?name={{ result.name }}&address={{ result.formatted_address }}&postcode={{ result.postcode }}" class="button is-small is-light" target="_blank">Add</a>
+                        <a href="https://www.google.co.uk/search?q={{ result.name|urlencode }}, {{ result.postcode|urlencode }}" class="button is-small is-light" target="_blank">Search</a>
                     </div>
                 </li>
             {% endfor %}

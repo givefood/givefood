@@ -11,7 +11,7 @@
 
     <div class="column">
 
-      <a href="{% url 'admin:parlcon_form' %}" class="button is-link">New ParlCon</a>
+      <a href="{% url 'admin:parlcon_form' %}" class="button is-link is-light">New ParlCon</a>
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Name</th>
@@ -37,7 +37,7 @@
             <td>{{ parlcon.email }}</td>
             <td>{% if parlcon.boundary_geojson %}🗺️{% endif %}</td>
             <td>
-              <a href="{% url 'admin:parlcon_form' parlcon.slug %}" class="button is-small">Edit</a>
+              <a href="{% url 'admin:parlcon_form' parlcon.slug %}" class="button is-small is-light">Edit</a>
             </td>
           </tr>
         {% endfor %}
