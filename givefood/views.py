@@ -61,10 +61,10 @@ COUNTRY_MAP_CONFIG = {
 
 # Example postcodes and towns for country search placeholders
 COUNTRY_PLACEHOLDERS = {
-    'Scotland': _('e.g. EH1 1YZ or Glasgow'),
-    'England': _('e.g. SW1A 1AA or Manchester'),
-    'Wales': _('e.g. CF10 1EP or Cardiff'),
-    'Northern Ireland': _('e.g. BT1 1AA or Belfast'),
+    'Scotland': _('e.g. EH12 5PJ or Glasgow'),
+    'England': _('e.g. HA9 0WS or Manchester'),
+    'Wales': _('e.g. CF10 1NS or Cardiff'),
+    'Northern Ireland': _('e.g. BT12 6LW or Belfast'),
 }
 
 
