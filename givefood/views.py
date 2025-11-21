@@ -38,22 +38,22 @@ COUNTRY_MAPPING = {
 # Chosen to center the map on the geographical center of each country
 COUNTRY_MAP_CONFIG = {
     'Scotland': {
-        'lat': 56.5,  # Central Scotland
-        'lng': -4.0,
+        'lat': 57.7,
+        'lng': -4,
         'zoom': 7
     },
     'England': {
-        'lat': 52.5,  # Central England (Midlands area)
-        'lng': -1.5,
-        'zoom': 6
-    },
-    'Wales': {
-        'lat': 52.3,  # Central Wales
-        'lng': -3.7,
+        'lat': 53,
+        'lng': -1.8,
         'zoom': 7
     },
+    'Wales': {
+        'lat': 52.3,
+        'lng': -3.7,
+        'zoom': 8
+    },
     'Northern Ireland': {
-        'lat': 54.6,  # Central Northern Ireland
+        'lat': 54.6,
         'lng': -6.5,
         'zoom': 8
     },
