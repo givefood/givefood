@@ -63,13 +63,14 @@
 
       <a href="{% url 'admin:foodbank_check' foodbank.slug %}" class="is-pulled-right"><img src="/static/img/ai.png" style="width:32px;" alt="Check"></a>
 
-      <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link">Edit Food Bank</a><br>
+      <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-light">Edit Food Bank</a>
+      
       <form action="{% url 'admin:foodbank_touch' foodbank.slug %}" method="post" style="margin-top:10px">
-        <input type="submit" class="button is-link" value="Touch">
+        <input type="submit" class="button is-link is-light" value="Touch">
       </form>
 
       {% if not foodbank.orders %}
-        <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Order</a>
+        <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light" style="margin-top:10px">New Order</a>
       {% endif %}
 
       {% if foodbank.notes %}
@@ -243,7 +244,7 @@
         <dt>Last Need Check</dt>
         <dd>
           {{ foodbank.last_need_check }}<br>
-          <a href="{% url 'offline:foodbank_need_check' foodbank.slug %}?key={{ offline_key }}" class="button is-info is-small">Force Check</a>
+          <a href="{% url 'offline:foodbank_need_check' foodbank.slug %}?key={{ offline_key }}" class="button is-info is-small is-light">Force Check</a>
         </dd>
         <dt>Last RFI</dt>
         <dd>{{ foodbank.last_rfi }}</dd>
@@ -254,7 +255,7 @@
           <dd>
             {{ foodbank.last_crawl }}
             <form action="{% url 'admin:foodbank_crawl' foodbank.slug %}" method="post">
-              <input type="submit" value="Force Crawl" class="button is-info is-small">
+              <input type="submit" value="Force Crawl" class="button is-info is-small is-light">
             </form>
           </dd>
         {% endif %}
@@ -262,24 +263,24 @@
 
       <h3>⚠️ Mild Danger Zone</h3>
       <form action="{% url 'admin:foodbank_resave' foodbank.slug %}" method="post">
-        <input type="submit" class="button is-warning" value="Resave Everything" onclick="return confirm('Resave {{ foodbank.name}}?')">
+        <input type="submit" class="button is-warning is-light" value="Resave Everything" onclick="return confirm('Resave {{ foodbank.name}}?')">
       </form>
 
       <h3>⚠️ Danger Zone</h3>
       <form action="{% url 'admin:foodbank_rfi' foodbank.slug %}" method="post">
-        <input type="submit" class="button is-danger" value="Send RFI" onclick="return confirm('Send RFI to {{ foodbank.name}}?')">
+        <input type="submit" class="button is-danger is-light" value="Send RFI" onclick="return confirm('Send RFI to {{ foodbank.name}}?')">
       </form>
 
       <h3>⚠️ Really Dangerous Zone</h3>
       <form action="{% url 'admin:foodbank_delete' foodbank.slug %}" method="post">
-        <input type="submit" class="button is-danger" value="Delete {{ foodbank.full_name }}" onclick="return confirm('DELETE {{ foodbank.name}}?')">
+        <input type="submit" class="button is-danger is-light" value="Delete {{ foodbank.full_name }}" onclick="return confirm('DELETE {{ foodbank.name}}?')">
       </form>
 
     </div>
 
     {# Locations #}
     <div class="column tabcontent generallocations">
-      <a href="{% url 'admin:fblocation_new' foodbank.slug %}" class="button is-link">New Location</a>
+      <a href="{% url 'admin:fblocation_new' foodbank.slug %}" class="button is-link is-light">New Location</a>
       <h3>Locations</h3>
       <table class="table is-fullwidth locationtable">
         <tr>
@@ -317,7 +318,7 @@
                 <dd><a href="https://www.google.co.uk/maps/?q={{ foodbank.delivery_lat_lng }}">{{ foodbank.delivery_lat_lng }}</a></dd>
               </dl>
             </td>
-            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-link is-small is-pulled-right">Edit</a></td>
+            <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-link is-small is-pulled-right is-light">Edit</a></td>
           </tr>
         {% endif %}
         {% for location in foodbank.locations %}
@@ -364,7 +365,7 @@
     {# Last need #}
     <div class="column tabcontent generallocations">
 
-      <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link" style="margin-top:10px">New Need</a>
+      <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light" style="margin-top:10px">New Need</a>
       <br><br>
 
       {% if foodbank.last_need %}
@@ -397,7 +398,7 @@
 
     {# Donation Points #}
     <div class="column tabcontent donationpoints is-hidden" role="tabpanel" id="donationpoints-panel" aria-labelledby="donationpoints-tab">
-      <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-link">New Donation Point</a>
+      <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-link is-light">New Donation Point</a>
       {% if foodbank.donation_points %}
         <table class="table is-fullwidth is-hoverable">
           <tr>
@@ -453,7 +454,7 @@
     {# Needs #}
     {% if foodbank.needs %}
       <div class="column tabcontent needsorders is-hidden" role="tabpanel" id="needsorders-panel" aria-labelledby="needsorders-tab">
-        <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link">New Need</a>
+        <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light">New Need</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th>Published</th>
@@ -500,7 +501,7 @@
     {# Orders #}
     {% if foodbank.orders %}
       <div class="column tabcontent needsorders is-hidden">
-        <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link">New Order</a>
+        <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light">New Order</a>
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th></th>

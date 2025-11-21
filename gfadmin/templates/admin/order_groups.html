@@ -7,7 +7,7 @@
 
   <h2>Order Groups</h2>
 
-  <a href="{% url "admin:order_group_new" %}" class="button is-link">New Order Group</a>
+  <a href="{% url "admin:order_group_new" %}" class="button is-link is-light">New Order Group</a>
 
   <div class="columns">
 
@@ -30,7 +30,7 @@
                 <a href="{% url 'managed_donation' order_group.slug order_group.key %}">Link</a>
               {% endif %}
             </td>
-            <td><a href="{% url 'admin:order_group_edit' order_group.slug %}" class="button is-small">Edit</a></td>
+            <td><a href="{% url 'admin:order_group_edit' order_group.slug %}" class="button is-small is-light">Edit</a></td>
           </tr>
         {% endfor %}
       </table>

@@ -16,7 +16,7 @@
           {% for need in unpublished_needs %}
             <input type="hidden" name="need" value="{{ need.id }}">
           {% endfor %}
-          <input type="submit" value="Delete All" class="button is-small is-pulled-right" onclick="return confirm('Are you sure you want to DELETE ALL unpublished needs?')">
+          <input type="submit" value="Delete All" class="button is-small is-pulled-right is-light" onclick="return confirm('Are you sure you want to DELETE ALL unpublished needs?')">
         </form>
       {% endif %}
 

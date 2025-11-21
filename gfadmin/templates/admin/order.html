@@ -9,7 +9,7 @@
 
     <div class="column is-two-fifths">
 
-      <a href="{% url 'admin:order_edit' order.order_id %}" class="button is-link is-pulled-right">Edit</a>
+      <a href="{% url 'admin:order_edit' order.order_id %}" class="button is-link is-pulled-right is-light">Edit</a>
 
       <dl>
         <dt>ID</dt>
@@ -87,13 +87,13 @@
         {% endif %}
       </p>
       <form action="{% url 'admin:order_send_notification' order.order_id %}" method="post">
-        <input type="submit" class="button is-warning" value="Send Notification">
+        <input type="submit" class="button is-warning is-light" value="Send Notification">
         {% csrf_token %}
       </form>
 
       <h2>Danger Zone</h2>
       <form action="{% url 'admin:order_delete' order.order_id %}" method="post">
-        <input type="submit" class="button is-danger" value="Cancel" onclick="return confirm('Are you sure you want to cancel?')">
+        <input type="submit" class="button is-danger is-light" value="Cancel" onclick="return confirm('Are you sure you want to cancel?')">
         {% csrf_token %}
       </form>
 
@@ -118,7 +118,7 @@
               {% if line.calories == 0 %}
                 <form action="{% url 'admin:item_new' %}" method="post" style="display:inline" target="_blank">
                   <input type="hidden" name="name" value="{{ line.name }}">
-                  <input type="submit" class="button is-small" value="Add">
+                  <input type="submit" class="button is-small is-light" value="Add">
                 </form>
               {% endif %}
             </td>

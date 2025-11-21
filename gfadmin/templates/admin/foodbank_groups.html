@@ -6,7 +6,7 @@
 
   <h2>Foodbank Groups</h2>
 
-  <a href="{% url "admin:foodbank_group_new" %}" class="button is-link">New Foodbank Group</a>
+  <a href="{% url "admin:foodbank_group_new" %}" class="button is-link is-light">New Foodbank Group</a>
 
   <div class="columns">
 
@@ -26,7 +26,7 @@
               </a>
             </td>
             <td>{{ foodbank_group.created }}</td>
-            <td><a href="{% url 'admin:foodbank_group_edit' foodbank_group.slug %}" class="button is-small">Edit</a></td>
+            <td><a href="{% url 'admin:foodbank_group_edit' foodbank_group.slug %}" class="button is-small is-light">Edit</a></td>
           </tr>
         {% endfor %}
       </table>

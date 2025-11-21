@@ -13,7 +13,7 @@
       {% endif %}
       <form method="post" action="" class="form-{{ page_title|slugify }}">
         {{ form|bulma }}
-        <input type="submit" class="button is-link" value="Submit" onclick="this.form.submit();this.disabled = true;">
+        <input type="submit" class="button is-link is-light" value="Submit" onclick="this.form.submit();this.disabled = true;">
         {% csrf_token %}
       </form>
     </div>

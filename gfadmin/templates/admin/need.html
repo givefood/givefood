@@ -67,7 +67,7 @@
           <td></td>
           <td>Edit</td>
           <td>
-            <a href="{% url "admin:need_form" need.need_id %}" class="button is-link is-pulled-right is-small">Edit</a>
+            <a href="{% url "admin:need_form" need.need_id %}" class="button is-link is-pulled-right is-small is-light">Edit</a>
           </td>
         </tr>
         <tr>
@@ -81,7 +81,7 @@
           <td>Publish</td>
           <td>
             <form action="{% url "admin:need_publish" need.need_id 'publish' %}" method="post">
-              <input type="submit" class="button is-warning is-pulled-right is-small" value="Publish" onclick="this.form.submit();this.disabled = true;">
+              <input type="submit" class="button is-warning is-pulled-right is-small is-light" value="Publish" onclick="this.form.submit();this.disabled = true;">
               {% csrf_token %}
             </form>
           </td>
@@ -97,7 +97,7 @@
           <td>Categorise</td>
           <td>
             {% if need.published %}
-              <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small">Categorise</a>
+              <a href="{% url 'admin:need_categorise' need.need_id %}" class="button is-link is-pulled-right is-small is-light">Categorise</a>
             {% endif %}
           </td>
         </tr>
@@ -113,7 +113,7 @@
           <td>
             {% if need.published %}
               <form action="{% url 'admin:need_notifications' need.need_id %}" method="post">
-                <input type="submit" class="button is-warning is-pulled-right is-small" value="Send" onclick="this.form.submit();this.disabled = true;">
+                <input type="submit" class="button is-warning is-pulled-right is-small is-light" value="Send" onclick="this.form.submit();this.disabled = true;">
                 {% csrf_token %}
               </form>
             {% endif %}
@@ -133,12 +133,12 @@
 
       <h3>⚠️ Danger Zone</h3>
       <form action="{% url 'admin:need_nonpertinent' need.need_id %}" method="post">
-        <input type="submit" class="button is-warning" value="Nonpertinent">
+        <input type="submit" class="button is-warning is-light" value="Nonpertinent">
         {% csrf_token %}
       </form>
       <br>
       <form action="{% url 'admin:need_delete' need.need_id %}" method="post">
-        <input type="submit" class="button is-danger" value="Delete" onclick="return confirm('Are you sure you want to DELETE?')">
+        <input type="submit" class="button is-danger is-light" value="Delete" onclick="return confirm('Are you sure you want to DELETE?')">
         {% csrf_token %}
       </form>
 
