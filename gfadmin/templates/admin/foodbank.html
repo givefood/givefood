@@ -64,6 +64,10 @@
       <a href="{% url 'admin:foodbank_check' foodbank.slug %}" class="is-pulled-right"><img src="/static/img/ai.png" style="width:32px;" alt="Check"></a>
 
       <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-light">Edit Food Bank</a><br>
+      <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-light">Edit Food Bank</a><br>
+      <form action="{% url 'admin:foodbank_touch' foodbank.slug %}" method="post" style="margin-top:10px">
+        <input type="submit" class="button is-link is-light" value="Touch">
+      </form>
 
       {% if not foodbank.orders %}
         <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light" style="margin-top:10px">New Order</a>
