@@ -53,6 +53,19 @@ label, strong, b, h3 {
         height:50px;
     }
 }
+.country {
+    font-size:1.1em;
+    font-weight: bold;
+    display:inline-block;
+    margin:0 0 0 30px;
+    position:absolute;
+    top:45px;
+}
+.country img {
+    width:34px;
+    vertical-align:middle;
+    margin:-3px 2px 0 0;
+}
 h1 {
     font-size: 26px !important;
     font-family:"Soehne Dreiviertelfett","Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -151,9 +164,6 @@ del {
 .footer a:hover {
     color:#D3D3D3;
 }
-.lastupdated {
-    text-transform:lowercase;
-}
 .flag svg {
     stroke:#fff;
     vertical-align:middle;
@@ -161,6 +171,9 @@ del {
 }
 .flag:hover svg {
     stroke:#D3D3D3
+}
+.lastupdated {
+    text-transform:lowercase;
 }
 .tabs li.is-active a {
     color: rgb(53, 55, 64);
@@ -275,6 +288,9 @@ del {
 }
 .infowindow h3, .infowindow p, .infowindow address {
     margin-bottom:10px;
+}
+address {
+    font-style:normal;
 }
 
 @page {

@@ -59,6 +59,10 @@ urlpatterns += i18n_patterns(
     path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
     path("human/", givefood.views.human, name="human"),
     path("flag/", givefood.views.flag, name="flag"),
+    
+    # Country pages - must be before generic slug patterns
+    re_path(r"^(?P<country_slug>(scotland|england|wales|northern-ireland))/$", givefood.views.country, name="country"),
+    re_path(r"^(?P<country_slug>(scotland|england|wales|northern-ireland))/geo\.json$", givefood.views.country_geojson, name="country_geojson"),
 
     # Donate
     path("donate/", givefood.views.donate, name="donate"),

@@ -1,0 +1,89 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+{% load i18n %}
+
+{% block title %}Give Food {{ country_name }}{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/hp.css?v={{ version }}">
+  <meta name="description" content="{% blocktrans with country=country_name %}Find food banks in {{ country }}, see what they need and how you can help by donating or volunteering.{% endblocktrans %}">
+  <link rel="alternate" type="application/rss+xml" title="Give Food RSS" href="{% url 'wfbn:rss' %}">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@GiveFoodCharity">
+  <meta property="og:title" content="{% blocktrans with country=country_name %}Food banks in {{ country }}{% endblocktrans %} - Give Food">
+  <meta property="og:description" content="{% blocktrans with country=country_name %}Find food banks in {{ country }}, see what they need and how you can help.{% endblocktrans %}">
+  <meta property="og:image" content="https://www.givefood.org.uk/static/img/map.png">
+  <meta property="og:image:alt" content="Map of UK food banks">
+{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+    <div class="column">
+      <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+      <div class="country">
+        {% if country_name != 'Northern Ireland' %}
+          <img src="/static/img/flags/{{ country_name|slugify }}.svg" alt="{{ country_name }}">
+        {% endif %}
+        {{ country_name }}
+      </div>
+
+      {% include 'public/includes/langswitcher.html' %}
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="column {% if locations %}is-three-fifths{% else %}is-half{% endif %}">
+
+      <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}" data-no-instant>{% blocktrans %}Use my location{% endblocktrans %}</a>
+      <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
+        <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
+        <input id="address_field" type="text" name="address" class="input" placeholder="{{ placeholder }}" value="{{ address }}" required aria-required="true">
+        <input id="lat_lng_field" type="hidden" name="lat_lng">
+        <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
+      </form>
+      
+      <div id="index_intro">
+        <ul>
+            {% if enable_write %}
+              <li><a href="{% url 'write:index' %}">{% trans 'Write to your MP' %}</a>{% if language_code != 'en' %} ({% trans 'English' %}){% endif %}</li>
+            {% endif %}
+            <li><a href="{% url 'donate' %}">{% trans 'Donate' %}</a></li>
+            <li><a href="{% url 'register_foodbank' %}">{% blocktrans %}Register a foodbank{% endblocktrans %}</a></li>
+            <li><a href="{% url 'about_us' %}">{% blocktrans %}About us{% endblocktrans %}</a></li>
+        </ul>
+        <br>
+        <h2>{% blocktrans %}Recently updated{% endblocktrans %}</h2>
+        <ul class="recently-updated">
+            {% for foodbank in recently_updated %}
+                <li><a href="{% url 'wfbn:foodbank' foodbank.foodbank_name_slug %}">{{ foodbank.foodbank_name }}</a></li>
+            {% endfor %}
+        </ul>
+        <h2>{% blocktrans %}Most viewed this week{% endblocktrans %}</h2>
+        <ul class="most-viewed">
+            {% for foodbank in most_viewed %}
+                <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
+            {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="column {% if locations %}is-two-fifths{% else %}is-half{% endif %}">
+      <div id="map"></div>
+      {% include "public/includes/maplegend.html" %}
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+
+  {% include 'public/includes/mapconfig.html' %}
+  <script src="/static/js/wfbn.js?v={{ version }}" defer onload="init()"></script>
+
+{% endblock %}

@@ -17,15 +17,62 @@ from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
 from givefood.const.general import BOT_USER_AGENT, SITE_DOMAIN, PLACES_PER_SITEMAP
-from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
+from givefood.const.cache_times import (
+    SECONDS_IN_DAY,
+    SECONDS_IN_HOUR,
+    SECONDS_IN_TWO_MINUTES,
+    SECONDS_IN_WEEK
+)
 from givefood.settings import LANGUAGES
+
+
+# Country configuration for country-specific pages
+COUNTRY_MAPPING = {
+    'scotland': 'Scotland',
+    'england': 'England',
+    'wales': 'Wales',
+    'northern-ireland': 'Northern Ireland',
+}
+
+# Map center coordinates and zoom levels for each country
+# Chosen to center the map on the geographical center of each country
+COUNTRY_MAP_CONFIG = {
+    'Scotland': {
+        'lat': 57.7,
+        'lng': -4,
+        'zoom': 7
+    },
+    'England': {
+        'lat': 53,
+        'lng': -1.8,
+        'zoom': 7
+    },
+    'Wales': {
+        'lat': 52.3,
+        'lng': -3.7,
+        'zoom': 8
+    },
+    'Northern Ireland': {
+        'lat': 54.6,
+        'lng': -6.5,
+        'zoom': 8
+    },
+}
+
+# Example postcodes and towns for country search placeholders
+COUNTRY_PLACEHOLDERS = {
+    'Scotland': _('e.g. EH12 5PJ or Glasgow'),
+    'England': _('e.g. HA9 0WS or Manchester'),
+    'Wales': _('e.g. CF10 1NS or Cardiff'),
+    'Northern Ireland': _('e.g. BT12 6LW or Belfast'),
+}
 
 
 @cache_page(SECONDS_IN_HOUR)
 def index(request):
     """
     Give Food homepage, with stats and logos
-    """ 
+    """
 
     logos = [
         {
@@ -172,11 +219,229 @@ def index(request):
     return render(request, "public/index.html", template_vars)
 
 
+@cache_page(SECONDS_IN_HOUR)
+def country(request, country_slug):
+    """
+    Country-specific page with food banks filtered by country
+    """
+
+    # Get country name from slug
+    country_name = COUNTRY_MAPPING.get(country_slug)
+    if not country_name:
+        raise Http404("Country not found")
+
+    # Recently updated food banks for this country (deduplicated)
+    exclude_change_text = ["Unknown", "Facebook", "Nothing"]
+    recent_changes = (
+        FoodbankChange.objects
+        .filter(published=True, foodbank__country=country_name)
+        .exclude(change_text__in=exclude_change_text)
+        .only('foodbank_name')
+        .order_by("-created")[:50]  # Fetch more to ensure we have 10 unique
+    )
+
+    # Deduplicate by foodbank_name
+    seen_foodbanks = set()
+    recently_updated = []
+    for change in recent_changes:
+        if change.foodbank_name not in seen_foodbanks:
+            seen_foodbanks.add(change.foodbank_name)
+            recently_updated.append(change)
+            if len(recently_updated) >= 10:
+                break
+
+    # Most viewed food banks for this country
+    most_viewed = (
+        Foodbank.objects
+        .filter(
+            foodbankhit__day__gte=date.today() - timedelta(days=7),
+            foodbankhit__day__lte=date.today(),
+            country=country_name
+        )
+        .annotate(total_hits=Sum('foodbankhit__hits'))
+        .order_by('-total_hits')[:10]
+        .only('name', 'slug')
+    )
+
+    # Map configuration
+    map_settings = COUNTRY_MAP_CONFIG[country_name]
+    map_config = {
+        "geojson": reverse(
+            "country_geojson",
+            kwargs={"country_slug": country_slug}
+        ),
+        "lat": map_settings['lat'],
+        "lng": map_settings['lng'],
+        "zoom": map_settings['zoom'],
+        "location_marker": False,
+    }
+    map_config = json.dumps(map_config)
+    gmap_key = get_cred("gmap_key")
+
+    template_vars = {
+        "country_name": country_name,
+        "country_slug": country_slug,
+        "placeholder": COUNTRY_PLACEHOLDERS[country_name],
+        "recently_updated": recently_updated,
+        "most_viewed": most_viewed,
+        "gmap_key": gmap_key,
+        "map_config": map_config,
+        "is_country_page": True,
+    }
+    return render(request, "public/country.html", template_vars)
+
+
+@cache_page(SECONDS_IN_HOUR)
+def country_geojson(request, country_slug):
+    """
+    GeoJSON endpoint for country-specific food banks
+    """
+
+    country_name = COUNTRY_MAPPING.get(country_slug)
+    if not country_name:
+        raise Http404("Country not found")
+
+    # Get all food banks, locations, and donation points for this country
+    foodbanks = Foodbank.objects.filter(
+        country=country_name,
+        is_closed=False
+    ).only(
+        'slug', 'name', 'alt_name', 'address', 'postcode',
+        'lat_lng', 'delivery_address', 'delivery_lat_lng'
+    )
+    locations = FoodbankLocation.objects.filter(
+        country=country_name,
+        is_closed=False
+    ).only(
+        'name', 'foodbank_name', 'foodbank_slug', 'slug',
+        'address', 'postcode', 'lat_lng', 'boundary_geojson'
+    )
+    donationpoints = FoodbankDonationPoint.objects.filter(
+        country=country_name,
+        is_closed=False
+    ).only(
+        'name', 'foodbank_name', 'foodbank_slug', 'slug',
+        'address', 'postcode', 'lat_lng'
+    )
+
+    features = []
+    decimal_places = 4
+
+    # Add food banks
+    for foodbank in foodbanks:
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    round(foodbank.long(), decimal_places),
+                    round(foodbank.latt(), decimal_places)
+                ],
+            },
+            "properties": {
+                "type": "f",
+                "name": foodbank.full_name(),
+                "address": foodbank.full_address(),
+                "url": reverse(
+                    "wfbn:foodbank",
+                    kwargs={"slug": foodbank.slug}
+                ),
+            }
+        })
+
+        # Add delivery address if it exists (check both fields)
+        if foodbank.delivery_address and foodbank.delivery_lat_lng:
+            delivery_lat = foodbank.delivery_lat_lng.split(",")[0]
+            delivery_lng = foodbank.delivery_lat_lng.split(",")[1]
+            features.append({
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [
+                        round(float(delivery_lng), decimal_places),
+                        round(float(delivery_lat), decimal_places)
+                    ],
+                },
+                "properties": {
+                    "type": "f",
+                    "name": "%s Delivery Address" % (foodbank.full_name()),
+                    "address": foodbank.delivery_address,
+                    "url": reverse(
+                        "wfbn:foodbank",
+                        kwargs={"slug": foodbank.slug}
+                    ),
+                }
+            })
+
+    # Add locations
+    for location in locations:
+        lat = location.lat_lng.split(",")[0]
+        lng = location.lat_lng.split(",")[1]
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    round(float(lng), decimal_places),
+                    round(float(lat), decimal_places)
+                ],
+            },
+            "properties": {
+                "type": "l",
+                "name": location.name,
+                "foodbank": location.foodbank_name,
+                "address": location.full_address(),
+                "url": reverse(
+                    "wfbn:foodbank_location",
+                    kwargs={
+                        "slug": location.foodbank_slug,
+                        "locslug": location.slug
+                    }
+                ),
+            }
+        })
+
+    # Add donation points
+    for dp in donationpoints:
+        lat = dp.lat_lng.split(",")[0]
+        lng = dp.lat_lng.split(",")[1]
+        features.append({
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    round(float(lng), decimal_places),
+                    round(float(lat), decimal_places)
+                ],
+            },
+            "properties": {
+                "type": "d",
+                "name": dp.name,
+                "foodbank": dp.foodbank_name,
+                "address": dp.full_address(),
+                "url": reverse(
+                    "wfbn:foodbank_donationpoint",
+                    kwargs={
+                        "slug": dp.foodbank_slug,
+                        "dpslug": dp.slug
+                    }
+                ),
+            }
+        })
+
+    response_dict = {
+        "type": "FeatureCollection",
+        "features": features
+    }
+
+    return JsonResponse(response_dict)
+
+
 @cache_page(SECONDS_IN_WEEK)
 def annual_report_index(request):
     """
     Annual report homepage, with links to each year's report
-    """ 
+    """
     return render(request, "public/ar/index.html")
 
 
@@ -360,6 +625,9 @@ def sitemap(request):
         "privacy",
     ]
 
+    # Country slugs for sitemap
+    country_slugs = ['scotland', 'england', 'wales', 'northern-ireland']
+
     foodbanks = Foodbank.objects.all().exclude(is_closed=True).only(
         'slug',
         'days_between_needs',
@@ -371,18 +639,32 @@ def sitemap(request):
         'twitter_handle'
     )
     constituencies = ParliamentaryConstituency.objects.all().only('slug')
-    locations = FoodbankLocation.objects.all().exclude(is_closed=True).only('foodbank_slug', 'slug')
-    donationpoints = FoodbankDonationPoint.objects.all().exclude(is_closed=True).only('foodbank_slug', 'slug')
+    locations = (
+        FoodbankLocation.objects.all()
+        .exclude(is_closed=True)
+        .only('foodbank_slug', 'slug')
+    )
+    donationpoints = (
+        FoodbankDonationPoint.objects.all()
+        .exclude(is_closed=True)
+        .only('foodbank_slug', 'slug')
+    )
 
     template_vars = {
-        "domain":SITE_DOMAIN,
-        "url_names":url_names,
-        "foodbanks":foodbanks,
-        "constituencies":constituencies,
-        "locations":locations,
-        "donationpoints":donationpoints,
+        "domain": SITE_DOMAIN,
+        "url_names": url_names,
+        "country_slugs": country_slugs,
+        "foodbanks": foodbanks,
+        "constituencies": constituencies,
+        "locations": locations,
+        "donationpoints": donationpoints,
     }
-    return render(request, "public/sitemap.xml", template_vars, content_type='text/xml')
+    return render(
+        request,
+        "public/sitemap.xml",
+        template_vars,
+        content_type='text/xml'
+    )
 
 
 @cache_page(SECONDS_IN_WEEK)

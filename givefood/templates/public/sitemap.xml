@@ -4,6 +4,9 @@
 	{% for url_name in url_names %}
 		<url><loc>{{ domain }}{% url url_name %}</loc></url>
 	{% endfor %}
+	{% for country_slug in country_slugs %}
+		<url><loc>{{ domain }}{% url 'country' country_slug %}</loc></url>
+	{% endfor %}
 	{% for foodbank in foodbanks %}
 		<url>
 			<loc>{{ domain }}{% url 'wfbn:foodbank' foodbank.slug %}</loc>
