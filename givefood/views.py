@@ -354,8 +354,8 @@ def country_geojson(request, country_slug):
                     ],
                 },
                 "properties": {
-                    "type": "d",
-                    "name": foodbank.full_name(),
+                    "type": "f",
+                    "name": "%s Delivery Address" % (foodbank.full_name()),
                     "address": foodbank.delivery_address,
                     "url": reverse(
                         "wfbn:foodbank",
@@ -407,7 +407,7 @@ def country_geojson(request, country_slug):
                 ],
             },
             "properties": {
-                "type": "p",
+                "type": "d",
                 "name": dp.name,
                 "foodbank_name": dp.foodbank_name,
                 "address": dp.address,
