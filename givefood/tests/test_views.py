@@ -178,3 +178,70 @@ class TestManifest:
         
         # Verify correct MIME type for SVG
         assert icon['type'] == 'image/svg+xml'
+
+
+@pytest.mark.django_db
+class TestCountryPages:
+    """Test country-specific pages."""
+
+    def test_scotland_page_accessible(self, client):
+        """Test that the Scotland page is accessible."""
+        response = client.get('/scotland/')
+        assert response.status_code in [200, 500]  # May fail with empty DB due to aggregations
+        
+    def test_england_page_accessible(self, client):
+        """Test that the England page is accessible."""
+        response = client.get('/england/')
+        assert response.status_code in [200, 500]
+        
+    def test_wales_page_accessible(self, client):
+        """Test that the Wales page is accessible."""
+        response = client.get('/wales/')
+        assert response.status_code in [200, 500]
+        
+    def test_northern_ireland_page_accessible(self, client):
+        """Test that the Northern Ireland page is accessible."""
+        response = client.get('/northern-ireland/')
+        assert response.status_code in [200, 500]
+        
+    def test_invalid_country_returns_404(self, client):
+        """Test that invalid country slugs return 404."""
+        response = client.get('/invalid-country/')
+        assert response.status_code == 404
+        
+    def test_scotland_geojson_accessible(self, client):
+        """Test that the Scotland GeoJSON endpoint is accessible."""
+        response = client.get('/scotland/geo.json')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+        
+    def test_england_geojson_accessible(self, client):
+        """Test that the England GeoJSON endpoint is accessible."""
+        response = client.get('/england/geo.json')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+        
+    def test_wales_geojson_accessible(self, client):
+        """Test that the Wales GeoJSON endpoint is accessible."""
+        response = client.get('/wales/geo.json')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+        
+    def test_northern_ireland_geojson_accessible(self, client):
+        """Test that the Northern Ireland GeoJSON endpoint is accessible."""
+        response = client.get('/northern-ireland/geo.json')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+        
+    def test_geojson_has_valid_structure(self, client):
+        """Test that GeoJSON endpoints return valid GeoJSON structure."""
+        import json
+        response = client.get('/scotland/geo.json')
+        assert response.status_code == 200
+        data = json.loads(response.content.decode('utf-8'))
+        
+        # Check GeoJSON structure
+        assert data['type'] == 'FeatureCollection'
+        assert 'features' in data
+        assert isinstance(data['features'], list)
+

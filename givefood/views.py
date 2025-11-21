@@ -211,7 +211,7 @@ def country(request, country_slug):
     exclude_change_text = ["Unknown", "Facebook", "Nothing"]
     recently_updated = (
         FoodbankChange.objects
-        .filter(published=True, foodbank_country=country_name)
+        .filter(published=True, foodbank__country=country_name)
         .exclude(change_text__in=exclude_change_text)
         .only('foodbank_name')
         .order_by("-created")[:10]
