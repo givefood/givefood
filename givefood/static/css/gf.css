@@ -64,7 +64,7 @@ label, strong, b, h3 {
 .country img {
     width:34px;
     vertical-align:middle;
-    margin-top:-3px;
+    margin:-3px 2px 0 0;
 }
 h1 {
     font-size: 26px !important;
