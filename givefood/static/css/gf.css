@@ -281,6 +281,9 @@ del {
 .infowindow h3, .infowindow p, .infowindow address {
     margin-bottom:10px;
 }
+address {
+    font-style:normal;
+}
 
 @page {
     margin:1cm;
