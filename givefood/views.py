@@ -230,15 +230,25 @@ def country(request, country_slug):
     if not country_name:
         raise Http404("Country not found")
 
-    # Recently updated food banks for this country
+    # Recently updated food banks for this country (deduplicated)
     exclude_change_text = ["Unknown", "Facebook", "Nothing"]
-    recently_updated = (
+    recent_changes = (
         FoodbankChange.objects
         .filter(published=True, foodbank__country=country_name)
         .exclude(change_text__in=exclude_change_text)
         .only('foodbank_name')
-        .order_by("-created")[:10]
+        .order_by("-created")[:50]  # Fetch more to ensure we have 10 unique
     )
+
+    # Deduplicate by foodbank_name
+    seen_foodbanks = set()
+    recently_updated = []
+    for change in recent_changes:
+        if change.foodbank_name not in seen_foodbanks:
+            seen_foodbanks.add(change.foodbank_name)
+            recently_updated.append(change)
+            if len(recently_updated) >= 10:
+                break
 
     # Most viewed food banks for this country
     most_viewed = (
