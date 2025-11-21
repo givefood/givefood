@@ -388,10 +388,7 @@ msgid "Foodbanks in %(location)s"
 msgstr "Bainc bia i %(location)s"
 
 #: gfwfbn/templates/wfbn/index.html:68
-#, fuzzy, python-format
-#| msgid ""
-#| "Find a food bank near you, see what they need and how you can help by "
-#| "donating or volunteering."
+#, python-format
 msgid ""
 "Find a food bank near %(location)s, see what they need and how you can help "
 "by donating or volunteering."
