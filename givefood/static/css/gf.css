@@ -53,6 +53,19 @@ label, strong, b, h3 {
         height:50px;
     }
 }
+.country {
+    font-size:1.1em;
+    font-weight: bold;
+    display:inline-block;
+    margin:0 0 0 30px;
+    position:absolute;
+    top:45px;
+}
+.country img {
+    width:34px;
+    vertical-align:middle;
+    margin-top:-3px;
+}
 h1 {
     font-size: 26px !important;
     font-family:"Soehne Dreiviertelfett","Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -153,14 +166,6 @@ del {
 }
 .lastupdated {
     text-transform:lowercase;
-}
-.flag svg {
-    stroke:#fff;
-    vertical-align:middle;
-    margin:0 2px 2px 0;
-}
-.flag:hover svg {
-    stroke:#D3D3D3
 }
 .tabs li.is-active a {
     color: rgb(53, 55, 64);

@@ -21,14 +21,19 @@
   <div class="columns">
     <div class="column">
       <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+      <div class="country">
+        {% if country_name != 'Northern Ireland' %}
+          <img src="/static/img/flags/{{ country_name|slugify }}.svg" alt="{{ country_name }}">
+        {% endif %}
+        {{ country_name }}
+      </div>
+
       {% include 'public/includes/langswitcher.html' %}
     </div>
   </div>
 
   <div class="columns">
     <div class="column {% if locations %}is-three-fifths{% else %}is-half{% endif %}">
-
-      <h1>{% blocktrans with country=country_name %}Food banks in {{ country }}{% endblocktrans %}</h1>
 
       <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}" data-no-instant>{% blocktrans %}Use my location{% endblocktrans %}</a>
       <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
