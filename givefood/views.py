@@ -17,15 +17,62 @@ from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
 from givefood.const.general import BOT_USER_AGENT, SITE_DOMAIN, PLACES_PER_SITEMAP
-from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR, SECONDS_IN_TWO_MINUTES, SECONDS_IN_WEEK
+from givefood.const.cache_times import (
+    SECONDS_IN_DAY,
+    SECONDS_IN_HOUR,
+    SECONDS_IN_TWO_MINUTES,
+    SECONDS_IN_WEEK
+)
 from givefood.settings import LANGUAGES
+
+
+# Country configuration for country-specific pages
+COUNTRY_MAPPING = {
+    'scotland': 'Scotland',
+    'england': 'England',
+    'wales': 'Wales',
+    'northern-ireland': 'Northern Ireland',
+}
+
+# Map center coordinates and zoom levels for each country
+# Chosen to center the map on the geographical center of each country
+COUNTRY_MAP_CONFIG = {
+    'Scotland': {
+        'lat': 56.5,  # Central Scotland
+        'lng': -4.0,
+        'zoom': 7
+    },
+    'England': {
+        'lat': 52.5,  # Central England (Midlands area)
+        'lng': -1.5,
+        'zoom': 6
+    },
+    'Wales': {
+        'lat': 52.3,  # Central Wales
+        'lng': -3.7,
+        'zoom': 7
+    },
+    'Northern Ireland': {
+        'lat': 54.6,  # Central Northern Ireland
+        'lng': -6.5,
+        'zoom': 8
+    },
+}
+
+# Example postcodes and towns for country search placeholders
+COUNTRY_PLACEHOLDERS = {
+    'Scotland': _('e.g. EH1 1YZ or Glasgow'),
+    'England': _('e.g. SW1A 1AA or Manchester'),
+    'Wales': _('e.g. CF10 1EP or Cardiff'),
+    'Northern Ireland': _('e.g. BT1 1AA or Belfast'),
+}
 
 
 @cache_page(SECONDS_IN_HOUR)
 def index(request):
     """
     Give Food homepage, with stats and logos
-    """ 
+    """
 
     logos = [
         {
@@ -178,34 +225,10 @@ def country(request, country_slug):
     Country-specific page with food banks filtered by country
     """
 
-    # Map URL slugs to database country names
-    COUNTRY_MAPPING = {
-        'scotland': 'Scotland',
-        'england': 'England',
-        'wales': 'Wales',
-        'northern-ireland': 'Northern Ireland',
-    }
-
     # Get country name from slug
     country_name = COUNTRY_MAPPING.get(country_slug)
     if not country_name:
         raise Http404("Country not found")
-
-    # Map config for each country (lat, lng, zoom)
-    COUNTRY_MAP_CONFIG = {
-        'Scotland': {'lat': 56.5, 'lng': -4.0, 'zoom': 7},
-        'England': {'lat': 52.5, 'lng': -1.5, 'zoom': 6},
-        'Wales': {'lat': 52.3, 'lng': -3.7, 'zoom': 7},
-        'Northern Ireland': {'lat': 54.6, 'lng': -6.5, 'zoom': 8},
-    }
-
-    # Placeholder examples for each country
-    COUNTRY_PLACEHOLDERS = {
-        'Scotland': _('e.g. EH1 1YZ or Glasgow'),
-        'England': _('e.g. SW1A 1AA or Manchester'),
-        'Wales': _('e.g. CF10 1EP or Cardiff'),
-        'Northern Ireland': _('e.g. BT1 1AA or Belfast'),
-    }
 
     # Recently updated food banks for this country
     exclude_change_text = ["Unknown", "Facebook", "Nothing"]
@@ -264,14 +287,6 @@ def country_geojson(request, country_slug):
     GeoJSON endpoint for country-specific food banks
     """
 
-    # Map URL slugs to database country names
-    COUNTRY_MAPPING = {
-        'scotland': 'Scotland',
-        'england': 'England',
-        'wales': 'Wales',
-        'northern-ireland': 'Northern Ireland',
-    }
-
     country_name = COUNTRY_MAPPING.get(country_slug)
     if not country_name:
         raise Http404("Country not found")
@@ -325,8 +340,8 @@ def country_geojson(request, country_slug):
             }
         })
 
-        # Add delivery address if it exists
-        if foodbank.delivery_address:
+        # Add delivery address if it exists (check both fields)
+        if foodbank.delivery_address and foodbank.delivery_lat_lng:
             delivery_lat = foodbank.delivery_lat_lng.split(",")[0]
             delivery_lng = foodbank.delivery_lat_lng.split(",")[1]
             features.append({
