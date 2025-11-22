@@ -1154,14 +1154,14 @@ def gwen(prompt, temperature, response_mime_type = "application/json", response_
             api_params["response_format"] = {"type": "json_object"}
 
     response = client.chat.completions.create(**api_params)
-    
+
     # Parse the response content
     content = response.choices[0].message.content
-    
+
     # If JSON response was expected, parse it
     if response_mime_type == "application/json":
         return json.loads(content)
-    
+
     return content
 
 
