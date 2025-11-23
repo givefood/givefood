@@ -1366,7 +1366,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    need_response = gemini(
+    need_response = gwen(
         prompt = need_prompt,
         temperature = 0,
         response_schema = response_schema,
