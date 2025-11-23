@@ -24,7 +24,9 @@
     <div class="columns">
 
         {% if not foodbanks and not locations and not donationpoints and not constituencies and not needs %}
-            <p>No results, have another go</p>
+            <div class="column">
+                <p>No results, have another go</p>
+            </div>
         {% endif %}
 
         {% if foodbanks %}
