@@ -204,7 +204,10 @@ class TestGwenFunction:
         call_args = mock_client.chat.completions.create.call_args
         assert call_args.kwargs["model"] == "qwen-flash"
         assert call_args.kwargs["temperature"] == 0.5
-        assert call_args.kwargs["messages"][0]["content"] == "test prompt"
+        # Qwen API requires "json" in the prompt when using json_object format
+        assert "json" in call_args.kwargs["messages"][0]["content"].lower()
+        expected_content = "test prompt Respond in JSON format."
+        assert call_args.kwargs["messages"][0]["content"] == expected_content
 
     @patch('givefood.func.get_cred')
     @patch('givefood.func.OpenAI')
@@ -241,6 +244,8 @@ class TestGwenFunction:
         call_args = mock_client.chat.completions.create.call_args
         assert "response_format" in call_args.kwargs
         assert call_args.kwargs["response_format"]["type"] == "json_schema"
+        # Verify "json" was added to prompt
+        assert "json" in call_args.kwargs["messages"][0]["content"].lower()
 
     @patch('givefood.func.get_cred')
     @patch('givefood.func.OpenAI')
@@ -265,3 +270,30 @@ class TestGwenFunction:
         # Verify the API call used the custom model
         call_args = mock_client.chat.completions.create.call_args
         assert call_args.kwargs["model"] == "qwen-plus"
+
+    @patch('givefood.func.get_cred')
+    @patch('givefood.func.OpenAI')
+    def test_gwen_prompt_already_has_json(self, mock_openai_class, mock_get_cred):
+        """Test gwen function when prompt already contains 'json'."""
+        # Mock the credential
+        mock_get_cred.return_value = "test_api_key"
+
+        # Mock the OpenAI client and response
+        mock_client = Mock()
+        mock_openai_class.return_value = mock_client
+
+        # Create a mock response
+        mock_response = Mock()
+        mock_response.choices = [Mock()]
+        mock_response.choices[0].message.content = '{"result": "ok"}'
+        mock_client.chat.completions.create.return_value = mock_response
+
+        # Call the function with a prompt that already contains "json"
+        result = gwen("Return JSON output", temperature=0.5)
+
+        # Verify the result
+        assert result == {"result": "ok"}
+
+        # Verify the prompt was not modified
+        call_args = mock_client.chat.completions.create.call_args
+        assert call_args.kwargs["messages"][0]["content"] == "Return JSON output"
