@@ -11,7 +11,7 @@ from givefood.func import (
     distance_meters,
     diff_html,
     geojson_dict,
-    gwen,
+    qwen,
 )
 
 
@@ -167,13 +167,13 @@ class TestJSONUtilities:
         assert result["type"] == "Point"
 
 
-class TestGwenFunction:
-    """Test the gwen function (Qwen AI integration)."""
+class TestQwenFunction:
+    """Test the qwen function (Qwen AI integration)."""
 
     @patch('givefood.func.get_cred')
     @patch('givefood.func.OpenAI')
-    def test_gwen_basic_json_response(self, mock_openai_class, mock_get_cred):
-        """Test gwen function with JSON response."""
+    def test_qwen_basic_json_response(self, mock_openai_class, mock_get_cred):
+        """Test qwen function with JSON response."""
         # Mock the credential
         mock_get_cred.return_value = "test_api_key"
 
@@ -188,7 +188,7 @@ class TestGwenFunction:
         mock_client.chat.completions.create.return_value = mock_response
 
         # Call the function
-        result = gwen("test prompt", temperature=0.5)
+        result = qwen("test prompt", temperature=0.5)
 
         # Verify the result
         assert result == {"result": "success"}
@@ -211,8 +211,8 @@ class TestGwenFunction:
 
     @patch('givefood.func.get_cred')
     @patch('givefood.func.OpenAI')
-    def test_gwen_with_schema(self, mock_openai_class, mock_get_cred):
-        """Test gwen function with response schema."""
+    def test_qwen_with_schema(self, mock_openai_class, mock_get_cred):
+        """Test qwen function with response schema."""
         # Mock the credential
         mock_get_cred.return_value = "test_api_key"
 
@@ -235,7 +235,7 @@ class TestGwenFunction:
         }
 
         # Call the function
-        result = gwen("test prompt", temperature=0, response_schema=schema)
+        result = qwen("test prompt", temperature=0, response_schema=schema)
 
         # Verify the result
         assert result == {"items": ["item1", "item2"]}
@@ -251,8 +251,8 @@ class TestGwenFunction:
 
     @patch('givefood.func.get_cred')
     @patch('givefood.func.OpenAI')
-    def test_gwen_custom_model(self, mock_openai_class, mock_get_cred):
-        """Test gwen function with custom model."""
+    def test_qwen_custom_model(self, mock_openai_class, mock_get_cred):
+        """Test qwen function with custom model."""
         # Mock the credential
         mock_get_cred.return_value = "test_api_key"
 
@@ -267,7 +267,7 @@ class TestGwenFunction:
         mock_client.chat.completions.create.return_value = mock_response
 
         # Call the function with custom model
-        gwen("test prompt", temperature=0.7, model="qwen-plus")
+        qwen("test prompt", temperature=0.7, model="qwen-plus")
 
         # Verify the API call used the custom model
         call_args = mock_client.chat.completions.create.call_args
@@ -275,8 +275,8 @@ class TestGwenFunction:
 
     @patch('givefood.func.get_cred')
     @patch('givefood.func.OpenAI')
-    def test_gwen_prompt_already_has_json(self, mock_openai_class, mock_get_cred):
-        """Test gwen function when prompt already contains 'json'."""
+    def test_qwen_prompt_already_has_json(self, mock_openai_class, mock_get_cred):
+        """Test qwen function when prompt already contains 'json'."""
         # Mock the credential
         mock_get_cred.return_value = "test_api_key"
 
@@ -291,7 +291,7 @@ class TestGwenFunction:
         mock_client.chat.completions.create.return_value = mock_response
 
         # Call the function with a prompt that already contains "json"
-        result = gwen("Return JSON output", temperature=0.5)
+        result = qwen("Return JSON output", temperature=0.5)
 
         # Verify the result
         assert result == {"result": "ok"}

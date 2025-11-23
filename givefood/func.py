@@ -1118,7 +1118,7 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
     return response.parsed
 
 
-def gwen(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "qwen-flash"):
+def qwen(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "qwen-flash"):
 
     client = OpenAI(
         api_key = get_cred("qwen_api_key"),
@@ -1367,7 +1367,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    need_response = gwen(
+    need_response = qwen(
         prompt = need_prompt,
         temperature = 0,
         response_schema = response_schema,
