@@ -18,6 +18,7 @@ from datetime import datetime
 from time import mktime
 from google import genai
 from google.genai import types
+from openai import OpenAI
 from bs4 import BeautifulSoup
 from urllib.parse import quote
 from furl import furl
@@ -1117,6 +1118,59 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
     return response.parsed
 
 
+def gwen(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "qwen-flash"):
+
+    client = OpenAI(
+        api_key = get_cred("qwen_api_key"),
+        base_url = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+    )
+
+    # Qwen API requires the word "json" in messages when using json_object response_format
+    # Append instruction if JSON output is requested and prompt doesn't contain "json"
+    modified_prompt = prompt
+    if response_mime_type == "application/json" and "json" not in prompt.lower():
+        modified_prompt = prompt + " Respond in JSON format."
+
+    # Prepare the messages
+    messages = [
+        {"role": "user", "content": modified_prompt}
+    ]
+
+    # Prepare API call parameters
+    api_params = {
+        "model": model,
+        "messages": messages,
+        "temperature": temperature,
+    }
+
+    # Handle JSON response format if requested
+    if response_mime_type == "application/json":
+        if response_schema:
+            # OpenAI-compatible structured output using response_format
+            api_params["response_format"] = {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "response_schema",
+                    "strict": True,
+                    "schema": response_schema
+                }
+            }
+        else:
+            # Simple JSON mode
+            api_params["response_format"] = {"type": "json_object"}
+
+    response = client.chat.completions.create(**api_params)
+
+    # Parse the response content
+    content = response.choices[0].message.content
+
+    # If JSON response was expected, parse it
+    if response_mime_type == "application/json":
+        return json.loads(content)
+
+    return content
+
+
 def htmlbodytext(html):
 
     soup = BeautifulSoup(html, features="html.parser")
@@ -1318,7 +1372,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    need_response = gemini(
+    need_response = gwen(
         prompt = need_prompt,
         temperature = 0,
         response_schema = response_schema,
