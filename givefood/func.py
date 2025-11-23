@@ -1125,9 +1125,15 @@ def gwen(prompt, temperature, response_mime_type = "application/json", response_
         base_url = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
     )
 
+    # Qwen API requires the word "json" in messages when using json_object response_format
+    # Append instruction if JSON output is requested and prompt doesn't contain "json"
+    modified_prompt = prompt
+    if response_mime_type == "application/json" and "json" not in prompt.lower():
+        modified_prompt = prompt + " Respond in JSON format."
+
     # Prepare the messages
     messages = [
-        {"role": "user", "content": prompt}
+        {"role": "user", "content": modified_prompt}
     ]
 
     # Prepare API call parameters
