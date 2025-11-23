@@ -1130,6 +1130,12 @@ def gwen(prompt, temperature, response_mime_type = "application/json", response_
     modified_prompt = prompt
     if response_mime_type == "application/json" and "json" not in prompt.lower():
         modified_prompt = prompt + " Respond in JSON format."
+    
+    # If a schema is provided, include it in the prompt for Qwen
+    # Qwen doesn't fully support OpenAI's json_schema format with strict mode
+    if response_schema:
+        schema_str = json.dumps(response_schema, indent=2)
+        modified_prompt = modified_prompt + f"\n\nFollow this JSON schema:\n{schema_str}"
 
     # Prepare the messages
     messages = [
@@ -1145,19 +1151,8 @@ def gwen(prompt, temperature, response_mime_type = "application/json", response_
 
     # Handle JSON response format if requested
     if response_mime_type == "application/json":
-        if response_schema:
-            # OpenAI-compatible structured output using response_format
-            api_params["response_format"] = {
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "response_schema",
-                    "strict": True,
-                    "schema": response_schema
-                }
-            }
-        else:
-            # Simple JSON mode
-            api_params["response_format"] = {"type": "json_object"}
+        # Use simple json_object mode for Qwen
+        api_params["response_format"] = {"type": "json_object"}
 
     response = client.chat.completions.create(**api_params)
 

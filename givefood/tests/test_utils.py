@@ -240,12 +240,14 @@ class TestGwenFunction:
         # Verify the result
         assert result == {"items": ["item1", "item2"]}
 
-        # Verify the API call included the schema
+        # Verify the API call used json_object format (not json_schema)
         call_args = mock_client.chat.completions.create.call_args
         assert "response_format" in call_args.kwargs
-        assert call_args.kwargs["response_format"]["type"] == "json_schema"
-        # Verify "json" was added to prompt
-        assert "json" in call_args.kwargs["messages"][0]["content"].lower()
+        assert call_args.kwargs["response_format"]["type"] == "json_object"
+        # Verify "json" and schema were added to prompt
+        prompt_content = call_args.kwargs["messages"][0]["content"]
+        assert "json" in prompt_content.lower()
+        assert "Follow this JSON schema:" in prompt_content
 
     @patch('givefood.func.get_cred')
     @patch('givefood.func.OpenAI')
