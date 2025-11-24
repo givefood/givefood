@@ -1,0 +1,23 @@
+{% extends "admin/page.html" %}
+{% load bulma_tags %}
+
+{% block title %}{% if page_title %}{{ page_title }} - {% endif %}Give Food Admin{% endblock %}
+
+{% block body %}
+
+  <div class="columns">
+
+    <div class="column">
+      {% if page_title %}
+        <h2>{{ page_title }}</h2>
+      {% endif %}
+      <form method="post" action="" class="form-{{ page_title|slugify }}">
+        {{ form|bulma }}
+        <input type="submit" class="button is-link is-light" value="Submit" onclick="this.form.submit();this.disabled = true;">
+        {% csrf_token %}
+      </form>
+    </div>
+
+  </div>
+
+{% endblock %}

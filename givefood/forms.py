@@ -82,6 +82,11 @@ class FoodbankLocationForm(ModelForm):
             location.save()
         return location
 
+
+class FoodbankLocationAreaForm(forms.Form):
+    name = forms.CharField(max_length=100, help_text="Name of the location")
+    mapit_id = forms.IntegerField(help_text="MapIt Area ID")
+
    
 class FoodbankDonationPointForm(ModelForm):
     class Meta:
