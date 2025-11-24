@@ -988,50 +988,73 @@ def fblocation_area_form(request, slug):
             # Get MapIt API key
             mapit_key = get_cred("mapit_key")
             
-            # Fetch geometry data
-            geometry_url = f"https://mapit.mysociety.org/area/{mapit_id}/geometry?api_key={mapit_key}"
-            geometry_response = requests.get(geometry_url)
-            
-            if geometry_response.status_code != 200:
-                form.add_error('mapit_id', f'Failed to fetch geometry from MapIt API (status {geometry_response.status_code})')
-            else:
-                geometry_data = geometry_response.json()
+            try:
+                # Fetch geometry data
+                geometry_url = f"https://mapit.mysociety.org/area/{mapit_id}/geometry"
+                geometry_response = requests.get(
+                    geometry_url,
+                    params={"api_key": mapit_key},
+                    timeout=20
+                )
                 
-                # Fetch geojson data
-                geojson_url = f"https://mapit.mysociety.org/area/{mapit_id}.geojson?api_key={mapit_key}"
-                geojson_response = requests.get(geojson_url)
-                
-                if geojson_response.status_code != 200:
-                    form.add_error('mapit_id', f'Failed to fetch geojson from MapIt API (status {geojson_response.status_code})')
+                if geometry_response.status_code != 200:
+                    form.add_error('mapit_id', f'Failed to fetch geometry from MapIt API (status {geometry_response.status_code})')
                 else:
-                    geojson_data = geojson_response.json()
+                    try:
+                        geometry_data = geometry_response.json()
+                    except ValueError:
+                        form.add_error('mapit_id', 'MapIt API returned invalid JSON for geometry')
+                        geometry_data = None
                     
-                    # Extract centre coordinates
-                    centre_lat = geometry_data.get('centre_lat')
-                    centre_lon = geometry_data.get('centre_lon')
-                    
-                    if not centre_lat or not centre_lon:
-                        form.add_error('mapit_id', 'MapIt API did not return centre coordinates')
-                    else:
-                        # Create lat_lng string
-                        lat_lng = f"{centre_lat},{centre_lon}"
-                        
-                        # Create boundary_geojson by wrapping the geometry
-                        boundary_geojson = json.dumps({
-                            "type": "Feature",
-                            "geometry": geojson_data
-                        })
-                        
-                        # Create new FoodbankLocation
-                        foodbank_location = FoodbankLocation(
-                            foodbank=foodbank,
-                            name=name,
-                            lat_lng=lat_lng,
-                            boundary_geojson=boundary_geojson
+                    if geometry_data:
+                        # Fetch geojson data
+                        geojson_url = f"https://mapit.mysociety.org/area/{mapit_id}.geojson"
+                        geojson_response = requests.get(
+                            geojson_url,
+                            params={"api_key": mapit_key},
+                            timeout=20
                         )
-                        foodbank_location.save()
                         
-                        return redirect("admin:foodbank", slug=foodbank.slug)
+                        if geojson_response.status_code != 200:
+                            form.add_error('mapit_id', f'Failed to fetch geojson from MapIt API (status {geojson_response.status_code})')
+                        else:
+                            try:
+                                geojson_data = geojson_response.json()
+                            except ValueError:
+                                form.add_error('mapit_id', 'MapIt API returned invalid JSON for geojson')
+                                geojson_data = None
+                            
+                            if geojson_data:
+                                # Extract centre coordinates
+                                centre_lat = geometry_data.get('centre_lat')
+                                centre_lon = geometry_data.get('centre_lon')
+                                
+                                if centre_lat is None or centre_lon is None:
+                                    form.add_error('mapit_id', 'MapIt API did not return centre coordinates')
+                                else:
+                                    # Create lat_lng string
+                                    lat_lng = f"{centre_lat},{centre_lon}"
+                                    
+                                    # Create boundary_geojson by wrapping the geometry
+                                    boundary_geojson = json.dumps({
+                                        "type": "Feature",
+                                        "geometry": geojson_data
+                                    })
+                                    
+                                    # Create new FoodbankLocation
+                                    foodbank_location = FoodbankLocation(
+                                        foodbank=foodbank,
+                                        name=name,
+                                        lat_lng=lat_lng,
+                                        boundary_geojson=boundary_geojson
+                                    )
+                                    foodbank_location.save()
+                                    
+                                    return redirect("admin:foodbank", slug=foodbank.slug)
+            except requests.exceptions.Timeout:
+                form.add_error('mapit_id', 'Request to MapIt API timed out')
+            except requests.exceptions.RequestException as e:
+                form.add_error('mapit_id', f'Error calling MapIt API: {e}')
     else:
         form = FoodbankLocationAreaForm()
     
