@@ -293,7 +293,7 @@ class Foodbank(models.Model):
     def delivery_long(self):
         return float(self.delivery_lat_lng.split(",")[1])
 
-    def has_delivery_area(self):
+    def has_service_area(self):
         if self.no_locations == 0:
             return False
         locations = FoodbankLocation.objects.filter(foodbank = self, boundary_geojson__isnull = False).count()
