@@ -1063,9 +1063,8 @@ def fblocation_area_form(request, slug):
     template_vars = {
         "form": form,
         "page_title": page_title,
-        "foodbank": foodbank,
     }
-    return render(request, "admin/form.html", template_vars)
+    return render(request, "admin/fblocation_area_form.html", template_vars)
 
 
 def fblocation_politics_edit(request, slug, loc_slug):
