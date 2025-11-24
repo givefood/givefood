@@ -1042,13 +1042,15 @@ def fblocation_area_form(request, slug):
                                     })
                                     
                                     # Create new FoodbankLocation
+                                    # Note: We skip do_geoupdate=False because we don't have a postcode
+                                    # and Plus Codes aren't needed for area-based locations
                                     foodbank_location = FoodbankLocation(
                                         foodbank=foodbank,
                                         name=name,
                                         lat_lng=lat_lng,
                                         boundary_geojson=boundary_geojson
                                     )
-                                    foodbank_location.save()
+                                    foodbank_location.save(do_geoupdate=False)
                                     
                                     return redirect("admin:foodbank", slug=foodbank.slug)
             except requests.exceptions.Timeout:
