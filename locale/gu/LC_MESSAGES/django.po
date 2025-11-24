@@ -726,7 +726,7 @@ msgstr "ગર્નસી"
 msgid "Hello"
 msgstr "નમસ્તે"
 
-#: givefood/templates/public/includes/deliveryareadisclaimer.html:3
+#: givefood/templates/public/includes/serviceareadisclaimer.html:3
 msgid "Service areas are approximate. You should check with the food bank"
 msgstr "સેવા વિસ્તારો અંદાજિત છે. તમારે ફૂડ બેંક સાથે તપાસ કરવી જોઈએ."
 

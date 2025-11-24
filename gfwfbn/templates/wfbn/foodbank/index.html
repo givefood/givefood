@@ -115,7 +115,7 @@
             {% include "public/includes/maplegend.html" %}
             {% if foodbank.latest_need.change_text == "Unknown" or foodbank.latest_need.change_text == "Nothing" %}
             {% else %}
-              {% include "public/includes/deliveryareadisclaimer.html" %}
+              {% include "public/includes/serviceareadisclaimer.html" %}
             {% endif %}
 
             {% if foodbank.place_has_photo and not foodbank.address_is_administrative %}

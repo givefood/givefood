@@ -125,7 +125,7 @@
             <div id="map" class="sidemap"></div>
             {% include "public/includes/maplegend.html" %}
             {% if foodbank.latest_need.change_text != "Unknown" and foodbank.latest_need.change_text != "Nothing" %}
-              {% include "public/includes/deliveryareadisclaimer.html" %}
+              {% include "public/includes/serviceareadisclaimer.html" %}
             {% endif %}
             
             {% if location.address or location.postcode %}

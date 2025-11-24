@@ -751,7 +751,7 @@ msgstr "Guernsey"
 msgid "Hello"
 msgstr "Olá"
 
-#: givefood/templates/public/includes/deliveryareadisclaimer.html:3
+#: givefood/templates/public/includes/serviceareadisclaimer.html:3
 msgid "Service areas are approximate. You should check with the food bank"
 msgstr ""
 "As áreas de atendimento são aproximadas. Consulte o banco de alimentos."

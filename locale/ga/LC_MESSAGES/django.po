@@ -753,7 +753,7 @@ msgstr "Guernsey"
 msgid "Hello"
 msgstr "Haigh"
 
-#: givefood/templates/public/includes/deliveryareadisclaimer.html:3
+#: givefood/templates/public/includes/serviceareadisclaimer.html:3
 msgid "Service areas are approximate. You should check with the food bank"
 msgstr ""
 "Is garmheastacháin iad na limistéir seirbhíse. Ba chóir duit seiceáil leis "

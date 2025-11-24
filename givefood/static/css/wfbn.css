@@ -74,6 +74,7 @@
 }
 .mainmap {
     height:600px !important;
+    margin-bottom:10px;
 }
 .placephoto {
     margin-bottom:10px;
