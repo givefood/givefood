@@ -1970,6 +1970,10 @@ class ParliamentaryConstituency(models.Model):
             foodbank_names.add(foodbank.get("name"))
 
         return foodbank_names
+    
+    def has_service_areas(self):
+        """Check if any location in this constituency has boundary_geojson"""
+        return self.location_obj().filter(boundary_geojson__isnull=False).exists()
 
 
     def __str__(self):

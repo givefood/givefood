@@ -874,6 +874,7 @@ def constituency(request, slug):
     template_vars = {
         "constituency":constituency,
         "map_config":map_config,
+        "has_service_areas":constituency.has_service_areas(),
     }
 
     return render(request, "wfbn/constituency/constituency.html", template_vars)

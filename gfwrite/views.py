@@ -56,6 +56,7 @@ def constituency(request, slug):
         "postcode":postcode,
         "form":ConstituentDetailsForm,
         "map_config":map_config,
+        "has_service_areas":constituency.has_service_areas(),
     }
 
     return render(request, "write/constituency.html", template_vars)

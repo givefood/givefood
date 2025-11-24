@@ -3,7 +3,9 @@
     <div id="legend">
         <img src="/static/img/mapmarkers/red.png" alt="{% blocktrans %}Organisation{% endblocktrans %} {% blocktrans %}marker{% endblocktrans %}"> {% blocktrans %}Organisation{% endblocktrans %}<br>
         <img src="/static/img/mapmarkers/yellow.png" alt="{% blocktrans %}Location{% endblocktrans %} {% blocktrans %}marker{% endblocktrans %}"> {% blocktrans %}Location{% endblocktrans %}<br>
-        <div class="deliveryarea"></div> {% blocktrans %}Service area{% endblocktrans %}<br>
+        {% if foodbank.has_delivery_area or has_service_areas %}
+            <div class="deliveryarea"></div> {% blocktrans %}Service area{% endblocktrans %}<br>
+        {% endif %}
         <img src="/static/img/mapmarkers/blue.png" alt="{% blocktrans %}Donation point{% endblocktrans %} {% blocktrans %}marker{% endblocktrans %}"> {% blocktrans %}Donation point{% endblocktrans %}<br>
     </div>
 </template>
