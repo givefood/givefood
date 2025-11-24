@@ -1973,7 +1973,10 @@ class ParliamentaryConstituency(models.Model):
     
     def has_service_areas(self):
         """Check if any location in this constituency has boundary_geojson"""
-        return self.location_obj().filter(boundary_geojson__isnull=False).exists()
+        locations = self.location_obj().filter(boundary_geojson__isnull=False).count()
+        if locations == 0:
+            return False
+        return True
 
 
     def __str__(self):
