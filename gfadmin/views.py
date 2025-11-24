@@ -23,7 +23,7 @@ from django.db.models import Sum, Q, Count
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters
 from givefood.models import Changelog, CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect
-from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, SlugRedirectForm
+from givefood.forms import ChangelogForm, FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, SlugRedirectForm
 
 
 def index(request):
@@ -970,6 +970,75 @@ def fblocation_form(request, slug = None, loc_slug = None):
     template_vars = {
         "form":form,
         "page_title":page_title,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def fblocation_area_form(request, slug):
+    
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "New %s Food Bank Location from MapIt Area" % (foodbank.name)
+    
+    if request.POST:
+        form = FoodbankLocationAreaForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            mapit_id = form.cleaned_data['mapit_id']
+            
+            # Get MapIt API key
+            mapit_key = get_cred("mapit_key")
+            
+            # Fetch geometry data
+            geometry_url = f"https://mapit.mysociety.org/area/{mapit_id}/geometry?api_key={mapit_key}"
+            geometry_response = requests.get(geometry_url)
+            
+            if geometry_response.status_code != 200:
+                form.add_error('mapit_id', f'Failed to fetch geometry from MapIt API (status {geometry_response.status_code})')
+            else:
+                geometry_data = geometry_response.json()
+                
+                # Fetch geojson data
+                geojson_url = f"https://mapit.mysociety.org/area/{mapit_id}.geojson?api_key={mapit_key}"
+                geojson_response = requests.get(geojson_url)
+                
+                if geojson_response.status_code != 200:
+                    form.add_error('mapit_id', f'Failed to fetch geojson from MapIt API (status {geojson_response.status_code})')
+                else:
+                    geojson_data = geojson_response.json()
+                    
+                    # Extract centre coordinates
+                    centre_lat = geometry_data.get('centre_lat')
+                    centre_lon = geometry_data.get('centre_lon')
+                    
+                    if not centre_lat or not centre_lon:
+                        form.add_error('mapit_id', 'MapIt API did not return centre coordinates')
+                    else:
+                        # Create lat_lng string
+                        lat_lng = f"{centre_lat},{centre_lon}"
+                        
+                        # Create boundary_geojson by wrapping the geometry
+                        boundary_geojson = json.dumps({
+                            "type": "Feature",
+                            "geometry": geojson_data
+                        })
+                        
+                        # Create new FoodbankLocation
+                        foodbank_location = FoodbankLocation(
+                            foodbank=foodbank,
+                            name=name,
+                            lat_lng=lat_lng,
+                            boundary_geojson=boundary_geojson
+                        )
+                        foodbank_location.save()
+                        
+                        return redirect("admin:foodbank", slug=foodbank.slug)
+    else:
+        form = FoodbankLocationAreaForm()
+    
+    template_vars = {
+        "form": form,
+        "page_title": page_title,
+        "foodbank": foodbank,
     }
     return render(request, "admin/form.html", template_vars)
 
