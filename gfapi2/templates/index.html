@@ -28,13 +28,30 @@
         <a href="{% url 'api2:docs' %}" class="button is-light is-info">View documentation</a>
 
         <h2>Dumps</h2>
-        <p>These are daily updated CSV dumps of our data:</p>
-        <ul>
-          {% for dump in dumps %}
-            <li><a href="{% url 'dumps:dump_latest' dump_type=dump.dump_type dump_format=dump.dump_format %}">{{ dump.dump_type|title }}</a> {{ dump.size|filesizeformat }} and {{ dump.row_count|intcomma }} rows</li>
-          {% endfor %}
-        </ul>
-        <p>Dumps are also available for older data and in different formats.</p>
+        <p>These are daily updated dumps of our data:</p>
+        <table class="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Dump Type</th>
+              <th>Size</th>
+              <th>Rows</th>
+              <th>Format</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for dump in dumps %}
+            <tr>
+              <td><a href="{% url 'dumps:dump_latest' dump_type=dump.dump_type dump_format=dump.dump_format %}">{{ dump.created|date:"Y-m-d" }}</a></td>
+              <td>{{ dump.dump_type|title }}</td>
+              <td>{{ dump.size|filesizeformat }}</td>
+              <td>{{ dump.row_count|intcomma }}</td>
+              <td>{{ dump.dump_format|upper }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <p>Dumps are also available for older data.</p>
         <a href="{% url 'dumps:dump_index' %}" class="button is-light is-info">Browse dumps</a>
 
         <h2>Useful Links</h2>
