@@ -18,7 +18,7 @@ DEFAULT_FORMAT = "json"
 @cache_page(SECONDS_IN_DAY)
 def index(request):
     
-    dumps = Dump.objects.order_by('dump_type', '-created').distinct('dump_type').defer('the_dump')
+    dumps = Dump.objects.order_by('dump_type', 'dump_format', '-created').distinct('dump_type', 'dump_format').defer('the_dump')
 
     template_vars = {
         "dumps": dumps,
