@@ -124,6 +124,18 @@ def serialize_datetime(obj):
 
 def build_foodbank_row(foodbank, location=None):
     """Build a row of data for a foodbank or location."""
+    # Get latest_need values, handling None case
+    if foodbank.latest_need:
+        need_id = str(foodbank.latest_need.need_id)
+        needed_items = foodbank.latest_need.change_text
+        excess_items = foodbank.latest_need.excess_change_text
+        need_found = foodbank.latest_need.created
+    else:
+        need_id = None
+        needed_items = None
+        excess_items = None
+        need_found = None
+
     if location:
         return {
             "id": str(location.uuid),
@@ -170,10 +182,10 @@ def build_foodbank_row(foodbank, location=None):
             "created": foodbank.created,
             "modified": location.modified,
             "edited": location.edited,
-            "need_id": str(foodbank.latest_need.need_id),
-            "needed_items": foodbank.latest_need.change_text,
-            "excess_items": foodbank.latest_need.excess_change_text,
-            "need_found": foodbank.latest_need.created,
+            "need_id": need_id,
+            "needed_items": needed_items,
+            "excess_items": excess_items,
+            "need_found": need_found,
             "footprintsqm": foodbank.footprint,
         }
     else:
@@ -222,10 +234,10 @@ def build_foodbank_row(foodbank, location=None):
             "created": foodbank.created,
             "modified": foodbank.modified,
             "edited": foodbank.edited,
-            "need_id": str(foodbank.latest_need.need_id),
-            "needed_items": foodbank.latest_need.change_text,
-            "excess_items": foodbank.latest_need.excess_change_text,
-            "need_found": foodbank.latest_need.created,
+            "need_id": need_id,
+            "needed_items": needed_items,
+            "excess_items": excess_items,
+            "need_found": need_found,
             "footprintsqm": foodbank.footprint,
         }
 
