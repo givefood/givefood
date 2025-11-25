@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-import csv, io
+import csv, io, json
 from datetime import timedelta
 
 from django.urls import reverse
@@ -10,385 +10,459 @@ from givefood.func import decache
 from givefood.models import Dump, Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation
 
 
+# Field names for foodbanks dump (used by both CSV and JSON)
+FOODBANK_FIELDS = [
+    "id",
+    "organisation_name",
+    "organisation_alt_name",
+    "organisation_slug",
+    "location_name",
+    "location_slug",
+    "url",
+    "shopping_list_url",
+    "rss_url",
+    "donation_points_url",
+    "locations_url",
+    "contacts_url",
+    "phone_number",
+    "secondary_phone_number",
+    "email",
+    "address",
+    "postcode",
+    "country",
+    "lat_lng",
+    "place_id",
+    "plus_code_compound",
+    "plus_code_global",
+    "lsoa",
+    "msoa",
+    "parliamentary_constituency",
+    "mp_parliamentary_id",
+    "mp",
+    "mp_party",
+    "ward",
+    "district",
+    "charity_number",
+    "charity_register_url",
+    "charity_name",
+    "charity_type",
+    "charity_reg_date",
+    "charity_postcode",
+    "charity_website",
+    "food_standards_agency_id",
+    "food_standards_agency_url",
+    "network",
+    "network_id",
+    "created",
+    "modified",
+    "edited",
+    "need_id",
+    "needed_items",
+    "excess_items",
+    "need_found",
+    "footprintsqm",
+]
+
+# Field names for items dump (used by both CSV and JSON)
+ITEM_FIELDS = [
+    "organisation_id",
+    "organisation_name",
+    "organisation_alt_name",
+    "organisation_slug",
+    "network",
+    "country",
+    "lat_lng",
+    "type",
+    "item",
+    "category",
+    "group",
+    "created",
+]
+
+# Field names for donation points dump (used by both CSV and JSON)
+DONATIONPOINT_FIELDS = [
+    "id",
+    "name",
+    "slug",
+    "address",
+    "postcode",
+    "lat_lng",
+    "phone_number",
+    "opening_hours",
+    "wheelchair_accessible",
+    "url",
+    "in_store_only",
+    "company",
+    "store_id",
+    "place_id",
+    "plus_code_compound",
+    "plus_code_global",
+    "lsoa",
+    "msoa",
+    "parliamentary_constituency_name",
+    "mp_parl_id",
+    "mp",
+    "mp_party",
+    "ward",
+    "district",
+    "organisation_id",
+    "organisation_name",
+    "organisation_alt_name",
+    "organisation_slug",
+    "organisation_network",
+    "organisation_country",
+    "organisation_lat_lng",
+]
+
+
+def serialize_datetime(obj):
+    """JSON serializer for datetime objects."""
+    if hasattr(obj, 'isoformat'):
+        return obj.isoformat()
+    raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+
+
+def build_foodbank_row(foodbank, location=None):
+    """Build a row of data for a foodbank or location."""
+    if location:
+        return {
+            "id": str(location.uuid),
+            "organisation_name": foodbank.name,
+            "organisation_alt_name": foodbank.alt_name,
+            "organisation_slug": foodbank.slug,
+            "location_name": location.name,
+            "location_slug": location.slug,
+            "url": foodbank.url,
+            "shopping_list_url": foodbank.shopping_list_url,
+            "rss_url": foodbank.rss_url,
+            "donation_points_url": foodbank.donation_points_url,
+            "locations_url": foodbank.locations_url,
+            "contacts_url": foodbank.contacts_url,
+            "phone_number": location.phone_or_foodbank_phone(),
+            "secondary_phone_number": "",
+            "email": location.email_or_foodbank_email(),
+            "address": location.address,
+            "postcode": location.postcode,
+            "country": foodbank.country,
+            "lat_lng": location.lat_lng,
+            "place_id": location.place_id,
+            "plus_code_compound": location.plus_code_compound,
+            "plus_code_global": location.plus_code_global,
+            "lsoa": location.lsoa,
+            "msoa": location.msoa,
+            "parliamentary_constituency": location.parliamentary_constituency_name,
+            "mp_parliamentary_id": location.mp_parl_id,
+            "mp": location.mp,
+            "mp_party": location.mp_party,
+            "ward": location.ward,
+            "district": location.district,
+            "charity_number": foodbank.charity_number,
+            "charity_register_url": foodbank.charity_register_url(),
+            "charity_name": foodbank.charity_name,
+            "charity_type": foodbank.charity_type,
+            "charity_reg_date": foodbank.charity_reg_date,
+            "charity_postcode": foodbank.charity_postcode,
+            "charity_website": foodbank.charity_website,
+            "food_standards_agency_id": None,
+            "food_standards_agency_url": None,
+            "network": foodbank.network,
+            "network_id": foodbank.network_id,
+            "created": foodbank.created,
+            "modified": location.modified,
+            "edited": location.edited,
+            "need_id": str(foodbank.latest_need.need_id),
+            "needed_items": foodbank.latest_need.change_text,
+            "excess_items": foodbank.latest_need.excess_change_text,
+            "need_found": foodbank.latest_need.created,
+            "footprintsqm": foodbank.footprint,
+        }
+    else:
+        return {
+            "id": str(foodbank.uuid),
+            "organisation_name": foodbank.name,
+            "organisation_alt_name": foodbank.alt_name,
+            "organisation_slug": foodbank.slug,
+            "location_name": "",
+            "location_slug": "",
+            "url": foodbank.url,
+            "shopping_list_url": foodbank.shopping_list_url,
+            "rss_url": foodbank.rss_url,
+            "donation_points_url": foodbank.donation_points_url,
+            "locations_url": foodbank.locations_url,
+            "contacts_url": foodbank.contacts_url,
+            "phone_number": foodbank.phone_number,
+            "secondary_phone_number": foodbank.secondary_phone_number,
+            "email": foodbank.contact_email,
+            "address": foodbank.address,
+            "postcode": foodbank.postcode,
+            "country": foodbank.country,
+            "lat_lng": foodbank.lat_lng,
+            "place_id": foodbank.place_id,
+            "plus_code_compound": foodbank.plus_code_compound,
+            "plus_code_global": foodbank.plus_code_global,
+            "lsoa": foodbank.lsoa,
+            "msoa": foodbank.msoa,
+            "parliamentary_constituency": foodbank.parliamentary_constituency_name,
+            "mp_parliamentary_id": foodbank.mp_parl_id,
+            "mp": foodbank.mp,
+            "mp_party": foodbank.mp_party,
+            "ward": foodbank.ward,
+            "district": foodbank.district,
+            "charity_number": foodbank.charity_number,
+            "charity_register_url": foodbank.charity_register_url(),
+            "charity_name": foodbank.charity_name,
+            "charity_type": foodbank.charity_type,
+            "charity_reg_date": foodbank.charity_reg_date,
+            "charity_postcode": foodbank.charity_postcode,
+            "charity_website": foodbank.charity_website,
+            "food_standards_agency_id": foodbank.fsa_id,
+            "food_standards_agency_url": foodbank.fsa_url(),
+            "network": foodbank.network,
+            "network_id": foodbank.network_id,
+            "created": foodbank.created,
+            "modified": foodbank.modified,
+            "edited": foodbank.edited,
+            "need_id": str(foodbank.latest_need.need_id),
+            "needed_items": foodbank.latest_need.change_text,
+            "excess_items": foodbank.latest_need.excess_change_text,
+            "need_found": foodbank.latest_need.created,
+            "footprintsqm": foodbank.footprint,
+        }
+
+
+def build_item_row(item):
+    """Build a row of data for an item."""
+    return {
+        "organisation_id": str(item.foodbank.uuid),
+        "organisation_name": item.foodbank.name,
+        "organisation_alt_name": item.foodbank.alt_name,
+        "organisation_slug": item.foodbank.slug,
+        "network": item.foodbank.network,
+        "country": item.foodbank.country,
+        "lat_lng": item.foodbank.lat_lng,
+        "type": item.type,
+        "item": item.item,
+        "category": item.category,
+        "group": item.group,
+        "created": item.created,
+    }
+
+
+def build_donationpoint_row(donationpoint, is_location=False):
+    """Build a row of data for a donation point."""
+    if is_location:
+        return {
+            "id": str(donationpoint.uuid),
+            "name": donationpoint.name,
+            "slug": donationpoint.slug,
+            "address": donationpoint.address,
+            "postcode": donationpoint.postcode,
+            "lat_lng": donationpoint.lat_lng,
+            "phone_number": donationpoint.phone_number,
+            "opening_hours": None,
+            "wheelchair_accessible": None,
+            "url": None,
+            "in_store_only": None,
+            "company": None,
+            "store_id": None,
+            "place_id": donationpoint.place_id,
+            "plus_code_compound": donationpoint.plus_code_compound,
+            "plus_code_global": donationpoint.plus_code_global,
+            "lsoa": donationpoint.lsoa,
+            "msoa": donationpoint.msoa,
+            "parliamentary_constituency_name": donationpoint.parliamentary_constituency_name,
+            "mp_parl_id": donationpoint.mp_parl_id,
+            "mp": donationpoint.mp,
+            "mp_party": donationpoint.mp_party,
+            "ward": donationpoint.ward,
+            "district": donationpoint.district,
+            "organisation_id": str(donationpoint.foodbank.uuid),
+            "organisation_name": donationpoint.foodbank.name,
+            "organisation_alt_name": donationpoint.foodbank.alt_name,
+            "organisation_slug": donationpoint.foodbank.slug,
+            "organisation_network": donationpoint.foodbank.network,
+            "organisation_country": donationpoint.foodbank.country,
+            "organisation_lat_lng": donationpoint.foodbank.lat_lng,
+        }
+    else:
+        return {
+            "id": str(donationpoint.uuid),
+            "name": donationpoint.name,
+            "slug": donationpoint.slug,
+            "address": donationpoint.address,
+            "postcode": donationpoint.postcode,
+            "lat_lng": donationpoint.lat_lng,
+            "phone_number": donationpoint.phone_number,
+            "opening_hours": donationpoint.opening_hours,
+            "wheelchair_accessible": donationpoint.wheelchair_accessible,
+            "url": donationpoint.url,
+            "in_store_only": donationpoint.in_store_only,
+            "company": donationpoint.company,
+            "store_id": donationpoint.store_id,
+            "place_id": donationpoint.place_id,
+            "plus_code_compound": donationpoint.plus_code_compound,
+            "plus_code_global": donationpoint.plus_code_global,
+            "lsoa": donationpoint.lsoa,
+            "msoa": donationpoint.msoa,
+            "parliamentary_constituency_name": donationpoint.parliamentary_constituency_name,
+            "mp_parl_id": donationpoint.mp_parl_id,
+            "mp": donationpoint.mp,
+            "mp_party": donationpoint.mp_party,
+            "ward": donationpoint.ward,
+            "district": donationpoint.district,
+            "organisation_id": str(donationpoint.foodbank.uuid),
+            "organisation_name": donationpoint.foodbank.name,
+            "organisation_alt_name": donationpoint.foodbank.alt_name,
+            "organisation_slug": donationpoint.foodbank.slug,
+            "organisation_network": donationpoint.foodbank.network,
+            "organisation_country": donationpoint.foodbank.country,
+            "organisation_lat_lng": donationpoint.foodbank.lat_lng,
+        }
+
+
+def row_to_csv_values(row, fields):
+    """Convert a row dict to a list of values in the order of fields."""
+    return [row[field] for field in fields]
+
+
 class Command(BaseCommand):
 
     help = 'Create dumps'
     
     def handle(self, *args, **options):
 
-
-        self.stdout.write("Creating foodbank dump...")
+        # ==================== FOODBANKS ====================
+        self.stdout.write("Creating foodbank dumps...")
 
         foodbanks = Foodbank.objects.select_related("latest_need").filter(is_closed=False).order_by("name")
 
-        foodbank_dump = io.StringIO()
-        writer = csv.writer(foodbank_dump, quoting=csv.QUOTE_ALL)
-        writer.writerow([
-            "id",
-            "organisation_name",
-            "organisation_alt_name",
-            "organisation_slug",
-            "location_name",
-            "location_slug",
-            "url",
-            "shopping_list_url",
-            "rss_url",
-            "donation_points_url",
-            "locations_url",
-            "contacts_url",
-            "phone_number",
-            "secondary_phone_number",
-            "email",
-            "address",
-            "postcode",
-            "country",
-            "lat_lng",
-            "place_id",
-            "plus_code_compound",
-            "plus_code_global",
-            "lsoa",
-            "msoa",
-            "parliamentary_constituency",
-            "mp_parliamentary_id",
-            "mp",
-            "mp_party",
-            "ward",
-            "district",
-            "charity_number",
-            "charity_register_url",
-            "charity_name",
-            "charity_type",
-            "charity_reg_date",
-            "charity_postcode",
-            "charity_website",
-            "food_standards_agency_id",
-            "food_standards_agency_url",
-            "network",
-            "network_id",
-            "created",
-            "modified",
-            "edited",
-            "need_id",
-            "needed_items",
-            "excess_items",
-            "need_found",
-            "footprintsqm",
-        ])
-
-        row_count = 0
-
+        # Build rows for both CSV and JSON
+        foodbank_rows = []
         for foodbank in foodbanks:
-
-            row_count += 1
-
-            writer.writerow([
-                str(foodbank.uuid),
-                foodbank.name,
-                foodbank.alt_name,
-                foodbank.slug,
-                "", 
-                "",
-                foodbank.url,
-                foodbank.shopping_list_url,
-                foodbank.rss_url,
-                foodbank.donation_points_url,
-                foodbank.locations_url,
-                foodbank.contacts_url,
-                foodbank.phone_number,
-                foodbank.secondary_phone_number,
-                foodbank.contact_email,
-                foodbank.address,
-                foodbank.postcode,
-                foodbank.country,
-                foodbank.lat_lng,
-                foodbank.place_id,
-                foodbank.plus_code_compound,
-                foodbank.plus_code_global,
-                foodbank.lsoa,
-                foodbank.msoa,
-                foodbank.parliamentary_constituency_name,
-                foodbank.mp_parl_id,
-                foodbank.mp,
-                foodbank.mp_party,
-                foodbank.ward,
-                foodbank.district,
-                foodbank.charity_number,
-                foodbank.charity_register_url(),
-                foodbank.charity_name,
-                foodbank.charity_type,
-                foodbank.charity_reg_date,
-                foodbank.charity_postcode,
-                foodbank.charity_website,
-                foodbank.fsa_id,
-                foodbank.fsa_url(),
-                foodbank.network,
-                foodbank.network_id,
-                foodbank.created,
-                foodbank.modified,
-                foodbank.edited,
-                foodbank.latest_need.need_id,
-                foodbank.latest_need.change_text,
-                foodbank.latest_need.excess_change_text,
-                foodbank.latest_need.created,
-                foodbank.footprint,
-            ])
-
+            foodbank_rows.append(build_foodbank_row(foodbank))
             for location in foodbank.locations():
+                foodbank_rows.append(build_foodbank_row(foodbank, location))
 
-                row_count += 1
-                writer.writerow([
-                    str(location.uuid),
-                    foodbank.name,
-                    foodbank.alt_name,
-                    foodbank.slug,
-                    location.name, 
-                    location.slug,
-                    foodbank.url,
-                    foodbank.shopping_list_url,
-                    foodbank.rss_url,
-                    foodbank.donation_points_url,
-                    foodbank.locations_url,
-                    foodbank.contacts_url,
-                    location.phone_or_foodbank_phone(),
-                    "",
-                    location.email_or_foodbank_email(),
-                    location.address,
-                    location.postcode,
-                    foodbank.country,
-                    location.lat_lng,
-                    location.place_id,
-                    location.plus_code_compound,
-                    location.plus_code_global,
-                    location.lsoa,
-                    location.msoa,
-                    location.parliamentary_constituency_name,
-                    location.mp_parl_id,
-                    location.mp,
-                    location.mp_party,
-                    location.ward,
-                    location.district,
-                    foodbank.charity_number,
-                    foodbank.charity_register_url(),
-                    foodbank.charity_name,
-                    foodbank.charity_type,
-                    foodbank.charity_reg_date,
-                    foodbank.charity_postcode,
-                    foodbank.charity_website,
-                    None,
-                    None,
-                    foodbank.network,
-                    foodbank.network_id,
-                    foodbank.created,
-                    location.modified,
-                    location.edited,
-                    foodbank.latest_need.need_id,
-                    foodbank.latest_need.change_text,
-                    foodbank.latest_need.excess_change_text,
-                    foodbank.latest_need.created,
-                    foodbank.footprint,
-                ])
+        row_count = len(foodbank_rows)
 
-        foodbank_dump = foodbank_dump.getvalue()
+        # CSV dump
+        foodbank_csv = io.StringIO()
+        writer = csv.writer(foodbank_csv, quoting=csv.QUOTE_ALL)
+        writer.writerow(FOODBANK_FIELDS)
+        for row in foodbank_rows:
+            writer.writerow(row_to_csv_values(row, FOODBANK_FIELDS))
 
         dump_instance = Dump(
             dump_type="foodbanks",
             dump_format="csv",
-            the_dump=foodbank_dump,
+            the_dump=foodbank_csv.getvalue(),
             row_count=row_count,
         )
         dump_instance.save()
+        self.stdout.write(f"Created CSV dump {dump_instance.id} with {row_count} foodbanks")
 
-        self.stdout.write(f"Created dump {dump_instance.id} with {row_count} foodbanks")
+        # JSON dump
+        foodbank_json = json.dumps(foodbank_rows, default=serialize_datetime, indent=2)
+        dump_instance = Dump(
+            dump_type="foodbanks",
+            dump_format="json",
+            the_dump=foodbank_json,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} foodbanks")
 
-        self.stdout.write("Creating items dump...")
+        del foodbank_rows, foodbank_csv, foodbank_json
+
+        # ==================== ITEMS ====================
+        self.stdout.write("Creating items dumps...")
 
         items = FoodbankChangeLine.objects.select_related("foodbank").all().order_by("created").iterator()
 
-        item_dump = io.StringIO()
-        writer = csv.writer(item_dump, quoting=csv.QUOTE_ALL)
-        writer.writerow([
-            "organisation_id",
-            "organisation_name",
-            "organisation_alt_name",
-            "organisation_slug",
-            "network",
-            "country",
-            "lat_lng",
-            "type",
-            "item",
-            "category",
-            "group",
-            "created",
-        ])
-
-        row_count = 0
+        # Build rows for both CSV and JSON
+        item_rows = []
         for item in items:
-            writer.writerow([
-                item.foodbank.uuid,
-                item.foodbank.name,
-                item.foodbank.alt_name,
-                item.foodbank.slug,
-                item.foodbank.network,
-                item.foodbank.country,
-                item.foodbank.lat_lng,
-                item.type,
-                item.item,
-                item.category,
-                item.group,
-                item.created,
-            ])
-            row_count += 1
-        
-        item_dump = item_dump.getvalue()
+            item_rows.append(build_item_row(item))
+
+        row_count = len(item_rows)
+
+        # CSV dump
+        item_csv = io.StringIO()
+        writer = csv.writer(item_csv, quoting=csv.QUOTE_ALL)
+        writer.writerow(ITEM_FIELDS)
+        for row in item_rows:
+            writer.writerow(row_to_csv_values(row, ITEM_FIELDS))
+
         dump_instance = Dump(
             dump_type="items",
             dump_format="csv",
-            the_dump=item_dump,
+            the_dump=item_csv.getvalue(),
             row_count=row_count,
         )
         dump_instance.save()
+        self.stdout.write(f"Created CSV dump {dump_instance.id} with {row_count} items")
 
-        del item_dump
+        # JSON dump
+        item_json = json.dumps(item_rows, default=serialize_datetime, indent=2)
+        dump_instance = Dump(
+            dump_type="items",
+            dump_format="json",
+            the_dump=item_json,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} items")
 
-        self.stdout.write(f"Created dump {dump_instance.id} with {row_count} items")
+        del item_rows, item_csv, item_json
 
-        self.stdout.write("Creating donationpoints dump...")
+        # ==================== DONATION POINTS ====================
+        self.stdout.write("Creating donationpoints dumps...")
 
-        donationpoint_dump = io.StringIO()
-        writer = csv.writer(donationpoint_dump, quoting=csv.QUOTE_ALL)
-        writer.writerow([
-            "id",
-            "name",
-            "slug",
-            "address",
-            "postcode",
-            "lat_lng",
-            "phone_number",
-            "opening_hours",
-            "wheelchair_accessible",
-            "url",
-            "in_store_only",
-            "company",
-            "store_id",
-            "place_id",
-            "plus_code_compound",
-            "plus_code_global",
-            "lsoa",
-            "msoa",
-            "parliamentary_constituency_name",
-            "mp_parl_id",
-            "mp",
-            "mp_party",
-            "ward",
-            "district",
-            "organisation_id",
-            "organisation_name",
-            "organisation_alt_name",
-            "organisation_slug",
-            "organisation_network",
-            "organisation_country",
-            "organisation_lat_lng",
-        ])
-
-        row_count = 0
+        # Build rows for both CSV and JSON
+        donationpoint_rows = []
 
         # Include FoodbankDonationPoint objects
         donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").filter(is_closed=False).order_by("name").iterator()
-
         for donationpoint in donationpoints:
-
-            row_count += 1
-
-            writer.writerow([
-                str(donationpoint.uuid),
-                donationpoint.name,
-                donationpoint.slug,
-                donationpoint.address,
-                donationpoint.postcode,
-                donationpoint.lat_lng,
-                donationpoint.phone_number,
-                donationpoint.opening_hours,
-                donationpoint.wheelchair_accessible,
-                donationpoint.url,
-                donationpoint.in_store_only,
-                donationpoint.company,
-                donationpoint.store_id,
-                donationpoint.place_id,
-                donationpoint.plus_code_compound,
-                donationpoint.plus_code_global,
-                donationpoint.lsoa,
-                donationpoint.msoa,
-                donationpoint.parliamentary_constituency_name,
-                donationpoint.mp_parl_id,
-                donationpoint.mp,
-                donationpoint.mp_party,
-                donationpoint.ward,
-                donationpoint.district,
-                str(donationpoint.foodbank.uuid),
-                donationpoint.foodbank.name,
-                donationpoint.foodbank.alt_name,
-                donationpoint.foodbank.slug,
-                donationpoint.foodbank.network,
-                donationpoint.foodbank.country,
-                donationpoint.foodbank.lat_lng,
-            ])
+            donationpoint_rows.append(build_donationpoint_row(donationpoint, is_location=False))
 
         # Include FoodbankLocation objects with is_donation_point=True
         locations = FoodbankLocation.objects.select_related("foodbank").filter(is_closed=False, is_donation_point=True).order_by("name").iterator()
-
         for location in locations:
+            donationpoint_rows.append(build_donationpoint_row(location, is_location=True))
 
-            row_count += 1
+        row_count = len(donationpoint_rows)
 
-            writer.writerow([
-                str(location.uuid),
-                location.name,
-                location.slug,
-                location.address,
-                location.postcode,
-                location.lat_lng,
-                location.phone_number,
-                None,  # opening_hours - not available on FoodbankLocation
-                None,  # wheelchair_accessible - not available on FoodbankLocation
-                None,  # url - not available on FoodbankLocation
-                None,  # in_store_only - not available on FoodbankLocation
-                None,  # company - not available on FoodbankLocation
-                None,  # store_id - not available on FoodbankLocation
-                location.place_id,
-                location.plus_code_compound,
-                location.plus_code_global,
-                location.lsoa,
-                location.msoa,
-                location.parliamentary_constituency_name,
-                location.mp_parl_id,
-                location.mp,
-                location.mp_party,
-                location.ward,
-                location.district,
-                str(location.foodbank.uuid),
-                location.foodbank.name,
-                location.foodbank.alt_name,
-                location.foodbank.slug,
-                location.foodbank.network,
-                location.foodbank.country,
-                location.foodbank.lat_lng,
-            ])
-
-        donationpoint_dump = donationpoint_dump.getvalue()
+        # CSV dump
+        donationpoint_csv = io.StringIO()
+        writer = csv.writer(donationpoint_csv, quoting=csv.QUOTE_ALL)
+        writer.writerow(DONATIONPOINT_FIELDS)
+        for row in donationpoint_rows:
+            writer.writerow(row_to_csv_values(row, DONATIONPOINT_FIELDS))
 
         dump_instance = Dump(
             dump_type="donationpoints",
             dump_format="csv",
-            the_dump=donationpoint_dump,
+            the_dump=donationpoint_csv.getvalue(),
             row_count=row_count,
         )
         dump_instance.save()
+        self.stdout.write(f"Created CSV dump {dump_instance.id} with {row_count} donationpoints")
 
-        del donationpoint_dump
+        # JSON dump
+        donationpoint_json = json.dumps(donationpoint_rows, default=serialize_datetime, indent=2)
+        dump_instance = Dump(
+            dump_type="donationpoints",
+            dump_format="json",
+            the_dump=donationpoint_json,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} donationpoints")
 
-        self.stdout.write(f"Created dump {dump_instance.id} with {row_count} donationpoints")
+        del donationpoint_rows, donationpoint_csv, donationpoint_json
 
-
+        # ==================== CLEANUP ====================
         self.stdout.write("Deleting old dumps...")
 
         cutoff_date = timezone.now() - timedelta(days=28)

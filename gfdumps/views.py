@@ -63,7 +63,13 @@ def dump_serve(request, dump_type, dump_format, year=None, month=None, day=None)
     if not dump_instance:
         raise Http404("Dump not found")
 
-    response = HttpResponse(dump_instance.the_dump, content_type='text/csv')
+    # Set content type based on dump format
+    if dump_format == 'json':
+        content_type = 'application/json'
+    else:
+        content_type = 'text/csv'
+
+    response = HttpResponse(dump_instance.the_dump, content_type=content_type)
     response['Content-Disposition'] = 'attachment; filename="%s"' % (
         dump_instance.file_name(),
     )
