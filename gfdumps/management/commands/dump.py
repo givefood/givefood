@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 
 import csv, io, json
 from datetime import timedelta
+from dicttoxml import dicttoxml
 
 from django.urls import reverse
 from django.utils import timezone
@@ -120,6 +121,17 @@ def serialize_datetime(obj):
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
     raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+
+
+def prepare_row_for_xml(row):
+    """Prepare a row dictionary for XML serialization by converting datetime objects to strings."""
+    prepared = {}
+    for key, value in row.items():
+        if hasattr(value, 'isoformat'):
+            prepared[key] = value.isoformat()
+        else:
+            prepared[key] = value
+    return prepared
 
 
 def build_foodbank_row(foodbank, location=None):
@@ -384,7 +396,19 @@ class Command(BaseCommand):
         dump_instance.save()
         self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} foodbanks")
 
-        del foodbank_rows, foodbank_csv, foodbank_json
+        # XML dump
+        xml_rows = [prepare_row_for_xml(row) for row in foodbank_rows]
+        foodbank_xml = dicttoxml(xml_rows, custom_root='foodbanks', attr_type=False, item_func=lambda x: 'foodbank').decode('utf-8')
+        dump_instance = Dump(
+            dump_type="foodbanks",
+            dump_format="xml",
+            the_dump=foodbank_xml,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created XML dump {dump_instance.id} with {row_count} foodbanks")
+
+        del foodbank_rows, foodbank_csv, foodbank_json, xml_rows, foodbank_xml
 
         # ==================== ITEMS ====================
         self.stdout.write("Creating items dumps...")
@@ -425,7 +449,19 @@ class Command(BaseCommand):
         dump_instance.save()
         self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} items")
 
-        del item_rows, item_csv, item_json
+        # XML dump
+        xml_rows = [prepare_row_for_xml(row) for row in item_rows]
+        item_xml = dicttoxml(xml_rows, custom_root='items', attr_type=False, item_func=lambda x: 'item').decode('utf-8')
+        dump_instance = Dump(
+            dump_type="items",
+            dump_format="xml",
+            the_dump=item_xml,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created XML dump {dump_instance.id} with {row_count} items")
+
+        del item_rows, item_csv, item_json, xml_rows, item_xml
 
         # ==================== DONATION POINTS ====================
         self.stdout.write("Creating donationpoints dumps...")
@@ -472,7 +508,19 @@ class Command(BaseCommand):
         dump_instance.save()
         self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} donationpoints")
 
-        del donationpoint_rows, donationpoint_csv, donationpoint_json
+        # XML dump
+        xml_rows = [prepare_row_for_xml(row) for row in donationpoint_rows]
+        donationpoint_xml = dicttoxml(xml_rows, custom_root='donationpoints', attr_type=False, item_func=lambda x: 'donationpoint').decode('utf-8')
+        dump_instance = Dump(
+            dump_type="donationpoints",
+            dump_format="xml",
+            the_dump=donationpoint_xml,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created XML dump {dump_instance.id} with {row_count} donationpoints")
+
+        del donationpoint_rows, donationpoint_csv, donationpoint_json, xml_rows, donationpoint_xml
 
         # ==================== CLEANUP ====================
         self.stdout.write("Deleting old dumps...")
