@@ -5,6 +5,7 @@ import pytest
 import csv
 import io
 import json
+import xml.etree.ElementTree as ET
 from django.core.management import call_command
 from givefood.models import Foodbank, FoodbankChange, Dump
 
@@ -265,8 +266,6 @@ class TestDumpCommand:
 
     def test_xml_dump_created_for_foodbanks(self):
         """Test that XML dump is created for foodbanks with correct structure."""
-        import xml.etree.ElementTree as ET
-        
         # Create a test foodbank
         foodbank = Foodbank(
             name="Test Food Bank XML",
@@ -337,8 +336,6 @@ class TestDumpCommand:
 
     def test_xml_dump_created_for_items(self):
         """Test that XML dump is created for items."""
-        import xml.etree.ElementTree as ET
-
         # Run the dump command (uses existing data or empty)
         call_command('dump')
 
@@ -353,8 +350,6 @@ class TestDumpCommand:
 
     def test_xml_dump_created_for_donationpoints(self):
         """Test that XML dump is created for donationpoints."""
-        import xml.etree.ElementTree as ET
-
         # Run the dump command (uses existing data or empty)
         call_command('dump')
 
@@ -369,8 +364,6 @@ class TestDumpCommand:
 
     def test_xml_csv_json_have_same_field_count(self):
         """Test that XML, CSV and JSON dumps have the same number of fields per record."""
-        import xml.etree.ElementTree as ET
-        
         # Create a test foodbank
         foodbank = Foodbank(
             name="Test Food Bank Fields XML",
