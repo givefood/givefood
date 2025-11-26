@@ -30,7 +30,7 @@ The source of https://www.givefood.org.uk - built using Django, hosted at [Mythi
 
 We are a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.
 
-We maintain the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover nearly 3000 locations.
+We maintain the largest publicly available database of food banks and what they are requesting to have donated in the UK. We currently cover over 8500 locations.
 
 Our data is used by governments, councils, universities, supermarkets, political parties, the NHS, broadcasters, food manufacturers, hundreds of national & local news websites, and apps.
 
