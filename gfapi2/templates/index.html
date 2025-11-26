@@ -43,7 +43,7 @@
             {% for dump in dumps %}
             <tr>
               <td><a href="{% url 'dumps:dump_latest' dump_type=dump.dump_type dump_format=dump.dump_format %}">{{ dump.created|date:"Y-m-d" }}</a></td>
-              <td>{{ dump.dump_type|title }}</td>
+              <td>{{ dump.dump_type }}</td>
               <td>{{ dump.size|filesizeformat }}</td>
               <td>{{ dump.row_count|intcomma }}</td>
               <td>{{ dump.dump_format|upper }}</td>
