@@ -66,6 +66,8 @@ def dump_serve(request, dump_type, dump_format, year=None, month=None, day=None)
     # Set content type based on dump format
     if dump_format == 'json':
         content_type = 'application/json'
+    elif dump_format == 'xml':
+        content_type = 'application/xml'
     else:
         content_type = 'text/csv'
 

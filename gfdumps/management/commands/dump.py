@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 
 import csv, io, json
 from datetime import timedelta
+import xml.etree.ElementTree as ET
 
 from django.urls import reverse
 from django.utils import timezone
@@ -120,6 +121,22 @@ def serialize_datetime(obj):
     if hasattr(obj, 'isoformat'):
         return obj.isoformat()
     raise TypeError(f"Object of type {type(obj)} is not JSON serializable")
+
+
+def rows_to_xml(rows, root_name, item_name):
+    """Convert a list of row dictionaries to XML string using ElementTree for better performance."""
+    root = ET.Element(root_name)
+    for row in rows:
+        item = ET.SubElement(root, item_name)
+        for key, value in row.items():
+            child = ET.SubElement(item, key)
+            if value is None:
+                child.text = None
+            elif hasattr(value, 'isoformat'):
+                child.text = value.isoformat()
+            else:
+                child.text = str(value) if value is not None else None
+    return ET.tostring(root, encoding='unicode', xml_declaration=True)
 
 
 def build_foodbank_row(foodbank, location=None):
@@ -384,7 +401,18 @@ class Command(BaseCommand):
         dump_instance.save()
         self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} foodbanks")
 
-        del foodbank_rows, foodbank_csv, foodbank_json
+        # XML dump
+        foodbank_xml = rows_to_xml(foodbank_rows, 'foodbanks', 'foodbank')
+        dump_instance = Dump(
+            dump_type="foodbanks",
+            dump_format="xml",
+            the_dump=foodbank_xml,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created XML dump {dump_instance.id} with {row_count} foodbanks")
+
+        del foodbank_rows, foodbank_csv, foodbank_json, foodbank_xml
 
         # ==================== ITEMS ====================
         self.stdout.write("Creating items dumps...")
@@ -425,7 +453,18 @@ class Command(BaseCommand):
         dump_instance.save()
         self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} items")
 
-        del item_rows, item_csv, item_json
+        # XML dump
+        item_xml = rows_to_xml(item_rows, 'items', 'item')
+        dump_instance = Dump(
+            dump_type="items",
+            dump_format="xml",
+            the_dump=item_xml,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created XML dump {dump_instance.id} with {row_count} items")
+
+        del item_rows, item_csv, item_json, item_xml
 
         # ==================== DONATION POINTS ====================
         self.stdout.write("Creating donationpoints dumps...")
@@ -472,7 +511,18 @@ class Command(BaseCommand):
         dump_instance.save()
         self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} donationpoints")
 
-        del donationpoint_rows, donationpoint_csv, donationpoint_json
+        # XML dump
+        donationpoint_xml = rows_to_xml(donationpoint_rows, 'donationpoints', 'donationpoint')
+        dump_instance = Dump(
+            dump_type="donationpoints",
+            dump_format="xml",
+            the_dump=donationpoint_xml,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created XML dump {dump_instance.id} with {row_count} donationpoints")
+
+        del donationpoint_rows, donationpoint_csv, donationpoint_json, donationpoint_xml
 
         # ==================== CLEANUP ====================
         self.stdout.write("Deleting old dumps...")
