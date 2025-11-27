@@ -535,3 +535,4 @@ class Command(BaseCommand):
         self.stdout.write(f"Deleted {deleted_count} old dumps")
 
         decache(prefixes=[reverse("dumps:dump_index")])
+        decache(urls=[reverse("gfapi2:index")])
