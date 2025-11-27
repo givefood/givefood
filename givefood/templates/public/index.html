@@ -40,6 +40,7 @@
       </form>
       
       <div id="index_intro">
+
         <ul>
             {% if enable_write %}
               <li><a href="{% url 'write:index' %}">{% trans 'Write to your MP' %}</a>{% if language_code != 'en' %} ({% trans 'English' %}){% endif %}</li>
@@ -48,7 +49,9 @@
             <li><a href="{% url 'register_foodbank' %}">{% blocktrans %}Register a foodbank{% endblocktrans %}</a></li>
             <li><a href="{% url 'about_us' %}">{% blocktrans %}About us{% endblocktrans %}</a></li>
         </ul>
-        <br>
+
+        {% include 'public/includes/appbadges.html' %}
+
         <h2>{% blocktrans %}Recently updated{% endblocktrans %}</h2>
         <ul class="recently-updated">
             {% for foodbank in recently_updated %}

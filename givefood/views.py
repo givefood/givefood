@@ -736,6 +736,14 @@ def manifest(request):
                 "type": "image/png",
                 "sizes": "1402x2356"
             }
+        ],
+        "prefer_related_applications": True,
+        "related_applications": [
+            {
+                "platform": "play",
+                "url": "https://play.google.com/store/apps/details?id=uk.org.givefood.android",
+                "id": "uk.org.givefood.android"
+            }
         ]
     }
 
@@ -851,6 +859,10 @@ def bot(request):
     }
     return render(request, "public/bot.html", template_vars)
 
+
+@cache_page(SECONDS_IN_DAY)
+def apps(request):
+    return render(request, "public/apps.html")
 
 @cache_page(SECONDS_IN_TWO_MINUTES)
 def frag(request, frag):

@@ -1,0 +1,38 @@
+{% extends "public/page.html" %}
+{% load bulma_tags %}
+{% load i18n %}
+
+{% block title %}Give Food Apps{% endblock %}
+
+{% block body %}
+
+  <div class="columns is-centered">
+    <div class="column">
+    <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+  </div>
+  
+
+  <div class="columns is-centered">
+    <div class="column is-two-thirds content apps">
+        <h1>Give Food Apps</h1>
+
+        <p>Get Give Food on your iPhone, Android or iPad device to find a food bank near you, see what they need and how you can help by donating or volunteering.</p>
+
+        {% include "public/includes/appbadges.html" %}
+
+        <div class="appscreenshots">
+            <img src="/static/img/appscreenshots/1.png" alt="Give Food App Screenshot" loading="lazy">
+            <img src="/static/img/appscreenshots/2.png" alt="Give Food App Screenshot" loading="lazy">
+            <img src="/static/img/appscreenshots/3.png" alt="Give Food App Screenshot" loading="lazy">
+            <img src="/static/img/appscreenshots/4.png" alt="Give Food App Screenshot" loading="lazy">
+        </div>
+
+    </div>
+    <div class="column is-one-third">
+      <img src="/static/img/app.png" alt="Give Food App" loading="lazy">
+    </div>
+        
+  </div>
+
+{% endblock %}

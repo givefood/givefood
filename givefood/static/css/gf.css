@@ -145,6 +145,23 @@ del {
 .nochange {
     background:#fbffb3;
 }
+.app-badges {
+    margin:1rem 0;
+}
+.apps .app-badges {
+    margin:2rem 0;
+}
+.app-badges img {
+    height:35px;
+}
+.apps .app-badges img {
+    height:45px;
+}
+.appscreenshots img {
+    width:200px;
+    float:left;
+    padding:0 10px 10px 0;
+}
 .arproducts img {
     width:100px;
     float:left;

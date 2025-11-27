@@ -13,6 +13,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png">
   <link rel="canonical" href="{{ canonical_path }}">
   <link rel="manifest" href="{% url 'manifest' %}">
+  <meta name="apple-itunes-app" content="app-id=6755759247">
   <script defer data-domain="givefood.org.uk" data-api="/psb/api/event" event-language="{{ language_code }}" src="/psb/js/script.outbound-links.pageview-props.js"></script>
   {% if page_translatable %}{% for language in languages %}
   <link rel="alternate" hreflang="{{ language.code }}" href="{{ domain }}{{ language.url }}">{% endfor %}{% endif %}
@@ -49,6 +50,7 @@
           <div class="column {% if language_direction == 'ltr' %}has-text-right{% else %}has-text-left{% endif %}">
             <ul>
               <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+              <li><a href="{% url 'apps' %}">{% trans "Apps" %}</a></li>
               <li><a href="{% url 'dash:index' %}">{% trans "Dashboards" %}</a></li>
               <li><a href="/api/">API</a> {% if language_code != 'en' %} ({% trans 'English' %}){% endif %}</li>
               <li><a href="{% url 'annual_report_index' %}">{% trans "Annual reports" %}</a></li>
