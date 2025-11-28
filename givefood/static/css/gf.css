@@ -157,8 +157,13 @@ del {
 .apps .app-badges img {
     height:45px;
 }
+.appscreenshots {
+    margin:1rem 0 2rem 0;
+    overflow:hidden;
+    zoom:0;
+}
 .appscreenshots img {
-    width:200px;
+    width:150px;
     float:left;
     padding:0 10px 10px 0;
 }
