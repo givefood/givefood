@@ -29,7 +29,7 @@
     <div class="column {% if locations %}is-three-fifths{% else %}is-half{% endif %}">
 
       <p>{% blocktrans %}We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}</p>
-      <p>{% blocktrans %}Find a food bank near you, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
+      <p>{% blocktrans %}Use our unique database to find a food bank near you, see what they need and how you can help by donating or volunteering.{% endblocktrans %}</p>
 
       <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}" data-no-instant>{% blocktrans %}Use my location{% endblocktrans %}</a>
       <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
