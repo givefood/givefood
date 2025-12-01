@@ -1,4 +1,4 @@
-This is a list of items, the SKU name, quantity, individual weight in grams (one litre is 1000g), and unit price in pence.
+This is a list of items, the SKU name, quantity, individual weight in grams (one litre is 1000g), and unit price in pence. The weight is part of the SKU name too.
 
 Here is the order text...
 
