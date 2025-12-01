@@ -1,4 +1,6 @@
-This is a list of items, the SKU name, quantity, individual weight in grams (one litre is 1000g), and unit price in pence. The weight is part of the SKU name too.
+This is a list of items, the SKU name, quantity, individual weight in grams (one litre is 1000g), and unit price in pence. The weight is part of the name too.
+
+E.g. name of "Fray Bentos Meatballs In Tomato Sauce 380g" is "Fray Bentos Meatballs In Tomato Sauce 380g" and the weight is 380
 
 Here is the order text...
 
