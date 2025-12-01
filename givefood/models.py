@@ -1395,6 +1395,14 @@ class Order(models.Model):
             self.foodbank.last_order = Order.objects.filter(foodbank = self.foodbank).order_by("-delivery_date")[0].delivery_date
             self.foodbank.save(do_geoupdate=False)
 
+        # Decache OrderGroup public pages if this order belongs to a public OrderGroup
+        if self.order_group and self.order_group.public:
+            urls = [
+                reverse("managed_donation", kwargs={"slug": self.order_group.slug, "key": self.order_group.key}),
+                reverse("managed_donation_geojson", kwargs={"slug": self.order_group.slug, "key": self.order_group.key}),
+            ]
+            decache_async.enqueue(urls)
+
     def lines(self):
         return OrderLine.objects.filter(order = self).order_by("-weight")
 
