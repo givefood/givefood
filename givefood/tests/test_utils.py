@@ -1,7 +1,7 @@
 """
 Tests for the main givefood app utility functions.
 """
-import pytest
+from unittest.mock import patch, Mock
 from givefood.func import (
     text_for_comparison,
     clean_foodbank_need_text,
@@ -11,6 +11,7 @@ from givefood.func import (
     distance_meters,
     diff_html,
     geojson_dict,
+    qwen,
 )
 
 
@@ -164,3 +165,137 @@ class TestJSONUtilities:
         json_str = '  {"type": "Point"}  '
         result = geojson_dict(json_str)
         assert result["type"] == "Point"
+
+
+class TestQwenFunction:
+    """Test the qwen function (Qwen AI integration)."""
+
+    @patch('givefood.func.get_cred')
+    @patch('givefood.func.OpenAI')
+    def test_qwen_basic_json_response(self, mock_openai_class, mock_get_cred):
+        """Test qwen function with JSON response."""
+        # Mock the credential
+        mock_get_cred.return_value = "test_api_key"
+
+        # Mock the OpenAI client and response
+        mock_client = Mock()
+        mock_openai_class.return_value = mock_client
+
+        # Create a mock response
+        mock_response = Mock()
+        mock_response.choices = [Mock()]
+        mock_response.choices[0].message.content = '{"result": "success"}'
+        mock_client.chat.completions.create.return_value = mock_response
+
+        # Call the function
+        result = qwen("test prompt", temperature=0.5)
+
+        # Verify the result
+        assert result == {"result": "success"}
+
+        # Verify the client was initialized correctly
+        mock_openai_class.assert_called_once_with(
+            api_key="test_api_key",
+            base_url="https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+        )
+
+        # Verify the API call was made
+        mock_client.chat.completions.create.assert_called_once()
+        call_args = mock_client.chat.completions.create.call_args
+        assert call_args.kwargs["model"] == "qwen-flash"
+        assert call_args.kwargs["temperature"] == 0.5
+        # Qwen API requires "json" in the prompt when using json_object format
+        assert "json" in call_args.kwargs["messages"][0]["content"].lower()
+        expected_content = "test prompt Respond in JSON format."
+        assert call_args.kwargs["messages"][0]["content"] == expected_content
+
+    @patch('givefood.func.get_cred')
+    @patch('givefood.func.OpenAI')
+    def test_qwen_with_schema(self, mock_openai_class, mock_get_cred):
+        """Test qwen function with response schema."""
+        # Mock the credential
+        mock_get_cred.return_value = "test_api_key"
+
+        # Mock the OpenAI client and response
+        mock_client = Mock()
+        mock_openai_class.return_value = mock_client
+
+        # Create a mock response
+        mock_response = Mock()
+        mock_response.choices = [Mock()]
+        mock_response.choices[0].message.content = '{"items": ["item1", "item2"]}'
+        mock_client.chat.completions.create.return_value = mock_response
+
+        # Define a schema
+        schema = {
+            "type": "object",
+            "properties": {
+                "items": {"type": "array", "items": {"type": "string"}}
+            }
+        }
+
+        # Call the function
+        result = qwen("test prompt", temperature=0, response_schema=schema)
+
+        # Verify the result
+        assert result == {"items": ["item1", "item2"]}
+
+        # Verify the API call used json_object format (not json_schema)
+        call_args = mock_client.chat.completions.create.call_args
+        assert "response_format" in call_args.kwargs
+        assert call_args.kwargs["response_format"]["type"] == "json_object"
+        # Verify "json" and schema were added to prompt
+        prompt_content = call_args.kwargs["messages"][0]["content"]
+        assert "json" in prompt_content.lower()
+        assert "Follow this JSON schema:" in prompt_content
+
+    @patch('givefood.func.get_cred')
+    @patch('givefood.func.OpenAI')
+    def test_qwen_custom_model(self, mock_openai_class, mock_get_cred):
+        """Test qwen function with custom model."""
+        # Mock the credential
+        mock_get_cred.return_value = "test_api_key"
+
+        # Mock the OpenAI client and response
+        mock_client = Mock()
+        mock_openai_class.return_value = mock_client
+
+        # Create a mock response
+        mock_response = Mock()
+        mock_response.choices = [Mock()]
+        mock_response.choices[0].message.content = '{"test": "data"}'
+        mock_client.chat.completions.create.return_value = mock_response
+
+        # Call the function with custom model
+        qwen("test prompt", temperature=0.7, model="qwen-plus")
+
+        # Verify the API call used the custom model
+        call_args = mock_client.chat.completions.create.call_args
+        assert call_args.kwargs["model"] == "qwen-plus"
+
+    @patch('givefood.func.get_cred')
+    @patch('givefood.func.OpenAI')
+    def test_qwen_prompt_already_has_json(self, mock_openai_class, mock_get_cred):
+        """Test qwen function when prompt already contains 'json'."""
+        # Mock the credential
+        mock_get_cred.return_value = "test_api_key"
+
+        # Mock the OpenAI client and response
+        mock_client = Mock()
+        mock_openai_class.return_value = mock_client
+
+        # Create a mock response
+        mock_response = Mock()
+        mock_response.choices = [Mock()]
+        mock_response.choices[0].message.content = '{"result": "ok"}'
+        mock_client.chat.completions.create.return_value = mock_response
+
+        # Call the function with a prompt that already contains "json"
+        result = qwen("Return JSON output", temperature=0.5)
+
+        # Verify the result
+        assert result == {"result": "ok"}
+
+        # Verify the prompt was not modified
+        call_args = mock_client.chat.completions.create.call_args
+        assert call_args.kwargs["messages"][0]["content"] == "Return JSON output"
