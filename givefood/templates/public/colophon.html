@@ -36,13 +36,6 @@
           <a href="https://pypi.org/project/{{ requirement }}/">{{ requirement }}</a>{% if not forloop.last %},{% endif %}
         {% endfor %}
       </p>
-    
-      <h2>{% trans "Changelog" %}</h2>
-
-      {% for change in changelog %}
-          <h3>{{ change.date }}</h3>
-          <p>{{ change.change|linebreaksbr }}</p>
-      {% endfor %}
 
     </div>
   </div>

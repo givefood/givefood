@@ -2175,25 +2175,6 @@ class PlacePhoto(models.Model):
         app_label = 'givefood'
 
 
-class Changelog(models.Model):
-
-    date = models.DateField()
-    change = models.TextField()
-
-    class Meta:
-        app_label = 'givefood'
-
-    def save(self, *args, **kwargs):
-
-        super(Changelog, self).save(*args, **kwargs)
-        decache_async.enqueue([reverse("colophon")])
-
-    def delete(self, *args, **kwargs):
-
-        super(Changelog, self).delete(*args, **kwargs)
-        decache_async.enqueue([reverse("colophon")])
-
-
 class CharityYear(models.Model):
 
     foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
