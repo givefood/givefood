@@ -12,7 +12,7 @@ from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 
-from givefood.models import Changelog, Foodbank, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
+from givefood.models import Foodbank, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
 from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, validate_turnstile
 from givefood.func import send_email
@@ -841,9 +841,7 @@ def colophon(request):
         requirement_names.append(dep_name)
     requirement_names.sort()
 
-    changelog = Changelog.objects.all().order_by("-date")
     template_vars = {
-        "changelog":changelog,
         "requirements":requirement_names,
     }
     return render(request, "public/colophon.html", template_vars)

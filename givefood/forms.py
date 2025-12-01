@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.forms import ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
-from givefood.models import Changelog, FoodbankDonationPoint, OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine, SlugRedirect
+from givefood.models import FoodbankDonationPoint, OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine, SlugRedirect
 from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
@@ -182,10 +182,3 @@ class GfCredentialForm(ModelForm):
         fields = "__all__"
 
 
-class ChangelogForm(ModelForm):
-    class Meta:
-        model = Changelog
-        fields = "__all__"
-        widgets = {
-            'date': forms.DateInput(attrs={'type': 'date'})
-        }
