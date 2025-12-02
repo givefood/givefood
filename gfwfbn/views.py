@@ -312,7 +312,7 @@ def place(request, county, place):
     
     
 
-@cache_page(SECONDS_IN_DAY)
+# @cache_page(SECONDS_IN_DAY)
 def foodbank(request, slug):
     """
     Food bank index

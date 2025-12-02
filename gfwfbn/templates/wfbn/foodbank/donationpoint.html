@@ -75,8 +75,6 @@
                   <p>{% blocktrans %}They don't need any more{% endblocktrans %} {% for item in foodbank.latest_need.get_excess_text_list %}{{ item }}{% if not forloop.last %}, {% endif %}{% endfor %}.</p>
                 {% endif %}
 
-                {% include 'wfbn/foodbank/includes/subscribe.html' %}
-
             {% endif %}
 
             {% if donationpoint.opening_hours %}
@@ -97,6 +95,10 @@
 
             {% if donationpoint.wheelchair_accessible %}
                 <p>♿ {% blocktrans %}Wheelchair accessible{% endblocktrans %}</p>
+            {% endif %}
+
+            {% if has_need %}
+                {% include 'wfbn/foodbank/includes/subscribe.html' %}
             {% endif %}
 
           </div>

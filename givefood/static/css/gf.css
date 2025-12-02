@@ -148,11 +148,14 @@ del {
 .app-badges {
     margin:1rem 0;
 }
+#apps-panel .app-badges {
+    margin:0;
+}
 .apps .app-badges {
     margin:2rem 0;
 }
-.app-badges img {
-    height:35px;
+.app-badges img, #apps-panel .app-badges img {
+    height:35px
 }
 .apps .app-badges img {
     height:45px;

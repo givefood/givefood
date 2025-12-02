@@ -1,17 +1,52 @@
 {% load i18n %}
-<div class="subscribe-form">
-    <form action="{% url 'human' %}" method="post">
-        <label class="label" for="email">{% blocktrans %}Get an email when items are needed{% endblocktrans %}</label>
-        <div class="field has-addons">
-            <div class="control is-expanded">
-                <input class="input" id="email" maxlength="254" name="email" type="email" value="{% if email %}{{ email }}{% endif %}" placeholder="{% blocktrans %}Email address{% endblocktrans %}" required="required" autocomplete="email"{% if autofocus %} autofocus{% endif %}>
-            </div>
-            <div class="control">
-                <button type="submit" class="button is-link" id="subscribe_btn">{% blocktrans %}Get updates{% endblocktrans %}</button>
+<div class="subscribe">
+    <p><em>Get updates when items are needed by this food bank via...</em></p>
+    <div class="tabs is-boxed">
+        <ul>
+            <li class="is-active" role="presentation">
+                <a data-tab="apps" role="tab" aria-selected="true" aria-controls="apps-panel" id="apps-tab">
+                    <span>Apps</span>
+                </a>
+            </li>
+            <li role="presentation">
+                <a data-tab="browser" role="tab" aria-selected="false" aria-controls="browser-panel" id="browser-tab">
+                    <span>Browser</span>
+                </a>
+            </li>
+            <li role="presentation">
+                <a data-tab="email" role="tab" aria-selected="false" aria-controls="email-panel" id="email-tab">
+                    <span>Email</span>
+                </a>
+                </li>
+        </ul>
+    </div>
+    <div class="sections">
+        <div class="apps tabcontent" role="tabpanel" id="apps-panel" aria-labelledby="apps-tab">
+            {% include 'public/includes/appbadges.html' %}
+        </div>
+        <div class="browser tabcontent is-hidden" role="tabpanel" id="browser-panel" aria-labelledby="browser-tab">
+            <div class="subscribe-browser">
+                <button id="subscribe_browser_btn" class="button is-link is-light"">{% blocktrans %}Subscribe to browser notifications{% endblocktrans %}</button>
+                <p class="is-size-7">{% blocktrans %}You'll need to allow notifications in your browser for this to work.{% endblocktrans %}</p>
             </div>
         </div>
-        <p class="is-size-7">{% blocktrans %}We'll never use your email address for anything else, and you can unsubscribe at any time.{% endblocktrans %}</p>
-        <input type="hidden" name="target" value="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}">
-        <input type="hidden" name="action" value="subscribe">
-    </form>
+        <div class="email tabcontent is-hidden" role="tabpanel" id="email-panel" aria-labelledby="email-tab">
+            <div class="subscribe-form">
+                <form action="{% url 'human' %}" method="post">
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input class="input" maxlength="254" name="email" type="email" value="{% if email %}{{ email }}{% endif %}" placeholder="{% blocktrans %}Email address{% endblocktrans %}" required="required" autocomplete="email"{% if autofocus %} autofocus{% endif %}>
+                        </div>
+                        <div class="control">
+                            <button type="submit" class="button is-link is-light" id="subscribe_btn">{% blocktrans %}Get updates{% endblocktrans %}</button>
+                        </div>
+                    </div>
+                    <p class="is-size-7">{% blocktrans %}We'll never use your email address for anything else, and you can unsubscribe at any time.{% endblocktrans %}</p>
+                    <input type="hidden" name="target" value="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}">
+                    <input type="hidden" name="action" value="subscribe">
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+<script src="/static/js/tabber.js"></script>

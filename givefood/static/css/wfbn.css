@@ -63,6 +63,21 @@
 .subscribe {
     margin-top:10px;
 }
+.subscribe p {
+    margin:0 0 10px 0;
+}
+.subscribe .tabs {
+    padding:0;
+}
+.subscribe .tabcontent {
+    margin-top:10px;
+}
+.subscribe-form {
+    margin-top:10px;
+}
+#subscribe_browser_btn {
+    margin-bottom:12px;
+}
 #map {
     height:1000px;
     border-radius: 0.25rem;
