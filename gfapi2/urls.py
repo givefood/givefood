@@ -1,6 +1,5 @@
 from django.urls import path
 from gfapi2.views import *
-from gfapi2.firebase_views import subscribe_to_topic
 
 app_name = "gfapi2"
 
@@ -18,5 +17,4 @@ urlpatterns = (
     path("need/<uuid:id>/", need, name="need"),
     path("constituencies/", constituencies, name="constituencies"),
     path("constituency/<slug:slug>/", constituency, name="constituency"),
-    path("firebase/subscribe/", subscribe_to_topic, name="firebase_subscribe"),
 )

@@ -132,7 +132,7 @@ async function subscribeToTopic(token, topic) {
     try {
         // Call our backend endpoint to subscribe the token to the topic
         // The backend will use Firebase Admin SDK to handle the subscription
-        const response = await fetch('/api/firebase/subscribe/', {
+        const response = await fetch('/needs/firebase/subscribe/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
