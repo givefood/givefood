@@ -1419,15 +1419,42 @@ def send_firebase_notification(need):
         cred = credentials.Certificate(cred_dict)
         firebase_admin.initialize_app(cred)
     
-    # Get the first 4 items from the need
-    items = need.change_list()[:4]
-    items_text = ", ".join(items)
-    
     # Build the topic name
     topic = f"foodbank-{need.foodbank.uuid}"
     
-    # Build the notification
+    # Build the notification title
     title = f"{need.foodbank.name} needs {need.no_items()} items"
+    
+    # Get all items from the need
+    items = need.change_list()
+    
+    # Firebase has a 4KB limit for the notification payload
+    # We need to fit as many items as possible within this limit
+    # The limit applies to the entire message, but we'll be conservative
+    # and ensure the body stays well under 4KB (4096 bytes)
+    max_body_bytes = 4000  # Leave some room for overhead
+    
+    # Build the body by adding items one by one until we hit the limit
+    body_items = []
+    current_body = ""
+    
+    for item in items:
+        # Try adding this item
+        if body_items:
+            test_body = ", ".join(body_items + [item])
+        else:
+            test_body = item
+        
+        # Check if adding this item would exceed the limit
+        if len(test_body.encode('utf-8')) <= max_body_bytes:
+            body_items.append(item)
+            current_body = test_body
+        else:
+            # Can't fit any more items
+            break
+    
+    # Use the body with as many items as fit
+    items_text = current_body
     
     message = messaging.Message(
         notification=messaging.Notification(
