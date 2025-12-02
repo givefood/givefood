@@ -85,4 +85,26 @@
 <script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+
+<!-- Firebase configuration -->
+<script>
+  // Firebase configuration should be set from environment variables
+  // For now, these will be empty but should be configured in production
+  window.firebaseConfig = {
+    apiKey: "{{ firebase_api_key|default:'' }}",
+    authDomain: "{{ firebase_auth_domain|default:'' }}",
+    projectId: "{{ firebase_project_id|default:'' }}",
+    storageBucket: "{{ firebase_storage_bucket|default:'' }}",
+    messagingSenderId: "{{ firebase_messaging_sender_id|default:'' }}",
+    appId: "{{ firebase_app_id|default:'' }}"
+  };
+  window.firebaseVapidKey = "{{ firebase_vapid_key|default:'' }}";
+</script>
+
+<!-- Firebase subscription handler -->
+<script src="/static/js/firebase-subscribe.js?v={{ version }}" defer></script>
+
 {% endblock %}

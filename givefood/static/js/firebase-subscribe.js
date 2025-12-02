@@ -1,0 +1,212 @@
+/**
+ * Firebase Cloud Messaging (FCM) browser subscription handler
+ * Handles subscribing users to food bank notification topics
+ */
+
+// Firebase configuration - these values should be set from Django template/settings
+const firebaseConfig = window.firebaseConfig || {
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
+};
+
+// VAPID key for web push - should be set from Django template/settings
+const vapidKey = window.firebaseVapidKey || "";
+
+/**
+ * Initialize Firebase and set up the subscribe button click handler
+ */
+function initFirebaseSubscribe() {
+    const subscribeBtn = document.getElementById('subscribe_browser_btn');
+    
+    if (!subscribeBtn) {
+        return;
+    }
+
+    // Check if Firebase config is properly set
+    if (!firebaseConfig.apiKey || !vapidKey) {
+        console.warn('Firebase configuration not properly set');
+        subscribeBtn.disabled = true;
+        subscribeBtn.textContent = 'Browser notifications not configured';
+        return;
+    }
+
+    // Check if browser supports notifications
+    if (!('Notification' in window)) {
+        subscribeBtn.disabled = true;
+        subscribeBtn.textContent = 'Browser does not support notifications';
+        return;
+    }
+
+    // Check if service workers are supported
+    if (!('serviceWorker' in navigator)) {
+        subscribeBtn.disabled = true;
+        subscribeBtn.textContent = 'Browser does not support service workers';
+        return;
+    }
+
+    subscribeBtn.addEventListener('click', handleSubscribeClick);
+}
+
+/**
+ * Handle the subscribe button click
+ */
+async function handleSubscribeClick(event) {
+    event.preventDefault();
+    
+    const button = event.target;
+    const foodbankId = button.getAttribute('data-foodbankid');
+    
+    if (!foodbankId) {
+        console.error('No foodbank ID found on button');
+        showMessage('Error: Missing food bank information', 'error');
+        return;
+    }
+
+    // Disable button while processing
+    button.disabled = true;
+    const originalText = button.textContent;
+    button.textContent = 'Subscribing...';
+
+    try {
+        // Request notification permission
+        const permission = await Notification.requestPermission();
+        
+        if (permission !== 'granted') {
+            showMessage('Please allow notifications to subscribe', 'warning');
+            button.disabled = false;
+            button.textContent = originalText;
+            return;
+        }
+
+        // Initialize Firebase
+        if (!window.firebase || !firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        // Get Firebase Messaging instance
+        const messaging = firebase.messaging();
+
+        // Get FCM token
+        const currentToken = await messaging.getToken({ vapidKey: vapidKey });
+        
+        if (!currentToken) {
+            showMessage('Failed to get notification token', 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+            return;
+        }
+
+        // Subscribe to the topic
+        const topic = `foodbank-${foodbankId}`;
+        const subscribeResult = await subscribeToTopic(currentToken, topic);
+        
+        if (subscribeResult.success) {
+            showMessage('Successfully subscribed to notifications!', 'success');
+            button.textContent = 'Subscribed ✓';
+            button.classList.remove('is-light');
+            button.classList.add('is-success');
+        } else {
+            showMessage('Failed to subscribe to notifications', 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+        }
+    } catch (error) {
+        console.error('Error subscribing to notifications:', error);
+        showMessage('Error: ' + error.message, 'error');
+        button.disabled = false;
+        button.textContent = originalText;
+    }
+}
+
+/**
+ * Subscribe a token to a Firebase topic
+ * @param {string} token - FCM token
+ * @param {string} topic - Topic name (e.g., "foodbank-uuid")
+ * @returns {Promise<{success: boolean, message: string}>}
+ */
+async function subscribeToTopic(token, topic) {
+    try {
+        // Call our backend endpoint to subscribe the token to the topic
+        // The backend will use Firebase Admin SDK to handle the subscription
+        const response = await fetch('/api/firebase/subscribe/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken(),
+            },
+            body: JSON.stringify({
+                token: token,
+                topic: topic
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Server error: ' + response.status);
+        }
+
+        const data = await response.json();
+        return { success: true, message: data.message };
+    } catch (error) {
+        console.error('Error subscribing to topic:', error);
+        return { success: false, message: error.message };
+    }
+}
+
+/**
+ * Get CSRF token from cookie
+ * @returns {string} CSRF token
+ */
+function getCsrfToken() {
+    const name = 'csrftoken';
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+/**
+ * Show a message to the user
+ * @param {string} message - Message to display
+ * @param {string} type - Message type ('success', 'error', 'warning')
+ */
+function showMessage(message, type) {
+    // Create a notification element
+    const notification = document.createElement('div');
+    notification.className = `notification is-${type}`;
+    notification.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 1000; max-width: 300px;';
+    
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete';
+    deleteBtn.onclick = () => notification.remove();
+    
+    notification.appendChild(deleteBtn);
+    notification.appendChild(document.createTextNode(message));
+    
+    document.body.appendChild(notification);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFirebaseSubscribe);
+} else {
+    initFirebaseSubscribe();
+}

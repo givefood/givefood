@@ -26,7 +26,7 @@
         </div>
         <div class="browser tabcontent is-hidden" role="tabpanel" id="browser-panel" aria-labelledby="browser-tab">
             <div class="subscribe-browser">
-                <button id="subscribe_browser_btn" class="button is-link is-light"">{% blocktrans %}Subscribe to browser notifications{% endblocktrans %}</button>
+                <button id="subscribe_browser_btn" class="button is-link is-light" data-foodbankid="{{ foodbank.uuid }}">{% blocktrans %}Subscribe to browser notifications{% endblocktrans %}</button>
                 <p class="is-size-7">{% blocktrans %}You'll need to allow notifications in your browser for this to work.{% endblocktrans %}</p>
             </div>
         </div>

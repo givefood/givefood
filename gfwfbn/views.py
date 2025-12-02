@@ -1,4 +1,4 @@
-import json, requests, datetime
+import json, requests, datetime, os
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, Http404
@@ -621,6 +621,14 @@ def foodbank_subscribe(request, slug):
         "foodbank":foodbank,
         "email":email,
         "turnstilefail":turnstilefail,
+        # Firebase configuration from environment variables
+        "firebase_api_key": os.getenv("FIREBASE_API_KEY", ""),
+        "firebase_auth_domain": os.getenv("FIREBASE_AUTH_DOMAIN", ""),
+        "firebase_project_id": os.getenv("FIREBASE_PROJECT_ID", ""),
+        "firebase_storage_bucket": os.getenv("FIREBASE_STORAGE_BUCKET", ""),
+        "firebase_messaging_sender_id": os.getenv("FIREBASE_MESSAGING_SENDER_ID", ""),
+        "firebase_app_id": os.getenv("FIREBASE_APP_ID", ""),
+        "firebase_vapid_key": os.getenv("FIREBASE_VAPID_KEY", ""),
     }
 
     return render(request, "wfbn/foodbank/subscribe.html", template_vars)
