@@ -2041,7 +2041,7 @@ class GfCredential(models.Model):
 
     created = models.DateTimeField(auto_now_add=True, editable=False)
     cred_name = models.CharField(max_length=50)
-    cred_value = models.CharField(max_length=255)
+    cred_value = models.TextField()
 
     class Meta:
         app_label = 'givefood'
