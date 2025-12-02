@@ -27,7 +27,8 @@ function initFirebaseSubscribe() {
     }
 
     // Check if push notification config is properly set
-    if (!firebaseConfig.apiKey || !vapidKey) {
+    if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId || 
+        !firebaseConfig.messagingSenderId || !firebaseConfig.appId || !vapidKey) {
         console.warn('Push notification configuration not properly set');
         subscribeBtn.disabled = true;
         subscribeBtn.textContent = 'Browser notifications not configured';
@@ -83,7 +84,7 @@ async function handleSubscribeClick(event) {
         }
 
         // Initialize push notification service
-        if (!window.firebase || !window.firebase.apps || !window.firebase.apps.length) {
+        if (!window.firebase || !window.firebase.apps || window.firebase.apps.length === 0) {
             window.firebase.initializeApp(firebaseConfig);
         }
 
