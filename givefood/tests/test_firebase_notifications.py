@@ -365,8 +365,8 @@ class TestFirebaseNotifications:
         assert len(message.notification.body) > 0
         
         # Verify that the body is not truncated mid-item (should end with a complete item)
-        # Count the items in the body
+        # The body should contain items in the same order as the original list
         body_items = message.notification.body.split(", ")
-        # All items should be complete (not truncated)
-        for item in body_items:
-            assert item in items, f"Item '{item}' is not in the original list or is truncated"
+        # All items should be complete (not truncated) and appear in order
+        for i, body_item in enumerate(body_items):
+            assert body_item == items[i], f"Item at position {i} is '{body_item}' but expected '{items[i]}'"
