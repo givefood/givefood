@@ -862,6 +862,7 @@ def bot(request):
 def apps(request):
     return render(request, "public/apps.html")
 
+
 @cache_page(SECONDS_IN_TWO_MINUTES)
 def frag(request, frag):
     """
