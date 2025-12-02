@@ -1461,6 +1461,9 @@ def send_firebase_notification(need):
             title=title,
             body=items_text,
         ),
+        data={
+            "foodbank_slug": need.foodbank.slug,
+        },
         topic=topic,
     )
     
