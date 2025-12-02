@@ -50,6 +50,7 @@ dependencies = [
     "pyyaml",
     "sentry-sdk[django]",
     "django-tasks",
+    "firebase-admin",
 ]
 
 [project.optional-dependencies]

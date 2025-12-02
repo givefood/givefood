@@ -1387,3 +1387,61 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         "last_published_need":last_published_need,
         "last_nonpublished_needs":last_nonpublished_needs,
     }
+
+
+def send_firebase_notification(need):
+    """
+    Send a Firebase Cloud Messaging notification to a food bank's topic.
+    
+    Args:
+        need: FoodbankChange instance with foodbank and need information
+    """
+    import firebase_admin
+    from firebase_admin import credentials, messaging
+    
+    # Initialize Firebase app if not already initialized
+    try:
+        firebase_admin.get_app()
+    except ValueError:
+        # App not initialized, need to initialize it
+        cred_string = get_cred("firebase_service_account")
+        if not cred_string:
+            logging.warning("Firebase credentials not found")
+            return
+        
+        # Parse the JSON string to a dict
+        try:
+            cred_dict = json.loads(cred_string)
+        except json.JSONDecodeError:
+            logging.error("Failed to parse firebase_service_account as JSON")
+            return
+        
+        cred = credentials.Certificate(cred_dict)
+        firebase_admin.initialize_app(cred)
+    
+    # Get the first 4 items from the need
+    items = need.change_list()[:4]
+    items_text = ", ".join(items)
+    
+    # Build the topic name
+    topic = f"foodbank-{need.foodbank.uuid}"
+    
+    # Build the notification
+    title = f"{need.foodbank.name} needs {need.no_items()} items"
+    
+    message = messaging.Message(
+        notification=messaging.Notification(
+            title=title,
+            body=items_text,
+        ),
+        topic=topic,
+    )
+    
+    # Send the message
+    try:
+        response = messaging.send(message)
+        logging.info(f"Successfully sent Firebase notification for need {need.need_id} to topic {topic}: {response}")
+        return response
+    except Exception as e:
+        logging.error(f"Failed to send Firebase notification for need {need.need_id}: {e}")
+        return None
