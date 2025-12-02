@@ -1,5 +1,5 @@
 """
-Firebase subscription API endpoints
+Push notification subscription API endpoints
 Handles browser push notification subscriptions
 """
 import json
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 @require_http_methods(["POST"])
 def subscribe_to_topic(request):
     """
-    Subscribe a Firebase Cloud Messaging token to a food bank topic.
+    Subscribe a browser push notification token to a food bank topic.
     
     Expected POST body:
     {
@@ -40,7 +40,7 @@ def subscribe_to_topic(request):
                 'message': 'Invalid topic format'
             }, status=400)
         
-        # Import Firebase Admin SDK
+        # Import Firebase Admin SDK for push notifications
         try:
             import firebase_admin
             from firebase_admin import messaging
@@ -48,12 +48,12 @@ def subscribe_to_topic(request):
             logger.error('Firebase Admin SDK not available')
             return JsonResponse({
                 'success': False,
-                'message': 'Firebase not configured'
+                'message': 'Push notifications not configured'
             }, status=500)
         
         # Subscribe the token to the topic
         try:
-            # Firebase Admin SDK method to subscribe tokens to a topic
+            # Use Firebase Admin SDK to subscribe tokens to a topic
             response = messaging.subscribe_to_topic([token], topic)
             
             if response.success_count > 0:

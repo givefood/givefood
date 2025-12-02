@@ -1,13 +1,13 @@
 /**
- * Firebase Cloud Messaging Service Worker
+ * Push Notification Service Worker
  * Handles background push notifications for food bank updates
  */
 
-// Import Firebase scripts for service worker
+// Import scripts for push messaging
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 
-// Firebase configuration will be set via message from main thread
+// Push notification configuration will be set via message from main thread
 let firebaseConfig = null;
 
 // Listen for configuration from main thread
@@ -15,7 +15,7 @@ self.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'FIREBASE_CONFIG') {
         firebaseConfig = event.data.config;
         
-        // Initialize Firebase with received config
+        // Initialize push notification service with received config
         if (firebaseConfig) {
             firebase.initializeApp(firebaseConfig);
             

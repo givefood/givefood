@@ -607,48 +607,6 @@ def foodbank_nearby(request, slug):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def foodbank_subscribe(request, slug):
-    """
-    Food bank subscribe page
-    """
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-    email = request.GET.get("email", None)
-    turnstilefail = request.GET.get("email", None)
-
-    template_vars = {
-        "section":"subscribe",
-        "foodbank":foodbank,
-        "email":email,
-        "turnstilefail":turnstilefail,
-        # Firebase configuration from environment variables
-        "firebase_api_key": os.getenv("FIREBASE_API_KEY", ""),
-        "firebase_auth_domain": os.getenv("FIREBASE_AUTH_DOMAIN", ""),
-        "firebase_project_id": os.getenv("FIREBASE_PROJECT_ID", ""),
-        "firebase_storage_bucket": os.getenv("FIREBASE_STORAGE_BUCKET", ""),
-        "firebase_messaging_sender_id": os.getenv("FIREBASE_MESSAGING_SENDER_ID", ""),
-        "firebase_app_id": os.getenv("FIREBASE_APP_ID", ""),
-        "firebase_vapid_key": os.getenv("FIREBASE_VAPID_KEY", ""),
-    }
-
-    return render(request, "wfbn/foodbank/subscribe.html", template_vars)
-
-
-@cache_page(SECONDS_IN_WEEK)
-def foodbank_subscribe_sample(request, slug):
-    """
-    Food bank subscribe sample email
-    Used in an iframe in the subscribe page
-    """
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-
-    template_vars = {
-        "need":foodbank.latest_need,
-        "is_sample":True,
-    }
-
-    return render(request, "wfbn/emails/notification.html", template_vars)
 
 
 @cache_page(SECONDS_IN_DAY)

@@ -1,6 +1,6 @@
 from django.views.generic import RedirectView
 from gfwfbn.views import *
-from gfwfbn.firebase_views import subscribe_to_topic
+from gfwfbn.notification_views import subscribe_to_topic
 from django.urls import path, re_path
 
 app_name = 'gfwfbn'
@@ -14,8 +14,8 @@ urlpatterns = [
     path("geo.json", geojson, name="geojson"),
     path("manifest.json", RedirectView.as_view(url='/manifest.json', permanent=True)),
 
-    # Firebase subscription
-    path("firebase/subscribe/", subscribe_to_topic, name="firebase_subscribe"),
+    # Browser notification subscription
+    path("browser/subscribe/", subscribe_to_topic, name="browser_subscribe"),
 
     # Place
     path("at/place/<slug:county>/<slug:place>/", place, name="place"),
@@ -28,8 +28,6 @@ urlpatterns = [
     path("at/<slug:slug>/charity/", foodbank_charity, name="foodbank_charity"),
     path("at/<slug:slug>/socialmedia/", foodbank_socialmedia, name="foodbank_socialmedia"),
     path("at/<slug:slug>/nearby/", foodbank_nearby, name="foodbank_nearby"),
-    path("at/<slug:slug>/subscribe/", foodbank_subscribe, name="foodbank_subscribe"),
-    path("at/<slug:slug>/subscribe/sample/", foodbank_subscribe_sample, name="foodbank_subscribe_sample"),
     re_path(r"^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),
     path("at/<slug:slug>/map.png", foodbank_map, name="foodbank_map"),
     path("at/<slug:slug>/maps/<int:size>.png", foodbank_map, name="foodbank_map_size"),

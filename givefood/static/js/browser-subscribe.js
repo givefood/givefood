@@ -1,9 +1,9 @@
 /**
- * Firebase Cloud Messaging (FCM) browser subscription handler
+ * Browser push notification subscription handler
  * Handles subscribing users to food bank notification topics
  */
 
-// Firebase configuration - these values should be set from Django template/settings
+// Push notification configuration - these values should be set from Django template/settings
 const firebaseConfig = window.firebaseConfig || {
     apiKey: "",
     authDomain: "",
@@ -17,7 +17,7 @@ const firebaseConfig = window.firebaseConfig || {
 const vapidKey = window.firebaseVapidKey || "";
 
 /**
- * Initialize Firebase and set up the subscribe button click handler
+ * Initialize push notifications and set up the subscribe button click handler
  */
 function initFirebaseSubscribe() {
     const subscribeBtn = document.getElementById('subscribe_browser_btn');
@@ -26,9 +26,9 @@ function initFirebaseSubscribe() {
         return;
     }
 
-    // Check if Firebase config is properly set
+    // Check if push notification config is properly set
     if (!firebaseConfig.apiKey || !vapidKey) {
-        console.warn('Firebase configuration not properly set');
+        console.warn('Push notification configuration not properly set');
         subscribeBtn.disabled = true;
         subscribeBtn.textContent = 'Browser notifications not configured';
         return;
@@ -82,15 +82,15 @@ async function handleSubscribeClick(event) {
             return;
         }
 
-        // Initialize Firebase
+        // Initialize push notification service
         if (!window.firebase || !firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
         }
 
-        // Get Firebase Messaging instance
+        // Get messaging instance for push notifications
         const messaging = firebase.messaging();
 
-        // Get FCM token
+        // Get push notification token
         const currentToken = await messaging.getToken({ vapidKey: vapidKey });
         
         if (!currentToken) {
@@ -123,16 +123,16 @@ async function handleSubscribeClick(event) {
 }
 
 /**
- * Subscribe a token to a Firebase topic
- * @param {string} token - FCM token
+ * Subscribe a token to a food bank notification topic
+ * @param {string} token - Push notification token
  * @param {string} topic - Topic name (e.g., "foodbank-uuid")
  * @returns {Promise<{success: boolean, message: string}>}
  */
 async function subscribeToTopic(token, topic) {
     try {
         // Call our backend endpoint to subscribe the token to the topic
-        // The backend will use Firebase Admin SDK to handle the subscription
-        const response = await fetch('/needs/firebase/subscribe/', {
+        // The backend uses push notification services to handle the subscription
+        const response = await fetch('/needs/browser/subscribe/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
