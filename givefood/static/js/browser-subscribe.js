@@ -83,12 +83,19 @@ async function handleSubscribeClick(event) {
         }
 
         // Initialize push notification service
-        if (!window.firebase || !firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        if (!window.firebase || !window.firebase.apps || !window.firebase.apps.length) {
+            window.firebase.initializeApp(firebaseConfig);
         }
 
         // Get messaging instance for push notifications
-        const messaging = firebase.messaging();
+        if (!window.firebase.messaging) {
+            showMessage('Push notifications not available in this browser', 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+            return;
+        }
+        
+        const messaging = window.firebase.messaging();
 
         // Get push notification token
         const currentToken = await messaging.getToken({ vapidKey: vapidKey });

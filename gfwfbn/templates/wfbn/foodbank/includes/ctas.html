@@ -13,11 +13,4 @@
         </p>
     {% endif %}
 
-    {% if foodbank.latest_need.change_text != "Facebook" and foodbank.latest_need.change_text != "Nothing" and foodbank.latest_need.change_text != "Unknown" %}
-        <p>
-            <a href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}" class="button is-info is-small is-light" id="updates_btn">{% blocktrans %}Get updates{% endblocktrans %}</a>
-            {% blocktrans %}Get an email when items are needed{% endblocktrans %}
-        </p>
-    {% endif %}
-
 </div>

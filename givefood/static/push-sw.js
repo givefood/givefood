@@ -48,13 +48,14 @@ self.addEventListener('notificationclick', (event) => {
     const foodbankSlug = event.notification.data?.foodbank_slug;
     
     if (foodbankSlug) {
-        const url = `https://www.givefood.org.uk/needs/at/${foodbankSlug}/`;
+        // Use relative URL to work in all environments
+        const url = `/needs/at/${foodbankSlug}/`;
         
         event.waitUntil(
             clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
                 // Check if there's already a window open with this URL
                 for (const client of clientList) {
-                    if (client.url === url && 'focus' in client) {
+                    if (client.url.includes(url) && 'focus' in client) {
                         return client.focus();
                     }
                 }
