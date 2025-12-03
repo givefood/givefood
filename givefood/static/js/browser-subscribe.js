@@ -174,7 +174,7 @@ async function handleSubscribeClick(event) {
             button.textContent = 'Subscribed ✓';
             button.classList.remove('is-light');
             button.classList.add('is-success');
-            // Keep button disabled after successful subscription
+            button.disabled = true; // Keep button disabled after successful subscription
         } else {
             showMessage('Failed to subscribe to notifications', 'error');
             button.disabled = false;
