@@ -183,7 +183,7 @@ async function handleSubscribeClick(event) {
 
         // Register service worker and send Firebase config
         try {
-            const registration = await navigator.serviceWorker.register('/static/firebase-messaging-sw.js');
+            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
             await navigator.serviceWorker.ready;
             
             // Send Firebase config to service worker
