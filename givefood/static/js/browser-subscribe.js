@@ -163,8 +163,9 @@ async function handleSubscribeClick(event) {
             await navigator.serviceWorker.ready;
             
             // Send Firebase config to service worker
-            if (registration.active) {
-                registration.active.postMessage({
+            const serviceWorker = registration.active || registration.waiting || registration.installing;
+            if (serviceWorker) {
+                serviceWorker.postMessage({
                     type: 'FIREBASE_CONFIG',
                     config: firebaseConfig
                 });
@@ -265,8 +266,9 @@ async function handleUnsubscribeClick(event) {
                 await navigator.serviceWorker.ready;
                 
                 // Send Firebase config to service worker
-                if (registration.active) {
-                    registration.active.postMessage({
+                const serviceWorker = registration.active || registration.waiting || registration.installing;
+                if (serviceWorker) {
+                    serviceWorker.postMessage({
                         type: 'FIREBASE_CONFIG',
                         config: firebaseConfig
                     });
