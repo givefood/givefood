@@ -754,32 +754,71 @@ def manifest(request):
 def firebase_messaging_sw(request):
     """
     Firebase Cloud Messaging service worker
-    Serves the service worker file at /firebase-messaging-sw.js
-    
+    Serves the service worker file at /firebase-messaging-sw.js with config injected
+
     Note: Service workers should not be cached for too long to ensure updates
     are picked up by browsers.
     """
     # Path to the service worker file in static directory
     # Using os.path.join ensures safe path construction
     sw_path = os.path.join(settings.BASE_DIR, 'givefood', 'static', 'push-sw.js')
-    
+
     # Validate that the path is within the expected directory
     sw_path = os.path.abspath(sw_path)
-    expected_base = os.path.abspath(os.path.join(settings.BASE_DIR, 'givefood', 'static'))
+    expected_base = os.path.abspath(
+        os.path.join(settings.BASE_DIR, 'givefood', 'static')
+    )
     if not sw_path.startswith(expected_base):
-        return HttpResponse('// Invalid path', content_type='application/javascript', status=403)
-    
+        return HttpResponse(
+            '// Invalid path',
+            content_type='application/javascript',
+            status=403
+        )
+
     try:
         with open(sw_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
-        response = HttpResponse(content, content_type='application/javascript; charset=utf-8')
-        # Service workers should have short cache times to ensure updates are picked up
+
+        # Inject Firebase configuration into the service worker
+        # This allows the service worker to initialize Firebase immediately
+        # when it loads rather than waiting for a message from the main thread
+        firebase_config = {
+            "apiKey": get_cred("firebase_api_key"),
+            "authDomain": get_cred("firebase_auth_domain"),
+            "projectId": get_cred("firebase_project_id"),
+            "storageBucket": get_cred("firebase_storage_bucket"),
+            "messagingSenderId": get_cred("firebase_messaging_sender_id"),
+            "appId": get_cred("firebase_app_id"),
+        }
+
+        # Only inject config if all essential fields are present
+        # Check for truthiness to avoid injecting None or empty strings
+        if (firebase_config.get("apiKey") and
+                firebase_config.get("projectId") and
+                firebase_config.get("messagingSenderId") and
+                firebase_config.get("appId")):
+            config_json = json.dumps(firebase_config)
+            # Replace the placeholder in the service worker with actual config
+            content = content.replace(
+                '// FIREBASE_CONFIG_PLACEHOLDER',
+                f'const firebaseConfig = {config_json};'
+            )
+
+        response = HttpResponse(
+            content,
+            content_type='application/javascript; charset=utf-8'
+        )
+        # Service workers should have short cache times to ensure updates
+        # are picked up
         response['Cache-Control'] = 'public, max-age=0, must-revalidate'
         response['Service-Worker-Allowed'] = '/'
         return response
     except FileNotFoundError:
-        return HttpResponse('// Service worker not found', content_type='application/javascript', status=404)
+        return HttpResponse(
+            '// Service worker not found',
+            content_type='application/javascript',
+            status=404
+        )
 
 
 @cache_page(SECONDS_IN_WEEK)
