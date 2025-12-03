@@ -16,6 +16,49 @@ const firebaseConfig = window.firebaseConfig || {
 // VAPID key for web push - should be set from Django template/settings
 const vapidKey = window.firebaseVapidKey || "";
 
+// LocalStorage key for tracking subscriptions
+const SUBSCRIPTIONS_KEY = 'gf_push_subscriptions';
+
+/**
+ * Get list of subscribed food bank IDs from localStorage
+ * @returns {Array} Array of food bank UUIDs user is subscribed to
+ */
+function getSubscribedFoodbanks() {
+    try {
+        const subscriptions = localStorage.getItem(SUBSCRIPTIONS_KEY);
+        return subscriptions ? JSON.parse(subscriptions) : [];
+    } catch (e) {
+        console.error('Error reading subscriptions from localStorage:', e);
+        return [];
+    }
+}
+
+/**
+ * Add a food bank ID to the subscriptions list
+ * @param {string} foodbankId - Food bank UUID
+ */
+function addSubscription(foodbankId) {
+    try {
+        const subscriptions = getSubscribedFoodbanks();
+        if (!subscriptions.includes(foodbankId)) {
+            subscriptions.push(foodbankId);
+            localStorage.setItem(SUBSCRIPTIONS_KEY, JSON.stringify(subscriptions));
+        }
+    } catch (e) {
+        console.error('Error saving subscription to localStorage:', e);
+    }
+}
+
+/**
+ * Check if user is subscribed to a specific food bank
+ * @param {string} foodbankId - Food bank UUID
+ * @returns {boolean} True if subscribed
+ */
+function isSubscribed(foodbankId) {
+    const subscriptions = getSubscribedFoodbanks();
+    return subscriptions.includes(foodbankId);
+}
+
 /**
  * Initialize push notifications and set up the subscribe button click handler
  */
@@ -23,6 +66,17 @@ function initFirebaseSubscribe() {
     const subscribeBtn = document.getElementById('subscribe_browser_btn');
     
     if (!subscribeBtn) {
+        return;
+    }
+
+    const foodbankId = subscribeBtn.getAttribute('data-foodbankid');
+    
+    // Check if already subscribed
+    if (foodbankId && isSubscribed(foodbankId)) {
+        subscribeBtn.textContent = 'Subscribed ✓';
+        subscribeBtn.classList.remove('is-light');
+        subscribeBtn.classList.add('is-success');
+        subscribeBtn.disabled = true;
         return;
     }
 
@@ -113,10 +167,14 @@ async function handleSubscribeClick(event) {
         const subscribeResult = await subscribeToTopic(currentToken, topic);
         
         if (subscribeResult.success) {
+            // Store subscription in localStorage
+            addSubscription(foodbankId);
+            
             showMessage('Successfully subscribed to notifications!', 'success');
             button.textContent = 'Subscribed ✓';
             button.classList.remove('is-light');
             button.classList.add('is-success');
+            // Keep button disabled after successful subscription
         } else {
             showMessage('Failed to subscribe to notifications', 'error');
             button.disabled = false;
