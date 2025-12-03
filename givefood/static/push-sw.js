@@ -7,12 +7,41 @@
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 
-// Service worker activation handler
-self.addEventListener('activate', (event) => {
-    console.log('Service worker activated');
-    // Claim all clients immediately so the service worker becomes active right away
-    event.waitUntil(self.clients.claim());
-});
+// Firebase configuration will be injected here by the server
+// FIREBASE_CONFIG_PLACEHOLDER
+
+// Initialize Firebase immediately when the service worker loads
+// This ensures we can receive background messages even when no page is open
+if (typeof firebaseConfig !== 'undefined' && firebaseConfig && firebaseConfig.apiKey) {
+    try {
+        // Initialize Firebase app
+        firebase.initializeApp(firebaseConfig);
+        console.log('Firebase initialized in service worker on load');
+        
+        // Get messaging instance and set up background message handler
+        const messaging = firebase.messaging();
+        
+        // Handle background messages - this will be called when a push notification arrives
+        // while the page is in the background or closed
+        messaging.onBackgroundMessage((payload) => {
+            console.log('Received background message:', payload);
+            
+            const notificationTitle = payload.notification?.title || 'Food Bank Update';
+            const notificationOptions = {
+                body: payload.notification?.body || 'New items needed',
+                icon: '/static/img/logo.svg',
+                badge: '/static/img/logo.svg',
+                data: payload.data,
+            };
+            
+            return self.registration.showNotification(notificationTitle, notificationOptions);
+        });
+    } catch (error) {
+        console.error('Error initializing Firebase in service worker:', error);
+    }
+} else {
+    console.warn('Firebase configuration not available in service worker');
+}
 
 // Service worker installation handler - activate immediately
 self.addEventListener('install', (event) => {
@@ -21,42 +50,11 @@ self.addEventListener('install', (event) => {
     self.skipWaiting();
 });
 
-// Listen for configuration from main thread
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'FIREBASE_CONFIG') {
-        const firebaseConfig = event.data.config;
-        
-        // Initialize push notification service with received config
-        if (firebaseConfig) {
-            try {
-                // Check if Firebase is already initialized
-                if (!firebase.apps?.length) {
-                    firebase.initializeApp(firebaseConfig);
-                    console.log('Firebase initialized in service worker');
-                    
-                    // Get messaging instance and set up message handler
-                    const messaging = firebase.messaging();
-                    
-                    // Handle background messages
-                    messaging.onBackgroundMessage((payload) => {
-                        console.log('Received background message:', payload);
-                        
-                        const notificationTitle = payload.notification?.title || 'Food Bank Update';
-                        const notificationOptions = {
-                            body: payload.notification?.body || 'New items needed',
-                            icon: '/static/img/logo.svg',
-                            badge: '/static/img/logo.svg',
-                            data: payload.data,
-                        };
-                        
-                        return self.registration.showNotification(notificationTitle, notificationOptions);
-                    });
-                }
-            } catch (error) {
-                console.error('Error initializing Firebase in service worker:', error);
-            }
-        }
-    }
+// Service worker activation handler
+self.addEventListener('activate', (event) => {
+    console.log('Service worker activated');
+    // Claim all clients immediately so the service worker becomes active right away
+    event.waitUntil(self.clients.claim());
 });
 
 // Handle notification click

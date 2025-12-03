@@ -19,9 +19,6 @@ const vapidKey = window.firebaseVapidKey || "";
 // LocalStorage key for tracking subscriptions
 const SUBSCRIPTIONS_KEY = 'gf_push_subscriptions';
 
-// Time to wait for service worker to process Firebase config (milliseconds)
-const CONFIG_PROCESSING_DELAY = 100;
-
 /**
  * Get list of subscribed food bank IDs from localStorage
  * @returns {Array} Array of food bank UUIDs user is subscribed to
@@ -181,7 +178,8 @@ async function handleSubscribeClick(event) {
             window.firebase.initializeApp(firebaseConfig);
         }
 
-        // Register service worker and send Firebase config
+        // Register service worker
+        // Note: Firebase config is now injected server-side when the service worker is served
         try {
             const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
             
@@ -223,9 +221,6 @@ async function handleSubscribeClick(event) {
                     }, 10000);
                 });
             }
-            
-            // Send Firebase config to service worker
-            await sendConfigToServiceWorker(registration);
         } catch (err) {
             console.error('Service worker registration failed:', err);
             showMessage('Failed to register service worker: ' + err.message, 'error');
