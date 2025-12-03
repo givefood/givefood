@@ -88,8 +88,7 @@ function initFirebaseSubscribe() {
     // Check if already subscribed
     if (foodbankId && isSubscribed(foodbankId)) {
         subscribeBtn.textContent = 'Unsubscribe';
-        subscribeBtn.classList.remove('is-link');
-        subscribeBtn.classList.add('is-warning', 'is-light');
+        subscribeBtn.classList.add('is-link', 'is-light');
         subscribeBtn.disabled = false;
         subscribeBtn.addEventListener('click', handleUnsubscribeClick);
         return;
@@ -187,8 +186,7 @@ async function handleSubscribeClick(event) {
             
             showMessage('Successfully subscribed to notifications!', 'success');
             button.textContent = 'Unsubscribe';
-            button.classList.remove('is-link');
-            button.classList.add('is-warning', 'is-light');
+            button.classList.add('is-link', 'is-light');
             button.disabled = false;
             
             // Remove old event listener and add new one
@@ -263,8 +261,7 @@ async function handleUnsubscribeClick(event) {
             
             showMessage('Successfully unsubscribed from notifications', 'success');
             button.textContent = 'Subscribe to browser notifications';
-            button.classList.remove('is-warning');
-            button.classList.add('is-light', 'is-link');
+            button.classList.add('is-link', 'is-light');
             button.disabled = false;
             
             // Remove old event listener and add new one
