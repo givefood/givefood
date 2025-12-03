@@ -50,6 +50,20 @@ function addSubscription(foodbankId) {
 }
 
 /**
+ * Remove a food bank ID from the subscriptions list
+ * @param {string} foodbankId - Food bank UUID
+ */
+function removeSubscription(foodbankId) {
+    try {
+        const subscriptions = getSubscribedFoodbanks();
+        const filtered = subscriptions.filter(id => id !== foodbankId);
+        localStorage.setItem(SUBSCRIPTIONS_KEY, JSON.stringify(filtered));
+    } catch (e) {
+        console.error('Error removing subscription from localStorage:', e);
+    }
+}
+
+/**
  * Check if user is subscribed to a specific food bank
  * @param {string} foodbankId - Food bank UUID
  * @returns {boolean} True if subscribed
@@ -73,10 +87,11 @@ function initFirebaseSubscribe() {
     
     // Check if already subscribed
     if (foodbankId && isSubscribed(foodbankId)) {
-        subscribeBtn.textContent = 'Subscribed ✓';
-        subscribeBtn.classList.remove('is-light');
-        subscribeBtn.classList.add('is-success');
-        subscribeBtn.disabled = true;
+        subscribeBtn.textContent = 'Unsubscribe';
+        subscribeBtn.classList.remove('is-light', 'is-link');
+        subscribeBtn.classList.add('is-warning');
+        subscribeBtn.disabled = false;
+        subscribeBtn.addEventListener('click', handleUnsubscribeClick);
         return;
     }
 
@@ -171,10 +186,14 @@ async function handleSubscribeClick(event) {
             addSubscription(foodbankId);
             
             showMessage('Successfully subscribed to notifications!', 'success');
-            button.textContent = 'Subscribed ✓';
-            button.classList.remove('is-light');
-            button.classList.add('is-success');
-            button.disabled = true; // Keep button disabled after successful subscription
+            button.textContent = 'Unsubscribe';
+            button.classList.remove('is-light', 'is-link');
+            button.classList.add('is-warning');
+            button.disabled = false;
+            
+            // Remove old event listener and add new one
+            button.removeEventListener('click', handleSubscribeClick);
+            button.addEventListener('click', handleUnsubscribeClick);
         } else {
             showMessage('Failed to subscribe to notifications', 'error');
             button.disabled = false;
@@ -182,6 +201,82 @@ async function handleSubscribeClick(event) {
         }
     } catch (error) {
         console.error('Error subscribing to notifications:', error);
+        showMessage('Error: ' + error.message, 'error');
+        button.disabled = false;
+        button.textContent = originalText;
+    }
+}
+
+/**
+ * Handle the unsubscribe button click
+ */
+async function handleUnsubscribeClick(event) {
+    event.preventDefault();
+    
+    const button = event.target;
+    const foodbankId = button.getAttribute('data-foodbankid');
+    
+    if (!foodbankId) {
+        console.error('No foodbank ID found on button');
+        showMessage('Error: Missing food bank information', 'error');
+        return;
+    }
+
+    // Disable button while processing
+    button.disabled = true;
+    const originalText = button.textContent;
+    button.textContent = 'Unsubscribing...';
+
+    try {
+        // Initialize push notification service
+        if (!window.firebase || !window.firebase.apps || window.firebase.apps.length === 0) {
+            window.firebase.initializeApp(firebaseConfig);
+        }
+
+        // Get messaging instance for push notifications
+        if (!window.firebase.messaging) {
+            showMessage('Push notifications not available in this browser', 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+            return;
+        }
+        
+        const messaging = window.firebase.messaging();
+
+        // Get push notification token
+        const currentToken = await messaging.getToken({ vapidKey: vapidKey });
+        
+        if (!currentToken) {
+            showMessage('Failed to get notification token', 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+            return;
+        }
+
+        // Unsubscribe from the topic
+        const topic = `foodbank-${foodbankId}`;
+        const unsubscribeResult = await unsubscribeFromTopic(currentToken, topic);
+        
+        if (unsubscribeResult.success) {
+            // Remove subscription from localStorage
+            removeSubscription(foodbankId);
+            
+            showMessage('Successfully unsubscribed from notifications', 'success');
+            button.textContent = 'Subscribe to browser notifications';
+            button.classList.remove('is-warning');
+            button.classList.add('is-light', 'is-link');
+            button.disabled = false;
+            
+            // Remove old event listener and add new one
+            button.removeEventListener('click', handleUnsubscribeClick);
+            button.addEventListener('click', handleSubscribeClick);
+        } else {
+            showMessage('Failed to unsubscribe from notifications', 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+        }
+    } catch (error) {
+        console.error('Error unsubscribing from notifications:', error);
         showMessage('Error: ' + error.message, 'error');
         button.disabled = false;
         button.textContent = originalText;
@@ -218,6 +313,39 @@ async function subscribeToTopic(token, topic) {
         return { success: true, message: data.message };
     } catch (error) {
         console.error('Error subscribing to topic:', error);
+        return { success: false, message: error.message };
+    }
+}
+
+/**
+ * Unsubscribe a token from a food bank notification topic
+ * @param {string} token - Push notification token
+ * @param {string} topic - Topic name (e.g., "foodbank-uuid")
+ * @returns {Promise<{success: boolean, message: string}>}
+ */
+async function unsubscribeFromTopic(token, topic) {
+    try {
+        // Call our backend endpoint to unsubscribe the token from the topic
+        const response = await fetch('/needs/browser/unsubscribe/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken(),
+            },
+            body: JSON.stringify({
+                token: token,
+                topic: topic
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Server error: ' + response.status);
+        }
+
+        const data = await response.json();
+        return { success: true, message: data.message };
+    } catch (error) {
+        console.error('Error unsubscribing from topic:', error);
         return { success: false, message: error.message };
     }
 }
