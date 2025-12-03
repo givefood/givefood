@@ -103,8 +103,10 @@ self.addEventListener('push', (event) => {
         return;
     }
     
+    // Try to parse as JSON first
+    let data;
     try {
-        const data = event.data.json();
+        data = event.data.json();
         console.log('[Service Worker] Push data:', data);
         
         // If this is an FCM message with notification field, FCM should handle it
@@ -129,9 +131,10 @@ self.addEventListener('push', (event) => {
     } catch (e) {
         // If it's not JSON, show a basic notification with the text
         console.log('[Service Worker] Push is not JSON, showing basic notification');
+        const text = event.data.text();
         event.waitUntil(
             self.registration.showNotification(DEFAULT_NOTIFICATION_TITLE, {
-                body: event.data.text(),
+                body: text,
                 icon: NOTIFICATION_ICON,
             })
         );
