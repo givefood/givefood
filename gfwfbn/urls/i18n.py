@@ -1,6 +1,6 @@
 from django.views.generic import RedirectView
 from gfwfbn.views import *
-from gfwfbn.notification_views import subscribe_to_topic
+from gfwfbn.notification_views import subscribe_to_topic, unsubscribe_from_topic
 from django.urls import path, re_path
 
 app_name = 'gfwfbn'
@@ -16,6 +16,7 @@ urlpatterns = [
 
     # Browser notification subscription
     path("browser/subscribe/", subscribe_to_topic, name="browser_subscribe"),
+    path("browser/unsubscribe/", unsubscribe_from_topic, name="browser_unsubscribe"),
 
     # Place
     path("at/place/<slug:county>/<slug:place>/", place, name="place"),
