@@ -74,10 +74,11 @@ function isSubscribed(foodbankId) {
 }
 
 /**
- * Send Firebase configuration to service worker
+ * Send Firebase configuration to service worker and wait for it to be ready
  * @param {ServiceWorkerRegistration} registration - Service worker registration
+ * @returns {Promise<void>}
  */
-function sendConfigToServiceWorker(registration) {
+async function sendConfigToServiceWorker(registration) {
     const serviceWorker = registration.active || registration.waiting || registration.installing;
     if (serviceWorker) {
         try {
@@ -85,8 +86,11 @@ function sendConfigToServiceWorker(registration) {
                 type: 'FIREBASE_CONFIG',
                 config: firebaseConfig
             });
+            // Give the service worker a moment to process the config
+            await new Promise(resolve => setTimeout(resolve, 100));
         } catch (error) {
             console.error('Failed to send config to service worker:', error);
+            throw error;
         }
     }
 }
@@ -180,8 +184,8 @@ async function handleSubscribeClick(event) {
             registration = await navigator.serviceWorker.register('/static/push-sw.js');
             await navigator.serviceWorker.ready;
             
-            // Send Firebase config to service worker
-            sendConfigToServiceWorker(registration);
+            // Send Firebase config to service worker and wait for it to be ready
+            await sendConfigToServiceWorker(registration);
         } catch (err) {
             console.error('Service worker registration failed:', err);
             showMessage('Failed to register service worker', 'error');
@@ -278,8 +282,8 @@ async function handleUnsubscribeClick(event) {
                 registration = await navigator.serviceWorker.register('/static/push-sw.js');
                 await navigator.serviceWorker.ready;
                 
-                // Send Firebase config to service worker
-                sendConfigToServiceWorker(registration);
+                // Send Firebase config to service worker and wait for it to be ready
+                await sendConfigToServiceWorker(registration);
             } catch (err) {
                 console.error('Service worker registration failed:', err);
                 showMessage('Failed to access service worker', 'error');

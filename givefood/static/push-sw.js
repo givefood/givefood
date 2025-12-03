@@ -17,25 +17,32 @@ self.addEventListener('message', (event) => {
         
         // Initialize push notification service with received config
         if (firebaseConfig) {
-            firebase.initializeApp(firebaseConfig);
-            
-            // Get messaging instance
-            const messaging = firebase.messaging();
-            
-            // Handle background messages
-            messaging.onBackgroundMessage((payload) => {
-                console.log('Received background message:', payload);
+            try {
+                // Check if Firebase is already initialized
+                if (!firebase.apps || firebase.apps.length === 0) {
+                    firebase.initializeApp(firebaseConfig);
+                }
                 
-                const notificationTitle = payload.notification?.title || 'Food Bank Update';
-                const notificationOptions = {
-                    body: payload.notification?.body || 'New items needed',
-                    icon: '/static/img/logo.svg',
-                    badge: '/static/img/logo.svg',
-                    data: payload.data,
-                };
+                // Get messaging instance
+                const messaging = firebase.messaging();
                 
-                return self.registration.showNotification(notificationTitle, notificationOptions);
-            });
+                // Handle background messages
+                messaging.onBackgroundMessage((payload) => {
+                    console.log('Received background message:', payload);
+                    
+                    const notificationTitle = payload.notification?.title || 'Food Bank Update';
+                    const notificationOptions = {
+                        body: payload.notification?.body || 'New items needed',
+                        icon: '/static/img/logo.svg',
+                        badge: '/static/img/logo.svg',
+                        data: payload.data,
+                    };
+                    
+                    return self.registration.showNotification(notificationTitle, notificationOptions);
+                });
+            } catch (error) {
+                console.error('Error initializing Firebase in service worker:', error);
+            }
         }
     }
 });
