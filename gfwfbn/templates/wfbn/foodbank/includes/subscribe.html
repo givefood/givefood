@@ -49,13 +49,8 @@
         </div>
     </div>
 </div>
-<script src="/static/js/tabber.js"></script>
-
-<!-- Firebase SDK for push notifications -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
-
-<!-- Push notification configuration -->
 <script>
   window.firebaseConfig = {
     apiKey: "{{ firebase.api_key }}",
@@ -67,6 +62,5 @@
   };
   window.firebaseVapidKey = "{{ firebase.vapid_key }}";
 </script>
-
-<!-- Browser notification subscription handler -->
 <script src="/static/js/browser-subscribe.js?v={{ version }}" defer></script>
+<script src="/static/js/tabber.js" defer></script>
