@@ -74,28 +74,6 @@ function isSubscribed(foodbankId) {
 }
 
 /**
- * Send Firebase configuration to service worker and wait for it to be ready
- * @param {ServiceWorkerRegistration} registration - Service worker registration
- * @returns {Promise<void>}
- */
-async function sendConfigToServiceWorker(registration) {
-    const serviceWorker = registration.active || registration.waiting || registration.installing;
-    if (serviceWorker) {
-        try {
-            serviceWorker.postMessage({
-                type: 'FIREBASE_CONFIG',
-                config: firebaseConfig
-            });
-            // Give the service worker a moment to process the config
-            await new Promise(resolve => setTimeout(resolve, CONFIG_PROCESSING_DELAY));
-        } catch (error) {
-            console.error('Failed to send config to service worker:', error);
-            throw error;
-        }
-    }
-}
-
-/**
  * Initialize push notifications and set up the subscribe button click handler
  */
 function initFirebaseSubscribe() {
