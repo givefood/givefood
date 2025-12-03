@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, date
-import requests, json, tomllib
+import requests, json, tomllib, os
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
@@ -11,6 +11,7 @@ from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
+from django.conf import settings
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
 from givefood.forms import FoodbankRegistrationForm, FlagForm
@@ -755,10 +756,7 @@ def firebase_messaging_sw(request):
     Firebase Cloud Messaging service worker
     Serves the service worker file at /firebase-messaging-sw.js
     """
-    # Read the service worker file from static directory
-    import os
-    from django.conf import settings
-    
+    # Path to the service worker file in static directory
     sw_path = os.path.join(settings.BASE_DIR, 'givefood', 'static', 'push-sw.js')
     
     try:
