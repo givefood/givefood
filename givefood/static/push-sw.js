@@ -7,8 +7,7 @@
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 
-// Initialize Firebase with a minimal config on service worker activation
-// The full config will be sent from the main thread
+// Service worker activation handler
 self.addEventListener('activate', (event) => {
     console.log('Service worker activated');
 });
