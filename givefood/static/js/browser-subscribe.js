@@ -241,7 +241,13 @@ async function handleSubscribeClick(event) {
             // Show the notification using the Notifications API
             // This displays notifications even when the page is in the foreground
             if (Notification.permission === 'granted') {
-                new Notification(notificationTitle, notificationOptions);
+                try {
+                    new Notification(notificationTitle, notificationOptions);
+                } catch (error) {
+                    console.error('Error creating notification:', error);
+                    // Fallback to showing a simple message if notification creation fails
+                    showMessage(notificationTitle + ': ' + notificationOptions.body, 'info');
+                }
             }
         });
 
