@@ -1,6 +1,5 @@
 from django.views.generic import RedirectView
 from gfwfbn.views import *
-from gfwfbn.notification_views import subscribe_to_topic, unsubscribe_from_topic
 from django.urls import path, re_path
 
 app_name = 'gfwfbn'
@@ -13,10 +12,6 @@ urlpatterns = [
     path("getlocation/", get_location, name="get_location"),
     path("geo.json", geojson, name="geojson"),
     path("manifest.json", RedirectView.as_view(url='/manifest.json', permanent=True)),
-
-    # Browser notification subscription
-    path("browser/subscribe/", subscribe_to_topic, name="browser_subscribe"),
-    path("browser/unsubscribe/", unsubscribe_from_topic, name="browser_unsubscribe"),
 
     # Place
     path("at/place/<slug:county>/<slug:place>/", place, name="place"),

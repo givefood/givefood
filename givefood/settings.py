@@ -120,7 +120,6 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 "gfadmin.context_processors.gmap_keys",
                 "givefood.context_processors.context",
-                "givefood.context_processors.firebase_config",
             ],
         },
     },
