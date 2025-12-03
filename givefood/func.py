@@ -1435,6 +1435,10 @@ def send_firebase_notification(need):
     """
     from firebase_admin import messaging
     
+    # Constants for notification display
+    NOTIFICATION_ICON = '/static/img/logo.svg'
+    NOTIFICATION_BADGE = '/static/img/logo.svg'
+    
     # Initialize Firebase app if not already initialized
     if not initialize_firebase_admin():
         return
@@ -1489,8 +1493,8 @@ def send_firebase_notification(need):
             notification=messaging.WebpushNotification(
                 title=title,
                 body=items_text,
-                icon='/static/img/logo.svg',
-                badge='/static/img/logo.svg',
+                icon=NOTIFICATION_ICON,
+                badge=NOTIFICATION_BADGE,
             ),
             fcm_options=messaging.WebpushFCMOptions(
                 link=foodbank_url,

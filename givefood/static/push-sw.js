@@ -13,6 +13,12 @@
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 
+// Constants for notification defaults
+const DEFAULT_NOTIFICATION_TITLE = 'Food Bank Update';
+const DEFAULT_NOTIFICATION_BODY = 'New items needed';
+const NOTIFICATION_ICON = '/static/img/logo.svg';
+const NOTIFICATION_BADGE = '/static/img/logo.svg';
+
 // Firebase configuration will be injected here by the server
 // FIREBASE_CONFIG_PLACEHOLDER
 
@@ -53,11 +59,11 @@ try {
         console.log('[Service Worker] Received background data message:', payload);
         
         // Extract notification details from data payload
-        const notificationTitle = payload.data?.title || 'Food Bank Update';
+        const notificationTitle = payload.data?.title || DEFAULT_NOTIFICATION_TITLE;
         const notificationOptions = {
-            body: payload.data?.body || 'New items needed',
-            icon: '/static/img/logo.svg',
-            badge: '/static/img/logo.svg',
+            body: payload.data?.body || DEFAULT_NOTIFICATION_BODY,
+            icon: NOTIFICATION_ICON,
+            badge: NOTIFICATION_BADGE,
             data: payload.data,
         };
         
@@ -109,11 +115,11 @@ self.addEventListener('push', (event) => {
         }
         
         // Handle the notification ourselves
-        const title = data.notification?.title || data.title || 'Food Bank Update';
+        const title = data.notification?.title || data.title || DEFAULT_NOTIFICATION_TITLE;
         const options = {
-            body: data.notification?.body || data.body || 'New items needed',
-            icon: '/static/img/logo.svg',
-            badge: '/static/img/logo.svg',
+            body: data.notification?.body || data.body || DEFAULT_NOTIFICATION_BODY,
+            icon: NOTIFICATION_ICON,
+            badge: NOTIFICATION_BADGE,
             data: data.data || data,
         };
         
@@ -124,9 +130,9 @@ self.addEventListener('push', (event) => {
         // If it's not JSON, show a basic notification with the text
         console.log('[Service Worker] Push is not JSON, showing basic notification');
         event.waitUntil(
-            self.registration.showNotification('Food Bank Update', {
+            self.registration.showNotification(DEFAULT_NOTIFICATION_TITLE, {
                 body: event.data.text(),
-                icon: '/static/img/logo.svg',
+                icon: NOTIFICATION_ICON,
             })
         );
     }
