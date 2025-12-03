@@ -1475,6 +1475,7 @@ def send_firebase_notification(need):
     
     # Use the body with as many items as fit
     items_text = current_body
+    foodbank_url = f"{SITE_DOMAIN}{reverse('wfbn:foodbank', kwargs={'slug': need.foodbank.slug})}"
     
     message = messaging.Message(
         notification=messaging.Notification(
@@ -1484,6 +1485,18 @@ def send_firebase_notification(need):
         data={
             "foodbank_slug": need.foodbank.slug,
         },
+        webpush=messaging.WebpushConfig(
+            fcm_options=messaging.WebpushFCMOptions(
+                link=foodbank_url
+            ),
+            data={
+                "title": title,
+                "body": items_text,
+                "icon": "/static/img/logo.svg",
+                "badge": "/static/img/logo.svg",
+                "click_action": foodbank_url,
+            },
+        ),
         topic=topic,
     )
     
