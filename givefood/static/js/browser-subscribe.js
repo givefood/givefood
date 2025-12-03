@@ -19,6 +19,9 @@ const vapidKey = window.firebaseVapidKey || "";
 // LocalStorage key for tracking subscriptions
 const SUBSCRIPTIONS_KEY = 'gf_push_subscriptions';
 
+// Time to wait for service worker to process Firebase config (milliseconds)
+const CONFIG_PROCESSING_DELAY = 100;
+
 /**
  * Get list of subscribed food bank IDs from localStorage
  * @returns {Array} Array of food bank UUIDs user is subscribed to
@@ -71,6 +74,28 @@ function removeSubscription(foodbankId) {
 function isSubscribed(foodbankId) {
     const subscriptions = getSubscribedFoodbanks();
     return subscriptions.includes(foodbankId);
+}
+
+/**
+ * Send Firebase configuration to service worker and wait for it to be ready
+ * @param {ServiceWorkerRegistration} registration - Service worker registration
+ * @returns {Promise<void>}
+ */
+async function sendConfigToServiceWorker(registration) {
+    const serviceWorker = registration.active || registration.waiting || registration.installing;
+    if (serviceWorker) {
+        try {
+            serviceWorker.postMessage({
+                type: 'FIREBASE_CONFIG',
+                config: firebaseConfig
+            });
+            // Give the service worker a moment to process the config
+            await new Promise(resolve => setTimeout(resolve, CONFIG_PROCESSING_DELAY));
+        } catch (error) {
+            console.error('Failed to send config to service worker:', error);
+            throw error;
+        }
+    }
 }
 
 /**
@@ -156,6 +181,59 @@ async function handleSubscribeClick(event) {
             window.firebase.initializeApp(firebaseConfig);
         }
 
+        // Register service worker and send Firebase config
+        try {
+            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            
+            // Wait for the service worker to be ready
+            await navigator.serviceWorker.ready;
+            
+            // Ensure the service worker is active before proceeding
+            // If it's still installing or waiting, we need to wait for activation
+            let activeWorker = registration.active;
+            if (!activeWorker) {
+                // Wait for the service worker to become active
+                await new Promise((resolve, reject) => {
+                    const worker = registration.installing || registration.waiting;
+                    if (!worker) {
+                        reject(new Error('No service worker found'));
+                        return;
+                    }
+                    
+                    let timeoutId;
+                    const checkState = () => {
+                        if (worker.state === 'activated') {
+                            clearTimeout(timeoutId);
+                            worker.removeEventListener('statechange', checkState);
+                            resolve();
+                        } else if (worker.state === 'redundant') {
+                            clearTimeout(timeoutId);
+                            worker.removeEventListener('statechange', checkState);
+                            reject(new Error('Service worker became redundant'));
+                        }
+                    };
+                    
+                    worker.addEventListener('statechange', checkState);
+                    checkState(); // Check immediately in case it's already activated
+                    
+                    // Timeout after 10 seconds
+                    timeoutId = setTimeout(() => {
+                        worker.removeEventListener('statechange', checkState);
+                        reject(new Error('Service worker activation timeout'));
+                    }, 10000);
+                });
+            }
+            
+            // Send Firebase config to service worker
+            await sendConfigToServiceWorker(registration);
+        } catch (err) {
+            console.error('Service worker registration failed:', err);
+            showMessage('Failed to register service worker: ' + err.message, 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+            return;
+        }
+
         // Get messaging instance for push notifications
         if (!window.firebase.messaging) {
             showMessage('Push notifications not available in this browser', 'error');
@@ -166,7 +244,7 @@ async function handleSubscribeClick(event) {
         
         const messaging = window.firebase.messaging();
 
-        // Get push notification token
+        // Get push notification token (Firebase will use the registered service worker)
         const currentToken = await messaging.getToken({ vapidKey: vapidKey });
         
         if (!currentToken) {
@@ -242,6 +320,7 @@ async function handleUnsubscribeClick(event) {
         const messaging = window.firebase.messaging();
 
         // Get push notification token
+        // Note: Not passing serviceWorkerRegistration to let Firebase use default behavior
         const currentToken = await messaging.getToken({ vapidKey: vapidKey });
         
         if (!currentToken) {

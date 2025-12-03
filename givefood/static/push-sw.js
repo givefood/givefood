@@ -7,35 +7,54 @@
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 
-// Push notification configuration will be set via message from main thread
-let firebaseConfig = null;
+// Service worker activation handler
+self.addEventListener('activate', (event) => {
+    console.log('Service worker activated');
+    // Claim all clients immediately so the service worker becomes active right away
+    event.waitUntil(self.clients.claim());
+});
+
+// Service worker installation handler - activate immediately
+self.addEventListener('install', (event) => {
+    console.log('Service worker installing');
+    // Skip waiting to activate immediately
+    self.skipWaiting();
+});
 
 // Listen for configuration from main thread
 self.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'FIREBASE_CONFIG') {
-        firebaseConfig = event.data.config;
+        const firebaseConfig = event.data.config;
         
         // Initialize push notification service with received config
         if (firebaseConfig) {
-            firebase.initializeApp(firebaseConfig);
-            
-            // Get messaging instance
-            const messaging = firebase.messaging();
-            
-            // Handle background messages
-            messaging.onBackgroundMessage((payload) => {
-                console.log('Received background message:', payload);
-                
-                const notificationTitle = payload.notification?.title || 'Food Bank Update';
-                const notificationOptions = {
-                    body: payload.notification?.body || 'New items needed',
-                    icon: '/static/img/logo.svg',
-                    badge: '/static/img/logo.svg',
-                    data: payload.data,
-                };
-                
-                return self.registration.showNotification(notificationTitle, notificationOptions);
-            });
+            try {
+                // Check if Firebase is already initialized
+                if (!firebase.apps?.length) {
+                    firebase.initializeApp(firebaseConfig);
+                    console.log('Firebase initialized in service worker');
+                    
+                    // Get messaging instance and set up message handler
+                    const messaging = firebase.messaging();
+                    
+                    // Handle background messages
+                    messaging.onBackgroundMessage((payload) => {
+                        console.log('Received background message:', payload);
+                        
+                        const notificationTitle = payload.notification?.title || 'Food Bank Update';
+                        const notificationOptions = {
+                            body: payload.notification?.body || 'New items needed',
+                            icon: '/static/img/logo.svg',
+                            badge: '/static/img/logo.svg',
+                            data: payload.data,
+                        };
+                        
+                        return self.registration.showNotification(notificationTitle, notificationOptions);
+                    });
+                }
+            } catch (error) {
+                console.error('Error initializing Firebase in service worker:', error);
+            }
         }
     }
 });
