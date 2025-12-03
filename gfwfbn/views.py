@@ -330,14 +330,6 @@ def foodbank(request, slug):
         "section":"foodbank",
         "foodbank":foodbank,
         "map_config":map_config,
-        # Push notification configuration from credentials
-        "firebase_api_key": get_cred("firebase_api_key") or "",
-        "firebase_auth_domain": get_cred("firebase_auth_domain") or "",
-        "firebase_project_id": get_cred("firebase_project_id") or "",
-        "firebase_storage_bucket": get_cred("firebase_storage_bucket") or "",
-        "firebase_messaging_sender_id": get_cred("firebase_messaging_sender_id") or "",
-        "firebase_app_id": get_cred("firebase_app_id") or "",
-        "firebase_vapid_key": get_cred("firebase_vapid_key") or "",
     }
 
     return render(request, "wfbn/foodbank/index.html", template_vars)
@@ -642,14 +634,6 @@ def foodbank_location(request, slug, locslug):
         "foodbank":foodbank,
         "location":location,
         "map_config":map_config,
-        # Push notification configuration from credentials
-        "firebase_api_key": get_cred("firebase_api_key") or "",
-        "firebase_auth_domain": get_cred("firebase_auth_domain") or "",
-        "firebase_project_id": get_cred("firebase_project_id") or "",
-        "firebase_storage_bucket": get_cred("firebase_storage_bucket") or "",
-        "firebase_messaging_sender_id": get_cred("firebase_messaging_sender_id") or "",
-        "firebase_app_id": get_cred("firebase_app_id") or "",
-        "firebase_vapid_key": get_cred("firebase_vapid_key") or "",
     }
 
     return render(request, "wfbn/foodbank/location.html", template_vars)
@@ -767,14 +751,6 @@ def foodbank_donationpoint(request, slug, dpslug):
         "has_need":has_need,
         "donationpoint":donationpoint,
         "map_config":map_config,
-        # Push notification configuration from credentials
-        "firebase_api_key": get_cred("firebase_api_key") or "",
-        "firebase_auth_domain": get_cred("firebase_auth_domain") or "",
-        "firebase_project_id": get_cred("firebase_project_id") or "",
-        "firebase_storage_bucket": get_cred("firebase_storage_bucket") or "",
-        "firebase_messaging_sender_id": get_cred("firebase_messaging_sender_id") or "",
-        "firebase_app_id": get_cred("firebase_app_id") or "",
-        "firebase_vapid_key": get_cred("firebase_vapid_key") or "",
     }
 
     response = render(request, "wfbn/foodbank/donationpoint.html", template_vars)

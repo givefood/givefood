@@ -182,24 +182,4 @@
   {% include 'public/includes/mapconfig.html' %}
   <script src="/static/js/wfbn.js?v={{ version }}" defer onload="init()"></script>
   <script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
-  
-  <!-- Firebase SDK for push notifications -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
-  
-  <!-- Push notification configuration -->
-  <script>
-    window.firebaseConfig = {
-      apiKey: "{{ firebase_api_key }}",
-      authDomain: "{{ firebase_auth_domain }}",
-      projectId: "{{ firebase_project_id }}",
-      storageBucket: "{{ firebase_storage_bucket }}",
-      messagingSenderId: "{{ firebase_messaging_sender_id }}",
-      appId: "{{ firebase_app_id }}"
-    };
-    window.firebaseVapidKey = "{{ firebase_vapid_key }}";
-  </script>
-  
-  <!-- Browser notification subscription handler -->
-  <script src="/static/js/browser-subscribe.js?v={{ version }}" defer></script>
 {% endblock %}
