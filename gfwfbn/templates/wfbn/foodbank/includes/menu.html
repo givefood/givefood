@@ -18,9 +18,6 @@
             <li><a  {% if section == 'socialmedia' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}">{% blocktrans %}Social media{% endblocktrans %}</a></li>
         {% endif %}
         <li><a {% if section == 'nearby' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_nearby' foodbank.slug %}">{% blocktrans %}Nearby{% endblocktrans %}</a></li>
-        {% if foodbank.has_needs %}
-            <li><a {% if section == 'subscribe' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_subscribe' foodbank.slug %}">{% blocktrans %}Get updates{% endblocktrans %}</a></li>
-        {% endif %}
     </ul>
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
         <span aria-hidden="true"></span>

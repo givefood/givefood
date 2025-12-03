@@ -63,6 +63,9 @@
 .subscribe {
     margin-top:10px;
 }
+.subscribe li.is-active a {
+    background:#FAFAFA !important;
+}
 .subscribe p {
     margin:0 0 10px 0;
 }
@@ -70,10 +73,8 @@
     padding:0;
 }
 .subscribe .tabcontent {
-    margin-top:10px;
-}
-.subscribe-form {
-    margin-top:10px;
+    padding:20px 10px 10px 10px;
+    background:#FAFAFA;
 }
 #subscribe_browser_btn {
     margin-bottom:12px;

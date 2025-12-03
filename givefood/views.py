@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, date
-import requests, json, tomllib
+import requests, json, tomllib, os
 from django.views.decorators.cache import cache_page
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
@@ -11,6 +11,7 @@ from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
+from django.conf import settings
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
 from givefood.forms import FoodbankRegistrationForm, FlagForm
@@ -748,6 +749,37 @@ def manifest(request):
     }
 
     return HttpResponse(json.dumps(manifest_content), content_type="application/json")
+
+
+def firebase_messaging_sw(request):
+    """
+    Firebase Cloud Messaging service worker
+    Serves the service worker file at /firebase-messaging-sw.js
+    
+    Note: Service workers should not be cached for too long to ensure updates
+    are picked up by browsers.
+    """
+    # Path to the service worker file in static directory
+    # Using os.path.join ensures safe path construction
+    sw_path = os.path.join(settings.BASE_DIR, 'givefood', 'static', 'push-sw.js')
+    
+    # Validate that the path is within the expected directory
+    sw_path = os.path.abspath(sw_path)
+    expected_base = os.path.abspath(os.path.join(settings.BASE_DIR, 'givefood', 'static'))
+    if not sw_path.startswith(expected_base):
+        return HttpResponse('// Invalid path', content_type='application/javascript', status=403)
+    
+    try:
+        with open(sw_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        response = HttpResponse(content, content_type='application/javascript; charset=utf-8')
+        # Service workers should have short cache times to ensure updates are picked up
+        response['Cache-Control'] = 'public, max-age=0, must-revalidate'
+        response['Service-Worker-Allowed'] = '/'
+        return response
+    except FileNotFoundError:
+        return HttpResponse('// Service worker not found', content_type='application/javascript', status=404)
 
 
 @cache_page(SECONDS_IN_WEEK)

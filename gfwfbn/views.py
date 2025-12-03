@@ -1,4 +1,4 @@
-import json, requests, datetime
+import json, requests, datetime, os
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, Http404
@@ -607,40 +607,6 @@ def foodbank_nearby(request, slug):
 
 
 @cache_page(SECONDS_IN_WEEK)
-def foodbank_subscribe(request, slug):
-    """
-    Food bank subscribe page
-    """
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-    email = request.GET.get("email", None)
-    turnstilefail = request.GET.get("email", None)
-
-    template_vars = {
-        "section":"subscribe",
-        "foodbank":foodbank,
-        "email":email,
-        "turnstilefail":turnstilefail,
-    }
-
-    return render(request, "wfbn/foodbank/subscribe.html", template_vars)
-
-
-@cache_page(SECONDS_IN_WEEK)
-def foodbank_subscribe_sample(request, slug):
-    """
-    Food bank subscribe sample email
-    Used in an iframe in the subscribe page
-    """
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-
-    template_vars = {
-        "need":foodbank.latest_need,
-        "is_sample":True,
-    }
-
-    return render(request, "wfbn/emails/notification.html", template_vars)
 
 
 @cache_page(SECONDS_IN_DAY)

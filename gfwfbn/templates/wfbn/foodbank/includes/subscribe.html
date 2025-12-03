@@ -23,10 +23,11 @@
     <div class="sections">
         <div class="apps tabcontent" role="tabpanel" id="apps-panel" aria-labelledby="apps-tab">
             {% include 'public/includes/appbadges.html' %}
+            <p>Follow a food bank on our useful <a href="{% url 'apps'%}">mobile apps</a>.</p>
         </div>
         <div class="browser tabcontent is-hidden" role="tabpanel" id="browser-panel" aria-labelledby="browser-tab">
             <div class="subscribe-browser">
-                <button id="subscribe_browser_btn" class="button is-link is-light"">{% blocktrans %}Subscribe to browser notifications{% endblocktrans %}</button>
+                <button id="subscribe_browser_btn" class="button is-link is-light" data-foodbankid="{{ foodbank.uuid }}">{% blocktrans %}Subscribe to browser notifications{% endblocktrans %}</button>
                 <p class="is-size-7">{% blocktrans %}You'll need to allow notifications in your browser for this to work.{% endblocktrans %}</p>
             </div>
         </div>
@@ -49,4 +50,18 @@
         </div>
     </div>
 </div>
-<script src="/static/js/tabber.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+<script>
+  window.firebaseConfig = {
+    apiKey: "{{ firebase.api_key }}",
+    authDomain: "{{ firebase.auth_domain }}",
+    projectId: "{{ firebase.project_id }}",
+    storageBucket: "{{ firebase.storage_bucket }}",
+    messagingSenderId: "{{ firebase.messaging_sender_id }}",
+    appId: "{{ firebase.app_id }}"
+  };
+  window.firebaseVapidKey = "{{ firebase.vapid_key }}";
+</script>
+<script src="/static/js/browser-subscribe.js?v={{ version }}" defer></script>
+<script src="/static/js/tabber.js" defer></script>
