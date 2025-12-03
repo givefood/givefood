@@ -74,6 +74,20 @@ function isSubscribed(foodbankId) {
 }
 
 /**
+ * Send Firebase configuration to service worker
+ * @param {ServiceWorkerRegistration} registration - Service worker registration
+ */
+function sendConfigToServiceWorker(registration) {
+    const serviceWorker = registration.active || registration.waiting || registration.installing;
+    if (serviceWorker) {
+        serviceWorker.postMessage({
+            type: 'FIREBASE_CONFIG',
+            config: firebaseConfig
+        });
+    }
+}
+
+/**
  * Initialize push notifications and set up the subscribe button click handler
  */
 function initFirebaseSubscribe() {
@@ -163,13 +177,7 @@ async function handleSubscribeClick(event) {
             await navigator.serviceWorker.ready;
             
             // Send Firebase config to service worker
-            const serviceWorker = registration.active || registration.waiting || registration.installing;
-            if (serviceWorker) {
-                serviceWorker.postMessage({
-                    type: 'FIREBASE_CONFIG',
-                    config: firebaseConfig
-                });
-            }
+            sendConfigToServiceWorker(registration);
         } catch (err) {
             console.error('Service worker registration failed:', err);
             showMessage('Failed to register service worker', 'error');
@@ -257,7 +265,7 @@ async function handleUnsubscribeClick(event) {
         }
 
         // Get existing service worker registration
-        let registration = await navigator.serviceWorker.getRegistration('/static/push-sw.js');
+        let registration = await navigator.serviceWorker.getRegistration();
         
         if (!registration) {
             // If no registration exists, try to register it
@@ -266,13 +274,7 @@ async function handleUnsubscribeClick(event) {
                 await navigator.serviceWorker.ready;
                 
                 // Send Firebase config to service worker
-                const serviceWorker = registration.active || registration.waiting || registration.installing;
-                if (serviceWorker) {
-                    serviceWorker.postMessage({
-                        type: 'FIREBASE_CONFIG',
-                        config: firebaseConfig
-                    });
-                }
+                sendConfigToServiceWorker(registration);
             } catch (err) {
                 console.error('Service worker registration failed:', err);
                 showMessage('Failed to access service worker', 'error');
