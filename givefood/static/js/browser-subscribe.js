@@ -159,7 +159,12 @@ async function handleSubscribeClick(event) {
         // Register service worker
         // Note: Firebase config is now injected server-side when the service worker is served
         try {
-            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+                updateViaCache: 'none' // Bypass cache to always get the latest service worker
+            });
+            
+            // Check for updates to ensure we have the latest service worker
+            await registration.update();
             
             // Wait for the service worker to be ready
             await navigator.serviceWorker.ready;
@@ -199,6 +204,8 @@ async function handleSubscribeClick(event) {
                     }, 10000);
                 });
             }
+            
+            console.log('Service worker registered and active:', registration);
         } catch (err) {
             console.error('Service worker registration failed:', err);
             showMessage('Failed to register service worker: ' + err.message, 'error');
@@ -216,6 +223,33 @@ async function handleSubscribeClick(event) {
         }
         
         const messaging = window.firebase.messaging();
+
+        // Set up foreground message handler
+        // This handles messages when the page is open and in focus
+        messaging.onMessage((payload) => {
+            console.log('Received foreground message:', payload);
+            
+            // Extract notification details from payload
+            const notificationTitle = payload.notification?.title || 'Food Bank Update';
+            const notificationOptions = {
+                body: payload.notification?.body || 'New items needed',
+                icon: '/static/img/logo.svg',
+                badge: '/static/img/logo.svg',
+                data: payload.data,
+            };
+            
+            // Show the notification using the Notifications API
+            // This displays notifications even when the page is in the foreground
+            if (Notification.permission === 'granted') {
+                try {
+                    new Notification(notificationTitle, notificationOptions);
+                } catch (error) {
+                    console.error('Error creating notification:', error);
+                    // Fallback to showing a simple message if notification creation fails
+                    showMessage(notificationTitle + ': ' + notificationOptions.body, 'info');
+                }
+            }
+        });
 
         // Get push notification token (Firebase will use the registered service worker)
         const currentToken = await messaging.getToken({ vapidKey: vapidKey });
