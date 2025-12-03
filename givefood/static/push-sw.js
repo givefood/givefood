@@ -10,6 +10,15 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-comp
 // Service worker activation handler
 self.addEventListener('activate', (event) => {
     console.log('Service worker activated');
+    // Claim all clients immediately so the service worker becomes active right away
+    event.waitUntil(self.clients.claim());
+});
+
+// Service worker installation handler - activate immediately
+self.addEventListener('install', (event) => {
+    console.log('Service worker installing');
+    // Skip waiting to activate immediately
+    self.skipWaiting();
 });
 
 // Listen for configuration from main thread

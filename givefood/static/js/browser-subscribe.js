@@ -184,13 +184,43 @@ async function handleSubscribeClick(event) {
         // Register service worker and send Firebase config
         try {
             const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            
+            // Wait for the service worker to be ready
             await navigator.serviceWorker.ready;
+            
+            // Ensure the service worker is active before proceeding
+            // If it's still installing or waiting, we need to wait for activation
+            let activeWorker = registration.active;
+            if (!activeWorker) {
+                // Wait for the service worker to become active
+                await new Promise((resolve, reject) => {
+                    const worker = registration.installing || registration.waiting;
+                    if (!worker) {
+                        reject(new Error('No service worker found'));
+                        return;
+                    }
+                    
+                    const checkState = () => {
+                        if (worker.state === 'activated') {
+                            resolve();
+                        } else if (worker.state === 'redundant') {
+                            reject(new Error('Service worker became redundant'));
+                        }
+                    };
+                    
+                    worker.addEventListener('statechange', checkState);
+                    checkState(); // Check immediately in case it's already activated
+                    
+                    // Timeout after 10 seconds
+                    setTimeout(() => reject(new Error('Service worker activation timeout')), 10000);
+                });
+            }
             
             // Send Firebase config to service worker
             await sendConfigToServiceWorker(registration);
         } catch (err) {
             console.error('Service worker registration failed:', err);
-            showMessage('Failed to register service worker', 'error');
+            showMessage('Failed to register service worker: ' + err.message, 'error');
             button.disabled = false;
             button.textContent = originalText;
             return;
