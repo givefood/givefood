@@ -90,23 +90,3 @@ def context(request):
     }
 
     return context
-
-
-def firebase_config(request):
-    """
-    Context processor for Firebase push notification configuration.
-    Loads Firebase credentials from GfCredential and makes them available to all templates.
-    """
-    from givefood.func import get_cred
-    
-    firebase = {
-        "api_key": get_cred("firebase_api_key") or "",
-        "auth_domain": get_cred("firebase_auth_domain") or "",
-        "project_id": get_cred("firebase_project_id") or "",
-        "storage_bucket": get_cred("firebase_storage_bucket") or "",
-        "messaging_sender_id": get_cred("firebase_messaging_sender_id") or "",
-        "app_id": get_cred("firebase_app_id") or "",
-        "vapid_key": get_cred("firebase_vapid_key") or "",
-    }
-    
-    return {'firebase': firebase}
