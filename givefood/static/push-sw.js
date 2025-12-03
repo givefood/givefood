@@ -82,8 +82,15 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(self.clients.claim());
 });
 
+// NOTE: We do NOT add a custom 'push' event listener here!
+// Firebase Messaging SDK adds its own 'push' listener when firebase.messaging() is called.
+// If we add our own listener, we would need to manually handle notification display,
+// which would bypass FCM's automatic handling for notification messages.
+// The messaging instance created above is sufficient for FCM to work.
+
 // Handle notification click
 self.addEventListener('notificationclick', (event) => {
+    console.log('[Service Worker] Notification clicked:', event.notification);
     event.notification.close();
     
     // Get the food bank slug from notification data

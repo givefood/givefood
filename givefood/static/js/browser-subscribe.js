@@ -159,7 +159,12 @@ async function handleSubscribeClick(event) {
         // Register service worker
         // Note: Firebase config is now injected server-side when the service worker is served
         try {
-            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+                updateViaCache: 'none' // Bypass cache to always get the latest service worker
+            });
+            
+            // Check for updates to ensure we have the latest service worker
+            await registration.update();
             
             // Wait for the service worker to be ready
             await navigator.serviceWorker.ready;
@@ -199,6 +204,8 @@ async function handleSubscribeClick(event) {
                     }, 10000);
                 });
             }
+            
+            console.log('Service worker registered and active:', registration);
         } catch (err) {
             console.error('Service worker registration failed:', err);
             showMessage('Failed to register service worker: ' + err.message, 'error');
