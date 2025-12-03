@@ -1389,6 +1389,43 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
     }
 
 
+def initialize_firebase_admin():
+    """
+    Initialize Firebase Admin SDK if not already initialized.
+    
+    Returns:
+        bool: True if Firebase is initialized successfully, False otherwise
+    """
+    import firebase_admin
+    from firebase_admin import credentials
+    
+    # Check if Firebase app is already initialized
+    try:
+        firebase_admin.get_app()
+        return True
+    except ValueError:
+        # App not initialized, need to initialize it
+        cred_string = get_cred("firebase_service_account")
+        if not cred_string:
+            logging.warning("Firebase service account credentials not found")
+            return False
+        
+        # Parse the JSON string to a dict
+        try:
+            cred_dict = json.loads(cred_string)
+        except json.JSONDecodeError:
+            logging.error("Failed to parse firebase_service_account as JSON")
+            return False
+        
+        try:
+            cred = credentials.Certificate(cred_dict)
+            firebase_admin.initialize_app(cred)
+            return True
+        except Exception as e:
+            logging.error(f"Failed to initialize Firebase Admin SDK: {e}")
+            return False
+
+
 def send_firebase_notification(need):
     """
     Send a Firebase Cloud Messaging notification to a food bank's topic.
@@ -1396,28 +1433,11 @@ def send_firebase_notification(need):
     Args:
         need: FoodbankChange instance with foodbank and need information
     """
-    import firebase_admin
-    from firebase_admin import credentials, messaging
+    from firebase_admin import messaging
     
     # Initialize Firebase app if not already initialized
-    try:
-        firebase_admin.get_app()
-    except ValueError:
-        # App not initialized, need to initialize it
-        cred_string = get_cred("firebase_service_account")
-        if not cred_string:
-            logging.warning("Firebase credentials not found")
-            return
-        
-        # Parse the JSON string to a dict
-        try:
-            cred_dict = json.loads(cred_string)
-        except json.JSONDecodeError:
-            logging.error("Failed to parse firebase_service_account as JSON")
-            return
-        
-        cred = credentials.Certificate(cred_dict)
-        firebase_admin.initialize_app(cred)
+    if not initialize_firebase_admin():
+        return
     
     # Build the topic name
     topic = f"foodbank-{need.foodbank.uuid}"

@@ -7,6 +7,8 @@ import logging
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
+from givefood.func import initialize_firebase_admin
+
 logger = logging.getLogger(__name__)
 
 
@@ -39,47 +41,19 @@ def subscribe_to_topic(request):
                 'message': 'Invalid topic format'
             }, status=400)
         
-        # Import Firebase Admin SDK for push notifications
-        try:
-            import firebase_admin
-            from firebase_admin import credentials, messaging
-        except ImportError:
-            logger.error('Firebase Admin SDK not available')
+        # Initialize Firebase Admin SDK
+        if not initialize_firebase_admin():
+            logger.error('Failed to initialize Firebase Admin SDK')
             return JsonResponse({
                 'success': False,
                 'message': 'Push notifications not configured'
             }, status=500)
         
-        # Initialize Firebase app if not already initialized
-        try:
-            firebase_admin.get_app()
-        except ValueError:
-            # App not initialized, need to initialize it
-            from givefood.func import get_cred
-            
-            cred_string = get_cred("firebase_service_account")
-            if not cred_string:
-                logger.error('Firebase service account credentials not found')
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Push notifications not configured'
-                }, status=500)
-            
-            # Parse the JSON string to a dict
-            try:
-                cred_dict = json.loads(cred_string)
-            except json.JSONDecodeError:
-                logger.error('Failed to parse firebase_service_account as JSON')
-                return JsonResponse({
-                    'success': False,
-                    'message': 'Push notifications not configured'
-                }, status=500)
-            
-            cred = credentials.Certificate(cred_dict)
-            firebase_admin.initialize_app(cred)
-        
         # Subscribe the token to the topic
         try:
+            # Import here to avoid import errors if firebase-admin is not installed
+            from firebase_admin import messaging
+            
             # Use Firebase Admin SDK to subscribe tokens to a topic
             response = messaging.subscribe_to_topic([token], topic)
             
