@@ -18,6 +18,9 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-comp
 
 // Initialize Firebase and set up messaging
 // This MUST happen at the top level for Firebase to intercept push events
+// messaging must be at module scope to persist and be accessible globally
+let messaging = null;
+
 try {
     // Check if config was injected
     if (typeof firebaseConfig === 'undefined' || !firebaseConfig) {
@@ -40,7 +43,7 @@ try {
     // Create messaging instance
     // This is CRITICAL - without this, FCM won't handle push notifications
     // FCM uses this to intercept push events and handle notification display
-    const messaging = firebase.messaging();
+    messaging = firebase.messaging();
     console.log('[Service Worker] Firebase Messaging instance created');
     
     // Set up background message handler
@@ -82,11 +85,52 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(self.clients.claim());
 });
 
-// NOTE: We do NOT add a custom 'push' event listener here!
-// Firebase Messaging SDK adds its own 'push' listener when firebase.messaging() is called.
-// If we add our own listener, we would need to manually handle notification display,
-// which would bypass FCM's automatic handling for notification messages.
-// The messaging instance created above is sufficient for FCM to work.
+// Fallback push event listener
+// This handles raw push events (like DevTools test messages) and edge cases
+// where FCM doesn't auto-display notifications
+// FCM messages with 'notification' field are handled by FCM's own listener
+self.addEventListener('push', (event) => {
+    console.log('[Service Worker] Push event received:', event);
+    
+    if (!event.data) {
+        console.log('[Service Worker] Push event has no data');
+        return;
+    }
+    
+    try {
+        const data = event.data.json();
+        console.log('[Service Worker] Push data:', data);
+        
+        // If this is an FCM message with notification field, FCM should handle it
+        // But we'll handle it as fallback if it has our expected structure
+        if (data.fcmMessageId && data.notification) {
+            console.log('[Service Worker] FCM notification message, letting FCM handle it');
+            return;
+        }
+        
+        // Handle the notification ourselves
+        const title = data.notification?.title || data.title || 'Food Bank Update';
+        const options = {
+            body: data.notification?.body || data.body || 'New items needed',
+            icon: '/static/img/logo.svg',
+            badge: '/static/img/logo.svg',
+            data: data.data || data,
+        };
+        
+        event.waitUntil(
+            self.registration.showNotification(title, options)
+        );
+    } catch (e) {
+        // If it's not JSON, show a basic notification with the text
+        console.log('[Service Worker] Push is not JSON, showing basic notification');
+        event.waitUntil(
+            self.registration.showNotification('Food Bank Update', {
+                body: event.data.text(),
+                icon: '/static/img/logo.svg',
+            })
+        );
+    }
+});
 
 // Handle notification click
 self.addEventListener('notificationclick', (event) => {
