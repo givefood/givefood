@@ -19,7 +19,7 @@ self.addEventListener('message', (event) => {
         if (firebaseConfig) {
             try {
                 // Check if Firebase is already initialized
-                if (!firebase.apps || firebase.apps.length === 0) {
+                if (!firebase.apps?.length) {
                     firebase.initializeApp(firebaseConfig);
                 }
                 

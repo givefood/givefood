@@ -19,6 +19,9 @@ const vapidKey = window.firebaseVapidKey || "";
 // LocalStorage key for tracking subscriptions
 const SUBSCRIPTIONS_KEY = 'gf_push_subscriptions';
 
+// Time to wait for service worker to process Firebase config (milliseconds)
+const CONFIG_PROCESSING_DELAY = 100;
+
 /**
  * Get list of subscribed food bank IDs from localStorage
  * @returns {Array} Array of food bank UUIDs user is subscribed to
@@ -87,7 +90,7 @@ async function sendConfigToServiceWorker(registration) {
                 config: firebaseConfig
             });
             // Give the service worker a moment to process the config
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, CONFIG_PROCESSING_DELAY));
         } catch (error) {
             console.error('Failed to send config to service worker:', error);
             throw error;
