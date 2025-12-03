@@ -156,6 +156,27 @@ async function handleSubscribeClick(event) {
             window.firebase.initializeApp(firebaseConfig);
         }
 
+        // Register service worker for push notifications
+        let registration;
+        try {
+            registration = await navigator.serviceWorker.register('/static/push-sw.js');
+            await navigator.serviceWorker.ready;
+            
+            // Send Firebase config to service worker
+            if (registration.active) {
+                registration.active.postMessage({
+                    type: 'FIREBASE_CONFIG',
+                    config: firebaseConfig
+                });
+            }
+        } catch (err) {
+            console.error('Service worker registration failed:', err);
+            showMessage('Failed to register service worker', 'error');
+            button.disabled = false;
+            button.textContent = originalText;
+            return;
+        }
+
         // Get messaging instance for push notifications
         if (!window.firebase.messaging) {
             showMessage('Push notifications not available in this browser', 'error');
@@ -166,8 +187,11 @@ async function handleSubscribeClick(event) {
         
         const messaging = window.firebase.messaging();
 
-        // Get push notification token
-        const currentToken = await messaging.getToken({ vapidKey: vapidKey });
+        // Get push notification token with service worker registration
+        const currentToken = await messaging.getToken({ 
+            vapidKey: vapidKey,
+            serviceWorkerRegistration: registration
+        });
         
         if (!currentToken) {
             showMessage('Failed to get notification token', 'error');
@@ -231,6 +255,31 @@ async function handleUnsubscribeClick(event) {
             window.firebase.initializeApp(firebaseConfig);
         }
 
+        // Get existing service worker registration
+        let registration = await navigator.serviceWorker.getRegistration('/static/push-sw.js');
+        
+        if (!registration) {
+            // If no registration exists, try to register it
+            try {
+                registration = await navigator.serviceWorker.register('/static/push-sw.js');
+                await navigator.serviceWorker.ready;
+                
+                // Send Firebase config to service worker
+                if (registration.active) {
+                    registration.active.postMessage({
+                        type: 'FIREBASE_CONFIG',
+                        config: firebaseConfig
+                    });
+                }
+            } catch (err) {
+                console.error('Service worker registration failed:', err);
+                showMessage('Failed to access service worker', 'error');
+                button.disabled = false;
+                button.textContent = originalText;
+                return;
+            }
+        }
+
         // Get messaging instance for push notifications
         if (!window.firebase.messaging) {
             showMessage('Push notifications not available in this browser', 'error');
@@ -241,8 +290,11 @@ async function handleUnsubscribeClick(event) {
         
         const messaging = window.firebase.messaging();
 
-        // Get push notification token
-        const currentToken = await messaging.getToken({ vapidKey: vapidKey });
+        // Get push notification token with service worker registration
+        const currentToken = await messaging.getToken({ 
+            vapidKey: vapidKey,
+            serviceWorkerRegistration: registration
+        });
         
         if (!currentToken) {
             showMessage('Failed to get notification token', 'error');
