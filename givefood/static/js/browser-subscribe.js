@@ -200,10 +200,15 @@ async function handleSubscribeClick(event) {
                         return;
                     }
                     
+                    let timeoutId;
                     const checkState = () => {
                         if (worker.state === 'activated') {
+                            clearTimeout(timeoutId);
+                            worker.removeEventListener('statechange', checkState);
                             resolve();
                         } else if (worker.state === 'redundant') {
+                            clearTimeout(timeoutId);
+                            worker.removeEventListener('statechange', checkState);
                             reject(new Error('Service worker became redundant'));
                         }
                     };
@@ -212,7 +217,10 @@ async function handleSubscribeClick(event) {
                     checkState(); // Check immediately in case it's already activated
                     
                     // Timeout after 10 seconds
-                    setTimeout(() => reject(new Error('Service worker activation timeout')), 10000);
+                    timeoutId = setTimeout(() => {
+                        worker.removeEventListener('statechange', checkState);
+                        reject(new Error('Service worker activation timeout'));
+                    }, 10000);
                 });
             }
             
