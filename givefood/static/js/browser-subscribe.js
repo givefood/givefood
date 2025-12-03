@@ -217,6 +217,27 @@ async function handleSubscribeClick(event) {
         
         const messaging = window.firebase.messaging();
 
+        // Set up foreground message handler
+        // This handles messages when the page is open and in focus
+        messaging.onMessage((payload) => {
+            console.log('Received foreground message:', payload);
+            
+            // Extract notification details from payload
+            const notificationTitle = payload.notification?.title || 'Food Bank Update';
+            const notificationOptions = {
+                body: payload.notification?.body || 'New items needed',
+                icon: '/static/img/logo.svg',
+                badge: '/static/img/logo.svg',
+                data: payload.data,
+            };
+            
+            // Show the notification using the Notifications API
+            // This displays notifications even when the page is in the foreground
+            if (Notification.permission === 'granted') {
+                new Notification(notificationTitle, notificationOptions);
+            }
+        });
+
         // Get push notification token (Firebase will use the registered service worker)
         const currentToken = await messaging.getToken({ vapidKey: vapidKey });
         
