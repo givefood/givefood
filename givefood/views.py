@@ -750,6 +750,25 @@ def manifest(request):
     return HttpResponse(json.dumps(manifest_content), content_type="application/json")
 
 
+def firebase_messaging_sw(request):
+    """
+    Firebase Cloud Messaging service worker
+    Serves the service worker file at /firebase-messaging-sw.js
+    """
+    # Read the service worker file from static directory
+    import os
+    from django.conf import settings
+    
+    sw_path = os.path.join(settings.BASE_DIR, 'givefood', 'static', 'push-sw.js')
+    
+    try:
+        with open(sw_path, 'r') as f:
+            content = f.read()
+        return HttpResponse(content, content_type='application/javascript')
+    except FileNotFoundError:
+        return HttpResponse('// Service worker not found', content_type='application/javascript', status=404)
+
+
 @cache_page(SECONDS_IN_WEEK)
 def llmstxt(request):
     """
