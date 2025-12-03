@@ -80,10 +80,14 @@ function isSubscribed(foodbankId) {
 function sendConfigToServiceWorker(registration) {
     const serviceWorker = registration.active || registration.waiting || registration.installing;
     if (serviceWorker) {
-        serviceWorker.postMessage({
-            type: 'FIREBASE_CONFIG',
-            config: firebaseConfig
-        });
+        try {
+            serviceWorker.postMessage({
+                type: 'FIREBASE_CONFIG',
+                config: firebaseConfig
+            });
+        } catch (error) {
+            console.error('Failed to send config to service worker:', error);
+        }
     }
 }
 
@@ -264,7 +268,8 @@ async function handleUnsubscribeClick(event) {
             window.firebase.initializeApp(firebaseConfig);
         }
 
-        // Get existing service worker registration
+        // Get existing service worker registration for the current scope
+        // This retrieves any existing registration without specifying a script URL
         let registration = await navigator.serviceWorker.getRegistration();
         
         if (!registration) {
