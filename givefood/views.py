@@ -783,16 +783,20 @@ def firebase_messaging_sw(request):
         # This allows the service worker to initialize Firebase immediately
         # when it loads rather than waiting for a message from the main thread
         firebase_config = {
-            "apiKey": get_cred("firebase_api_key") or "",
-            "authDomain": get_cred("firebase_auth_domain") or "",
-            "projectId": get_cred("firebase_project_id") or "",
-            "storageBucket": get_cred("firebase_storage_bucket") or "",
-            "messagingSenderId": get_cred("firebase_messaging_sender_id") or "",
-            "appId": get_cred("firebase_app_id") or "",
+            "apiKey": get_cred("firebase_api_key"),
+            "authDomain": get_cred("firebase_auth_domain"),
+            "projectId": get_cred("firebase_project_id"),
+            "storageBucket": get_cred("firebase_storage_bucket"),
+            "messagingSenderId": get_cred("firebase_messaging_sender_id"),
+            "appId": get_cred("firebase_app_id"),
         }
 
-        # Only inject config if all required fields are present
-        if all(firebase_config.values()):
+        # Only inject config if all essential fields are present
+        # Check for truthiness to avoid injecting None or empty strings
+        if (firebase_config.get("apiKey") and
+                firebase_config.get("projectId") and
+                firebase_config.get("messagingSenderId") and
+                firebase_config.get("appId")):
             config_json = json.dumps(firebase_config)
             # Replace the placeholder in the service worker with actual config
             content = content.replace(

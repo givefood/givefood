@@ -12,7 +12,9 @@ importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-comp
 
 // Initialize Firebase immediately when the service worker loads
 // This ensures we can receive background messages even when no page is open
-if (typeof firebaseConfig !== 'undefined' && firebaseConfig && firebaseConfig.apiKey) {
+if (typeof firebaseConfig !== 'undefined' && firebaseConfig &&
+    firebaseConfig.apiKey && firebaseConfig.projectId &&
+    firebaseConfig.messagingSenderId && firebaseConfig.appId) {
     try {
         // Initialize Firebase app
         firebase.initializeApp(firebaseConfig);
