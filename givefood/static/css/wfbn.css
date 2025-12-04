@@ -73,8 +73,10 @@
     padding:0;
 }
 .subscribe .tabcontent {
-    padding:20px 10px 10px 10px;
+    padding:15px;
     background:#FAFAFA;
+    border:1px solid #D6DAE0;
+    border-top:0;
 }
 #subscribe_browser_btn {
     margin-bottom:12px;
