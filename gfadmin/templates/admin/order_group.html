@@ -27,6 +27,8 @@
           {% if order_group.public %}
             <span style="color:green">✓</span>
             <a href="{% url 'managed_donation' order_group.slug order_group.key %}">Link</a>
+          {% else %}
+            <span style="color:red">✗</span>
           {% endif %}
         </dd>
       </dl>
