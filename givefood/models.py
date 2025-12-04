@@ -1400,6 +1400,7 @@ class Order(models.Model):
             urls = [
                 reverse("managed_donation", kwargs={"slug": self.order_group.slug, "key": self.order_group.key}),
                 reverse("managed_donation_geojson", kwargs={"slug": self.order_group.slug, "key": self.order_group.key}),
+                reverse("managed_donation_items", kwargs={"slug": self.order_group.slug, "key": self.order_group.key}),
             ]
             decache_async.enqueue(urls)
 
@@ -1428,6 +1429,9 @@ class OrderLine(models.Model):
 
     def weight_kg(self):
         return self.weight/1000
+    
+    def natural_cost(self):
+        return float(self.line_cost/100)
 
     class Meta:
         app_label = 'givefood'

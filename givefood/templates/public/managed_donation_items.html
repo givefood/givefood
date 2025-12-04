@@ -1,0 +1,68 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+{% load i18n %}
+
+{% block title %}{{ order_group.name }} Donation - Give Food{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
+    <link rel="stylesheet" href="/static/css/managed_donation.css?v={{ version }}">
+    <meta name="description" content="{% blocktrans %}Give Food is a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}">
+    <meta name="robots" content="noindex">
+{% endblock %}
+
+{% block body %}
+
+    <div class="columns is-centered">
+        <div class="column">
+            <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column content">
+            <h1>{{ order_group.name }} Donation Items</h1>
+        </div>
+    </div>
+
+    <div class="columns is-centered">
+        <div class="column is-one-half content">
+
+            <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                <tr>
+                    <th>Delivery</th>
+                    <th>Food Bank</th>
+                    <th>Quantity</th>
+                    <th>Name</th>
+                    <th>Weight</th>
+                    <th>Calories</th>
+                    <th>Cost</th>
+                </tr>
+                {% for order in order_group.orders %}
+                    {% for line in order.lines %}
+                        <tr>
+                            <td>{{ order.delivery_date }}, {{ order.delivery_hour }}:00</td>
+                            <td><a href="{% url 'wfbn:foodbank' order.foodbank.slug %}">{{ order.foodbank.name }}</a></td>
+                            <td>{{ line.quantity }}</td>
+                            <td>{{ line.name }}</td>
+                            <td>{{ line.weight_kg|intcomma|floatformat:2 }}kg</td>
+                            <td>{{ line.calories|intcomma }}</td>
+                            <td>£{{ line.natural_cost|floatformat:2 }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+            
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+    {% include 'public/includes/mapconfig.html' %}
+    <script src="/static/js/wfbn.js?v={{ version }}" defer onload="init()"></script>
+
+{% endblock %}

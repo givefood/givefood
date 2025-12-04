@@ -569,6 +569,21 @@ def managed_donation_geojson(request, slug, key):
     return JsonResponse(response_dict)
 
 
+def managed_donation_items(request, slug, key):
+    """
+    Managed donation items list
+    """
+
+    order_group = get_object_or_404(OrderGroup, slug=slug, key=key, public=True)
+    orders = order_group.orders().prefetch_related('orderline_set__item')
+
+    template_vars = {
+        "order_group":order_group,
+        "orders":orders,
+    }
+    return render(request, "public/managed_donation_items.html", template_vars)
+
+
 @cache_page(SECONDS_IN_WEEK)
 def about_us(request):
     """
