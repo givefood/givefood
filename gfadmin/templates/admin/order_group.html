@@ -22,6 +22,13 @@
         <dd>{{ calories|intcomma }}</dd>
         <dt>Cost</dt>
         <dd>£{{ cost|intcomma }}</dd>
+        <dt>Public</dt>
+        <dd>
+          {% if order_group.public %}
+            <span style="color:green">✓</span>
+            <a href="{% url 'managed_donation' order_group.slug order_group.key %}">Link</a>
+          {% endif %}
+        </dd>
       </dl>
 
       <table class="table is-fullwidth is-hoverable">
