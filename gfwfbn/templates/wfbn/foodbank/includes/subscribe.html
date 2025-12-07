@@ -3,24 +3,29 @@
     <p><em>Get updates when items are needed by this food bank via...</em></p>
     <div class="tabs is-boxed">
         <ul>
-            <li class="is-active" role="presentation">
-                <a data-tab="apps" role="tab" aria-selected="true" aria-controls="apps-panel" id="apps-tab">
+            <li{% if not turnstilefail %} class="is-active"{% endif %} role="presentation">
+                <a data-tab="apps" role="tab"{% if not turnstilefail %} aria-selected="true"{% else %} aria-selected="false"{% endif %} aria-controls="apps-panel" id="apps-tab">
                     <span>Apps</span>
                 </a>
             </li>
-            <li role="presentation">
-                <a data-tab="email" role="tab" aria-selected="false" aria-controls="email-panel" id="email-tab">
+            <li{% if turnstilefail %} class="is-active"{% endif %} role="presentation">
+                <a data-tab="email" role="tab"{% if turnstilefail %} aria-selected="true"{% else %} aria-selected="false"{% endif %} aria-controls="email-panel" id="email-tab">
                     <span>Email</span>
                 </a>
                 </li>
         </ul>
     </div>
     <div class="sections">
-        <div class="apps tabcontent" role="tabpanel" id="apps-panel" aria-labelledby="apps-tab">
+        <div class="apps tabcontent{% if turnstilefail %} is-hidden{% endif %}" role="tabpanel" id="apps-panel" aria-labelledby="apps-tab">
             {% include 'public/includes/appbadges.html' %}
             <p>Follow a food bank on our useful <a href="{% url 'apps'%}">mobile apps</a>.</p>
         </div>
-        <div class="email tabcontent is-hidden" role="tabpanel" id="email-panel" aria-labelledby="email-tab">
+        <div class="email tabcontent{% if not turnstilefail %} is-hidden{% endif %}" role="tabpanel" id="email-panel" aria-labelledby="email-tab">
+            {% if turnstilefail %}
+                <div class="notification is-danger">
+                    <p>{% blocktrans %}Sorry, the security check failed. Please try again.{% endblocktrans %}</p>
+                </div>
+            {% endif %}
             <div class="subscribe-form">
                 <form action="{% url 'human' %}" method="post">
                     <div class="field has-addons">

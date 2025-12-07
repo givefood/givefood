@@ -331,6 +331,12 @@ def foodbank(request, slug):
         "foodbank":foodbank,
         "map_config":map_config,
     }
+    
+    # Handle turnstile failure redirect
+    if request.GET.get("turnstilefail"):
+        template_vars["turnstilefail"] = True
+        template_vars["email"] = request.GET.get("email", "")
+        template_vars["autofocus"] = True
 
     return render(request, "wfbn/foodbank/index.html", template_vars)
 
@@ -866,7 +872,7 @@ def updates(request, slug, action):
         turnstile_is_valid = validate_turnstile(request.POST.get("cf-turnstile-response"))
 
         if not turnstile_is_valid:
-            return HttpResponseRedirect("%s?turnstilefail=true&email=%s" % (reverse("wfbn:foodbank_subscribe", kwargs={"slug":foodbank.slug}), email))
+            return HttpResponseRedirect("%s?turnstilefail=true&email=%s" % (reverse("wfbn:foodbank", kwargs={"slug":foodbank.slug}), email))
 
         # TODO - check subscriber dupe here, rather than inside the try
 
