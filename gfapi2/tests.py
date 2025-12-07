@@ -139,6 +139,50 @@ class TestAPI2FoodbankDetail:
                     assert 'wheelchair_accessible' in donationpoint
                     assert 'opening_hours' in donationpoint
 
+    def test_foodbank_detail_locations_have_id(self, client):
+        """Test that each location in the foodbank detail response has an id field (UUID)."""
+        response = client.get('/api/2/foodbank/test-foodbank/')
+        
+        # Only test structure if foodbank exists
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            
+            # Check that locations field exists
+            assert 'locations' in data
+            
+            # If there are locations, check each has an id field
+            if isinstance(data['locations'], list) and len(data['locations']) > 0:
+                for location in data['locations']:
+                    assert 'id' in location
+                    # Verify it's a string (UUID should be converted to string)
+                    assert isinstance(location['id'], str)
+                    # Verify it looks like a UUID (36 characters with hyphens)
+                    assert len(location['id']) == 36
+                    assert location['id'].count('-') == 4
+
+    def test_foodbank_detail_donationpoints_have_id(self, client):
+        """Test that each donation point in the foodbank detail response has an id field (UUID)."""
+        response = client.get('/api/2/foodbank/test-foodbank/')
+        
+        # Only test structure if foodbank exists
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            
+            # Check that donationpoints field exists
+            assert 'donationpoints' in data
+            
+            # If there are donation points, check each has an id field
+            if isinstance(data['donationpoints'], list) and len(data['donationpoints']) > 0:
+                for donationpoint in data['donationpoints']:
+                    assert 'id' in donationpoint
+                    # Verify it's a string (UUID should be converted to string)
+                    assert isinstance(donationpoint['id'], str)
+                    # Verify it looks like a UUID (36 characters with hyphens)
+                    assert len(donationpoint['id']) == 36
+                    assert donationpoint['id'].count('-') == 4
+
 
 
 @pytest.mark.django_db
