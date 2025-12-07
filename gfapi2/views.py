@@ -163,6 +163,7 @@ def foodbank(request, slug):
         for location in locations:
             location_list.append(
                 {
+                    "id":str(location.uuid),
                     "name":location.name,
                     "slug":location.slug,
                     "address":location.full_address(),
@@ -189,6 +190,7 @@ def foodbank(request, slug):
         for donationpoint in foodbank.donation_points():
             donationpoint_list.append(
                 {
+                    "id":str(donationpoint.uuid),
                     "name":donationpoint.name,
                     "slug":donationpoint.slug,
                     "address":donationpoint.full_address(),
