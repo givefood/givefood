@@ -1188,3 +1188,130 @@ class TestRSSFeeds:
         """Test that requesting RSS for non-existent food bank returns 404."""
         response = client.get(reverse('wfbn:foodbank_rss', kwargs={'slug': 'non-existent-foodbank'}))
         assert response.status_code == 404
+
+
+@pytest.mark.django_db
+class TestTurnstileFailureHandling:
+    """Test the turnstile failure redirect and error handling"""
+
+    def test_foodbank_with_turnstilefail_shows_error(self, client):
+        """Test that foodbank page with turnstilefail parameter shows error message."""
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank",
+            slug="test-food-bank",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need for the food bank so subscribe form is shown
+        need = FoodbankChange.objects.create(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes, Pasta, Rice",
+            published=True,
+        )
+        
+        # Update the foodbank to reference the latest need
+        foodbank.latest_need = need
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Make request with turnstilefail parameter
+        url = reverse('wfbn:foodbank', kwargs={'slug': 'test-food-bank'})
+        response = client.get(url + '?turnstilefail=true&email=test@example.com')
+        
+        # Check that response is successful
+        assert response.status_code == 200
+        
+        # Check that error message is present
+        content = response.content.decode('utf-8')
+        assert 'Sorry, the security check failed' in content
+        
+        # Check that email is pre-filled
+        assert 'test@example.com' in content
+        
+    def test_foodbank_without_turnstilefail_no_error(self, client):
+        """Test that foodbank page without turnstilefail doesn't show error."""
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 2",
+            slug="test-food-bank-2",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need for the food bank
+        need = FoodbankChange.objects.create(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes, Pasta, Rice",
+            published=True,
+        )
+        
+        # Update the foodbank to reference the latest need
+        foodbank.latest_need = need
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Make request without turnstilefail parameter
+        url = reverse('wfbn:foodbank', kwargs={'slug': 'test-food-bank-2'})
+        response = client.get(url)
+        
+        # Check that response is successful
+        assert response.status_code == 200
+        
+        # Check that error message is NOT present
+        content = response.content.decode('utf-8')
+        assert 'Sorry, the security check failed' not in content
+
+    @patch('gfwfbn.views.validate_turnstile')
+    def test_updates_subscribe_redirects_to_foodbank_on_turnstile_fail(self, mock_validate_turnstile, client):
+        """Test that updates view redirects to foodbank page when turnstile fails."""
+        # Setup mock to return False (turnstile validation failed)
+        mock_validate_turnstile.return_value = False
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 3",
+            slug="test-food-bank-3",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Post to updates view with subscribe action
+        url = reverse('wfbn:updates', kwargs={'slug': 'test-food-bank-3', 'action': 'subscribe'})
+        response = client.post(url, {
+            'email': 'test@example.com',
+            'cf-turnstile-response': 'fake-token'
+        })
+        
+        # Should redirect
+        assert response.status_code == 302
+        
+        # Should redirect to foodbank page with turnstilefail parameter
+        expected_url = reverse('wfbn:foodbank', kwargs={'slug': 'test-food-bank-3'})
+        assert response.url.startswith(expected_url)
+        assert 'turnstilefail=true' in response.url
+        assert 'email=test%40example.com' in response.url or 'email=test@example.com' in response.url
+
