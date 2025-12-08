@@ -71,7 +71,10 @@
         <dt>Oldest Edit</dt>
         <dd>
           {{ stats.oldest_edit.edited|timesince }} ago
-          <br><span class="is-size-7">{{ stats.oldest_edit.edited }} ({{ stats.oldest_edit_days }} days)</span>
+          <br>
+          <span class="is-size-7">{{ stats.oldest_edit.edited }}<br>
+            {{ stats.oldest_edit_days }} days ago
+          </span>
         </dd>
         <dt>Latest Edit</dt>
         <dd>
