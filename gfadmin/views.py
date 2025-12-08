@@ -16,6 +16,7 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
+from django.utils import timezone
 from django.core.cache import cache
 from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
@@ -45,8 +46,13 @@ def index(request):
     except IndexError:
         latest_need_crawlset = None
     
+    # Get oldest edit and calculate days since
+    oldest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0]
+    oldest_edit_days = (timezone.now() - oldest_edit.edited).days
+    
     stats = {
-        "oldest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0],
+        "oldest_edit":oldest_edit,
+        "oldest_edit_days":oldest_edit_days,
         "latest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("-edited")[:1][0],
         "sub_count_24h":FoodbankSubscriber.objects.filter(created__gte=yesterday).count(),
         "sub_count_7d":FoodbankSubscriber.objects.filter(created__gte=week_ago).count(),

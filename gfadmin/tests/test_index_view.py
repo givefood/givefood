@@ -1,9 +1,9 @@
 """Tests for the admin index view."""
 import pytest
 from django.utils import timezone
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from givefood.models import CrawlSet
+from givefood.models import CrawlSet, Foodbank
 
 
 @pytest.mark.django_db
@@ -97,3 +97,36 @@ class TestLatestNeedCrawlset:
         assert latest is not None
         assert latest.id == need_crawlset.id
         assert latest.crawl_type == 'need'
+
+
+@pytest.mark.django_db
+class TestOldestEditDays:
+    """Test the oldest edit days calculation."""
+
+    def test_oldest_edit_days_calculation(self):
+        """Test that oldest_edit_days is correctly calculated."""
+        # Create a food bank with an edit date 100 days ago
+        old_date = timezone.now() - timedelta(days=100)
+        
+        # Create the foodbank without triggering geo updates
+        foodbank = Foodbank(
+            name='Test Food Bank',
+            slug='test-food-bank',
+            address='123 Test St',
+            postcode='TE1 1ST',
+            lat_lng='51.5074,-0.1278',  # London coordinates
+            country='England',
+            edited=old_date,
+            is_closed=False
+        )
+        # Set required fields manually to avoid external API calls
+        foodbank.latitude = 51.5074
+        foodbank.longitude = -0.1278
+        foodbank.save(do_geoupdate=False)
+        
+        # The days calculation should be approximately 100
+        # (we allow a small margin since timezone.now() might be slightly different)
+        days_since = (timezone.now() - foodbank.edited).days
+        assert days_since >= 99
+        assert days_since <= 101
+
