@@ -106,7 +106,7 @@ class TestOldestEditDays:
     def test_oldest_edit_days_calculation(self):
         """Test that oldest_edit_days is correctly calculated."""
         # Create a food bank with an edit date 100 days ago
-        old_date = datetime.now() - timedelta(days=100)
+        old_date = timezone.now() - timedelta(days=100)
         
         # Create the foodbank without triggering geo updates
         foodbank = Foodbank(
@@ -125,8 +125,8 @@ class TestOldestEditDays:
         foodbank.save(do_geoupdate=False)
         
         # The days calculation should be approximately 100
-        # (we allow a small margin since datetime.now() might be slightly different)
-        days_since = (datetime.now() - foodbank.edited).days
+        # (we allow a small margin since timezone.now() might be slightly different)
+        days_since = (timezone.now() - foodbank.edited).days
         assert days_since >= 99
         assert days_since <= 101
 

@@ -16,6 +16,7 @@ from django.template.loader import render_to_string
 from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
+from django.utils import timezone
 from django.core.cache import cache
 from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
@@ -47,7 +48,7 @@ def index(request):
     
     # Get oldest edit and calculate days since
     oldest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0]
-    oldest_edit_days = (datetime.now() - oldest_edit.edited).days
+    oldest_edit_days = (timezone.now() - oldest_edit.edited).days
     
     stats = {
         "oldest_edit":oldest_edit,
