@@ -38,7 +38,7 @@
       <a id="usemylocationbtn" href="{% url 'wfbn:get_location' %}" class="button is-light is-info" data-url="{% url 'wfbn:index' %}" data-no-instant>{% blocktrans %}Use my location{% endblocktrans %}</a>
       <form id="addressform" action="{% url 'wfbn:index' %}" method="GET">
         <label id="address_label" for="address_field" class="label">{% blocktrans %}Postcode or town{% endblocktrans %}</label>
-        <input id="address_field" type="text" name="address" class="input" placeholder="{{ placeholder }}" value="{{ address }}" required aria-required="true">
+        <input id="address_field" type="text" name="address" class="input" placeholder="{{ placeholder }}" value="{{ address }}" required>
         <input id="lat_lng_field" type="hidden" name="lat_lng">
         <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
       </form>
