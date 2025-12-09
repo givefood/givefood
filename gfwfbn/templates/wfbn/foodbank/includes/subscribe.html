@@ -1,6 +1,5 @@
 {% load i18n %}
 <div class="subscribe">
-    <p><em>Get updates when items are needed by this food bank via...</em></p>
     <div class="tabs is-boxed">
         <ul>
             <li{% if not turnstilefail %} class="is-active"{% endif %} role="presentation">
@@ -17,8 +16,12 @@
     </div>
     <div class="sections">
         <div class="apps tabcontent{% if turnstilefail %} is-hidden{% endif %}" role="tabpanel" id="apps-panel" aria-labelledby="apps-tab">
+            {% if section == 'donationpoints' %}
+                <p>Get a notification of what is needed when you are near a donation point with our <a href="{% url 'apps'%}">mobile apps</a></p>
+            {% else %}
+                <p>Get updates on what is needed with our <a href="{% url 'apps'%}">mobile apps</a></p>
+            {% endif %}
             {% include 'public/includes/appbadges.html' %}
-            <p>Follow a food bank on our useful <a href="{% url 'apps'%}">mobile apps</a>.</p>
         </div>
         <div class="email tabcontent{% if not turnstilefail %} is-hidden{% endif %}" role="tabpanel" id="email-panel" aria-labelledby="email-tab">
             {% if turnstilefail %}
@@ -26,6 +29,7 @@
                     <p>{% blocktrans %}Sorry, the security check failed. Please try again.{% endblocktrans %}</p>
                 </div>
             {% endif %}
+            <p>Get updates on this shopping list via email</p>
             <div class="subscribe-form">
                 <form action="{% url 'human' %}" method="post">
                     <div class="field has-addons">
@@ -36,7 +40,7 @@
                             <button type="submit" class="button is-link is-light" id="subscribe_btn">{% blocktrans %}Get updates{% endblocktrans %}</button>
                         </div>
                     </div>
-                    <p class="is-size-7">{% blocktrans %}We'll never use your email address for anything else, and you can unsubscribe at any time.{% endblocktrans %}</p>
+                    <p class="is-size-7">{% blocktrans %}We'll never use your email address for anything else, and you can unsubscribe at any time{% endblocktrans %}</p>
                     <input type="hidden" name="target" value="{% url 'wfbn:updates' foodbank.slug 'subscribe' %}">
                     <input type="hidden" name="action" value="subscribe">
                 </form>
