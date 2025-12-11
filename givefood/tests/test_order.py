@@ -307,3 +307,39 @@ class TestNullableFoodbank:
         for line in order_lines:
             line.refresh_from_db()
             assert line.foodbank is None
+
+    @patch('givefood.models.gemini')
+    def test_multiple_unassigned_orders_allowed(self, mock_gemini):
+        """Test that multiple unassigned orders with same delivery date/provider are allowed."""
+        # Mock gemini to return empty list to avoid AI call
+        mock_gemini.return_value = []
+        
+        delivery_date = date.today()
+        delivery_hour = 10
+        
+        # Create first unassigned order
+        order1 = Order(
+            foodbank=None,
+            items_text="Test items 1",
+            delivery_date=delivery_date,
+            delivery_hour=delivery_hour,
+            delivery_provider="Tesco",
+        )
+        order1.save(do_foodbank_save=False)
+        
+        # Create second unassigned order with same delivery date and provider
+        order2 = Order(
+            foodbank=None,
+            items_text="Test items 2",
+            delivery_date=delivery_date,
+            delivery_hour=delivery_hour,
+            delivery_provider="Tesco",
+        )
+        order2.save(do_foodbank_save=False)
+        
+        # Verify both orders were created successfully
+        assert order1.id is not None
+        assert order2.id is not None
+        assert order1.id != order2.id
+        # Verify they have different order_ids (because timestamps differ)
+        assert order1.order_id != order2.order_id

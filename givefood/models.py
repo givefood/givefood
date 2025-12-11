@@ -1254,6 +1254,9 @@ class Order(models.Model):
     no_items = models.PositiveIntegerField(editable=False)
 
     class Meta:
+       # Note: unique_together allows multiple NULL values, so multiple unassigned orders
+       # with the same delivery_date and delivery_provider are permitted. This is intentional
+       # as unassigned orders are distinguished by their order_id which includes a timestamp.
        unique_together = ('foodbank', 'delivery_date', 'delivery_provider')
        app_label = 'givefood'
 
@@ -1292,17 +1295,19 @@ class Order(models.Model):
         super(Order, self).delete(*args, **kwargs)
 
     def save(self, do_foodbank_save = True, *args, **kwargs):
-        # Generate ID
-        if self.foodbank:
-            foodbank_slug = self.foodbank.slug
-        else:
-            foodbank_slug = "unassigned"
+        # Save first to get an ID if this is a new order
+        is_new = self.pk is None
         
-        self.order_id = "gf-%s-%s-%s" % (
-            foodbank_slug,
-            slugify(self.delivery_provider),
-            str(self.delivery_date)
-        )
+        # For new unassigned orders, use a temporary order_id
+        if is_new and not self.foodbank:
+            self.order_id = "temp-order-id"
+        elif self.foodbank:
+            # Generate ID for assigned orders
+            self.order_id = "gf-%s-%s-%s" % (
+                self.foodbank.slug,
+                slugify(self.delivery_provider),
+                str(self.delivery_date)
+            )
 
         # Store delivery_datetime
         self.delivery_datetime = datetime(
@@ -1402,8 +1407,18 @@ class Order(models.Model):
 
         super(Order, self).save(*args, **kwargs)
 
+        # Update order_id for new unassigned orders now that we have a pk
+        if is_new and not self.foodbank:
+            self.order_id = "gf-unassigned-%s-%s-%s" % (
+                self.pk,
+                slugify(self.delivery_provider) if self.delivery_provider else "none",
+                str(self.delivery_date)
+            )
+            # Use update to avoid recursive save calls
+            Order.objects.filter(pk=self.pk).update(order_id=self.order_id)
+
         # Update last order date on foodbank
-        if do_foodbank_save:
+        if do_foodbank_save and self.foodbank:
             self.foodbank.last_order = Order.objects.filter(foodbank = self.foodbank).order_by("-delivery_date")[0].delivery_date
             self.foodbank.save(do_geoupdate=False)
 
