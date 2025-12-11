@@ -1,11 +1,11 @@
 {% extends "admin/page.html" %}
 {% load humanize %}
 
-{% block title %}Orders - GF Admin{% endblock %}
+{% block title %}Unassigned Orders - GF Admin{% endblock %}
 
 {% block body %}
 
-  <h2>Orders</h2>
+  <h2>Unassigned Orders</h2>
 
   <div class="columns">
 
@@ -29,7 +29,6 @@
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>ID</th>
-          <th>Foodbank</th>
           <th>Del. Prov. ID</th>
           <th>Country</th>
           <th>Delivery</th>
@@ -43,13 +42,6 @@
         {% for order in orders %}
           <tr>
             <td><a href="{% url "admin:order" order.order_id %}">{{ order.order_id }}</a></td>
-            <td>
-              {% if order.foodbank %}
-                <a href="{% url "admin:foodbank" order.foodbank_name_slug %}">{{ order.foodbank.name }}</a>
-              {% else %}
-                <em>Unassigned</em>
-              {% endif %}
-            </td>
             <td>{{ order.delivery_provider_id }}</td>
             <td>{{ order.country }}</td>
             <td>{{ order.delivery_datetime }}</td>

@@ -536,6 +536,10 @@ class Foodbank(models.Model):
         CharityYear.objects.filter(foodbank = self).delete()
         CrawlItem.objects.filter(foodbank = self).delete()
         
+        # Unassign orders from this foodbank
+        Order.objects.filter(foodbank = self).update(foodbank=None)
+        OrderLine.objects.filter(foodbank = self).update(foodbank=None)
+        
         super(Foodbank, self).delete(*args, **kwargs)
 
 
@@ -1223,8 +1227,7 @@ class FoodbankDonationPoint(models.Model):
 class Order(models.Model):
 
     order_id = models.CharField(max_length=100, editable=False)
-    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
-    foodbank_name = models.CharField(max_length=100, editable=False)
+    foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.SET_NULL)
     items_text = models.TextField()
     need = models.ForeignKey("FoodbankChange", null=True, blank=True, on_delete=models.DO_NOTHING)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
@@ -1258,7 +1261,9 @@ class Order(models.Model):
         return self.order_id
 
     def foodbank_name_slug(self):
-        return slugify(self.foodbank_name)
+        if self.foodbank:
+            return self.foodbank.slug
+        return "unassigned"
 
     def delivery_hour_end(self):
         return self.delivery_hour + 1
@@ -1288,8 +1293,13 @@ class Order(models.Model):
 
     def save(self, do_foodbank_save = True, *args, **kwargs):
         # Generate ID
+        if self.foodbank:
+            foodbank_slug = self.foodbank.slug
+        else:
+            foodbank_slug = "unassigned"
+        
         self.order_id = "gf-%s-%s-%s" % (
-            self.foodbank.slug,
+            foodbank_slug,
             slugify(self.delivery_provider),
             str(self.delivery_date)
         )
@@ -1309,9 +1319,11 @@ class Order(models.Model):
         self.no_lines = 0
         self.no_items = 0
 
-        # Denorm foodbank name & country
-        self.foodbank_name = self.foodbank.name
-        self.country = self.foodbank.country
+        # Denorm country
+        if self.foodbank:
+            self.country = self.foodbank.country
+        else:
+            self.country = ""
 
         super(Order, self).save(*args, **kwargs)
 
@@ -1410,7 +1422,7 @@ class Order(models.Model):
 
 class OrderLine(models.Model):
 
-    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
+    foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.SET_NULL)
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
 
     name = models.CharField(max_length=100)
@@ -1471,7 +1483,7 @@ class OrderGroup(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def orders(self):
-        return Order.objects.filter(order_group = self).order_by("delivery_datetime")
+        return Order.objects.select_related('foodbank').filter(order_group = self).order_by("delivery_datetime")
 
     def save(self, *args, **kwargs):
 
