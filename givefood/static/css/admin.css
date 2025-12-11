@@ -15,7 +15,7 @@
 }
 .navbar-dropdown {
   border-top:0;
-  top:calc(100% - 0.5rem);
+  top:calc(100% - 2px);
 }
 .main {
   padding:0 10px;
