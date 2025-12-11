@@ -47,7 +47,13 @@
         {% for order in orders %}
           <tr>
             <td><a href="{% url "admin:order" order.order_id %}">{{ order.order_id }}</a></td>
-            <td>{{ order.foodbank_name }}</td>
+            <td>
+              {% if order.foodbank %}
+                {{ order.foodbank.name }}
+              {% else %}
+                <em>Unassigned</em>
+              {% endif %}
+            </td>
             <td>{{ order.delivery_datetime }}</td>
             <td>{{ order.no_items }}</td>
             <td>{{ order.weight_kg_pkg|intcomma|floatformat:2 }}</td>

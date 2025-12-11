@@ -536,6 +536,9 @@ class Foodbank(models.Model):
         CharityYear.objects.filter(foodbank = self).delete()
         CrawlItem.objects.filter(foodbank = self).delete()
         
+        # Unassign orders from this foodbank
+        Order.objects.filter(foodbank = self).update(foodbank=None)
+        
         super(Foodbank, self).delete(*args, **kwargs)
 
 
@@ -1223,8 +1226,7 @@ class FoodbankDonationPoint(models.Model):
 class Order(models.Model):
 
     order_id = models.CharField(max_length=100, editable=False)
-    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
-    foodbank_name = models.CharField(max_length=100, editable=False)
+    foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.SET_NULL)
     items_text = models.TextField()
     need = models.ForeignKey("FoodbankChange", null=True, blank=True, on_delete=models.DO_NOTHING)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, editable=False)
@@ -1251,6 +1253,9 @@ class Order(models.Model):
     no_items = models.PositiveIntegerField(editable=False)
 
     class Meta:
+       # Note: unique_together allows multiple NULL values, so multiple unassigned orders
+       # with the same delivery_date and delivery_provider are permitted. This is intentional
+       # as unassigned orders are distinguished by their order_id which includes a timestamp.
        unique_together = ('foodbank', 'delivery_date', 'delivery_provider')
        app_label = 'givefood'
 
@@ -1258,7 +1263,9 @@ class Order(models.Model):
         return self.order_id
 
     def foodbank_name_slug(self):
-        return slugify(self.foodbank_name)
+        if self.foodbank:
+            return self.foodbank.slug
+        return "unassigned"
 
     def delivery_hour_end(self):
         return self.delivery_hour + 1
@@ -1287,12 +1294,16 @@ class Order(models.Model):
         super(Order, self).delete(*args, **kwargs)
 
     def save(self, do_foodbank_save = True, *args, **kwargs):
-        # Generate ID
-        self.order_id = "gf-%s-%s-%s" % (
-            self.foodbank.slug,
-            slugify(self.delivery_provider),
-            str(self.delivery_date)
-        )
+        # Save first to get an ID if this is a new order
+        is_new = self.pk is None
+        
+        # For new unassigned orders, use a temporary unique order_id
+        if is_new and not self.foodbank:
+            import uuid as uuid_module
+            self.order_id = f"temp-order-{uuid_module.uuid4()}"
+        elif self.foodbank:
+            # Generate ID for assigned orders
+            self.order_id = f"gf-{self.foodbank.slug}-{slugify(self.delivery_provider)}-{self.delivery_date}"
 
         # Store delivery_datetime
         self.delivery_datetime = datetime(
@@ -1309,9 +1320,11 @@ class Order(models.Model):
         self.no_lines = 0
         self.no_items = 0
 
-        # Denorm foodbank name & country
-        self.foodbank_name = self.foodbank.name
-        self.country = self.foodbank.country
+        # Denorm country
+        if self.foodbank:
+            self.country = self.foodbank.country
+        else:
+            self.country = ""
 
         super(Order, self).save(*args, **kwargs)
 
@@ -1370,7 +1383,6 @@ class Order(models.Model):
             order_weight = order_weight + line_weight
 
             new_order_line = OrderLine(
-                foodbank = self.foodbank,
                 order = self,
                 name = order_line.get("name"),
                 quantity = order_line["quantity"],
@@ -1390,8 +1402,15 @@ class Order(models.Model):
 
         super(Order, self).save(*args, **kwargs)
 
+        # Update order_id for new unassigned orders now that we have a pk
+        if is_new and not self.foodbank:
+            provider_slug = slugify(self.delivery_provider) if self.delivery_provider else "none"
+            self.order_id = f"gf-unassigned-{self.pk}-{provider_slug}-{self.delivery_date}"
+            # Use update to avoid recursive save calls
+            Order.objects.filter(pk=self.pk).update(order_id=self.order_id)
+
         # Update last order date on foodbank
-        if do_foodbank_save:
+        if do_foodbank_save and self.foodbank:
             self.foodbank.last_order = Order.objects.filter(foodbank = self.foodbank).order_by("-delivery_date")[0].delivery_date
             self.foodbank.save(do_geoupdate=False)
 
@@ -1410,7 +1429,6 @@ class Order(models.Model):
 
 class OrderLine(models.Model):
 
-    foodbank = models.ForeignKey(Foodbank, on_delete=models.DO_NOTHING)
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
 
     name = models.CharField(max_length=100)
@@ -1471,7 +1489,7 @@ class OrderGroup(models.Model):
     modified = models.DateTimeField(auto_now=True, editable=False)
 
     def orders(self):
-        return Order.objects.filter(order_group = self).order_by("delivery_datetime")
+        return Order.objects.select_related('foodbank').filter(order_group = self).order_by("delivery_datetime")
 
     def save(self, *args, **kwargs):
 

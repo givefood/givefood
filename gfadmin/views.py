@@ -215,7 +215,7 @@ def orders(request):
     sort_string = sort
     sort = "-%s" % (sort)
 
-    orders = Order.objects.all().order_by(sort)
+    orders = Order.objects.select_related('foodbank').all().order_by(sort)
 
     template_vars = {
         "sort":sort_string,
@@ -225,16 +225,44 @@ def orders(request):
     return render(request, "admin/orders.html", template_vars)
 
 
+def orders_unassigned(request):
+
+    sort_options = [
+        "delivery_datetime",
+        "created",
+        "no_items",
+        "weight",
+        "calories",
+        "cost",
+    ]
+    sort = request.GET.get("sort", "delivery_datetime")
+    if sort not in sort_options:
+        return HttpResponseForbidden()
+
+    sort_string = sort
+    sort = "-%s" % (sort)
+
+    orders = Order.objects.filter(foodbank__isnull=True).order_by(sort)
+
+    template_vars = {
+        "sort":sort_string,
+        "orders":orders,
+        "section":"orders",
+    }
+    return render(request, "admin/orders_unassigned.html", template_vars)
+
+
 def orders_csv(request):
 
-    orders = Order.objects.all().order_by("-created")
+    orders = Order.objects.select_related('foodbank').all().order_by("-created")
 
     output = []
     response = HttpResponse (content_type='text/csv')
     writer = csv.writer(response)
     writer.writerow(['id', 'created', 'delivery', 'delivery_provider', 'foodbank', 'country', 'weight', 'calories', 'items', 'cost', 'delivered_cost'])
     for order in orders:
-        output.append([order.order_id, order.created, order.delivery_datetime, order.delivery_provider, order.foodbank_name, order.country, order.weight, order.calories, order.no_items, order.cost, order.actual_cost])
+        foodbank_name = order.foodbank.name if order.foodbank else "Unassigned"
+        output.append([order.order_id, order.created, order.delivery_datetime, order.delivery_provider, foodbank_name, order.country, order.weight, order.calories, order.no_items, order.cost, order.actual_cost])
     writer.writerows(output)
     return response
 
@@ -362,6 +390,10 @@ def order_form(request, id = None):
 def order_send_notification(request, id = None):
 
     order = get_object_or_404(Order, order_id = id)
+    
+    # Cannot send notification for unassigned orders
+    if not order.foodbank:
+        return redirect("admin:order", id = order.order_id)
 
     text_body = render_to_string("admin/emails/order.txt",{"order":order})
     html_body = render_to_string("admin/emails/order.html",{"order":order})
