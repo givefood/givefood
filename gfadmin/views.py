@@ -390,6 +390,10 @@ def order_form(request, id = None):
 def order_send_notification(request, id = None):
 
     order = get_object_or_404(Order, order_id = id)
+    
+    # Cannot send notification for unassigned orders
+    if not order.foodbank:
+        return redirect("admin:order", id = order.order_id)
 
     text_body = render_to_string("admin/emails/order.txt",{"order":order})
     html_body = render_to_string("admin/emails/order.html",{"order":order})

@@ -16,7 +16,13 @@
         <dt>ID</dt>
         <dd>{{ order.order_id }}
         <dt>Foodbank</dt>
-        <dd><a href="{% url "admin:foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a></dd>
+        <dd>
+          {% if order.foodbank %}
+            <a href="{% url "admin:foodbank" order.foodbank.slug %}">{{ order.foodbank }}</a>
+          {% else %}
+            <em>Unassigned</em>
+          {% endif %}
+        </dd>
         <dt>Delivery hour</dt>
         <dd>{{ order.delivery_date|date:"D" }}, {{ order.delivery_date }}, {{ order.delivery_hour }}:00</dd>
         <dt>Items</dt>
@@ -79,18 +85,20 @@
         </dl>
       {% endif %}
 
-      <h2>Notification</h2>
-      <p>
-        {% if order.notification_email_sent %}
-          <span style="color:green">✓</span> Sent <time datetime="{{ order.notification_email_sent|date:'c' }}" title="{{ order.notification_email_sent }}">{{ order.notification_email_sent|timesince }} ago</time>
-        {% else %}
-          <span style="color:red">x</span> Not Sent
-        {% endif %}
-      </p>
-      <form action="{% url 'admin:order_send_notification' order.order_id %}" method="post">
-        <input type="submit" class="button is-warning is-light" value="Send Notification">
-        {% csrf_token %}
-      </form>
+      {% if order.foodbank %}
+        <h2>Notification</h2>
+        <p>
+          {% if order.notification_email_sent %}
+            <span style="color:green">✓</span> Sent <time datetime="{{ order.notification_email_sent|date:'c' }}" title="{{ order.notification_email_sent }}">{{ order.notification_email_sent|timesince }} ago</time>
+          {% else %}
+            <span style="color:red">x</span> Not Sent
+          {% endif %}
+        </p>
+        <form action="{% url 'admin:order_send_notification' order.order_id %}" method="post">
+          <input type="submit" class="button is-warning is-light" value="Send Notification">
+          {% csrf_token %}
+        </form>
+      {% endif %}
 
       <h2>Danger Zone</h2>
       <form action="{% url 'admin:order_delete' order.order_id %}" method="post">

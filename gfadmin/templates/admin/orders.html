@@ -45,7 +45,7 @@
             <td><a href="{% url "admin:order" order.order_id %}">{{ order.order_id }}</a></td>
             <td>
               {% if order.foodbank %}
-                <a href="{% url "admin:foodbank" order.foodbank_name_slug %}">{{ order.foodbank.name }}</a>
+                <a href="{% url "admin:foodbank" order.foodbank.slug %}">{{ order.foodbank.name }}</a>
               {% else %}
                 <em>Unassigned</em>
               {% endif %}
