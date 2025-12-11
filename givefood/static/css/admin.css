@@ -13,9 +13,11 @@
   margin:5px 10px 5px 0;
   max-height:unset !important;
 }
+.navbar-item.has-dropdown .navbar-link {
+  padding-bottom:0;
+}
 .navbar-dropdown {
   border-top:0;
-  margin-top:-1px;
 }
 .main {
   padding:0 10px;
