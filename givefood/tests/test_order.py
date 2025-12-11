@@ -266,8 +266,8 @@ class TestNullableFoodbank:
         assert order.foodbank is None
 
     @patch('givefood.models.gemini')
-    def test_order_line_unassigned_when_foodbank_deleted(self, mock_gemini):
-        """Test that OrderLine.foodbank is set to None when the foodbank is deleted."""
+    def test_order_line_accessible_via_order_when_foodbank_deleted(self, mock_gemini):
+        """Test that OrderLine can access foodbank via order.foodbank after foodbank deletion."""
         # Mock gemini to return empty list to avoid AI call
         mock_gemini.return_value = []
         
@@ -300,13 +300,17 @@ class TestNullableFoodbank:
         # Get order lines (created by the save method)
         order_lines = OrderLine.objects.filter(order=order)
         
+        # Verify order lines can access foodbank via order before deletion
+        for line in order_lines:
+            assert line.order.foodbank == foodbank
+        
         # Delete the foodbank
         foodbank.delete()
 
-        # Verify all order lines have null foodbank
+        # Verify order lines can still be accessed and order.foodbank is None
         for line in order_lines:
             line.refresh_from_db()
-            assert line.foodbank is None
+            assert line.order.foodbank is None
 
     @patch('givefood.models.gemini')
     def test_multiple_unassigned_orders_allowed(self, mock_gemini):

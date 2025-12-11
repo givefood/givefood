@@ -538,7 +538,6 @@ class Foodbank(models.Model):
         
         # Unassign orders from this foodbank
         Order.objects.filter(foodbank = self).update(foodbank=None)
-        OrderLine.objects.filter(foodbank = self).update(foodbank=None)
         
         super(Foodbank, self).delete(*args, **kwargs)
 
@@ -1384,7 +1383,6 @@ class Order(models.Model):
             order_weight = order_weight + line_weight
 
             new_order_line = OrderLine(
-                foodbank = self.foodbank,
                 order = self,
                 name = order_line.get("name"),
                 quantity = order_line["quantity"],
@@ -1431,7 +1429,6 @@ class Order(models.Model):
 
 class OrderLine(models.Model):
 
-    foodbank = models.ForeignKey(Foodbank, null=True, blank=True, on_delete=models.SET_NULL)
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
 
     name = models.CharField(max_length=100)
