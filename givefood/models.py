@@ -1298,16 +1298,13 @@ class Order(models.Model):
         # Save first to get an ID if this is a new order
         is_new = self.pk is None
         
-        # For new unassigned orders, use a temporary order_id
+        # For new unassigned orders, use a temporary unique order_id
         if is_new and not self.foodbank:
-            self.order_id = "temp-order-id"
+            import uuid as uuid_module
+            self.order_id = f"temp-order-{uuid_module.uuid4()}"
         elif self.foodbank:
             # Generate ID for assigned orders
-            self.order_id = "gf-%s-%s-%s" % (
-                self.foodbank.slug,
-                slugify(self.delivery_provider),
-                str(self.delivery_date)
-            )
+            self.order_id = f"gf-{self.foodbank.slug}-{slugify(self.delivery_provider)}-{self.delivery_date}"
 
         # Store delivery_datetime
         self.delivery_datetime = datetime(
@@ -1409,11 +1406,8 @@ class Order(models.Model):
 
         # Update order_id for new unassigned orders now that we have a pk
         if is_new and not self.foodbank:
-            self.order_id = "gf-unassigned-%s-%s-%s" % (
-                self.pk,
-                slugify(self.delivery_provider) if self.delivery_provider else "none",
-                str(self.delivery_date)
-            )
+            provider_slug = slugify(self.delivery_provider) if self.delivery_provider else "none"
+            self.order_id = f"gf-unassigned-{self.pk}-{provider_slug}-{self.delivery_date}"
             # Use update to avoid recursive save calls
             Order.objects.filter(pk=self.pk).update(order_id=self.order_id)
 
