@@ -451,7 +451,7 @@ def price_per_kg(request):
 
     items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
     weight = Order.objects.aggregate(Sum("weight"))["weight__sum"]/1000000
-    number_foodbanks = Order.objects.values('foodbank_name').distinct().count()
+    number_foodbanks = Order.objects.values('foodbank').distinct().count()
 
     template_vars = {
         "months": months,
@@ -481,7 +481,7 @@ def price_per_calorie(request):
     
     items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
     calories = Order.objects.aggregate(Sum("calories"))["calories__sum"]
-    number_foodbanks = Order.objects.values('foodbank_name').distinct().count()
+    number_foodbanks = Order.objects.values('foodbank').distinct().count()
 
     template_vars = {
         "months": months,
