@@ -997,11 +997,12 @@ def slug_redirect(request, old_slug, new_slug, subpage=None):
     return redirect(new_path, permanent=True)
 
 
-@cache_page(SECONDS_IN_WEEK)
+@cache_page(SECONDS_IN_HOUR)
 def service_worker(request):
     """
     Serves the service worker JavaScript file from the website root.
     Required for Firebase Cloud Messaging web push notifications.
+    Service workers should be cached for a shorter duration to allow updates.
     """
     import os
     sw_path = os.path.join(settings.STATIC_ROOT, 'root', 'sw.js')

@@ -1,6 +1,8 @@
 // Give Food Service Worker for Web Push Notifications
 // This file must be served from the root of the website
 
+// Firebase SDKs loaded from Google's CDN as recommended by Firebase documentation.
+// SRI hashes are not provided by Firebase for their CDN-hosted SDKs.
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 

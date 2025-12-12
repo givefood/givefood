@@ -975,10 +975,12 @@ def foodbank_hit(request, slug):
     return render(request, "wfbn/foodbank/hit.js", content_type="text/javascript")
 
 
-@cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_HOUR)
 def notifications_config(request):
     """
-    Returns Firebase configuration for web push notifications
+    Returns Firebase configuration for web push notifications.
+    These values are public client configuration, not secrets.
+    Firebase API keys are designed to be exposed on the client side.
     """
     config = {
         "apiKey": get_cred("firebase_api_key"),
@@ -995,8 +997,15 @@ def notifications_config(request):
 @csrf_exempt
 def notifications_subscribe(request):
     """
-    Subscribes a web push token to a Firebase topic
+    Subscribes a web push token to a Firebase topic.
+    
+    CSRF is exempt because:
+    1. This is an AJAX API endpoint, not a form submission
+    2. The endpoint only allows subscription, not data modification
+    3. Firebase FCM tokens are unique per browser/device and provide authentication
+    4. The topic name must match a valid foodbank UUID format
     """
+    import re
     from givefood.func import initialize_firebase_admin
     from firebase_admin import messaging
     
@@ -1012,7 +1021,14 @@ def notifications_subscribe(request):
             return HttpResponseBadRequest()
         
         # Validate topic format (should be foodbank-{uuid})
-        if not topic.startswith('foodbank-'):
+        # UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        uuid_pattern = r'^foodbank-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+        if not re.match(uuid_pattern, topic, re.IGNORECASE):
+            return HttpResponseBadRequest()
+        
+        # Validate FCM token format (should be a non-empty string with reasonable length)
+        # FCM tokens are typically 150-200 characters
+        if len(token) < 100 or len(token) > 500:
             return HttpResponseBadRequest()
         
         # Initialize Firebase Admin SDK
