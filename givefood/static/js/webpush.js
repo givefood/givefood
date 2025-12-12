@@ -24,7 +24,7 @@ function initWebPush(foodbankUuid, configUrl) {
     }
     
     // Update button state based on current permission
-    updateButtonState(subscribeBtn, statusDiv);
+    updateButtonState(subscribeBtn, statusDiv, foodbankUuid);
     
     // Handle subscribe button click
     subscribeBtn.addEventListener('click', function() {
@@ -49,10 +49,11 @@ function initWebPush(foodbankUuid, configUrl) {
     });
 }
 
-function updateButtonState(subscribeBtn, statusDiv) {
+function updateButtonState(subscribeBtn, statusDiv, foodbankUuid) {
     if (Notification.permission === 'granted') {
-        // Check if already subscribed by looking for stored subscription
-        if (localStorage.getItem('gf_webpush_subscribed')) {
+        // Check if already subscribed to this specific food bank
+        var subscribedFoodbanks = JSON.parse(localStorage.getItem('gf_webpush_foodbanks') || '[]');
+        if (subscribedFoodbanks.indexOf(foodbankUuid) !== -1) {
             subscribeBtn.textContent = 'Notifications enabled';
             subscribeBtn.disabled = true;
             subscribeBtn.classList.remove('is-light');
@@ -125,9 +126,12 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
                 });
             })
             .then(function(result) {
-                // Success!
-                localStorage.setItem('gf_webpush_subscribed', 'true');
-                localStorage.setItem('gf_webpush_foodbank', foodbankUuid);
+                // Success! Store this food bank in the list of subscribed food banks
+                var subscribedFoodbanks = JSON.parse(localStorage.getItem('gf_webpush_foodbanks') || '[]');
+                if (subscribedFoodbanks.indexOf(foodbankUuid) === -1) {
+                    subscribedFoodbanks.push(foodbankUuid);
+                    localStorage.setItem('gf_webpush_foodbanks', JSON.stringify(subscribedFoodbanks));
+                }
                 
                 statusDiv.innerHTML = '<div class="notification is-success">Successfully subscribed to notifications!</div>';
                 subscribeBtn.textContent = 'Notifications enabled';
