@@ -995,3 +995,19 @@ def slug_redirect(request, old_slug, new_slug, subpage=None):
         new_path = f"/{current_language}{new_path}"
     
     return redirect(new_path, permanent=True)
+
+
+@cache_page(SECONDS_IN_WEEK)
+def service_worker(request):
+    """
+    Serves the service worker JavaScript file from the website root.
+    Required for Firebase Cloud Messaging web push notifications.
+    """
+    import os
+    sw_path = os.path.join(settings.STATIC_ROOT, 'root', 'sw.js')
+    try:
+        with open(sw_path, 'r') as f:
+            sw_content = f.read()
+        return HttpResponse(sw_content, content_type='application/javascript')
+    except FileNotFoundError:
+        return HttpResponse(status=404)

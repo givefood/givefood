@@ -7,6 +7,11 @@
                     <span>Apps</span>
                 </a>
             </li>
+            <li role="presentation">
+                <a data-tab="web" role="tab" aria-selected="false" aria-controls="web-panel" id="web-tab">
+                    <span>Web</span>
+                </a>
+            </li>
             <li{% if turnstilefail %} class="is-active"{% endif %} role="presentation">
                 <a data-tab="email" role="tab"{% if turnstilefail %} aria-selected="true"{% else %} aria-selected="false"{% endif %} aria-controls="email-panel" id="email-tab">
                     <span>Email</span>
@@ -22,6 +27,11 @@
                 <p>Get updates on what is needed with our <a href="{% url 'apps'%}">mobile apps</a></p>
             {% endif %}
             {% include 'public/includes/appbadges.html' %}
+        </div>
+        <div class="web tabcontent is-hidden" role="tabpanel" id="web-panel" aria-labelledby="web-tab">
+            <p>{% blocktrans %}Get browser notifications when this food bank updates their shopping list{% endblocktrans %}</p>
+            <div id="webpush-status"></div>
+            <button id="webpush-subscribe-btn" class="button is-link is-light">{% blocktrans %}Get browser notifications{% endblocktrans %}</button>
         </div>
         <div class="email tabcontent{% if not turnstilefail %} is-hidden{% endif %}" role="tabpanel" id="email-panel" aria-labelledby="email-tab">
             {% if turnstilefail %}
@@ -49,3 +59,11 @@
     </div>
 </div>
 <script src="/static/js/tabber.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js" defer></script>
+<script src="/static/js/webpush.js" defer></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initWebPush('{{ foodbank.uuid }}', '{% url "wfbn-generic:notifications_config" %}');
+    });
+</script>

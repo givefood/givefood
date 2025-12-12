@@ -973,3 +973,61 @@ def foodbank_hit(request, slug):
         FoodbankHit.objects.filter(pk=hit.pk).update(hits=hit.hits + 1)
 
     return render(request, "wfbn/foodbank/hit.js", content_type="text/javascript")
+
+
+@cache_page(SECONDS_IN_DAY)
+def notifications_config(request):
+    """
+    Returns Firebase configuration for web push notifications
+    """
+    config = {
+        "apiKey": get_cred("firebase_api_key"),
+        "authDomain": get_cred("firebase_auth_domain"),
+        "projectId": get_cred("firebase_project_id"),
+        "storageBucket": get_cred("firebase_storage_bucket"),
+        "messagingSenderId": get_cred("firebase_messaging_sender_id"),
+        "appId": get_cred("firebase_app_id"),
+        "vapidKey": get_cred("firebase_vapid_key"),
+    }
+    return JsonResponse(config)
+
+
+@csrf_exempt
+def notifications_subscribe(request):
+    """
+    Subscribes a web push token to a Firebase topic
+    """
+    from givefood.func import initialize_firebase_admin
+    from firebase_admin import messaging
+    
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+    
+    try:
+        data = json.loads(request.body)
+        token = data.get('token')
+        topic = data.get('topic')
+        
+        if not token or not topic:
+            return HttpResponseBadRequest()
+        
+        # Validate topic format (should be foodbank-{uuid})
+        if not topic.startswith('foodbank-'):
+            return HttpResponseBadRequest()
+        
+        # Initialize Firebase Admin SDK
+        if not initialize_firebase_admin():
+            return JsonResponse({'error': 'Firebase not configured'}, status=500)
+        
+        # Subscribe the token to the topic
+        response = messaging.subscribe_to_topic([token], topic)
+        
+        if response.failure_count > 0:
+            return JsonResponse({'error': 'Failed to subscribe'}, status=500)
+        
+        return JsonResponse({'success': True})
+        
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest()
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

@@ -96,6 +96,7 @@ urlpatterns += [
     path("llms.txt", givefood.views.llmstxt, name="llmstxt"),
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
+    path("sw.js", givefood.views.service_worker, name="service_worker"),
 
     # Rickrolling
     path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),
