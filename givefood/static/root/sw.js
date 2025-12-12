@@ -6,36 +6,39 @@
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 
-// Firebase configuration will be set when receiving the first push
-let firebaseInitialized = false;
+// Firebase will be initialized when we receive the config from the main page
+let messaging = null;
 
-// Handle background push messages
-self.addEventListener('push', function(event) {
-    if (event.data) {
-        try {
-            const data = event.data.json();
-            const notification = data.notification || {};
-            const title = notification.title || 'Give Food';
-            const options = {
-                body: notification.body || '',
+// Listen for messages from the main page to get Firebase config
+self.addEventListener('message', function(event) {
+    if (event.data && event.data.type === 'FIREBASE_CONFIG') {
+        const config = event.data.config;
+        if (!firebase.apps.length) {
+            firebase.initializeApp(config);
+        }
+        messaging = firebase.messaging();
+        
+        // Set up background message handler
+        messaging.onBackgroundMessage(function(payload) {
+            console.log('[Service Worker] Received background message:', payload);
+            
+            const notificationTitle = payload.notification?.title || payload.data?.title || 'Give Food';
+            const notificationOptions = {
+                body: payload.notification?.body || payload.data?.body || '',
                 icon: '/static/img/logo.svg',
                 badge: '/static/img/logo.svg',
-                data: data.data || {}
+                data: {
+                    foodbank_slug: payload.data?.foodbank_slug,
+                    click_action: payload.data?.click_action || payload.fcmOptions?.link
+                }
             };
-            event.waitUntil(
-                self.registration.showNotification(title, options)
-            );
-        } catch (e) {
-            // If not JSON, try to show as text
-            const title = 'Give Food';
-            const options = {
-                body: event.data.text(),
-                icon: '/static/img/logo.svg',
-                badge: '/static/img/logo.svg'
-            };
-            event.waitUntil(
-                self.registration.showNotification(title, options)
-            );
+            
+            return self.registration.showNotification(notificationTitle, notificationOptions);
+        });
+        
+        // Confirm config received
+        if (event.ports && event.ports[0]) {
+            event.ports[0].postMessage({ success: true });
         }
     }
 });
@@ -72,4 +75,40 @@ self.addEventListener('notificationclick', function(event) {
             }
         })
     );
+});
+
+// Fallback: Handle push events directly (for non-Firebase push or when Firebase handler doesn't trigger)
+self.addEventListener('push', function(event) {
+    // Only handle if messaging hasn't been set up (Firebase will handle its own messages)
+    if (messaging) {
+        return; // Let Firebase handle it
+    }
+    
+    if (event.data) {
+        try {
+            const data = event.data.json();
+            const notification = data.notification || {};
+            const title = notification.title || data.data?.title || 'Give Food';
+            const options = {
+                body: notification.body || data.data?.body || '',
+                icon: '/static/img/logo.svg',
+                badge: '/static/img/logo.svg',
+                data: data.data || {}
+            };
+            event.waitUntil(
+                self.registration.showNotification(title, options)
+            );
+        } catch (e) {
+            // If not JSON, try to show as text
+            const title = 'Give Food';
+            const options = {
+                body: event.data.text(),
+                icon: '/static/img/logo.svg',
+                badge: '/static/img/logo.svg'
+            };
+            event.waitUntil(
+                self.registration.showNotification(title, options)
+            );
+        }
+    }
 });

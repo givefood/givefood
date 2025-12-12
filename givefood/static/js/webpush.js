@@ -23,6 +23,9 @@ function initWebPush(foodbankUuid, configUrl) {
         return;
     }
     
+    // If already subscribed, ensure service worker has the config for background messages
+    initializeServiceWorkerConfig(configUrl);
+    
     // Update button state based on current permission
     updateButtonState(subscribeBtn, statusDiv, foodbankUuid);
     
@@ -54,6 +57,52 @@ function initWebPush(foodbankUuid, configUrl) {
                 subscribeBtn.disabled = false;
                 subscribeBtn.classList.remove('is-loading');
             });
+    });
+}
+
+// Initialize the service worker with Firebase config on page load (for returning users)
+function initializeServiceWorkerConfig(configUrl) {
+    var subscribedFoodbanks = JSON.parse(localStorage.getItem('gf_webpush_foodbanks') || '[]');
+    if (subscribedFoodbanks.length === 0) {
+        return; // No subscriptions, no need to initialize
+    }
+    
+    // Try to get stored config first, otherwise fetch it
+    var storedConfig = localStorage.getItem('gf_webpush_config');
+    if (storedConfig) {
+        sendConfigToServiceWorker(JSON.parse(storedConfig));
+    } else {
+        fetch(configUrl)
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(config) {
+                localStorage.setItem('gf_webpush_config', JSON.stringify(config));
+                sendConfigToServiceWorker(config);
+            })
+            .catch(function(error) {
+                console.error('Error fetching Firebase config:', error);
+            });
+    }
+}
+
+function sendConfigToServiceWorker(config) {
+    navigator.serviceWorker.ready.then(function(registration) {
+        if (registration.active) {
+            registration.active.postMessage({
+                type: 'FIREBASE_CONFIG',
+                config: {
+                    apiKey: config.apiKey,
+                    authDomain: config.authDomain,
+                    projectId: config.projectId,
+                    storageBucket: config.storageBucket,
+                    messagingSenderId: config.messagingSenderId,
+                    appId: config.appId
+                }
+            });
+        }
+    }).catch(function(error) {
+        console.error('Error sending config to service worker:', error);
     });
 }
 
@@ -90,7 +139,22 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
                 return navigator.serviceWorker.ready;
             })
             .then(function(registration) {
-                // Initialize Firebase
+                // Send Firebase config to the service worker
+                if (registration.active) {
+                    registration.active.postMessage({
+                        type: 'FIREBASE_CONFIG',
+                        config: {
+                            apiKey: config.apiKey,
+                            authDomain: config.authDomain,
+                            projectId: config.projectId,
+                            storageBucket: config.storageBucket,
+                            messagingSenderId: config.messagingSenderId,
+                            appId: config.appId
+                        }
+                    });
+                }
+                
+                // Initialize Firebase in the main page
                 if (!firebase.apps.length) {
                     firebase.initializeApp({
                         apiKey: config.apiKey,
@@ -143,6 +207,9 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
                     subscribedFoodbanks.push(foodbankUuid);
                     localStorage.setItem('gf_webpush_foodbanks', JSON.stringify(subscribedFoodbanks));
                 }
+                
+                // Store the Firebase config for future page loads
+                localStorage.setItem('gf_webpush_config', JSON.stringify(config));
                 
                 statusDiv.innerHTML = '<div class="notification is-success">Successfully subscribed to notifications!</div>';
                 subscribeBtn.textContent = 'Disable notifications';
