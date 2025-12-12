@@ -92,7 +92,6 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
     "givefood.middleware.LoginRequiredAccess",
     "givefood.middleware.OfflineKeyCheck",
-    "givefood.middleware.GeoJSONPreload",
     "givefood.middleware.RenderTime",
     "givefood.middleware.RedirectToWWW",
 ]
