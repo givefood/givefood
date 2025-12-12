@@ -13,4 +13,5 @@ urlpatterns = [
     # Web push notifications
     path("notifications/config/", notifications_config, name="notifications_config"),
     path("notifications/subscribe/", notifications_subscribe, name="notifications_subscribe"),
+    path("notifications/unsubscribe/", notifications_unsubscribe, name="notifications_unsubscribe"),
 ]
