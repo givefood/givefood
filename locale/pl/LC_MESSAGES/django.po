@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-13 22:42+0000\n"
-"PO-Revision-Date: 2025-10-28 13:52-0700\n"
+"PO-Revision-Date: 2025-12-13 22:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: gfadmin/templates/admin/page.html:62
 msgid "Search"
-msgstr ""
+msgstr "Szukaj"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
@@ -87,10 +87,8 @@ msgid "Search by postcode"
 msgstr "Szukaj według kodu pocztowego"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:51
-#, fuzzy
-#| msgid "Postcode or town"
 msgid "Postcode"
-msgstr "Kod pocztowy lub miasto"
+msgstr "Kod pocztowy"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:52
 #: gfwfbn/templates/wfbn/index.html:64
@@ -162,6 +160,7 @@ msgstr "Ten bank żywności jest zamknięty"
 msgid ""
 "is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgstr ""
+"jest punktem darowizn dla <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 msgid "Here they are requesting to have donated..."
@@ -223,6 +222,8 @@ msgid ""
 "Charity Registration <a href=\"%(charity_url)s\" "
 "id=\"charity_link\">%(charity_number)s</a>"
 msgstr ""
+"Rejestracja organizacji charytatywnej <a href=\"%(charity_url)s\" "
+"id=\"charity_link\">%(charity_number)s</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
 msgid "Part of"
@@ -284,13 +285,11 @@ msgstr "W pobliżu"
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
 #: givefood/templates/public/page.html:53
 msgid "Apps"
-msgstr ""
+msgstr "Aplikacje"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:12
-#, fuzzy
-#| msgid "Website"
 msgid "Web"
-msgstr "Strona internetowa"
+msgstr "Strona Internetowa"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
 #: gfwfbn/templates/wfbn/index.html:114 givefood/templates/403.html:30
@@ -304,6 +303,9 @@ msgid ""
 "Get a notification of what is needed when you are near a donation point with "
 "our <a href=\"%(apps_url)s\">mobile apps</a>"
 msgstr ""
+"Otrzymuj powiadomienia o tym, co jest potrzebne, gdy będziesz w pobliżu "
+"punktu donacji, dzięki naszym <a href=\"%(apps_url)s\">aplikacjom mobilnym</"
+"a>"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:27
 #, python-format
@@ -311,22 +313,27 @@ msgid ""
 "Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</"
 "a>"
 msgstr ""
+"Otrzymuj aktualizacje dotyczące tego, co jest potrzebne, dzięki naszym <a "
+"href=\"%(apps_url)s\">aplikacjom mobilnym</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:32
 msgid "Have this web browser notify when the shopping list changes"
 msgstr ""
+"Ustaw tę przeglądarkę internetową tak, aby powiadamiała o zmianach na liście "
+"zakupów"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:34
 msgid "Get browser notifications"
-msgstr ""
+msgstr "Otrzymuj powiadomienia w przeglądarce"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:39
 msgid "Sorry, the security check failed. Please try again."
 msgstr ""
+"Przepraszamy, kontrola bezpieczeństwa nie powiodła się. Spróbuj ponownie."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:42
 msgid "Get updates on this shopping list via email"
-msgstr ""
+msgstr "Otrzymuj aktualizacje dotyczące tej listy zakupów e-mailem"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:47
 msgid "Email address"
@@ -337,16 +344,12 @@ msgid "Get updates"
 msgstr "Pobierz aktualizacje"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:53
-#, fuzzy
-#| msgid ""
-#| "We'll never use your email address for anything else, and you can "
-#| "unsubscribe at any time."
 msgid ""
 "We'll never use your email address for anything else, and you can "
 "unsubscribe at any time"
 msgstr ""
-"Nigdy nie wykorzystamy Twojego adresu e-mail w żadnym innym celu. W każdej "
-"chwili możesz zrezygnować z subskrypcji."
+"Nigdy nie wykorzystamy Twojego adresu e-mail w żadnym innym celu. Możesz "
+"zrezygnować z subskrypcji w dowolnym momencie"
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:70
 msgid "You can find out what is needed on the foodbank's Facebook page:"
@@ -379,7 +382,7 @@ msgstr "Ta lokalizacja akceptuje darowizny"
 #: gfwfbn/templates/wfbn/foodbank/location.html:84
 #: gfwfbn/templates/wfbn/foodbank/location.html:95
 msgid "Mobile food bank location"
-msgstr ""
+msgstr "Lokalizacja mobilnego banku żywności"
 
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:65
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:67
@@ -450,7 +453,7 @@ msgstr ""
 
 #: gfwfbn/templates/wfbn/index.html:78
 msgid "Search results"
-msgstr ""
+msgstr "Wyniki wyszukiwania"
 
 #: gfwfbn/templates/wfbn/index.html:82 givefood/templates/public/index.html:116
 #: givefood/templates/public/index.html:140
@@ -460,7 +463,7 @@ msgstr "Banki żywności"
 #: gfwfbn/templates/wfbn/index.html:100
 #, python-format
 msgid "Part of <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "Część <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/index.html:108 gfwfbn/templates/wfbn/index.html:154
 msgid "Nothing right now, thanks"
@@ -485,7 +488,7 @@ msgstr "do tego, czego potrzebują"
 #: gfwfbn/templates/wfbn/index.html:148
 #, python-format
 msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "Dla <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/index.html:156
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
@@ -494,10 +497,8 @@ msgstr ""
 "żywności"
 
 #: gfwfbn/views.py:117
-#, fuzzy
-#| msgid "Items requested"
 msgid "items requested at"
-msgstr "Przedmioty żądane"
+msgstr "przedmioty zamówione w"
 
 #: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
@@ -569,17 +570,17 @@ msgid ""
 "millions of users each year, helping people learn about and engage with food "
 "poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">charity</a> in February 2020, just weeks before the UK "
-"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
-"local food insecurity alleviation organisations delivering hundreds of "
-"tonnes of vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">charity</a> in February 2020, just weeks before the UK entered "
+"COVID-19 lockdowns, and since then we've worked with hundreds of local food "
+"insecurity alleviation organisations delivering hundreds of tonnes of "
+"vitally needed supplies.</p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a "
-"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
-"from Penzance to Lerwick as safe as possible whilst continuing to support "
-"their communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a href=\"/"
+"2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks from "
+"Penzance to Lerwick as safe as possible whilst continuing to support their "
+"communities.</p>\n"
 "\n"
 "                <p>We help the public act on food insecurity by using our "
 "data to show which food banks are in their parliamentary constituency, and "
@@ -600,8 +601,8 @@ msgid ""
 "                    <em>The Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
-"org.uk</a>\n"
+"                    <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
@@ -616,31 +617,31 @@ msgstr ""
 "prywatnymi, w tym wieloma organizacjami charytatywnymi, co roku udostępniamy "
 "nasze dane milionom użytkowników, pomagając im dowiedzieć się więcej o "
 "przyczynach ubóstwa żywnościowego i zaangażować się w ich walkę.</p><p> "
-"Staliśmy się organizacją <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">charytatywną</a> w lutym 2020 r., zaledwie kilka tygodni "
-"przed wprowadzeniem w Wielkiej Brytanii lockdownu związanego z COVID-19. Od "
-"tego czasu współpracowaliśmy z setkami lokalnych organizacji zajmujących się "
+"Staliśmy się organizacją <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">charytatywną</a> w lutym 2020 r., zaledwie kilka tygodni przed "
+"wprowadzeniem w Wielkiej Brytanii lockdownu związanego z COVID-19. Od tego "
+"czasu współpracowaliśmy z setkami lokalnych organizacji zajmujących się "
 "łagodzeniem niedoborów żywności, dostarczając setki ton niezbędnych "
-"artykułów.</p><p> Na przykład podczas pandemii dostarczyliśmy <a "
-"href=\"/2020/#ppe-supplies\">1,2 mln sztuk środków ochrony osobistej,</a> "
-"aby pomóc w zapewnieniu jak największego bezpieczeństwa bankom żywności od "
-"Penzance do Lerwick, a jednocześnie w dalszym ciągu wspierać ich "
-"społeczności.</p><p> Pomagamy społeczeństwu podejmować działania w związku z "
-"brakiem bezpieczeństwa żywnościowego, wykorzystując nasze dane, aby wskazać "
-"banki żywności znajdujące się w okręgu wyborczym, a także udostępniamy <a "
-"href=\"/write/\">narzędzie umożliwiające łatwe wysłanie wiadomości e-mail do "
-"członka parlamentu</a> z pytaniem o działania podejmowane w celu rozwiązania "
-"tego problemu.</p><p> Nasze działania są oparte na otwartym kodzie źródłowym "
-"i transparentne; niemal wszystkie nasze aktualne i historyczne <a "
+"artykułów.</p><p> Na przykład podczas pandemii dostarczyliśmy <a href=\"/"
+"2020/#ppe-supplies\">1,2 mln sztuk środków ochrony osobistej,</a> aby pomóc "
+"w zapewnieniu jak największego bezpieczeństwa bankom żywności od Penzance do "
+"Lerwick, a jednocześnie w dalszym ciągu wspierać ich społeczności.</p><p> "
+"Pomagamy społeczeństwu podejmować działania w związku z brakiem "
+"bezpieczeństwa żywnościowego, wykorzystując nasze dane, aby wskazać banki "
+"żywności znajdujące się w okręgu wyborczym, a także udostępniamy <a href=\"/"
+"write/\">narzędzie umożliwiające łatwe wysłanie wiadomości e-mail do członka "
+"parlamentu</a> z pytaniem o działania podejmowane w celu rozwiązania tego "
+"problemu.</p><p> Nasze działania są oparte na otwartym kodzie źródłowym i "
+"transparentne; niemal wszystkie nasze aktualne i historyczne <a "
 "href=\"https://github.com/givefood/givefood\">kody</a> oraz <a href=\"/api/"
 "\">dane</a> są publikowane, a sprawozdania <a href=\"https://register-of-"
 "charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/"
 "accounts-and-annual-returns\">finansowe</a> i <a href=\"/annual-reports/"
 "\">roczne</a> są dostępne do wglądu.</p><p> Jeśli masz jakiekolwiek "
 "sugestie, uwagi, krytykę lub zachętę, nie wahaj się z nami skontaktować.</"
-"p><p> <em>Zarząd Give Food</em></p><p> <a href=\"mailto:mail@givefood.org."
-"uk\">mail@givefood.org.uk</a></p>\n"
+"p><p> <em>Zarząd Give Food</em></p><p> <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
 "\n"
 "            "
 
@@ -696,33 +697,26 @@ msgid "Colophon"
 msgstr "Kolofon"
 
 #: givefood/templates/public/country.html:9
-#, fuzzy, python-format
-#| msgid ""
-#| "Find a food bank near %(location)s, see what they need and how you can "
-#| "help by donating or volunteering."
+#, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help by "
 "donating or volunteering."
 msgstr ""
-"Znajdź bank żywności w pobliżu %(location)s, zobacz czego potrzebują i jak "
-"możesz pomóc poprzez darowiznę lub wolontariat."
+"Znajdź banki żywności w %(country)s, dowiedz się, czego potrzebują i jak "
+"możesz pomóc, przekazując darowiznę lub zgłaszając się jako wolontariusz."
 
 #: givefood/templates/public/country.html:13
-#, fuzzy, python-format
-#| msgid "Foodbanks in %(location)s"
+#, python-format
 msgid "Food banks in %(country)s"
-msgstr "Banki żywności w %(location)s"
+msgstr "Banki żywności w %(country)s"
 
 #: givefood/templates/public/country.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "Find a food bank near %(location)s, see what they need and how you can "
-#| "help by donating or volunteering."
+#, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help."
 msgstr ""
-"Znajdź bank żywności w pobliżu %(location)s, zobacz czego potrzebują i jak "
-"możesz pomóc poprzez darowiznę lub wolontariat."
+"Znajdź banki żywności w %(country)s, dowiedz się, czego potrzebują i jak "
+"możesz pomóc."
 
 #: givefood/templates/public/country.html:49
 #: givefood/templates/public/index.html:46
@@ -904,16 +898,13 @@ msgstr ""
 "następnie udostępnia narzędzia pomagające je łagodzić."
 
 #: givefood/templates/public/index.html:32
-#, fuzzy
-#| msgid ""
-#| "Find a food bank near you, see what they need and how you can help by "
-#| "donating or volunteering."
 msgid ""
 "Use our unique database to find a food bank near you, see what they need and "
 "how you can help by donating or volunteering."
 msgstr ""
-"Znajdź bank żywności w swojej okolicy, dowiedz się, czego potrzebują i jak "
-"możesz pomóc, przekazując darowiznę lub pracując jako wolontariusz."
+"Skorzystaj z naszej wyjątkowej bazy danych, aby znaleźć bank żywności w "
+"Twojej okolicy, dowiedzieć się, czego potrzebują i jak możesz pomóc, "
+"przekazując darowiznę lub angażując się jako wolontariusz."
 
 #: givefood/templates/public/index.html:84
 msgid "We've worked with"
@@ -1040,19 +1031,19 @@ msgstr "Polityka prywatności"
 
 #: givefood/views.py:65
 msgid "e.g. EH12 5PJ or Glasgow"
-msgstr ""
+msgstr "np. EH12 5PJ lub Glasgow"
 
 #: givefood/views.py:66
 msgid "e.g. HA9 0WS or Manchester"
-msgstr ""
+msgstr "np. HA9 0WS lub Manchester"
 
 #: givefood/views.py:67
 msgid "e.g. CF10 1NS or Cardiff"
-msgstr ""
+msgstr "np. CF10 1NS lub Cardiff"
 
 #: givefood/views.py:68
 msgid "e.g. BT12 6LW or Belfast"
-msgstr ""
+msgstr "np. BT12 6LW lub Belfast"
 
 #: givefood/views.py:898
 msgid "minutes"

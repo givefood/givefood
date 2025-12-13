@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-13 22:42+0000\n"
-"PO-Revision-Date: 2025-10-28 13:54-0700\n"
+"PO-Revision-Date: 2025-12-13 22:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ro\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: gfadmin/templates/admin/page.html:62
 msgid "Search"
-msgstr ""
+msgstr "Caută"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
@@ -86,10 +86,8 @@ msgid "Search by postcode"
 msgstr "Căutați după codul poștal"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:51
-#, fuzzy
-#| msgid "Postcode or town"
 msgid "Postcode"
-msgstr "Cod poștal sau oraș"
+msgstr "Cod poștal"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:52
 #: gfwfbn/templates/wfbn/index.html:64
@@ -161,6 +159,8 @@ msgstr "Această bancă de alimente este închisă"
 msgid ""
 "is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgstr ""
+"este un punct de donație pentru <a "
+"href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 msgid "Here they are requesting to have donated..."
@@ -222,6 +222,8 @@ msgid ""
 "Charity Registration <a href=\"%(charity_url)s\" "
 "id=\"charity_link\">%(charity_number)s</a>"
 msgstr ""
+"Înregistrare ca organizație caritabilă <a href=\"%(charity_url)s\" "
+"id=\"charity_link\">%(charity_number)s</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
 msgid "Part of"
@@ -283,13 +285,11 @@ msgstr "Aproape"
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
 #: givefood/templates/public/page.html:53
 msgid "Apps"
-msgstr ""
+msgstr "Aplicații"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:12
-#, fuzzy
-#| msgid "Website"
 msgid "Web"
-msgstr "Website"
+msgstr "Site"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
 #: gfwfbn/templates/wfbn/index.html:114 givefood/templates/403.html:30
@@ -303,6 +303,9 @@ msgid ""
 "Get a notification of what is needed when you are near a donation point with "
 "our <a href=\"%(apps_url)s\">mobile apps</a>"
 msgstr ""
+"Primește o notificare despre ce este necesar atunci când te afli în "
+"apropierea unui punct de donare cu ajutorul <a "
+"href=\"%(apps_url)s\">aplicațiilor noastre mobile</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:27
 #, python-format
@@ -310,22 +313,28 @@ msgid ""
 "Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</"
 "a>"
 msgstr ""
+"Primiți actualizări despre ce este necesar cu <a "
+"href=\"%(apps_url)s\">aplicațiile noastre mobile</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:32
 msgid "Have this web browser notify when the shopping list changes"
 msgstr ""
+"Setează acest browser web să te notifice când lista de cumpărături se "
+"modifică"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:34
 msgid "Get browser notifications"
-msgstr ""
+msgstr "Primește notificări în browser"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:39
 msgid "Sorry, the security check failed. Please try again."
 msgstr ""
+"Ne pare rău, verificarea de securitate a eșuat. Vă rugăm să încercați din "
+"nou."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:42
 msgid "Get updates on this shopping list via email"
-msgstr ""
+msgstr "Primiți actualizări despre această listă de cumpărături prin e-mail"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:47
 msgid "Email address"
@@ -336,16 +345,12 @@ msgid "Get updates"
 msgstr "Obțineți actualizări"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:53
-#, fuzzy
-#| msgid ""
-#| "We'll never use your email address for anything else, and you can "
-#| "unsubscribe at any time."
 msgid ""
 "We'll never use your email address for anything else, and you can "
 "unsubscribe at any time"
 msgstr ""
-"Nu vom folosi niciodată adresa dvs. de e-mail pentru nimic altceva și vă "
-"puteți dezabona în orice moment."
+"Nu vom folosi niciodată adresa ta de e-mail pentru nimic altceva și te poți "
+"dezabona oricând."
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:70
 msgid "You can find out what is needed on the foodbank's Facebook page:"
@@ -377,7 +382,7 @@ msgstr "Această locație acceptă donații"
 #: gfwfbn/templates/wfbn/foodbank/location.html:84
 #: gfwfbn/templates/wfbn/foodbank/location.html:95
 msgid "Mobile food bank location"
-msgstr ""
+msgstr "Locația băncii mobile de alimente"
 
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:65
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:67
@@ -448,7 +453,7 @@ msgstr ""
 
 #: gfwfbn/templates/wfbn/index.html:78
 msgid "Search results"
-msgstr ""
+msgstr "Rezultate căutare pentru"
 
 #: gfwfbn/templates/wfbn/index.html:82 givefood/templates/public/index.html:116
 #: givefood/templates/public/index.html:140
@@ -458,7 +463,7 @@ msgstr "Băncile alimentare"
 #: gfwfbn/templates/wfbn/index.html:100
 #, python-format
 msgid "Part of <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "Parte din <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/index.html:108 gfwfbn/templates/wfbn/index.html:154
 msgid "Nothing right now, thanks"
@@ -483,7 +488,7 @@ msgstr "pentru ceea ce au nevoie"
 #: gfwfbn/templates/wfbn/index.html:148
 #, python-format
 msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "Pentru <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/index.html:156
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
@@ -492,10 +497,8 @@ msgstr ""
 "alimentară"
 
 #: gfwfbn/views.py:117
-#, fuzzy
-#| msgid "Items requested"
 msgid "items requested at"
-msgstr "Articole solicitate"
+msgstr "articole solicitate la"
 
 #: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
@@ -567,17 +570,17 @@ msgid ""
 "millions of users each year, helping people learn about and engage with food "
 "poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">charity</a> in February 2020, just weeks before the UK "
-"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
-"local food insecurity alleviation organisations delivering hundreds of "
-"tonnes of vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">charity</a> in February 2020, just weeks before the UK entered "
+"COVID-19 lockdowns, and since then we've worked with hundreds of local food "
+"insecurity alleviation organisations delivering hundreds of tonnes of "
+"vitally needed supplies.</p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a "
-"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
-"from Penzance to Lerwick as safe as possible whilst continuing to support "
-"their communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a href=\"/"
+"2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks from "
+"Penzance to Lerwick as safe as possible whilst continuing to support their "
+"communities.</p>\n"
 "\n"
 "                <p>We help the public act on food insecurity by using our "
 "data to show which food banks are in their parliamentary constituency, and "
@@ -598,8 +601,8 @@ msgid ""
 "                    <em>The Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
-"org.uk</a>\n"
+"                    <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
@@ -631,13 +634,13 @@ msgstr ""
 "pentru a remedia această problemă.</p><p> Operațiunile noastre sunt open "
 "source și transparente, aproape tot <a href=\"https://github.com/givefood/"
 "givefood\">codul</a> și <a href=\"/api/\">datele</a> noastre actuale și "
-"istorice fiind publicate, plus <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/charity-search/-/charity-details/5147019/accounts-"
-"and-annual-returns\">conturi</a> și <a href=\"/annual-reports/\">rapoarte "
-"anuale</a> disponibile pentru vizualizare.</p><p> Nu ezitați să ne "
-"contactați pentru orice sugestii, comentarii, critici sau încurajări.</p><p> "
-"<em>Administratorii Give Food</em></p><p> <a href=\"mailto:mail@givefood.org."
-"uk\">mail@givefood.org.uk</a></p>\n"
+"istorice fiind publicate, plus <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/"
+"accounts-and-annual-returns\">conturi</a> și <a href=\"/annual-reports/"
+"\">rapoarte anuale</a> disponibile pentru vizualizare.</p><p> Nu ezitați să "
+"ne contactați pentru orice sugestii, comentarii, critici sau încurajări.</"
+"p><p> <em>Administratorii Give Food</em></p><p> <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
 "\n"
 "            "
 
@@ -694,33 +697,26 @@ msgid "Colophon"
 msgstr "Colofon"
 
 #: givefood/templates/public/country.html:9
-#, fuzzy, python-format
-#| msgid ""
-#| "Find a food bank near %(location)s, see what they need and how you can "
-#| "help by donating or volunteering."
+#, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help by "
 "donating or volunteering."
 msgstr ""
-"Găsiți o bancă alimentară în apropierea %(location)s, vedeți ce au nevoie și "
-"cum puteți ajuta prin donații sau voluntariat."
+"Găsește bănci de alimente în %(country)s, vezi de ce au nevoie și cum poți "
+"ajuta donând sau oferindu-te voluntariat."
 
 #: givefood/templates/public/country.html:13
-#, fuzzy, python-format
-#| msgid "Foodbanks in %(location)s"
+#, python-format
 msgid "Food banks in %(country)s"
-msgstr "Bănci alimentare în %(location)s"
+msgstr "Bănci de alimente în %(country)s"
 
 #: givefood/templates/public/country.html:14
-#, fuzzy, python-format
-#| msgid ""
-#| "Find a food bank near %(location)s, see what they need and how you can "
-#| "help by donating or volunteering."
+#, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help."
 msgstr ""
-"Găsiți o bancă alimentară în apropierea %(location)s, vedeți ce au nevoie și "
-"cum puteți ajuta prin donații sau voluntariat."
+"Găsește bănci de alimente în %(country)s, vezi de ce au nevoie și cum poți "
+"ajuta."
 
 #: givefood/templates/public/country.html:49
 #: givefood/templates/public/index.html:46
@@ -902,16 +898,13 @@ msgstr ""
 "instrumente pentru a ajuta la atenuarea acesteia."
 
 #: givefood/templates/public/index.html:32
-#, fuzzy
-#| msgid ""
-#| "Find a food bank near you, see what they need and how you can help by "
-#| "donating or volunteering."
 msgid ""
 "Use our unique database to find a food bank near you, see what they need and "
 "how you can help by donating or volunteering."
 msgstr ""
-"Găsiți o bancă de alimente în apropierea dvs., vedeți de ce au nevoie și cum "
-"le puteți ajuta prin donație sau voluntariat."
+"Folosește baza noastră de date unică pentru a găsi o bancă de alimente în "
+"apropierea ta, pentru a vedea de ce au nevoie și cum poți ajuta donând sau "
+"oferindu-te voluntariat."
 
 #: givefood/templates/public/index.html:84
 msgid "We've worked with"
@@ -1038,19 +1031,19 @@ msgstr "Politica de Confidențialitate"
 
 #: givefood/views.py:65
 msgid "e.g. EH12 5PJ or Glasgow"
-msgstr ""
+msgstr "de exemplu EH12 5PJ sau Glasgow"
 
 #: givefood/views.py:66
 msgid "e.g. HA9 0WS or Manchester"
-msgstr ""
+msgstr "de exemplu, HA9 0WS sau Manchester"
 
 #: givefood/views.py:67
 msgid "e.g. CF10 1NS or Cardiff"
-msgstr ""
+msgstr "de exemplu CF10 1NS sau Cardiff"
 
 #: givefood/views.py:68
 msgid "e.g. BT12 6LW or Belfast"
-msgstr ""
+msgstr "de exemplu, BT12 6LW sau Belfast"
 
 #: givefood/views.py:898
 msgid "minutes"
