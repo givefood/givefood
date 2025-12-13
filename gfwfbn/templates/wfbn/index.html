@@ -97,7 +97,7 @@
                   <td>
                     <a href="{% if location.type == 'organisation' %}{% url 'wfbn:foodbank' location.foodbank_slug %}{% endif %}{% if location.type == 'location' %}{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}{% endif %}">{{ location.name }}</a>
                     {% if location.type == "location" %}
-                      <div class="parent_org">{% blocktrans %}Part of{% endblocktrans %} <a href="{% url 'wfbn:foodbank' location.foodbank_slug %}">{{ location.foodbank_name }}</a></div>
+                      {% url 'wfbn:foodbank' location.foodbank_slug as parent_url %}<div class="parent_org">{% blocktrans with parent_url=parent_url foodbank_name=location.foodbank_name %}Part of <a href="{{ parent_url }}">{{ foodbank_name }}</a>{% endblocktrans %}</div>
                     {% endif %}
                     <div class="distance">{{ location.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
                   </td>
@@ -145,7 +145,7 @@
                   </td>
                   <td>
                     <a href="{{ donationpoint.url }}">{{ donationpoint.name }}</a>
-                    <div class="parent_org">{% blocktrans %}For{% endblocktrans %} <a href="{% url 'wfbn:foodbank' donationpoint.foodbank_slug %}">{{ donationpoint.foodbank_name }}</a></div>
+                    {% url 'wfbn:foodbank' donationpoint.foodbank_slug as foodbank_url %}<div class="parent_org">{% blocktrans with foodbank_url=foodbank_url foodbank_name=donationpoint.foodbank_name %}For <a href="{{ foodbank_url }}">{{ foodbank_name }}</a>{% endblocktrans %}</div>
                     <div class="distance">{{ donationpoint.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
                   </td>
                   <td>

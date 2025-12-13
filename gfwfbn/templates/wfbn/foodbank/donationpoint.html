@@ -64,7 +64,7 @@
               <p class="tag is-danger is-large">{% blocktrans %}This food bank is closed{% endblocktrans %}</p>
             {% endif %}
 
-            <p>{{ donationpoint }} {% blocktrans %}is a donation point for{% endblocktrans %} <a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.full_name }}</a>. {% if has_need %}{% blocktrans %}Here they are requesting to have donated...{% endblocktrans %}{% endif %}</p>
+            <p>{{ donationpoint }} {% url 'wfbn:foodbank' foodbank.slug as foodbank_url %}{% blocktrans with foodbank_url=foodbank_url foodbank_name=foodbank.full_name %}is a donation point for <a href="{{ foodbank_url }}">{{ foodbank_name }}</a>{% endblocktrans %}. {% if has_need %}{% blocktrans %}Here they are requesting to have donated...{% endblocktrans %}{% endif %}</p>
 
             {% if has_need %}
             
