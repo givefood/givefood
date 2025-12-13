@@ -973,3 +973,131 @@ def foodbank_hit(request, slug):
         FoodbankHit.objects.filter(pk=hit.pk).update(hits=hit.hits + 1)
 
     return render(request, "wfbn/foodbank/hit.js", content_type="text/javascript")
+
+
+@cache_page(SECONDS_IN_HOUR)
+def notifications_config(request):
+    """
+    Returns Firebase configuration for web push notifications.
+    These values are public client configuration, not secrets.
+    Firebase API keys are designed to be exposed on the client side.
+    """
+    config = {
+        "apiKey": get_cred("firebase_api_key"),
+        "authDomain": get_cred("firebase_auth_domain"),
+        "projectId": get_cred("firebase_project_id"),
+        "storageBucket": get_cred("firebase_storage_bucket"),
+        "messagingSenderId": get_cred("firebase_messaging_sender_id"),
+        "appId": get_cred("firebase_app_id"),
+        "vapidKey": get_cred("firebase_vapid_key"),
+    }
+    return JsonResponse(config)
+
+
+@csrf_exempt
+def notifications_subscribe(request):
+    """
+    Subscribes a web push token to a Firebase topic.
+    
+    CSRF is exempt because:
+    1. This is an AJAX API endpoint, not a form submission
+    2. The endpoint only allows subscription, not data modification
+    3. Firebase FCM tokens are unique per browser/device and provide authentication
+    4. The topic name must match a valid foodbank UUID format
+    """
+    import re
+    from givefood.func import initialize_firebase_admin
+    from firebase_admin import messaging
+    
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+    
+    try:
+        data = json.loads(request.body)
+        token = data.get('token')
+        topic = data.get('topic')
+        
+        if not token or not topic:
+            return HttpResponseBadRequest()
+        
+        # Validate topic format (should be foodbank-{uuid})
+        # UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        uuid_pattern = r'^foodbank-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+        if not re.match(uuid_pattern, topic, re.IGNORECASE):
+            return HttpResponseBadRequest()
+        
+        # Validate FCM token format (should be a non-empty string with reasonable length)
+        # FCM tokens are typically 150-200 characters
+        if len(token) < 100 or len(token) > 500:
+            return HttpResponseBadRequest()
+        
+        # Initialize Firebase Admin SDK
+        if not initialize_firebase_admin():
+            return JsonResponse({'error': 'Firebase not configured'}, status=500)
+        
+        # Subscribe the token to the topic
+        response = messaging.subscribe_to_topic([token], topic)
+        
+        if response.failure_count > 0:
+            return JsonResponse({'error': 'Failed to subscribe'}, status=500)
+        
+        return JsonResponse({'success': True})
+        
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest()
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@csrf_exempt
+def notifications_unsubscribe(request):
+    """
+    Unsubscribes a web push token from a Firebase topic.
+    
+    CSRF is exempt because:
+    1. This is an AJAX API endpoint, not a form submission
+    2. Firebase FCM tokens are unique per browser/device and provide authentication
+    3. The topic name must match a valid foodbank UUID format
+    """
+    import re
+    from givefood.func import initialize_firebase_admin
+    from firebase_admin import messaging
+    
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+    
+    try:
+        data = json.loads(request.body)
+        token = data.get('token')
+        topic = data.get('topic')
+        
+        if not token or not topic:
+            return HttpResponseBadRequest()
+        
+        # Validate topic format (should be foodbank-{uuid})
+        # UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+        uuid_pattern = r'^foodbank-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$'
+        if not re.match(uuid_pattern, topic, re.IGNORECASE):
+            return HttpResponseBadRequest()
+        
+        # Validate FCM token format (should be a non-empty string with reasonable length)
+        # FCM tokens are typically 150-200 characters
+        if len(token) < 100 or len(token) > 500:
+            return HttpResponseBadRequest()
+        
+        # Initialize Firebase Admin SDK
+        if not initialize_firebase_admin():
+            return JsonResponse({'error': 'Firebase not configured'}, status=500)
+        
+        # Unsubscribe the token from the topic
+        response = messaging.unsubscribe_from_topic([token], topic)
+        
+        if response.failure_count > 0:
+            return JsonResponse({'error': 'Failed to unsubscribe'}, status=500)
+        
+        return JsonResponse({'success': True})
+        
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest()
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
