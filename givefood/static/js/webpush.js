@@ -1,7 +1,8 @@
-// Give Food Web Push Notifications using Firebase Cloud Messaging
+// Give Food Web Push Notifications using VAPID (django-webpush)
+// This replaces the Firebase-based web push with standard Web Push API
 
 // Initialize the web push subscription
-function initWebPush(foodbankUuid, configUrl) {
+function initWebPush(foodbankSlug, configUrl) {
     const subscribeBtn = document.getElementById('webpush-subscribe-btn');
     const statusDiv = document.getElementById('webpush-status');
     
@@ -23,8 +24,15 @@ function initWebPush(foodbankUuid, configUrl) {
         return;
     }
     
+    // Check if PushManager is supported
+    if (!('PushManager' in window)) {
+        statusDiv.innerHTML = 'Your browser does not support push notifications';
+        subscribeBtn.style.display = 'none';
+        return;
+    }
+    
     // Update button state based on current permission
-    updateButtonState(subscribeBtn, statusDiv, foodbankUuid);
+    updateButtonState(subscribeBtn, statusDiv, foodbankSlug);
     
     // Handle subscribe/unsubscribe button click
     subscribeBtn.addEventListener('click', function() {
@@ -34,18 +42,18 @@ function initWebPush(foodbankUuid, configUrl) {
         
         // Check if already subscribed to determine action
         var subscribedFoodbanks = JSON.parse(localStorage.getItem('gf_webpush_foodbanks') || '[]');
-        var isSubscribed = subscribedFoodbanks.indexOf(foodbankUuid) !== -1;
+        var isSubscribed = subscribedFoodbanks.indexOf(foodbankSlug) !== -1;
         
-        // Fetch Firebase config and subscribe/unsubscribe
+        // Fetch VAPID config and subscribe/unsubscribe
         fetch(configUrl)
             .then(function(response) {
                 return response.json();
             })
             .then(function(config) {
                 if (isSubscribed) {
-                    return unsubscribeFromNotifications(foodbankUuid, config, subscribeBtn, statusDiv);
+                    return unsubscribeFromNotifications(foodbankSlug, subscribeBtn, statusDiv);
                 } else {
-                    return subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv);
+                    return subscribeToNotifications(foodbankSlug, config, subscribeBtn, statusDiv);
                 }
             })
             .catch(function(error) {
@@ -57,11 +65,11 @@ function initWebPush(foodbankUuid, configUrl) {
     });
 }
 
-function updateButtonState(subscribeBtn, statusDiv, foodbankUuid) {
+function updateButtonState(subscribeBtn, statusDiv, foodbankSlug) {
     if (Notification.permission === 'granted') {
         // Check if already subscribed to this specific food bank
         var subscribedFoodbanks = JSON.parse(localStorage.getItem('gf_webpush_foodbanks') || '[]');
-        if (subscribedFoodbanks.indexOf(foodbankUuid) !== -1) {
+        if (subscribedFoodbanks.indexOf(foodbankSlug) !== -1) {
             subscribeBtn.textContent = 'Disable notifications';
             subscribeBtn.disabled = false;
             subscribeBtn.classList.remove('is-light', 'is-link');
@@ -73,7 +81,23 @@ function updateButtonState(subscribeBtn, statusDiv, foodbankUuid) {
     }
 }
 
-function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv) {
+// Convert base64 URL-safe string to Uint8Array for applicationServerKey
+function urlBase64ToUint8Array(base64String) {
+    var padding = '='.repeat((4 - base64String.length % 4) % 4);
+    var base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+    
+    var rawData = window.atob(base64);
+    var outputArray = new Uint8Array(rawData.length);
+    
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+}
+
+function subscribeToNotifications(foodbankSlug, config, subscribeBtn, statusDiv) {
     // Request notification permission
     return Notification.requestPermission().then(function(permission) {
         if (permission !== 'granted') {
@@ -83,51 +107,42 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
             return;
         }
         
-        // Register service worker (Firebase's default filename)
-        return navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: '/' })
+        // Register service worker
+        return navigator.serviceWorker.register('/sw.js', { scope: '/' })
             .then(function(registration) {
                 // Wait for service worker to be ready
                 return navigator.serviceWorker.ready;
             })
             .then(function(registration) {
-                // Initialize Firebase in the main page
-                if (!firebase.apps.length) {
-                    firebase.initializeApp({
-                        apiKey: config.apiKey,
-                        authDomain: config.authDomain,
-                        projectId: config.projectId,
-                        storageBucket: config.storageBucket,
-                        messagingSenderId: config.messagingSenderId,
-                        appId: config.appId
-                    });
-                }
+                // Subscribe to push with VAPID public key
+                var applicationServerKey = urlBase64ToUint8Array(config.vapidPublicKey);
                 
-                const messaging = firebase.messaging();
-                
-                // Get FCM token
-                return messaging.getToken({
-                    vapidKey: config.vapidKey,
-                    serviceWorkerRegistration: registration
+                return registration.pushManager.subscribe({
+                    userVisibleOnly: true,
+                    applicationServerKey: applicationServerKey
                 });
             })
-            .then(function(token) {
-                if (!token) {
-                    throw new Error('No FCM token received');
-                }
+            .then(function(subscription) {
+                // Extract subscription data
+                var subscriptionJson = subscription.toJSON();
+                var endpoint = subscriptionJson.endpoint;
+                var p256dh = subscriptionJson.keys.p256dh;
+                var auth = subscriptionJson.keys.auth;
                 
-                // Store token for later use (unsubscribe)
-                localStorage.setItem('gf_webpush_token', token);
+                // Store subscription endpoint for unsubscribe
+                localStorage.setItem('gf_webpush_endpoint', endpoint);
                 
-                // Subscribe to the foodbank topic on the server
-                const topic = 'foodbank-' + foodbankUuid;
-                return fetch('/needs/notifications/subscribe/', {
+                // Send subscription to server
+                return fetch('/needs/webpush/subscribe/' + foodbankSlug + '/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        token: token,
-                        topic: topic
+                        endpoint: endpoint,
+                        p256dh: p256dh,
+                        auth: auth,
+                        browser: navigator.userAgent
                     })
                 }).then(function(response) {
                     if (!response.ok) {
@@ -139,8 +154,8 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
             .then(function(result) {
                 // Success! Store this food bank in the list of subscribed food banks
                 var subscribedFoodbanks = JSON.parse(localStorage.getItem('gf_webpush_foodbanks') || '[]');
-                if (subscribedFoodbanks.indexOf(foodbankUuid) === -1) {
-                    subscribedFoodbanks.push(foodbankUuid);
+                if (subscribedFoodbanks.indexOf(foodbankSlug) === -1) {
+                    subscribedFoodbanks.push(foodbankSlug);
                     localStorage.setItem('gf_webpush_foodbanks', JSON.stringify(subscribedFoodbanks));
                 }
                 
@@ -159,86 +174,64 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
     });
 }
 
-function unsubscribeFromNotifications(foodbankUuid, config, subscribeBtn, statusDiv) {
-    // Get stored token
-    var token = localStorage.getItem('gf_webpush_token');
+function unsubscribeFromNotifications(foodbankSlug, subscribeBtn, statusDiv) {
+    var endpoint = localStorage.getItem('gf_webpush_endpoint');
     
-    if (!token) {
-        // If no token stored, we need to get one first
-        return navigator.serviceWorker.ready
-            .then(function(registration) {
-                // Initialize Firebase if needed
-                if (!firebase.apps.length) {
-                    firebase.initializeApp({
-                        apiKey: config.apiKey,
-                        authDomain: config.authDomain,
-                        projectId: config.projectId,
-                        storageBucket: config.storageBucket,
-                        messagingSenderId: config.messagingSenderId,
-                        appId: config.appId
-                    });
-                }
-                
-                const messaging = firebase.messaging();
-                
-                return messaging.getToken({
-                    vapidKey: config.vapidKey,
-                    serviceWorkerRegistration: registration
-                });
-            })
-            .then(function(newToken) {
-                token = newToken;
-                localStorage.setItem('gf_webpush_token', token);
-                return performUnsubscribe(token, foodbankUuid, subscribeBtn, statusDiv);
-            })
-            .catch(function(error) {
-                console.error('Error getting token for unsubscribe:', error);
-                // Even if we can't unsubscribe on server, remove from local storage
-                removeFromLocalStorage(foodbankUuid);
-                resetButtonToSubscribe(subscribeBtn, statusDiv);
-            });
-    }
-    
-    return performUnsubscribe(token, foodbankUuid, subscribeBtn, statusDiv);
-}
-
-function performUnsubscribe(token, foodbankUuid, subscribeBtn, statusDiv) {
-    const topic = 'foodbank-' + foodbankUuid;
-    
-    return fetch('/needs/notifications/unsubscribe/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            token: token,
-            topic: topic
+    return navigator.serviceWorker.ready
+        .then(function(registration) {
+            return registration.pushManager.getSubscription();
         })
-    })
-    .then(function(response) {
-        if (!response.ok) {
-            throw new Error('Server unsubscription failed');
-        }
-        return response.json();
-    })
-    .then(function(result) {
-        // Success! Remove this food bank from the list
-        removeFromLocalStorage(foodbankUuid);
-        
-        statusDiv.innerHTML = 'Successfully unsubscribed from notifications';
-        resetButtonToSubscribe(subscribeBtn, statusDiv);
-    })
-    .catch(function(error) {
-        console.error('Unsubscription error:', error);
-        statusDiv.innerHTML = 'Failed to unsubscribe: ' + error.message;
-        subscribeBtn.disabled = false;
-        subscribeBtn.classList.remove('is-loading');
-    });
+        .then(function(subscription) {
+            if (subscription) {
+                // Unsubscribe from browser
+                return subscription.unsubscribe().then(function() {
+                    return subscription.endpoint;
+                });
+            }
+            return endpoint;
+        })
+        .then(function(endpointToRemove) {
+            if (!endpointToRemove) {
+                throw new Error('No subscription found');
+            }
+            
+            // Notify server
+            return fetch('/needs/webpush/unsubscribe/' + foodbankSlug + '/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    endpoint: endpointToRemove
+                })
+            });
+        })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Server unsubscription failed');
+            }
+            return response.json();
+        })
+        .then(function(result) {
+            // Success! Remove this food bank from the list
+            removeFromLocalStorage(foodbankSlug);
+            localStorage.removeItem('gf_webpush_endpoint');
+            
+            statusDiv.innerHTML = 'Successfully unsubscribed from notifications';
+            resetButtonToSubscribe(subscribeBtn, statusDiv);
+        })
+        .catch(function(error) {
+            console.error('Unsubscription error:', error);
+            // Even if server fails, remove from local storage
+            removeFromLocalStorage(foodbankSlug);
+            statusDiv.innerHTML = 'Unsubscribed from notifications';
+            resetButtonToSubscribe(subscribeBtn, statusDiv);
+        });
 }
 
-function removeFromLocalStorage(foodbankUuid) {
+function removeFromLocalStorage(foodbankSlug) {
     var subscribedFoodbanks = JSON.parse(localStorage.getItem('gf_webpush_foodbanks') || '[]');
-    var index = subscribedFoodbanks.indexOf(foodbankUuid);
+    var index = subscribedFoodbanks.indexOf(foodbankSlug);
     if (index !== -1) {
         subscribedFoodbanks.splice(index, 1);
         localStorage.setItem('gf_webpush_foodbanks', JSON.stringify(subscribedFoodbanks));

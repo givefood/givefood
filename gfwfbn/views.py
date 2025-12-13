@@ -1101,3 +1101,113 @@ def notifications_unsubscribe(request):
         return HttpResponseBadRequest()
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@cache_page(SECONDS_IN_HOUR)
+def webpush_config(request):
+    """
+    Returns VAPID public key for web push notifications.
+    This replaces the Firebase-based web notifications with standard web push.
+    """
+    vapid_public_key = get_cred("VAPID_PUBLIC_KEY")
+    if not vapid_public_key:
+        return JsonResponse({'error': 'VAPID not configured'}, status=500)
+    
+    config = {
+        "vapidPublicKey": vapid_public_key,
+    }
+    return JsonResponse(config)
+
+
+@csrf_exempt
+def webpush_subscribe(request, slug):
+    """
+    Subscribes a browser to web push notifications for a food bank using VAPID.
+    
+    CSRF is exempt because:
+    1. This is an AJAX API endpoint, not a form submission
+    2. The endpoint only allows subscription, not data modification
+    3. Web push subscription data is unique per browser/device
+    """
+    from givefood.models import WebPushSubscription
+    
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+    
+    foodbank = get_object_or_404(Foodbank, slug=slug)
+    
+    try:
+        data = json.loads(request.body)
+        endpoint = data.get('endpoint')
+        p256dh = data.get('p256dh')
+        auth = data.get('auth')
+        browser = data.get('browser', '')
+        
+        if not endpoint or not p256dh or not auth:
+            return HttpResponseBadRequest()
+        
+        # Validate endpoint is a valid URL
+        if not endpoint.startswith('https://'):
+            return HttpResponseBadRequest()
+        
+        # Create or update the subscription
+        subscription, created = WebPushSubscription.objects.update_or_create(
+            foodbank=foodbank,
+            endpoint=endpoint,
+            defaults={
+                'p256dh': p256dh,
+                'auth': auth,
+                'browser': browser[:100] if browser else None,
+            }
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'created': created,
+            'subscription_id': subscription.id,
+        })
+        
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest()
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+@csrf_exempt
+def webpush_unsubscribe(request, slug):
+    """
+    Unsubscribes a browser from web push notifications for a food bank.
+    
+    CSRF is exempt because:
+    1. This is an AJAX API endpoint, not a form submission
+    2. Web push subscription data is unique per browser/device
+    """
+    from givefood.models import WebPushSubscription
+    
+    if request.method != 'POST':
+        return HttpResponseBadRequest()
+    
+    foodbank = get_object_or_404(Foodbank, slug=slug)
+    
+    try:
+        data = json.loads(request.body)
+        endpoint = data.get('endpoint')
+        
+        if not endpoint:
+            return HttpResponseBadRequest()
+        
+        # Delete the subscription
+        deleted_count, _ = WebPushSubscription.objects.filter(
+            foodbank=foodbank,
+            endpoint=endpoint
+        ).delete()
+        
+        return JsonResponse({
+            'success': True,
+            'deleted': deleted_count > 0,
+        })
+        
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest()
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
