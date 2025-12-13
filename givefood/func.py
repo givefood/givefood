@@ -1486,14 +1486,17 @@ def send_firebase_notification(need):
             "foodbank_slug": need.foodbank.slug,
         },
         webpush=messaging.WebpushConfig(
+            notification=messaging.WebpushNotification(
+                title=title,
+                body=items_text,
+                icon="/static/img/logo.svg",
+                badge="/static/img/logo.svg",
+            ),
             fcm_options=messaging.WebpushFCMOptions(
                 link=foodbank_url
             ),
             data={
-                "title": title,
-                "body": items_text,
-                "icon": "/static/img/logo.svg",
-                "badge": "/static/img/logo.svg",
+                "foodbank_slug": need.foodbank.slug,
                 "click_action": foodbank_url,
             },
         ),
