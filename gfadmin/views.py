@@ -22,7 +22,7 @@ from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification
+from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, delete_all_cached_credentials
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, SlugRedirectForm
 
@@ -2233,6 +2233,8 @@ def credentials_form(request):
         form = GfCredentialForm(request.POST)
         if form.is_valid():
             cred = form.save()
+            # Delete all cached credentials when a new one is added
+            delete_all_cached_credentials()
             return redirect("admin:credentials")
     else:
         form = GfCredentialForm()
@@ -2243,6 +2245,12 @@ def credentials_form(request):
         "page_title":page_title,
     }
     return render(request, "admin/form.html", template_vars)
+
+
+def credentials_decache(request):
+    """Clear all cached credentials."""
+    delete_all_cached_credentials()
+    return redirect("admin:credentials")
 
 
 def subscriptions(request):
