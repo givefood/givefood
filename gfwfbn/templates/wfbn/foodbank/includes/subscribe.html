@@ -4,17 +4,17 @@
         <ul>
             <li{% if not turnstilefail %} class="is-active"{% endif %} role="presentation">
                 <a data-tab="apps" role="tab"{% if not turnstilefail %} aria-selected="true"{% else %} aria-selected="false"{% endif %} aria-controls="apps-panel" id="apps-tab">
-                    <span>Apps</span>
+                    <span>{% trans "Apps" %}</span>
                 </a>
             </li>
             <li role="presentation">
                 <a data-tab="web" role="tab" aria-selected="false" aria-controls="web-panel" id="web-tab">
-                    <span>Web</span>
+                    <span>{% trans "Web" %}</span>
                 </a>
             </li>
             <li{% if turnstilefail %} class="is-active"{% endif %} role="presentation">
                 <a data-tab="email" role="tab"{% if turnstilefail %} aria-selected="true"{% else %} aria-selected="false"{% endif %} aria-controls="email-panel" id="email-tab">
-                    <span>Email</span>
+                    <span>{% trans "Email" %}</span>
                 </a>
                 </li>
         </ul>
@@ -22,14 +22,14 @@
     <div class="sections">
         <div class="apps tabcontent{% if turnstilefail %} is-hidden{% endif %}" role="tabpanel" id="apps-panel" aria-labelledby="apps-tab">
             {% if section == 'donationpoints' %}
-                <p>Get a notification of what is needed when you are near a donation point with our <a href="{% url 'apps'%}">mobile apps</a></p>
+                <p>{% blocktrans %}Get a notification of what is needed when you are near a donation point with our <a href="{% url 'apps'%}">mobile apps</a>{% endblocktrans %}</p>
             {% else %}
-                <p>Get updates on what is needed with our <a href="{% url 'apps'%}">mobile apps</a></p>
+                <p>{% blocktrans %}Get updates on what is needed with our <a href="{% url 'apps'%}">mobile apps</a>{% endblocktrans %}</p>
             {% endif %}
             {% include 'public/includes/appbadges.html' %}
         </div>
         <div class="web tabcontent is-hidden" role="tabpanel" id="web-panel" aria-labelledby="web-tab">
-            <p>{% blocktrans %}Get browser notifications when this food bank updates their shopping list{% endblocktrans %}</p>
+            <p>{% blocktrans %}Have this web browser notify when the shopping list changes{% endblocktrans %}</p>
             <div id="webpush-status"></div>
             <button id="webpush-subscribe-btn" class="button is-link is-light">{% blocktrans %}Get browser notifications{% endblocktrans %}</button>
         </div>
@@ -39,7 +39,7 @@
                     <p>{% blocktrans %}Sorry, the security check failed. Please try again.{% endblocktrans %}</p>
                 </div>
             {% endif %}
-            <p>Get updates on this shopping list via email</p>
+            <p>{% trans "Get updates on this shopping list via email" %}</p>
             <div class="subscribe-form">
                 <form action="{% url 'human' %}" method="post">
                     <div class="field has-addons">
