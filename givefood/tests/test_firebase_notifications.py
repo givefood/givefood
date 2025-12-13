@@ -370,3 +370,88 @@ class TestFirebaseNotifications:
         # All items should be complete (not truncated) and appear in order
         for i, body_item in enumerate(body_items):
             assert body_item == items[i], f"Item at position {i} is '{body_item}' but expected '{items[i]}'"
+
+    @patch('firebase_admin.messaging.send')
+    @patch('firebase_admin.get_app')
+    @patch('givefood.func.get_cred')
+    def test_send_firebase_notification_webpush_structure(self, mock_get_cred, mock_get_app, mock_send):
+        """Test that notification includes WebpushNotification for web browser compatibility."""
+        # Mock credentials
+        mock_cred_dict = {
+            "type": "service_account",
+            "project_id": "test-project",
+            "private_key_id": "test-key-id",
+            "private_key": "-----BEGIN PRIVATE KEY-----\ntest\n-----END PRIVATE KEY-----\n",
+            "client_email": "test@test-project.iam.gserviceaccount.com",
+            "client_id": "123456",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+        }
+        mock_get_cred.return_value = json.dumps(mock_cred_dict)
+        
+        # Mock Firebase app already initialized
+        mock_get_app.return_value = MagicMock()
+        
+        # Mock send response
+        mock_send.return_value = "projects/test-project/messages/0:1234567890"
+        
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank 7",
+            slug="test-food-bank-7",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test7.example.com",
+            shopping_list_url="https://test7.example.com/shopping",
+            contact_email="test7@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a need
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes\nPasta\nRice",
+            published=True,
+        )
+        need.save()
+        
+        # Call the function
+        result = send_firebase_notification(need)
+        
+        # Verify send was called
+        assert mock_send.called
+        call_args = mock_send.call_args
+        message = call_args[0][0]
+        
+        # Check that top-level notification exists (for mobile apps)
+        assert message.notification is not None
+        assert message.notification.title == f"{foodbank.name} needs 3 items"
+        assert message.notification.body == "Tinned Tomatoes, Pasta, Rice"
+        
+        # Check that top-level data exists (for mobile apps)
+        assert message.data is not None
+        assert message.data["foodbank_slug"] == foodbank.slug
+        
+        # Check that webpush config exists
+        assert message.webpush is not None
+        
+        # Check that WebpushNotification exists inside WebpushConfig (for web browsers)
+        assert message.webpush.notification is not None
+        assert message.webpush.notification.title == f"{foodbank.name} needs 3 items"
+        assert message.webpush.notification.body == "Tinned Tomatoes, Pasta, Rice"
+        assert message.webpush.notification.icon == "/static/img/logo.svg"
+        assert message.webpush.notification.badge == "/static/img/logo.svg"
+        
+        # Check that webpush data contains required fields
+        assert message.webpush.data is not None
+        assert message.webpush.data["foodbank_slug"] == foodbank.slug
+        assert "click_action" in message.webpush.data
+        
+        # Check that fcm_options contains the link
+        assert message.webpush.fcm_options is not None
+        assert message.webpush.fcm_options.link is not None
