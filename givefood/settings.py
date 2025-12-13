@@ -204,6 +204,13 @@ LANGUAGES = [
     ("pt", "Português"),
     ("gd", "Gàidhlig"),
     ("ga", "Gaeilge"),
+    ("it", "Italiano"),
+    ("ta", "தமிழ்"),
+    ("fr", "Français"),
+    ("lt", "Lietuvių"),
+    ("zh-hans", "简体中文"),
+    ("tr", "Türkçe"),
+    ("bg", "Български"),
 ]
 
 LOCALE_PATHS = (
