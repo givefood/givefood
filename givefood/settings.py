@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     "bulma",
     "django_tasks",
     "django_tasks.backends.database",
+    "webpush",
 
     "gfadmin",
     "gfapi1",
@@ -217,3 +218,12 @@ LOCALE_PATHS = (
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "givefood", "static"))
 WHITENOISE_MAX_AGE = 60 * 60 * 24 * 365  # 1 year
+
+# Web Push Notifications (django-webpush)
+# VAPID credentials are loaded dynamically via get_cred() in func.py
+# The settings below are placeholders - actual values from database take precedence
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": "",  # Loaded via get_cred("VAPID_PUBLIC_KEY")
+    "VAPID_PRIVATE_KEY": "",  # Loaded via get_cred("VAPID_PRIVATE_KEY")
+    "VAPID_ADMIN_EMAIL": "",  # Loaded via get_cred("VAPID_ADMIN_EMAIL")
+}

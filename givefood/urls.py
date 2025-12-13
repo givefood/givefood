@@ -97,6 +97,7 @@ urlpatterns += [
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
     path("firebase-messaging-sw.js", givefood.views.service_worker, name="service_worker"),
+    path("sw.js", givefood.views.vapid_service_worker, name="vapid_service_worker"),
 
     # Rickrolling
     path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),

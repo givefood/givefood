@@ -2315,3 +2315,29 @@ class SlugRedirect(models.Model):
 
     def __str__(self):
         return f"{self.old_slug} -> {self.new_slug}"
+
+
+class WebPushSubscription(models.Model):
+    """
+    Stores web push notification subscriptions for food banks.
+    Uses VAPID (Voluntary Application Server Identification) standard.
+    """
+    
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.CASCADE, related_name='webpush_subscriptions')
+    
+    # Browser push subscription data
+    endpoint = models.URLField(max_length=2000)
+    p256dh = models.CharField(max_length=200, help_text="User public encryption key")
+    auth = models.CharField(max_length=50, help_text="Auth secret for encryption")
+    
+    # Browser info (optional)
+    browser = models.CharField(max_length=100, null=True, blank=True)
+    
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    
+    class Meta:
+        app_label = 'givefood'
+        unique_together = ('foodbank', 'endpoint')
+    
+    def __str__(self):
+        return f"WebPush: {self.foodbank.name} - {self.endpoint[:50]}..."

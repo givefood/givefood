@@ -1534,3 +1534,108 @@ def send_firebase_notification(need):
     except Exception as e:
         logging.error(f"Failed to send Firebase notification for need {need.need_id}: {e}")
         return None
+
+
+def send_webpush_notification(need):
+    """
+    Send web push notifications to subscribers of a food bank using django-webpush.
+    
+    This uses VAPID (Voluntary Application Server Identification) for web push,
+    which is the standard for browser push notifications without Firebase.
+    
+    Args:
+        need: FoodbankChange instance with foodbank and need information
+    """
+    from webpush import send_user_notification
+    from givefood.models import WebPushSubscription
+    
+    # Get VAPID credentials from database
+    vapid_public_key = get_cred("VAPID_PUBLIC_KEY")
+    vapid_private_key = get_cred("VAPID_PRIVATE_KEY")
+    vapid_admin_email = get_cred("VAPID_ADMIN_EMAIL")
+    
+    if not vapid_public_key or not vapid_private_key or not vapid_admin_email:
+        logging.warning("VAPID credentials not found, skipping web push notifications")
+        return None
+    
+    # Get all web push subscriptions for this food bank
+    subscriptions = WebPushSubscription.objects.filter(foodbank=need.foodbank)
+    
+    if not subscriptions.exists():
+        logging.info(f"No web push subscriptions for food bank {need.foodbank.name}")
+        return None
+    
+    # Build the notification title
+    title = f"{need.foodbank.name} needs {need.no_items()} items"
+    
+    # Get items for the body
+    items = need.change_list()
+    
+    # Build body with items, staying under reasonable size
+    max_body_chars = 200
+    body_items = []
+    current_body = ""
+    
+    for item in items:
+        if body_items:
+            test_body = ", ".join(body_items + [item])
+        else:
+            test_body = item
+        
+        if len(test_body) <= max_body_chars:
+            body_items.append(item)
+            current_body = test_body
+        else:
+            break
+    
+    foodbank_url = f"{SITE_DOMAIN}{reverse('wfbn:foodbank', kwargs={'slug': need.foodbank.slug})}"
+    
+    payload = {
+        "head": title,
+        "body": current_body,
+        "icon": "/static/img/logo.svg",
+        "url": foodbank_url,
+        "tag": f"need-{need.need_id}",
+    }
+    
+    sent_count = 0
+    failed_subscriptions = []
+    
+    for subscription in subscriptions:
+        try:
+            # Build subscription info dict for pywebpush
+            subscription_info = {
+                "endpoint": subscription.endpoint,
+                "keys": {
+                    "p256dh": subscription.p256dh,
+                    "auth": subscription.auth,
+                }
+            }
+            
+            # Send push notification using pywebpush directly
+            from pywebpush import webpush, WebPushException
+            
+            webpush(
+                subscription_info=subscription_info,
+                data=json.dumps(payload),
+                vapid_private_key=vapid_private_key,
+                vapid_claims={"sub": f"mailto:{vapid_admin_email}"}
+            )
+            sent_count += 1
+            logging.info(f"Sent web push to subscription {subscription.id}")
+            
+        except WebPushException as e:
+            logging.error(f"Failed to send web push to subscription {subscription.id}: {e}")
+            # If subscription is invalid (410 Gone or 404), mark for deletion
+            if e.response and e.response.status_code in [404, 410]:
+                failed_subscriptions.append(subscription.id)
+        except Exception as e:
+            logging.error(f"Unexpected error sending web push to subscription {subscription.id}: {e}")
+    
+    # Clean up invalid subscriptions
+    if failed_subscriptions:
+        WebPushSubscription.objects.filter(id__in=failed_subscriptions).delete()
+        logging.info(f"Deleted {len(failed_subscriptions)} invalid web push subscriptions")
+    
+    logging.info(f"Sent {sent_count} web push notifications for need {need.need_id}")
+    return sent_count

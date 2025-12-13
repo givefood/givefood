@@ -10,8 +10,13 @@ urlpatterns = [
     path("at/<slug:slug>/donationpoint/<slug:dpslug>/photo.jpg", foodbank_donationpoint_photo, name="foodbank_donationpoint_photo"),
     path("at/<slug:slug>/<slug:locslug>/photo.jpg", foodbank_location_photo, name="foodbank_location_photo"),
     
-    # Web push notifications
+    # Web push notifications (Firebase - for backward compatibility)
     path("notifications/config/", notifications_config, name="notifications_config"),
     path("notifications/subscribe/", notifications_subscribe, name="notifications_subscribe"),
     path("notifications/unsubscribe/", notifications_unsubscribe, name="notifications_unsubscribe"),
+    
+    # Web push notifications (VAPID - django-webpush)
+    path("webpush/config/", webpush_config, name="webpush_config"),
+    path("webpush/subscribe/<slug:slug>/", webpush_subscribe, name="webpush_subscribe"),
+    path("webpush/unsubscribe/<slug:slug>/", webpush_unsubscribe, name="webpush_unsubscribe"),
 ]
