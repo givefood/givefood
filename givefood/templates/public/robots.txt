@@ -4,7 +4,7 @@ Disallow: {{ disallowed_url }}{% endfor %}
 
 User-agent: *
 Allow: /
-Crawl-delay: 2
+Crawl-delay: 5
 
 {% for sitemap_url in sitemap_urls %}Sitemap: {{ domain }}{{ sitemap_url }}
 {% endfor %}
