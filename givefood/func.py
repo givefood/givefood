@@ -1596,9 +1596,7 @@ def send_webpush_notification(need):
                 subscription_info=subscription_info,
                 data=json.dumps(payload),
                 vapid_private_key=vapid_private_key,
-                vapid_claims={
-                    "sub": f"mailto:{vapid_admin_email}"
-                }
+                vapid_claims={"sub": f"mailto:{vapid_admin_email}"}
             )
             sent_count += 1
             logging.info(f"Sent web push to subscription {subscription.id}")

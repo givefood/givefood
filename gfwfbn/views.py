@@ -1130,6 +1130,8 @@ def webpush_subscribe(request, slug):
     3. Web push subscription data is unique per browser/device
     """
     from givefood.models import WebPushSubscription
+    from django.core.validators import URLValidator
+    from django.core.exceptions import ValidationError as DjangoValidationError
     
     if request.method != 'POST':
         return HttpResponseBadRequest()
@@ -1146,18 +1148,26 @@ def webpush_subscribe(request, slug):
         if not endpoint or not p256dh or not auth:
             return HttpResponseBadRequest()
         
-        # Validate endpoint is a valid URL
+        # Validate endpoint is a valid HTTPS URL
         if not endpoint.startswith('https://'):
             return HttpResponseBadRequest()
         
+        url_validator = URLValidator()
+        try:
+            url_validator(endpoint)
+        except DjangoValidationError:
+            return HttpResponseBadRequest()
+        
         # Create or update the subscription
+        # Use model's max_length for browser field
+        browser_max_length = WebPushSubscription._meta.get_field('browser').max_length
         subscription, created = WebPushSubscription.objects.update_or_create(
             foodbank=foodbank,
             endpoint=endpoint,
             defaults={
                 'p256dh': p256dh,
                 'auth': auth,
-                'browser': browser[:100] if browser else None,
+                'browser': browser[:browser_max_length] if browser else None,
             }
         )
         
