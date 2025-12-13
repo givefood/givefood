@@ -22,9 +22,9 @@
     <div class="sections">
         <div class="apps tabcontent{% if turnstilefail %} is-hidden{% endif %}" role="tabpanel" id="apps-panel" aria-labelledby="apps-tab">
             {% if section == 'donationpoints' %}
-                <p>{% blocktrans %}Get a notification of what is needed when you are near a donation point with our <a href="{% url 'apps'%}">mobile apps</a>{% endblocktrans %}</p>
+                <p>{% url 'apps' as apps_url %}{% blocktrans with apps_url=apps_url %}Get a notification of what is needed when you are near a donation point with our <a href="{{ apps_url }}">mobile apps</a>{% endblocktrans %}</p>
             {% else %}
-                <p>{% blocktrans %}Get updates on what is needed with our <a href="{% url 'apps'%}">mobile apps</a>{% endblocktrans %}</p>
+                <p>{% url 'apps' as apps_url %}{% blocktrans with apps_url=apps_url %}Get updates on what is needed with our <a href="{{ apps_url }}">mobile apps</a>{% endblocktrans %}</p>
             {% endif %}
             {% include 'public/includes/appbadges.html' %}
         </div>
