@@ -131,6 +131,7 @@ LOC_MC_KEY = "all_locations"
 LOC_OPEN_MC_KEY = "all_open_locations"
 ITEMS_MC_KEY = "all_items"
 PARLCON_MC_KEY = "all_parlcon"
+CRED_MC_KEY_PREFIX = "cred_"
 
 RICK_ASTLEY = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 

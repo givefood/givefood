@@ -31,7 +31,7 @@ from django.contrib.humanize.templatetags.humanize import apnumber
 from django.db.models import Value
 from django.contrib.contenttypes.models import ContentType
 
-from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN
+from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, QUERYSTRING_RUBBISH, SITE_DOMAIN, CRED_MC_KEY_PREFIX
 from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
@@ -949,11 +949,34 @@ def get_cred(cred_name):
 
     from givefood.models import GfCredential
 
-    try:
-        credential = GfCredential.objects.filter(cred_name = cred_name).latest("created")
-        return credential.cred_value
-    except GfCredential.DoesNotExist:
-        return None
+    cache_key = f"{CRED_MC_KEY_PREFIX}{cred_name}"
+    cred_value = cache.get(cache_key)
+    
+    if cred_value is None:
+        try:
+            credential = GfCredential.objects.filter(cred_name = cred_name).latest("created")
+            cred_value = credential.cred_value
+            # Cache for 1 hour (3600 seconds)
+            cache.set(cache_key, cred_value, 3600)
+        except GfCredential.DoesNotExist:
+            cred_value = None
+    
+    return cred_value
+
+
+def delete_all_cached_credentials():
+    """Delete all cached credentials from the cache."""
+    from givefood.models import GfCredential
+    
+    # Get all unique credential names
+    cred_names = GfCredential.objects.values_list('cred_name', flat=True).distinct()
+    
+    # Delete each cached credential
+    for cred_name in cred_names:
+        cache_key = f"{CRED_MC_KEY_PREFIX}{cred_name}"
+        cache.delete(cache_key)
+    
+    return True
 
 
 def post_to_subscriber(need, subscriber):
