@@ -11,14 +11,14 @@ function initWebPush(foodbankUuid, configUrl) {
     
     // Check if browser supports notifications
     if (!('Notification' in window)) {
-        statusDiv.innerHTML = '<div class="notification is-warning">Your browser does not support notifications.</div>';
+        statusDiv.innerHTML = 'Your browser does not support notifications';
         subscribeBtn.style.display = 'none';
         return;
     }
     
     // Check if service workers are supported
     if (!('serviceWorker' in navigator)) {
-        statusDiv.innerHTML = '<div class="notification is-warning">Your browser does not support service workers required for notifications.</div>';
+        statusDiv.innerHTML = 'Your browser does not support service workers required for notifications';
         subscribeBtn.style.display = 'none';
         return;
     }
@@ -50,7 +50,7 @@ function initWebPush(foodbankUuid, configUrl) {
             })
             .catch(function(error) {
                 console.error('Error with notifications:', error);
-                statusDiv.innerHTML = '<div class="notification is-danger">Failed. Please try again.</div>';
+                statusDiv.innerHTML = 'Failed. Please try again.';
                 subscribeBtn.disabled = false;
                 subscribeBtn.classList.remove('is-loading');
             });
@@ -68,7 +68,7 @@ function updateButtonState(subscribeBtn, statusDiv, foodbankUuid) {
             subscribeBtn.classList.add('is-success');
         }
     } else if (Notification.permission === 'denied') {
-        statusDiv.innerHTML = '<div class="notification is-warning">Notifications are blocked. Please enable them in your browser settings.</div>';
+        statusDiv.innerHTML = 'Notifications are blocked. Please enable them in your browser settings.';
         subscribeBtn.style.display = 'none';
     }
 }
@@ -77,7 +77,7 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
     // Request notification permission
     return Notification.requestPermission().then(function(permission) {
         if (permission !== 'granted') {
-            statusDiv.innerHTML = '<div class="notification is-warning">Notification permission was not granted.</div>';
+            statusDiv.innerHTML = 'Notification permission was not granted.';
             subscribeBtn.disabled = false;
             subscribeBtn.classList.remove('is-loading');
             return;
@@ -144,7 +144,7 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
                     localStorage.setItem('gf_webpush_foodbanks', JSON.stringify(subscribedFoodbanks));
                 }
                 
-                statusDiv.innerHTML = '<div class="notification is-success">Successfully subscribed to notifications!</div>';
+                statusDiv.innerHTML = 'Successfully subscribed to notifications';
                 subscribeBtn.textContent = 'Disable notifications';
                 subscribeBtn.disabled = false;
                 subscribeBtn.classList.remove('is-loading', 'is-light', 'is-link');
@@ -152,7 +152,7 @@ function subscribeToNotifications(foodbankUuid, config, subscribeBtn, statusDiv)
             })
             .catch(function(error) {
                 console.error('Subscription error:', error);
-                statusDiv.innerHTML = '<div class="notification is-danger">Failed to subscribe: ' + error.message + '</div>';
+                statusDiv.innerHTML = 'Failed to subscribe: ' + error.message;
                 subscribeBtn.disabled = false;
                 subscribeBtn.classList.remove('is-loading');
             });
@@ -225,12 +225,12 @@ function performUnsubscribe(token, foodbankUuid, subscribeBtn, statusDiv) {
         // Success! Remove this food bank from the list
         removeFromLocalStorage(foodbankUuid);
         
-        statusDiv.innerHTML = '<div class="notification is-info">Successfully unsubscribed from notifications.</div>';
+        statusDiv.innerHTML = 'Successfully unsubscribed from notifications';
         resetButtonToSubscribe(subscribeBtn, statusDiv);
     })
     .catch(function(error) {
         console.error('Unsubscription error:', error);
-        statusDiv.innerHTML = '<div class="notification is-danger">Failed to unsubscribe: ' + error.message + '</div>';
+        statusDiv.innerHTML = 'Failed to unsubscribe: ' + error.message;
         subscribeBtn.disabled = false;
         subscribeBtn.classList.remove('is-loading');
     });
