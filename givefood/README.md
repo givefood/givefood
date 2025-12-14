@@ -169,7 +169,6 @@ Provides global template context:
 - Facebook locale mapping
 - Language switcher URLs
 - Flag reporting paths
-- Speculation rules for prerendering/prefetching
 - App name detection
 
 ### Forms (`forms.py`)
@@ -299,7 +298,6 @@ Uses Django's `@cache_page` decorator with varied cache times:
 - Multi-language support via `{% trans %}` tags
 - Bulma CSS components via custom template tags
 - Dynamic map configuration via JSON context
-- Speculation rules for performance optimization
 
 ### URL Patterns
 - Translated URLs use `i18n_patterns()`
