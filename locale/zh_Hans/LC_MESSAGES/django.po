@@ -6,26 +6,28 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-13 23:08+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: zh-hans\n"
+"PO-Revision-Date: 2025-12-14 09:32+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.8\n"
+
 #: gfadmin/templates/admin/page.html:62
 msgid "Search"
-msgstr ""
+msgstr "搜索"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
 #: gfdumps/templates/gfdumps/dumps.html:42
 msgid "Dumps"
-msgstr ""
+msgstr "垃圾场"
 
 #: gfdumps/templates/gfdumps/dumps.html:24
 #: gfwfbn/templates/wfbn/constituency/constituency.html:41
@@ -42,96 +44,96 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/updates.html:40
 #: givefood/templates/public/page.html:52
 msgid "Home"
-msgstr ""
+msgstr "首页"
 
 #: gfdumps/templates/gfdumps/dumps.html:67
 msgid "Date"
-msgstr ""
+msgstr "日期"
 
 #: gfdumps/templates/gfdumps/dumps.html:68
 msgid "Size"
-msgstr ""
+msgstr "大小"
 
 #: gfdumps/templates/gfdumps/dumps.html:69
 msgid "Rows"
-msgstr ""
+msgstr "行"
 
 #: gfdumps/templates/gfdumps/dumps.html:75
 msgid "Latest"
-msgstr ""
+msgstr "最新"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:32
 #: gfwfbn/templates/wfbn/constituency/index.html:36
 msgid "Parliamentary Constituencies"
-msgstr ""
+msgstr "议会选区"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:42
 msgid ""
 "Find which food banks operate in your parliamentary constituency, then "
 "donate or take action."
-msgstr ""
+msgstr "找到您所在选区内有哪些食物银行，然后捐款或采取行动。"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:46
 msgid "Sorry, we didn't recognise this postcode. Could you try again?"
-msgstr ""
+msgstr "抱歉，我们无法识别此邮政编码。请您再试一次好吗？"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Search by postcode"
-msgstr ""
+msgstr "按邮政编码搜索"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Postcode"
-msgstr ""
+msgstr "邮编"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:52
 #: gfwfbn/templates/wfbn/index.html:64
 #: givefood/templates/public/country.html:43
 #: givefood/templates/public/index.html:39
 msgid "Go"
-msgstr ""
+msgstr "开始"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:23
 #: gfwfbn/templates/wfbn/foodbank/charity.html:43
 #: gfwfbn/templates/wfbn/foodbank/charity.html:47
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
 msgid "Charity"
-msgstr ""
+msgstr "慈善机构"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:59
 msgid "Charity name"
-msgstr ""
+msgstr "慈善机构名称"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:67
 msgid "Charity number"
-msgstr ""
+msgstr "慈善机构编号"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:72
 msgid "Charity type"
-msgstr ""
+msgstr "慈善类型"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:76
 msgid "Registration date"
-msgstr ""
+msgstr "注册日期"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:81
 msgid "Objectives"
-msgstr ""
+msgstr "目标"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:85
 msgid "Purposes"
-msgstr ""
+msgstr "给动画起个名字，以便编辑"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:99
 msgid "Year"
-msgstr ""
+msgstr "年"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:100
 msgid "Income"
-msgstr ""
+msgstr "收入"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:101
 msgid "Expenditure"
-msgstr ""
+msgstr "支出"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:48
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:22
@@ -140,47 +142,47 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
 #: gfwfbn/templates/wfbn/index.html:87 givefood/templates/public/index.html:144
 msgid "Donation points"
-msgstr ""
+msgstr "捐赠点"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:64
 #: gfwfbn/templates/wfbn/foodbank/index.html:64
 #: gfwfbn/templates/wfbn/foodbank/location.html:63
 msgid "This food bank is closed"
-msgstr ""
+msgstr "这家食物银行已关闭"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 #, python-format
 msgid ""
 "is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "是<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>的捐赠点"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 msgid "Here they are requesting to have donated..."
-msgstr ""
+msgstr "他们在此请求捐款……"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:75
 #: gfwfbn/templates/wfbn/foodbank/index.html:78
 #: gfwfbn/templates/wfbn/foodbank/location.html:77
 msgid "They don't need any more"
-msgstr ""
+msgstr "他们不需要更多了"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:81
 msgid "Opening hours"
-msgstr ""
+msgstr "营业时间"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
 msgid "Only accepts in-store purchases as donations"
-msgstr ""
+msgstr "只接受店内购买的商品作为捐赠"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:92
 msgid ""
 "Although, sometimes you can add items marked as not from the store. Best to "
 "check."
-msgstr ""
+msgstr "不过，有时你也可以添加标明“非本店商品”的商品。最好还是确认一下。"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:97
 msgid "Wheelchair accessible"
-msgstr ""
+msgstr "轮椅无障碍"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:123
 #: gfwfbn/templates/wfbn/foodbank/index.html:140
@@ -188,23 +190,23 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/location.html:132
 #: gfwfbn/templates/wfbn/foodbank/location.html:144
 msgid "Directions"
-msgstr ""
+msgstr "方向"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:6
 msgid "Hours may vary because of"
-msgstr ""
+msgstr "工作时间可能会因各种原因而有所变动。"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:58
 #: gfwfbn/templates/wfbn/foodbank/locations.html:61
 msgid "Main"
-msgstr ""
+msgstr "主要"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:66
 #: gfwfbn/templates/wfbn/foodbank/index.html:152
 #: gfwfbn/templates/wfbn/foodbank/location.html:142
 #: gfwfbn/templates/wfbn/foodbank/locations.html:70
 msgid "Delivery"
-msgstr ""
+msgstr "发货"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
 #, python-format
@@ -212,14 +214,16 @@ msgid ""
 "Charity Registration <a href=\"%(charity_url)s\" "
 "id=\"charity_link\">%(charity_number)s</a>"
 msgstr ""
+"慈善机构注册<a href=\"%(charity_url)s\" "
+"id=\"charity_link\">%(charity_number)s</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
 msgid "Part of"
-msgstr ""
+msgstr "属于"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:13
 msgid "is a registered charity in England &amp; Wales"
-msgstr ""
+msgstr "是在英格兰和威尔士注册的慈善机构"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
 #: givefood/templates/public/country.html:51
@@ -228,62 +232,63 @@ msgstr ""
 #: givefood/templates/public/index.html:48
 #: givefood/templates/public/page.html:57
 msgid "Donate"
-msgstr ""
+msgstr "捐赠"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:6
 msgid "Food, money or your time"
-msgstr ""
+msgstr "食物、金钱或时间"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:12
 msgid "Donate using "
-msgstr ""
+msgstr "捐赠方式"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
 msgid "Details"
-msgstr ""
+msgstr "详情"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:6
 #: gfwfbn/templates/wfbn/foodbank/locations.html:22
 #: gfwfbn/templates/wfbn/foodbank/locations.html:42
 #: gfwfbn/templates/wfbn/foodbank/locations.html:46
 msgid "Locations"
-msgstr ""
+msgstr "位置"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
 #: gfwfbn/templates/wfbn/foodbank/news.html:23
 #: gfwfbn/templates/wfbn/foodbank/news.html:43
 #: gfwfbn/templates/wfbn/foodbank/news.html:47
 msgid "News"
-msgstr ""
+msgstr "新闻"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:18
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:22
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:42
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:46
 msgid "Social media"
-msgstr ""
+msgstr "社交媒体"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:20
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:22
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:42
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:46
 msgid "Nearby"
-msgstr ""
+msgstr "身边"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
 #: givefood/templates/public/page.html:53
 msgid "Apps"
-msgstr ""
+msgstr "应用"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:12
 msgid "Web"
-msgstr ""
+msgstr "网页"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
 #: gfwfbn/templates/wfbn/index.html:114 givefood/templates/403.html:30
 #: givefood/templates/404.html:30 givefood/templates/500.html:30
+#, fuzzy
 msgid "Email"
-msgstr ""
+msgstr "邮箱"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:25
 #, python-format
@@ -291,122 +296,124 @@ msgid ""
 "Get a notification of what is needed when you are near a donation point with "
 "our <a href=\"%(apps_url)s\">mobile apps</a>"
 msgstr ""
+"使用我们的<a href=\"%(apps_url)s\">移动应用程序</a>，当您靠近捐赠点时，即可收"
+"到所需捐赠物品的通知。"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:27
 #, python-format
 msgid ""
 "Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</"
 "a>"
-msgstr ""
+msgstr "通过我们的<a href=\"%(apps_url)s\">移动应用</a>获取所需信息的最新动态"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:32
 msgid "Have this web browser notify when the shopping list changes"
-msgstr ""
+msgstr "当购物清单更改时，此网络浏览器会发出通知。"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:34
 msgid "Get browser notifications"
-msgstr ""
+msgstr "获取浏览器通知"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:39
 msgid "Sorry, the security check failed. Please try again."
-msgstr ""
+msgstr "抱歉，安全验证失败。请重试。"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:42
 msgid "Get updates on this shopping list via email"
-msgstr ""
+msgstr "通过电子邮件获取此购物清单的更新信息"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:47
 msgid "Email address"
-msgstr ""
+msgstr "邮箱地址"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:50
 msgid "Get updates"
-msgstr ""
+msgstr "获取更新"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:53
 msgid ""
 "We'll never use your email address for anything else, and you can "
 "unsubscribe at any time"
-msgstr ""
+msgstr "我们绝不会将您的电子邮件地址用于其他任何用途，您可以随时取消订阅。"
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:70
 msgid "You can find out what is needed on the foodbank's Facebook page:"
-msgstr ""
+msgstr "您可以在食物银行的Facebook页面上找到所需物品的信息："
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:73
 msgid "is currently requesting the following items to be donated:"
-msgstr ""
+msgstr "目前请求捐赠以下物品："
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:97
 #: gfwfbn/templates/wfbn/foodbank/index.html:99
 msgid ""
 "This food bank is located at a school, so may not be open to the public."
-msgstr ""
+msgstr "这家食品银行位于学校内，因此可能不对公众开放。"
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:138
 #: gfwfbn/templates/wfbn/foodbank/locations.html:59
 msgid "Administrative"
-msgstr ""
+msgstr "管理"
 
 #: gfwfbn/templates/wfbn/foodbank/location.html:81
 #: gfwfbn/templates/wfbn/foodbank/location.html:92
 msgid "This location accepts donations"
-msgstr ""
+msgstr "该地点接受捐赠"
 
 #: gfwfbn/templates/wfbn/foodbank/location.html:84
 #: gfwfbn/templates/wfbn/foodbank/location.html:95
 msgid "Mobile food bank location"
-msgstr ""
+msgstr "流动食物银行地点"
 
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:65
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:67
 #: gfwfbn/templates/wfbn/index.html:102 gfwfbn/templates/wfbn/index.html:149
 msgid "away"
-msgstr ""
+msgstr "客"
 
 #: gfwfbn/templates/wfbn/index.html:10
 msgid "What Food Banks Need"
-msgstr ""
+msgstr "食物银行需要什么"
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
 #: givefood/views.py:727
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
-msgstr ""
+msgstr "使用 Give Food 的工具查找您附近的哪些食品银行需要捐赠。"
 
 #: gfwfbn/templates/wfbn/index.html:14
 msgid "Map of UK food banks"
-msgstr ""
+msgstr "英国食物银行地图"
 
 #: gfwfbn/templates/wfbn/index.html:32 gfwfbn/templates/wfbn/index.html:40
 msgid "Find Food Banks To Help"
-msgstr ""
+msgstr "寻找食物银行提供帮助"
 
 #: gfwfbn/templates/wfbn/index.html:35 gfwfbn/templates/wfbn/index.html:38
 msgid "food banks"
-msgstr ""
+msgstr "食物银行"
 
 #: gfwfbn/templates/wfbn/index.html:59
 #: givefood/templates/public/country.html:38
 #: givefood/templates/public/index.html:34
 msgid "Use my location"
-msgstr ""
+msgstr "使用我的位置"
 
 #: gfwfbn/templates/wfbn/index.html:61
 #: givefood/templates/public/country.html:40
 #: givefood/templates/public/index.html:36
 msgid "Postcode or town"
-msgstr ""
+msgstr "邮政编码或城镇"
 
 #: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:37
 msgid "e.g. EX4 6PX or Sheffield"
-msgstr ""
+msgstr "例如 EX4 6PX 或谢菲尔德"
 
 #: gfwfbn/templates/wfbn/index.html:67
 #, python-format
 msgid "Foodbanks in %(location)s"
-msgstr ""
+msgstr "%(location)s 中的食物银行"
 
 #: gfwfbn/templates/wfbn/index.html:68
 #, python-format
@@ -414,99 +421,102 @@ msgid ""
 "Find a food bank near %(location)s, see what they need and how you can help "
 "by donating or volunteering."
 msgstr ""
+"找到 %(location)s 附近的食物银行，看看他们需要什么，以及你如何通过捐赠或做志"
+"愿者来提供帮助。"
 
 #: gfwfbn/templates/wfbn/index.html:72
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
-msgstr ""
+msgstr "抱歉，我们无法使用该地点。它在英国境内吗？"
 
 #: gfwfbn/templates/wfbn/index.html:78
 msgid "Search results"
-msgstr ""
+msgstr "搜索结果"
 
 #: gfwfbn/templates/wfbn/index.html:82 givefood/templates/public/index.html:116
 #: givefood/templates/public/index.html:140
 msgid "Food banks"
-msgstr ""
+msgstr "食物银行"
 
 #: gfwfbn/templates/wfbn/index.html:100
 #, python-format
 msgid "Part of <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "的一部分<a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/index.html:108 gfwfbn/templates/wfbn/index.html:154
 msgid "Nothing right now, thanks"
-msgstr ""
+msgstr "目前没有，谢谢。"
 
 #: gfwfbn/templates/wfbn/index.html:111
 msgid "Phone"
-msgstr ""
+msgstr "电话"
 
 #: gfwfbn/templates/wfbn/index.html:116
 msgid "Check the foodbank's "
-msgstr ""
+msgstr "查看食物银行的"
 
 #: gfwfbn/templates/wfbn/index.html:117
 msgid "Facebook page"
-msgstr ""
+msgstr "Facebook 页面"
 
 #: gfwfbn/templates/wfbn/index.html:118
 msgid " for what they need"
-msgstr ""
+msgstr "他们需要什么"
 
 #: gfwfbn/templates/wfbn/index.html:148
 #, python-format
 msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "对于<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/index.html:156
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
-msgstr ""
+msgstr "抱歉，我们不清楚这里需要什么，请联系食物银行。"
 
 #: gfwfbn/views.py:117
 msgid "items requested at"
-msgstr ""
+msgstr "请求的物品"
 
 #: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
-msgstr ""
+msgstr "食物银行"
 
 #: givefood/models.py:1063
 msgid "Closed"
-msgstr ""
+msgstr "关闭"
 
 #: givefood/templates/403.html:4 givefood/templates/403.html:19
 msgid "403 - Forbidden"
-msgstr ""
+msgstr "403 内容禁止"
 
 #: givefood/templates/403.html:25 givefood/templates/500.html:25
 msgid ""
 "Sorry, something has gone wrong there and we can't serve that page. This "
 "error has been logged and we'll look into it."
 msgstr ""
+"抱歉，页面加载出现问题，我们无法提供该页面。此错误已记录，我们将进行调查。"
 
 #: givefood/templates/403.html:28 givefood/templates/404.html:28
 #: givefood/templates/500.html:28
 msgid "Homepage"
-msgstr ""
+msgstr "主页"
 
 #: givefood/templates/403.html:29 givefood/templates/404.html:29
 #: givefood/templates/500.html:29
 msgid "Find what food banks need"
-msgstr ""
+msgstr "了解食物银行需要什么"
 
 #: givefood/templates/404.html:4 givefood/templates/404.html:19
 msgid "404 - Not Found"
-msgstr ""
+msgstr "404 - 未找到"
 
 #: givefood/templates/404.html:25
 msgid ""
 "Sorry, we can't find that page. It may have been removed or you might have "
 "entered an incorrect URL."
-msgstr ""
+msgstr "抱歉，我们找不到该页面。它可能已被删除，或者您输入的网址有误。"
 
 #: givefood/templates/500.html:4 givefood/templates/500.html:19
 msgid "500 - Internal Server Error"
-msgstr ""
+msgstr "500 内部服务器错误"
 
 #: givefood/templates/public/about_us.html:5
 #: givefood/templates/public/about_us.html:22
@@ -514,7 +524,7 @@ msgstr ""
 #: givefood/templates/public/index.html:50
 #: givefood/templates/public/page.html:58
 msgid "About us"
-msgstr ""
+msgstr "关于我们"
 
 #: givefood/templates/public/about_us.html:24
 msgid ""
@@ -532,17 +542,17 @@ msgid ""
 "millions of users each year, helping people learn about and engage with food "
 "poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">charity</a> in February 2020, just weeks before the UK "
-"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
-"local food insecurity alleviation organisations delivering hundreds of "
-"tonnes of vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">charity</a> in February 2020, just weeks before the UK entered "
+"COVID-19 lockdowns, and since then we've worked with hundreds of local food "
+"insecurity alleviation organisations delivering hundreds of tonnes of "
+"vitally needed supplies.</p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a "
-"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
-"from Penzance to Lerwick as safe as possible whilst continuing to support "
-"their communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a href=\"/"
+"2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks from "
+"Penzance to Lerwick as safe as possible whilst continuing to support their "
+"communities.</p>\n"
 "\n"
 "                <p>We help the public act on food insecurity by using our "
 "data to show which food banks are in their parliamentary constituency, and "
@@ -563,18 +573,41 @@ msgid ""
 "                    <em>The Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
-"org.uk</a>\n"
+"                    <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
 msgstr ""
+"\n"
+"                <p>Give Food 是一家英国慈善机构，它利用数据来突出当地和结构性"
+"的粮食不安全问题，然后提供工具来帮助缓解这些问题。</p><p>我们运营着<a "
+"href=\"/needs/\">全国唯一的食品银行公共数据库</a>，实时追踪他们请求捐赠的物"
+"品。</p><p>我们与众多公共和私营组织（包括许多其他慈善机构）合作，每年与数百万"
+"用户共享数据，帮助人们了解和参与解决粮食贫困问题。</p><p>我们在 2020 年 2 月"
+"成为<a href=\"https://register-of-charities.charitycommission.gov.uk/en/"
+"charity-search/-/charity-details/5147019\">慈善机构</a>，就在几周后英国进入 "
+"COVID-19 封锁状态。从那时起，我们与数百个当地粮食安全缓解组织合作，提供了数百"
+"吨急需的物资。</p><p>例如，在疫情期间，我们运送了<a href=\"/2020/#ppe-"
+"supplies\">120 万件个人防护装备，</a>以帮助从彭赞斯到勒威克的食品银行尽可能保"
+"持安全，同时继续支持他们的社区。</p><p>我们利用数据帮助公众应对粮食不安全问"
+"题，向他们展示各自选区内有哪些食品银行，并提供一个<a href=\"/write/\">工具，"
+"方便他们向自己的国会议员发送电子邮件，询问议员</a>正在采取哪些措施来解决这个"
+"问题。</p><p>我们的运营是开源透明的，几乎所有当前和历史<a href=\"https://"
+"github.com/givefood/givefood\">代码</a>及<a href=\"/api/\">数据</a>都已发布，"
+"<a href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
+"search/-/charity-details/5147019/accounts-and-annual-returns\">账户</a>和<a "
+"href=\"/annual-reports/\">年度报告</a>也可供查看。</p><p>如有任何建议、意见、"
+"批评或鼓励，请随时与我们联系。</p><p><em>捐赠食物信托</em></p><p><a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
+"\n"
+"            "
 
 #: givefood/templates/public/ar/index.html:5
 #: givefood/templates/public/ar/index.html:22
 #: givefood/templates/public/page.html:56
 msgid "Annual reports"
-msgstr ""
+msgstr "年度报告"
 
 #: givefood/templates/public/ar/index.html:8
 #: givefood/templates/public/donate.html:8
@@ -584,36 +617,38 @@ msgid ""
 "Give Food is a UK charity that uses data to highlight local and structural "
 "food insecurity then provides tools to help alleviate it."
 msgstr ""
+"Give Food 是一家英国慈善机构，它利用数据来揭示当地和结构性的粮食不安全问题，"
+"然后提供工具来帮助缓解这些问题。"
 
 #: givefood/templates/public/ar/index.html:25
 msgid "AI, general election, site translation"
-msgstr ""
+msgstr "人工智能、大选、网站翻译"
 
 #: givefood/templates/public/ar/index.html:28
 msgid "Rebrand, refresh, rewrite &amp; categorisation"
-msgstr ""
+msgstr "品牌重塑、更新、重写和分类"
 
 #: givefood/templates/public/ar/index.html:31
 msgid "Write to your MP tool, surplus monitoring, data audits"
-msgstr ""
+msgstr "请参阅您的 MP 工具、盈余监控和数据审计。"
 
 #: givefood/templates/public/ar/index.html:34
 msgid "Data &amp; UX review, dashboards, charity reporting"
-msgstr ""
+msgstr "数据与用户体验审查、仪表盘、慈善机构报告"
 
 #: givefood/templates/public/ar/index.html:37
 msgid "Pandemic response, becoming a charity, publishing our data"
-msgstr ""
+msgstr "应对疫情、成为慈善机构、公布我们的数据"
 
 #: givefood/templates/public/ar/index.html:40
 msgid "Initial deliveries, Christmas"
-msgstr ""
+msgstr "首批交付，圣诞节"
 
 #: givefood/templates/public/colophon.html:5
 #: givefood/templates/public/colophon.html:19
 #: givefood/templates/public/page.html:59
 msgid "Colophon"
-msgstr ""
+msgstr "Colophon"
 
 #: givefood/templates/public/country.html:9
 #, python-format
@@ -621,47 +656,50 @@ msgid ""
 "Find food banks in %(country)s, see what they need and how you can help by "
 "donating or volunteering."
 msgstr ""
+"在 %(country)s 中查找食物银行，了解他们需要什么，以及您可以通过捐赠或志愿服务"
+"来提供帮助。"
 
 #: givefood/templates/public/country.html:13
 #, python-format
 msgid "Food banks in %(country)s"
-msgstr ""
+msgstr "食品银行在 %(country)s"
 
 #: givefood/templates/public/country.html:14
 #, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help."
-msgstr ""
+msgstr "在%(country)s中查找食物银行，了解他们需要什么以及你可以如何提供帮助。"
 
 #: givefood/templates/public/country.html:49
 #: givefood/templates/public/index.html:46
 msgid "Write to your MP"
-msgstr ""
+msgstr "写信给你的国会议员"
 
 #: givefood/templates/public/country.html:49
 #: givefood/templates/public/index.html:46
 #: givefood/templates/public/page.html:55
 msgid "English"
-msgstr ""
+msgstr "英语"
 
 #: givefood/templates/public/country.html:52
 #: givefood/templates/public/index.html:49
 msgid "Register a foodbank"
-msgstr ""
+msgstr "注册食物银行"
 
 #: givefood/templates/public/country.html:56
 #: givefood/templates/public/index.html:55
 msgid "Recently updated"
-msgstr ""
+msgstr "最近更新"
 
 #: givefood/templates/public/country.html:62
 #: givefood/templates/public/index.html:61
 msgid "Most viewed this week"
-msgstr ""
+msgstr "本周浏览量最高"
 
 #: givefood/templates/public/donate.html:27
+#, fuzzy
 msgid "To"
-msgstr ""
+msgstr "到"
 
 #: givefood/templates/public/donate.html:28
 #, python-format
@@ -669,28 +707,32 @@ msgid ""
 "100%% of donations from the public to Give Food are used directly to "
 "efficiently and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
+"Give Food 收到的公众捐款 100% 将直接用于高效快速地向英国食品银行提供所需的食"
+"品和物资。"
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
-msgstr ""
+msgstr "使用 CAF 捐款"
 
 #: givefood/templates/public/donate.html:32
 msgid "To a food bank"
-msgstr ""
+msgstr "去食物银行"
 
 #: givefood/templates/public/donate.html:33
 msgid ""
 "Use our tool to find a local food bank and see what they need. Then donate "
 "food, household supplies, toiletries, money or your time."
 msgstr ""
+"使用我们的工具查找您当地的食物银行，了解他们的需求。然后捐赠食物、家居用品、"
+"洗漱用品、金钱或您的时间。"
 
 #: givefood/templates/public/donate.html:34
 msgid "Find a food bank"
-msgstr ""
+msgstr "寻找食物银行"
 
 #: givefood/templates/public/donate.html:40
 msgid "Managed donations"
-msgstr ""
+msgstr "管理捐赠"
 
 #: givefood/templates/public/donate.html:41
 msgid ""
@@ -700,88 +742,94 @@ msgid ""
 "charitable aims. Realtime reports and tracking of how your donation is used "
 "are provided."
 msgstr ""
+"对于500英镑及以上的捐款或赠款，我们可以提供管理服务。凭借我们的数据和物流专业"
+"知识，我们可以确保您的捐款用于高效地将所需物品送达符合您慈善目标的食物银行。"
+"我们会提供实时报告和捐款使用情况跟踪。"
 
 #: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"
-msgstr ""
+msgstr "举报错误"
 
 #: givefood/templates/public/flag.html:31
 msgid ""
 "Sorry that you've found something wrong. We'll review your report within 24 "
 "hours, usually quicker."
-msgstr ""
+msgstr "很抱歉您发现了问题。我们会在24小时内审核您的报告，通常会更快。"
 
 #: givefood/templates/public/human.html:4
 msgid "Human check"
-msgstr ""
+msgstr "人工核查"
 
 #: givefood/templates/public/human.html:21
 msgid "Sorry, but we just have to check you are a human..."
-msgstr ""
+msgstr "抱歉，我们需要确认您是真人……"
 
 #: givefood/templates/public/includes/country.html:2
 msgid "England"
-msgstr ""
+msgstr "英格兰"
 
 #: givefood/templates/public/includes/country.html:3
 msgid "Wales"
-msgstr ""
+msgstr "威尔士"
 
 #: givefood/templates/public/includes/country.html:4
 msgid "Scotland"
-msgstr ""
+msgstr "苏格兰"
 
 #: givefood/templates/public/includes/country.html:5
 msgid "Northern Ireland"
-msgstr ""
+msgstr "北爱尔兰"
 
 #: givefood/templates/public/includes/country.html:6
 msgid "Isle of Man"
-msgstr ""
+msgstr "马恩岛"
 
 #: givefood/templates/public/includes/country.html:7
 msgid "Jersey"
-msgstr ""
+msgstr "泽西"
 
 #: givefood/templates/public/includes/country.html:8
 msgid "Guernsey"
-msgstr ""
+msgstr "根西岛"
 
 #: givefood/templates/public/includes/debugcomment.html:3
 msgid "Hello"
-msgstr ""
+msgstr "你好"
 
 #: givefood/templates/public/includes/maplegend.html:4
 msgid "Organisation"
-msgstr ""
+msgstr "组织"
 
 #: givefood/templates/public/includes/maplegend.html:4
 #: givefood/templates/public/includes/maplegend.html:5
 #: givefood/templates/public/includes/maplegend.html:7
 msgid "marker"
-msgstr ""
+msgstr "标记"
 
 #: givefood/templates/public/includes/maplegend.html:5
+#, fuzzy
 msgid "Location"
-msgstr ""
+msgstr "位置"
 
 #: givefood/templates/public/includes/maplegend.html:6
 msgid "Service area"
-msgstr ""
+msgstr "招待面积"
 
 #: givefood/templates/public/includes/maplegend.html:7
 msgid "Donation point"
-msgstr ""
+msgstr "捐赠点"
 
 #: givefood/templates/public/includes/serviceareadisclaimer.html:3
 msgid "Service areas are approximate. You should check with the food bank"
-msgstr ""
+msgstr "服务范围仅供参考，请与食物银行确认。"
 
 #: givefood/templates/public/index.html:9
 msgid ""
 "Give Food a UK charity uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
 msgstr ""
+"英国慈善机构 Give Food 利用数据来突出当地和结构性的粮食不安全问题，然后提供工"
+"具来帮助缓解这些问题。"
 
 #: givefood/templates/public/index.html:14
 #: givefood/templates/public/index.html:31
@@ -789,149 +837,156 @@ msgid ""
 "We're a UK charity that uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
 msgstr ""
+"我们是一家英国慈善机构，利用数据来揭示当地和结构性的粮食不安全问题，然后提供"
+"工具来帮助缓解这些问题。"
 
 #: givefood/templates/public/index.html:32
 msgid ""
 "Use our unique database to find a food bank near you, see what they need and "
 "how you can help by donating or volunteering."
 msgstr ""
+"使用我们独特的数据库查找您附近的食品银行，了解他们需要什么以及您可以通过捐赠"
+"或做志愿者来如何提供帮助。"
 
 #: givefood/templates/public/index.html:84
 msgid "We've worked with"
-msgstr ""
+msgstr "我们曾与……合作"
 
 #: givefood/templates/public/index.html:105
 msgid "How we can help"
-msgstr ""
+msgstr "我们如何提供帮助"
 
 #: givefood/templates/public/index.html:111
 msgid "Public"
-msgstr ""
+msgstr "公开"
 
 #: givefood/templates/public/index.html:112
 msgid ""
 "Use our tool to find your local food banks, then donate, volunteer or take "
 "political action."
 msgstr ""
+"使用我们的工具查找您当地的食物银行，然后进行捐赠、志愿服务或参与政治行动。"
 
 #: givefood/templates/public/index.html:113
 msgid "Find out how to help"
-msgstr ""
+msgstr "了解如何提供帮助"
 
 #: givefood/templates/public/index.html:117
 msgid ""
 "Register a food bank to be included in our database and allow users to find "
 "you and what you need."
-msgstr ""
+msgstr "注册成为食品银行，即可将其纳入我们的数据库，方便用户找到您和您的需求。"
 
 #: givefood/templates/public/index.html:118
 #: givefood/templates/public/register_foodbank.html:9
 #: givefood/templates/public/register_foodbank.html:21
 msgid "Register a food bank"
-msgstr ""
+msgstr "注册食品银行"
 
 #: givefood/templates/public/index.html:121
 msgid "Media"
-msgstr ""
+msgstr "媒体"
 
 #: givefood/templates/public/index.html:122
 msgid ""
 "Journalists, in particular data journalists, can use our data for stories "
 "around food poverty."
-msgstr ""
+msgstr "记者，特别是数据记者，可以利用我们的数据来报道有关粮食贫困的新闻。"
 
 #: givefood/templates/public/index.html:123
 #: givefood/templates/public/index.html:128
 msgid "Use our API"
-msgstr ""
+msgstr "使用我们的 API"
 
 #: givefood/templates/public/index.html:126
 msgid "Researchers & students"
-msgstr ""
+msgstr "研究人员和学生"
 
 #: givefood/templates/public/index.html:127
 msgid ""
 "We can provide our data in bulk, plus advice on how to interpret it, to "
 "researchers. Have a look at our API or email us."
 msgstr ""
+"我们可以向研究人员批量提供数据，并提供数据解读方面的建议。请查看我们的API或给"
+"我们发送电子邮件。"
 
 #: givefood/templates/public/index.html:134
 msgid "Statistics"
-msgstr ""
+msgstr "统计"
 
 #: givefood/templates/public/index.html:148
 msgid "Items requested"
-msgstr ""
+msgstr "所需物品"
 
 #: givefood/templates/public/index.html:152
 msgid "Meals delivered"
-msgstr ""
+msgstr "送餐服务"
 
 #: givefood/templates/public/index.html:156
 #: givefood/templates/public/page.html:41
 msgid "Last updated"
-msgstr ""
+msgstr "最近更新"
 
 #: givefood/templates/public/index.html:168
 msgid "Read our"
-msgstr ""
+msgstr "阅读我们的"
 
 #: givefood/templates/public/index.html:168
 msgid "annual report"
-msgstr ""
+msgstr "年报"
 
 #: givefood/templates/public/page.html:36
 msgid "Something wrong in this page?"
-msgstr ""
+msgstr "这个页面有问题吗？"
 
 #: givefood/templates/public/page.html:42
 msgid "food bank needs viewed this week"
-msgstr ""
+msgstr "本周查看的食物银行需求"
 
 #: givefood/templates/public/page.html:45
 msgid "Give Food is a registered charity in England & Wales"
-msgstr ""
+msgstr "Give Food 是在英格兰和威尔士注册的慈善机构。"
 
 #: givefood/templates/public/page.html:46
 msgid "Registered with the"
-msgstr ""
+msgstr "已在以下机构注册"
 
 #: givefood/templates/public/page.html:47
 msgid "ICO Data Protection Registration"
-msgstr ""
+msgstr "ICO 数据保护注册"
 
 #: givefood/templates/public/page.html:54
 msgid "Dashboards"
-msgstr ""
+msgstr "仪表盘"
 
 #: givefood/templates/public/page.html:60
 msgid "Privacy policy"
-msgstr ""
+msgstr "隐私政策"
 
 #: givefood/views.py:65
 msgid "e.g. EH12 5PJ or Glasgow"
-msgstr ""
+msgstr "例如：EH12 5PJ 或格拉斯哥"
 
 #: givefood/views.py:66
 msgid "e.g. HA9 0WS or Manchester"
-msgstr ""
+msgstr "例如：HA9 0WS 或曼彻斯特"
 
 #: givefood/views.py:67
 msgid "e.g. CF10 1NS or Cardiff"
-msgstr ""
+msgstr "例如：CF10 1NS 或卡迪夫"
 
 #: givefood/views.py:68
 msgid "e.g. BT12 6LW or Belfast"
-msgstr ""
+msgstr "例如：BT12 6LW 或贝尔法斯特"
 
 #: givefood/views.py:898
 msgid "minutes"
-msgstr ""
+msgstr "分钟"
 
 #: givefood/views.py:899
 msgid "Under a minute ago"
-msgstr ""
+msgstr "不到一分钟前"
 
 #: givefood/views.py:901
 msgid "ago"
-msgstr ""
+msgstr "前"
