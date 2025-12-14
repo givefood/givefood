@@ -1,4 +1,4 @@
-import os, sys, json
+import os, sys
 from django.urls import resolve, translate_url
 from givefood.settings import LANGUAGES
 from django.utils.translation import get_language_info
@@ -52,26 +52,6 @@ def context(request):
     except:
         app_name = "unknown"
 
-    speculation_rules = {
-        "prerender": [
-            {
-                "where": {"selector_matches": ".menu a, .langswitcher a"},
-                "eagerness": "eager"
-            }
-        ],
-        "prefetch": [
-            {
-                "where": {"selector_matches": ".cta a"},
-                "eagerness": "eager"
-            },
-            {
-                "where": {"selector_matches": "a"},
-                "eagerness": "moderate"
-            }
-        ]
-    }
-    speculation_rules_json = json.dumps(speculation_rules, indent=2)
-
     context = {
         'canonical_path': canonical_path,
         'flag_path': flag_path,
@@ -86,7 +66,6 @@ def context(request):
         'language_name': language_name,
         'language_direction': language_direction,
         'facebook_locale': facebook_locale,
-        'speculation_rules_json': speculation_rules_json,
     }
 
     return context
