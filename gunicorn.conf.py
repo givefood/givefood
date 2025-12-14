@@ -1,2 +1,2 @@
 timeout = 1200
-workers = 6
+workers = 8
