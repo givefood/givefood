@@ -54,11 +54,11 @@
           </div>
 
             <div class="column is-4 content">
-              <p>{{ foodbank.full_name }} {% if foodbank.charity_just_foodbank %} is {% else %} operates under {% endif %} a registered charity.</p>
+                <p>{% if foodbank.charity_just_foodbank %}{% blocktrans with name=foodbank.full_name %}{{ name }} is a registered charity.{% endblocktrans %}{% else %}{% blocktrans with name=foodbank.full_name %}{{ name }} operates under a registered charity.{% endblocktrans %}{% endif %}</p>
               <dl>
                 <dt>{% blocktrans %}Charity name{% endblocktrans %}</dt>
                 <dd>{{ foodbank.charity_name|title }}</dd>
-                <dt>Regulator</dt>
+                <dt>{% blocktrans %}Regulator{% endblocktrans %}</dt>
                 <dd>
                     {% if foodbank.country == 'England' or foodbank.country == 'Wales' %}<a href="https://www.gov.uk/government/organisations/charity-commission?ref=givefood.org.uk">Charity Commission for England &amp; Wales</a>{% endif %}
                     {% if foodbank.country == 'Scotland' %}<a href="https://www.oscr.org.uk/?ref=givefood.org.uk">Office of the Scottish Charity Regulator</a>{% endif %}
