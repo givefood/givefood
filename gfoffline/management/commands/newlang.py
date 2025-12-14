@@ -19,10 +19,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         language_code = options['language_code']
 
-        # Validate language code is 2 characters
-        if len(language_code) != 2:
-            raise CommandError('Language code must be exactly 2 characters')
-
         # Validate language code is supported
         supported_languages = [lang[0] for lang in LANGUAGES]
         if language_code not in supported_languages:
