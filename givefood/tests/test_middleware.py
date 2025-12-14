@@ -280,108 +280,13 @@ class TestRenderTimeMiddleware:
         render_time = float(match.group(1))
         assert render_time >= 0, "Render time should be non-negative"
 
-    def test_query_count_replacement(self):
-        """Test that PUTTHEQUERIESHERE is replaced with actual query count."""
-        # Create a view that returns HTML with the placeholder
-        def test_view(request):
-            return HttpResponse(
-                b"<html><!--PUTTHEQUERIESHERE queries--></html>"
-            )
-
-        # Create middleware
-        middleware = RenderTime(test_view)
-
-        # Create request
-        request = RequestFactory().get('/')
-
-        # Process request
-        response = middleware(request)
-        content = response.content.decode('utf-8')
-
-        # Verify placeholder was replaced
-        assert 'PUTTHEQUERIESHERE' not in content, (
-            "PUTTHEQUERIESHERE placeholder should be replaced"
-        )
-
-        # Verify a number was inserted
-        import re
-        match = re.search(r'(\d+) queries', content)
-        assert match is not None, "Should contain query count"
-
-        # Verify it's a valid number
-        query_count = int(match.group(1))
-        assert query_count >= 0, "Query count should be non-negative"
-
-    def test_both_placeholders_replaced(self):
-        """Test that both placeholders are replaced in the same response."""
-        # Create a view with both placeholders
-        def test_view(request):
-            html = b"""<html>
-<!--
-Took PUTTHERENDERTIMEHEREms
-Took PUTTHEQUERIESHERE queries
--->
-</html>"""
-            return HttpResponse(html)
-
-        # Create middleware
-        middleware = RenderTime(test_view)
-
-        # Create request
-        request = RequestFactory().get('/')
-
-        # Process request
-        response = middleware(request)
-        content = response.content.decode('utf-8')
-
-        # Verify both placeholders were replaced
-        assert 'PUTTHERENDERTIMEHERE' not in content, (
-            "PUTTHERENDERTIMEHERE should be replaced"
-        )
-        assert 'PUTTHEQUERIESHERE' not in content, (
-            "PUTTHEQUERIESHERE should be replaced"
-        )
-
-        # Verify both values are present
-        import re
-        time_match = re.search(r'Took (\d+\.?\d*)ms', content)
-        query_match = re.search(r'Took (\d+) queries', content)
-
-        assert time_match is not None, "Should contain render time"
-        assert query_match is not None, "Should contain query count"
-
-    def test_query_tracking_enabled(self):
-        """Test that query tracking is enabled by the middleware."""
-        from django.db import connection
-
-        # Create a simple view
-        def test_view(request):
-            # Check that force_debug_cursor is enabled
-            assert connection.force_debug_cursor is True, (
-                "Query tracking should be enabled"
-            )
-            return HttpResponse(b"<html>PUTTHERENDERTIMEHERE PUTTHEQUERIESHERE</html>")
-
-        # Create middleware
-        middleware = RenderTime(test_view)
-
-        # Create request
-        request = RequestFactory().get('/')
-
-        # Process request
-        response = middleware(request)
-
-        # The assertion in test_view will fail if force_debug_cursor is not set
-
     def test_multiple_replacements_only_replace_first(self):
-        """Test that placeholders are only replaced once (first occurrence)."""
+        """Test that placeholder is only replaced once (first occurrence)."""
         # Create a view with multiple occurrences of the same placeholder
         def test_view(request):
             html = b"""<html>
 PUTTHERENDERTIMEHERE
 PUTTHERENDERTIMEHERE
-PUTTHEQUERIESHERE
-PUTTHEQUERIESHERE
 </html>"""
             return HttpResponse(html)
 
@@ -395,11 +300,8 @@ PUTTHEQUERIESHERE
         response = middleware(request)
         content = response.content.decode('utf-8')
 
-        # Count how many times each placeholder appears
-        # They should each appear once (the second occurrence not replaced)
+        # Count how many times the placeholder appears
+        # It should appear once (the second occurrence not replaced)
         assert content.count('PUTTHERENDERTIMEHERE') == 1, (
             "Should replace only the first PUTTHERENDERTIMEHERE"
-        )
-        assert content.count('PUTTHEQUERIESHERE') == 1, (
-            "Should replace only the first PUTTHEQUERIESHERE"
         )
