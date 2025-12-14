@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 22:42+0000\n"
-"PO-Revision-Date: 2025-12-13 23:00+0000\n"
+"POT-Creation-Date: 2025-12-14 10:27+0000\n"
+"PO-Revision-Date: 2025-12-14 10:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pa\n"
@@ -18,10 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.8\n"
-
-#: gfadmin/templates/admin/page.html:62
-msgid "Search"
-msgstr "ਖੋਜ"
 
 #: gfdumps/templates/gfdumps/dumps.html:5 gfdumps/templates/gfdumps/dumps.html:25
 #: gfdumps/templates/gfdumps/dumps.html:42
@@ -416,7 +412,7 @@ msgstr "<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> ਲਈ"
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr "ਮਾਫ਼ ਕਰਨਾ। ਸਾਨੂੰ ਨਹੀਂ ਪਤਾ ਕਿ ਇੱਥੇ ਕੀ ਚਾਹੀਦਾ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਫੂਡ ਬੈਂਕ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।"
 
-#: gfwfbn/views.py:117
+#: gfwfbn/views.py:118
 msgid "items requested at"
 msgstr "ਬੇਨਤੀ ਕੀਤੀਆਂ ਚੀਜ਼ਾਂ ਇੱਥੇ"
 
@@ -621,13 +617,12 @@ msgid "To"
 msgstr "ਨੂੰ"
 
 #: givefood/templates/public/donate.html:28
-#, python-format
 msgid ""
-"100%% of donations from the public to Give Food are used directly to efficiently and quickly deliver "
+"All donations from the public to Give Food are used directly to efficiently and quickly deliver "
 "requested food and supplies to UK food banks."
 msgstr ""
-"ਜਨਤਾ ਵੱਲੋਂ ਗਿਵ ਫੂਡ ਨੂੰ ਦਿੱਤੇ ਗਏ 100%% ਦਾਨ ਦੀ ਵਰਤੋਂ ਸਿੱਧੇ ਤੌਰ 'ਤੇ ਯੂਕੇ ਫੂਡ ਬੈਂਕਾਂ ਨੂੰ ਬੇਨਤੀ ਕੀਤੇ ਭੋਜਨ ਅਤੇ ਸਪਲਾਈ ਨੂੰ ਕੁਸ਼ਲਤਾ ਅਤੇ ਤੇਜ਼ੀ "
-"ਨਾਲ ਪਹੁੰਚਾਉਣ ਲਈ ਕੀਤੀ ਜਾਂਦੀ ਹੈ।"
+"ਜਨਤਾ ਵੱਲੋਂ ਗਿਵ ਫੂਡ ਨੂੰ ਦਿੱਤੇ ਗਏ ਸਾਰੇ ਦਾਨ ਸਿੱਧੇ ਤੌਰ 'ਤੇ ਯੂਕੇ ਫੂਡ ਬੈਂਕਾਂ ਨੂੰ ਬੇਨਤੀ ਕੀਤੇ ਭੋਜਨ ਅਤੇ ਸਪਲਾਈ ਨੂੰ ਕੁਸ਼ਲਤਾ ਅਤੇ ਤੇਜ਼ੀ ਨਾਲ "
+"ਪਹੁੰਚਾਉਣ ਲਈ ਵਰਤੇ ਜਾਂਦੇ ਹਨ।"
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
@@ -899,6 +894,9 @@ msgstr "ਇੱਕ ਮਿੰਟ ਤੋਂ ਘੱਟ ਸਮਾਂ ਪਹਿਲਾ�
 #: givefood/views.py:901
 msgid "ago"
 msgstr "ਪਹਿਲਾਂ"
+
+#~ msgid "Search"
+#~ msgstr "ਖੋਜ"
 
 #~ msgid "is a donation point for"
 #~ msgstr "ਲਈ ਇੱਕ ਦਾਨ ਬਿੰਦੂ ਹੈ"

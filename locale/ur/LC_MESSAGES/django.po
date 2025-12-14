@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 22:42+0000\n"
-"PO-Revision-Date: 2025-12-13 22:58+0000\n"
+"POT-Creation-Date: 2025-12-14 10:27+0000\n"
+"PO-Revision-Date: 2025-12-14 10:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ur\n"
@@ -18,10 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.8\n"
-
-#: gfadmin/templates/admin/page.html:62
-msgid "Search"
-msgstr "تلاش"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
@@ -485,7 +481,7 @@ msgstr ""
 "معذرت ہمیں نہیں معلوم کہ یہاں کس چیز کی ضرورت ہے، براہ کرم فوڈ بینک سے رابطہ "
 "کریں۔"
 
-#: gfwfbn/views.py:117
+#: gfwfbn/views.py:118
 msgid "items requested at"
 msgstr "پر درخواست کی اشیاء"
 
@@ -736,14 +732,13 @@ msgid "To"
 msgstr "کو"
 
 #: givefood/templates/public/donate.html:28
-#, python-format
 msgid ""
-"100%% of donations from the public to Give Food are used directly to "
-"efficiently and quickly deliver requested food and supplies to UK food banks."
+"All donations from the public to Give Food are used directly to efficiently "
+"and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
-"کھانے کو دینے کے لیے عوام کی طرف سے 100%% عطیات کا استعمال براہ راست مؤثر "
-"طریقے سے اور فوری طور پر برطانیہ کے فوڈ بینکوں کو مطلوبہ خوراک اور سامان "
-"فراہم کرنے کے لیے کیا جاتا ہے۔"
+"کھانے کو دینے کے لیے عوام کی طرف سے تمام عطیات براہ راست موثر طریقے سے اور "
+"فوری طور پر درخواست کردہ خوراک اور سامان برطانیہ کے فوڈ بینکوں تک پہنچانے کے "
+"لیے استعمال کیے جاتے ہیں۔"
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
@@ -1037,6 +1032,9 @@ msgstr "ایک منٹ پہلے"
 #: givefood/views.py:901
 msgid "ago"
 msgstr "پہلے"
+
+#~ msgid "Search"
+#~ msgstr "تلاش"
 
 #~ msgid "is a donation point for"
 #~ msgstr "کے لئے ایک عطیہ نقطہ ہے"

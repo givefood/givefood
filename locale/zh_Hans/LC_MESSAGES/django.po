@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 23:08+0000\n"
-"PO-Revision-Date: 2025-12-14 09:32+0000\n"
+"POT-Creation-Date: 2025-12-14 10:27+0000\n"
+"PO-Revision-Date: 2025-12-14 10:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -18,10 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.8\n"
-
-#: gfadmin/templates/admin/page.html:62
-msgid "Search"
-msgstr "搜索"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
@@ -286,9 +282,8 @@ msgstr "网页"
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
 #: gfwfbn/templates/wfbn/index.html:114 givefood/templates/403.html:30
 #: givefood/templates/404.html:30 givefood/templates/500.html:30
-#, fuzzy
 msgid "Email"
-msgstr "邮箱"
+msgstr "邮件"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:25
 #, python-format
@@ -471,7 +466,7 @@ msgstr "对于<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr "抱歉，我们不清楚这里需要什么，请联系食物银行。"
 
-#: gfwfbn/views.py:117
+#: gfwfbn/views.py:118
 msgid "items requested at"
 msgstr "请求的物品"
 
@@ -697,18 +692,16 @@ msgid "Most viewed this week"
 msgstr "本周浏览量最高"
 
 #: givefood/templates/public/donate.html:27
-#, fuzzy
 msgid "To"
-msgstr "到"
+msgstr "至"
 
 #: givefood/templates/public/donate.html:28
-#, python-format
 msgid ""
-"100%% of donations from the public to Give Food are used directly to "
-"efficiently and quickly deliver requested food and supplies to UK food banks."
+"All donations from the public to Give Food are used directly to efficiently "
+"and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
-"Give Food 收到的公众捐款 100% 将直接用于高效快速地向英国食品银行提供所需的食"
-"品和物资。"
+"公众向 Give Food 捐赠的所有款项将直接用于高效、快速地向英国食品银行运送所需的"
+"食品和物资。"
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
@@ -990,3 +983,6 @@ msgstr "不到一分钟前"
 #: givefood/views.py:901
 msgid "ago"
 msgstr "前"
+
+#~ msgid "Search"
+#~ msgstr "搜索"

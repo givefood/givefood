@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 22:42+0000\n"
-"PO-Revision-Date: 2025-12-13 23:03+0000\n"
+"POT-Creation-Date: 2025-12-14 10:27+0000\n"
+"PO-Revision-Date: 2025-12-14 10:28+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ga\n"
@@ -19,10 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=5; plural=(n==1 ? 0 : n==2 ? 1 : n>=3 && n<=6 ? 2 : "
 "n>=7 && n<=10 ? 3 : 4);\n"
 "X-Generator: Poedit 3.8\n"
-
-#: gfadmin/templates/admin/page.html:62
-msgid "Search"
-msgstr "Cuardaigh"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
@@ -495,7 +491,7 @@ msgstr ""
 "Tá brón orm. Níl a fhios againn cad atá ag teastáil anseo, déan teagmháil "
 "leis an mbanc bia le do thoil"
 
-#: gfwfbn/views.py:117
+#: gfwfbn/views.py:118
 msgid "items requested at"
 msgstr "míreanna a iarradh ag"
 
@@ -745,14 +741,13 @@ msgid "To"
 msgstr "Ar"
 
 #: givefood/templates/public/donate.html:28
-#, python-format
 msgid ""
-"100%% of donations from the public to Give Food are used directly to "
-"efficiently and quickly deliver requested food and supplies to UK food banks."
+"All donations from the public to Give Food are used directly to efficiently "
+"and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
-"Úsáidtear 100%% de shíntiúis ón bpobal chuig Give Food go díreach chun bia "
-"agus soláthairtí iarrtha a sheachadadh go héifeachtúil agus go tapa chuig "
-"bainc bia sa Ríocht Aontaithe."
+"Úsáidtear gach síntiús ón bpobal chuig Give Food go díreach chun bia agus "
+"soláthairtí a iarrtar a sheachadadh go héifeachtúil agus go tapa chuig bainc "
+"bia sa Ríocht Aontaithe."
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
@@ -1051,6 +1046,9 @@ msgstr "Faoi nóiméad ó shin"
 #: givefood/views.py:901
 msgid "ago"
 msgstr "ó shin"
+
+#~ msgid "Search"
+#~ msgstr "Cuardaigh"
 
 #~ msgid "is a donation point for"
 #~ msgstr "is pointe síntiús é do"

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 22:42+0000\n"
-"PO-Revision-Date: 2025-12-13 22:51+0000\n"
+"POT-Creation-Date: 2025-12-14 10:27+0000\n"
+"PO-Revision-Date: 2025-12-14 10:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: gd\n"
@@ -19,10 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 || n==11 ? 0 : n==2 || n==12 ? 1 : "
 "(n>=3 && n<=10) || (n>=13 && n<=19) ? 2 : 3);\n"
 "X-Generator: Poedit 3.8\n"
-
-#: gfadmin/templates/admin/page.html:62
-msgid "Search"
-msgstr ""
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
@@ -493,7 +489,7 @@ msgstr ""
 "Duilich. Chan eil fios againn dè a tha a dhìth an seo, cuir fios chun bhanca "
 "bìdh"
 
-#: gfwfbn/views.py:117
+#: gfwfbn/views.py:118
 msgid "items requested at"
 msgstr "nithean a chaidh iarraidh aig"
 
@@ -746,14 +742,13 @@ msgid "To"
 msgstr "Gu"
 
 #: givefood/templates/public/donate.html:28
-#, python-format
 msgid ""
-"100%% of donations from the public to Give Food are used directly to "
-"efficiently and quickly deliver requested food and supplies to UK food banks."
+"All donations from the public to Give Food are used directly to efficiently "
+"and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
-"Bithear a’ cleachdadh 100%% de thabhartasan bhon phoball gu Give Food gu "
-"dìreach gus biadh agus solar a chaidh iarraidh a lìbhrigeadh gu h-"
-"èifeachdach agus gu sgiobalta gu bancaichean bìdh na RA."
+"Bithear a’ cleachdadh a h-uile tabhartas bhon phoball gu Give Food gu "
+"dìreach gus biadh is solar a chaidh iarraidh a lìbhrigeadh gu h-èifeachdach "
+"agus gu luath gu bancaichean bìdh san RA."
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"

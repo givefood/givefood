@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 22:42+0000\n"
-"PO-Revision-Date: 2025-12-13 23:02+0000\n"
+"POT-Creation-Date: 2025-12-14 10:27+0000\n"
+"PO-Revision-Date: 2025-12-14 10:27+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ar\n"
@@ -19,10 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && "
 "n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 "X-Generator: Poedit 3.8\n"
-
-#: gfadmin/templates/admin/page.html:62
-msgid "Search"
-msgstr "بحث"
 
 #: gfdumps/templates/gfdumps/dumps.html:5 gfdumps/templates/gfdumps/dumps.html:25
 #: gfdumps/templates/gfdumps/dumps.html:42
@@ -468,7 +464,7 @@ msgstr "لـ <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr "عذراً. لا نعرف ما هو مطلوب هنا، يُرجى التواصل مع بنك الطعام"
 
-#: gfwfbn/views.py:117
+#: gfwfbn/views.py:118
 msgid "items requested at"
 msgstr "العناصر المطلوبة في"
 
@@ -710,13 +706,13 @@ msgid "To"
 msgstr "إلى"
 
 #: givefood/templates/public/donate.html:28
-#, python-format
 msgid ""
-"100%% of donations from the public to Give Food are used directly to efficiently "
-"and quickly deliver requested food and supplies to UK food banks."
+"All donations from the public to Give Food are used directly to efficiently and "
+"quickly deliver requested food and supplies to UK food banks."
 msgstr ""
-"يتم استخدام 100%% من التبرعات من الجمهور لمؤسسة Give Food بشكل مباشر لتوصيل "
-"الطعام والإمدادات المطلوبة إلى بنوك الطعام في المملكة المتحدة بكفاءة وسرعة."
+"تُستخدم جميع التبرعات المقدمة من الجمهور إلى مؤسسة \"جيف فود\" بشكل مباشر لتوصيل "
+"المواد الغذائية والإمدادات المطلوبة إلى بنوك الطعام في المملكة المتحدة بكفاءة "
+"وسرعة."
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
@@ -1002,6 +998,9 @@ msgstr "منذ أقل من دقيقة"
 #: givefood/views.py:901
 msgid "ago"
 msgstr "منذ"
+
+#~ msgid "Search"
+#~ msgstr "بحث"
 
 #~ msgid "is a donation point for"
 #~ msgstr "هي نقطة تبرع لـ"

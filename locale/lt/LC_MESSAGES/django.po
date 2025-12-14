@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 23:08+0000\n"
-"PO-Revision-Date: 2025-12-14 09:30+0000\n"
+"POT-Creation-Date: 2025-12-14 10:27+0000\n"
+"PO-Revision-Date: 2025-12-14 10:28+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: lt\n"
@@ -20,10 +20,6 @@ msgstr ""
 "11) ? 0 : (n % 10 >= 2 && n % 10 <=9) && (n % 100 > 19 || n % 100 < 11) ? "
 "1 : n % 1 != 0 ? 2: 3);\n"
 "X-Generator: Poedit 3.8\n"
-
-#: gfadmin/templates/admin/page.html:62
-msgid "Search"
-msgstr "Ieškoti"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
@@ -489,7 +485,7 @@ msgstr "Skirta <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr "Atsiprašome. Nežinome, ko čia reikia, susisiekite su maisto banku."
 
-#: gfwfbn/views.py:117
+#: gfwfbn/views.py:118
 msgid "items requested at"
 msgstr "užsakytų daiktų"
 
@@ -738,14 +734,13 @@ msgid "To"
 msgstr "Iki"
 
 #: givefood/templates/public/donate.html:28
-#, python-format
 msgid ""
-"100%% of donations from the public to Give Food are used directly to "
-"efficiently and quickly deliver requested food and supplies to UK food banks."
+"All donations from the public to Give Food are used directly to efficiently "
+"and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
-"100 % visuomenės aukų, skirtų organizacijai „Give Food“, yra tiesiogiai "
-"panaudojamos tam, kad būtų efektyviai ir greitai pristatytas prašomas "
-"maistas ir reikmenys JK maisto bankams."
+"Visos visuomenės aukos organizacijai „Give Food“ naudojamos tiesiogiai tam, "
+"kad būtų galima efektyviai ir greitai pristatyti prašomą maistą ir reikmenis "
+"JK maisto bankams."
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
@@ -1038,3 +1033,6 @@ msgstr "Prieš mažiau nei minutę"
 #: givefood/views.py:901
 msgid "ago"
 msgstr "prieš"
+
+#~ msgid "Search"
+#~ msgstr "Ieškoti"

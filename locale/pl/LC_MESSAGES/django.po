@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-13 22:42+0000\n"
-"PO-Revision-Date: 2025-12-13 22:57+0000\n"
+"POT-Creation-Date: 2025-12-14 10:27+0000\n"
+"PO-Revision-Date: 2025-12-14 10:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -19,10 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 "
 "|| n%100>14) ? 1 : 2);\n"
 "X-Generator: Poedit 3.8\n"
-
-#: gfadmin/templates/admin/page.html:62
-msgid "Search"
-msgstr "Szukaj"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
@@ -496,7 +492,7 @@ msgstr ""
 "Przepraszamy. Nie wiemy, co jest tutaj potrzebne, skontaktuj się z bankiem "
 "żywności"
 
-#: gfwfbn/views.py:117
+#: gfwfbn/views.py:118
 msgid "items requested at"
 msgstr "przedmioty zamówione w"
 
@@ -749,13 +745,12 @@ msgid "To"
 msgstr "Do"
 
 #: givefood/templates/public/donate.html:28
-#, python-format
 msgid ""
-"100%% of donations from the public to Give Food are used directly to "
-"efficiently and quickly deliver requested food and supplies to UK food banks."
+"All donations from the public to Give Food are used directly to efficiently "
+"and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
-"100%% darowizn od społeczeństwa na rzecz organizacji Give Food jest "
-"wykorzystywanych bezpośrednio w celu sprawnego i szybkiego dostarczania "
+"Wszystkie darowizny od społeczeństwa na rzecz organizacji Give Food są "
+"wykorzystywane bezpośrednio w celu sprawnego i szybkiego dostarczania "
 "zamówionej żywności i innych artykułów do banków żywności w Wielkiej "
 "Brytanii."
 
@@ -1056,6 +1051,9 @@ msgstr "Mniej niż minutę temu"
 #: givefood/views.py:901
 msgid "ago"
 msgstr "temu"
+
+#~ msgid "Search"
+#~ msgstr "Szukaj"
 
 #~ msgid "is a donation point for"
 #~ msgstr "jest punktem darowizn dla"
