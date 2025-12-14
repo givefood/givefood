@@ -6,26 +6,28 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-13 23:08+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2025-12-14 09:33+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.8\n"
+
 #: gfadmin/templates/admin/page.html:62
 msgid "Search"
-msgstr ""
+msgstr "Arama"
 
 #: gfdumps/templates/gfdumps/dumps.html:5
 #: gfdumps/templates/gfdumps/dumps.html:25
 #: gfdumps/templates/gfdumps/dumps.html:42
 msgid "Dumps"
-msgstr ""
+msgstr "Çöp yığınları"
 
 #: gfdumps/templates/gfdumps/dumps.html:24
 #: gfwfbn/templates/wfbn/constituency/constituency.html:41
@@ -42,96 +44,98 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/updates.html:40
 #: givefood/templates/public/page.html:52
 msgid "Home"
-msgstr ""
+msgstr "Ana Sayfa"
 
 #: gfdumps/templates/gfdumps/dumps.html:67
 msgid "Date"
-msgstr ""
+msgstr "Tarih"
 
 #: gfdumps/templates/gfdumps/dumps.html:68
 msgid "Size"
-msgstr ""
+msgstr "Boyut"
 
 #: gfdumps/templates/gfdumps/dumps.html:69
 msgid "Rows"
-msgstr ""
+msgstr "Satırlar"
 
 #: gfdumps/templates/gfdumps/dumps.html:75
 msgid "Latest"
-msgstr ""
+msgstr "Son"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:32
 #: gfwfbn/templates/wfbn/constituency/index.html:36
 msgid "Parliamentary Constituencies"
-msgstr ""
+msgstr "Parlamento Seçim Bölgeleri"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:42
 msgid ""
 "Find which food banks operate in your parliamentary constituency, then "
 "donate or take action."
 msgstr ""
+"Seçim bölgenizde faaliyet gösteren gıda bankalarını bulun, ardından bağış "
+"yapın veya harekete geçin."
 
 #: gfwfbn/templates/wfbn/constituency/index.html:46
 msgid "Sorry, we didn't recognise this postcode. Could you try again?"
-msgstr ""
+msgstr "Üzgünüz, bu posta kodunu tanımadık. Tekrar deneyebilir misiniz?"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Search by postcode"
-msgstr ""
+msgstr "Posta koduna göre ara"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Postcode"
-msgstr ""
+msgstr "Posta Kodu"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:52
 #: gfwfbn/templates/wfbn/index.html:64
 #: givefood/templates/public/country.html:43
 #: givefood/templates/public/index.html:39
 msgid "Go"
-msgstr ""
+msgstr "Git"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:23
 #: gfwfbn/templates/wfbn/foodbank/charity.html:43
 #: gfwfbn/templates/wfbn/foodbank/charity.html:47
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
 msgid "Charity"
-msgstr ""
+msgstr "Hayır kurumu"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:59
 msgid "Charity name"
-msgstr ""
+msgstr "Hayır kurumu adı"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:67
 msgid "Charity number"
-msgstr ""
+msgstr "Yardım kuruluşu numarası"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:72
 msgid "Charity type"
-msgstr ""
+msgstr "Hayır kurumu türü"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:76
 msgid "Registration date"
-msgstr ""
+msgstr "Kayıt Tarihi"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:81
 msgid "Objectives"
-msgstr ""
+msgstr "Hedefler"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:85
 msgid "Purposes"
-msgstr ""
+msgstr "Amaçlar"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:99
 msgid "Year"
-msgstr ""
+msgstr "Yıl"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:100
 msgid "Income"
-msgstr ""
+msgstr "Kazanç"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:101
 msgid "Expenditure"
-msgstr ""
+msgstr "Harcama"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:48
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:22
@@ -140,47 +144,50 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
 #: gfwfbn/templates/wfbn/index.html:87 givefood/templates/public/index.html:144
 msgid "Donation points"
-msgstr ""
+msgstr "Bağış puanları"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:64
 #: gfwfbn/templates/wfbn/foodbank/index.html:64
 #: gfwfbn/templates/wfbn/foodbank/location.html:63
 msgid "This food bank is closed"
-msgstr ""
+msgstr "Bu gıda bankası kapalı."
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 #, python-format
 msgid ""
 "is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgstr ""
+"<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> için bir bağış noktasıdır."
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 msgid "Here they are requesting to have donated..."
-msgstr ""
+msgstr "Burada bağış yapılmasını talep ediyorlar..."
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:75
 #: gfwfbn/templates/wfbn/foodbank/index.html:78
 #: gfwfbn/templates/wfbn/foodbank/location.html:77
 msgid "They don't need any more"
-msgstr ""
+msgstr "Daha fazlasına ihtiyaçları yok."
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:81
 msgid "Opening hours"
-msgstr ""
+msgstr "Açılış saatleri"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
 msgid "Only accepts in-store purchases as donations"
-msgstr ""
+msgstr "Sadece mağazadan yapılan satın alımları bağış olarak kabul eder."
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:92
 msgid ""
 "Although, sometimes you can add items marked as not from the store. Best to "
 "check."
 msgstr ""
+"Ancak bazen mağazada bulunmayan ürünleri de ekleyebilirsiniz. Yine de "
+"kontrol etmenizde fayda var."
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:97
 msgid "Wheelchair accessible"
-msgstr ""
+msgstr "Tekerlekli sandalye erişimine uygun"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint.html:123
 #: gfwfbn/templates/wfbn/foodbank/index.html:140
@@ -188,23 +195,23 @@ msgstr ""
 #: gfwfbn/templates/wfbn/foodbank/location.html:132
 #: gfwfbn/templates/wfbn/foodbank/location.html:144
 msgid "Directions"
-msgstr ""
+msgstr "Talimatlar"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:6
 msgid "Hours may vary because of"
-msgstr ""
+msgstr "Çalışma saatleri çeşitli nedenlerle değişiklik gösterebilir."
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:58
 #: gfwfbn/templates/wfbn/foodbank/locations.html:61
 msgid "Main"
-msgstr ""
+msgstr "Ana"
 
 #: gfwfbn/templates/wfbn/foodbank/donationpoints.html:66
 #: gfwfbn/templates/wfbn/foodbank/index.html:152
 #: gfwfbn/templates/wfbn/foodbank/location.html:142
 #: gfwfbn/templates/wfbn/foodbank/locations.html:70
 msgid "Delivery"
-msgstr ""
+msgstr "Teslimat"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
 #, python-format
@@ -212,14 +219,16 @@ msgid ""
 "Charity Registration <a href=\"%(charity_url)s\" "
 "id=\"charity_link\">%(charity_number)s</a>"
 msgstr ""
+"Hayır Kurumu Kaydı <a href=\"%(charity_url)s\" "
+"id=\"charity_link\">%(charity_number)s</a>"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
 msgid "Part of"
-msgstr ""
+msgstr "Parçası"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:13
 msgid "is a registered charity in England &amp; Wales"
-msgstr ""
+msgstr "İngiltere ve Galler'de kayıtlı bir hayır kurumudur."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
 #: givefood/templates/public/country.html:51
@@ -228,62 +237,62 @@ msgstr ""
 #: givefood/templates/public/index.html:48
 #: givefood/templates/public/page.html:57
 msgid "Donate"
-msgstr ""
+msgstr "Bağış"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:6
 msgid "Food, money or your time"
-msgstr ""
+msgstr "Yemek, para veya zamanınız"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:12
 msgid "Donate using "
-msgstr ""
+msgstr "Bağış yapmak için"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
 msgid "Details"
-msgstr ""
+msgstr "Detaylar"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:6
 #: gfwfbn/templates/wfbn/foodbank/locations.html:22
 #: gfwfbn/templates/wfbn/foodbank/locations.html:42
 #: gfwfbn/templates/wfbn/foodbank/locations.html:46
 msgid "Locations"
-msgstr ""
+msgstr "Konumlar"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
 #: gfwfbn/templates/wfbn/foodbank/news.html:23
 #: gfwfbn/templates/wfbn/foodbank/news.html:43
 #: gfwfbn/templates/wfbn/foodbank/news.html:47
 msgid "News"
-msgstr ""
+msgstr "Haberler"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:18
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:22
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:42
 #: gfwfbn/templates/wfbn/foodbank/socialmedia.html:46
 msgid "Social media"
-msgstr ""
+msgstr "Sosyal medya"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/menu.html:20
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:22
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:42
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:46
 msgid "Nearby"
-msgstr ""
+msgstr "Yakınlarda"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
 #: givefood/templates/public/page.html:53
 msgid "Apps"
-msgstr ""
+msgstr "Uygulamalar"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:12
 msgid "Web"
-msgstr ""
+msgstr "Web"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
 #: gfwfbn/templates/wfbn/index.html:114 givefood/templates/403.html:30
 #: givefood/templates/404.html:30 givefood/templates/500.html:30
 msgid "Email"
-msgstr ""
+msgstr "E-posta"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:25
 #, python-format
@@ -291,6 +300,8 @@ msgid ""
 "Get a notification of what is needed when you are near a donation point with "
 "our <a href=\"%(apps_url)s\">mobile apps</a>"
 msgstr ""
+"<a href=\"%(apps_url)s\">Mobil uygulamalarımız</a> sayesinde bağış "
+"noktalarına yaklaştığınızda neye ihtiyaç duyulduğuna dair bildirim alın."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:27
 #, python-format
@@ -298,75 +309,84 @@ msgid ""
 "Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</"
 "a>"
 msgstr ""
+"<a href=\"%(apps_url)s\">Mobil uygulamalarımızla</a> ihtiyaç duyulanlar "
+"hakkında güncel bilgilere ulaşın."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:32
 msgid "Have this web browser notify when the shopping list changes"
 msgstr ""
+"Bu web tarayıcısının alışveriş listesi değiştiğinde bildirim göndermesini "
+"sağlayın."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:34
 msgid "Get browser notifications"
-msgstr ""
+msgstr "Tarayıcı bildirimlerini alın"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:39
 msgid "Sorry, the security check failed. Please try again."
-msgstr ""
+msgstr "Üzgünüz, güvenlik kontrolü başarısız oldu. Lütfen tekrar deneyin."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:42
 msgid "Get updates on this shopping list via email"
-msgstr ""
+msgstr "Bu alışveriş listesiyle ilgili güncellemeleri e-posta yoluyla alın."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:47
 msgid "Email address"
-msgstr ""
+msgstr "E-posta adresi"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:50
 msgid "Get updates"
-msgstr ""
+msgstr "Güncellemeleri al"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:53
 msgid ""
 "We'll never use your email address for anything else, and you can "
 "unsubscribe at any time"
 msgstr ""
+"E-posta adresinizi asla başka bir amaçla kullanmayacağız ve istediğiniz "
+"zaman aboneliğinizi iptal edebilirsiniz."
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:70
 msgid "You can find out what is needed on the foodbank's Facebook page:"
 msgstr ""
+"İhtiyaç duyulan malzemeleri gıda bankasının Facebook sayfasından "
+"öğrenebilirsiniz:"
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:73
 msgid "is currently requesting the following items to be donated:"
-msgstr ""
+msgstr "Şu anda aşağıdaki eşyaların bağışlanmasını talep etmektedir:"
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:97
 #: gfwfbn/templates/wfbn/foodbank/index.html:99
 msgid ""
 "This food bank is located at a school, so may not be open to the public."
 msgstr ""
+"Bu gıda bankası bir okulda bulunuyor, bu nedenle halka açık olmayabilir."
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:138
 #: gfwfbn/templates/wfbn/foodbank/locations.html:59
 msgid "Administrative"
-msgstr ""
+msgstr "Yönetimsel"
 
 #: gfwfbn/templates/wfbn/foodbank/location.html:81
 #: gfwfbn/templates/wfbn/foodbank/location.html:92
 msgid "This location accepts donations"
-msgstr ""
+msgstr "Bu mekân bağış kabul etmektedir."
 
 #: gfwfbn/templates/wfbn/foodbank/location.html:84
 #: gfwfbn/templates/wfbn/foodbank/location.html:95
 msgid "Mobile food bank location"
-msgstr ""
+msgstr "Mobil gıda bankası konumu"
 
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:65
 #: gfwfbn/templates/wfbn/foodbank/nearby.html:67
 #: gfwfbn/templates/wfbn/index.html:102 gfwfbn/templates/wfbn/index.html:149
 msgid "away"
-msgstr ""
+msgstr "uzakta"
 
 #: gfwfbn/templates/wfbn/index.html:10
 msgid "What Food Banks Need"
-msgstr ""
+msgstr "Gıda Bankalarının İhtiyaç Duydukları Şeyler"
 
 #: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
 #: givefood/views.py:727
@@ -374,39 +394,41 @@ msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
 msgstr ""
+"Give Food'un aracını kullanarak, yakınınızdaki gıda bankalarının hangi "
+"bağışlara ihtiyaç duyduğunu öğrenebilirsiniz."
 
 #: gfwfbn/templates/wfbn/index.html:14
 msgid "Map of UK food banks"
-msgstr ""
+msgstr "Birleşik Krallık gıda bankalarının haritası"
 
 #: gfwfbn/templates/wfbn/index.html:32 gfwfbn/templates/wfbn/index.html:40
 msgid "Find Food Banks To Help"
-msgstr ""
+msgstr "Yardım Alabileceğiniz Gıda Bankaları Bulun"
 
 #: gfwfbn/templates/wfbn/index.html:35 gfwfbn/templates/wfbn/index.html:38
 msgid "food banks"
-msgstr ""
+msgstr "gıda bankaları"
 
 #: gfwfbn/templates/wfbn/index.html:59
 #: givefood/templates/public/country.html:38
 #: givefood/templates/public/index.html:34
 msgid "Use my location"
-msgstr ""
+msgstr "Konumumu kullan"
 
 #: gfwfbn/templates/wfbn/index.html:61
 #: givefood/templates/public/country.html:40
 #: givefood/templates/public/index.html:36
 msgid "Postcode or town"
-msgstr ""
+msgstr "Posta kodu veya şehir"
 
 #: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:37
 msgid "e.g. EX4 6PX or Sheffield"
-msgstr ""
+msgstr "Örneğin EX4 6PX veya Sheffield"
 
 #: gfwfbn/templates/wfbn/index.html:67
 #, python-format
 msgid "Foodbanks in %(location)s"
-msgstr ""
+msgstr "%(location)s'daki gıda bankaları"
 
 #: gfwfbn/templates/wfbn/index.html:68
 #, python-format
@@ -414,99 +436,107 @@ msgid ""
 "Find a food bank near %(location)s, see what they need and how you can help "
 "by donating or volunteering."
 msgstr ""
+"%(location)s yakınlarındaki bir gıda bankasını bulun, ihtiyaçlarını öğrenin "
+"ve bağış yaparak veya gönüllü olarak nasıl yardımcı olabileceğinizi görün."
 
 #: gfwfbn/templates/wfbn/index.html:72
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
-msgstr ""
+msgstr "Üzgünüz, o konumu kullanamadık. Birleşik Krallık sınırları içinde mi?"
 
 #: gfwfbn/templates/wfbn/index.html:78
 msgid "Search results"
-msgstr ""
+msgstr "Arama sonuçları"
 
 #: gfwfbn/templates/wfbn/index.html:82 givefood/templates/public/index.html:116
 #: givefood/templates/public/index.html:140
 msgid "Food banks"
-msgstr ""
+msgstr "Gıda bankaları"
 
 #: gfwfbn/templates/wfbn/index.html:100
 #, python-format
 msgid "Part of <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "<a href=\"%(parent_url)s\">%(foodbank_name)s'</a> in bir parçası"
 
 #: gfwfbn/templates/wfbn/index.html:108 gfwfbn/templates/wfbn/index.html:154
 msgid "Nothing right now, thanks"
-msgstr ""
+msgstr "Şu an için bir şey yok, teşekkürler."
 
 #: gfwfbn/templates/wfbn/index.html:111
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #: gfwfbn/templates/wfbn/index.html:116
 msgid "Check the foodbank's "
-msgstr ""
+msgstr "Gıda bankasının bilgilerini kontrol edin."
 
 #: gfwfbn/templates/wfbn/index.html:117
 msgid "Facebook page"
-msgstr ""
+msgstr "Facebook sayfası"
 
 #: gfwfbn/templates/wfbn/index.html:118
 msgid " for what they need"
-msgstr ""
+msgstr "ihtiyaç duydukları şey için"
 
 #: gfwfbn/templates/wfbn/index.html:148
 #, python-format
 msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgstr "<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> için"
 
 #: gfwfbn/templates/wfbn/index.html:156
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr ""
+"Üzgünüz. Burada neye ihtiyaç duyulduğunu bilmiyoruz, lütfen gıda bankasıyla "
+"iletişime geçin."
 
 #: gfwfbn/views.py:117
 msgid "items requested at"
-msgstr ""
+msgstr "talep edilen ürünler"
 
 #: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
-msgstr ""
+msgstr "Gıda Bankası"
 
 #: givefood/models.py:1063
 msgid "Closed"
-msgstr ""
+msgstr "Kapalı"
 
 #: givefood/templates/403.html:4 givefood/templates/403.html:19
 msgid "403 - Forbidden"
-msgstr ""
+msgstr "403 - Yasak"
 
 #: givefood/templates/403.html:25 givefood/templates/500.html:25
 msgid ""
 "Sorry, something has gone wrong there and we can't serve that page. This "
 "error has been logged and we'll look into it."
 msgstr ""
+"Üzgünüz, bir sorun oluştu ve bu sayfayı sunamıyoruz. Bu hata kaydedildi ve "
+"inceleyeceğiz."
 
 #: givefood/templates/403.html:28 givefood/templates/404.html:28
 #: givefood/templates/500.html:28
 msgid "Homepage"
-msgstr ""
+msgstr "Anasayfa"
 
 #: givefood/templates/403.html:29 givefood/templates/404.html:29
 #: givefood/templates/500.html:29
 msgid "Find what food banks need"
-msgstr ""
+msgstr "Gıda bankalarının neye ihtiyacı olduğunu öğrenin."
 
 #: givefood/templates/404.html:4 givefood/templates/404.html:19
 msgid "404 - Not Found"
-msgstr ""
+msgstr "404 - Sayfa Bulunamadı"
 
 #: givefood/templates/404.html:25
 msgid ""
 "Sorry, we can't find that page. It may have been removed or you might have "
 "entered an incorrect URL."
 msgstr ""
+"Üzgünüz, o sayfayı bulamadık. Sayfa kaldırılmış olabilir veya yanlış bir URL "
+"girmiş olabilirsiniz."
 
 #: givefood/templates/500.html:4 givefood/templates/500.html:19
 msgid "500 - Internal Server Error"
-msgstr ""
+msgstr "500 - İç Sunucu Hatası"
 
 #: givefood/templates/public/about_us.html:5
 #: givefood/templates/public/about_us.html:22
@@ -514,7 +544,7 @@ msgstr ""
 #: givefood/templates/public/index.html:50
 #: givefood/templates/public/page.html:58
 msgid "About us"
-msgstr ""
+msgstr "Hakkımızda"
 
 #: givefood/templates/public/about_us.html:24
 msgid ""
@@ -532,17 +562,17 @@ msgid ""
 "millions of users each year, helping people learn about and engage with food "
 "poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">charity</a> in February 2020, just weeks before the UK "
-"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
-"local food insecurity alleviation organisations delivering hundreds of "
-"tonnes of vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">charity</a> in February 2020, just weeks before the UK entered "
+"COVID-19 lockdowns, and since then we've worked with hundreds of local food "
+"insecurity alleviation organisations delivering hundreds of tonnes of "
+"vitally needed supplies.</p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a "
-"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
-"from Penzance to Lerwick as safe as possible whilst continuing to support "
-"their communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a href=\"/"
+"2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks from "
+"Penzance to Lerwick as safe as possible whilst continuing to support their "
+"communities.</p>\n"
 "\n"
 "                <p>We help the public act on food insecurity by using our "
 "data to show which food banks are in their parliamentary constituency, and "
@@ -563,18 +593,54 @@ msgid ""
 "                    <em>The Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
-"org.uk</a>\n"
+"                    <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
 msgstr ""
+"\n"
+"                <p>Give Food, İngiltere merkezli bir yardım kuruluşu olup, "
+"verileri kullanarak yerel ve yapısal gıda güvensizliğini ortaya koyuyor ve "
+"ardından bu sorunu hafifletmeye yardımcı olacak araçlar sunuyor.</p><p> <a "
+"href=\"/needs/\">Ulusal çapta faaliyet gösteren tek kamuya açık gıda bankası "
+"veri tabanını</a> işletiyoruz ve bağış taleplerini gerçek zamanlı olarak "
+"takip ediyoruz.</p><p> Çeşitli kamu ve özel kuruluşlarla, aralarında birçok "
+"hayır kurumunun da bulunduğu kuruluşlarla iş birliği yaparak, verilerimizi "
+"her yıl milyonlarca kullanıcıyla paylaşıyor ve insanların gıda yoksulluğu "
+"sorunları hakkında bilgi edinmelerine ve bu sorunlara çözüm bulmaya yönelik "
+"çalışmalara katılmalarına yardımcı oluyoruz.</p><p> Şubat 2020'de, "
+"İngiltere'nin COVID-19 karantinalarına girmesinden sadece birkaç hafta önce "
+"bir <a href=\"https://register-of-charities.charitycommission.gov.uk/en/"
+"charity-search/-/charity-details/5147019\">yardım kuruluşu</a> olduk ve o "
+"zamandan beri yüzlerce yerel gıda güvensizliğiyle mücadele örgütüyle "
+"çalışarak yüzlerce ton hayati önem taşıyan malzemeyi teslim ettik.</p><p> "
+"Örneğin, pandemi sırasında Penzance'den Lerwick'e kadar gıda bankalarının "
+"olabildiğince güvenli kalmasına ve topluluklarına destek vermeye devam "
+"etmesine yardımcı olmak için <a href=\"/2020/#ppe-supplies\">1,2 milyon adet "
+"kişisel koruyucu ekipman</a> teslim ettik.</p><p> Verilerimizi kullanarak, "
+"halkın gıda güvensizliğiyle mücadele etmesine yardımcı oluyoruz; bu sayede "
+"kendi seçim bölgelerinde hangi gıda bankalarının bulunduğunu gösteriyor ve "
+"<a href=\"/write/\">milletvekillerine e-posta göndererek bu sorunu çözmek "
+"için ne gibi adımlar attıklarını sormalarını kolaylaştıran bir araç</a> "
+"sunuyoruz.</p><p> Operasyonlarımız açık kaynaklı ve şeffaftır; mevcut ve "
+"geçmiş <a href=\"https://github.com/givefood/givefood\">kodlarımızın</a> ve "
+"<a href=\"/api/\">verilerimizin</a> neredeyse tamamı yayınlanmıştır, ayrıca "
+"<a href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
+"search/-/charity-details/5147019/accounts-and-annual-returns\">hesaplar</a> "
+"ve <a href=\"/annual-reports/\">yıllık raporlar</a> da incelenebilir "
+"durumdadır.</p><p> Önerileriniz, yorumlarınız, eleştirileriniz veya "
+"destekleriniz için lütfen bizimle iletişime geçmekten çekinmeyin.</p><p> "
+"<em>Give Food Vakfı Mütevelli Heyeti</em></p><p> <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
+"\n"
+"            "
 
 #: givefood/templates/public/ar/index.html:5
 #: givefood/templates/public/ar/index.html:22
 #: givefood/templates/public/page.html:56
 msgid "Annual reports"
-msgstr ""
+msgstr "Yıllık raporlar"
 
 #: givefood/templates/public/ar/index.html:8
 #: givefood/templates/public/donate.html:8
@@ -584,36 +650,41 @@ msgid ""
 "Give Food is a UK charity that uses data to highlight local and structural "
 "food insecurity then provides tools to help alleviate it."
 msgstr ""
+"Give Food, İngiltere merkezli bir yardım kuruluşu olup, verileri kullanarak "
+"yerel ve yapısal gıda güvensizliğini ortaya koyuyor ve ardından bu sorunu "
+"hafifletmeye yardımcı olacak araçlar sunuyor."
 
 #: givefood/templates/public/ar/index.html:25
 msgid "AI, general election, site translation"
-msgstr ""
+msgstr "Yapay zeka, genel seçim, site çevirisi"
 
 #: givefood/templates/public/ar/index.html:28
 msgid "Rebrand, refresh, rewrite &amp; categorisation"
-msgstr ""
+msgstr "Yeniden markalama, yenileme, yeniden yazma ve kategorizasyon"
 
 #: givefood/templates/public/ar/index.html:31
 msgid "Write to your MP tool, surplus monitoring, data audits"
-msgstr ""
+msgstr "MP aracınıza yazın, fazla izleme, veri denetimleri"
 
 #: givefood/templates/public/ar/index.html:34
 msgid "Data &amp; UX review, dashboards, charity reporting"
 msgstr ""
+"Veri ve kullanıcı deneyimi incelemesi, gösterge panelleri, hayır kurumu "
+"raporlaması"
 
 #: givefood/templates/public/ar/index.html:37
 msgid "Pandemic response, becoming a charity, publishing our data"
-msgstr ""
+msgstr "Pandemiye müdahale, hayır kurumu olma, verilerimizi yayınlama"
 
 #: givefood/templates/public/ar/index.html:40
 msgid "Initial deliveries, Christmas"
-msgstr ""
+msgstr "İlk teslimatlar, Noel"
 
 #: givefood/templates/public/colophon.html:5
 #: givefood/templates/public/colophon.html:19
 #: givefood/templates/public/page.html:59
 msgid "Colophon"
-msgstr ""
+msgstr "Kolofon"
 
 #: givefood/templates/public/country.html:9
 #, python-format
@@ -621,47 +692,52 @@ msgid ""
 "Find food banks in %(country)s, see what they need and how you can help by "
 "donating or volunteering."
 msgstr ""
+"%(country)s bölgesindeki gıda bankalarını bulun, ihtiyaçlarını öğrenin ve "
+"bağış yaparak veya gönüllü olarak nasıl yardımcı olabileceğinizi görün."
 
 #: givefood/templates/public/country.html:13
 #, python-format
 msgid "Food banks in %(country)s"
-msgstr ""
+msgstr "%(country)s'daki gıda bankaları"
 
 #: givefood/templates/public/country.html:14
 #, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help."
 msgstr ""
+"%(country)s bölgesindeki gıda bankalarını bulun, ihtiyaçlarını öğrenin ve "
+"nasıl yardım edebileceğinizi görün."
 
 #: givefood/templates/public/country.html:49
 #: givefood/templates/public/index.html:46
 msgid "Write to your MP"
-msgstr ""
+msgstr "Milletvekilinize yazın."
 
 #: givefood/templates/public/country.html:49
 #: givefood/templates/public/index.html:46
 #: givefood/templates/public/page.html:55
 msgid "English"
-msgstr ""
+msgstr "İngilizce"
 
 #: givefood/templates/public/country.html:52
 #: givefood/templates/public/index.html:49
 msgid "Register a foodbank"
-msgstr ""
+msgstr "Bir gıda bankası kaydı oluşturun"
 
 #: givefood/templates/public/country.html:56
 #: givefood/templates/public/index.html:55
 msgid "Recently updated"
-msgstr ""
+msgstr "Son güncellemeler"
 
 #: givefood/templates/public/country.html:62
 #: givefood/templates/public/index.html:61
 msgid "Most viewed this week"
-msgstr ""
+msgstr "Bu hafta en çok görüntülenenler"
 
 #: givefood/templates/public/donate.html:27
+#, fuzzy
 msgid "To"
-msgstr ""
+msgstr "Kime"
 
 #: givefood/templates/public/donate.html:28
 #, python-format
@@ -669,28 +745,34 @@ msgid ""
 "100%% of donations from the public to Give Food are used directly to "
 "efficiently and quickly deliver requested food and supplies to UK food banks."
 msgstr ""
+"Give Food'a halktan gelen bağışların %100'ü, talep edilen gıda ve "
+"malzemelerin Birleşik Krallık'taki gıda bankalarına verimli ve hızlı bir "
+"şekilde ulaştırılması için doğrudan kullanılmaktadır."
 
 #: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
-msgstr ""
+msgstr "CAF Donate aracılığıyla bağış yapın."
 
 #: givefood/templates/public/donate.html:32
 msgid "To a food bank"
-msgstr ""
+msgstr "Bir gıda bankasına"
 
 #: givefood/templates/public/donate.html:33
 msgid ""
 "Use our tool to find a local food bank and see what they need. Then donate "
 "food, household supplies, toiletries, money or your time."
 msgstr ""
+"Yerel bir gıda bankası bulmak ve ihtiyaçlarını görmek için aracımızı "
+"kullanın. Ardından yiyecek, ev eşyası, hijyen ürünleri, para veya zamanınızı "
+"bağışlayın."
 
 #: givefood/templates/public/donate.html:34
 msgid "Find a food bank"
-msgstr ""
+msgstr "Bir gıda bankası bulun"
 
 #: givefood/templates/public/donate.html:40
 msgid "Managed donations"
-msgstr ""
+msgstr "Yönetilen bağışlar"
 
 #: givefood/templates/public/donate.html:41
 msgid ""
@@ -700,88 +782,100 @@ msgid ""
 "charitable aims. Realtime reports and tracking of how your donation is used "
 "are provided."
 msgstr ""
+"500 £ ve üzeri bağışlar veya hibeler için yönetilen bir hizmet sunuyoruz. "
+"Verilerimizden ve lojistik uzmanlığımızdan yararlanarak, bağışınızın "
+"hayırseverlik amaçlarınıza uygun gıda bankalarına gerekli ürünlerin etkili "
+"bir şekilde ulaştırılması için kullanılmasını sağlayabiliriz. Bağışınızın "
+"nasıl kullanıldığına dair gerçek zamanlı raporlar ve takip sağlanmaktadır."
 
 #: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"
-msgstr ""
+msgstr "Bir sorun olduğunu bildir."
 
 #: givefood/templates/public/flag.html:31
 msgid ""
 "Sorry that you've found something wrong. We'll review your report within 24 "
 "hours, usually quicker."
 msgstr ""
+"Bir sorun tespit ettiğiniz için üzgünüz. Raporunuzu 24 saat içinde, "
+"genellikle daha kısa sürede inceleyeceğiz."
 
 #: givefood/templates/public/human.html:4
 msgid "Human check"
-msgstr ""
+msgstr "İnsan kontrolü"
 
 #: givefood/templates/public/human.html:21
 msgid "Sorry, but we just have to check you are a human..."
-msgstr ""
+msgstr "Üzgünüz, ancak insan olduğunuzu doğrulamamız gerekiyor..."
 
 #: givefood/templates/public/includes/country.html:2
 msgid "England"
-msgstr ""
+msgstr "İngiltere"
 
 #: givefood/templates/public/includes/country.html:3
 msgid "Wales"
-msgstr ""
+msgstr "Galler"
 
 #: givefood/templates/public/includes/country.html:4
 msgid "Scotland"
-msgstr ""
+msgstr "İskoçya"
 
 #: givefood/templates/public/includes/country.html:5
 msgid "Northern Ireland"
-msgstr ""
+msgstr "Kuzey İrlanda"
 
 #: givefood/templates/public/includes/country.html:6
 msgid "Isle of Man"
-msgstr ""
+msgstr "Man Adası"
 
 #: givefood/templates/public/includes/country.html:7
 msgid "Jersey"
-msgstr ""
+msgstr "Jersey"
 
 #: givefood/templates/public/includes/country.html:8
 msgid "Guernsey"
-msgstr ""
+msgstr "Guernsey"
 
 #: givefood/templates/public/includes/debugcomment.html:3
 msgid "Hello"
-msgstr ""
+msgstr "Merhaba"
 
 #: givefood/templates/public/includes/maplegend.html:4
 msgid "Organisation"
-msgstr ""
+msgstr "Organizasyon"
 
 #: givefood/templates/public/includes/maplegend.html:4
 #: givefood/templates/public/includes/maplegend.html:5
 #: givefood/templates/public/includes/maplegend.html:7
 msgid "marker"
-msgstr ""
+msgstr "işaretleyici"
 
 #: givefood/templates/public/includes/maplegend.html:5
 msgid "Location"
-msgstr ""
+msgstr "Konum"
 
 #: givefood/templates/public/includes/maplegend.html:6
 msgid "Service area"
-msgstr ""
+msgstr "Hizmet alanı"
 
 #: givefood/templates/public/includes/maplegend.html:7
 msgid "Donation point"
-msgstr ""
+msgstr "Bağış noktası"
 
 #: givefood/templates/public/includes/serviceareadisclaimer.html:3
 msgid "Service areas are approximate. You should check with the food bank"
 msgstr ""
+"Hizmet verilen bölgeler yaklaşık değerlerdir. Kesin bilgi için gıda "
+"bankasıyla iletişime geçmelisiniz."
 
 #: givefood/templates/public/index.html:9
 msgid ""
 "Give Food a UK charity uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
 msgstr ""
+"Birleşik Krallık merkezli bir yardım kuruluşu olan Give Food, verileri "
+"kullanarak yerel ve yapısal gıda güvensizliğini ortaya koyuyor ve ardından "
+"bu sorunu hafifletmeye yardımcı olacak araçlar sunuyor."
 
 #: givefood/templates/public/index.html:14
 #: givefood/templates/public/index.html:31
@@ -789,149 +883,163 @@ msgid ""
 "We're a UK charity that uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
 msgstr ""
+"Biz, İngiltere merkezli bir yardım kuruluşuyuz ve verileri kullanarak yerel "
+"ve yapısal gıda güvensizliğini ortaya koyuyor, ardından bu sorunu "
+"hafifletmeye yardımcı olacak araçlar sunuyoruz."
 
 #: givefood/templates/public/index.html:32
 msgid ""
 "Use our unique database to find a food bank near you, see what they need and "
 "how you can help by donating or volunteering."
 msgstr ""
+"Benzersiz veri tabanımızı kullanarak size en yakın gıda bankasını bulun, "
+"ihtiyaçlarını öğrenin ve bağış yaparak veya gönüllü olarak nasıl yardımcı "
+"olabileceğinizi keşfedin."
 
 #: givefood/templates/public/index.html:84
 msgid "We've worked with"
-msgstr ""
+msgstr "Bizler birlikte çalıştık"
 
 #: givefood/templates/public/index.html:105
 msgid "How we can help"
-msgstr ""
+msgstr "Nasıl yardımcı olabiliriz?"
 
 #: givefood/templates/public/index.html:111
 msgid "Public"
-msgstr ""
+msgstr "Herkese Açık"
 
 #: givefood/templates/public/index.html:112
 msgid ""
 "Use our tool to find your local food banks, then donate, volunteer or take "
 "political action."
 msgstr ""
+"Aracımızı kullanarak size en yakın gıda bankalarını bulun, ardından bağış "
+"yapın, gönüllü olun veya siyasi eylemde bulunun."
 
 #: givefood/templates/public/index.html:113
 msgid "Find out how to help"
-msgstr ""
+msgstr "Nasıl yardım edebileceğinizi öğrenin."
 
 #: givefood/templates/public/index.html:117
 msgid ""
 "Register a food bank to be included in our database and allow users to find "
 "you and what you need."
 msgstr ""
+"Veritabanımıza dahil olmak ve kullanıcıların sizi ve ihtiyaçlarınızı "
+"bulmasını sağlamak için bir gıda bankası kaydı oluşturun."
 
 #: givefood/templates/public/index.html:118
 #: givefood/templates/public/register_foodbank.html:9
 #: givefood/templates/public/register_foodbank.html:21
 msgid "Register a food bank"
-msgstr ""
+msgstr "Bir gıda bankası kaydı oluşturun"
 
 #: givefood/templates/public/index.html:121
 msgid "Media"
-msgstr ""
+msgstr "Medya"
 
 #: givefood/templates/public/index.html:122
 msgid ""
 "Journalists, in particular data journalists, can use our data for stories "
 "around food poverty."
 msgstr ""
+"Gazeteciler, özellikle veri gazetecileri, gıda yoksulluğuyla ilgili haberler "
+"yapmak için verilerimizi kullanabilirler."
 
 #: givefood/templates/public/index.html:123
 #: givefood/templates/public/index.html:128
 msgid "Use our API"
-msgstr ""
+msgstr "API'mizi kullanın"
 
 #: givefood/templates/public/index.html:126
 msgid "Researchers & students"
-msgstr ""
+msgstr "Araştırmacılar ve öğrenciler"
 
 #: givefood/templates/public/index.html:127
 msgid ""
 "We can provide our data in bulk, plus advice on how to interpret it, to "
 "researchers. Have a look at our API or email us."
 msgstr ""
+"Verilerimizi toplu olarak ve yorumlama konusunda tavsiyelerle birlikte "
+"araştırmacılara sunabiliriz. API'mıza göz atın veya bize e-posta gönderin."
 
 #: givefood/templates/public/index.html:134
 msgid "Statistics"
-msgstr ""
+msgstr "İstatistikler"
 
 #: givefood/templates/public/index.html:148
 msgid "Items requested"
-msgstr ""
+msgstr "Talep edilen ürünler"
 
 #: givefood/templates/public/index.html:152
 msgid "Meals delivered"
-msgstr ""
+msgstr "Yemekler teslim edildi."
 
 #: givefood/templates/public/index.html:156
 #: givefood/templates/public/page.html:41
 msgid "Last updated"
-msgstr ""
+msgstr "Son güncelleme"
 
 #: givefood/templates/public/index.html:168
 msgid "Read our"
-msgstr ""
+msgstr "Okuyun"
 
 #: givefood/templates/public/index.html:168
 msgid "annual report"
-msgstr ""
+msgstr "yıllık rapor"
 
 #: givefood/templates/public/page.html:36
 msgid "Something wrong in this page?"
-msgstr ""
+msgstr "Bu sayfada bir sorun mu var?"
 
 #: givefood/templates/public/page.html:42
 msgid "food bank needs viewed this week"
-msgstr ""
+msgstr "Bu hafta gıda bankasının ihtiyaçları değerlendirildi."
 
 #: givefood/templates/public/page.html:45
 msgid "Give Food is a registered charity in England & Wales"
-msgstr ""
+msgstr "Give Food, İngiltere ve Galler'de kayıtlı bir hayır kuruluşudur."
 
 #: givefood/templates/public/page.html:46
 msgid "Registered with the"
-msgstr ""
+msgstr "Kayıtlı olduğu yer"
 
 #: givefood/templates/public/page.html:47
 msgid "ICO Data Protection Registration"
-msgstr ""
+msgstr "ICO Veri Koruma Kaydı"
 
 #: givefood/templates/public/page.html:54
 msgid "Dashboards"
-msgstr ""
+msgstr "Dashboardlar"
 
 #: givefood/templates/public/page.html:60
 msgid "Privacy policy"
-msgstr ""
+msgstr "Gizlilik Politikası"
 
 #: givefood/views.py:65
 msgid "e.g. EH12 5PJ or Glasgow"
-msgstr ""
+msgstr "Örneğin EH12 5PJ veya Glasgow"
 
 #: givefood/views.py:66
 msgid "e.g. HA9 0WS or Manchester"
-msgstr ""
+msgstr "Örneğin HA9 0WS veya Manchester"
 
 #: givefood/views.py:67
 msgid "e.g. CF10 1NS or Cardiff"
-msgstr ""
+msgstr "Örneğin CF10 1NS veya Cardiff"
 
 #: givefood/views.py:68
 msgid "e.g. BT12 6LW or Belfast"
-msgstr ""
+msgstr "Örneğin BT12 6LW veya Belfast"
 
 #: givefood/views.py:898
 msgid "minutes"
-msgstr ""
+msgstr "dakika"
 
 #: givefood/views.py:899
 msgid "Under a minute ago"
-msgstr ""
+msgstr "Bir dakikadan az önce"
 
 #: givefood/views.py:901
 msgid "ago"
-msgstr ""
+msgstr "önce"
