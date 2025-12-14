@@ -1758,24 +1758,29 @@ class FoodbankChange(models.Model):
 
         current_language = get_language()
         if self.change_text in ["Facebook", "Unknown", "Nothing"]:
-            return self.change_text
+            the_text = self.change_text
         if current_language == "en":
             if text_type == "change":
-                return self.change_text
+                the_text = self.change_text
             if text_type == "excess":
-                return self.excess_change_text
+                the_text = self.excess_change_text
         else:
             try:
                 translated_text = FoodbankChangeTranslation.objects.get(need = self, language = current_language)
             except FoodbankChangeTranslation.DoesNotExist:
                 if text_type == "change":
-                    return self.change_text
+                    the_text= self.change_text
                 if text_type == "excess":
-                    return self.excess_change_text
+                    the_text = self.excess_change_text
             if text_type == "change":
-                return translated_text.change_text
+                the_text = translated_text.change_text
             if text_type == "excess":
-                return translated_text.excess_change_text
+                the_text = translated_text.excess_change_text
+            
+        # Remove empty lines
+        non_empty_lines = [line for line in the_text.splitlines() if line.strip()]
+        the_text = "\n".join(non_empty_lines)
+        return the_text
 
     def get_change_text(self):
         return self.get_text("change")
