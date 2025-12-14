@@ -2347,3 +2347,20 @@ class WebPushSubscription(models.Model):
     
     def __str__(self):
         return f"WebPush: {self.foodbank.name} - {self.endpoint[:50]}..."
+    
+
+class MobileSubscriber(models.Model):
+
+    device_id = models.CharField(max_length=250)
+    platform = models.CharField(max_length=10)
+    timezone = models.CharField(max_length=100)
+    locale = models.CharField(max_length=50)
+    app_version = models.CharField(max_length=50)
+    os_version = models.CharField(max_length=50)
+    device_model = models.CharField(max_length=100)
+    sub_type = models.CharField(max_length=25)
+
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    class Meta:
+        app_label = 'givefood'
