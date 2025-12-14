@@ -19,7 +19,4 @@ urlpatterns = [
     path("webpush/subscribe/<slug:slug>/", webpush_subscribe, name="webpush_subscribe"),
     path("webpush/unsubscribe/<slug:slug>/", webpush_unsubscribe, name="webpush_unsubscribe"),
 
-    # Mobile sub hits
-    path("mobsub/", mobsub, name="mobsub"),
-
 ]

@@ -15,7 +15,7 @@ from django.utils.translation import gettext
 
 from givefood.const.general import SITE_DOMAIN
 
-from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, MobileSubscriber, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle, Place
+from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle, Place
 from givefood.func import geocode, find_locations, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, is_uk, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 from django.db.models import Sum
@@ -1093,39 +1093,4 @@ def webpush_unsubscribe(request, slug):
         return HttpResponseBadRequest()
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
-
-
-@csrf_exempt
-@require_POST
-def mobsub(request):
-    
-    device_id = request.POST.get("device_id", None)
-    platform = request.POST.get("platform", None)
-    foodbank_slug = request.POST.get("foodbank_slug", None)
-    timezone = request.POST.get("timezone", None)
-    locale = request.POST.get("locale", None)
-    app_version = request.POST.get("app_version", None)
-    os_version = request.POST.get("os_version", None)
-    device_model = request.POST.get("device_model", None)
-    sub_type = request.POST.get("sub_type", None)
-
-    if not device_id or not platform or not foodbank_slug:
-        return HttpResponseBadRequest()
-    
-    foodbank = get_object_or_404(Foodbank, slug=foodbank_slug)
-
-    mobsub = MobileSubscriber(
-        device_id=device_id,
-        platform=platform,
-        foodbank=foodbank,
-        timezone=timezone,
-        locale=locale,
-        app_version=app_version,
-        os_version=os_version,
-        device_model=device_model,
-        sub_type=sub_type,
-    )
-    mobsub.save()
-
-    return JsonResponse({"success": True})
 
