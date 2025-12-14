@@ -1,6 +1,7 @@
 import pytest
 from unittest.mock import patch, call
-from givefood.models import Foodbank, FoodbankChange
+from django.utils.translation import activate
+from givefood.models import Foodbank, FoodbankChange, FoodbankChangeTranslation
 
 
 @pytest.mark.django_db
@@ -162,3 +163,140 @@ class TestFoodbankChangeTranslation:
 
         # Should not crash, and translation might or might not be called
         # (depending on implementation - it's valid either way)
+
+
+@pytest.mark.django_db
+class TestFoodbankChangeGetText:
+    """Test that FoodbankChange.get_text() handles missing translations."""
+
+    @patch('givefood.models.translate_need_async')
+    def test_get_text_fallback_to_english_when_translation_missing(self, mock_translate):
+        """Test that get_text falls back to English when translation doesn't exist."""
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank Fallback",
+            slug="test-food-bank-fallback",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://testfallback.example.com",
+            shopping_list_url="https://testfallback.example.com/shopping",
+            contact_email="testfallback@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need with English text only (no translation)
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes\nPasta\nRice",
+            excess_change_text="Bread\nMilk",
+            published=True,
+        )
+        need.save(do_translate=False)
+
+        # Activate a non-English language (e.g., Spanish)
+        activate('es')
+
+        # Should fall back to English text without raising UnboundLocalError
+        change_text = need.get_change_text()
+        assert change_text == "Tinned Tomatoes\nPasta\nRice"
+
+        excess_text = need.get_excess_text()
+        assert excess_text == "Bread\nMilk"
+
+        # Reset to English
+        activate('en')
+
+    @patch('givefood.models.translate_need_async')
+    def test_get_text_uses_translation_when_available(self, mock_translate):
+        """Test that get_text uses translation when it exists."""
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank Translation",
+            slug="test-food-bank-translation",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://testtranslation.example.com",
+            shopping_list_url="https://testtranslation.example.com/shopping",
+            contact_email="testtranslation@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes\nPasta\nRice",
+            excess_change_text="Bread\nMilk",
+            published=True,
+        )
+        need.save(do_translate=False)
+
+        # Create a translation for Spanish
+        translation = FoodbankChangeTranslation(
+            need=need,
+            language="es",
+            change_text="Tomates enlatados\nPasta\nArroz",
+            excess_change_text="Pan\nLeche",
+        )
+        translation.save()
+
+        # Activate Spanish
+        activate('es')
+
+        # Should use Spanish translation
+        change_text = need.get_change_text()
+        assert change_text == "Tomates enlatados\nPasta\nArroz"
+
+        excess_text = need.get_excess_text()
+        assert excess_text == "Pan\nLeche"
+
+        # Reset to English
+        activate('en')
+
+    @patch('givefood.models.translate_need_async')
+    def test_get_text_returns_english_when_language_is_english(self, mock_translate):
+        """Test that get_text returns English text when language is English."""
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank English",
+            slug="test-food-bank-english",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://testenglish.example.com",
+            shopping_list_url="https://testenglish.example.com/shopping",
+            contact_email="testenglish@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes\nPasta\nRice",
+            excess_change_text="Bread\nMilk",
+            published=True,
+        )
+        need.save(do_translate=False)
+
+        # Activate English
+        activate('en')
+
+        # Should return English text
+        change_text = need.get_change_text()
+        assert change_text == "Tinned Tomatoes\nPasta\nRice"
+
+        excess_text = need.get_excess_text()
+        assert excess_text == "Bread\nMilk"

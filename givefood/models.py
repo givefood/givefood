@@ -1772,10 +1772,11 @@ class FoodbankChange(models.Model):
                     the_text= self.change_text
                 if text_type == "excess":
                     the_text = self.excess_change_text
-            if text_type == "change":
-                the_text = translated_text.change_text
-            if text_type == "excess":
-                the_text = translated_text.excess_change_text
+            else:
+                if text_type == "change":
+                    the_text = translated_text.change_text
+                if text_type == "excess":
+                    the_text = translated_text.excess_change_text
             
         # Remove empty lines
         non_empty_lines = [line for line in the_text.splitlines() if line.strip()]
