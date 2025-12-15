@@ -101,7 +101,11 @@ MIDDLEWARE = [
 
 if DEBUG:
     INSTALLED_APPS += ["debug_toolbar"]
-    MIDDLEWARE.insert(1, "debug_toolbar.middleware.DebugToolbarMiddleware")
+    MIDDLEWARE = [
+        MIDDLEWARE[0],
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+        *MIDDLEWARE[1:],
+    ]
 
 TASKS = {
     "default": {
