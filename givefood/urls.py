@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import include
 from django.conf.urls.i18n import i18n_patterns
 from django.views.generic import RedirectView
@@ -120,3 +121,7 @@ urlpatterns += [
     path('write/', include('gfwrite.urls', namespace="write")),
     path('auth/', include('gfauth.urls', namespace="auth")),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [path('__debug__/', include(debug_toolbar.urls))] + urlpatterns

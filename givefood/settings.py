@@ -53,6 +53,7 @@ ALLOWED_HOSTS = [
     "origin.givefood.org.uk",
     os.getenv("COOLIFY_FQDN"),
 ]
+INTERNAL_IPS = ["127.0.0.1"]
 
 # Application definition
 
@@ -97,6 +98,10 @@ MIDDLEWARE = [
     "givefood.middleware.RenderTime",
     "givefood.middleware.RedirectToWWW",
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE.insert(1, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 TASKS = {
     "default": {
