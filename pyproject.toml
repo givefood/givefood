@@ -52,7 +52,7 @@ dependencies = [
     "django-tasks",
     "firebase-admin",
     "django-webpush==0.3.6",
-    "pywebpush==1.14.1",
+    "pywebpush==2.1.2",
 ]
 
 [project.optional-dependencies]
