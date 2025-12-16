@@ -638,6 +638,7 @@ def find_foodbanks(lattlong, quantity = 10, skip_first = False):
 def find_locations(lat_lng, quantity = 10, skip_first = False):
 
     from givefood.models import Foodbank, FoodbankLocation
+    from django.db.models import Prefetch
 
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
@@ -648,7 +649,9 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
             LlToEarth(['latitude', 'longitude'])
         ])).annotate(type=Value("organisation")).order_by("distance")[:quantity]
     
-    locations = FoodbankLocation.objects.filter(is_closed = False).select_related("foodbank__latest_need").annotate(
+    locations = FoodbankLocation.objects.filter(is_closed = False).prefetch_related(
+        Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need"))
+    ).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
@@ -692,18 +695,23 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
 
 def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
 
-    from givefood.models import FoodbankLocation, FoodbankDonationPoint
+    from givefood.models import Foodbank, FoodbankLocation, FoodbankDonationPoint
+    from django.db.models import Prefetch
 
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
 
-    donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).select_related("foodbank__latest_need").annotate(
+    donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).prefetch_related(
+        Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need"))
+    ).annotate(
     distance=EarthDistance([
         LlToEarth([lat, lng]),
         LlToEarth(['latitude', 'longitude'])
     ])).annotate(type=Value("donationpoint")).order_by("distance")[:quantity]
 
-    location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).select_related("foodbank__latest_need").annotate(
+    location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).prefetch_related(
+        Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need"))
+    ).annotate(
     distance=EarthDistance([
         LlToEarth([lat, lng]),
         LlToEarth(['latitude', 'longitude'])
