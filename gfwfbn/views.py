@@ -1109,12 +1109,17 @@ def mobsub(request):
         return HttpResponseBadRequest()
     
     foodbank = get_object_or_404(Foodbank, slug=foodbank_slug)
+    donationpoint_slug = request.POST.get("donationpoint_slug")
+    donationpoint = None
+    if donationpoint_slug:
+        donationpoint = get_object_or_404(FoodbankDonationPoint, foodbank=foodbank, slug=donationpoint_slug)
 
     # Use update_or_create to handle existing subscriptions and update metadata
     # This prevents duplicate records if the device registers again
     MobileSubscriber.objects.update_or_create(
         device_id=device_id,
         foodbank=foodbank,
+        donationpoint=donationpoint,
         defaults={
             'platform': platform,
             'timezone': request.POST.get("timezone"),
@@ -1127,4 +1132,28 @@ def mobsub(request):
     )
 
     return JsonResponse({"success": True})
+
+def delete_mobsub(request):
+    """
+    Delete a mobile device subscription for a food bank.
+    """
+    device_id = request.POST.get("device_id")
+    foodbank_slug = request.POST.get("foodbank_slug")
+
+    if not device_id or not foodbank_slug:
+        return HttpResponseBadRequest()
+    
+    foodbank = get_object_or_404(Foodbank, slug=foodbank_slug)
+    donationpoint_slug = request.POST.get("donationpoint_slug")
+    donationpoint = None
+    if donationpoint_slug:
+        donationpoint = get_object_or_404(FoodbankDonationPoint, foodbank=foodbank, slug=donationpoint_slug)
+
+    deleted_count, _ = MobileSubscriber.objects.filter(
+        device_id=device_id,
+        foodbank=foodbank,
+        donationpoint=donationpoint,
+    ).delete()
+
+    return JsonResponse({"deleted": deleted_count > 0})
 

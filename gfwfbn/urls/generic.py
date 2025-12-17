@@ -21,5 +21,6 @@ urlpatterns = [
 
     # Mobile sub hits
     path("mobsub/", mobsub, name="mobsub"),
+    path("mobsub/delete/", delete_mobsub, name="delete_mobsub"),
 
 ]

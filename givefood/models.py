@@ -2361,6 +2361,7 @@ class MobileSubscriber(models.Model):
     sub_type = models.CharField(max_length=25)
 
     foodbank = models.ForeignKey(Foodbank, on_delete=models.CASCADE)
+    donationpoint = models.ForeignKey(FoodbankDonationPoint, on_delete=models.CASCADE, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
     class Meta:
         app_label = 'givefood'
