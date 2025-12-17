@@ -1312,11 +1312,17 @@ class TestMobileSubscription:
         foodbank = create_test_foodbank()
         
         # Post to mobsub with foodbank UUID
-        url = reverse('wfbn:mobsub')
+        url = reverse('wfbn-generic:mobsub')
         response = client.post(url, {
             'device_id': 'test-device-123',
             'platform': 'ios',
             'foodbank': str(foodbank.uuid),
+            'timezone': 'Europe/London',
+            'locale': 'en_GB',
+            'app_version': '1.0.0',
+            'os_version': '17.0',
+            'device_model': 'iPhone',
+            'sub_type': 'needs',
         })
         
         # Should succeed
@@ -1354,7 +1360,7 @@ class TestMobileSubscription:
         donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
         
         # Post to mobsub with both UUIDs
-        url = reverse('wfbn:mobsub')
+        url = reverse('wfbn-generic:mobsub')
         response = client.post(url, {
             'device_id': 'test-device-456',
             'platform': 'android',
@@ -1362,6 +1368,10 @@ class TestMobileSubscription:
             'donationpoint': str(donationpoint.uuid),
             'timezone': 'Europe/London',
             'locale': 'en_GB',
+            'app_version': '2.0.0',
+            'os_version': '14.0',
+            'device_model': 'Samsung',
+            'sub_type': 'needs',
         })
         
         # Should succeed
@@ -1379,10 +1389,16 @@ class TestMobileSubscription:
 
     def test_mobsub_missing_foodbank_returns_400(self, client):
         """Test that mobsub returns 400 when foodbank UUID is missing."""
-        url = reverse('wfbn:mobsub')
+        url = reverse('wfbn-generic:mobsub')
         response = client.post(url, {
             'device_id': 'test-device-789',
             'platform': 'ios',
+            'timezone': 'Europe/London',
+            'locale': 'en_GB',
+            'app_version': '1.0.0',
+            'os_version': '17.0',
+            'device_model': 'iPhone',
+            'sub_type': 'needs',
         })
         
         assert response.status_code == 400
@@ -1391,11 +1407,17 @@ class TestMobileSubscription:
         """Test that mobsub returns 404 for invalid foodbank UUID."""
         import uuid
         
-        url = reverse('wfbn:mobsub')
+        url = reverse('wfbn-generic:mobsub')
         response = client.post(url, {
             'device_id': 'test-device-999',
             'platform': 'ios',
             'foodbank': str(uuid.uuid4()),  # Random UUID that doesn't exist
+            'timezone': 'Europe/London',
+            'locale': 'en_GB',
+            'app_version': '1.0.0',
+            'os_version': '17.0',
+            'device_model': 'iPhone',
+            'sub_type': 'needs',
         })
         
         assert response.status_code == 404
@@ -1412,10 +1434,16 @@ class TestMobileSubscription:
             device_id='test-device-delete-1',
             platform='ios',
             foodbank=foodbank,
+            timezone='Europe/London',
+            locale='en_GB',
+            app_version='1.0.0',
+            os_version='17.0',
+            device_model='iPhone',
+            sub_type='needs',
         )
         
         # Delete via delete_mobsub
-        url = reverse('wfbn:delete_mobsub')
+        url = reverse('wfbn-generic:delete_mobsub')
         response = client.post(url, {
             'device_id': 'test-device-delete-1',
             'foodbank': str(foodbank.uuid),
@@ -1459,10 +1487,16 @@ class TestMobileSubscription:
             platform='android',
             foodbank=foodbank,
             donationpoint=donationpoint,
+            timezone='Europe/London',
+            locale='en_GB',
+            app_version='1.0.0',
+            os_version='14.0',
+            device_model='Samsung',
+            sub_type='needs',
         )
         
         # Delete via delete_mobsub
-        url = reverse('wfbn:delete_mobsub')
+        url = reverse('wfbn-generic:delete_mobsub')
         response = client.post(url, {
             'device_id': 'test-device-delete-2',
             'foodbank': str(foodbank.uuid),
@@ -1483,7 +1517,7 @@ class TestMobileSubscription:
         foodbank = create_test_foodbank(name="Test Food Bank 5", slug="test-food-bank-5")
         
         # Try to delete non-existent subscription
-        url = reverse('wfbn:delete_mobsub')
+        url = reverse('wfbn-generic:delete_mobsub')
         response = client.post(url, {
             'device_id': 'nonexistent-device',
             'foodbank': str(foodbank.uuid),
