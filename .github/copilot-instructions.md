@@ -29,8 +29,10 @@ The project follows Django's app-based architecture with multiple specialized ap
 | gfadmin   | Admin tool                          | https://www.givefood.org.uk/admin/     |
 | gfapi1    | Deprecated first version of our API | https://www.givefood.org.uk/api/1/     |
 | gfapi2    | Current API                         | https://www.givefood.org.uk/api/       |
-| gfapi3    | Future API                          | https://www.givefood.org.uk/api/3/     |
+| gfapi3    | Future API (in development)         | https://www.givefood.org.uk/api/3/     |
+| gfauth    | Google OAuth authentication         | https://www.givefood.org.uk/auth/      |
 | gfdash    | Data dashboards                     | https://www.givefood.org.uk/dashboard/ |
+| gfdumps   | Data dumps management               | https://www.givefood.org.uk/dumps/     |
 | gfoffline | Offline tasks                       | N/A                                    |
 | gfwfbn    | What food banks need tool           | https://www.givefood.org.uk/needs/     |
 | gfwrite   | Allow users to contact their MPs    | https://www.givefood.org.uk/write/     |
