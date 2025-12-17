@@ -1098,34 +1098,33 @@ def webpush_unsubscribe(request, slug):
 @csrf_exempt
 @require_POST
 def mobsub(request):
-    
-    device_id = request.POST.get("device_id", None)
-    platform = request.POST.get("platform", None)
-    foodbank_slug = request.POST.get("foodbank_slug", None)
-    timezone = request.POST.get("timezone", None)
-    locale = request.POST.get("locale", None)
-    app_version = request.POST.get("app_version", None)
-    os_version = request.POST.get("os_version", None)
-    device_model = request.POST.get("device_model", None)
-    sub_type = request.POST.get("sub_type", None)
+    """
+    Register or update a mobile device subscription for a food bank.
+    """
+    device_id = request.POST.get("device_id")
+    platform = request.POST.get("platform")
+    foodbank_slug = request.POST.get("foodbank_slug")
 
     if not device_id or not platform or not foodbank_slug:
         return HttpResponseBadRequest()
     
     foodbank = get_object_or_404(Foodbank, slug=foodbank_slug)
 
-    mobsub = MobileSubscriber(
+    # Use update_or_create to handle existing subscriptions and update metadata
+    # This prevents duplicate records if the device registers again
+    MobileSubscriber.objects.update_or_create(
         device_id=device_id,
-        platform=platform,
         foodbank=foodbank,
-        timezone=timezone,
-        locale=locale,
-        app_version=app_version,
-        os_version=os_version,
-        device_model=device_model,
-        sub_type=sub_type,
+        defaults={
+            'platform': platform,
+            'timezone': request.POST.get("timezone"),
+            'locale': request.POST.get("locale"),
+            'app_version': request.POST.get("app_version"),
+            'os_version': request.POST.get("os_version"),
+            'device_model': request.POST.get("device_model"),
+            'sub_type': request.POST.get("sub_type"),
+        }
     )
-    mobsub.save()
 
     return JsonResponse({"success": True})
 
