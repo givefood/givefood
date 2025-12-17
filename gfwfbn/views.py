@@ -1103,16 +1103,16 @@ def mobsub(request):
     """
     device_id = request.POST.get("device_id")
     platform = request.POST.get("platform")
-    foodbank_slug = request.POST.get("foodbank_slug")
+    foodbank_uuid = request.POST.get("foodbank")
 
-    if not device_id or not platform or not foodbank_slug:
+    if not device_id or not platform or not foodbank_uuid:
         return HttpResponseBadRequest()
     
-    foodbank = get_object_or_404(Foodbank, slug=foodbank_slug)
-    donationpoint_slug = request.POST.get("donationpoint_slug")
+    foodbank = get_object_or_404(Foodbank, uuid=foodbank_uuid)
+    donationpoint_uuid = request.POST.get("donationpoint")
     donationpoint = None
-    if donationpoint_slug:
-        donationpoint = get_object_or_404(FoodbankDonationPoint, foodbank=foodbank, slug=donationpoint_slug)
+    if donationpoint_uuid:
+        donationpoint = get_object_or_404(FoodbankDonationPoint, foodbank=foodbank, uuid=donationpoint_uuid)
 
     # Use update_or_create to handle existing subscriptions and update metadata
     # This prevents duplicate records if the device registers again
@@ -1138,16 +1138,16 @@ def delete_mobsub(request):
     Delete a mobile device subscription for a food bank.
     """
     device_id = request.POST.get("device_id")
-    foodbank_slug = request.POST.get("foodbank_slug")
+    foodbank_uuid = request.POST.get("foodbank")
 
-    if not device_id or not foodbank_slug:
+    if not device_id or not foodbank_uuid:
         return HttpResponseBadRequest()
     
-    foodbank = get_object_or_404(Foodbank, slug=foodbank_slug)
-    donationpoint_slug = request.POST.get("donationpoint_slug")
+    foodbank = get_object_or_404(Foodbank, uuid=foodbank_uuid)
+    donationpoint_uuid = request.POST.get("donationpoint")
     donationpoint = None
-    if donationpoint_slug:
-        donationpoint = get_object_or_404(FoodbankDonationPoint, foodbank=foodbank, slug=donationpoint_slug)
+    if donationpoint_uuid:
+        donationpoint = get_object_or_404(FoodbankDonationPoint, foodbank=foodbank, uuid=donationpoint_uuid)
 
     deleted_count, _ = MobileSubscriber.objects.filter(
         device_id=device_id,
