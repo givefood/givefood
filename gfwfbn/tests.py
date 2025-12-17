@@ -1299,3 +1299,198 @@ class TestTurnstileFailureHandling:
         assert 'turnstilefail=true' in response.url
         assert 'email=test@example.com' in unquote(response.url)
 
+
+@pytest.mark.django_db
+class TestMobileSubscription:
+    """Test mobile subscription endpoints using UUID-based lookups"""
+
+    def test_mobsub_with_foodbank_uuid(self, client, create_test_foodbank):
+        """Test that mobsub accepts foodbank UUID in 'foodbank' parameter."""
+        from givefood.models import MobileSubscriber
+        
+        # Create a food bank
+        foodbank = create_test_foodbank()
+        
+        # Post to mobsub with foodbank UUID
+        url = reverse('wfbn:mobsub')
+        response = client.post(url, {
+            'device_id': 'test-device-123',
+            'platform': 'ios',
+            'foodbank': str(foodbank.uuid),
+        })
+        
+        # Should succeed
+        assert response.status_code == 200
+        data = response.json()
+        assert data['success'] is True
+        
+        # Verify subscription was created
+        subscription = MobileSubscriber.objects.get(device_id='test-device-123', foodbank=foodbank)
+        assert subscription.platform == 'ios'
+        assert subscription.donationpoint is None
+
+    def test_mobsub_with_foodbank_and_donationpoint_uuid(self, client, create_test_foodbank):
+        """Test that mobsub accepts both foodbank and donationpoint UUIDs."""
+        from givefood.models import MobileSubscriber
+        
+        # Create a food bank
+        foodbank = create_test_foodbank(name="Test Food Bank 2", slug="test-food-bank-2")
+        
+        # Create a donation point
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test Donation Point",
+            slug="test-donation-point",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+        
+        # Post to mobsub with both UUIDs
+        url = reverse('wfbn:mobsub')
+        response = client.post(url, {
+            'device_id': 'test-device-456',
+            'platform': 'android',
+            'foodbank': str(foodbank.uuid),
+            'donationpoint': str(donationpoint.uuid),
+            'timezone': 'Europe/London',
+            'locale': 'en_GB',
+        })
+        
+        # Should succeed
+        assert response.status_code == 200
+        data = response.json()
+        assert data['success'] is True
+        
+        # Verify subscription was created with donation point
+        subscription = MobileSubscriber.objects.get(device_id='test-device-456')
+        assert subscription.foodbank == foodbank
+        assert subscription.donationpoint == donationpoint
+        assert subscription.platform == 'android'
+        assert subscription.timezone == 'Europe/London'
+        assert subscription.locale == 'en_GB'
+
+    def test_mobsub_missing_foodbank_returns_400(self, client):
+        """Test that mobsub returns 400 when foodbank UUID is missing."""
+        url = reverse('wfbn:mobsub')
+        response = client.post(url, {
+            'device_id': 'test-device-789',
+            'platform': 'ios',
+        })
+        
+        assert response.status_code == 400
+
+    def test_mobsub_invalid_foodbank_uuid_returns_404(self, client):
+        """Test that mobsub returns 404 for invalid foodbank UUID."""
+        import uuid
+        
+        url = reverse('wfbn:mobsub')
+        response = client.post(url, {
+            'device_id': 'test-device-999',
+            'platform': 'ios',
+            'foodbank': str(uuid.uuid4()),  # Random UUID that doesn't exist
+        })
+        
+        assert response.status_code == 404
+
+    def test_delete_mobsub_with_foodbank_uuid(self, client, create_test_foodbank):
+        """Test that delete_mobsub accepts foodbank UUID and deletes subscription."""
+        from givefood.models import MobileSubscriber
+        
+        # Create a food bank
+        foodbank = create_test_foodbank(name="Test Food Bank 3", slug="test-food-bank-3")
+        
+        # Create a subscription
+        MobileSubscriber.objects.create(
+            device_id='test-device-delete-1',
+            platform='ios',
+            foodbank=foodbank,
+        )
+        
+        # Delete via delete_mobsub
+        url = reverse('wfbn:delete_mobsub')
+        response = client.post(url, {
+            'device_id': 'test-device-delete-1',
+            'foodbank': str(foodbank.uuid),
+        })
+        
+        # Should succeed
+        assert response.status_code == 200
+        data = response.json()
+        assert data['deleted'] is True
+        
+        # Verify subscription was deleted
+        assert not MobileSubscriber.objects.filter(device_id='test-device-delete-1').exists()
+
+    def test_delete_mobsub_with_donationpoint_uuid(self, client, create_test_foodbank):
+        """Test that delete_mobsub accepts donation point UUID."""
+        from givefood.models import MobileSubscriber
+        
+        # Create a food bank
+        foodbank = create_test_foodbank(name="Test Food Bank 4", slug="test-food-bank-4")
+        
+        # Create a donation point
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test Donation Point 2",
+            slug="test-donation-point-2",
+            address="456 Test Ave",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+        
+        # Create a subscription with donation point
+        MobileSubscriber.objects.create(
+            device_id='test-device-delete-2',
+            platform='android',
+            foodbank=foodbank,
+            donationpoint=donationpoint,
+        )
+        
+        # Delete via delete_mobsub
+        url = reverse('wfbn:delete_mobsub')
+        response = client.post(url, {
+            'device_id': 'test-device-delete-2',
+            'foodbank': str(foodbank.uuid),
+            'donationpoint': str(donationpoint.uuid),
+        })
+        
+        # Should succeed
+        assert response.status_code == 200
+        data = response.json()
+        assert data['deleted'] is True
+        
+        # Verify subscription was deleted
+        assert not MobileSubscriber.objects.filter(device_id='test-device-delete-2').exists()
+
+    def test_delete_mobsub_nonexistent_returns_false(self, client, create_test_foodbank):
+        """Test that delete_mobsub returns false when subscription doesn't exist."""
+        # Create a food bank
+        foodbank = create_test_foodbank(name="Test Food Bank 5", slug="test-food-bank-5")
+        
+        # Try to delete non-existent subscription
+        url = reverse('wfbn:delete_mobsub')
+        response = client.post(url, {
+            'device_id': 'nonexistent-device',
+            'foodbank': str(foodbank.uuid),
+        })
+        
+        # Should succeed but deleted should be False
+        assert response.status_code == 200
+        data = response.json()
+        assert data['deleted'] is False
+
