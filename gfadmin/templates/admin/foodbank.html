@@ -350,6 +350,10 @@
                 <dt>Donation Point</dt>
                 <dd>✅ Yes</dd>
               {% endif %}
+              {% if location.boundary_geojson %}
+                <dt>Is Service Area</dt>
+                <dd>✅ Yes</dd>
+              {% endif %}
             </dl>
           </td>
           <td>
