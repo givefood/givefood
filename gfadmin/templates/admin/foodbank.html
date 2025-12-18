@@ -144,7 +144,7 @@
           <dd>
             <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>
             <form action="{% url 'admin:foodbank_charity_crawl' foodbank.slug %}" method="post" style="display:inline-block;margin-left:10px;">
-              <input type="submit" value="Force Crawl" class="button is-info is-small is-light">
+              <input type="submit" value="Force Charity Crawl" class="button is-info is-small is-light">
             </form>
           </dd>
           {% if foodbank.charity_just_foodbank %}
