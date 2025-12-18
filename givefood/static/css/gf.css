@@ -312,6 +312,11 @@ del {
 .gm-style-iw-chr {
     display:none;
 }
+.serviceareadisclaimer {
+    font-size:0.9em;
+    font-style:italic;
+    margin-top: -5px;
+}
 .infowindow a {
     outline:0;
 }
