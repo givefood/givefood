@@ -369,11 +369,6 @@ def foodbank_charity_crawl(foodbank, crawl_set = None):
     - Scotland: OSCR API
     - Northern Ireland: Charity Commission NI CSV export
     """
-    import csv
-    from io import StringIO
-    from datetime import timezone as tz
-    from givefood.models import CharityYear, CrawlItem
-
     if not foodbank.charity_number:
         return False
 
