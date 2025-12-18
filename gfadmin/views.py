@@ -85,20 +85,51 @@ def search_results(request):
     if query:
         query = query.strip()
 
-    foodbanks = Foodbank.objects.filter(Q(slug__icontains=query) | Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query) | Q(url__icontains=query) | Q(charity_name__icontains=query))[:100]
-    locations = FoodbankLocation.objects.filter(Q(slug__icontains=query) | Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))[:100]
-    donationpoints = FoodbankDonationPoint.objects.filter(Q(name__icontains=query) | Q(address__icontains=query) | Q(postcode__icontains=query))[:100]
-    constituencies = ParliamentaryConstituency.objects.filter(Q(name__icontains=query) | Q(mp__icontains=query))[:100]
-    needs = FoodbankChange.objects.filter(Q(change_text__icontains=query) | Q(excess_change_text__icontains=query)).order_by("-created")[:100]
-    
+    foodbanks = Foodbank.objects.filter(
+        Q(slug__icontains=query) |
+        Q(name__icontains=query) |
+        Q(address__icontains=query) |
+        Q(postcode__icontains=query) |
+        Q(url__icontains=query) |
+        Q(shopping_list_url__icontains=query) |
+        Q(rss_url__icontains=query) |
+        Q(donation_points_url__icontains=query) |
+        Q(locations_url__icontains=query) |
+        Q(contacts_url__icontains=query) |
+        Q(charity_name__icontains=query)
+    )[:100]
+
+    locations = FoodbankLocation.objects.filter(
+        Q(slug__icontains=query) |
+        Q(name__icontains=query) |
+        Q(address__icontains=query) |
+        Q(postcode__icontains=query)
+    )[:100]
+
+    donationpoints = FoodbankDonationPoint.objects.filter(
+        Q(name__icontains=query) |
+        Q(address__icontains=query) |
+        Q(postcode__icontains=query)
+    )[:100]
+
+    constituencies = ParliamentaryConstituency.objects.filter(
+        Q(name__icontains=query) |
+        Q(mp__icontains=query)
+    )[:100]
+
+    needs = FoodbankChange.objects.filter(
+        Q(change_text__icontains=query) |
+        Q(excess_change_text__icontains=query)
+    ).order_by("-created")[:100]
+
     template_vars = {
-        "query":query,
-        "foodbanks":foodbanks,
-        "locations":locations,
-        "donationpoints":donationpoints,
-        "constituencies":constituencies,
-        "needs":needs,
-        "section":"search",
+        "query": query,
+        "foodbanks": foodbanks,
+        "locations": locations,
+        "donationpoints": donationpoints,
+        "constituencies": constituencies,
+        "needs": needs,
+        "section": "search",
     }
     return render(request, "admin/search.html", template_vars)
 
