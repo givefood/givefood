@@ -300,3 +300,61 @@ class TestFoodbankChangeGetText:
 
         excess_text = need.get_excess_text()
         assert excess_text == "Bread\nMilk"
+
+    @patch('givefood.models.translate_need_async')
+    def test_get_text_uses_prefetched_translations(self, mock_translate):
+        """Test that get_text uses prefetched translations when available to avoid N+1 queries."""
+        from django.db.models import Prefetch
+
+        # Create a food bank
+        foodbank = Foodbank(
+            name="Test Food Bank Prefetch",
+            slug="test-food-bank-prefetch",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://testprefetch.example.com",
+            shopping_list_url="https://testprefetch.example.com/shopping",
+            contact_email="testprefetch@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes\nPasta\nRice",
+            excess_change_text="Bread\nMilk",
+            published=True,
+        )
+        need.save(do_translate=False)
+
+        # Create a translation for Spanish
+        translation = FoodbankChangeTranslation(
+            need=need,
+            language="es",
+            change_text="Tomates enlatados\nPasta\nArroz",
+            excess_change_text="Pan\nLeche",
+        )
+        translation.save()
+
+        # Activate Spanish
+        activate('es')
+
+        # Fetch the need with prefetched translations
+        need_with_prefetch = FoodbankChange.objects.prefetch_related(
+            Prefetch("foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.all())
+        ).get(pk=need.pk)
+
+        # Should use the prefetched Spanish translation without making an additional query
+        change_text = need_with_prefetch.get_change_text()
+        assert change_text == "Tomates enlatados\nPasta\nArroz"
+
+        excess_text = need_with_prefetch.get_excess_text()
+        assert excess_text == "Pan\nLeche"
+
+        # Reset to English
+        activate('en')
