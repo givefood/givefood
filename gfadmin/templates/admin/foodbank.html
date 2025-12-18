@@ -255,7 +255,7 @@
           <dd>
             {{ foodbank.last_crawl }}
             <form action="{% url 'admin:foodbank_crawl' foodbank.slug %}" method="post">
-              <input type="submit" value="Force Crawl" class="button is-info is-small is-light">
+              <input type="submit" value="Force Article Crawl" class="button is-info is-small is-light">
             </form>
           </dd>
         {% endif %}
