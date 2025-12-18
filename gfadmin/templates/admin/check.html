@@ -43,6 +43,9 @@
                     {{ foodbank.postcode }}</p>
                     <p>{{ foodbank.phone_number }}</p>
                     <p>{{ foodbank.contact_email }}</p>
+                    {% if foodbank.delivery_address %}
+                        <p><strong>Delivery address:</strong><br>{{ foodbank.delivery_address|linebreaksbr }}</p>
+                    {% endif %}
                 </td>
                 <td>
                     <p>{{ check_result.details.address|linebreaksbr }}<br>
