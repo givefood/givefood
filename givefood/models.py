@@ -1765,18 +1765,30 @@ class FoodbankChange(models.Model):
             if text_type == "excess":
                 the_text = self.excess_change_text
         else:
-            try:
-                translated_text = FoodbankChangeTranslation.objects.get(need = self, language = current_language)
-            except FoodbankChangeTranslation.DoesNotExist:
-                if text_type == "change":
-                    the_text= self.change_text
-                if text_type == "excess":
-                    the_text = self.excess_change_text
+            # Check for prefetched translations first to avoid N+1 queries
+            translated_text = None
+            prefetched = getattr(self, '_prefetched_objects_cache', {})
+            if 'foodbankchangetranslation_set' in prefetched:
+                for translation in prefetched['foodbankchangetranslation_set']:
+                    if translation.language == current_language:
+                        translated_text = translation
+                        break
             else:
+                try:
+                    translated_text = FoodbankChangeTranslation.objects.get(need = self, language = current_language)
+                except FoodbankChangeTranslation.DoesNotExist:
+                    pass
+
+            if translated_text:
                 if text_type == "change":
                     the_text = translated_text.change_text
                 if text_type == "excess":
                     the_text = translated_text.excess_change_text
+            else:
+                if text_type == "change":
+                    the_text = self.change_text
+                if text_type == "excess":
+                    the_text = self.excess_change_text
             
         # Remove empty lines
         non_empty_lines = [line for line in the_text.splitlines() if line.strip()]
