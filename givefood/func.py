@@ -649,7 +649,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
     # Only prefetch translations for non-English languages to avoid unnecessary queries
     if current_language and current_language != "en":
         foodbanks = Foodbank.objects.filter(is_closed = False).select_related("latest_need").prefetch_related(
-            Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.all())
+            Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
         ).annotate(
             distance=EarthDistance([
                 LlToEarth([lat, lng]),
@@ -658,7 +658,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
         
         locations = FoodbankLocation.objects.filter(is_closed = False).prefetch_related(
             Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need").prefetch_related(
-                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.all())
+                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
             ))
         ).annotate(
             distance=EarthDistance([
@@ -731,7 +731,7 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
     if current_language and current_language != "en":
         donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).prefetch_related(
             Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need").prefetch_related(
-                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.all())
+                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
             ))
         ).annotate(
         distance=EarthDistance([
@@ -741,7 +741,7 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
 
         location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).prefetch_related(
             Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need").prefetch_related(
-                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.all())
+                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
             ))
         ).annotate(
         distance=EarthDistance([

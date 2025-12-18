@@ -344,9 +344,9 @@ class TestFoodbankChangeGetText:
         # Activate Spanish
         activate('es')
 
-        # Fetch the need with prefetched translations
+        # Fetch the need with prefetched translations (filtered by language as in production)
         need_with_prefetch = FoodbankChange.objects.prefetch_related(
-            Prefetch("foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.all())
+            Prefetch("foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language='es'))
         ).get(pk=need.pk)
 
         # Should use the prefetched Spanish translation without making an additional query

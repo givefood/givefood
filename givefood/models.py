@@ -1769,7 +1769,7 @@ class FoodbankChange(models.Model):
             translated_text = None
             prefetched = getattr(self, '_prefetched_objects_cache', {})
             if 'foodbankchangetranslation_set' in prefetched:
-                for translation in self.foodbankchangetranslation_set.all():
+                for translation in prefetched['foodbankchangetranslation_set']:
                     if translation.language == current_language:
                         translated_text = translation
                         break
