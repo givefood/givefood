@@ -24,7 +24,7 @@ from django.db.models import Sum, Q, Count
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect
-from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, SlugRedirectForm
+from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 
 
 def index(request):
@@ -991,6 +991,90 @@ Only suggest URLs from the list provided. Return as JSON with these exact field 
         for field in suggested_fields:
             if field in form.fields:
                 form.fields[field].widget.attrs['class'] = 'is-success'
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+        "foodbank":foodbank,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def foodbank_address_form(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "Edit %s Food Bank Address" % (foodbank.name)
+
+    if request.POST:
+        form = FoodbankAddressForm(request.POST, instance=foodbank)
+        if form.is_valid():
+            foodbank = form.save()
+            return redirect("admin:foodbank", slug = foodbank.slug)
+    else:
+        form = FoodbankAddressForm(instance=foodbank)
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+        "foodbank":foodbank,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def foodbank_phone_form(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "Edit %s Food Bank Phone Numbers" % (foodbank.name)
+
+    if request.POST:
+        form = FoodbankPhoneForm(request.POST, instance=foodbank)
+        if form.is_valid():
+            foodbank = form.save()
+            return redirect("admin:foodbank", slug = foodbank.slug)
+    else:
+        form = FoodbankPhoneForm(instance=foodbank)
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+        "foodbank":foodbank,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def foodbank_email_form(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "Edit %s Food Bank Email" % (foodbank.name)
+
+    if request.POST:
+        form = FoodbankEmailForm(request.POST, instance=foodbank)
+        if form.is_valid():
+            foodbank = form.save()
+            return redirect("admin:foodbank", slug = foodbank.slug)
+    else:
+        form = FoodbankEmailForm(instance=foodbank)
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+        "foodbank":foodbank,
+    }
+    return render(request, "admin/form.html", template_vars)
+
+
+def foodbank_fsa_id_form(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    page_title = "Edit %s Food Bank FSA ID" % (foodbank.name)
+
+    if request.POST:
+        form = FoodbankFsaIdForm(request.POST, instance=foodbank)
+        if form.is_valid():
+            foodbank = form.save()
+            return redirect("admin:foodbank", slug = foodbank.slug)
+    else:
+        form = FoodbankFsaIdForm(instance=foodbank)
 
     template_vars = {
         "form":form,
