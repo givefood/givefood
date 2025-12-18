@@ -55,6 +55,7 @@ urlpatterns = (
     path("foodbank/<slug:slug>/edit/urls/", foodbank_urls_form, name="foodbank_urls_edit"),
     path("foodbank/<slug:slug>/addsub/", foodbank_addsub, name="foodbank_addsub"),
     path("foodbank/<slug:slug>/crawl/", foodbank_crawl, name="foodbank_crawl"),
+    path("foodbank/<slug:slug>/charity-crawl/", foodbank_charity_crawl, name="foodbank_charity_crawl"),
     path("foodbank/<slug:slug>/sendrfi/", foodbank_rfi, name="foodbank_rfi"),
     path("foodbank/<slug:slug>/resave/", foodbank_resave, name="foodbank_resave"),
     path("foodbank/<slug:slug>/touch/", foodbank_touch, name="foodbank_touch"),

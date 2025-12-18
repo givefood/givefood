@@ -763,6 +763,16 @@ def foodbank_crawl(request, slug):
     if foodbank.rss_url:
         foodbank_article_crawl(foodbank)
     return redirect("admin:foodbank", slug = foodbank.slug)
+
+
+@require_POST
+def foodbank_charity_crawl(request, slug):
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    if foodbank.charity_number:
+        from givefood.func import foodbank_charity_crawl as do_charity_crawl
+        do_charity_crawl(foodbank)
+    return redirect("admin:foodbank", slug = foodbank.slug)
     
 
 @require_POST

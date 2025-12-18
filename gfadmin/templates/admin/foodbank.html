@@ -141,7 +141,12 @@
         {% endif %}
         {% if foodbank.charity_register_url %}
           <dt>Charity register</dt>
-          <dd><a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a></dd>
+          <dd>
+            <a href="{{ foodbank.charity_register_url }}">{{ foodbank.charity_number }}</a>
+            <form action="{% url 'admin:foodbank_charity_crawl' foodbank.slug %}" method="post" style="display:inline-block;margin-left:10px;">
+              <input type="submit" value="Force Crawl" class="button is-info is-small is-light">
+            </form>
+          </dd>
           {% if foodbank.charity_just_foodbank %}
             <dt>Charity just food bank</dt>
             <dd>✅ Yes</dd>
