@@ -537,18 +537,23 @@ def _crawl_charity_ni(foodbank, crawl_set = None):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         csv_input = csv.reader(StringIO(response.text))
-        csv_headers = next(csv_input)
-        data_row = next(csv_input)
-        data = dict(zip(csv_headers, data_row))
-        foodbank.charity_name = data.get("Charity name")
-        foodbank.charity_reg_date = data.get("Date registered")
-        foodbank.charity_website = data.get("Website")
-        # Objectives and purposes are reversed in NI
-        foodbank.charity_objectives = data.get("Charitable purposes")
-        objectives = data.get("What the charity does")
-        if objectives:
-            objectives = re.sub(r",(?!\s)", "\n", objectives)
-        foodbank.charity_purpose = objectives
+        try:
+            csv_headers = next(csv_input)
+            data_row = next(csv_input)
+        except StopIteration:
+            # Empty or malformed CSV response
+            pass
+        else:
+            data = dict(zip(csv_headers, data_row))
+            foodbank.charity_name = data.get("Charity name")
+            foodbank.charity_reg_date = data.get("Date registered")
+            foodbank.charity_website = data.get("Website")
+            # Objectives and purposes are reversed in NI
+            foodbank.charity_objectives = data.get("Charitable purposes")
+            objectives = data.get("What the charity does")
+            if objectives:
+                objectives = re.sub(r",(?!\s)", "\n", objectives)
+            foodbank.charity_purpose = objectives
 
     foodbank.last_charity_check = datetime.now(tz.utc)
     foodbank.save(do_decache=False, do_geoupdate=False)
