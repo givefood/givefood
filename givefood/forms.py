@@ -55,6 +55,62 @@ class FoodbankUrlsForm(ModelForm):
         return foodbank
 
 
+class FoodbankAddressForm(ModelForm):
+    class Meta:
+        model = Foodbank
+        fields = ["address", "postcode", "lat_lng"]
+
+    def save(self, commit=True): 
+        foodbank = super().save(commit=False)
+        foodbank.edited = datetime.now()
+        
+        if commit:
+            foodbank.save()
+        return foodbank
+
+
+class FoodbankPhoneForm(ModelForm):
+    class Meta:
+        model = Foodbank
+        fields = ["phone_number", "secondary_phone_number", "delivery_phone_number"]
+
+    def save(self, commit=True): 
+        foodbank = super().save(commit=False)
+        foodbank.edited = datetime.now()
+        
+        if commit:
+            foodbank.save()
+        return foodbank
+
+
+class FoodbankEmailForm(ModelForm):
+    class Meta:
+        model = Foodbank
+        fields = ["contact_email", "notification_email"]
+
+    def save(self, commit=True): 
+        foodbank = super().save(commit=False)
+        foodbank.edited = datetime.now()
+        
+        if commit:
+            foodbank.save()
+        return foodbank
+
+
+class FoodbankFsaIdForm(ModelForm):
+    class Meta:
+        model = Foodbank
+        fields = ["fsa_id"]
+
+    def save(self, commit=True): 
+        foodbank = super().save(commit=False)
+        foodbank.edited = datetime.now()
+        
+        if commit:
+            foodbank.save()
+        return foodbank
+
+
 class FoodbankPoliticsForm(ModelForm):
     class Meta:
         model = Foodbank

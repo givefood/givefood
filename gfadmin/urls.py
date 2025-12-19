@@ -53,6 +53,10 @@ urlpatterns = (
 
     path("foodbank/<slug:slug>/politics/edit/", foodbank_politics_form, name="foodbank_politics_edit"),
     path("foodbank/<slug:slug>/edit/urls/", foodbank_urls_form, name="foodbank_urls_edit"),
+    path("foodbank/<slug:slug>/edit/address/", foodbank_address_form, name="foodbank_address_edit"),
+    path("foodbank/<slug:slug>/edit/phone/", foodbank_phone_form, name="foodbank_phone_edit"),
+    path("foodbank/<slug:slug>/edit/email/", foodbank_email_form, name="foodbank_email_edit"),
+    path("foodbank/<slug:slug>/edit/fsa-id/", foodbank_fsa_id_form, name="foodbank_fsa_id_edit"),
     path("foodbank/<slug:slug>/addsub/", foodbank_addsub, name="foodbank_addsub"),
     path("foodbank/<slug:slug>/crawl/", foodbank_crawl, name="foodbank_crawl"),
     path("foodbank/<slug:slug>/charity-crawl/", foodbank_charity_crawl, name="foodbank_charity_crawl"),

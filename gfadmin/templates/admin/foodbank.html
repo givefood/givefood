@@ -156,6 +156,7 @@
         <dd>{{ foodbank.network }}</dd>
         <dt>FSA ID</dt>
         <dd>
+          <a href="{% url 'admin:foodbank_fsa_id_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light">Edit</a>
           {% if foodbank.fsa_id %}
             <a href="{{ foodbank.fsa_url }}">{{ foodbank.fsa_id }}</a>
           {% else %}
@@ -169,6 +170,8 @@
       </dl>
 
       <h3>Contacts</h3>
+      <a href="{% url 'admin:foodbank_email_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light">Edit Email</a>
+      <a href="{% url 'admin:foodbank_phone_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light" style="margin-right:5px;">Edit Phone</a>
       <dl>
         <dt>Email</dt>
         <dd><a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email }}</a></dd>
@@ -310,7 +313,7 @@
               {% endif %}
             </dl>
           </td>
-          <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light">Edit</a></td>
+          <td><a href="{% url 'admin:foodbank_address_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light">Edit</a></td>
         </tr>
         {% if foodbank.delivery_address %}
           <tr>
