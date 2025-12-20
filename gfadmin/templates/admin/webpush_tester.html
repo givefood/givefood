@@ -29,7 +29,7 @@
             <td>
               <form action="{% url 'admin:webpush_tester_send' %}" method="post">
                 <input type="hidden" name="subscription_id" value="{{ subscription.id }}">
-                <input type="submit" value="Send" onclick="return confirm('Are you sure? This will send a web push notification to this subscriber with the latest need for {{ subscription.foodbank.name }}.')" class="button is-primary is-small is-light">
+                <input type="submit" value="Send" onclick="return confirm('Are you sure? This will send a web push notification to this subscriber with the latest need for {{ subscription.foodbank.name|escapejs }}.')" class="button is-primary is-small is-light">
                 {% csrf_token %}
               </form>
             </td>

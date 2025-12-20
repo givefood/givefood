@@ -1913,8 +1913,6 @@ def send_single_webpush_notification(subscription, need):
     Returns:
         True if sent successfully, False otherwise
     """
-    from pywebpush import webpush, WebPushException
-    
     # Get VAPID credentials from database
     vapid_public_key = get_cred("VAPID_PUBLIC_KEY")
     vapid_private_key = get_cred("VAPID_PRIVATE_KEY")
@@ -1958,6 +1956,9 @@ def send_single_webpush_notification(subscription, need):
     }
     
     try:
+        # Import pywebpush here for consistency with send_webpush_notification
+        from pywebpush import webpush, WebPushException
+        
         # Build subscription info dict for pywebpush
         subscription_info = {
             "endpoint": subscription.endpoint,
