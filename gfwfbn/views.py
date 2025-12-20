@@ -21,6 +21,21 @@ from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_
 from django.db.models import Sum
 
 
+def fix_base64_padding(s):
+    """
+    Add padding to base64 string if needed.
+    
+    Browser may send base64url-encoded values without padding.
+    Standard base64 requires length to be divisible by 4.
+    """
+    if not s:
+        return s
+    padding = 4 - (len(s) % 4)
+    if padding != 4:
+        s += '=' * padding
+    return s
+
+
 @cache_page(SECONDS_IN_HOUR)
 def index(request, lat_lng=None, page_title=None):
     """
@@ -1019,6 +1034,10 @@ def webpush_subscribe(request, slug):
         
         if not endpoint or not p256dh or not auth:
             return HttpResponseBadRequest()
+        
+        # Fix base64 padding - browser may not include padding characters
+        p256dh = fix_base64_padding(p256dh)
+        auth = fix_base64_padding(auth)
         
         # Validate endpoint is a valid HTTPS URL
         if not endpoint.startswith('https://'):

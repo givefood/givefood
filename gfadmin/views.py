@@ -22,8 +22,8 @@ from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials
-from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect
+from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification
+from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 
 
@@ -2494,6 +2494,39 @@ def email_tester_test(request):
         rendered_template = "<pre>%s</pre>" % (rendered_template)
     
     return HttpResponse(rendered_template)
+
+
+def webpush_tester(request):
+
+    subscriptions = WebPushSubscription.objects.all().select_related('foodbank').order_by("-created")
+
+    template_vars = {
+        "section":"settings",
+        "subscriptions":subscriptions,
+    }
+    return render(request, "admin/webpush_tester.html", template_vars)
+
+
+@require_POST
+def webpush_tester_send(request):
+
+    subscription_id = request.POST.get("subscription_id")
+    subscription = get_object_or_404(WebPushSubscription, id=subscription_id)
+    
+    # Get the latest published need for this food bank
+    try:
+        latest_need = FoodbankChange.objects.filter(
+            foodbank=subscription.foodbank, 
+            published=True
+        ).latest("created")
+    except FoodbankChange.DoesNotExist:
+        return redirect("admin:webpush_tester")
+    
+    # Send the notification
+    send_single_webpush_notification(subscription, latest_need)
+    
+    redir_url = "%s?sent=%s" % (reverse("admin:webpush_tester"), subscription_id)
+    return redirect(redir_url)
 
 
 def crawl_sets(request):

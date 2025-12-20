@@ -1,0 +1,48 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Web Push Tester - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Web Push Tester</h2>
+
+  <div class="columns">
+
+    <div class="column">
+
+      <p>Send test web push notifications to individual subscribers. Pushes the latest need for that subscription's food bank.</p>
+
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>ID</th>
+          <th>Foodbank</th>
+          <th>Browser</th>
+          <th>Created</th>
+          <th></th>
+        </tr>
+        {% for subscription in subscriptions %}
+          <tr{% if request.GET.sent == subscription.id|stringformat:"i" %} class="is-selected"{% endif %}>
+            <td>{{ subscription.id }}</td>
+            <td><a href="{% url 'admin:foodbank' subscription.foodbank.slug %}">{{ subscription.foodbank.name }}</a></td>
+            <td>{{ subscription.browser|default:"-" }}</td>
+            <td>{{ subscription.created }}</td>
+            <td>
+              <form action="{% url 'admin:webpush_tester_send' %}" method="post">
+                <input type="hidden" name="subscription_id" value="{{ subscription.id }}">
+                <input type="submit" value="Send" onclick="return confirm('Are you sure? This will send a web push notification to this subscriber with the latest need for {{ subscription.foodbank.name|escapejs }}.')" class="button is-primary is-small is-light">
+                {% csrf_token %}
+              </form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5">No web push subscriptions found.</td>
+          </tr>
+        {% endfor %}
+      </table>
+
+    </div>
+
+  </div>
+
+{% endblock %}

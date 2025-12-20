@@ -127,6 +127,8 @@ urlpatterns = (
     path("clearcache/", clearcache, name="clearcache"),
     path("emailtester/", email_tester, name="email_tester"),
     path("emailtester/test/", email_tester_test, name="email_tester_test"),
+    path("webpushtester/", webpush_tester, name="webpush_tester"),
+    path("webpushtester/send/", webpush_tester_send, name="webpush_tester_send"),
 
     path("crawl-sets/", crawl_sets, name="crawl_sets"),
     path("crawl-set/<int:crawl_set_id>/", crawl_set, name="crawl_set"),
