@@ -2360,12 +2360,6 @@ class WebPushSubscription(models.Model):
     def __str__(self):
         return f"WebPush: {self.foodbank.name} - {self.endpoint[:50]}..."
     
-    def save(self, *args, **kwargs):
-        # Strip whitespace from endpoint URL
-        if self.endpoint:
-            self.endpoint = self.endpoint.strip()
-        super(WebPushSubscription, self).save(*args, **kwargs)
-    
 
 class MobileSubscriber(models.Model):
 
