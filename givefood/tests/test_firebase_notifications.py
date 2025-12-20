@@ -444,8 +444,8 @@ class TestFirebaseNotifications:
         assert message.webpush.notification is not None
         assert message.webpush.notification.title == f"{foodbank.name} needs 3 items"
         assert message.webpush.notification.body == "Tinned Tomatoes, Pasta, Rice"
-        assert message.webpush.notification.icon == "/static/img/logo.svg"
-        assert message.webpush.notification.badge == "/static/img/logo.svg"
+        assert message.webpush.notification.icon == "/static/img/notificationicon.svg"
+        assert message.webpush.notification.badge == "/static/img/notificationicon.svg"
         
         # Check that webpush data contains required fields
         assert message.webpush.data is not None

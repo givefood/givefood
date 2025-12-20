@@ -1040,8 +1040,8 @@ messaging.onBackgroundMessage(function(payload) {{
     const notificationTitle = payload.notification?.title || payload.data?.title || 'Give Food';
     const notificationOptions = {{
         body: payload.notification?.body || payload.data?.body || '',
-        icon: '/static/img/logo.svg',
-        badge: '/static/img/logo.svg',
+        icon: '/static/img/notificationicon.svg',
+        badge: '/static/img/notificationicon.svg',
         data: {{
             foodbank_slug: payload.data?.foodbank_slug,
             click_action: payload.data?.click_action || payload.fcmOptions?.link
@@ -1113,8 +1113,8 @@ self.addEventListener('push', function(event) {
     const title = data.head || data.title || 'Give Food';
     const options = {
         body: data.body || '',
-        icon: data.icon || '/static/img/logo.svg',
-        badge: '/static/img/logo.svg',
+        icon: data.icon || '/static/img/notificationicon.svg',
+        badge: '/static/img/notificationicon.svg',
         tag: data.tag || 'give-food-notification',
         data: {
             url: data.url || '/needs/'

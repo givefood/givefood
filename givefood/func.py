@@ -1773,8 +1773,8 @@ def send_firebase_notification(need):
             notification=messaging.WebpushNotification(
                 title=title,
                 body=items_text,
-                icon="/static/img/logo.svg",
-                badge="/static/img/logo.svg",
+                icon="/static/img/notificationicon.svg",
+                badge="/static/img/notificationicon.svg",
             ),
             fcm_options=messaging.WebpushFCMOptions(
                 link=foodbank_url
@@ -1854,7 +1854,7 @@ def send_webpush_notification(need):
     payload = {
         "head": title,
         "body": current_body,
-        "icon": "/static/img/logo.svg",
+        "icon": "/static/img/notificationicon.svg",
         "url": foodbank_url,
         "tag": f"need-{need.need_id}",
     }
@@ -1950,7 +1950,7 @@ def send_single_webpush_notification(subscription, need):
     payload = {
         "head": title,
         "body": current_body,
-        "icon": "/static/img/logo.svg",
+        "icon": "/static/img/notificationicon.svg",
         "url": foodbank_url,
         "tag": f"need-{need.need_id}",
     }
