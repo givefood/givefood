@@ -1035,6 +1035,9 @@ def webpush_subscribe(request, slug):
         if not endpoint or not p256dh or not auth:
             return HttpResponseBadRequest()
         
+        # Strip whitespace from endpoint URL
+        endpoint = endpoint.strip()
+        
         # Fix base64 padding - browser may not include padding characters
         p256dh = fix_base64_padding(p256dh)
         auth = fix_base64_padding(auth)
