@@ -1979,6 +1979,11 @@ def send_single_webpush_notification(subscription, need):
         
     except WebPushException as e:
         logging.error(f"Failed to send test web push to subscription {subscription.id}: {e}")
+        # If subscription is invalid (410 Gone or 404), delete it
+        if e.response and e.response.status_code in [404, 410]:
+            from givefood.models import WebPushSubscription
+            WebPushSubscription.objects.filter(id=subscription.id).delete()
+            logging.info(f"Deleted invalid web push subscription {subscription.id}")
         return False
     except Exception as e:
         logging.error(f"Unexpected error sending test web push to subscription {subscription.id}: {e}")
