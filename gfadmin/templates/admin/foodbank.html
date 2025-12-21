@@ -571,6 +571,7 @@
 
     {# Subscribers #}
     <div class="column tabcontent subscribers is-hidden" role="tabpanel" id="subscribers-panel" aria-labelledby="subscribers-tab">
+      <h3>Email</h3>
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Email</th>
@@ -582,6 +583,38 @@
             <td>{{ subscription.email }}</td>
             <td>{{ subscription.created }}</td>
             <td>{% if subscription.confirmed %}Y{% else %}N{% endif %}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <div class="column tabcontent subscribers is-hidden" role="tabpanel">
+      <h3>Web Push</h3>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Endpoint</th>
+          <th>Created</th>
+        </tr>
+        {% for subscription in foodbank.webpush_subscribers %}
+          <tr>
+            <td>{{ subscription.endpoint|truncatechars:50 }}</td>
+            <td>{{ subscription.created }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <div class="column tabcontent subscribers is-hidden" role="tabpanel">
+      <h3>Mobile</h3>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Device ID</th>
+          <th>Created</th>
+        </tr>
+        {% for subscription in foodbank.mobile_subscribers %}
+          <tr>
+            <td>{{ subscription.device_id|truncatechars:50 }}</td>
+            <td>{{ subscription.created }}</td>
           </tr>
         {% endfor %}
       </table>

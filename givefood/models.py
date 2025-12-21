@@ -404,6 +404,12 @@ class Foodbank(models.Model):
     def subscribers(self):
         return FoodbankSubscriber.objects.filter(foodbank = self)
 
+    def webpush_subscribers(self):
+        return WebPushSubscription.objects.filter(foodbank = self)
+    
+    def mobile_subscribers(self):
+        return MobileSubscriber.objects.filter(foodbank = self)
+
     def number_subscribers(self):
         return FoodbankSubscriber.objects.filter(foodbank = self).count()
     
