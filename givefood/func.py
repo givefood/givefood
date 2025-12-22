@@ -1797,35 +1797,33 @@ def send_firebase_notification(need):
         return None
 
 
-def send_webpush_notification(need):
+def _get_vapid_credentials():
     """
-    Send web push notifications to subscribers of a food bank using django-webpush.
+    Get VAPID credentials from database.
     
-    This uses VAPID (Voluntary Application Server Identification) for web push,
-    which is the standard for browser push notifications without Firebase.
-    
-    Args:
-        need: FoodbankChange instance with foodbank and need information
+    Returns:
+        tuple: (vapid_private_key, vapid_admin_email) or (None, None) if not found
     """
-    from webpush import send_user_notification
-    from givefood.models import WebPushSubscription
-    
-    # Get VAPID credentials from database
     vapid_public_key = get_cred("VAPID_PUBLIC_KEY")
     vapid_private_key = get_cred("VAPID_PRIVATE_KEY")
     vapid_admin_email = get_cred("VAPID_ADMIN_EMAIL")
     
     if not vapid_public_key or not vapid_private_key or not vapid_admin_email:
-        logging.warning("VAPID credentials not found, skipping web push notifications")
-        return None
+        return None, None
     
-    # Get all web push subscriptions for this food bank
-    subscriptions = WebPushSubscription.objects.filter(foodbank=need.foodbank)
+    return vapid_private_key, vapid_admin_email
+
+
+def _build_webpush_payload(need):
+    """
+    Build the web push notification payload for a food bank need.
     
-    if not subscriptions.exists():
-        logging.info(f"No web push subscriptions for food bank {need.foodbank.name}")
-        return None
-    
+    Args:
+        need: FoodbankChange instance with foodbank and need information
+        
+    Returns:
+        dict: Notification payload with head, body, icon, url, and tag
+    """
     # Build the notification title
     title = f"{need.foodbank.name} needs {need.no_items()} items"
     
@@ -1851,47 +1849,93 @@ def send_webpush_notification(need):
     
     foodbank_url = f"{SITE_DOMAIN}{reverse('wfbn:foodbank', kwargs={'slug': need.foodbank.slug})}"
     
-    payload = {
+    return {
         "head": title,
         "body": current_body,
         "icon": "/static/img/notificationicon.svg",
         "url": foodbank_url,
         "tag": f"need-{need.need_id}",
     }
+
+
+def _send_single_push(subscription, payload, vapid_private_key, vapid_admin_email):
+    """
+    Send a single web push notification.
+    
+    Args:
+        subscription: WebPushSubscription instance
+        payload: dict with notification payload
+        vapid_private_key: VAPID private key
+        vapid_admin_email: VAPID admin email
+        
+    Returns:
+        tuple: (success: bool, should_delete: bool) - whether send succeeded and whether subscription should be deleted
+    """
+    from pywebpush import webpush, WebPushException
+    
+    subscription_info = {
+        "endpoint": subscription.endpoint,
+        "keys": {
+            "p256dh": subscription.p256dh,
+            "auth": subscription.auth,
+        }
+    }
+    
+    try:
+        webpush(
+            subscription_info=subscription_info,
+            data=json.dumps(payload),
+            vapid_private_key=vapid_private_key,
+            vapid_claims={"sub": f"mailto:{vapid_admin_email}"}
+        )
+        return True, False
+    except WebPushException as e:
+        logging.error(f"Failed to send web push to subscription {subscription.id}: {e}")
+        # If subscription is invalid (410 Gone or 404), mark for deletion
+        if e.response and e.response.status_code in [404, 410]:
+            return False, True
+        return False, False
+    except Exception as e:
+        logging.error(f"Unexpected error sending web push to subscription {subscription.id}: {e}")
+        return False, False
+
+
+def send_webpush_notification(need):
+    """
+    Send web push notifications to subscribers of a food bank using django-webpush.
+    
+    This uses VAPID (Voluntary Application Server Identification) for web push,
+    which is the standard for browser push notifications without Firebase.
+    
+    Args:
+        need: FoodbankChange instance with foodbank and need information
+    """
+    from givefood.models import WebPushSubscription
+    
+    vapid_private_key, vapid_admin_email = _get_vapid_credentials()
+    if not vapid_private_key:
+        logging.warning("VAPID credentials not found, skipping web push notifications")
+        return None
+    
+    # Get all web push subscriptions for this food bank
+    subscriptions = WebPushSubscription.objects.filter(foodbank=need.foodbank)
+    
+    if not subscriptions.exists():
+        logging.info(f"No web push subscriptions for food bank {need.foodbank.name}")
+        return None
+    
+    payload = _build_webpush_payload(need)
     
     sent_count = 0
     failed_subscriptions = []
     
     for subscription in subscriptions:
-        try:
-            # Build subscription info dict for pywebpush
-            subscription_info = {
-                "endpoint": subscription.endpoint,
-                "keys": {
-                    "p256dh": subscription.p256dh,
-                    "auth": subscription.auth,
-                }
-            }
-            
-            # Send push notification using pywebpush directly
-            from pywebpush import webpush, WebPushException
-            
-            webpush(
-                subscription_info=subscription_info,
-                data=json.dumps(payload),
-                vapid_private_key=vapid_private_key,
-                vapid_claims={"sub": f"mailto:{vapid_admin_email}"}
-            )
+        success, should_delete = _send_single_push(subscription, payload, vapid_private_key, vapid_admin_email)
+        if success:
             sent_count += 1
             logging.info(f"Sent web push to subscription {subscription.id}")
-            
-        except WebPushException as e:
-            logging.error(f"Failed to send web push to subscription {subscription.id}: {e}")
-            # If subscription is invalid (410 Gone or 404), mark for deletion
-            if e.response and e.response.status_code in [404, 410]:
-                failed_subscriptions.append(subscription.id)
-        except Exception as e:
-            logging.error(f"Unexpected error sending web push to subscription {subscription.id}: {e}")
+        if should_delete:
+            failed_subscriptions.append(subscription.id)
     
     # Clean up invalid subscriptions
     if failed_subscriptions:
@@ -1913,78 +1957,22 @@ def send_single_webpush_notification(subscription, need):
     Returns:
         True if sent successfully, False otherwise
     """
-    # Get VAPID credentials from database
-    vapid_public_key = get_cred("VAPID_PUBLIC_KEY")
-    vapid_private_key = get_cred("VAPID_PRIVATE_KEY")
-    vapid_admin_email = get_cred("VAPID_ADMIN_EMAIL")
+    from givefood.models import WebPushSubscription
     
-    if not vapid_public_key or not vapid_private_key or not vapid_admin_email:
+    vapid_private_key, vapid_admin_email = _get_vapid_credentials()
+    if not vapid_private_key:
         logging.warning("VAPID credentials not found, cannot send web push notification")
         return False
     
-    # Build the notification title
-    title = f"{need.foodbank.name} needs {need.no_items()} items"
+    payload = _build_webpush_payload(need)
     
-    # Get items for the body
-    items = need.change_list()
+    success, should_delete = _send_single_push(subscription, payload, vapid_private_key, vapid_admin_email)
     
-    # Build body with items, staying under reasonable size
-    max_body_chars = 200
-    body_items = []
-    current_body = ""
-    
-    for item in items:
-        if body_items:
-            test_body = ", ".join(body_items + [item])
-        else:
-            test_body = item
-        
-        if len(test_body) <= max_body_chars:
-            body_items.append(item)
-            current_body = test_body
-        else:
-            break
-    
-    foodbank_url = f"{SITE_DOMAIN}{reverse('wfbn:foodbank', kwargs={'slug': need.foodbank.slug})}"
-    
-    payload = {
-        "head": title,
-        "body": current_body,
-        "icon": "/static/img/notificationicon.svg",
-        "url": foodbank_url,
-        "tag": f"need-{need.need_id}",
-    }
-    
-    try:
-        # Import pywebpush here for consistency with send_webpush_notification
-        from pywebpush import webpush, WebPushException
-        
-        # Build subscription info dict for pywebpush
-        subscription_info = {
-            "endpoint": subscription.endpoint,
-            "keys": {
-                "p256dh": subscription.p256dh,
-                "auth": subscription.auth,
-            }
-        }
-        
-        webpush(
-            subscription_info=subscription_info,
-            data=json.dumps(payload),
-            vapid_private_key=vapid_private_key,
-            vapid_claims={"sub": f"mailto:{vapid_admin_email}"}
-        )
+    if success:
         logging.info(f"Sent test web push to subscription {subscription.id}")
-        return True
-        
-    except WebPushException as e:
-        logging.error(f"Failed to send test web push to subscription {subscription.id}: {e}")
-        # If subscription is invalid (410 Gone or 404), delete it
-        if e.response and e.response.status_code in [404, 410]:
-            from givefood.models import WebPushSubscription
-            WebPushSubscription.objects.filter(id=subscription.id).delete()
-            logging.info(f"Deleted invalid web push subscription {subscription.id}")
-        return False
-    except Exception as e:
-        logging.error(f"Unexpected error sending test web push to subscription {subscription.id}: {e}")
-        return False
+    
+    if should_delete:
+        WebPushSubscription.objects.filter(id=subscription.id).delete()
+        logging.info(f"Deleted invalid web push subscription {subscription.id}")
+    
+    return success
