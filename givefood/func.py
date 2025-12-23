@@ -936,7 +936,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         ordered by distance
     """
     from givefood.models import Foodbank, FoodbankLocation, FoodbankChangeLine, FoodbankChangeTranslation
-    from django.db.models import Prefetch, Exists, OuterRef, F
+    from django.db.models import Prefetch, Exists, OuterRef
     from django.utils.translation import get_language
 
     lat = lat_lng.split(",")[0]
@@ -947,14 +947,6 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
     # Subquery to check if latest_need has the specified category
     has_category = FoodbankChangeLine.objects.filter(
         need=OuterRef('latest_need'),
-        category=category,
-        type='need'
-    )
-
-    # Subquery to check if a location's foodbank has the category
-    # This uses the foodbank_id foreign key to check the parent foodbank's latest_need
-    foodbank_has_category = FoodbankChangeLine.objects.filter(
-        need=OuterRef('foodbank__latest_need'),
         category=category,
         type='need'
     )
@@ -977,12 +969,23 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
             needs_category=True
         ).annotate(type=Value("organisation")).order_by("distance")[:quantity]
 
-        # For locations, we need to use F() expressions to explicitly reference 
-        # the FoodbankLocation table's latitude/longitude columns to avoid ambiguity
-        # when the Exists subquery joins with the Foodbank table
+        # Get the IDs of foodbanks that need the category (within extended distance to catch all relevant locations)
+        foodbank_ids_with_category = list(
+            Foodbank.objects.filter(
+                is_closed=False,
+                latest_need__isnull=False
+            ).annotate(
+                needs_category=Exists(has_category)
+            ).filter(
+                needs_category=True
+            ).values_list('id', flat=True)
+        )
+
+        # Query locations whose foodbank needs the category
+        # Filter by foodbank_id instead of using Exists subquery to avoid column ambiguity
         locations = FoodbankLocation.objects.filter(
             is_closed=False,
-            foodbank__latest_need__isnull=False
+            foodbank_id__in=foodbank_ids_with_category
         ).prefetch_related(
             Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need").prefetch_related(
                 Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
@@ -990,12 +993,10 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         ).annotate(
             distance=EarthDistance([
                 LlToEarth([lat, lng]),
-                LlToEarth([F('latitude'), F('longitude')])
-            ]),
-            foodbank_needs_category=Exists(foodbank_has_category)
+                LlToEarth(['latitude', 'longitude'])
+            ])
         ).filter(
-            distance__lte=max_distance_meters,
-            foodbank_needs_category=True
+            distance__lte=max_distance_meters
         ).annotate(type=Value("location")).order_by("distance")[:quantity]
     else:
         foodbanks = Foodbank.objects.filter(
@@ -1012,23 +1013,32 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
             needs_category=True
         ).annotate(type=Value("organisation")).order_by("distance")[:quantity]
 
-        # For locations, we need to use F() expressions to explicitly reference 
-        # the FoodbankLocation table's latitude/longitude columns to avoid ambiguity
-        # when the Exists subquery joins with the Foodbank table
+        # Get the IDs of foodbanks that need the category
+        foodbank_ids_with_category = list(
+            Foodbank.objects.filter(
+                is_closed=False,
+                latest_need__isnull=False
+            ).annotate(
+                needs_category=Exists(has_category)
+            ).filter(
+                needs_category=True
+            ).values_list('id', flat=True)
+        )
+
+        # Query locations whose foodbank needs the category
+        # Filter by foodbank_id instead of using Exists subquery to avoid column ambiguity
         locations = FoodbankLocation.objects.filter(
             is_closed=False,
-            foodbank__latest_need__isnull=False
+            foodbank_id__in=foodbank_ids_with_category
         ).prefetch_related(
             Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need"))
         ).annotate(
             distance=EarthDistance([
                 LlToEarth([lat, lng]),
-                LlToEarth([F('latitude'), F('longitude')])
-            ]),
-            foodbank_needs_category=Exists(foodbank_has_category)
+                LlToEarth(['latitude', 'longitude'])
+            ])
         ).filter(
-            distance__lte=max_distance_meters,
-            foodbank_needs_category=True
+            distance__lte=max_distance_meters
         ).annotate(type=Value("location")).order_by("distance")[:quantity]
 
     # Process foodbanks
