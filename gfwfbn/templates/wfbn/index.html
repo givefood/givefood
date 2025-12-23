@@ -77,8 +77,8 @@
 
           <div class="tabs is-boxed" role="tablist" aria-label="{% blocktrans %}Search results{% endblocktrans %}">
             <ul>
-              <li class="is-active" role="presentation">
-                <a data-tab="foodbanks" role="tab" aria-selected="true" aria-controls="foodbanks-panel" id="foodbanks-tab">
+              <li class="{% if not item_category %}is-active{% endif %}" role="presentation">
+                <a data-tab="foodbanks" role="tab" aria-selected="{% if not item_category %}true{% else %}false{% endif %}" aria-controls="foodbanks-panel" id="foodbanks-tab">
                   <span>{% blocktrans %}Food banks{% endblocktrans %}</span>
                 </a>
               </li>
@@ -87,10 +87,15 @@
                   <span>{% blocktrans %}Donation points{% endblocktrans %}</span>
                 </a>
               </li>
+              <li class="{% if item_category %}is-active{% endif %}" role="presentation">
+                <a data-tab="byitem" role="tab" aria-selected="{% if item_category %}true{% else %}false{% endif %}" aria-controls="byitem-panel" id="byitem-tab">
+                  <span>{% blocktrans %}By item{% endblocktrans %}</span>
+                </a>
+              </li>
             </ul>
           </div>
           
-          <div class="foodbanks tabcontent" role="tabpanel" id="foodbanks-panel" aria-labelledby="foodbanks-tab">
+          <div class="foodbanks tabcontent {% if item_category %}is-hidden{% endif %}" role="tabpanel" id="foodbanks-panel" aria-labelledby="foodbanks-tab">
             <table class="table needs">
               {% for location in locations %}
                 <tr>
@@ -165,6 +170,71 @@
                 </tr>
               {% endfor %}
             </table>
+          </div>
+
+          <div class="byitem tabcontent {% if not item_category %}is-hidden{% endif %}" role="tabpanel" id="byitem-panel" aria-labelledby="byitem-tab">
+            {% if not item_category %}
+              <p>{% blocktrans %}Find an item needed by a food bank nearby{% endblocktrans %}</p>
+            {% endif %}
+            <form action="{% url 'wfbn:index' %}#byitem" method="GET" class="byitem-form">
+              <input type="hidden" name="lat_lng" value="{{ lat }},{{ lng }}">
+              {% if address %}<input type="hidden" name="address" value="{{ address }}">{% endif %}
+              <div class="field has-addons">
+                <div class="control is-expanded">
+                  <div class="select is-fullwidth">
+                    <select name="item" id="item_select">
+                      <option value="">{% blocktrans %}Select an item category{% endblocktrans %}</option>
+                      {% for cat_value, cat_label in item_categories %}
+                        <option value="{{ cat_value }}" {% if item_category == cat_value %}selected{% endif %}>{{ cat_label }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="control">
+                  <button type="submit" class="button is-info">{% trans "Go" %}</button>
+                </div>
+              </div>
+            </form>
+
+            {% if item_category and locations_by_category %}
+              <table class="table needs">
+                {% for location in locations_by_category %}
+                  <tr>
+                    <td>
+                      <a href="{% if location.type == 'organisation' %}{% url 'wfbn:foodbank' location.foodbank_slug %}{% endif %}{% if location.type == 'location' %}{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}{% endif %}">{{ location.name }}</a>
+                      {% if location.type == "location" %}
+                        {% url 'wfbn:foodbank' location.foodbank_slug as parent_url %}<div class="parent_org">{% blocktrans with parent_url=parent_url foodbank_name=location.foodbank_name %}Part of <a href="{{ parent_url }}">{{ foodbank_name }}</a>{% endblocktrans %}</div>
+                      {% endif %}
+                      <div class="distance">{{ location.distance_mi|floatformat:2 }}mi {% blocktrans %}away{% endblocktrans %}</div>
+                    </td>
+                    <td class="need_detail">
+                      <div class="fb_needs">
+                        {% with change_text=location.latest_need.get_change_text %}
+                          {% if change_text == "Nothing" %}
+                            {% blocktrans %}Nothing right now, thanks{% endblocktrans %}
+                          {% elif change_text == "Unknown" %}
+                            {% if location.phone_number %}
+                              <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ location.phone_number|full_phone }}">{{ location.phone_number|friendly_phone }}</a>
+                              <br>
+                            {% endif %}
+                            <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ location.contact_email }}">{{ location.contact_email }}</a>
+                          {% elif change_text == "Facebook" %}
+                            {% blocktrans %}Check the foodbank's {% endblocktrans %}
+                            <a href="https://www.facebook.com/{% if location.type == 'organisation' %}{{ location.facebook_page }}{% endif %}{% if location.type == 'location' %}{{ location.foodbank.facebook_page }}{% endif %}?ref=givefood.org.uk">{% blocktrans %}Facebook page{% endblocktrans %}</a>
+                            {% blocktrans %} for what they need{% endblocktrans %}
+                          {% else %}
+                            {{ change_text|linebreaks }}
+                          {% endif %}
+                        {% endwith %}
+                        <script src="{% url 'wfbn-generic:foodbank_hit' location.foodbank_slug %}" defer></script>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+            {% elif item_category and not locations_by_category %}
+              <p class="mt-4">{% blocktrans %}No food banks nearby need this item category right now.{% endblocktrans %}</p>
+            {% endif %}
           </div>
           
         </div>
