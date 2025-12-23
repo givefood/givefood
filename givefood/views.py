@@ -1043,8 +1043,7 @@ messaging.onBackgroundMessage(function(payload) {{
         icon: '/static/img/notificationicon.svg',
         badge: '/static/img/notificationicon.svg',
         data: {{
-            foodbank_slug: payload.data?.foodbank_slug,
-            click_action: payload.data?.click_action || payload.fcmOptions?.link
+            url: payload.data?.click_action || payload.fcmOptions?.link || '/needs/'
         }}
     }};
     
@@ -1056,13 +1055,9 @@ self.addEventListener('notificationclick', function(event) {{
     event.notification.close();
     
     // Get the URL from the notification data
-    let url = '/needs/';
-    if (event.notification.data && event.notification.data.foodbank_slug) {{
-        url = '/needs/at/' + event.notification.data.foodbank_slug + '/';
-    }}
-    if (event.notification.data && event.notification.data.click_action) {{
-        url = event.notification.data.click_action;
-    }}
+    const url = event.notification.data && event.notification.data.url 
+        ? event.notification.data.url 
+        : '/needs/';
 
     event.waitUntil(
         clients.matchAll({{ type: 'window', includeUncontrolled: true }}).then(function(clientList) {{
