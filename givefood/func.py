@@ -936,7 +936,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         ordered by distance
     """
     from givefood.models import Foodbank, FoodbankLocation, FoodbankChangeLine, FoodbankChangeTranslation
-    from django.db.models import Prefetch, Exists, OuterRef
+    from django.db.models import Prefetch, Exists, OuterRef, F
     from django.utils.translation import get_language
 
     lat = lat_lng.split(",")[0]
@@ -977,6 +977,9 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
             needs_category=True
         ).annotate(type=Value("organisation")).order_by("distance")[:quantity]
 
+        # For locations, we need to use F() expressions to explicitly reference 
+        # the FoodbankLocation table's latitude/longitude columns to avoid ambiguity
+        # when the Exists subquery joins with the Foodbank table
         locations = FoodbankLocation.objects.filter(
             is_closed=False,
             foodbank__latest_need__isnull=False
@@ -987,7 +990,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         ).annotate(
             distance=EarthDistance([
                 LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
+                LlToEarth([F('latitude'), F('longitude')])
             ]),
             foodbank_needs_category=Exists(foodbank_has_category)
         ).filter(
@@ -1009,6 +1012,9 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
             needs_category=True
         ).annotate(type=Value("organisation")).order_by("distance")[:quantity]
 
+        # For locations, we need to use F() expressions to explicitly reference 
+        # the FoodbankLocation table's latitude/longitude columns to avoid ambiguity
+        # when the Exists subquery joins with the Foodbank table
         locations = FoodbankLocation.objects.filter(
             is_closed=False,
             foodbank__latest_need__isnull=False
@@ -1017,7 +1023,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         ).annotate(
             distance=EarthDistance([
                 LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
+                LlToEarth([F('latitude'), F('longitude')])
             ]),
             foodbank_needs_category=Exists(foodbank_has_category)
         ).filter(
