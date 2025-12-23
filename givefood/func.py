@@ -951,6 +951,14 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         type='need'
     )
 
+    # Subquery to check if a location's foodbank has the category
+    # This uses the foodbank_id foreign key to check the parent foodbank's latest_need
+    foodbank_has_category = FoodbankChangeLine.objects.filter(
+        need=OuterRef('foodbank__latest_need'),
+        category=category,
+        type='need'
+    )
+
     # Base foodbank query with category filter
     if current_language and current_language != "en":
         foodbanks = Foodbank.objects.filter(
@@ -980,10 +988,12 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
             distance=EarthDistance([
                 LlToEarth([lat, lng]),
                 LlToEarth(['latitude', 'longitude'])
-            ])
+            ]),
+            foodbank_needs_category=Exists(foodbank_has_category)
         ).filter(
-            distance__lte=max_distance_meters
-        ).annotate(type=Value("location")).order_by("distance")[:quantity * 2]
+            distance__lte=max_distance_meters,
+            foodbank_needs_category=True
+        ).annotate(type=Value("location")).order_by("distance")[:quantity]
     else:
         foodbanks = Foodbank.objects.filter(
             is_closed=False,
@@ -1008,10 +1018,12 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
             distance=EarthDistance([
                 LlToEarth([lat, lng]),
                 LlToEarth(['latitude', 'longitude'])
-            ])
+            ]),
+            foodbank_needs_category=Exists(foodbank_has_category)
         ).filter(
-            distance__lte=max_distance_meters
-        ).annotate(type=Value("location")).order_by("distance")[:quantity * 2]
+            distance__lte=max_distance_meters,
+            foodbank_needs_category=True
+        ).annotate(type=Value("location")).order_by("distance")[:quantity]
 
     # Process foodbanks
     for foodbank in foodbanks:
@@ -1026,42 +1038,21 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         )
         foodbank.homepage = foodbank.url_with_ref()
 
-    # Filter locations by checking if their foodbank needs the category
-    # Get all foodbank IDs that need this category
-    foodbank_ids_with_category = set(fb.id for fb in foodbanks)
-    
-    # Also check which other foodbanks (not in the result set) need this category
-    # for locations that might be closer
-    additional_foodbank_ids = set(
-        Foodbank.objects.filter(
-            is_closed=False,
-            latest_need__isnull=False
-        ).annotate(
-            needs_category=Exists(has_category)
-        ).filter(
-            needs_category=True
-        ).values_list('id', flat=True)
-    )
-    foodbank_ids_with_category.update(additional_foodbank_ids)
-
-    # Filter locations to only include those whose foodbank needs the category
-    filtered_locations = []
+    # Process locations
     for location in locations:
-        if location.foodbank_id in foodbank_ids_with_category:
-            location.distance_mi = miles(location.distance)
-            location.distance_km = location.distance / 1000
-            location.phone_number = location.phone_or_foodbank_phone()
-            location.contact_email = location.email_or_foodbank_email()
-            location.latest_need = location.foodbank.latest_need
-            location.html_url = "%s%s" % (
-                SITE_DOMAIN,
-                reverse("wfbn:foodbank_location", kwargs={"slug": location.foodbank_slug, "locslug": location.slug}),
-            )
-            location.homepage = location.foodbank.url_with_ref()
-            filtered_locations.append(location)
+        location.distance_mi = miles(location.distance)
+        location.distance_km = location.distance / 1000
+        location.phone_number = location.phone_or_foodbank_phone()
+        location.contact_email = location.email_or_foodbank_email()
+        location.latest_need = location.foodbank.latest_need
+        location.html_url = "%s%s" % (
+            SITE_DOMAIN,
+            reverse("wfbn:foodbank_location", kwargs={"slug": location.foodbank_slug, "locslug": location.slug}),
+        )
+        location.homepage = location.foodbank.url_with_ref()
 
     # Combine and sort by distance
-    foodbanksandlocations = list(chain(foodbanks, filtered_locations))
+    foodbanksandlocations = list(chain(foodbanks, locations))
     foodbanksandlocations = sorted(foodbanksandlocations, key=lambda k: k.distance)
 
     return foodbanksandlocations[:quantity]
