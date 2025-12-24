@@ -1433,17 +1433,25 @@ def post_to_subscriber(need, subscriber):
         }
     )
 
+    # Generate one-click unsubscribe URL (RFC 8058)
+    unsubscribe_url = "%s%s?key=%s" % (
+        SITE_DOMAIN,
+        reverse("wfbn:updates", kwargs={"slug": need.foodbank.slug, "action": "unsubscribe"}),
+        subscriber.unsub_key
+    )
+
     send_email_async.enqueue(
         to = subscriber.email,
         subject = subject,
         body = text_body,
         html_body = html_body,
         is_broadcast = True,
+        unsubscribe_url = unsubscribe_url,
     )
 
 
 @task(queue_name="email")
-def send_email_async(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None):
+def send_email_async(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None, unsubscribe_url=None):
     return send_email(
         to = to,
         subject = subject,
@@ -1456,10 +1464,11 @@ def send_email_async(to, subject, body, html_body=None, cc=None, cc_name=None, r
         is_broadcast = is_broadcast,
         bcc = bcc,
         bcc_name = bcc_name,
+        unsubscribe_url = unsubscribe_url,
     )
 
 
-def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None):
+def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None, unsubscribe_url=None):
 
     api_url = "https://api.postmarkapp.com/email"
     server_token = get_cred("postmark_server_token")
@@ -1490,6 +1499,13 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
         "ReplyTo": reply_to,
         "MessageStream": message_stream
       }
+
+    # Add List-Unsubscribe headers for one-click unsubscribe (RFC 8058)
+    if unsubscribe_url:
+        request_body["Headers"] = [
+            {"Name": "List-Unsubscribe", "Value": "<%s>" % unsubscribe_url},
+            {"Name": "List-Unsubscribe-Post", "Value": "List-Unsubscribe=One-Click"},
+        ]
 
     result = requests.post(
         api_url,

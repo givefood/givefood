@@ -969,6 +969,11 @@ def updates(request, slug, action):
         sub = get_object_or_404(FoodbankSubscriber, unsub_key=key)
         sub.delete()
 
+        # Handle one-click unsubscribe (RFC 8058)
+        # Email clients will POST with body "List-Unsubscribe=One-Click"
+        if request.method == "POST":
+            return HttpResponse(status=200)
+
         message = "You have been unsubscribed."
 
 
