@@ -966,16 +966,13 @@ def updates(request, slug, action):
         if not key:
             return HttpResponseForbidden()
 
+        sub = get_object_or_404(FoodbankSubscriber, unsub_key=key)
+        sub.delete()
+
         # Handle one-click unsubscribe (RFC 8058)
         # Email clients will POST with body "List-Unsubscribe=One-Click"
         if request.method == "POST":
-            # For one-click unsubscribe, just return success after deleting
-            sub = get_object_or_404(FoodbankSubscriber, unsub_key=key)
-            sub.delete()
             return HttpResponse(status=200)
-
-        sub = get_object_or_404(FoodbankSubscriber, unsub_key=key)
-        sub.delete()
 
         message = "You have been unsubscribed."
 
