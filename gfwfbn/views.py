@@ -98,6 +98,9 @@ def index(request, lat_lng=None, page_title=None):
     # Need the Google Maps API key too
     gmap_key = get_cred("gmap_key")
 
+    # Filter out 'Other' from item categories for the dropdown
+    item_categories_filtered = [cat for cat in ITEM_CATEGORIES_CHOICES if cat[0] != "Other"]
+    
     template_vars = {
         "page_title":page_title,
         "address":address,
@@ -108,7 +111,7 @@ def index(request, lat_lng=None, page_title=None):
         "donationpoints":donationpoints,
         "locations_by_category":locations_by_category,
         "item_category":item_category,
-        "item_categories":ITEM_CATEGORIES_CHOICES,
+        "item_categories":item_categories_filtered,
         "is_uk":lat_lng_is_uk,
         "map_config":map_config,
     }
