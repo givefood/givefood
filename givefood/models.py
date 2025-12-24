@@ -1998,6 +1998,9 @@ class ParliamentaryConstituency(models.Model):
                 "url":foodbank.url,
                 "shopping_list_url":foodbank.shopping_list_url,
                 "gf_url":"/needs/at/%s/" % (foodbank.slug),
+                "phone_number":foodbank.phone_number,
+                "contact_email":foodbank.contact_email,
+                "facebook_page":foodbank.facebook_page,
             })
 
         for location in locations:
@@ -2010,7 +2013,10 @@ class ParliamentaryConstituency(models.Model):
                 "needs":location.latest_need(),
                 "url":location.foodbank.url,
                 "shopping_list_url":location.foodbank.shopping_list_url,
-                "gf_url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug)
+                "gf_url":"/needs/at/%s/%s/" % (location.foodbank_slug, location.slug),
+                "phone_number":location.phone_or_foodbank_phone(),
+                "contact_email":location.email_or_foodbank_email(),
+                "facebook_page":location.foodbank.facebook_page,
             })
 
         return constituency_foodbanks

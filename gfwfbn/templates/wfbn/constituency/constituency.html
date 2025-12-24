@@ -1,4 +1,5 @@
 {% extends "public/page.html" %}
+{% load custom_tags %}
 {% load i18n %}
 
 {% block head %}
@@ -75,7 +76,21 @@
                     {% endif %}
                   </td>
                   <td>
-                    {% include "wfbn/includes/need_text.html" with need_text=foodbank.needs.change_text %}
+                    {% with change_text=foodbank.needs.change_text %}
+                      {% if change_text == "Unknown" %}
+                        {% if foodbank.phone_number %}
+                          <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ foodbank.phone_number|full_phone }}">{{ foodbank.phone_number|friendly_phone }}</a>
+                          <br>
+                        {% endif %}
+                        <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email }}</a>
+                      {% elif change_text == "Facebook" %}
+                        {% blocktrans %}Check the foodbank's {% endblocktrans %}
+                        <a href="https://www.facebook.com/{{ foodbank.facebook_page }}?ref=givefood.org.uk">{% blocktrans %}Facebook page{% endblocktrans %}</a>
+                        {% blocktrans %} for what they need{% endblocktrans %}
+                      {% else %}
+                        {% include "wfbn/includes/need_text.html" with need_text=change_text %}
+                      {% endif %}
+                    {% endwith %}
                   </td>
                 </tr>
               {% endfor %}
