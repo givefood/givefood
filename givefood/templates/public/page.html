@@ -28,7 +28,7 @@
     <footer class="footer">
       <div class="container">
         <div class="columns">
-          <div class="column {% if language_direction == 'ltr' %}has-text-left{% else %}has-text-right{% endif %}">
+          <div class="column {% if language_direction|default:'ltr' == 'ltr' %}has-text-left{% else %}has-text-right{% endif %}">
             {% if not is_flag_page %}
               <p class="flag">
                 <svg fill="none" height="16" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="m4 15s1-1 4-1 5 2 8 2 4-1 4-1v-12s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="m4 22v-7"/></svg>
@@ -47,7 +47,7 @@
               {% trans "ICO Data Protection Registration" %} <a href="https://ico.org.uk/ESDWebPages/Entry/ZB528540">ZB528540</a>
             </p>
           </div>
-          <div class="column {% if language_direction == 'ltr' %}has-text-right{% else %}has-text-left{% endif %}">
+          <div class="column {% if language_direction|default:'ltr' == 'ltr' %}has-text-right{% else %}has-text-left{% endif %}">
             <ul>
               <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
               <li><a href="{% url 'apps' %}">{% trans "Apps" %}</a></li>
