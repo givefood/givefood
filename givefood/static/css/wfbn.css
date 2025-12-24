@@ -38,6 +38,12 @@
     padding-top:25px;
     margin:0 !important;
 }
+.byitem-explanation {
+    margin:15px 0;
+}
+.byitem-form {
+    margin:15px 0;
+}
 .needs {
     width:100%;
 }
