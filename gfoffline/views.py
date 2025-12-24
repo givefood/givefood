@@ -73,6 +73,12 @@ def discrepancy_check(request):
                 if foodbank_page.status_code == 200:
                     foodbank_page = htmlbodytext(foodbank_page.text)
 
+                    if not foodbank_page:
+                        # No body in HTML, skip discrepancy check
+                        foodbank.last_discrepancy_check = datetime.now()
+                        foodbank.save(do_decache=False, do_geoupdate=False)
+                        continue
+
                     # DETAILS
                     detail_prompt = render_to_string(
                         "foodbank_detail_prompt.txt",
