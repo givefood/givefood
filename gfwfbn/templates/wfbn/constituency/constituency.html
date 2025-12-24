@@ -82,11 +82,17 @@
                           <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ foodbank.phone_number|full_phone }}">{{ foodbank.phone_number|friendly_phone }}</a>
                           <br>
                         {% endif %}
-                        <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email }}</a>
+                        {% if foodbank.contact_email %}
+                          <img src="/static/img/email.svg" alt="{% blocktrans %}Email{% endblocktrans %}" class="contact-icon"> <a href="mailto:{{ foodbank.contact_email }}">{{ foodbank.contact_email }}</a>
+                        {% endif %}
                       {% elif change_text == "Facebook" %}
-                        {% blocktrans %}Check the foodbank's {% endblocktrans %}
-                        <a href="https://www.facebook.com/{{ foodbank.facebook_page }}?ref=givefood.org.uk">{% blocktrans %}Facebook page{% endblocktrans %}</a>
-                        {% blocktrans %} for what they need{% endblocktrans %}
+                        {% if foodbank.facebook_page %}
+                          {% blocktrans %}Check the foodbank's {% endblocktrans %}
+                          <a href="https://www.facebook.com/{{ foodbank.facebook_page }}?ref=givefood.org.uk">{% blocktrans %}Facebook page{% endblocktrans %}</a>
+                          {% blocktrans %} for what they need{% endblocktrans %}
+                        {% else %}
+                          {% include "wfbn/includes/need_text.html" with need_text=change_text %}
+                        {% endif %}
                       {% else %}
                         {% include "wfbn/includes/need_text.html" with need_text=change_text %}
                       {% endif %}
