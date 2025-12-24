@@ -14,9 +14,10 @@ from django import forms
 from django.utils.translation import gettext
 
 from givefood.const.general import SITE_DOMAIN
+from givefood.const.item_types import ITEM_CATEGORIES_CHOICES
 
 from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, MobileSubscriber, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle, Place
-from givefood.func import geocode, find_locations, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, is_uk, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
+from givefood.func import geocode, find_locations, find_locations_by_category, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, is_uk, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 from django.db.models import Sum
 
@@ -48,11 +49,12 @@ def index(request, lat_lng=None, page_title=None):
 
     # All the vars we'll need
     address = request.GET.get("address", "")
+    item_category = request.GET.get("item", "")
     if not lat_lng:
         lat_lng = request.GET.get("lat_lng", "")
 
     lat_lng_is_uk = True
-    lat = lng = approx_address = locations = donationpoints = None
+    lat = lng = approx_address = locations = donationpoints = locations_by_category = None
 
     # Geocode address if no lat_lng
     if address and not lat_lng:
@@ -72,6 +74,13 @@ def index(request, lat_lng=None, page_title=None):
         if lat_lng_is_uk:
             locations = find_locations(lat_lng, 20)
             donationpoints = find_donationpoints(lat_lng, 20)
+            
+            # If an item category is specified, find locations that need it
+            if item_category:
+                # Validate the category is in our list
+                valid_categories = [cat[0] for cat in ITEM_CATEGORIES_CHOICES]
+                if item_category in valid_categories:
+                    locations_by_category = find_locations_by_category(lat_lng, item_category, 20000, 20)
     else:
         return redirect(reverse("index"), permanent=True)
 
@@ -97,6 +106,9 @@ def index(request, lat_lng=None, page_title=None):
         "gmap_key":gmap_key,
         "locations":locations,
         "donationpoints":donationpoints,
+        "locations_by_category":locations_by_category,
+        "item_category":item_category,
+        "item_categories":ITEM_CATEGORIES_CHOICES,
         "is_uk":lat_lng_is_uk,
         "map_config":map_config,
     }
