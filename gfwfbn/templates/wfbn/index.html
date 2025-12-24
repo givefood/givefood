@@ -173,27 +173,23 @@
           </div>
 
           <div class="byitem tabcontent {% if not item_category %}is-hidden{% endif %}" role="tabpanel" id="byitem-panel" aria-labelledby="byitem-tab">
+
             {% if not item_category %}
-              <p>{% blocktrans %}Find an item needed by a food bank nearby{% endblocktrans %}</p>
+              <p class="byitem-explanation">{% blocktrans %}Find an item needed by a food bank nearby{% endblocktrans %}</p>
             {% endif %}
-            <form action="{% url 'wfbn:index' %}#byitem" method="GET" class="byitem-form">
+
+            <form id="byitem-form" action="{% url 'wfbn:index' %}#byitem" method="GET" class="byitem-form">
               <input type="hidden" name="lat_lng" value="{{ lat }},{{ lng }}">
               {% if address %}<input type="hidden" name="address" value="{{ address }}">{% endif %}
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <div class="select is-fullwidth">
-                    <select name="item" id="item_select">
-                      <option value="">{% blocktrans %}Select an item category{% endblocktrans %}</option>
-                      {% for cat_value, cat_label in item_categories %}
-                        <option value="{{ cat_value }}" {% if item_category == cat_value %}selected{% endif %}>{{ cat_label }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                </div>
-                <div class="control">
-                  <button type="submit" class="button is-info">{% trans "Go" %}</button>
-                </div>
+              <div class="select">
+                <select name="item" id="item_select">
+                  <option value="">{% blocktrans %}Select an item category{% endblocktrans %}</option>
+                  {% for cat_value, cat_label in item_categories %}
+                  <option value="{{ cat_value }}" {% if item_category == cat_value %}selected{% endif %}>{{ cat_label }}</option>
+                  {% endfor %}
+                </select>
               </div>
+              <button type="submit" class="button is-info is-light">{% trans "Go" %}</button>
             </form>
 
             {% if item_category and locations_by_category %}
