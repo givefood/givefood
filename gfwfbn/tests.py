@@ -1528,3 +1528,39 @@ class TestMobileSubscription:
         data = response.json()
         assert data['deleted'] is False
 
+
+@pytest.mark.django_db
+class TestIndexItemCategories:
+    """Test that the index view filters out 'Other' from item categories"""
+
+    def test_index_excludes_other_from_item_categories(self, client):
+        """
+        Test that the 'Other' category is not included in item_categories
+        passed to the template for the By Item dropdown.
+        """
+        # Mock find_locations and find_donationpoints to avoid geographic queries
+        with patch('gfwfbn.views.find_locations', return_value=[]), \
+             patch('gfwfbn.views.find_donationpoints', return_value=[]):
+            
+            # Make a request to the index with a lat_lng to trigger the view
+            url = reverse('wfbn:index')
+            response = client.get(url, {'lat_lng': '51.5074,-0.1278'})  # London coordinates
+            
+            assert response.status_code == 200
+            
+            # Check the context data
+            item_categories = response.context['item_categories']
+            
+            # Verify 'Other' is not in the list
+            category_names = [cat[0] for cat in item_categories]
+            assert 'Other' not in category_names
+            
+            # Verify we still have other categories (should be 53 instead of 54)
+            from givefood.const.item_types import ITEM_CATEGORIES_CHOICES
+            assert len(item_categories) == len(ITEM_CATEGORIES_CHOICES) - 1
+            
+            # Verify some expected categories are still present
+            assert 'Tinned Tomatoes' in category_names
+            assert 'Pasta' in category_names
+            assert 'Rice' in category_names
+
