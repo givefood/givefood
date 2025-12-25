@@ -97,7 +97,6 @@ urlpatterns = (
 
     path("finder/", finder, name="finder"),
     path("finder/check/", finder_check, name="finder_check"),
-    path("finder/trussell/", finder_trussell, name="finder_trussell"),
     path("finder/fsa/", finder_fsa, name="finder_fsa"),
 
     path("politics/", politics, name="politics"),
