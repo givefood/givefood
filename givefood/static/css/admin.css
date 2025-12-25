@@ -136,6 +136,10 @@ td.delivery-provider-icon img {
 .checktable li {
   margin-bottom:10px;
 }
+.htmx-fade.htmx-swapping {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
 .footer {
   margin-top:3rem;
 }

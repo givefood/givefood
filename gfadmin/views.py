@@ -1259,6 +1259,9 @@ def fblocation_delete(request, slug, loc_slug):
     foodbank_location = get_object_or_404(FoodbankLocation, foodbank = foodbank, slug = loc_slug)
     foodbank_location.delete()
 
+    # Return empty response for HTMX requests (element will be removed)
+    if request.headers.get('HX-Request'):
+        return HttpResponse('')
     return redirect("admin:foodbank", slug = foodbank.slug)
 
 
@@ -1323,6 +1326,9 @@ def donationpoint_delete(request, slug, dp_slug):
     donation_point = get_object_or_404(FoodbankDonationPoint, foodbank = foodbank, slug = dp_slug)
     donation_point.delete()
 
+    # Return empty response for HTMX requests (element will be removed)
+    if request.headers.get('HX-Request'):
+        return HttpResponse('')
     return redirect("admin:foodbank", slug = foodbank.slug)
 
 
