@@ -61,11 +61,14 @@
                 <td>
                     <ul>
                         {% for location in foodbank_json.locations %}
-                            <li>
+                            <li class="htmx-fade">
                                 {% if location.discrepancy %}
-                                    <form action="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}" method="post" class="is-pulled-right">
-                                        <button type="submit" class="button is-small is-danger is-light" onclick="return confirm('Are you sure you want to delete this location?');">Delete</button>
-                                    </form>
+                                    <button type="button"
+                                        class="button is-small is-danger is-light is-pulled-right"
+                                        hx-post="{% url 'admin:fblocation_delete' foodbank.slug location.slug %}"
+                                        hx-confirm="Are you sure you want to delete this location?"
+                                        hx-target="closest li"
+                                        hx-swap="outerHTML swap:0.5s">Delete</button>
                                 {% endif %}
                                 {{ location.name }}<br>
                                 {{ location.address|linebreaksbr }}<br>
@@ -96,11 +99,14 @@
                 <td>
                     <ul>
                         {% for dp in foodbank_json.donation_points %}
-                            <li>
+                            <li class="htmx-fade">
                                 {% if dp.discrepancy %}
-                                    <form action="{% url 'admin:donationpoint_delete' foodbank.slug dp.slug %}" method="post" class="is-pulled-right">
-                                        <button type="submit" class="button is-small is-danger is-light" onclick="return confirm('Are you sure you want to delete this donation point?');">Delete</button>
-                                    </form>
+                                    <button type="button"
+                                        class="button is-small is-danger is-light is-pulled-right"
+                                        hx-post="{% url 'admin:donationpoint_delete' foodbank.slug dp.slug %}"
+                                        hx-confirm="Are you sure you want to delete this donation point?"
+                                        hx-target="closest li"
+                                        hx-swap="outerHTML swap:0.5s">Delete</button>
                                 {% endif %}
                                 {{ dp.name }}<br>
                                 {{ dp.address|linebreaksbr }}<br>
