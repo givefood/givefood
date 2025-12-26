@@ -2155,33 +2155,6 @@ def finder_check(request):
     return redirect("admin:finder")
 
 
-def finder_fsa(request):
-
-    with open('./givefood/data/fsa/establishments.json') as jsonfile:
-        data = json.load(jsonfile)
-        establishments = data["EstablishmentCollection"]["EstablishmentDetail"]
-
-    foodbank_postcodes = []
-    foodbanks = Foodbank.objects.filter(is_closed = False)
-    locations = FoodbankLocation.objects.filter(is_closed = False)
-    for foodbank in foodbanks:
-        foodbank_postcodes.append(foodbank.postcode)
-    for location in locations:
-        foodbank_postcodes.append(location.postcode)
-
-    unmatched_foodbanks = []
-
-    for establishment in establishments:
-        if establishment["PostCode"] not in foodbank_postcodes:
-            unmatched_foodbanks.append(establishment)
-
-    template_vars = {
-        "section":"finder",
-        "unmatched_foodbanks":unmatched_foodbanks,
-    }
-    return render(request, "admin/finder_fsa.html", template_vars)
-
-
 def settings(request):
 
     template_vars = {
