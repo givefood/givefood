@@ -130,12 +130,12 @@ msgstr "Caritate"
 #: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s is a registered charity."
-msgstr ""
+msgstr "%(name)s este o organizație caritabilă înregistrată."
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s operates under a registered charity."
-msgstr ""
+msgstr "%(name)s operează sub o organizație caritabilă înregistrată."
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:59
 msgid "Charity name"
@@ -143,7 +143,7 @@ msgstr "Numele organizației caritabile"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:61
 msgid "Regulator"
-msgstr ""
+msgstr "Autoritate de reglementare"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:67
 msgid "Charity number"
@@ -495,7 +495,7 @@ msgstr "Băncile alimentare"
 
 #: gfwfbn/templates/wfbn/index.html:92
 msgid "By item"
-msgstr ""
+msgstr "După produs"
 
 #: gfwfbn/templates/wfbn/index.html:105 gfwfbn/templates/wfbn/index.html:202
 #, python-format
@@ -526,11 +526,11 @@ msgstr "Găsește de ce au nevoie băncile de alimente"
 
 #: gfwfbn/templates/wfbn/index.html:186
 msgid "Select an item category"
-msgstr ""
+msgstr "Selectați o categorie de produse"
 
 #: gfwfbn/templates/wfbn/index.html:232
 msgid "We don't know of any food banks nearby that need this item right now."
-msgstr ""
+msgstr "Nu cunoaștem nicio bancă de alimente din apropiere care să aibă nevoie de acest produs acum."
 
 #: gfwfbn/views.py:148
 msgid "items requested at"
@@ -538,7 +538,7 @@ msgstr "articole solicitate la"
 
 #: givefood/const/item_types.py:4
 msgid "Tinned Tomatoes"
-msgstr ""
+msgstr "Roșii conservate"
 
 #: givefood/const/item_types.py:4 givefood/const/item_types.py:5
 #: givefood/const/item_types.py:6 givefood/const/item_types.py:7
@@ -550,234 +550,234 @@ msgstr ""
 #: givefood/const/item_types.py:30 givefood/const/item_types.py:31
 #: givefood/const/item_types.py:32
 msgid "Meal Food"
-msgstr ""
+msgstr "Alimente pentru mese"
 
 #: givefood/const/item_types.py:5
 msgid "Tinned Meat"
-msgstr ""
+msgstr "Carne conservată"
 
 #: givefood/const/item_types.py:6
 msgid "Tinned Vegetarian"
-msgstr ""
+msgstr "Produse vegetariene conservate"
 
 #: givefood/const/item_types.py:7
 msgid "Tinned Pasta"
-msgstr ""
+msgstr "Paste conservate"
 
 #: givefood/const/item_types.py:8
 msgid "Confectionery"
-msgstr ""
+msgstr "Produse de cofetărie"
 
 #: givefood/const/item_types.py:8 givefood/const/item_types.py:19
 #: givefood/const/item_types.py:20
 msgid "Snack Food"
-msgstr ""
+msgstr "Gustări"
 
 #: givefood/const/item_types.py:9
 msgid "Cereal"
-msgstr ""
+msgstr "Cereale"
 
 #: givefood/const/item_types.py:10
 msgid "Tinned Fruit"
-msgstr ""
+msgstr "Fructe conservate"
 
 #: givefood/const/item_types.py:11
 msgid "Milk"
-msgstr ""
+msgstr "Lapte"
 
 #: givefood/const/item_types.py:11 givefood/const/item_types.py:12
 #: givefood/const/item_types.py:13 givefood/const/item_types.py:26
 #: givefood/const/item_types.py:27 givefood/const/item_types.py:53
 msgid "Drink"
-msgstr ""
+msgstr "Băuturi"
 
 #: givefood/const/item_types.py:12
 msgid "Fruit Juice"
-msgstr ""
+msgstr "Suc de fructe"
 
 #: givefood/const/item_types.py:13
 msgid "Squash"
-msgstr ""
+msgstr "Sirop de fructe"
 
 #: givefood/const/item_types.py:14
 msgid "Condiment"
-msgstr ""
+msgstr "Condiment"
 
 #: givefood/const/item_types.py:14 givefood/const/item_types.py:16
 #: givefood/const/item_types.py:23 givefood/const/item_types.py:28
 #: givefood/const/item_types.py:50
 msgid "Cooking"
-msgstr ""
+msgstr "Gătit"
 
 #: givefood/const/item_types.py:15
 msgid "Noodles"
-msgstr ""
+msgstr "Tăiței"
 
 #: givefood/const/item_types.py:16
 msgid "Cooking Oil"
-msgstr ""
+msgstr "Ulei de gătit"
 
 #: givefood/const/item_types.py:17
 msgid "Tinned Fish"
-msgstr ""
+msgstr "Pește conservat"
 
 #: givefood/const/item_types.py:18
 msgid "Soup"
-msgstr ""
+msgstr "Supă"
 
 #: givefood/const/item_types.py:19
 msgid "Crisps"
-msgstr ""
+msgstr "Chipsuri"
 
 #: givefood/const/item_types.py:20
 msgid "Biscuits"
-msgstr ""
+msgstr "Biscuiți"
 
 #: givefood/const/item_types.py:21
 msgid "Baked Beans"
-msgstr ""
+msgstr "Fasole în sos"
 
 #: givefood/const/item_types.py:22
 msgid "Tinned Vegetables"
-msgstr ""
+msgstr "Legume conservate"
 
 #: givefood/const/item_types.py:23
 msgid "Pasta Sauce"
-msgstr ""
+msgstr "Sos pentru paste"
 
 #: givefood/const/item_types.py:24
 msgid "Pasta"
-msgstr ""
+msgstr "Paste"
 
 #: givefood/const/item_types.py:25
 msgid "Rice"
-msgstr ""
+msgstr "Orez"
 
 #: givefood/const/item_types.py:26
 msgid "Tea"
-msgstr ""
+msgstr "Ceai"
 
 #: givefood/const/item_types.py:27
 msgid "Coffee"
-msgstr ""
+msgstr "Cafea"
 
 #: givefood/const/item_types.py:28
 msgid "Sugar"
-msgstr ""
+msgstr "Zahăr"
 
 #: givefood/const/item_types.py:29
 msgid "Spread"
-msgstr ""
+msgstr "Cremă tartinabilă"
 
 #: givefood/const/item_types.py:30
 msgid "Vegetable"
-msgstr ""
+msgstr "Legume"
 
 #: givefood/const/item_types.py:31
 msgid "Instant Mash"
-msgstr ""
+msgstr "Piure instant"
 
 #: givefood/const/item_types.py:32
 msgid "Dessert"
-msgstr ""
+msgstr "Desert"
 
 #: givefood/const/item_types.py:33
 msgid "Washing Up Liquid"
-msgstr ""
+msgstr "Detergent de vase"
 
 #: givefood/const/item_types.py:33 givefood/const/item_types.py:40
 #: givefood/const/item_types.py:46 givefood/const/item_types.py:47
 msgid "Cleaning"
-msgstr ""
+msgstr "Curățenie"
 
 #: givefood/const/item_types.py:34
 msgid "Toilet Roll"
-msgstr ""
+msgstr "Hârtie igienică"
 
 #: givefood/const/item_types.py:34 givefood/const/item_types.py:35
 #: givefood/const/item_types.py:36 givefood/const/item_types.py:37
 #: givefood/const/item_types.py:38 givefood/const/item_types.py:39
 #: givefood/const/item_types.py:41 givefood/const/item_types.py:52
 msgid "Toiletries"
-msgstr ""
+msgstr "Articole de toaletă"
 
 #: givefood/const/item_types.py:35
 msgid "Shower Gel"
-msgstr ""
+msgstr "Gel de duș"
 
 #: givefood/const/item_types.py:36
 msgid "Shampoo"
-msgstr ""
+msgstr "Șampon"
 
 #: givefood/const/item_types.py:37
 msgid "Soap"
-msgstr ""
+msgstr "Săpun"
 
 #: givefood/const/item_types.py:38
 msgid "Dental"
-msgstr ""
+msgstr "Îngrijire dentară"
 
 #: givefood/const/item_types.py:39
 msgid "Deodorant"
-msgstr ""
+msgstr "Deodorant"
 
 #: givefood/const/item_types.py:40
 msgid "Laundry"
-msgstr ""
+msgstr "Rufe"
 
 #: givefood/const/item_types.py:41
 msgid "Sanitary Products"
-msgstr ""
+msgstr "Produse sanitare"
 
 #: givefood/const/item_types.py:42
 msgid "Baby Food"
-msgstr ""
+msgstr "Mâncare pentru bebeluși"
 
 #: givefood/const/item_types.py:42 givefood/const/item_types.py:43
 #: givefood/const/item_types.py:44 givefood/const/item_types.py:45
 msgid "Baby Supplies"
-msgstr ""
+msgstr "Articole pentru bebeluși"
 
 #: givefood/const/item_types.py:43
 msgid "Baby Milk"
-msgstr ""
+msgstr "Lapte pentru bebeluși"
 
 #: givefood/const/item_types.py:44
 msgid "Nappies"
-msgstr ""
+msgstr "Scutece"
 
 #: givefood/const/item_types.py:45
 msgid "Wipes"
-msgstr ""
+msgstr "Șervețele umede"
 
 #: givefood/const/item_types.py:46
 msgid "Kitchen Roll"
-msgstr ""
+msgstr "Prosop de hârtie"
 
 #: givefood/const/item_types.py:47
 msgid "Household Supplies"
-msgstr ""
+msgstr "Articole de uz casnic"
 
 #: givefood/const/item_types.py:48
 msgid "Pet Food"
-msgstr ""
+msgstr "Hrană pentru animale"
 
 #: givefood/const/item_types.py:48 givefood/const/item_types.py:49
 #: givefood/const/item_types.py:51
 msgid "Other"
-msgstr ""
+msgstr "Altele"
 
 #: givefood/const/item_types.py:49
 msgid "Carrier Bags"
-msgstr ""
+msgstr "Pungi de cumpărături"
 
 #: givefood/const/item_types.py:50
 msgid "Sauce"
-msgstr ""
+msgstr "Sos"
 
 #: givefood/const/item_types.py:53
 msgid "Hot Chocolate"
-msgstr ""
+msgstr "Ciocolată caldă"
 
 #: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
@@ -1098,11 +1098,11 @@ msgstr "Ne pare rău, dar trebuie doar să verificăm că ești om..."
 
 #: givefood/templates/public/includes/appbadges.html:4
 msgid "Download on the App Store"
-msgstr ""
+msgstr "Descarcă din App Store"
 
 #: givefood/templates/public/includes/appbadges.html:7
 msgid "Get it on Google Play"
-msgstr ""
+msgstr "Disponibil pe Google Play"
 
 #: givefood/templates/public/includes/country.html:2
 msgid "England"

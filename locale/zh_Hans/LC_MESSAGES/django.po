@@ -126,12 +126,12 @@ msgstr "慈善机构"
 #: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s is a registered charity."
-msgstr ""
+msgstr "%(name)s 是一个注册慈善机构。"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s operates under a registered charity."
-msgstr ""
+msgstr "%(name)s 在一个注册慈善机构下运营。"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:59
 msgid "Charity name"
@@ -139,7 +139,7 @@ msgstr "慈善机构名称"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:61
 msgid "Regulator"
-msgstr ""
+msgstr "监管机构"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:67
 msgid "Charity number"
@@ -471,7 +471,7 @@ msgstr "食物银行"
 
 #: gfwfbn/templates/wfbn/index.html:92
 msgid "By item"
-msgstr ""
+msgstr "按物品"
 
 #: gfwfbn/templates/wfbn/index.html:105 gfwfbn/templates/wfbn/index.html:202
 #, python-format
@@ -500,11 +500,11 @@ msgstr "了解食物银行需要什么"
 
 #: gfwfbn/templates/wfbn/index.html:186
 msgid "Select an item category"
-msgstr ""
+msgstr "选择物品类别"
 
 #: gfwfbn/templates/wfbn/index.html:232
 msgid "We don't know of any food banks nearby that need this item right now."
-msgstr ""
+msgstr "我们不知道附近有任何食品银行现在需要这件物品。"
 
 #: gfwfbn/views.py:148
 msgid "items requested at"
@@ -512,7 +512,7 @@ msgstr "请求的物品"
 
 #: givefood/const/item_types.py:4
 msgid "Tinned Tomatoes"
-msgstr ""
+msgstr "罐装番茄"
 
 #: givefood/const/item_types.py:4 givefood/const/item_types.py:5
 #: givefood/const/item_types.py:6 givefood/const/item_types.py:7
@@ -524,234 +524,234 @@ msgstr ""
 #: givefood/const/item_types.py:30 givefood/const/item_types.py:31
 #: givefood/const/item_types.py:32
 msgid "Meal Food"
-msgstr ""
+msgstr "餐食食品"
 
 #: givefood/const/item_types.py:5
 msgid "Tinned Meat"
-msgstr ""
+msgstr "罐装肉类"
 
 #: givefood/const/item_types.py:6
 msgid "Tinned Vegetarian"
-msgstr ""
+msgstr "罐装素食"
 
 #: givefood/const/item_types.py:7
 msgid "Tinned Pasta"
-msgstr ""
+msgstr "罐装意大利面"
 
 #: givefood/const/item_types.py:8
 msgid "Confectionery"
-msgstr ""
+msgstr "糖果"
 
 #: givefood/const/item_types.py:8 givefood/const/item_types.py:19
 #: givefood/const/item_types.py:20
 msgid "Snack Food"
-msgstr ""
+msgstr "零食"
 
 #: givefood/const/item_types.py:9
 msgid "Cereal"
-msgstr ""
+msgstr "麦片"
 
 #: givefood/const/item_types.py:10
 msgid "Tinned Fruit"
-msgstr ""
+msgstr "罐装水果"
 
 #: givefood/const/item_types.py:11
 msgid "Milk"
-msgstr ""
+msgstr "牛奶"
 
 #: givefood/const/item_types.py:11 givefood/const/item_types.py:12
 #: givefood/const/item_types.py:13 givefood/const/item_types.py:26
 #: givefood/const/item_types.py:27 givefood/const/item_types.py:53
 msgid "Drink"
-msgstr ""
+msgstr "饮料"
 
 #: givefood/const/item_types.py:12
 msgid "Fruit Juice"
-msgstr ""
+msgstr "果汁"
 
 #: givefood/const/item_types.py:13
 msgid "Squash"
-msgstr ""
+msgstr "浓缩果汁"
 
 #: givefood/const/item_types.py:14
 msgid "Condiment"
-msgstr ""
+msgstr "调味品"
 
 #: givefood/const/item_types.py:14 givefood/const/item_types.py:16
 #: givefood/const/item_types.py:23 givefood/const/item_types.py:28
 #: givefood/const/item_types.py:50
 msgid "Cooking"
-msgstr ""
+msgstr "烹饪"
 
 #: givefood/const/item_types.py:15
 msgid "Noodles"
-msgstr ""
+msgstr "面条"
 
 #: givefood/const/item_types.py:16
 msgid "Cooking Oil"
-msgstr ""
+msgstr "食用油"
 
 #: givefood/const/item_types.py:17
 msgid "Tinned Fish"
-msgstr ""
+msgstr "罐装鱼"
 
 #: givefood/const/item_types.py:18
 msgid "Soup"
-msgstr ""
+msgstr "汤"
 
 #: givefood/const/item_types.py:19
 msgid "Crisps"
-msgstr ""
+msgstr "薯片"
 
 #: givefood/const/item_types.py:20
 msgid "Biscuits"
-msgstr ""
+msgstr "饼干"
 
 #: givefood/const/item_types.py:21
 msgid "Baked Beans"
-msgstr ""
+msgstr "烘豆"
 
 #: givefood/const/item_types.py:22
 msgid "Tinned Vegetables"
-msgstr ""
+msgstr "罐装蔬菜"
 
 #: givefood/const/item_types.py:23
 msgid "Pasta Sauce"
-msgstr ""
+msgstr "意大利面酱"
 
 #: givefood/const/item_types.py:24
 msgid "Pasta"
-msgstr ""
+msgstr "意大利面"
 
 #: givefood/const/item_types.py:25
 msgid "Rice"
-msgstr ""
+msgstr "米饭"
 
 #: givefood/const/item_types.py:26
 msgid "Tea"
-msgstr ""
+msgstr "茶"
 
 #: givefood/const/item_types.py:27
 msgid "Coffee"
-msgstr ""
+msgstr "咖啡"
 
 #: givefood/const/item_types.py:28
 msgid "Sugar"
-msgstr ""
+msgstr "糖"
 
 #: givefood/const/item_types.py:29
 msgid "Spread"
-msgstr ""
+msgstr "涂抹酱"
 
 #: givefood/const/item_types.py:30
 msgid "Vegetable"
-msgstr ""
+msgstr "蔬菜"
 
 #: givefood/const/item_types.py:31
 msgid "Instant Mash"
-msgstr ""
+msgstr "速溶土豆泥"
 
 #: givefood/const/item_types.py:32
 msgid "Dessert"
-msgstr ""
+msgstr "甜点"
 
 #: givefood/const/item_types.py:33
 msgid "Washing Up Liquid"
-msgstr ""
+msgstr "洗洁精"
 
 #: givefood/const/item_types.py:33 givefood/const/item_types.py:40
 #: givefood/const/item_types.py:46 givefood/const/item_types.py:47
 msgid "Cleaning"
-msgstr ""
+msgstr "清洁用品"
 
 #: givefood/const/item_types.py:34
 msgid "Toilet Roll"
-msgstr ""
+msgstr "卫生纸"
 
 #: givefood/const/item_types.py:34 givefood/const/item_types.py:35
 #: givefood/const/item_types.py:36 givefood/const/item_types.py:37
 #: givefood/const/item_types.py:38 givefood/const/item_types.py:39
 #: givefood/const/item_types.py:41 givefood/const/item_types.py:52
 msgid "Toiletries"
-msgstr ""
+msgstr "洗漱用品"
 
 #: givefood/const/item_types.py:35
 msgid "Shower Gel"
-msgstr ""
+msgstr "沐浴露"
 
 #: givefood/const/item_types.py:36
 msgid "Shampoo"
-msgstr ""
+msgstr "洗发水"
 
 #: givefood/const/item_types.py:37
 msgid "Soap"
-msgstr ""
+msgstr "肥皂"
 
 #: givefood/const/item_types.py:38
 msgid "Dental"
-msgstr ""
+msgstr "牙齿护理"
 
 #: givefood/const/item_types.py:39
 msgid "Deodorant"
-msgstr ""
+msgstr "止汗剂"
 
 #: givefood/const/item_types.py:40
 msgid "Laundry"
-msgstr ""
+msgstr "洗衣"
 
 #: givefood/const/item_types.py:41
 msgid "Sanitary Products"
-msgstr ""
+msgstr "卫生用品"
 
 #: givefood/const/item_types.py:42
 msgid "Baby Food"
-msgstr ""
+msgstr "婴儿食品"
 
 #: givefood/const/item_types.py:42 givefood/const/item_types.py:43
 #: givefood/const/item_types.py:44 givefood/const/item_types.py:45
 msgid "Baby Supplies"
-msgstr ""
+msgstr "婴儿用品"
 
 #: givefood/const/item_types.py:43
 msgid "Baby Milk"
-msgstr ""
+msgstr "婴儿奶粉"
 
 #: givefood/const/item_types.py:44
 msgid "Nappies"
-msgstr ""
+msgstr "尿布"
 
 #: givefood/const/item_types.py:45
 msgid "Wipes"
-msgstr ""
+msgstr "湿巾"
 
 #: givefood/const/item_types.py:46
 msgid "Kitchen Roll"
-msgstr ""
+msgstr "厨房纸巾"
 
 #: givefood/const/item_types.py:47
 msgid "Household Supplies"
-msgstr ""
+msgstr "家庭用品"
 
 #: givefood/const/item_types.py:48
 msgid "Pet Food"
-msgstr ""
+msgstr "宠物食品"
 
 #: givefood/const/item_types.py:48 givefood/const/item_types.py:49
 #: givefood/const/item_types.py:51
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
 #: givefood/const/item_types.py:49
 msgid "Carrier Bags"
-msgstr ""
+msgstr "购物袋"
 
 #: givefood/const/item_types.py:50
 msgid "Sauce"
-msgstr ""
+msgstr "酱"
 
 #: givefood/const/item_types.py:53
 msgid "Hot Chocolate"
-msgstr ""
+msgstr "热巧克力"
 
 #: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
@@ -1042,11 +1042,11 @@ msgstr "抱歉，我们需要确认您是真人……"
 
 #: givefood/templates/public/includes/appbadges.html:4
 msgid "Download on the App Store"
-msgstr ""
+msgstr "在 App Store 下载"
 
 #: givefood/templates/public/includes/appbadges.html:7
 msgid "Get it on Google Play"
-msgstr ""
+msgstr "在 Google Play 下载"
 
 #: givefood/templates/public/includes/country.html:2
 msgid "England"

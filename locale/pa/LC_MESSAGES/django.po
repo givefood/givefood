@@ -127,12 +127,12 @@ msgstr "ਚੈਰਿਟੀ"
 #: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s is a registered charity."
-msgstr ""
+msgstr "%(name)s ਇੱਕ ਰਜਿਸਟਰਡ ਚੈਰਿਟੀ ਹੈ।"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s operates under a registered charity."
-msgstr ""
+msgstr "%(name)s ਇੱਕ ਰਜਿਸਟਰਡ ਚੈਰਿਟੀ ਦੇ ਅਧੀਨ ਕੰਮ ਕਰਦਾ ਹੈ।"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:59
 msgid "Charity name"
@@ -140,7 +140,7 @@ msgstr "ਚੈਰਿਟੀ ਨਾਮ"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:61
 msgid "Regulator"
-msgstr ""
+msgstr "ਰੈਗੂਲੇਟਰ"
 
 #: gfwfbn/templates/wfbn/foodbank/charity.html:67
 msgid "Charity number"
@@ -479,7 +479,7 @@ msgstr "ਫੂਡ ਬੈਂਕ"
 
 #: gfwfbn/templates/wfbn/index.html:92
 msgid "By item"
-msgstr ""
+msgstr "ਆਈਟਮ ਦੁਆਰਾ"
 
 #: gfwfbn/templates/wfbn/index.html:105 gfwfbn/templates/wfbn/index.html:202
 #, python-format
@@ -508,11 +508,11 @@ msgstr "ਫੂਡ ਬੈਂਕਾਂ ਨੂੰ ਕੀ ਚਾਹੀਦਾ ਹੈ,
 
 #: gfwfbn/templates/wfbn/index.html:186
 msgid "Select an item category"
-msgstr ""
+msgstr "ਆਈਟਮ ਸ਼੍ਰੇਣੀ ਚੁਣੋ"
 
 #: gfwfbn/templates/wfbn/index.html:232
 msgid "We don't know of any food banks nearby that need this item right now."
-msgstr ""
+msgstr "ਸਾਨੂੰ ਨੇੜੇ ਕਿਸੇ ਵੀ ਫੂਡ ਬੈਂਕ ਦਾ ਪਤਾ ਨਹੀਂ ਹੈ ਜਿਸ ਨੂੰ ਹੁਣੇ ਇਸ ਆਈਟਮ ਦੀ ਲੋੜ ਹੈ।"
 
 #: gfwfbn/views.py:148
 msgid "items requested at"
@@ -520,7 +520,7 @@ msgstr "ਬੇਨਤੀ ਕੀਤੀਆਂ ਚੀਜ਼ਾਂ ਇੱਥੇ"
 
 #: givefood/const/item_types.py:4
 msgid "Tinned Tomatoes"
-msgstr ""
+msgstr "ਡੱਬਾਬੰਦ ਟਮਾਟਰ"
 
 #: givefood/const/item_types.py:4 givefood/const/item_types.py:5
 #: givefood/const/item_types.py:6 givefood/const/item_types.py:7
@@ -532,234 +532,234 @@ msgstr ""
 #: givefood/const/item_types.py:30 givefood/const/item_types.py:31
 #: givefood/const/item_types.py:32
 msgid "Meal Food"
-msgstr ""
+msgstr "ਭੋਜਨ ਲਈ ਖਾਣਾ"
 
 #: givefood/const/item_types.py:5
 msgid "Tinned Meat"
-msgstr ""
+msgstr "ਡੱਬਾਬੰਦ ਮੀਟ"
 
 #: givefood/const/item_types.py:6
 msgid "Tinned Vegetarian"
-msgstr ""
+msgstr "ਡੱਬਾਬੰਦ ਸ਼ਾਕਾਹਾਰੀ"
 
 #: givefood/const/item_types.py:7
 msgid "Tinned Pasta"
-msgstr ""
+msgstr "ਡੱਬਾਬੰਦ ਪਾਸਤਾ"
 
 #: givefood/const/item_types.py:8
 msgid "Confectionery"
-msgstr ""
+msgstr "ਮਿਠਾਈਆਂ"
 
 #: givefood/const/item_types.py:8 givefood/const/item_types.py:19
 #: givefood/const/item_types.py:20
 msgid "Snack Food"
-msgstr ""
+msgstr "ਸਨੈਕਸ"
 
 #: givefood/const/item_types.py:9
 msgid "Cereal"
-msgstr ""
+msgstr "ਸੀਰੀਅਲ"
 
 #: givefood/const/item_types.py:10
 msgid "Tinned Fruit"
-msgstr ""
+msgstr "ਡੱਬਾਬੰਦ ਫਲ"
 
 #: givefood/const/item_types.py:11
 msgid "Milk"
-msgstr ""
+msgstr "ਦੁੱਧ"
 
 #: givefood/const/item_types.py:11 givefood/const/item_types.py:12
 #: givefood/const/item_types.py:13 givefood/const/item_types.py:26
 #: givefood/const/item_types.py:27 givefood/const/item_types.py:53
 msgid "Drink"
-msgstr ""
+msgstr "ਪੀਣ ਵਾਲੇ ਪਦਾਰਥ"
 
 #: givefood/const/item_types.py:12
 msgid "Fruit Juice"
-msgstr ""
+msgstr "ਫਲਾਂ ਦਾ ਜੂਸ"
 
 #: givefood/const/item_types.py:13
 msgid "Squash"
-msgstr ""
+msgstr "ਸਕੁਐਸ਼"
 
 #: givefood/const/item_types.py:14
 msgid "Condiment"
-msgstr ""
+msgstr "ਮਸਾਲਾ"
 
 #: givefood/const/item_types.py:14 givefood/const/item_types.py:16
 #: givefood/const/item_types.py:23 givefood/const/item_types.py:28
 #: givefood/const/item_types.py:50
 msgid "Cooking"
-msgstr ""
+msgstr "ਖਾਣਾ ਬਣਾਉਣਾ"
 
 #: givefood/const/item_types.py:15
 msgid "Noodles"
-msgstr ""
+msgstr "ਨੂਡਲਜ਼"
 
 #: givefood/const/item_types.py:16
 msgid "Cooking Oil"
-msgstr ""
+msgstr "ਖਾਣਾ ਬਣਾਉਣ ਦਾ ਤੇਲ"
 
 #: givefood/const/item_types.py:17
 msgid "Tinned Fish"
-msgstr ""
+msgstr "ਡੱਬਾਬੰਦ ਮੱਛੀ"
 
 #: givefood/const/item_types.py:18
 msgid "Soup"
-msgstr ""
+msgstr "ਸੂਪ"
 
 #: givefood/const/item_types.py:19
 msgid "Crisps"
-msgstr ""
+msgstr "ਚਿਪਸ"
 
 #: givefood/const/item_types.py:20
 msgid "Biscuits"
-msgstr ""
+msgstr "ਬਿਸਕੁਟ"
 
 #: givefood/const/item_types.py:21
 msgid "Baked Beans"
-msgstr ""
+msgstr "ਬੇਕਡ ਬੀਨਜ਼"
 
 #: givefood/const/item_types.py:22
 msgid "Tinned Vegetables"
-msgstr ""
+msgstr "ਡੱਬਾਬੰਦ ਸਬਜ਼ੀਆਂ"
 
 #: givefood/const/item_types.py:23
 msgid "Pasta Sauce"
-msgstr ""
+msgstr "ਪਾਸਤਾ ਸਾਸ"
 
 #: givefood/const/item_types.py:24
 msgid "Pasta"
-msgstr ""
+msgstr "ਪਾਸਤਾ"
 
 #: givefood/const/item_types.py:25
 msgid "Rice"
-msgstr ""
+msgstr "ਚੌਲ"
 
 #: givefood/const/item_types.py:26
 msgid "Tea"
-msgstr ""
+msgstr "ਚਾਹ"
 
 #: givefood/const/item_types.py:27
 msgid "Coffee"
-msgstr ""
+msgstr "ਕੌਫੀ"
 
 #: givefood/const/item_types.py:28
 msgid "Sugar"
-msgstr ""
+msgstr "ਖੰਡ"
 
 #: givefood/const/item_types.py:29
 msgid "Spread"
-msgstr ""
+msgstr "ਸਪ੍ਰੈਡ"
 
 #: givefood/const/item_types.py:30
 msgid "Vegetable"
-msgstr ""
+msgstr "ਸਬਜ਼ੀ"
 
 #: givefood/const/item_types.py:31
 msgid "Instant Mash"
-msgstr ""
+msgstr "ਇੰਸਟੈਂਟ ਮੈਸ਼"
 
 #: givefood/const/item_types.py:32
 msgid "Dessert"
-msgstr ""
+msgstr "ਮਿਠਾਈ"
 
 #: givefood/const/item_types.py:33
 msgid "Washing Up Liquid"
-msgstr ""
+msgstr "ਬਰਤਨ ਧੋਣ ਦਾ ਤਰਲ"
 
 #: givefood/const/item_types.py:33 givefood/const/item_types.py:40
 #: givefood/const/item_types.py:46 givefood/const/item_types.py:47
 msgid "Cleaning"
-msgstr ""
+msgstr "ਸਫ਼ਾਈ"
 
 #: givefood/const/item_types.py:34
 msgid "Toilet Roll"
-msgstr ""
+msgstr "ਟਾਇਲਟ ਰੋਲ"
 
 #: givefood/const/item_types.py:34 givefood/const/item_types.py:35
 #: givefood/const/item_types.py:36 givefood/const/item_types.py:37
 #: givefood/const/item_types.py:38 givefood/const/item_types.py:39
 #: givefood/const/item_types.py:41 givefood/const/item_types.py:52
 msgid "Toiletries"
-msgstr ""
+msgstr "ਟਾਇਲਟਰੀਜ਼"
 
 #: givefood/const/item_types.py:35
 msgid "Shower Gel"
-msgstr ""
+msgstr "ਸ਼ਾਵਰ ਜੈੱਲ"
 
 #: givefood/const/item_types.py:36
 msgid "Shampoo"
-msgstr ""
+msgstr "ਸ਼ੈਂਪੂ"
 
 #: givefood/const/item_types.py:37
 msgid "Soap"
-msgstr ""
+msgstr "ਸਾਬਣ"
 
 #: givefood/const/item_types.py:38
 msgid "Dental"
-msgstr ""
+msgstr "ਦੰਦਾਂ ਦੀ ਦੇਖਭਾਲ"
 
 #: givefood/const/item_types.py:39
 msgid "Deodorant"
-msgstr ""
+msgstr "ਡਿਓਡਰੈਂਟ"
 
 #: givefood/const/item_types.py:40
 msgid "Laundry"
-msgstr ""
+msgstr "ਧੁਲਾਈ"
 
 #: givefood/const/item_types.py:41
 msgid "Sanitary Products"
-msgstr ""
+msgstr "ਸੈਨੇਟਰੀ ਉਤਪਾਦ"
 
 #: givefood/const/item_types.py:42
 msgid "Baby Food"
-msgstr ""
+msgstr "ਬੱਚਿਆਂ ਦਾ ਖਾਣਾ"
 
 #: givefood/const/item_types.py:42 givefood/const/item_types.py:43
 #: givefood/const/item_types.py:44 givefood/const/item_types.py:45
 msgid "Baby Supplies"
-msgstr ""
+msgstr "ਬੱਚਿਆਂ ਦੀਆਂ ਚੀਜ਼ਾਂ"
 
 #: givefood/const/item_types.py:43
 msgid "Baby Milk"
-msgstr ""
+msgstr "ਬੱਚਿਆਂ ਦਾ ਦੁੱਧ"
 
 #: givefood/const/item_types.py:44
 msgid "Nappies"
-msgstr ""
+msgstr "ਨੈਪੀਆਂ"
 
 #: givefood/const/item_types.py:45
 msgid "Wipes"
-msgstr ""
+msgstr "ਵਾਈਪਸ"
 
 #: givefood/const/item_types.py:46
 msgid "Kitchen Roll"
-msgstr ""
+msgstr "ਕਿਚਨ ਰੋਲ"
 
 #: givefood/const/item_types.py:47
 msgid "Household Supplies"
-msgstr ""
+msgstr "ਘਰੇਲੂ ਸਮਾਨ"
 
 #: givefood/const/item_types.py:48
 msgid "Pet Food"
-msgstr ""
+msgstr "ਪਾਲਤੂ ਜਾਨਵਰਾਂ ਦਾ ਭੋਜਨ"
 
 #: givefood/const/item_types.py:48 givefood/const/item_types.py:49
 #: givefood/const/item_types.py:51
 msgid "Other"
-msgstr ""
+msgstr "ਹੋਰ"
 
 #: givefood/const/item_types.py:49
 msgid "Carrier Bags"
-msgstr ""
+msgstr "ਕੈਰੀਅਰ ਬੈਗ"
 
 #: givefood/const/item_types.py:50
 msgid "Sauce"
-msgstr ""
+msgstr "ਸਾਸ"
 
 #: givefood/const/item_types.py:53
 msgid "Hot Chocolate"
-msgstr ""
+msgstr "ਹੌਟ ਚਾਕਲੇਟ"
 
 #: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
@@ -1063,11 +1063,11 @@ msgstr "ਮਾਫ਼ ਕਰਨਾ, ਪਰ ਸਾਨੂੰ ਸਿਰਫ਼ ਇਹ
 
 #: givefood/templates/public/includes/appbadges.html:4
 msgid "Download on the App Store"
-msgstr ""
+msgstr "ਐਪ ਸਟੋਰ ਤੋਂ ਡਾਊਨਲੋਡ ਕਰੋ"
 
 #: givefood/templates/public/includes/appbadges.html:7
 msgid "Get it on Google Play"
-msgstr ""
+msgstr "ਗੂਗਲ ਪਲੇ ਤੋਂ ਪ੍ਰਾਪਤ ਕਰੋ"
 
 #: givefood/templates/public/includes/country.html:2
 msgid "England"
