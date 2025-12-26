@@ -95,9 +95,6 @@ urlpatterns = (
     path("places/", places, name="places"),
     path("places/loader/", places_loader, name="places_loader"),
 
-    path("finder/", finder, name="finder"),
-    path("finder/check/", finder_check, name="finder_check"),
-
     path("politics/", politics, name="politics"),
     path("politics/csv/", politics_csv, name="politics_csv"),
 
@@ -136,7 +133,6 @@ urlpatterns = (
     path("stats/editing/", edit_stats, name="edit_stats"),
     path("stats/subscribers/", subscriber_stats, name="subscriber_stats"),
     path("stats/subscribers/graph/", subscriber_graph, name="subscriber_graph"),
-    path("stats/finder/", finder_stats, name="finder_stats"),
     path("stats/needs/", need_stats, name="need_stats"),
 
     path("proxy/", proxy, name="proxy"),

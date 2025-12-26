@@ -1878,22 +1878,6 @@ def subscriber_graph(request):
     return render(request, "admin/sub_graph.html", template_vars)
 
 
-def finder_stats(request):
-
-    stats = {
-        "Places":Place.objects.count(),
-        "Checked Places":Place.objects.filter(checked__isnull=False).count(),
-    }
-
-    template_vars = {
-        "stats":stats,
-        "title":"Finder",
-        "section":"stats",
-    }
-
-    return render(request, "admin/stats.html", template_vars)
-
-
 def need_stats(request):
 
     stats = {
@@ -2102,57 +2086,6 @@ def places_loader(request):
                 pass
 
     return HttpResponse("OK")
-
-
-def finder(request):
-
-    place = Place.objects.filter(checked__isnull=True).order_by('?').first()
-        
-    search_url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=food bank&location=%s&radius=5000&region=uk&key=%s" % (place.lat_lng, get_cred("gmap_places_key"))
-    response = requests.get(search_url)
-    if response.status_code == 200:
-        search_results = response.json()["results"]
-
-    for result in search_results:
-        result["distance"] = distance_meters(place.lat(), place.lng(), result["geometry"]["location"]["lat"], result["geometry"]["location"]["lng"])/1000
-
-        try:
-            result["postcode"] = re.findall("[A-Z]{1,2}[0-9][A-Z0-9]? [0-9][ABD-HJLNP-UW-Z]{2}", result["formatted_address"])[0]
-        except IndexError:
-            result["postcode"] = None
-
-        try:
-            matched_foodbank = Foodbank.objects.get(postcode=result["postcode"])
-        except Foodbank.DoesNotExist:
-            try:
-                matched_location = FoodbankLocation.objects.get(postcode=result["postcode"])
-                matched_foodbank = matched_location.foodbank
-                result["closest_foodbank"] = None
-            except FoodbankLocation.DoesNotExist:
-                matched_foodbank = None
-                closest_foodbank = find_locations("%s,%s" % (result["geometry"]["location"]["lat"], result["geometry"]["location"]["lng"]),1)[0]
-                result["closest_foodbank"] = closest_foodbank
-
-        result["matched_foodbank"] = matched_foodbank
-
-    template_vars = {
-        "section":"finder",
-        'gmap_static_key':get_cred("gmap_static_key"),
-        "place":place,
-        "search_url":search_url,
-        "search_results":search_results,
-    }
-    return render(request, "admin/finder.html", template_vars)
-
-
-@require_POST
-def finder_check(request):
-
-    place = Place.objects.get(gbpnid = request.POST["place"])
-    place.checked = datetime.now()
-    place.save()
-
-    return redirect("admin:finder")
 
 
 def settings(request):
