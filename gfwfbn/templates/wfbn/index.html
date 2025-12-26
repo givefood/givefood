@@ -184,9 +184,9 @@
               <div class="select">
                 <select name="item" id="item_select">
                   <option value="">{% blocktrans %}Select an item category{% endblocktrans %}</option>
-                  {% for cat_value, cat_label in item_categories %}
-                  <option value="{{ cat_value }}" {% if item_category == cat_value %}selected{% endif %}>{{ cat_label }}</option>
-                  {% endfor %}
+                    {% for cat_value, cat_label in item_categories %}
+                    <option value="{{ cat_value }}" {% if item_category == cat_value %}selected{% endif %}>{% trans cat_label %}</option>
+                    {% endfor %}
                 </select>
               </div>
               <button type="submit" class="button is-info is-light">{% trans "Go" %}</button>
