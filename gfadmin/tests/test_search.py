@@ -3,7 +3,7 @@ import pytest
 from django.test import Client
 from django.urls import reverse
 
-from givefood.models import Foodbank
+from givefood.models import Foodbank, FoodbankChange
 
 
 @pytest.mark.django_db
@@ -130,3 +130,36 @@ class TestSearchResults:
         
         assert response.status_code == 200
         assert 'RSS URL FB' in response.content.decode()
+
+    def test_search_need_id_displays_truncated(self):
+        """Test that need IDs in search results display only first 7 characters."""
+        foodbank = self._create_foodbank(name='Need Search FB')
+        
+        # Create a need for the foodbank
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text='unique-search-term-for-need-test',
+            published=True
+        )
+        need.save(do_translate=False, do_foodbank_save=False)
+        
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.get(reverse('admin:search_results'), {'q': 'unique-search-term-for-need-test'})
+        
+        content = response.content.decode()
+        assert response.status_code == 200
+        
+        # The full need_id should be in the URL (href)
+        full_need_id = str(need.need_id)
+        assert full_need_id in content
+        
+        # The displayed link text should be only the first 7 characters
+        truncated_id = full_need_id[:7]
+        # Check that the truncated ID appears (as link text)
+        assert truncated_id in content
+        
+        # The 8th character should NOT appear immediately after the 7th character
+        # as the link text (except in the href URL)
+        # We can verify this by checking the HTML structure
+        assert f'>{truncated_id}</a>' in content
