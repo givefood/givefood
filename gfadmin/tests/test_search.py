@@ -132,7 +132,7 @@ class TestSearchResults:
         assert 'RSS URL FB' in response.content.decode()
 
     def test_search_need_id_displays_truncated(self):
-        """Test that need IDs in search results display only first 7 characters."""
+        """Test that need IDs in search results display only first 7 characters using need_id_short."""
         foodbank = self._create_foodbank(name='Need Search FB')
         
         # Create a need for the foodbank
@@ -154,8 +154,9 @@ class TestSearchResults:
         full_need_id = str(need.need_id)
         assert full_need_id in content
         
-        # The displayed link text should be only the first 7 characters
-        truncated_id = full_need_id[:7]
+        # The displayed link text should be only the first 7 characters (via need_id_short)
+        truncated_id = need.need_id_short()
+        assert truncated_id == full_need_id[:7]  # Verify need_id_short returns first 7 chars
         # Check that the truncated ID appears (as link text)
         assert truncated_id in content
         

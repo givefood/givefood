@@ -1628,8 +1628,11 @@ class FoodbankChange(models.Model):
         if self.foodbank == None and self.published == True:
             raise ValidationError('Need to set a food bank to publish need')
 
+    def need_id_short(self):
+        return str(self.need_id)[:7]
+
     def __str__(self):
-        return "%s - %s (%s)" % (self.foodbank_name, self.created.strftime("%b %d %Y %H:%M:%S"), str(self.need_id)[:7])
+        return "%s - %s (%s)" % (self.foodbank_name, self.created.strftime("%b %d %Y %H:%M:%S"), self.need_id_short())
 
     def created_without_microseconds(self):
         return self.created.replace(microsecond=0)

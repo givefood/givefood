@@ -87,7 +87,7 @@
                 <h2>Needs</h2>
                 <ul>
                     {% for need in needs %}
-                        <li><a href="{% url 'admin:need' need.need_id %}">{{ need.need_id|stringformat:"s"|slice:":7" }}</a> {{ need.foodbank_name }}, {{ need.modified }}</li>
+                        <li><a href="{% url 'admin:need' need.need_id %}">{{ need.need_id_short }}</a> {{ need.foodbank_name }}, {{ need.modified }}</li>
                     {% endfor %}
                 </ul>
             </div>
