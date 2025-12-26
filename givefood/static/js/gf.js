@@ -16,4 +16,15 @@ window.addEventListener('DOMContentLoaded', () => {
     // without reloading the page or adding a new history entry.
     history.replaceState(null, '', url.toString());
   }
+
+  // Add the anchor from the current URL to the language switcher links
+  const anchor = window.location.hash;
+  if (anchor) {
+    const langSwitcherLinks = document.querySelectorAll('#langswitcher a');
+    langSwitcherLinks.forEach(link => {
+      const linkUrl = new URL(link.href, window.location.origin);
+      linkUrl.hash = anchor;
+      link.href = linkUrl.toString();
+    });
+  }
 });
