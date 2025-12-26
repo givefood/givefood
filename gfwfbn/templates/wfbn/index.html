@@ -184,8 +184,11 @@
               <div class="select">
                 <select name="item" id="item_select">
                   <option value="">{% blocktrans %}Select an item category{% endblocktrans %}</option>
-                    {% for cat_value, cat_label in item_categories %}
-                    <option value="{{ cat_value }}" {% if item_category == cat_value %}selected{% endif %}>{% trans cat_label %}</option>
+                      {% for cat_value, cat_label in item_categories %}
+                        {% language 'en' %}
+                            {% translate cat_value as en_cat_value %}
+                        {% endlanguage %}
+                      <option value="{{ en_cat_value }}" {% if item_category == en_cat_value %}selected{% endif %}>{% trans cat_label %}</option>
                     {% endfor %}
                 </select>
               </div>
