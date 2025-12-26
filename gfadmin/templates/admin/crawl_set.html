@@ -1,6 +1,5 @@
 {% extends "admin/page.html" %}
 {% load humanize %}
-{% load custom_tags %}
 
 {% block title %}Crawl Set - GF Admin{% endblock %}
 
@@ -81,7 +80,7 @@
                     {% if crawl_item.content_object %}
                         <a href="{{ crawl_item.content_object.get_absolute_url }}">
                             {% if crawl_item.object_class_name == 'FoodbankChange' %}
-                                {{ crawl_item.content_object.need_id|truncate_need_id }}
+                                {{ crawl_item.content_object.need_id_short }}
                             {% endif %}
                         </a><br>
                         {% if crawl_item.object_class_name == 'FoodbankChange' %}

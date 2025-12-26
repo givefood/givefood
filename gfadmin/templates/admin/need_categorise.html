@@ -1,6 +1,5 @@
 {% extends "admin/page.html" %}
 {% load bulma_tags %}
-{% load custom_tags %}
 
 {% block title %}{{ need }} - GF Admin{% endblock %}
 
@@ -24,7 +23,7 @@
   <div class="columns">
 
     <div class="column">
-        <h2>{{ need.need_id|truncate_need_id }}</h2>
+        <h2>{{ need.need_id_short }}</h2>
 
         <form action="{% url 'admin:need_categorise' need.need_id %}" method="post">
 

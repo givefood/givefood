@@ -1,5 +1,4 @@
 {% extends "admin/page.html" %}
-{% load custom_tags %}
 
 {% block title %}{{ need }} - GF Admin{% endblock %}
 
@@ -11,7 +10,7 @@
     <div class="column">
       <dl>
         <dt>ID</dt>
-        <dd>{{ need.need_id|truncate_need_id }}</dd>
+        <dd>{{ need.need_id_short }}</dd>
         <dt>Food Bank</dt>
         <dd>
           {% if need.foodbank %}
@@ -49,14 +48,14 @@
           <dt>Published</dt>
           <dd>
             <time datetime="{{ prev_published.created|date:'c' }}" title="{{ prev_published.created }}">{{ prev_published.created|timesince }} ago</time>
-            <br><a href="{% url 'admin:need' prev_published.need_id %}">{{ prev_published.need_id|truncate_need_id }}</a>
+            <br><a href="{% url 'admin:need' prev_published.need_id %}">{{ prev_published.need_id_short }}</a>
           </dd>
         {% endif %}
         {% if prev_nonpert %}
           <dt>NonPert</dt>
           <dd>
             <time datetime="{{ prev_nonpert.created|date:'c' }}" title="{{ prev_nonpert.created }}">{{ prev_nonpert.created|timesince }} ago</time>
-            <br><a href="{% url 'admin:need' prev_nonpert.need_id %}">{{ prev_nonpert.need_id|truncate_need_id }}</a>
+            <br><a href="{% url 'admin:need' prev_nonpert.need_id %}">{{ prev_nonpert.need_id_short }}</a>
           </dd>
         {% endif %}
       </dl>

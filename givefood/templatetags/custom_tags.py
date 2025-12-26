@@ -16,10 +16,3 @@ def friendly_url(url):
     if url:
         return make_url_friendly(url)
     return ""
-
-@register.filter
-def truncate_need_id(need_id):
-    """Truncate need_id to first 8 characters for display"""
-    if need_id:
-        return str(need_id)[:8]
-    return ""

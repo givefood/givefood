@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import uuid
 import pytest
 from django.template import Context, Template
 
@@ -52,43 +51,3 @@ class TestFriendlyUrlTemplateTag:
         # truncatechars adds ... if text is longer than specified
         assert "example.com" in result
         assert len(result) <= 20
-
-
-class TestTruncateNeedIdTemplateTag:
-    """Tests for the truncate_need_id template tag."""
-
-    def test_truncate_need_id_full_uuid(self):
-        """Test that truncate_need_id returns first 8 characters of a UUID."""
-        template = Template("{% load custom_tags %}{{ need_id|truncate_need_id }}")
-        context = Context({"need_id": "550e8400-e29b-41d4-a716-446655440000"})
-        result = template.render(context)
-        assert result == "550e8400"
-
-    def test_truncate_need_id_short_string(self):
-        """Test that truncate_need_id handles strings shorter than 8 characters."""
-        template = Template("{% load custom_tags %}{{ need_id|truncate_need_id }}")
-        context = Context({"need_id": "abc123"})
-        result = template.render(context)
-        assert result == "abc123"
-
-    def test_truncate_need_id_exactly_8_chars(self):
-        """Test that truncate_need_id handles exactly 8 character strings."""
-        template = Template("{% load custom_tags %}{{ need_id|truncate_need_id }}")
-        context = Context({"need_id": "12345678"})
-        result = template.render(context)
-        assert result == "12345678"
-
-    def test_truncate_need_id_with_none(self):
-        """Test that truncate_need_id handles None gracefully."""
-        template = Template("{% load custom_tags %}{{ need_id|truncate_need_id }}")
-        context = Context({"need_id": None})
-        result = template.render(context)
-        assert result == ""
-
-    def test_truncate_need_id_with_uuid_object(self):
-        """Test that truncate_need_id works with UUID objects."""
-        template = Template("{% load custom_tags %}{{ need_id|truncate_need_id }}")
-        test_uuid = uuid.UUID("550e8400-e29b-41d4-a716-446655440000")
-        context = Context({"need_id": test_uuid})
-        result = template.render(context)
-        assert result == "550e8400"
