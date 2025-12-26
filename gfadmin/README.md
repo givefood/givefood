@@ -103,11 +103,6 @@ The main admin landing page showing:
 - MP information
 - Political boundary management
 
-### Finder (`/admin/finder/`)
-- Google Places integration
-- Identify potential new food banks
-- Match against existing database
-
 ### Statistics (`/admin/stats/`)
 - Various reporting dashboards
 - Quarter statistics
