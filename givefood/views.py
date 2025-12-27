@@ -15,7 +15,7 @@ from django.conf import settings
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
 from givefood.forms import FoodbankRegistrationForm, FlagForm
-from givefood.func import get_cred, validate_turnstile
+from givefood.func import get_cred, get_user_ip, validate_turnstile
 from givefood.func import send_email
 from givefood.const.general import BOT_USER_AGENT, SITE_DOMAIN, PLACES_PER_SITEMAP
 from givefood.const.cache_times import (
@@ -879,23 +879,31 @@ def apps(request):
     return render(request, "public/apps.html")
 
 
-@cache_page(SECONDS_IN_TWO_MINUTES)
+
 def frag(request, frag):
     """
-    Fragments for client side includes
+    Fragments for client side includes.
+    ip-address is handled inside and returns early (not cached).
     """
 
     allowed_frags = [
+        "ip-address",
         "last-updated",
         "need-hits",
     ]
     if frag not in allowed_frags:
         raise Http404()
 
-    # last-updated"
+    frag_text = None
+
+    # ip-address - not cached since IP address is user-specific
+    if frag == "ip-address":
+        return HttpResponse(get_user_ip(request))
+
+    # last-updated
     if frag == "last-updated":
         timesince_text = timesince(Foodbank.objects.latest("modified").modified)
-        if timesince_text == "0 %s" % (_("minutes")):
+        if timesince_text == "0 %s" % (_("minutes")):
             frag_text = _("Under a minute ago")
         else:
             frag_text = "%s %s" % (timesince_text, _("ago"))
@@ -909,30 +917,6 @@ def frag(request, frag):
         return HttpResponseForbidden()
 
     return HttpResponse(frag_text)
-
-
-def frag_ip_address(request):
-    """
-    Return the client's IP address.
-    Handles Cloudflare proxy by checking CF-Connecting-IP header first.
-    Not cached since IP address is user-specific.
-    """
-    # Cloudflare provides the original client IP in CF-Connecting-IP header
-    ip_address = request.META.get("HTTP_CF_CONNECTING_IP")
-    
-    # Fallback to X-Forwarded-For if not behind Cloudflare
-    if not ip_address:
-        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
-        if x_forwarded_for:
-            # X-Forwarded-For can contain multiple IPs, take the first one
-            ip_address = x_forwarded_for.split(",")[0].strip()
-    
-    # Final fallback to REMOTE_ADDR
-    if not ip_address:
-        ip_address = request.META.get("REMOTE_ADDR", "")
-    
-    return HttpResponse(ip_address)
-
 
 @require_POST
 def human(request):
@@ -977,8 +961,8 @@ def flag(request):
             fields.pop("csrfmiddlewaretoken", None)
             fields.pop("cf-turnstile-response", None)
 
-            # Get user's IP address (Cloudflare header or fallback to REMOTE_ADDR)
-            user_ip = request.META.get("HTTP_CF_CONNECTING_IP") or request.META.get("REMOTE_ADDR")
+            # Get user's IP address
+            user_ip = get_user_ip(request)
 
             email_body = render_to_string("public/flag_email.txt",{"form":fields.items(), "user_ip":user_ip})
             send_email(
