@@ -954,7 +954,10 @@ def flag(request):
             fields.pop("csrfmiddlewaretoken", None)
             fields.pop("cf-turnstile-response", None)
 
-            email_body = render_to_string("public/flag_email.txt",{"form":fields.items()})
+            # Get user's IP address (Cloudflare header or fallback to REMOTE_ADDR)
+            user_ip = request.META.get("HTTP_CF_CONNECTING_IP") or request.META.get("REMOTE_ADDR")
+
+            email_body = render_to_string("public/flag_email.txt",{"form":fields.items(), "user_ip":user_ip})
             send_email(
                 to = "mail@givefood.org.uk",
                 subject = "Give Food - Flagged Page",

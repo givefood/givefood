@@ -1,2 +1,4 @@
 {% for key, value in form %}
 {{ key }}: {{ value }}{% endfor %}
+
+IP Address: {{ user_ip }}
