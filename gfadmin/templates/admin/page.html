@@ -38,7 +38,6 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link{% if section == "needs" %} is-active{% endif %}" href="{% url 'admin:needs' %}" >Needs</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="{% url 'admin:needs' %}?uncategorised=true">Uncategorised</a>
             <a class="navbar-item" href="{% url 'admin:needs_otherlines' %}">Other Lines</a>
           </div>
         </div>
