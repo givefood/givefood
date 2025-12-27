@@ -311,37 +311,6 @@ def needs(request):
     return render(request, "admin/needs.html", template_vars)
 
 
-def needs_otherlines(request):
-
-    needlines = FoodbankChangeLine.objects.filter(category = "Other").order_by("-created")[:500]
-
-    template_vars = {
-        "needlines":needlines,
-    }
-    return render(request, "admin/needlines.html", template_vars)
-
-
-def needline_form(request, id, line_id):
-
-    needline = get_object_or_404(FoodbankChangeLine, id = line_id)
-
-    if request.POST:
-        form = NeedLineForm(request.POST, instance=needline)
-        if form.is_valid():
-            order = form.save()
-            return redirect("admin:needs_otherlines")
-    else:
-        form = NeedLineForm(instance=needline)
-
-    page_title = "Edit %s" % str(needline)
-
-    template_vars = {
-        "form":form,
-        "page_title":page_title,
-    }
-    return render(request, "admin/form.html", template_vars)
-    
-
 @require_POST
 def needs_deleteall(request):
 

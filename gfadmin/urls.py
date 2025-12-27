@@ -24,7 +24,6 @@ urlpatterns = (
     path("orders/csv/", orders_csv, name="orders_csv"),
 
     path("needs/", needs, name="needs"),
-    path("needs/otherlines/", needs_otherlines, name="needs_otherlines"),
     path("needs/deleteall/", needs_deleteall, name="needs_deleteall"),
     path("needs/csv/", needs_csv, name="needs_csv"),
 
@@ -74,7 +73,6 @@ urlpatterns = (
     path("need/<uuid:id>/translations/", need_translations, name="need_translations"),
     path("need/<uuid:id>/email/", need_email, name="need_email"),
     path("need/<uuid:id>/categorise/", need_categorise, name="need_categorise"),
-    path("need/<uuid:id>/line/<int:line_id>/", needline_form, name="needline_form"),
     path("need/<uuid:id>/<slug:action>/", need_publish, name="need_publish"),
 
     path("locations/", locations, name="locations"),
