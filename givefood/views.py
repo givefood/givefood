@@ -911,6 +911,29 @@ def frag(request, frag):
     return HttpResponse(frag_text)
 
 
+def frag_ip_address(request):
+    """
+    Return the client's IP address.
+    Handles Cloudflare proxy by checking CF-Connecting-IP header first.
+    Not cached since IP address is user-specific.
+    """
+    # Cloudflare provides the original client IP in CF-Connecting-IP header
+    ip_address = request.META.get("HTTP_CF_CONNECTING_IP")
+    
+    # Fallback to X-Forwarded-For if not behind Cloudflare
+    if not ip_address:
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            # X-Forwarded-For can contain multiple IPs, take the first one
+            ip_address = x_forwarded_for.split(",")[0].strip()
+    
+    # Final fallback to REMOTE_ADDR
+    if not ip_address:
+        ip_address = request.META.get("REMOTE_ADDR", "")
+    
+    return HttpResponse(ip_address)
+
+
 @require_POST
 def human(request):
     """
@@ -954,7 +977,10 @@ def flag(request):
             fields.pop("csrfmiddlewaretoken", None)
             fields.pop("cf-turnstile-response", None)
 
-            email_body = render_to_string("public/flag_email.txt",{"form":fields.items()})
+            # Get user's IP address (Cloudflare header or fallback to REMOTE_ADDR)
+            user_ip = request.META.get("HTTP_CF_CONNECTING_IP") or request.META.get("REMOTE_ADDR")
+
+            email_body = render_to_string("public/flag_email.txt",{"form":fields.items(), "user_ip":user_ip})
             send_email(
                 to = "mail@givefood.org.uk",
                 subject = "Give Food - Flagged Page",
