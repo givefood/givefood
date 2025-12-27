@@ -95,10 +95,7 @@ API responses include food bank data, needs, locations, and parliamentary consti
 ### Local Setup
 
 ```bash
-virtualenv --python=python3.12 .venv
-source .venv/bin/activate
-pip install -e .
-./manage.py runserver
+uv run manage.py runserver
 ```
 
 ### Environment Variables
