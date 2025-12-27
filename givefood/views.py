@@ -883,8 +883,7 @@ def apps(request):
 def frag(request, frag):
     """
     Fragments for client side includes.
-    ip-address is handled inside but returns early (uncached).
-    Other frags should go through frag_cached for caching.
+    ip-address is handled inside and returns early (not cached).
     """
 
     allowed_frags = [
