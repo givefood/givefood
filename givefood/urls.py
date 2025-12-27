@@ -73,7 +73,7 @@ urlpatterns += i18n_patterns(
 
     # Annual Reports
     path("annual-reports/", givefood.views.annual_report_index, name="annual_report_index"),
-    re_path(r"^(?P<year>(2019|2020|2021|2022|2023|2024))/$", givefood.views.annual_report, name="annual_report"),
+    re_path(r"^(?P<year>(2019|2020|2021|2022|2023|2024|2025))/$", givefood.views.annual_report, name="annual_report"),
 
     # WFBN
     path("needs/", include('gfwfbn.urls.i18n', namespace="wfbn")),

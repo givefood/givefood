@@ -1,0 +1,142 @@
+{% extends "public/page.html" %}
+
+{% block title %}2025 Give Food Annual Report{% endblock %}
+
+{% block head %}
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@GiveFoodCharity">
+    <meta property="og:title" content="Give Food 2025 Annual Report">
+    <meta property="og:description" content="Find out what we've been doing in 2025">
+    <meta name="description" content="Find out what we've been doing in 2025">
+    <meta property="og:image" content="https://www.givefood.org.uk/static/img/ar/2025/sharing.png">
+    <meta property="og:image:alt" content="Map of UK food banks">
+{% endblock %}
+
+{% block body %}
+
+<div class="columns">
+
+    <div class="column is-4">
+        <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+
+  </div>
+
+  <div class="columns">
+    <div class="column is-one-third intro">
+
+        <h1>2025 annual report</h1>
+
+        <p>We're a UK charity that supports food banks around the country. We do this by using technology to identify what is needed at food banks, distributing this information and also making our own deliveries.</p>
+
+        <p>We run the largest and most complete public database of UK food banks and scrape their websites for what they are requesting in real time.</p>
+
+        <div class="sticky-toc content">
+            <ul class="is-size-6">
+                <li><a href="#summary">Summary</a></li>
+                <li><a href="#ai-data">AI &amp; Data</a></li>
+                <li><a href="#translations">Translations</a></li>
+                <li><a href="#item-search">Item Search</a></li>
+                <li><a href="#apps">Apps</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="column is-half content">
+
+        <h2 id="summary">Summary</h2>
+
+        <ul>
+            <li>Extensive use of AI to improve code, data and documentation quality</li>
+            <li>Website now available in 20 languages</li>
+            <li>iOS and Android apps</li>
+            <li>Delivered over 2 tonnes of food to 23 food banks</li>
+        </ul>
+
+        <h2 id="ai-data">AI &amp; Data</h2>
+        <p>We maintain the only national database of food banks, continuously improving how we find and manage our open data - often with the use of AI.</p>
+
+        <p>We now index 3,109 locations (up from 2,916 last year, and 2,787 in 2023) plus over 7,600 donation points.</p>
+
+        <p>Our rich dataset contains photos, accessibility information and opening hours plus contact information like phone numbers, email addresses and social media.</p>
+        
+        <p>This year we also added registration and governance information, plus financial data for food banks that are charities registered in England, Wales, Scotland or Northern Ireland.</p>
+
+        <p>Additionally our data now contains food banks within schools, mobile food banks, and shows service areas for deliveries reflecting the diverse outlets food banks have evolved to use since the pandemic.</p>
+
+        <figure>
+            <img src="/static/img/ar/2025/purley-food-hub-service-areas.png" alt="Purley Food Hub, and it's postcode service areas for deliveries" loading="lazy">
+            <figcaption><a href="/needs/at/purley/">Purley Food Hub</a>, and it's postcode service areas for deliveries</figcaption>
+        </figure>
+
+        <p>With the use of human-led AI data checking, we now guarantee our data to be accurate within 90 days of any change.</p>
+        
+        <p>We used AI to read and understand around two billion words during 2025, the equivalent to reading the bible seven times a day.</p>
+
+        <figure>
+            <img src="/static/img/ar/2025/foodbank-check.png" alt="AI data checking" loading="lazy">
+            <figcaption>AI data checking</figcaption>
+        </figure>
+
+        <h2 id="translations">Translations</h2>
+
+        <p>Our website is now available in all 20 languages with more than 100,000 speakers in the UK. They are...</p>
+
+        <p>
+            <a href="/ar/" lang="ar">العربية</a>, <a href="/bn/" lang="bn">বাংলા</a>, <a href="/bg/" lang="bg">Български</a>, <a href="/zh-hans/" lang="zh-Hans">简体中文</a>, <a href="/">English</a>, <a href="/fr/" lang="fr">Français</a>, <a href="/gu/" lang="gu">ગુજરાતી</a>, <a href="/ga/" lang="ga">Gaeilge</a>, <a href="/it/" lang="it">Italiano</a>, <a href="/lt/" lang="lt">Lietuvių</a>, <a href="/pl/" lang="pl">Polski</a>, <a href="/pt/" lang="pt">Português</a>, <a href="/pa/" lang="pa">ਪੰਜਾਬੀ</a>, <a href="/ro/" lang="ro">Română</a>, <a href="/gd/" lang="gd">Gàidhlig</a>, <a href="/es/" lang="es">Español</a>, <a href="/ta/" lang="ta">தமிழ்</a>, <a href="/tr/" lang="tr">Türkçe</a>, <a href="/ur/" lang="ur">اردو</a>, and <a href="/cy/" lang="cy">Cymraeg</a>
+        </p>
+
+        <p>Some example pages...</p>
+
+        <ul>
+            <li>Whitechapel <a href="https://www.givefood.org.uk/bn/needs/at/place/tower-hamlets/whitechapel/">in বাংলা (Bengali)</a></li>
+            <li>Bradford <a href="https://www.givefood.org.uk/pa/needs/at/place/bradford/bradford/">in ਪੰਜਾਬੀ (Punjabi)</a></li>
+            <li>Leicester <a href="https://www.givefood.org.uk/ur/needs/at/place/leicester/leicester/">in اردو (Urdu)</a></li>
+        </ul>
+
+        <h2 id="item-search">Item Search</h2>
+        <p>In December we launched one of our most requested features: the ability to search for specific items needed by food banks near a location.</p>
+        <p>Some examples...</p>
+
+        <ul>
+            <li><a href="https://www.givefood.org.uk/needs/?lat_lng=55.953252%2C-3.188267&address=Edinburgh&item=Pasta#byitem">Pasta in Edinburgh</a></li>
+            <li><a href="https://www.givefood.org.uk/needs/?lat_lng=53.4872927%2C-2.2900071&address=Salford&item=Dessert#byitem">Desserts in Salford</a></li>
+            <li><a href="https://www.givefood.org.uk/needs/?lat_lng=50.7220101%2C-1.8667169&address=Bournemouth&item=Nappies#byitem">Nappies in Bournemouth</a></li>
+            <li><a href="https://www.givefood.org.uk/needs/?lat_lng=51.454513%2C-2.58791&address=Bristol&item=Coffee#byitem">Coffee in Bristol</a></li>
+        </ul>
+
+        <h2 id="apps">Apps</h2>
+        
+        <div class="columns">
+            <div class="column is-half">
+                <p>In 2025 Give Food launched <a href="/apps/">mobile apps</a> on <a href="https://apps.apple.com/gb/app/give-food/id6755759247">iOS</a> and <a href="https://play.google.com/store/apps/details?id=uk.org.givefood.android">Android</a>.</p>
+
+                <p>These quick and easy to navigate native applications can be used to find local food banks and what they need, plus get notifications on food bank shopping list changes.</p>
+
+                <p>The apps also support notifying you of a food bank’s shopping list when you are near one of their donation points.</p>
+                
+                <p>This is particularly useful at the <a href="/dashboard/donationpoints/supermarkets/">thousands of supermarkets</a> which act as donation points for food banks.</p>
+
+                <p class="app-badges">
+                    <a href="https://apps.apple.com/gb/app/give-food/id6755759247">
+                        <img src="/static/img/app-store.svg" alt="Download on the App Store">
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=uk.org.givefood.android">
+                        <img src="/static/img/google-play.svg" alt="Get it on Google Play">
+                    </a>
+                </p>
+
+            </div>
+            <div class="column is-half">
+                <video width="100%" src="/static/img/ar/2025/androidapp.mp4" autoplay loop muted playsinline></video>
+            </div>
+        </div>
+
+        <br><br><br><br>
+
+    </div>
+
+  </div>
+
+
+{% endblock %}
