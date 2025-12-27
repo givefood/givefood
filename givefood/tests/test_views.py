@@ -245,3 +245,47 @@ class TestCountryPages:
         assert 'features' in data
         assert isinstance(data['features'], list)
 
+
+@pytest.mark.django_db
+class TestFragIPAddress:
+    """Test the IP address fragment endpoint."""
+
+    def test_frag_ip_address_accessible(self, client):
+        """Test that the IP address fragment endpoint is accessible."""
+        response = client.get('/frag/ip-address/')
+        assert response.status_code == 200
+        
+    def test_frag_ip_address_returns_ip(self, client):
+        """Test that the endpoint returns an IP address string."""
+        response = client.get('/frag/ip-address/')
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        # Should return an IP address (127.0.0.1 for test client)
+        assert content == '127.0.0.1'
+
+    def test_frag_ip_address_with_cloudflare_header(self, client):
+        """Test that Cloudflare CF-Connecting-IP header is used when present."""
+        response = client.get('/frag/ip-address/', HTTP_CF_CONNECTING_IP='203.0.113.50')
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        assert content == '203.0.113.50'
+
+    def test_frag_ip_address_with_x_forwarded_for(self, client):
+        """Test that X-Forwarded-For header is used as fallback."""
+        response = client.get('/frag/ip-address/', HTTP_X_FORWARDED_FOR='198.51.100.25, 192.168.1.1')
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        # Should use first IP from X-Forwarded-For
+        assert content == '198.51.100.25'
+
+    def test_frag_ip_address_cloudflare_takes_precedence(self, client):
+        """Test that CF-Connecting-IP takes precedence over X-Forwarded-For."""
+        response = client.get(
+            '/frag/ip-address/',
+            HTTP_CF_CONNECTING_IP='203.0.113.50',
+            HTTP_X_FORWARDED_FOR='198.51.100.25, 192.168.1.1'
+        )
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        assert content == '203.0.113.50'
+
