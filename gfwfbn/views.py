@@ -605,7 +605,8 @@ def foodbank_socialmedia(request, slug):
     """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    # TODO: check if fb has social media
+    if not foodbank.facebook_page and not foodbank.twitter_handle:
+        return HttpResponseNotFound()
 
     template_vars = {
         "section":"socialmedia",
