@@ -17,7 +17,7 @@ from givefood.const.general import SITE_DOMAIN
 from givefood.const.item_types import ITEM_CATEGORIES_CHOICES
 
 from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, MobileSubscriber, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle, Place
-from givefood.func import geocode, find_locations, find_locations_by_category, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, is_uk, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
+from givefood.func import geocode, find_locations, find_locations_by_category, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, get_user_ip, is_uk, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 from django.db.models import Sum
 
@@ -179,7 +179,7 @@ def get_location(request):
     Handle non-javascript location requests
     """
 
-    response = requests.get("https://freeipapi.com/api/json/%s" % (request.META.get("HTTP_CF_CONNECTING_IP", None)))
+    response = requests.get("https://freeipapi.com/api/json/%s" % (get_user_ip(request)))
     if response.status_code != 200:
         return HttpResponseBadRequest()
     response_json = response.json()

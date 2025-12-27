@@ -164,3 +164,62 @@ class TestJSONUtilities:
         json_str = '  {"type": "Point"}  '
         result = geojson_dict(json_str)
         assert result["type"] == "Point"
+
+
+class TestGetUserIP:
+    """Test get_user_ip utility function."""
+
+    def test_get_user_ip_with_cloudflare_header(self):
+        """Test get_user_ip with CF-Connecting-IP header."""
+        from givefood.func import get_user_ip
+        from django.test import RequestFactory
+        
+        factory = RequestFactory()
+        request = factory.get('/', HTTP_CF_CONNECTING_IP='203.0.113.50')
+        
+        assert get_user_ip(request) == '203.0.113.50'
+
+    def test_get_user_ip_with_x_forwarded_for(self):
+        """Test get_user_ip with X-Forwarded-For header."""
+        from givefood.func import get_user_ip
+        from django.test import RequestFactory
+        
+        factory = RequestFactory()
+        request = factory.get('/', HTTP_X_FORWARDED_FOR='198.51.100.25, 192.168.1.1')
+        
+        assert get_user_ip(request) == '198.51.100.25'
+
+    def test_get_user_ip_cloudflare_takes_precedence(self):
+        """Test that CF-Connecting-IP takes precedence over X-Forwarded-For."""
+        from givefood.func import get_user_ip
+        from django.test import RequestFactory
+        
+        factory = RequestFactory()
+        request = factory.get(
+            '/',
+            HTTP_CF_CONNECTING_IP='203.0.113.50',
+            HTTP_X_FORWARDED_FOR='198.51.100.25, 192.168.1.1'
+        )
+        
+        assert get_user_ip(request) == '203.0.113.50'
+
+    def test_get_user_ip_fallback_to_remote_addr(self):
+        """Test get_user_ip falls back to REMOTE_ADDR."""
+        from givefood.func import get_user_ip
+        from django.test import RequestFactory
+        
+        factory = RequestFactory()
+        request = factory.get('/')
+        # RequestFactory sets REMOTE_ADDR to '127.0.0.1' by default
+        
+        assert get_user_ip(request) == '127.0.0.1'
+
+    def test_get_user_ip_x_forwarded_for_with_spaces(self):
+        """Test get_user_ip strips spaces from X-Forwarded-For header."""
+        from givefood.func import get_user_ip
+        from django.test import RequestFactory
+        
+        factory = RequestFactory()
+        request = factory.get('/', HTTP_X_FORWARDED_FOR=' 198.51.100.25 , 192.168.1.1')
+        
+        assert get_user_ip(request) == '198.51.100.25'

@@ -36,6 +36,37 @@ from givefood.const.parlcon_mp import parlcon_mp
 from givefood.const.parlcon_party import parlcon_party
 
 
+def get_user_ip(request):
+    """
+    Get the client's IP address from a request.
+    Handles proxies by checking headers in the following order:
+    1. CF-Connecting-IP (Cloudflare)
+    2. X-Forwarded-For (other proxies)
+    3. REMOTE_ADDR (direct connection)
+    
+    Args:
+        request: Django HttpRequest object
+        
+    Returns:
+        str: The client's IP address
+    """
+    # Cloudflare provides the original client IP in CF-Connecting-IP header
+    ip_address = request.META.get("HTTP_CF_CONNECTING_IP")
+    
+    # Fallback to X-Forwarded-For if not behind Cloudflare
+    if not ip_address:
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            # X-Forwarded-For can contain multiple IPs, take the first one
+            ip_address = x_forwarded_for.split(",")[0].strip()
+    
+    # Final fallback to REMOTE_ADDR
+    if not ip_address:
+        ip_address = request.META.get("REMOTE_ADDR", "")
+    
+    return ip_address
+
+
 def get_slug_redirects():
     """Get slug redirects from database with caching."""
     from django.db.utils import ProgrammingError, OperationalError
