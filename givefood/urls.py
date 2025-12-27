@@ -57,6 +57,7 @@ urlpatterns += i18n_patterns(
     path("colophon/", givefood.views.colophon, name="colophon"),
     path("bot/", givefood.views.bot, name="bot"),
     path("apps/", givefood.views.apps, name="apps"),
+    path("frag/ip-address/", givefood.views.frag_ip_address, name="frag_ip_address"),
     path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
     path("human/", givefood.views.human, name="human"),
     path("flag/", givefood.views.flag, name="flag"),

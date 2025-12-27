@@ -911,6 +911,29 @@ def frag(request, frag):
     return HttpResponse(frag_text)
 
 
+def frag_ip_address(request):
+    """
+    Return the client's IP address.
+    Handles Cloudflare proxy by checking CF-Connecting-IP header first.
+    Not cached since IP address is user-specific.
+    """
+    # Cloudflare provides the original client IP in CF-Connecting-IP header
+    ip_address = request.META.get("HTTP_CF_CONNECTING_IP")
+    
+    # Fallback to X-Forwarded-For if not behind Cloudflare
+    if not ip_address:
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            # X-Forwarded-For can contain multiple IPs, take the first one
+            ip_address = x_forwarded_for.split(",")[0].strip()
+    
+    # Final fallback to REMOTE_ADDR
+    if not ip_address:
+        ip_address = request.META.get("REMOTE_ADDR", "")
+    
+    return HttpResponse(ip_address)
+
+
 @require_POST
 def human(request):
     """
