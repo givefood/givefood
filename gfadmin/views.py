@@ -253,33 +253,6 @@ def orders(request):
     return render(request, "admin/orders.html", template_vars)
 
 
-def orders_unassigned(request):
-
-    sort_options = [
-        "delivery_datetime",
-        "created",
-        "no_items",
-        "weight",
-        "calories",
-        "cost",
-    ]
-    sort = request.GET.get("sort", "delivery_datetime")
-    if sort not in sort_options:
-        return HttpResponseForbidden()
-
-    sort_string = sort
-    sort = "-%s" % (sort)
-
-    orders = Order.objects.filter(foodbank__isnull=True).order_by(sort)
-
-    template_vars = {
-        "sort":sort_string,
-        "orders":orders,
-        "section":"orders",
-    }
-    return render(request, "admin/orders_unassigned.html", template_vars)
-
-
 def orders_csv(request):
 
     orders = Order.objects.select_related('foodbank').all().order_by("-created")

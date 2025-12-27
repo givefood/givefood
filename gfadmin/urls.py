@@ -20,7 +20,6 @@ urlpatterns = (
     path("foodbanks/without_need/", foodbanks_without_need, name="foodbanks_without_need"),
 
     path("orders/", orders, name="orders"),
-    path("orders/unassigned/", orders_unassigned, name="orders_unassigned"),
     path("orders/csv/", orders_csv, name="orders_csv"),
 
     path("needs/", needs, name="needs"),
