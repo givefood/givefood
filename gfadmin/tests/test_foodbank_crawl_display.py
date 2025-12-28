@@ -68,8 +68,9 @@ class TestFoodbankCrawlDisplay:
         assert 'foodbank' in template_vars
         assert template_vars['foodbank'] == foodbank
         
-        # Verify crawl items can be accessed from the foodbank
-        crawl_items = template_vars['foodbank'].crawl_items()
+        # Verify crawl items are passed directly to template (optimization)
+        assert 'crawl_items' in template_vars
+        crawl_items = list(template_vars['crawl_items'])
         assert len(crawl_items) == 2
 
     def test_crawl_item_icon_method_consistency(self):
