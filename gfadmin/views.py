@@ -396,23 +396,73 @@ def order_delete(request, id):
 
 def foodbank(request, slug):
 
-    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank = get_object_or_404(Foodbank.objects.select_related('latest_need', 'foodbank_group'), slug = slug)
 
-    subscriber_count = FoodbankSubscriber.objects.filter(foodbank = foodbank).count() + WebPushSubscription.objects.filter(foodbank = foodbank).count() + MobileSubscriber.objects.filter(foodbank = foodbank).count()
+    # Prefetch all related data to avoid N+1 queries in template
+    locations = FoodbankLocation.objects.filter(foodbank=foodbank).order_by("name")
+    donation_points = FoodbankDonationPoint.objects.filter(foodbank=foodbank).order_by("name")
+    needs = FoodbankChange.objects.filter(foodbank=foodbank).order_by("-created")
+    orders = Order.objects.filter(foodbank=foodbank).order_by("-delivery_datetime")
+    articles = FoodbankArticle.objects.filter(foodbank=foodbank).order_by("-published_date")[:20]
+    subscribers = FoodbankSubscriber.objects.filter(foodbank=foodbank)
+    webpush_subscribers = WebPushSubscription.objects.filter(foodbank=foodbank)
+    mobile_subscribers = MobileSubscriber.objects.filter(foodbank=foodbank)
+    crawl_items = CrawlItem.objects.filter(foodbank=foodbank).order_by("-finish")[:100]
+
+    # Calculate counts from prefetched data where possible
+    locations_count = len(locations)
+    donation_points_count = len(donation_points)
+    needs_count = len(needs)
+    orders_count = len(orders)
+    articles_count = len(articles)
+    subscribers_count = len(subscribers)
+    webpush_count = len(webpush_subscribers)
+    mobile_count = len(mobile_subscribers)
+    crawl_items_count = CrawlItem.objects.filter(foodbank=foodbank).count()  # Count separately as we limit to 100
+
+    subscriber_count = subscribers_count + webpush_count + mobile_count
+
+    # Calculate order aggregates in a single query
+    order_aggregates = Order.objects.filter(foodbank=foodbank).aggregate(
+        total_weight=Sum('weight'),
+        total_cost=Sum('cost'),
+        total_items=Sum('no_items')
+    )
+    total_weight = order_aggregates['total_weight'] or 0
+    total_cost = order_aggregates['total_cost'] or 0
+    total_items = order_aggregates['total_items']
+    total_weight_kg = total_weight / 1000
+    total_weight_kg_pkg = total_weight_kg * PACKAGING_WEIGHT_PC
+    total_cost_display = total_cost / 100 if total_cost else 0
 
     counts = {
-        "locations":FoodbankLocation.objects.filter(foodbank = foodbank).count(),
-        "needs":FoodbankChange.objects.filter(foodbank = foodbank).count(),
-        "orders":Order.objects.filter(foodbank = foodbank).count(),
-        "donation_points":FoodbankDonationPoint.objects.filter(foodbank = foodbank).count(),
-        "articles":FoodbankArticle.objects.filter(foodbank = foodbank).count(),
-        "subscribers":subscriber_count,
-        "crawls":CrawlItem.objects.filter(foodbank = foodbank).count(),
+        "locations": locations_count,
+        "needs": needs_count,
+        "orders": orders_count,
+        "donation_points": donation_points_count,
+        "articles": articles_count,
+        "subscribers": subscriber_count,
+        "crawls": crawl_items_count,
     }
 
     template_vars = {
-        "foodbank":foodbank,
-        "counts":counts,
+        "foodbank": foodbank,
+        "counts": counts,
+        "locations": locations,
+        "donation_points": donation_points,
+        "needs": needs,
+        "orders": orders,
+        "articles": articles,
+        "subscribers": subscribers,
+        "webpush_subscribers": webpush_subscribers,
+        "mobile_subscribers": mobile_subscribers,
+        "crawl_items": crawl_items,
+        "total_weight_kg": total_weight_kg,
+        "total_weight_kg_pkg": total_weight_kg_pkg,
+        "total_items": total_items,
+        "total_cost": total_cost_display,
+        "no_orders": orders_count,
+        "number_subscribers": subscribers_count,
     }
     return render(request, "admin/foodbank.html", template_vars)
 

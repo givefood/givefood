@@ -25,7 +25,7 @@
           <span>Donation Points <span class="tag is-info is-normal is-light">{{ counts.donation_points }}</span></span>
         </a>
       </li>
-      {% if foodbank.articles %}
+      {% if articles %}
         <li role="presentation">
           <a data-tab="articles" role="tab" aria-selected="false" aria-controls="articles-panel" id="articles-tab">
             <span>Articles <span class="tag is-info is-normal is-light">{{ counts.articles }}</span></span>
@@ -69,7 +69,7 @@
         <input type="submit" class="button is-link is-light" value="Touch">
       </form>
 
-      {% if not foodbank.orders %}
+      {% if not orders %}
         <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light" style="margin-top:10px">New Order</a>
       {% endif %}
 
@@ -224,23 +224,23 @@
       <h3>Stats</h3>
       <dl>
         <dt>Subscribers</dt>
-        <dd>{{ foodbank.number_subscribers }}</dd>
+        <dd>{{ number_subscribers }}</dd>
         <dt>Days Between Needs</dt>
         <dd>{{ foodbank.days_between_needs }}</dd>
         <dt>Orders</dt>
-        <dd>{{ foodbank.no_orders }}</dd>
+        <dd>{{ no_orders }}</dd>
         <dt>Total weight</dt>
-        <dd>{{ foodbank.total_weight_kg|intcomma }} kg</dd>
+        <dd>{{ total_weight_kg|intcomma }} kg</dd>
         <dt>Total weight (pkging)</dt>
-        <dd>{{ foodbank.total_weight_kg_pkg|intcomma }} kg</dd>
+        <dd>{{ total_weight_kg_pkg|intcomma }} kg</dd>
         <dt>Total items</dt>
-        <dd>{{ foodbank.total_items|intcomma }}</dd>
+        <dd>{{ total_items|intcomma }}</dd>
         <dt>Total cost</dt>
-        <dd>£{{ foodbank.total_cost|intcomma }}</dd>
+        <dd>£{{ total_cost|intcomma }}</dd>
         <dt>Locations</dt>
-        <dd>{{ foodbank.no_locations }}</dd>
+        <dd>{{ counts.locations }}</dd>
         <dt>Donation Points</dt>
-        <dd>{{ foodbank.no_donation_points }}</dd>
+        <dd>{{ counts.donation_points }}</dd>
       </dl>
 
       <h3>Dates</h3>
@@ -334,7 +334,7 @@
             <td><a href="{% url 'admin:foodbank_edit' foodbank.slug %}#id_delivery_address" class="button is-link is-small is-pulled-right is-light">Edit</a></td>
           </tr>
         {% endif %}
-        {% for location in foodbank.locations %}
+        {% for location in locations %}
         <tr>
           <td>{{ location.name }}</td>
           <td>
@@ -416,7 +416,7 @@
     {# Donation Points #}
     <div class="column tabcontent donationpoints is-hidden" role="tabpanel" id="donationpoints-panel" aria-labelledby="donationpoints-tab">
       <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-link is-light">New Donation Point</a>
-      {% if foodbank.donation_points %}
+      {% if donation_points %}
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th>Name</th>
@@ -430,7 +430,7 @@
             <th>Notes</th>
             <th></th>
           </tr>
-          {% for donation_point in foodbank.donation_points %}
+          {% for donation_point in donation_points %}
             <tr>
               <td>{{ donation_point.name }}</td>
               <td>{{ donation_point.address|linebreaksbr }}</td>
@@ -469,7 +469,7 @@
     </div>
 
     {# Needs #}
-    {% if foodbank.needs %}
+    {% if needs %}
       <div class="column tabcontent needsorders is-hidden" role="tabpanel" id="needsorders-panel" aria-labelledby="needsorders-tab">
         <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light">New Need</a>
         <table class="table is-fullwidth is-hoverable">
@@ -483,7 +483,7 @@
             <th>Created</th>
             <th>Modified</th>
           </tr>
-          {% for need in foodbank.needs %}
+          {% for need in needs %}
             <tr>
               <td>
                 {% if need.published %}
@@ -516,7 +516,7 @@
     {% endif %}
 
     {# Orders #}
-    {% if foodbank.orders %}
+    {% if orders %}
       <div class="column tabcontent needsorders is-hidden">
         <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light">New Order</a>
         <table class="table is-fullwidth is-hoverable">
@@ -527,7 +527,7 @@
             <th>Cost</th>
             <th></th>
           </tr>
-          {% for order in foodbank.orders %}
+          {% for order in orders %}
             <tr>
               <td class="delivery-provider-icon">{% if order.delivery_provider %}<img src="/static/img/delivery_provider/icon/{{ order.delivery_provider|slugify }}.png" width="12" alt="{{ order.delivery_provider }}">{% endif %}</td>
               <td><a href="{% url 'admin:order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
@@ -541,10 +541,10 @@
     {% endif %}
 
     {# Articles #}
-    {% if foodbank.articles %}
+    {% if articles %}
       <div class="column tabcontent articles is-hidden" role="tabpanel" id="articles-panel" aria-labelledby="articles-tab">
         <table class="table is-fullwidth is-hoverable">
-          {% for article in foodbank.articles %}
+          {% for article in articles %}
             <tr>
               <td>
                 <a href="{{ article.url }}">{{ article.title_captialised }}</a>
@@ -582,7 +582,7 @@
           <th>Created</th>
           <th>Confirmed</th>
         </tr>
-        {% for subscription in foodbank.subscribers %}
+        {% for subscription in subscribers %}
           <tr>
             <td>{{ subscription.email }}</td>
             <td>{{ subscription.created }}</td>
@@ -599,7 +599,7 @@
           <th>Endpoint</th>
           <th>Created</th>
         </tr>
-        {% for subscription in foodbank.webpush_subscribers %}
+        {% for subscription in webpush_subscribers %}
           <tr>
             <td>{{ subscription.endpoint|truncatechars:50 }}</td>
             <td>{{ subscription.created }}</td>
@@ -615,7 +615,7 @@
           <th>Device ID</th>
           <th>Created</th>
         </tr>
-        {% for subscription in foodbank.mobile_subscribers %}
+        {% for subscription in mobile_subscribers %}
           <tr>
             <td>{{ subscription.device_id|truncatechars:50 }}</td>
             <td>{{ subscription.created }}</td>
@@ -638,7 +638,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for crawl_item in foodbank.crawl_items %}
+            {% for crawl_item in crawl_items %}
             <tr>
                 <td>{{ crawl_item.crawl_type_icon }} {{ crawl_item.crawl_type }}</td>
                 <td>{{ crawl_item.start }}</td>
