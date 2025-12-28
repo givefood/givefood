@@ -275,7 +275,7 @@ def orders_csv(request):
 
 def needs(request):
 
-    needs = FoodbankChange.objects.select_related('foodbank').order_by("-created")[:200]
+    needs = FoodbankChange.objects.order_by("-created")[:200]
 
     template_vars = {
         "needs":needs,
