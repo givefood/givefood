@@ -30,23 +30,20 @@ from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, N
 def index(request):
 
     # Needs
-    unpublished_needs = FoodbankChange.objects.filter(published = False, nonpertinent = False).order_by("-created")
-    published_needs = FoodbankChange.objects.filter(published = True).order_by("-created")[:20]
+    unpublished_needs = FoodbankChange.objects.filter(published = False, nonpertinent = False).select_related('foodbank').order_by("-created")
+    published_needs = FoodbankChange.objects.filter(published = True).select_related('foodbank').order_by("-created")[:20]
 
     # Discrepancies
-    discrepancies = FoodbankDiscrepancy.objects.filter(status = 'New').order_by("-created")[:20]
+    discrepancies = FoodbankDiscrepancy.objects.filter(status = 'New').select_related('foodbank').order_by("-created")[:20]
 
     # Stats
     yesterday = datetime.now() - timedelta(days=1)
     
     # Get latest need crawlset
-    try:
-        latest_need_crawlset = CrawlSet.objects.filter(crawl_type="need").order_by("-start")[:1][0]
-    except IndexError:
-        latest_need_crawlset = None
+    latest_need_crawlset = CrawlSet.objects.filter(crawl_type="need").order_by("-start").first()
     
     # Get oldest edit and calculate days since
-    oldest_edit = Foodbank.objects.all().exclude(is_closed = True).order_by("edited")[:1][0]
+    oldest_edit = Foodbank.objects.exclude(is_closed=True).order_by("edited").first()
     oldest_edit_days = (timezone.now() - oldest_edit.edited).days
     
     stats = {
@@ -63,7 +60,7 @@ def index(request):
     }
 
     # Articles
-    articles = FoodbankArticle.objects.all().order_by("-published_date")[:20]
+    articles = FoodbankArticle.objects.all().select_related('foodbank').order_by("-published_date")[:20]
 
     template_vars = {
         "unpublished_needs":unpublished_needs,
