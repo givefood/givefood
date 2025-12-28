@@ -1835,8 +1835,8 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             change_state.append("Nonpub same")
 
     if last_published_need is None:
-        # No previous published need exists, treat any scraped need as a change
-        if need_text:
+        # No previous published need exists, treat any scraped need or excess as a change
+        if need_text or excess_text:
             is_change = True
             change_state.append("First need")
     else:
