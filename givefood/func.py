@@ -1818,7 +1818,10 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         need_text = ""
         excess_text = ""
 
-    last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
+    try:
+        last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
+    except FoodbankChange.DoesNotExist:
+        last_published_need = None
     last_nonpublished_needs = FoodbankChange.objects.filter(foodbank = foodbank, published = False).order_by("-created")[:10]
 
     is_nonpertinent = False
@@ -1831,12 +1834,18 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             last_nonpublished_need.is_nonpertinent = True
             change_state.append("Nonpub same")
 
-    if text_for_comparison(need_text) != text_for_comparison(last_published_need.change_text):
-        is_change = True
-        change_state.append("Last pub need change")
-    if text_for_comparison(excess_text) != text_for_comparison(last_published_need.excess_change_text):
-        is_change = True
-        change_state.append("Last pub excess change")
+    if last_published_need is None:
+        # No previous published need exists, treat any scraped need or excess as a change
+        if need_text or excess_text:
+            is_change = True
+            change_state.append("First need")
+    else:
+        if text_for_comparison(need_text) != text_for_comparison(last_published_need.change_text):
+            is_change = True
+            change_state.append("Last pub need change")
+        if text_for_comparison(excess_text) != text_for_comparison(last_published_need.excess_change_text):
+            is_change = True
+            change_state.append("Last pub excess change")
 
     if is_change and not is_nonpertinent:
         foodbank_change = FoodbankChange(
