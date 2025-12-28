@@ -46,17 +46,22 @@ def index(request):
     oldest_edit = Foodbank.objects.exclude(is_closed=True).order_by("edited").first()
     oldest_edit_days = (timezone.now() - oldest_edit.edited).days
     
+    # Get latest need crawlset IDs for efficient filtering
+    need_crawlset_ids = CrawlSet.objects.filter(crawl_type="need", finish__gte=yesterday).values_list('id', flat=True)
+    article_crawlset_ids = CrawlSet.objects.filter(crawl_type="article", finish__gte=yesterday).values_list('id', flat=True)
+    charity_crawlset_ids = CrawlSet.objects.filter(crawl_type="charity", finish__gte=yesterday).values_list('id', flat=True)
+
     stats = {
         "oldest_edit":oldest_edit,
         "oldest_edit_days":oldest_edit_days,
-        "latest_edit":Foodbank.objects.all().exclude(is_closed = True).order_by("-edited")[:1][0],
+        "latest_edit":Foodbank.objects.exclude(is_closed = True).order_by("-edited").first(),
         "need_count_24h":FoodbankChangeLine.objects.filter(created__gte=yesterday).count(),
-        "need_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="need", finish__gte=yesterday).count(),
-        "oldest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").order_by("last_need_check")[:1][0],
-        "latest_need_check":Foodbank.objects.all().exclude(is_closed = True).exclude(last_need_check__isnull=True).order_by("-last_need_check")[:1][0],
+        "need_check_24h":CrawlItem.objects.filter(crawl_set_id__in=need_crawlset_ids).count(),
+        "oldest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").order_by("last_need_check").first(),
+        "latest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(last_need_check__isnull=True).order_by("-last_need_check").first(),
         "latest_need_crawlset":latest_need_crawlset,
-        "article_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="article", finish__gte=yesterday).count(),
-        "charity_check_24h":CrawlItem.objects.filter(crawl_set__crawl_type="charity", finish__gte=yesterday).count(),
+        "article_check_24h":CrawlItem.objects.filter(crawl_set_id__in=article_crawlset_ids).count(),
+        "charity_check_24h":CrawlItem.objects.filter(crawl_set_id__in=charity_crawlset_ids).count(),
     }
 
     # Articles
@@ -267,7 +272,7 @@ def orders_csv(request):
 
 def needs(request):
 
-    needs = FoodbankChange.objects.all().order_by("-created")[:200]
+    needs = FoodbankChange.objects.select_related('foodbank').order_by("-created")[:200]
 
     template_vars = {
         "needs":needs,
