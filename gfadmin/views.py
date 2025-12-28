@@ -47,8 +47,9 @@ def index(request):
     oldest_edit_days = (timezone.now() - oldest_edit.edited).days
     
     # Get crawl item counts by type in a single query
+    # Filter by CrawlItem.finish (not CrawlSet.finish) to match original logic
     crawl_counts_by_type = CrawlItem.objects.filter(
-        crawl_set__finish__gte=yesterday
+        finish__gte=yesterday
     ).values('crawl_set__crawl_type').annotate(count=Count('id'))
     
     # Convert to a dictionary for easy lookup
