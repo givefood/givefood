@@ -46,22 +46,25 @@ def index(request):
     oldest_edit = Foodbank.objects.exclude(is_closed=True).order_by("edited").first()
     oldest_edit_days = (timezone.now() - oldest_edit.edited).days
     
-    # Get latest need crawlset IDs for efficient filtering
-    need_crawlset_ids = CrawlSet.objects.filter(crawl_type="need", finish__gte=yesterday).values_list('id', flat=True)
-    article_crawlset_ids = CrawlSet.objects.filter(crawl_type="article", finish__gte=yesterday).values_list('id', flat=True)
-    charity_crawlset_ids = CrawlSet.objects.filter(crawl_type="charity", finish__gte=yesterday).values_list('id', flat=True)
+    # Get crawl item counts by type in a single query
+    crawl_counts_by_type = CrawlItem.objects.filter(
+        crawl_set__finish__gte=yesterday
+    ).values('crawl_set__crawl_type').annotate(count=Count('id'))
+    
+    # Convert to a dictionary for easy lookup
+    crawl_counts = {item['crawl_set__crawl_type']: item['count'] for item in crawl_counts_by_type}
 
     stats = {
         "oldest_edit":oldest_edit,
         "oldest_edit_days":oldest_edit_days,
         "latest_edit":Foodbank.objects.exclude(is_closed = True).order_by("-edited").first(),
         "need_count_24h":FoodbankChangeLine.objects.filter(created__gte=yesterday).count(),
-        "need_check_24h":CrawlItem.objects.filter(crawl_set_id__in=need_crawlset_ids).count(),
+        "need_check_24h":crawl_counts.get("need", 0),
         "oldest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(shopping_list_url__contains = "facebook.com").order_by("last_need_check").first(),
         "latest_need_check":Foodbank.objects.exclude(is_closed = True).exclude(last_need_check__isnull=True).order_by("-last_need_check").first(),
         "latest_need_crawlset":latest_need_crawlset,
-        "article_check_24h":CrawlItem.objects.filter(crawl_set_id__in=article_crawlset_ids).count(),
-        "charity_check_24h":CrawlItem.objects.filter(crawl_set_id__in=charity_crawlset_ids).count(),
+        "article_check_24h":crawl_counts.get("article", 0),
+        "charity_check_24h":crawl_counts.get("charity", 0),
     }
 
     # Articles
