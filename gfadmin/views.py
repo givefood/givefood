@@ -1299,8 +1299,11 @@ def need(request, id):
         subscriber_count = FoodbankSubscriber.objects.filter(foodbank = need.foodbank).count()
     
     # Pre-fetch crawl_set in a single query with select_related
-    content_type = ContentType.objects.get_for_model(FoodbankChange)
-    crawl_item = CrawlItem.objects.filter(content_type = content_type, object_id = need.id).select_related('crawl_set').first()
+    # Note: ContentType.objects.get_for_model() uses Django's internal cache
+    crawl_item = CrawlItem.objects.filter(
+        content_type=ContentType.objects.get_for_model(FoodbankChange), 
+        object_id=need.id
+    ).select_related('crawl_set').first()
     if crawl_item:
         crawl_set = crawl_item.crawl_set
     

@@ -62,8 +62,6 @@ def need(foodbank):
 @pytest.fixture
 def prev_published_need(foodbank, need):
     """Create a previous published need."""
-    import time
-    time.sleep(0.01)  # Ensure different created timestamp
     prev_need = FoodbankChange(
         foodbank=foodbank,
         change_text='Old Pasta\nOld Rice',
@@ -71,9 +69,8 @@ def prev_published_need(foodbank, need):
         published=True,
         input_method='typed'
     )
-    # Need to save first then update created to be earlier
     prev_need.save(do_translate=False, do_foodbank_save=False)
-    # Update created to be before the main need
+    # Update created to be before the main need using timezone.timedelta
     FoodbankChange.objects.filter(pk=prev_need.pk).update(
         created=need.created - timezone.timedelta(days=1)
     )
