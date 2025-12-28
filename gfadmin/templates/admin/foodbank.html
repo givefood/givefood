@@ -154,6 +154,10 @@
         {% endif %}
         <dt>Network</dt>
         <dd>{{ foodbank.network }}</dd>
+        {% if foodbank.network_id %}
+          <dt>Network ID</dt>
+          <dd>{{ foodbank.network_id }}</dd>
+        {% endif %}
         <dt>FSA ID</dt>
         <dd>
           <a href="{% url 'admin:foodbank_fsa_id_edit' foodbank.slug %}" class="button is-link is-small is-pulled-right is-light">Edit</a>
