@@ -20,9 +20,10 @@ from django.utils import timezone
 from django.core.cache import cache
 from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
+from django.contrib.contenttypes.models import ContentType
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification
+from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 
@@ -1260,24 +1261,63 @@ def fblocation_delete(request, slug, loc_slug):
 
 def need(request, id):
 
-    need = get_object_or_404(FoodbankChange, need_id = id)
+    need = get_object_or_404(FoodbankChange.objects.select_related('foodbank'), need_id = id)
+    
+    prev_published = None
+    prev_nonpert = None
+    diff_from_pub = None
+    diff_from_pub_excess = None
+    diff_from_nonpert = None
+    diff_from_nonpert_excess = None
+    crawl_set = None
+    translation_count = 0
+    subscriber_count = 0
+    
     if need.foodbank:
+        # Fetch previous published need
         try:
             prev_published = FoodbankChange.objects.filter(foodbank = need.foodbank, created__lt = need.created, published = True).latest("created")
         except FoodbankChange.DoesNotExist:
-            prev_published = None
+            pass
+        
+        # Fetch previous nonpertinent need
         try:
             prev_nonpert = FoodbankChange.objects.filter(foodbank = need.foodbank, created__lt = need.created, nonpertinent = True).latest("created")
         except FoodbankChange.DoesNotExist:
-            prev_nonpert = None
-    else:
-        prev_published = None
-        prev_nonpert = None
+            pass
+        
+        # Pre-compute diffs using the already-fetched previous needs
+        if prev_published:
+            diff_from_pub = diff_html(prev_published.change_list(), need.change_list())
+            diff_from_pub_excess = diff_html(prev_published.excess_list(), need.excess_list())
+        
+        if prev_nonpert:
+            diff_from_nonpert = diff_html(prev_nonpert.change_list(), need.change_list())
+            diff_from_nonpert_excess = diff_html(prev_nonpert.excess_list(), need.excess_list())
+        
+        # Pre-fetch subscriber count
+        subscriber_count = FoodbankSubscriber.objects.filter(foodbank = need.foodbank).count()
+    
+    # Pre-fetch crawl_set in a single query with select_related
+    content_type = ContentType.objects.get_for_model(FoodbankChange)
+    crawl_item = CrawlItem.objects.filter(content_type = content_type, object_id = need.id).select_related('crawl_set').first()
+    if crawl_item:
+        crawl_set = crawl_item.crawl_set
+    
+    # Pre-fetch translation count
+    translation_count = FoodbankChangeTranslation.objects.filter(need = need).count()
     
     template_vars = {
         "need":need,
         "prev_published":prev_published,
         "prev_nonpert":prev_nonpert,
+        "diff_from_pub":diff_from_pub,
+        "diff_from_pub_excess":diff_from_pub_excess,
+        "diff_from_nonpert":diff_from_nonpert,
+        "diff_from_nonpert_excess":diff_from_nonpert_excess,
+        "crawl_set":crawl_set,
+        "translation_count":translation_count,
+        "subscriber_count":subscriber_count,
     }
     return render(request, "admin/need.html", template_vars)
 
