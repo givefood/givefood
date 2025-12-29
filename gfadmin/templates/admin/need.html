@@ -32,14 +32,14 @@
           <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
         {% endif %}
         <dt>Food Bank Subs</dt>
-        <dd>{{ need.foodbank.number_subscribers }}</dd>
+        <dd>{{ subscriber_count }}</dd>
       </dl>
 
-      {% if need.crawl_set %}
+      {% if crawl_set %}
         <h3>Crawl Set</h3>
-        <time datetime="{{ need.crawl_set.start|date:'c' }}" title="{{ need.crawl_set.start }}">{{ need.crawl_set.start|timesince }} ago</time>
+        <time datetime="{{ crawl_set.start|date:'c' }}" title="{{ crawl_set.start }}">{{ crawl_set.start|timesince }} ago</time>
         <br>
-        <a href="{% url 'admin:crawl_set' need.crawl_set.id %}">{{ need.crawl_set.start }}</a>
+        <a href="{% url 'admin:crawl_set' crawl_set.id %}">{{ crawl_set.start }}</a>
       {% endif %}
 
       <h3>Previous</h3>
@@ -121,7 +121,7 @@
       </table>
 
       {% if need.published %}
-        <a href="{% url 'admin:need_translations' need.need_id %}">Translations <span class="tag is-info is-normal is-light">{{ need.translation_count }}</span></a>
+        <a href="{% url 'admin:need_translations' need.need_id %}">Translations <span class="tag is-info is-normal is-light">{{ translation_count }}</span></a>
       {% endif %}
       
       <h3>Notification Preview</h3>
@@ -181,8 +181,8 @@
           <div class="published column is-half tabcontent" role="tabpanel" id="published-panel" aria-labelledby="published-tab">
             <div class="tab-content" data-tab="published">
               <div class="box">
-                {% if need.diff_from_pub %}
-                  <p>{{ need.diff_from_pub|safe|linebreaksbr }}</p>
+                {% if diff_from_pub %}
+                  <p>{{ diff_from_pub|safe|linebreaksbr }}</p>
                 {% else %}
                   <p class="nochange">No change</p>
                 {% endif %}
@@ -193,8 +193,8 @@
           <div class="published column is-half tabcontent is-hidden" role="tabpanel" id="nonpert-panel" aria-labelledby="nonpert-tab">
             <div class="tab-content" data-tab="nonpert">
               <div class="box">
-                {% if need.diff_from_pub_excess %}
-                  <p>{{ need.diff_from_pub_excess|safe|linebreaksbr }}</p>
+                {% if diff_from_pub_excess %}
+                  <p>{{ diff_from_pub_excess|safe|linebreaksbr }}</p>
                 {% else %}
                   <p class="nochange">No change</p>
                 {% endif %}
@@ -212,8 +212,8 @@
             <div>
               <div class="box">
                 <p>
-                  {% if need.diff_from_nonpert %}
-                    {{ need.diff_from_nonpert|safe|linebreaksbr }}
+                  {% if diff_from_nonpert %}
+                    {{ diff_from_nonpert|safe|linebreaksbr }}
                   {% else %}
                     No change
                   {% endif %}
@@ -226,8 +226,8 @@
             <div>
               <div class="box">
                 <p>
-                  {% if need.diff_from_nonpert_excess %}
-                    {{ need.diff_from_nonpert_excess|safe|linebreaksbr }}
+                  {% if diff_from_nonpert_excess %}
+                    {{ diff_from_nonpert_excess|safe|linebreaksbr }}
                   {% else %}
                     No change
                   {% endif %}
