@@ -55,4 +55,4 @@ sitepackages/*
 
 # Migrations (generated at deployment time)
 */migrations/*.py
-!*/migrations/__init__.py
+!*/migrations/__init__.py.env

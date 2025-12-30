@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-26 16:43+0000\n"
+"POT-Creation-Date: 2025-12-30 18:01+0000\n"
 "PO-Revision-Date: 2025-12-14 10:31+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,79 +20,82 @@ msgstr ""
 "n%100<=19) ? 1 : 2);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: gfdumps/templates/gfdumps/dumps.html:5
-#: gfdumps/templates/gfdumps/dumps.html:25
-#: gfdumps/templates/gfdumps/dumps.html:42
 msgid "Dumps"
 msgstr "Gropi de gunoi"
 
-#: gfdumps/templates/gfdumps/dumps.html:24
-#: gfwfbn/templates/wfbn/constituency/constituency.html:42
-#: gfwfbn/templates/wfbn/constituency/index.html:31
-#: gfwfbn/templates/wfbn/foodbank/charity.html:41
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:46
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:40
-#: gfwfbn/templates/wfbn/foodbank/index.html:48
-#: gfwfbn/templates/wfbn/foodbank/location.html:46
-#: gfwfbn/templates/wfbn/foodbank/locations.html:40
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:40
-#: gfwfbn/templates/wfbn/foodbank/news.html:41
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:40
-#: gfwfbn/templates/wfbn/foodbank/updates.html:40
-#: givefood/templates/public/page.html:52
 msgid "Home"
 msgstr "Acasă"
 
-#: gfdumps/templates/gfdumps/dumps.html:67
 msgid "Date"
 msgstr "Data"
 
-#: gfdumps/templates/gfdumps/dumps.html:68
 msgid "Size"
 msgstr "Dimensiune"
 
-#: gfdumps/templates/gfdumps/dumps.html:69
 msgid "Rows"
 msgstr "Rânduri"
 
-#: gfdumps/templates/gfdumps/dumps.html:75
 msgid "Latest"
 msgstr "Cele mai recente"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:82
-#: gfwfbn/templates/wfbn/index.html:116 gfwfbn/templates/wfbn/index.html:213
+#, fuzzy
+#| msgid "Parliamentary Constituencies"
+msgid "Constituencies"
+msgstr "Circumscripțiile parlamentare"
+
+#, fuzzy, python-format
+#| msgid "Food banks in %(country)s"
+msgid "Food banks in %(constituency_name)s"
+msgstr "Bănci de alimente în %(country)s"
+
+#, python-format
+msgid "%(constituency_name)s constituency is represented by"
+msgstr ""
+
+msgid "who is the Speaker of the House of Commons."
+msgstr ""
+
+#, python-format
+msgid "of the %(mp_party)s party."
+msgstr ""
+
+msgid "Write"
+msgstr ""
+
+#, python-format
+msgid ""
+"The following food banks operate in the %(constituency_name)s constituency. "
+"Here is what they are requesting to have donated."
+msgstr ""
+
+#, fuzzy, python-format
+#| msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+msgid "Part of <a href=\"/needs/at/%(foodbank_slug)s/\">%(foodbank_name)s</a>"
+msgstr "Pentru <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+
 msgid "Phone"
 msgstr "Telefon"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:86
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
-#: gfwfbn/templates/wfbn/index.html:119 gfwfbn/templates/wfbn/index.html:216
-#: givefood/templates/403.html:30 givefood/templates/404.html:30
-#: givefood/templates/500.html:30
 msgid "Email"
 msgstr "E-mail"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:90
-#: gfwfbn/templates/wfbn/index.html:121 gfwfbn/templates/wfbn/index.html:218
 msgid "Check the foodbank's "
 msgstr "Verificați banca de alimente"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:91
-#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:219
 msgid "Facebook page"
 msgstr "Pagina Facebook"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:92
-#: gfwfbn/templates/wfbn/index.html:123 gfwfbn/templates/wfbn/index.html:220
 msgid " for what they need"
 msgstr "pentru ceea ce au nevoie"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:32
-#: gfwfbn/templates/wfbn/constituency/index.html:36
+#, fuzzy
+#| msgid "Parliamentary Constituencies"
+msgid "Nearby Constituencies"
+msgstr "Circumscripțiile parlamentare"
+
 msgid "Parliamentary Constituencies"
 msgstr "Circumscripțiile parlamentare"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:42
 msgid ""
 "Find which food banks operate in your parliamentary constituency, then "
 "donate or take action."
@@ -100,99 +103,66 @@ msgstr ""
 "Găsiți ce bănci alimentare operează în circumscripția dvs. parlamentară, "
 "apoi donați sau luați măsuri."
 
-#: gfwfbn/templates/wfbn/constituency/index.html:46
 msgid "Sorry, we didn't recognise this postcode. Could you try again?"
 msgstr ""
 "Ne pare rău, nu am recunoscut acest cod poștal. Ai putea să încerci din nou?"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Search by postcode"
 msgstr "Căutați după codul poștal"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Postcode"
 msgstr "Cod poștal"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:52
-#: gfwfbn/templates/wfbn/index.html:64 gfwfbn/templates/wfbn/index.html:192
-#: givefood/templates/public/country.html:43
-#: givefood/templates/public/index.html:39
 msgid "Go"
 msgstr "Mergi"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:23
-#: gfwfbn/templates/wfbn/foodbank/charity.html:43
-#: gfwfbn/templates/wfbn/foodbank/charity.html:47
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
 msgid "Charity"
 msgstr "Caritate"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s is a registered charity."
 msgstr "%(name)s este o organizație caritabilă înregistrată."
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s operates under a registered charity."
 msgstr "%(name)s operează sub o organizație caritabilă înregistrată."
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:59
 msgid "Charity name"
 msgstr "Numele organizației caritabile"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:61
 msgid "Regulator"
 msgstr "Autoritate de reglementare"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:67
 msgid "Charity number"
 msgstr "Număr de înregistrare pentru organizații caritabile"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:72
 msgid "Charity type"
 msgstr "Tipul de organizație caritabilă"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:76
 msgid "Registration date"
 msgstr "Data ȋnregistrării"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:81
 msgid "Objectives"
 msgstr "Obiective"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:85
 msgid "Purposes"
 msgstr "Scopuri"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:99
 msgid "Year"
 msgstr "Anul"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:100
 msgid "Income"
 msgstr "Venituri"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:101
 msgid "Expenditure"
 msgstr "Cheltuieli"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:48
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:22
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:42
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:46
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
-#: gfwfbn/templates/wfbn/index.html:87 givefood/templates/public/index.html:144
 msgid "Donation points"
 msgstr "Puncte de donație"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:64
-#: gfwfbn/templates/wfbn/foodbank/index.html:64
-#: gfwfbn/templates/wfbn/foodbank/location.html:63
 msgid "This food bank is closed"
 msgstr "Această bancă de alimente este închisă"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 #, python-format
 msgid ""
 "is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
@@ -200,25 +170,18 @@ msgstr ""
 "este un punct de donație pentru <a "
 "href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 msgid "Here they are requesting to have donated..."
 msgstr "Aici ei cer să fi donat..."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:75
-#: gfwfbn/templates/wfbn/foodbank/index.html:78
-#: gfwfbn/templates/wfbn/foodbank/location.html:77
 msgid "They don't need any more"
 msgstr "Nu mai au nevoie de nimic"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:81
 msgid "Opening hours"
 msgstr "Program de lucru"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
 msgid "Only accepts in-store purchases as donations"
 msgstr "Acceptă doar achiziții din magazin ca donații"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:92
 msgid ""
 "Although, sometimes you can add items marked as not from the store. Best to "
 "check."
@@ -226,35 +189,21 @@ msgstr ""
 "Deși, uneori puteți adăuga articole marcate ca nefiind din magazin. Cel mai "
 "bine să verificați."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:97
 msgid "Wheelchair accessible"
 msgstr "Acces în scaun cu rotile"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:123
-#: gfwfbn/templates/wfbn/foodbank/index.html:140
-#: gfwfbn/templates/wfbn/foodbank/index.html:153
-#: gfwfbn/templates/wfbn/foodbank/location.html:132
-#: gfwfbn/templates/wfbn/foodbank/location.html:144
 msgid "Directions"
 msgstr "Instrucțiuni"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:6
 msgid "Hours may vary because of"
 msgstr "Orele pot varia din cauza"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:58
-#: gfwfbn/templates/wfbn/foodbank/locations.html:61
 msgid "Main"
 msgstr "Principal"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:66
-#: gfwfbn/templates/wfbn/foodbank/index.html:152
-#: gfwfbn/templates/wfbn/foodbank/location.html:142
-#: gfwfbn/templates/wfbn/foodbank/locations.html:70
 msgid "Delivery"
 msgstr "Livrare"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
 #, python-format
 msgid ""
 "Charity Registration <a href=\"%(charity_url)s\" "
@@ -263,73 +212,42 @@ msgstr ""
 "Înregistrare ca organizație caritabilă <a href=\"%(charity_url)s\" "
 "id=\"charity_link\">%(charity_number)s</a>"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
 msgid "Part of"
 msgstr "Parte din"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:13
 msgid "is a registered charity in England &amp; Wales"
 msgstr "este o organizație caritabilă înregistrată în Anglia &amp; Wales"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
-#: givefood/templates/public/country.html:51
-#: givefood/templates/public/donate.html:5
-#: givefood/templates/public/donate.html:21
-#: givefood/templates/public/index.html:48
-#: givefood/templates/public/page.html:57
 msgid "Donate"
 msgstr "Donează"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:6
 msgid "Food, money or your time"
 msgstr "Mâncare, bani sau timpul tău"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:12
 msgid "Donate using "
 msgstr "Donează folosind "
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
 msgid "Details"
 msgstr "Detalii"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:6
-#: gfwfbn/templates/wfbn/foodbank/locations.html:22
-#: gfwfbn/templates/wfbn/foodbank/locations.html:42
-#: gfwfbn/templates/wfbn/foodbank/locations.html:46
 msgid "Locations"
 msgstr "Locații"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
-#: gfwfbn/templates/wfbn/foodbank/news.html:23
-#: gfwfbn/templates/wfbn/foodbank/news.html:43
-#: gfwfbn/templates/wfbn/foodbank/news.html:47
 msgid "News"
 msgstr "Noutăți"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:18
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:22
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:42
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:46
 msgid "Social media"
 msgstr "Retele sociale"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:20
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:22
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:42
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:46
 msgid "Nearby"
 msgstr "Aproape"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
-#: givefood/templates/public/page.html:53
 msgid "Apps"
 msgstr "Aplicații"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:12
 msgid "Web"
 msgstr "Site"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:25
 #, python-format
 msgid ""
 "Get a notification of what is needed when you are near a donation point with "
@@ -339,7 +257,6 @@ msgstr ""
 "apropierea unui punct de donare cu ajutorul <a "
 "href=\"%(apps_url)s\">aplicațiilor noastre mobile</a>"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:27
 #, python-format
 msgid ""
 "Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</"
@@ -348,35 +265,28 @@ msgstr ""
 "Primiți actualizări despre ce este necesar cu <a "
 "href=\"%(apps_url)s\">aplicațiile noastre mobile</a>"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:32
 msgid "Have this web browser notify when the shopping list changes"
 msgstr ""
 "Setează acest browser web să te notifice când lista de cumpărături se "
 "modifică"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:34
 msgid "Get browser notifications"
 msgstr "Primește notificări în browser"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:39
 msgid "Sorry, the security check failed. Please try again."
 msgstr ""
 "Ne pare rău, verificarea de securitate a eșuat. Vă rugăm să încercați din "
 "nou."
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:42
 msgid "Get updates on this shopping list via email"
 msgstr "Primiți actualizări despre această listă de cumpărături prin e-mail"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:47
 msgid "Email address"
 msgstr "Adresă email"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:50
 msgid "Get updates"
 msgstr "Obțineți actualizări"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:53
 msgid ""
 "We'll never use your email address for anything else, and you can "
 "unsubscribe at any time"
@@ -384,51 +294,49 @@ msgstr ""
 "Nu vom folosi niciodată adresa ta de e-mail pentru nimic altceva și te poți "
 "dezabona oricând."
 
-#: gfwfbn/templates/wfbn/foodbank/index.html:70
 msgid "You can find out what is needed on the foodbank's Facebook page:"
 msgstr ""
 "Puteți afla de ce aveți nevoie pe pagina de Facebook a băncii de alimente:"
 
-#: gfwfbn/templates/wfbn/foodbank/index.html:73
 msgid "is currently requesting the following items to be donated:"
 msgstr "solicită în prezent să fie donate următoarele articole:"
 
-#: gfwfbn/templates/wfbn/foodbank/index.html:97
-#: gfwfbn/templates/wfbn/foodbank/index.html:99
 msgid ""
 "This food bank is located at a school, so may not be open to the public."
 msgstr ""
 "Această bancă de alimente se află într-o școală, deci este posibil să nu fie "
 "deschisă publicului."
 
-#: gfwfbn/templates/wfbn/foodbank/index.html:138
-#: gfwfbn/templates/wfbn/foodbank/locations.html:59
 msgid "Administrative"
 msgstr "Administrativ"
 
-#: gfwfbn/templates/wfbn/foodbank/location.html:81
-#: gfwfbn/templates/wfbn/foodbank/location.html:92
 msgid "This location accepts donations"
 msgstr "Această locație acceptă donații"
 
-#: gfwfbn/templates/wfbn/foodbank/location.html:84
-#: gfwfbn/templates/wfbn/foodbank/location.html:95
 msgid "Mobile food bank location"
 msgstr "Locația băncii mobile de alimente"
 
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:65
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:67
-#: gfwfbn/templates/wfbn/index.html:107 gfwfbn/templates/wfbn/index.html:154
-#: gfwfbn/templates/wfbn/index.html:204
 msgid "away"
 msgstr "plecat"
 
-#: gfwfbn/templates/wfbn/index.html:10
+#, fuzzy
+#| msgid ""
+#| "Sorry. We don't know what's needed here, please contact the food bank"
+msgid ""
+"We currently don't know what is needed at this food bank. Please contact "
+"them to find out."
+msgstr ""
+"Îmi pare rău. Nu știm de ce este nevoie aici, vă rugăm să contactați banca "
+"alimentară"
+
+msgid ""
+"This food bank isn't requesting anything, but may appreciate other support "
+"like a financial donation or volunteers. Please contact them to find out."
+msgstr ""
+
 msgid "What Food Banks Need"
 msgstr "De ce au nevoie băncile alimentare"
 
-#: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: givefood/views.py:727
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -436,40 +344,28 @@ msgstr ""
 "Utilizați instrumentul Give Food pentru a găsi ce bănci alimentare din "
 "apropiere solicită să fi donat"
 
-#: gfwfbn/templates/wfbn/index.html:14
 msgid "Map of UK food banks"
 msgstr "Harta băncilor alimentare din Marea Britanie"
 
-#: gfwfbn/templates/wfbn/index.html:32 gfwfbn/templates/wfbn/index.html:40
 msgid "Find Food Banks To Help"
 msgstr "Găsiți bănci alimentare pentru a vă ajuta"
 
-#: gfwfbn/templates/wfbn/index.html:35 gfwfbn/templates/wfbn/index.html:38
 msgid "food banks"
 msgstr "bănci alimentare"
 
-#: gfwfbn/templates/wfbn/index.html:59
-#: givefood/templates/public/country.html:38
-#: givefood/templates/public/index.html:34
 msgid "Use my location"
 msgstr "Folosește locația mea"
 
-#: gfwfbn/templates/wfbn/index.html:61
-#: givefood/templates/public/country.html:40
-#: givefood/templates/public/index.html:36
 msgid "Postcode or town"
 msgstr "Cod poștal sau oraș"
 
-#: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:37
 msgid "e.g. EX4 6PX or Sheffield"
 msgstr "de ex. EX4 6PX sau Sheffield"
 
-#: gfwfbn/templates/wfbn/index.html:67
 #, python-format
 msgid "Foodbanks in %(location)s"
 msgstr "Bănci alimentare în %(location)s"
 
-#: gfwfbn/templates/wfbn/index.html:68
 #, python-format
 msgid ""
 "Find a food bank near %(location)s, see what they need and how you can help "
@@ -478,320 +374,229 @@ msgstr ""
 "Găsiți o bancă alimentară în apropierea %(location)s, vedeți ce au nevoie și "
 "cum puteți ajuta prin donații sau voluntariat."
 
-#: gfwfbn/templates/wfbn/index.html:72
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
 msgstr ""
 "Ne pare rău, nu am putut folosi locația respectivă. Este în interiorul "
 "Regatului Unit?"
 
-#: gfwfbn/templates/wfbn/index.html:78
 msgid "Search results"
 msgstr "Rezultate căutare pentru"
 
-#: gfwfbn/templates/wfbn/index.html:82 givefood/templates/public/index.html:116
-#: givefood/templates/public/index.html:140
 msgid "Food banks"
 msgstr "Băncile alimentare"
 
-#: gfwfbn/templates/wfbn/index.html:92
 msgid "By item"
 msgstr "După produs"
 
-#: gfwfbn/templates/wfbn/index.html:105 gfwfbn/templates/wfbn/index.html:202
 #, python-format
 msgid "Part of <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
 msgstr "Parte din <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
 
-#: gfwfbn/templates/wfbn/index.html:113 gfwfbn/templates/wfbn/index.html:159
-#: gfwfbn/templates/wfbn/index.html:210
 msgid "Nothing right now, thanks"
 msgstr "Nimic acum, mulțumesc"
 
-#: gfwfbn/templates/wfbn/index.html:153
 #, python-format
 msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgstr "Pentru <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 
-#: gfwfbn/templates/wfbn/index.html:161
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr ""
 "Îmi pare rău. Nu știm de ce este nevoie aici, vă rugăm să contactați banca "
 "alimentară"
 
-#: gfwfbn/templates/wfbn/index.html:178
 #, fuzzy
 #| msgid "Find what food banks need"
 msgid "Find an item needed by a food bank nearby"
 msgstr "Găsește de ce au nevoie băncile de alimente"
 
-#: gfwfbn/templates/wfbn/index.html:186
 msgid "Select an item category"
 msgstr "Selectați o categorie de produse"
 
-#: gfwfbn/templates/wfbn/index.html:232
 msgid "We don't know of any food banks nearby that need this item right now."
-msgstr "Nu cunoaștem nicio bancă de alimente din apropiere care să aibă nevoie de acest produs acum."
+msgstr ""
+"Nu cunoaștem nicio bancă de alimente din apropiere care să aibă nevoie de "
+"acest produs acum."
 
-#: gfwfbn/views.py:148
 msgid "items requested at"
 msgstr "articole solicitate la"
 
-#: givefood/const/item_types.py:4
 msgid "Tinned Tomatoes"
 msgstr "Roșii conservate"
 
-#: givefood/const/item_types.py:4 givefood/const/item_types.py:5
-#: givefood/const/item_types.py:6 givefood/const/item_types.py:7
-#: givefood/const/item_types.py:9 givefood/const/item_types.py:10
-#: givefood/const/item_types.py:15 givefood/const/item_types.py:17
-#: givefood/const/item_types.py:18 givefood/const/item_types.py:21
-#: givefood/const/item_types.py:22 givefood/const/item_types.py:24
-#: givefood/const/item_types.py:25 givefood/const/item_types.py:29
-#: givefood/const/item_types.py:30 givefood/const/item_types.py:31
-#: givefood/const/item_types.py:32
 msgid "Meal Food"
 msgstr "Alimente pentru mese"
 
-#: givefood/const/item_types.py:5
 msgid "Tinned Meat"
 msgstr "Carne conservată"
 
-#: givefood/const/item_types.py:6
 msgid "Tinned Vegetarian"
 msgstr "Produse vegetariene conservate"
 
-#: givefood/const/item_types.py:7
 msgid "Tinned Pasta"
 msgstr "Paste conservate"
 
-#: givefood/const/item_types.py:8
 msgid "Confectionery"
 msgstr "Produse de cofetărie"
 
-#: givefood/const/item_types.py:8 givefood/const/item_types.py:19
-#: givefood/const/item_types.py:20
 msgid "Snack Food"
 msgstr "Gustări"
 
-#: givefood/const/item_types.py:9
 msgid "Cereal"
 msgstr "Cereale"
 
-#: givefood/const/item_types.py:10
 msgid "Tinned Fruit"
 msgstr "Fructe conservate"
 
-#: givefood/const/item_types.py:11
 msgid "Milk"
 msgstr "Lapte"
 
-#: givefood/const/item_types.py:11 givefood/const/item_types.py:12
-#: givefood/const/item_types.py:13 givefood/const/item_types.py:26
-#: givefood/const/item_types.py:27 givefood/const/item_types.py:53
 msgid "Drink"
 msgstr "Băuturi"
 
-#: givefood/const/item_types.py:12
 msgid "Fruit Juice"
 msgstr "Suc de fructe"
 
-#: givefood/const/item_types.py:13
 msgid "Squash"
 msgstr "Sirop de fructe"
 
-#: givefood/const/item_types.py:14
 msgid "Condiment"
 msgstr "Condiment"
 
-#: givefood/const/item_types.py:14 givefood/const/item_types.py:16
-#: givefood/const/item_types.py:23 givefood/const/item_types.py:28
-#: givefood/const/item_types.py:50
 msgid "Cooking"
 msgstr "Gătit"
 
-#: givefood/const/item_types.py:15
 msgid "Noodles"
 msgstr "Tăiței"
 
-#: givefood/const/item_types.py:16
 msgid "Cooking Oil"
 msgstr "Ulei de gătit"
 
-#: givefood/const/item_types.py:17
 msgid "Tinned Fish"
 msgstr "Pește conservat"
 
-#: givefood/const/item_types.py:18
 msgid "Soup"
 msgstr "Supă"
 
-#: givefood/const/item_types.py:19
 msgid "Crisps"
 msgstr "Chipsuri"
 
-#: givefood/const/item_types.py:20
 msgid "Biscuits"
 msgstr "Biscuiți"
 
-#: givefood/const/item_types.py:21
 msgid "Baked Beans"
 msgstr "Fasole în sos"
 
-#: givefood/const/item_types.py:22
 msgid "Tinned Vegetables"
 msgstr "Legume conservate"
 
-#: givefood/const/item_types.py:23
 msgid "Pasta Sauce"
 msgstr "Sos pentru paste"
 
-#: givefood/const/item_types.py:24
 msgid "Pasta"
 msgstr "Paste"
 
-#: givefood/const/item_types.py:25
 msgid "Rice"
 msgstr "Orez"
 
-#: givefood/const/item_types.py:26
 msgid "Tea"
 msgstr "Ceai"
 
-#: givefood/const/item_types.py:27
 msgid "Coffee"
 msgstr "Cafea"
 
-#: givefood/const/item_types.py:28
 msgid "Sugar"
 msgstr "Zahăr"
 
-#: givefood/const/item_types.py:29
 msgid "Spread"
 msgstr "Cremă tartinabilă"
 
-#: givefood/const/item_types.py:30
 msgid "Vegetable"
 msgstr "Legume"
 
-#: givefood/const/item_types.py:31
 msgid "Instant Mash"
 msgstr "Piure instant"
 
-#: givefood/const/item_types.py:32
 msgid "Dessert"
 msgstr "Desert"
 
-#: givefood/const/item_types.py:33
 msgid "Washing Up Liquid"
 msgstr "Detergent de vase"
 
-#: givefood/const/item_types.py:33 givefood/const/item_types.py:40
-#: givefood/const/item_types.py:46 givefood/const/item_types.py:47
 msgid "Cleaning"
 msgstr "Curățenie"
 
-#: givefood/const/item_types.py:34
 msgid "Toilet Roll"
 msgstr "Hârtie igienică"
 
-#: givefood/const/item_types.py:34 givefood/const/item_types.py:35
-#: givefood/const/item_types.py:36 givefood/const/item_types.py:37
-#: givefood/const/item_types.py:38 givefood/const/item_types.py:39
-#: givefood/const/item_types.py:41 givefood/const/item_types.py:52
 msgid "Toiletries"
 msgstr "Articole de toaletă"
 
-#: givefood/const/item_types.py:35
 msgid "Shower Gel"
 msgstr "Gel de duș"
 
-#: givefood/const/item_types.py:36
 msgid "Shampoo"
 msgstr "Șampon"
 
-#: givefood/const/item_types.py:37
 msgid "Soap"
 msgstr "Săpun"
 
-#: givefood/const/item_types.py:38
 msgid "Dental"
 msgstr "Îngrijire dentară"
 
-#: givefood/const/item_types.py:39
 msgid "Deodorant"
 msgstr "Deodorant"
 
-#: givefood/const/item_types.py:40
 msgid "Laundry"
 msgstr "Rufe"
 
-#: givefood/const/item_types.py:41
 msgid "Sanitary Products"
 msgstr "Produse sanitare"
 
-#: givefood/const/item_types.py:42
 msgid "Baby Food"
 msgstr "Mâncare pentru bebeluși"
 
-#: givefood/const/item_types.py:42 givefood/const/item_types.py:43
-#: givefood/const/item_types.py:44 givefood/const/item_types.py:45
 msgid "Baby Supplies"
 msgstr "Articole pentru bebeluși"
 
-#: givefood/const/item_types.py:43
 msgid "Baby Milk"
 msgstr "Lapte pentru bebeluși"
 
-#: givefood/const/item_types.py:44
 msgid "Nappies"
 msgstr "Scutece"
 
-#: givefood/const/item_types.py:45
 msgid "Wipes"
 msgstr "Șervețele umede"
 
-#: givefood/const/item_types.py:46
 msgid "Kitchen Roll"
 msgstr "Prosop de hârtie"
 
-#: givefood/const/item_types.py:47
 msgid "Household Supplies"
 msgstr "Articole de uz casnic"
 
-#: givefood/const/item_types.py:48
 msgid "Pet Food"
 msgstr "Hrană pentru animale"
 
-#: givefood/const/item_types.py:48 givefood/const/item_types.py:49
-#: givefood/const/item_types.py:51
 msgid "Other"
 msgstr "Altele"
 
-#: givefood/const/item_types.py:49
 msgid "Carrier Bags"
 msgstr "Pungi de cumpărături"
 
-#: givefood/const/item_types.py:50
 msgid "Sauce"
 msgstr "Sos"
 
-#: givefood/const/item_types.py:53
 msgid "Hot Chocolate"
 msgstr "Ciocolată caldă"
 
-#: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
 msgstr "Bancă de alimente"
 
-#: givefood/models.py:1069
 msgid "Closed"
 msgstr "Închis"
 
-#: givefood/templates/403.html:4 givefood/templates/403.html:19
 msgid "403 - Forbidden"
 msgstr "403 - Interzis"
 
-#: givefood/templates/403.html:25 givefood/templates/500.html:25
 msgid ""
 "Sorry, something has gone wrong there and we can't serve that page. This "
 "error has been logged and we'll look into it."
@@ -799,21 +604,15 @@ msgstr ""
 "Ne pare rău, ceva nu a mers bine acolo și nu putem servi pagina respectivă. "
 "Această eroare a fost înregistrată și o vom analiza."
 
-#: givefood/templates/403.html:28 givefood/templates/404.html:28
-#: givefood/templates/500.html:28
 msgid "Homepage"
 msgstr "Prima pagină"
 
-#: givefood/templates/403.html:29 givefood/templates/404.html:29
-#: givefood/templates/500.html:29
 msgid "Find what food banks need"
 msgstr "Găsește de ce au nevoie băncile de alimente"
 
-#: givefood/templates/404.html:4 givefood/templates/404.html:19
 msgid "404 - Not Found"
 msgstr "404 - Nu s-a găsit resursa"
 
-#: givefood/templates/404.html:25
 msgid ""
 "Sorry, we can't find that page. It may have been removed or you might have "
 "entered an incorrect URL."
@@ -821,19 +620,12 @@ msgstr ""
 "Ne pare rău, nu putem găsi pagina respectivă. Este posibil să fi fost "
 "eliminată sau este posibil să fi introdus o adresă URL greșită."
 
-#: givefood/templates/500.html:4 givefood/templates/500.html:19
 msgid "500 - Internal Server Error"
 msgstr "500 - Eroare internă a serverului"
 
-#: givefood/templates/public/about_us.html:5
-#: givefood/templates/public/about_us.html:22
-#: givefood/templates/public/country.html:53
-#: givefood/templates/public/index.html:50
-#: givefood/templates/public/page.html:58
 msgid "About us"
 msgstr "Despre noi"
 
-#: givefood/templates/public/about_us.html:24
 msgid ""
 "\n"
 "                <p>Give Food is a UK charity that uses data to highlight "
@@ -923,16 +715,9 @@ msgstr ""
 "\n"
 "            "
 
-#: givefood/templates/public/ar/index.html:5
-#: givefood/templates/public/ar/index.html:22
-#: givefood/templates/public/page.html:56
 msgid "Annual reports"
 msgstr "Rapoarte anuale"
 
-#: givefood/templates/public/ar/index.html:8
-#: givefood/templates/public/donate.html:8
-#: givefood/templates/public/managed_donation.html:10
-#: givefood/templates/public/managed_donation_items.html:10
 msgid ""
 "Give Food is a UK charity that uses data to highlight local and structural "
 "food insecurity then provides tools to help alleviate it."
@@ -941,41 +726,34 @@ msgstr ""
 "date pentru a evidenția insecuritatea alimentară locală și structurală, apoi "
 "oferă instrumente pentru a ajuta la atenuarea acesteia."
 
-#: givefood/templates/public/ar/index.html:25
+msgid "Even more AI, translations and mobile apps"
+msgstr ""
+
 msgid "AI, general election, site translation"
 msgstr "AI, alegeri generale, traducere site"
 
-#: givefood/templates/public/ar/index.html:28
 msgid "Rebrand, refresh, rewrite &amp; categorisation"
 msgstr "Rebrand, reîmprospăta, rescrie &amp; categorizare"
 
-#: givefood/templates/public/ar/index.html:31
 msgid "Write to your MP tool, surplus monitoring, data audits"
 msgstr ""
 "Scrieți în instrumentul dvs. MP, monitorizarea excedentului, auditarea "
 "datelor"
 
-#: givefood/templates/public/ar/index.html:34
 msgid "Data &amp; UX review, dashboards, charity reporting"
 msgstr "Date &amp; Revizuire UX, tablouri de bord, raportare de caritate"
 
-#: givefood/templates/public/ar/index.html:37
 msgid "Pandemic response, becoming a charity, publishing our data"
 msgstr ""
 "Răspunsul la pandemie, devenind o organizație caritabilă, publicând datele "
 "noastre"
 
-#: givefood/templates/public/ar/index.html:40
 msgid "Initial deliveries, Christmas"
 msgstr "Livrări inițiale, Crăciun"
 
-#: givefood/templates/public/colophon.html:5
-#: givefood/templates/public/colophon.html:19
-#: givefood/templates/public/page.html:59
 msgid "Colophon"
 msgstr "Colofon"
 
-#: givefood/templates/public/country.html:9
 #, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help by "
@@ -984,12 +762,10 @@ msgstr ""
 "Găsește bănci de alimente în %(country)s, vezi de ce au nevoie și cum poți "
 "ajuta donând sau oferindu-te voluntariat."
 
-#: givefood/templates/public/country.html:13
 #, python-format
 msgid "Food banks in %(country)s"
 msgstr "Bănci de alimente în %(country)s"
 
-#: givefood/templates/public/country.html:14
 #, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help."
@@ -997,37 +773,24 @@ msgstr ""
 "Găsește bănci de alimente în %(country)s, vezi de ce au nevoie și cum poți "
 "ajuta."
 
-#: givefood/templates/public/country.html:49
-#: givefood/templates/public/index.html:46
 msgid "Write to your MP"
 msgstr "Scrie-i deputatului tău"
 
-#: givefood/templates/public/country.html:49
-#: givefood/templates/public/index.html:46
-#: givefood/templates/public/page.html:55
 msgid "English"
 msgstr "Engleză"
 
-#: givefood/templates/public/country.html:52
-#: givefood/templates/public/index.html:49
 msgid "Register a foodbank"
 msgstr "Înregistrați o bancă de alimente"
 
-#: givefood/templates/public/country.html:56
-#: givefood/templates/public/index.html:55
 msgid "Recently updated"
 msgstr "Actualizat recent"
 
-#: givefood/templates/public/country.html:62
-#: givefood/templates/public/index.html:61
 msgid "Most viewed this week"
 msgstr "Cele mai vizionate saptamana aceasta"
 
-#: givefood/templates/public/donate.html:27
 msgid "To"
 msgstr "La"
 
-#: givefood/templates/public/donate.html:28
 msgid ""
 "All donations from the public to Give Food are used directly to efficiently "
 "and quickly deliver requested food and supplies to UK food banks."
@@ -1036,15 +799,12 @@ msgstr ""
 "pentru a livra eficient și rapid alimentele și proviziile solicitate către "
 "băncile de alimente din Regatul Unit."
 
-#: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
 msgstr "Donează folosind CAF Donează"
 
-#: givefood/templates/public/donate.html:32
 msgid "To a food bank"
 msgstr "La o bancă de alimente"
 
-#: givefood/templates/public/donate.html:33
 msgid ""
 "Use our tool to find a local food bank and see what they need. Then donate "
 "food, household supplies, toiletries, money or your time."
@@ -1053,15 +813,12 @@ msgstr ""
 "pentru a vedea de ce au nevoie. Apoi donează alimente, rechizite de uz "
 "casnic, articole de toaletă, bani sau timpul tău."
 
-#: givefood/templates/public/donate.html:34
 msgid "Find a food bank"
 msgstr "Găsiți o bancă de alimente"
 
-#: givefood/templates/public/donate.html:40
 msgid "Managed donations"
 msgstr "Donații gestionate"
 
-#: givefood/templates/public/donate.html:41
 msgid ""
 "For donations or grants of £500 or more we can provide a managed service. "
 "Leveraging our data and logistical expertise we can ensure your donation is "
@@ -1076,11 +833,9 @@ msgstr ""
 "scopurilor dumneavoastră caritabile. Sunt furnizate rapoarte în timp real și "
 "urmărirea modului în care este utilizată donația dumneavoastră."
 
-#: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"
 msgstr "Semnalează ceva greșit"
 
-#: givefood/templates/public/flag.html:31
 msgid ""
 "Sorry that you've found something wrong. We'll review your report within 24 "
 "hours, usually quicker."
@@ -1088,83 +843,62 @@ msgstr ""
 "Îmi pare rău că ați găsit ceva în neregulă. Vom examina raportul dvs. în "
 "termen de 24 de ore, de obicei mai rapid."
 
-#: givefood/templates/public/human.html:4
 msgid "Human check"
 msgstr "Verificare umană"
 
-#: givefood/templates/public/human.html:21
 msgid "Sorry, but we just have to check you are a human..."
 msgstr "Ne pare rău, dar trebuie doar să verificăm că ești om..."
 
-#: givefood/templates/public/includes/appbadges.html:4
 msgid "Download on the App Store"
 msgstr "Descarcă din App Store"
 
-#: givefood/templates/public/includes/appbadges.html:7
 msgid "Get it on Google Play"
 msgstr "Disponibil pe Google Play"
 
-#: givefood/templates/public/includes/country.html:2
 msgid "England"
 msgstr "Anglia"
 
-#: givefood/templates/public/includes/country.html:3
 msgid "Wales"
 msgstr "Wales"
 
-#: givefood/templates/public/includes/country.html:4
 msgid "Scotland"
 msgstr "Scoţia"
 
-#: givefood/templates/public/includes/country.html:5
 msgid "Northern Ireland"
 msgstr "Irlanda de Nord"
 
-#: givefood/templates/public/includes/country.html:6
 msgid "Isle of Man"
 msgstr "Isle of Man"
 
-#: givefood/templates/public/includes/country.html:7
 msgid "Jersey"
 msgstr "Jersey"
 
-#: givefood/templates/public/includes/country.html:8
 msgid "Guernsey"
 msgstr "Guernsey"
 
-#: givefood/templates/public/includes/debugcomment.html:3
 msgid "Hello"
 msgstr "Bună"
 
-#: givefood/templates/public/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "Organizație"
 
-#: givefood/templates/public/includes/maplegend.html:4
-#: givefood/templates/public/includes/maplegend.html:5
-#: givefood/templates/public/includes/maplegend.html:7
 msgid "marker"
 msgstr "marker"
 
-#: givefood/templates/public/includes/maplegend.html:5
 msgid "Location"
 msgstr "Locatie"
 
-#: givefood/templates/public/includes/maplegend.html:6
 msgid "Service area"
 msgstr "Zona de servicii"
 
-#: givefood/templates/public/includes/maplegend.html:7
 msgid "Donation point"
 msgstr "Punct de donație"
 
-#: givefood/templates/public/includes/serviceareadisclaimer.html:3
 msgid "Service areas are approximate. You should check with the food bank"
 msgstr ""
 "Zonele deservite sunt aproximative. Ar trebui să verificați cu banca de "
 "alimente."
 
-#: givefood/templates/public/index.html:9
 msgid ""
 "Give Food a UK charity uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
@@ -1173,8 +907,6 @@ msgstr ""
 "a evidenția insecuritatea alimentară locală și structurală, apoi oferă "
 "instrumente pentru a ajuta la atenuarea acesteia."
 
-#: givefood/templates/public/index.html:14
-#: givefood/templates/public/index.html:31
 msgid ""
 "We're a UK charity that uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
@@ -1183,7 +915,6 @@ msgstr ""
 "a evidenția insecuritatea alimentară locală și structurală, apoi oferă "
 "instrumente pentru a ajuta la atenuarea acesteia."
 
-#: givefood/templates/public/index.html:32
 msgid ""
 "Use our unique database to find a food bank near you, see what they need and "
 "how you can help by donating or volunteering."
@@ -1192,19 +923,15 @@ msgstr ""
 "apropierea ta, pentru a vedea de ce au nevoie și cum poți ajuta donând sau "
 "oferindu-te voluntariat."
 
-#: givefood/templates/public/index.html:84
 msgid "We've worked with"
 msgstr "Am lucrat cu"
 
-#: givefood/templates/public/index.html:105
 msgid "How we can help"
 msgstr "Cum putem ajuta"
 
-#: givefood/templates/public/index.html:111
 msgid "Public"
 msgstr "Public"
 
-#: givefood/templates/public/index.html:112
 msgid ""
 "Use our tool to find your local food banks, then donate, volunteer or take "
 "political action."
@@ -1212,11 +939,9 @@ msgstr ""
 "Folosiți instrumentul nostru pentru a găsi băncile alimentare locale, apoi "
 "donați, faceți voluntariat sau luați măsuri politice."
 
-#: givefood/templates/public/index.html:113
 msgid "Find out how to help"
 msgstr "Aflați cum să ajutați"
 
-#: givefood/templates/public/index.html:117
 msgid ""
 "Register a food bank to be included in our database and allow users to find "
 "you and what you need."
@@ -1224,17 +949,12 @@ msgstr ""
 "Înregistrați o bancă de alimente pentru a fi inclusă în baza noastră de date "
 "și permiteți utilizatorilor să vă găsească și ceea ce aveți nevoie."
 
-#: givefood/templates/public/index.html:118
-#: givefood/templates/public/register_foodbank.html:9
-#: givefood/templates/public/register_foodbank.html:21
 msgid "Register a food bank"
 msgstr "Înregistrați o bancă de alimente"
 
-#: givefood/templates/public/index.html:121
 msgid "Media"
 msgstr "Media"
 
-#: givefood/templates/public/index.html:122
 msgid ""
 "Journalists, in particular data journalists, can use our data for stories "
 "around food poverty."
@@ -1242,16 +962,12 @@ msgstr ""
 "Jurnaliştii, în special jurnaliştii de date, pot folosi datele noastre "
 "pentru povestiri despre sărăcia alimentară."
 
-#: givefood/templates/public/index.html:123
-#: givefood/templates/public/index.html:128
 msgid "Use our API"
 msgstr "Utilizați API-ul nostru"
 
-#: givefood/templates/public/index.html:126
 msgid "Researchers & students"
 msgstr "Cercetători și studenți"
 
-#: givefood/templates/public/index.html:127
 msgid ""
 "We can provide our data in bulk, plus advice on how to interpret it, to "
 "researchers. Have a look at our API or email us."
@@ -1260,86 +976,65 @@ msgstr ""
 "să le interpretăm. Aruncă o privire la API-ul nostru sau trimite-ne un e-"
 "mail."
 
-#: givefood/templates/public/index.html:134
 msgid "Statistics"
 msgstr "Statistici"
 
-#: givefood/templates/public/index.html:148
 msgid "Items requested"
 msgstr "Articole solicitate"
 
-#: givefood/templates/public/index.html:152
 msgid "Meals delivered"
 msgstr "Mesele livrate"
 
-#: givefood/templates/public/index.html:156
-#: givefood/templates/public/page.html:41
 msgid "Last updated"
 msgstr "Ultima actualizare"
 
-#: givefood/templates/public/index.html:168
 msgid "Read our"
 msgstr "Citește-ne"
 
-#: givefood/templates/public/index.html:168
 msgid "annual report"
 msgstr "raport anual"
 
-#: givefood/templates/public/page.html:36
 msgid "Something wrong in this page?"
 msgstr "Ceva în neregulă în această pagină?"
 
-#: givefood/templates/public/page.html:42
 msgid "food bank needs viewed this week"
 msgstr "băncile alimentare trebuie vizualizate în această săptămână"
 
-#: givefood/templates/public/page.html:45
 msgid "Give Food is a registered charity in England & Wales"
 msgstr ""
 "Give Food este o organizație caritabilă înregistrată în Anglia și Țara "
 "Galilor"
 
-#: givefood/templates/public/page.html:46
 msgid "Registered with the"
 msgstr "Înregistrat la"
 
-#: givefood/templates/public/page.html:47
 msgid "ICO Data Protection Registration"
 msgstr "Înregistrarea ICO pentru protecția datelor"
 
-#: givefood/templates/public/page.html:54
 msgid "Dashboards"
 msgstr "Panouri de control"
 
-#: givefood/templates/public/page.html:60
 msgid "Privacy policy"
 msgstr "Politica de Confidențialitate"
 
-#: givefood/views.py:65
 msgid "e.g. EH12 5PJ or Glasgow"
 msgstr "de exemplu EH12 5PJ sau Glasgow"
 
-#: givefood/views.py:66
 msgid "e.g. HA9 0WS or Manchester"
 msgstr "de exemplu, HA9 0WS sau Manchester"
 
-#: givefood/views.py:67
 msgid "e.g. CF10 1NS or Cardiff"
 msgstr "de exemplu CF10 1NS sau Cardiff"
 
-#: givefood/views.py:68
 msgid "e.g. BT12 6LW or Belfast"
 msgstr "de exemplu, BT12 6LW sau Belfast"
 
-#: givefood/views.py:898
 msgid "minutes"
 msgstr "minute"
 
-#: givefood/views.py:899
 msgid "Under a minute ago"
 msgstr "Mai puțin de un minut în urmă"
 
-#: givefood/views.py:901
 msgid "ago"
 msgstr "în urmă"
 
