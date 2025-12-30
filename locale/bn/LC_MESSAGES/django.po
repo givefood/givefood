@@ -49,23 +49,23 @@ msgstr "%(country)s-এ খাদ্য ব্যাংক"
 
 #, python-format
 msgid "%(constituency_name)s constituency is represented by"
-msgstr ""
+msgstr "%(constituency_name)s নির্বাচনী এলাকার প্রতিনিধিত্ব করেন"
 
 msgid "who is the Speaker of the House of Commons."
-msgstr ""
+msgstr "যিনি হাউস অফ কমন্সের স্পিকার।"
 
 #, python-format
 msgid "of the %(mp_party)s party."
-msgstr ""
+msgstr "%(mp_party)s দলের।"
 
 msgid "Write"
-msgstr ""
+msgstr "লিখুন"
 
 #, python-format
 msgid ""
 "The following food banks operate in the %(constituency_name)s constituency. "
 "Here is what they are requesting to have donated."
-msgstr ""
+msgstr "%(constituency_name)s নির্বাচনী এলাকায় নিম্নলিখিত খাদ্য ব্যাংকগুলি কাজ করে। তারা যা দান করতে অনুরোধ করছে তা এখানে।"
 
 #, fuzzy, python-format
 #| msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
@@ -319,7 +319,7 @@ msgstr ""
 msgid ""
 "This food bank isn't requesting anything, but may appreciate other support "
 "like a financial donation or volunteers. Please contact them to find out."
-msgstr ""
+msgstr "এই খাদ্য ব্যাংক কিছু অনুরোধ করছে না, তবে আর্থিক অনুদান বা স্বেচ্ছাসেবকদের মতো অন্যান্য সহায়তার প্রশংসা করতে পারে। জানতে তাদের সাথে যোগাযোগ করুন।"
 
 msgid "What Food Banks Need"
 msgstr "খাদ্য ব্যাংকের কী প্রয়োজন"

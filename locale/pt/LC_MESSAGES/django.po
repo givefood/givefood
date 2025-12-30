@@ -49,23 +49,23 @@ msgstr "Bancos de alimentos em %(country)s"
 
 #, python-format
 msgid "%(constituency_name)s constituency is represented by"
-msgstr ""
+msgstr "O círculo eleitoral de %(constituency_name)s é representado por"
 
 msgid "who is the Speaker of the House of Commons."
-msgstr ""
+msgstr "que é o Presidente da Câmara dos Comuns."
 
 #, python-format
 msgid "of the %(mp_party)s party."
-msgstr ""
+msgstr "do partido %(mp_party)s."
 
 msgid "Write"
-msgstr ""
+msgstr "Escrever"
 
 #, python-format
 msgid ""
 "The following food banks operate in the %(constituency_name)s constituency. "
 "Here is what they are requesting to have donated."
-msgstr ""
+msgstr "Os seguintes bancos alimentares operam no círculo eleitoral de %(constituency_name)s. Aqui está o que eles estão pedindo como doação."
 
 #, fuzzy, python-format
 #| msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
@@ -331,7 +331,7 @@ msgstr ""
 msgid ""
 "This food bank isn't requesting anything, but may appreciate other support "
 "like a financial donation or volunteers. Please contact them to find out."
-msgstr ""
+msgstr "Este banco alimentar não está pedindo nada, mas pode apreciar outro tipo de apoio, como doação financeira ou voluntários. Entre em contato com eles para descobrir."
 
 msgid "What Food Banks Need"
 msgstr "O que os bancos de alimentos precisam"

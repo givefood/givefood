@@ -50,23 +50,23 @@ msgstr "Bainceanna bia i %(country)s"
 
 #, python-format
 msgid "%(constituency_name)s constituency is represented by"
-msgstr ""
+msgstr "Déanann an toghcheantar %(constituency_name)s ionadaíocht ar"
 
 msgid "who is the Speaker of the House of Commons."
-msgstr ""
+msgstr "atá ina Cheann Comhairle ar Theach na dTeachtaí."
 
 #, python-format
 msgid "of the %(mp_party)s party."
-msgstr ""
+msgstr "de pháirtí %(mp_party)s."
 
 msgid "Write"
-msgstr ""
+msgstr "Scríobh"
 
 #, python-format
 msgid ""
 "The following food banks operate in the %(constituency_name)s constituency. "
 "Here is what they are requesting to have donated."
-msgstr ""
+msgstr "Oibríonn na bancanna bia seo a leanas i dtoghcheantar %(constituency_name)s. Seo iad na rudaí a iarrann siad a thabhairt."
 
 #, fuzzy, python-format
 #| msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
@@ -331,7 +331,7 @@ msgstr ""
 msgid ""
 "This food bank isn't requesting anything, but may appreciate other support "
 "like a financial donation or volunteers. Please contact them to find out."
-msgstr ""
+msgstr "Níl an banc bia seo ag iarraidh aon rud, ach b'fhéidir go mbeadh siad buíoch as tacaíocht eile cosúil le síntiús airgeadais nó oibrithe deonacha. Déan teagmháil leo chun fáil amach."
 
 msgid "What Food Banks Need"
 msgstr "Cad is Riachtanach do Bhainc Bia"

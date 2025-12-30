@@ -51,23 +51,23 @@ msgstr "Maisto bankai %(country)s"
 
 #, python-format
 msgid "%(constituency_name)s constituency is represented by"
-msgstr ""
+msgstr "%(constituency_name)s rinkimų apygardai atstovauja"
 
 msgid "who is the Speaker of the House of Commons."
-msgstr ""
+msgstr "kuris yra Bendruomenių Rūmų pirmininkas."
 
 #, python-format
 msgid "of the %(mp_party)s party."
-msgstr ""
+msgstr "iš %(mp_party)s partijos."
 
 msgid "Write"
-msgstr ""
+msgstr "Rašyti"
 
 #, python-format
 msgid ""
 "The following food banks operate in the %(constituency_name)s constituency. "
 "Here is what they are requesting to have donated."
-msgstr ""
+msgstr "Šie maisto bankai veikia %(constituency_name)s rinkimų apygardoje. Štai ko jie prašo paaukoti."
 
 #, fuzzy, python-format
 #| msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
@@ -325,7 +325,7 @@ msgstr "Atsiprašome. Nežinome, ko čia reikia, susisiekite su maisto banku."
 msgid ""
 "This food bank isn't requesting anything, but may appreciate other support "
 "like a financial donation or volunteers. Please contact them to find out."
-msgstr ""
+msgstr "Šis maisto bankas nieko neprašo, bet gali būti dėkingas už kitą paramą, pavyzdžiui, finansinę auką ar savanorius. Susisiekite su jais, kad sužinotumėte."
 
 msgid "What Food Banks Need"
 msgstr "Ko reikia maisto bankams"
