@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-26 16:43+0000\n"
+"POT-Creation-Date: 2025-12-30 18:01+0000\n"
 "PO-Revision-Date: 2025-12-14 10:28+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,79 +19,82 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.8\n"
 
-#: gfdumps/templates/gfdumps/dumps.html:5
-#: gfdumps/templates/gfdumps/dumps.html:25
-#: gfdumps/templates/gfdumps/dumps.html:42
 msgid "Dumps"
 msgstr "குப்பைகள்"
 
-#: gfdumps/templates/gfdumps/dumps.html:24
-#: gfwfbn/templates/wfbn/constituency/constituency.html:42
-#: gfwfbn/templates/wfbn/constituency/index.html:31
-#: gfwfbn/templates/wfbn/foodbank/charity.html:41
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:46
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:40
-#: gfwfbn/templates/wfbn/foodbank/index.html:48
-#: gfwfbn/templates/wfbn/foodbank/location.html:46
-#: gfwfbn/templates/wfbn/foodbank/locations.html:40
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:40
-#: gfwfbn/templates/wfbn/foodbank/news.html:41
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:40
-#: gfwfbn/templates/wfbn/foodbank/updates.html:40
-#: givefood/templates/public/page.html:52
 msgid "Home"
 msgstr "முகப்புப் பக்கம்"
 
-#: gfdumps/templates/gfdumps/dumps.html:67
 msgid "Date"
 msgstr "தேதி"
 
-#: gfdumps/templates/gfdumps/dumps.html:68
 msgid "Size"
 msgstr "அளவு"
 
-#: gfdumps/templates/gfdumps/dumps.html:69
 msgid "Rows"
 msgstr "நிரைகள்"
 
-#: gfdumps/templates/gfdumps/dumps.html:75
 msgid "Latest"
 msgstr "சமீபத்தியது"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:82
-#: gfwfbn/templates/wfbn/index.html:116 gfwfbn/templates/wfbn/index.html:213
+#, fuzzy
+#| msgid "Parliamentary Constituencies"
+msgid "Constituencies"
+msgstr "நாடாளுமன்றத் தொகுதிகள்"
+
+#, fuzzy, python-format
+#| msgid "Food banks in %(country)s"
+msgid "Food banks in %(constituency_name)s"
+msgstr "%(country)s இல் உள்ள உணவு வங்கிகள்"
+
+#, python-format
+msgid "%(constituency_name)s constituency is represented by"
+msgstr "%(constituency_name)s தொகுதியை பிரதிநிதித்துவப்படுத்துகிறார்"
+
+msgid "who is the Speaker of the House of Commons."
+msgstr "அவர் கீழவை சபாநாயகர்."
+
+#, python-format
+msgid "of the %(mp_party)s party."
+msgstr "%(mp_party)s கட்சியின்."
+
+msgid "Write"
+msgstr "எழுதுங்கள்"
+
+#, python-format
+msgid ""
+"The following food banks operate in the %(constituency_name)s constituency. "
+"Here is what they are requesting to have donated."
+msgstr "பின்வரும் உணவு வங்கிகள் %(constituency_name)s தொகுதியில் செயல்படுகின்றன. அவர்கள் நன்கொடையாக கேட்பது இதோ."
+
+#, fuzzy, python-format
+#| msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+msgid "Part of <a href=\"/needs/at/%(foodbank_slug)s/\">%(foodbank_name)s</a>"
+msgstr "<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> க்கு"
+
 msgid "Phone"
 msgstr "தொலைபேசி"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:86
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
-#: gfwfbn/templates/wfbn/index.html:119 gfwfbn/templates/wfbn/index.html:216
-#: givefood/templates/403.html:30 givefood/templates/404.html:30
-#: givefood/templates/500.html:30
 msgid "Email"
 msgstr "மின்னஞ்சல்"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:90
-#: gfwfbn/templates/wfbn/index.html:121 gfwfbn/templates/wfbn/index.html:218
 msgid "Check the foodbank's "
 msgstr "உணவு வங்கியைச் சரிபார்க்கவும்"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:91
-#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:219
 msgid "Facebook page"
 msgstr "முகநூல் பக்கம்"
 
-#: gfwfbn/templates/wfbn/constituency/constituency.html:92
-#: gfwfbn/templates/wfbn/index.html:123 gfwfbn/templates/wfbn/index.html:220
 msgid " for what they need"
 msgstr "அவர்களுக்குத் தேவையானவற்றிற்காக"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:32
-#: gfwfbn/templates/wfbn/constituency/index.html:36
+#, fuzzy
+#| msgid "Parliamentary Constituencies"
+msgid "Nearby Constituencies"
+msgstr "நாடாளுமன்றத் தொகுதிகள்"
+
 msgid "Parliamentary Constituencies"
 msgstr "நாடாளுமன்றத் தொகுதிகள்"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:42
 msgid ""
 "Find which food banks operate in your parliamentary constituency, then "
 "donate or take action."
@@ -99,124 +102,84 @@ msgstr ""
 "உங்கள் நாடாளுமன்றத் தொகுதியில் எந்த உணவு வங்கிகள் செயல்படுகின்றன என்பதைக் கண்டறிந்து, "
 "பின்னர் நன்கொடை அளிக்கவும் அல்லது நடவடிக்கை எடுக்கவும்."
 
-#: gfwfbn/templates/wfbn/constituency/index.html:46
 msgid "Sorry, we didn't recognise this postcode. Could you try again?"
 msgstr ""
 "மன்னிக்கவும், இந்த அஞ்சல் குறியீட்டை எங்களால் அடையாளம் காண முடியவில்லை. மீண்டும் முயற்சி "
 "செய்ய முடியுமா?"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Search by postcode"
 msgstr "அஞ்சல் குறியீடு மூலம் தேடுங்கள்"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Postcode"
 msgstr "அஞ்சல் குறியீடு"
 
-#: gfwfbn/templates/wfbn/constituency/index.html:52
-#: gfwfbn/templates/wfbn/index.html:64 gfwfbn/templates/wfbn/index.html:192
-#: givefood/templates/public/country.html:43
-#: givefood/templates/public/index.html:39
 msgid "Go"
 msgstr "போ"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:23
-#: gfwfbn/templates/wfbn/foodbank/charity.html:43
-#: gfwfbn/templates/wfbn/foodbank/charity.html:47
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
 msgid "Charity"
 msgstr "தொண்டு"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s is a registered charity."
 msgstr "%(name)s ஒரு பதிவு செய்யப்பட்ட தொண்டு நிறுவனம்."
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s operates under a registered charity."
 msgstr "%(name)s ஒரு பதிவு செய்யப்பட்ட தொண்டு நிறுவனத்தின் கீழ் செயல்படுகிறது."
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:59
 msgid "Charity name"
 msgstr "தொண்டு நிறுவனத்தின் பெயர்"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:61
 msgid "Regulator"
 msgstr "ஒழுங்குமுறையாளர்"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:67
 msgid "Charity number"
 msgstr "தொண்டு நிறுவன எண்"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:72
 msgid "Charity type"
 msgstr "தொண்டு வகை"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:76
 msgid "Registration date"
 msgstr "பதிவு தேதி"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:81
 msgid "Objectives"
 msgstr "குறிக்கோள்கள்"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:85
 msgid "Purposes"
 msgstr "நோக்கங்கள்"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:99
 msgid "Year"
 msgstr "ஆண்டு"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:100
 msgid "Income"
 msgstr "வருமானம்"
 
-#: gfwfbn/templates/wfbn/foodbank/charity.html:101
 msgid "Expenditure"
 msgstr "செலவு"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:48
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:22
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:42
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:46
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
-#: gfwfbn/templates/wfbn/index.html:87 givefood/templates/public/index.html:144
 msgid "Donation points"
 msgstr "நன்கொடை புள்ளிகள்"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:64
-#: gfwfbn/templates/wfbn/foodbank/index.html:64
-#: gfwfbn/templates/wfbn/foodbank/location.html:63
 msgid "This food bank is closed"
 msgstr "இந்த உணவு வங்கி மூடப்பட்டுள்ளது."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 #, python-format
 msgid ""
 "is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgstr "<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> க்கான நன்கொடைப் புள்ளி"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 msgid "Here they are requesting to have donated..."
 msgstr "இங்கே அவர்கள் நன்கொடை அளிக்கக் கேட்கிறார்கள்..."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:75
-#: gfwfbn/templates/wfbn/foodbank/index.html:78
-#: gfwfbn/templates/wfbn/foodbank/location.html:77
 msgid "They don't need any more"
 msgstr "அவர்களுக்கு இனி எதுவும் தேவையில்லை."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:81
 msgid "Opening hours"
 msgstr "தொடக்க நேரம்"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
 msgid "Only accepts in-store purchases as donations"
 msgstr "கடையில் வாங்கும் பொருட்களை மட்டுமே நன்கொடையாக ஏற்றுக்கொள்கிறோம்."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:92
 msgid ""
 "Although, sometimes you can add items marked as not from the store. Best to "
 "check."
@@ -224,35 +187,21 @@ msgstr ""
 "இருப்பினும், சில நேரங்களில் கடையில் இருந்து வரவில்லை எனக் குறிக்கப்பட்ட பொருட்களை நீங்கள் "
 "சேர்க்கலாம். சரிபார்ப்பது நல்லது."
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:97
 msgid "Wheelchair accessible"
 msgstr "சக்கர நாற்காலி வசதி உள்ளது"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:123
-#: gfwfbn/templates/wfbn/foodbank/index.html:140
-#: gfwfbn/templates/wfbn/foodbank/index.html:153
-#: gfwfbn/templates/wfbn/foodbank/location.html:132
-#: gfwfbn/templates/wfbn/foodbank/location.html:144
 msgid "Directions"
 msgstr "வழிமுறைகள்"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:6
 msgid "Hours may vary because of"
 msgstr "நேரங்கள் மாறுபடலாம் ஏனெனில்"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:58
-#: gfwfbn/templates/wfbn/foodbank/locations.html:61
 msgid "Main"
 msgstr "முக்கிய"
 
-#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:66
-#: gfwfbn/templates/wfbn/foodbank/index.html:152
-#: gfwfbn/templates/wfbn/foodbank/location.html:142
-#: gfwfbn/templates/wfbn/foodbank/locations.html:70
 msgid "Delivery"
 msgstr "டெலிவரி"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
 #, python-format
 msgid ""
 "Charity Registration <a href=\"%(charity_url)s\" "
@@ -261,73 +210,42 @@ msgstr ""
 "தொண்டு நிறுவனப் பதிவு <a href=\"%(charity_url)s\" "
 "id=\"charity_link\">%(charity_number)s</a>"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
 msgid "Part of"
 msgstr "ஒரு பகுதியாக"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:13
 msgid "is a registered charity in England &amp; Wales"
 msgstr "இங்கிலாந்து & வேல்ஸில் பதிவுசெய்யப்பட்ட தொண்டு நிறுவனம் ஆகும்."
 
-#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
-#: givefood/templates/public/country.html:51
-#: givefood/templates/public/donate.html:5
-#: givefood/templates/public/donate.html:21
-#: givefood/templates/public/index.html:48
-#: givefood/templates/public/page.html:57
 msgid "Donate"
 msgstr "நன்கொடை அளியுங்கள்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:6
 msgid "Food, money or your time"
 msgstr "உணவு, பணம் அல்லது உங்கள் நேரம்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:12
 msgid "Donate using "
 msgstr "இதைப் பயன்படுத்தி நன்கொடை அளிக்கவும்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
 msgid "Details"
 msgstr "விவரங்கள்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:6
-#: gfwfbn/templates/wfbn/foodbank/locations.html:22
-#: gfwfbn/templates/wfbn/foodbank/locations.html:42
-#: gfwfbn/templates/wfbn/foodbank/locations.html:46
 msgid "Locations"
 msgstr "இடங்கள்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
-#: gfwfbn/templates/wfbn/foodbank/news.html:23
-#: gfwfbn/templates/wfbn/foodbank/news.html:43
-#: gfwfbn/templates/wfbn/foodbank/news.html:47
 msgid "News"
 msgstr "செய்தி"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:18
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:22
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:42
-#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:46
 msgid "Social media"
 msgstr "சமூக ஊடகங்கள்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:20
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:22
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:42
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:46
 msgid "Nearby"
 msgstr "அருகிலுள்ள"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
-#: givefood/templates/public/page.html:53
 msgid "Apps"
 msgstr "ஆப்ஸ்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:12
 msgid "Web"
 msgstr "வலை"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:25
 #, python-format
 msgid ""
 "Get a notification of what is needed when you are near a donation point with "
@@ -336,7 +254,6 @@ msgstr ""
 "எங்கள் <a href=\"%(apps_url)s\">மொபைல் செயலிகளைப்</a> பயன்படுத்தி நன்கொடை மையத்திற்கு "
 "அருகில் இருக்கும்போது என்ன தேவை என்பது குறித்த அறிவிப்பைப் பெறுங்கள்."
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:27
 #, python-format
 msgid ""
 "Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</"
@@ -345,31 +262,24 @@ msgstr ""
 "எங்கள் <a href=\"%(apps_url)s\">மொபைல் பயன்பாடுகள்</a> மூலம் என்ன தேவை என்பது குறித்த "
 "புதுப்பிப்புகளைப் பெறுங்கள்."
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:32
 msgid "Have this web browser notify when the shopping list changes"
 msgstr "ஷாப்பிங் பட்டியல் மாறும்போது இந்த வலை உலாவிக்கு அறிவிக்கச் சொல்லுங்கள்."
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:34
 msgid "Get browser notifications"
 msgstr "உலாவி அறிவிப்புகளைப் பெறுங்கள்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:39
 msgid "Sorry, the security check failed. Please try again."
 msgstr "மன்னிக்கவும், பாதுகாப்பு சோதனை தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்."
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:42
 msgid "Get updates on this shopping list via email"
 msgstr "இந்த ஷாப்பிங் பட்டியல் பற்றிய புதுப்பிப்புகளை மின்னஞ்சல் மூலம் பெறுங்கள்."
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:47
 msgid "Email address"
 msgstr "மின்னஞ்சல் முகவரி"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:50
 msgid "Get updates"
 msgstr "புதுப்பிப்புகளைப் பெறுங்கள்"
 
-#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:53
 msgid ""
 "We'll never use your email address for anything else, and you can "
 "unsubscribe at any time"
@@ -377,50 +287,48 @@ msgstr ""
 "உங்கள் மின்னஞ்சல் முகவரியை வேறு எதற்கும் நாங்கள் பயன்படுத்த மாட்டோம், மேலும் நீங்கள் எந்த "
 "நேரத்திலும் குழுவிலகலாம்."
 
-#: gfwfbn/templates/wfbn/foodbank/index.html:70
 msgid "You can find out what is needed on the foodbank's Facebook page:"
 msgstr "உணவு வங்கியின் பேஸ்புக் பக்கத்தில் என்ன தேவை என்பதை நீங்கள் கண்டுபிடிக்கலாம்:"
 
-#: gfwfbn/templates/wfbn/foodbank/index.html:73
 msgid "is currently requesting the following items to be donated:"
 msgstr "தற்போது பின்வரும் பொருட்களை நன்கொடையாகக் கோருகிறது:"
 
-#: gfwfbn/templates/wfbn/foodbank/index.html:97
-#: gfwfbn/templates/wfbn/foodbank/index.html:99
 msgid ""
 "This food bank is located at a school, so may not be open to the public."
 msgstr ""
 "இந்த உணவு வங்கி ஒரு பள்ளியில் அமைந்துள்ளது, எனவே பொதுமக்களுக்கு இது திறந்திருக்க "
 "வாய்ப்பில்லை."
 
-#: gfwfbn/templates/wfbn/foodbank/index.html:138
-#: gfwfbn/templates/wfbn/foodbank/locations.html:59
 msgid "Administrative"
 msgstr "நிர்வாக"
 
-#: gfwfbn/templates/wfbn/foodbank/location.html:81
-#: gfwfbn/templates/wfbn/foodbank/location.html:92
 msgid "This location accepts donations"
 msgstr "இந்த இடம் நன்கொடைகளை ஏற்றுக்கொள்கிறது."
 
-#: gfwfbn/templates/wfbn/foodbank/location.html:84
-#: gfwfbn/templates/wfbn/foodbank/location.html:95
 msgid "Mobile food bank location"
 msgstr "நடமாடும் உணவு வங்கி இருப்பிடம்"
 
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:65
-#: gfwfbn/templates/wfbn/foodbank/nearby.html:67
-#: gfwfbn/templates/wfbn/index.html:107 gfwfbn/templates/wfbn/index.html:154
-#: gfwfbn/templates/wfbn/index.html:204
 msgid "away"
 msgstr "தொலைவில்"
 
-#: gfwfbn/templates/wfbn/index.html:10
+#, fuzzy
+#| msgid ""
+#| "Sorry. We don't know what's needed here, please contact the food bank"
+msgid ""
+"We currently don't know what is needed at this food bank. Please contact "
+"them to find out."
+msgstr ""
+"மன்னிக்கவும். இங்கே என்ன தேவை என்று எங்களுக்குத் தெரியவில்லை, தயவுசெய்து உணவு வங்கியைத் "
+"தொடர்பு கொள்ளவும்."
+
+msgid ""
+"This food bank isn't requesting anything, but may appreciate other support "
+"like a financial donation or volunteers. Please contact them to find out."
+msgstr "இந்த உணவு வங்கி எதையும் கேட்கவில்லை, ஆனால் நிதி நன்கொடை அல்லது தன்னார்வலர்கள் போன்ற பிற ஆதரவை பாராட்டலாம். தெரிந்துகொள்ள அவர்களை தொடர்பு கொள்ளுங்கள்."
+
 msgid "What Food Banks Need"
 msgstr "உணவு வங்கிகளுக்கு என்ன தேவை?"
 
-#: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
-#: givefood/views.py:727
 msgid ""
 "Use Give Food's tool to find what food banks near you are requesting to have "
 "donated"
@@ -428,40 +336,28 @@ msgstr ""
 "உங்களுக்கு அருகிலுள்ள உணவு வங்கிகள் என்ன நன்கொடை அளிக்கக் கோருகின்றன என்பதைக் கண்டறிய "
 "Give Food கருவியைப் பயன்படுத்தவும்."
 
-#: gfwfbn/templates/wfbn/index.html:14
 msgid "Map of UK food banks"
 msgstr "UK உணவு வங்கிகளின் வரைபடம்"
 
-#: gfwfbn/templates/wfbn/index.html:32 gfwfbn/templates/wfbn/index.html:40
 msgid "Find Food Banks To Help"
 msgstr "உதவ உணவு வங்கிகளைக் கண்டறியவும்"
 
-#: gfwfbn/templates/wfbn/index.html:35 gfwfbn/templates/wfbn/index.html:38
 msgid "food banks"
 msgstr "உணவு வங்கிகள்"
 
-#: gfwfbn/templates/wfbn/index.html:59
-#: givefood/templates/public/country.html:38
-#: givefood/templates/public/index.html:34
 msgid "Use my location"
 msgstr "எனது இருப்பிடத்தைப் பயன்படுத்து"
 
-#: gfwfbn/templates/wfbn/index.html:61
-#: givefood/templates/public/country.html:40
-#: givefood/templates/public/index.html:36
 msgid "Postcode or town"
 msgstr "அஞ்சல் குறியீடு அல்லது நகரம்"
 
-#: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:37
 msgid "e.g. EX4 6PX or Sheffield"
 msgstr "எ.கா. EX4 6PX அல்லது ஷெஃபீல்ட்"
 
-#: gfwfbn/templates/wfbn/index.html:67
 #, python-format
 msgid "Foodbanks in %(location)s"
 msgstr "%(location)s இல் உள்ள உணவு வங்கிகள்"
 
-#: gfwfbn/templates/wfbn/index.html:68
 #, python-format
 msgid ""
 "Find a food bank near %(location)s, see what they need and how you can help "
@@ -471,320 +367,228 @@ msgstr ""
 "என்பதையும், நன்கொடை அளிப்பதன் மூலமோ அல்லது தன்னார்வத் தொண்டு செய்வதன் மூலமோ நீங்கள் எவ்வாறு "
 "உதவ முடியும் என்பதையும் பாருங்கள்."
 
-#: gfwfbn/templates/wfbn/index.html:72
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
 msgstr ""
 "மன்னிக்கவும், அந்த இடத்தை எங்களால் பயன்படுத்த முடியவில்லை. அது யுனைடெட் கிங்டமிற்குள் "
 "உள்ளதா?"
 
-#: gfwfbn/templates/wfbn/index.html:78
 msgid "Search results"
 msgstr "தேடல் முடிவுகள்"
 
-#: gfwfbn/templates/wfbn/index.html:82 givefood/templates/public/index.html:116
-#: givefood/templates/public/index.html:140
 msgid "Food banks"
 msgstr "உணவு வங்கிகள்"
 
-#: gfwfbn/templates/wfbn/index.html:92
 msgid "By item"
 msgstr "பொருள் வாரியாக"
 
-#: gfwfbn/templates/wfbn/index.html:105 gfwfbn/templates/wfbn/index.html:202
 #, python-format
 msgid "Part of <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
 msgstr "<a href=\"%(parent_url)s\">%(foodbank_name)s</a> இன் பகுதி"
 
-#: gfwfbn/templates/wfbn/index.html:113 gfwfbn/templates/wfbn/index.html:159
-#: gfwfbn/templates/wfbn/index.html:210
 msgid "Nothing right now, thanks"
 msgstr "இப்போ ஒண்ணுமில்லை, நன்றி."
 
-#: gfwfbn/templates/wfbn/index.html:153
 #, python-format
 msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgstr "<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> க்கு"
 
-#: gfwfbn/templates/wfbn/index.html:161
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr ""
 "மன்னிக்கவும். இங்கே என்ன தேவை என்று எங்களுக்குத் தெரியவில்லை, தயவுசெய்து உணவு வங்கியைத் "
 "தொடர்பு கொள்ளவும்."
 
-#: gfwfbn/templates/wfbn/index.html:178
 #, fuzzy
 #| msgid "Find what food banks need"
 msgid "Find an item needed by a food bank nearby"
 msgstr "உணவு வங்கிகளுக்கு என்ன தேவை என்பதைக் கண்டறியவும்."
 
-#: gfwfbn/templates/wfbn/index.html:186
 msgid "Select an item category"
 msgstr "ஒரு பொருள் வகையைத் தேர்ந்தெடுக்கவும்"
 
-#: gfwfbn/templates/wfbn/index.html:232
 msgid "We don't know of any food banks nearby that need this item right now."
-msgstr "இப்போது இந்தப் பொருள் தேவைப்படும் அருகிலுள்ள உணவு வங்கிகள் எதுவும் எங்களுக்குத் தெரியாது."
+msgstr ""
+"இப்போது இந்தப் பொருள் தேவைப்படும் அருகிலுள்ள உணவு வங்கிகள் எதுவும் எங்களுக்குத் தெரியாது."
 
-#: gfwfbn/views.py:148
 msgid "items requested at"
 msgstr "கோரப்பட்ட பொருட்கள்"
 
-#: givefood/const/item_types.py:4
 msgid "Tinned Tomatoes"
 msgstr "தகரத்தில் தக்காளி"
 
-#: givefood/const/item_types.py:4 givefood/const/item_types.py:5
-#: givefood/const/item_types.py:6 givefood/const/item_types.py:7
-#: givefood/const/item_types.py:9 givefood/const/item_types.py:10
-#: givefood/const/item_types.py:15 givefood/const/item_types.py:17
-#: givefood/const/item_types.py:18 givefood/const/item_types.py:21
-#: givefood/const/item_types.py:22 givefood/const/item_types.py:24
-#: givefood/const/item_types.py:25 givefood/const/item_types.py:29
-#: givefood/const/item_types.py:30 givefood/const/item_types.py:31
-#: givefood/const/item_types.py:32
 msgid "Meal Food"
 msgstr "உணவுக்கான உணவு"
 
-#: givefood/const/item_types.py:5
 msgid "Tinned Meat"
 msgstr "தகரத்தில் இறைச்சி"
 
-#: givefood/const/item_types.py:6
 msgid "Tinned Vegetarian"
 msgstr "தகரத்தில் சைவம்"
 
-#: givefood/const/item_types.py:7
 msgid "Tinned Pasta"
 msgstr "தகரத்தில் பாஸ்தா"
 
-#: givefood/const/item_types.py:8
 msgid "Confectionery"
 msgstr "இனிப்பு வகைகள்"
 
-#: givefood/const/item_types.py:8 givefood/const/item_types.py:19
-#: givefood/const/item_types.py:20
 msgid "Snack Food"
 msgstr "சிற்றுண்டி"
 
-#: givefood/const/item_types.py:9
 msgid "Cereal"
 msgstr "தானியம்"
 
-#: givefood/const/item_types.py:10
 msgid "Tinned Fruit"
 msgstr "தகரத்தில் பழம்"
 
-#: givefood/const/item_types.py:11
 msgid "Milk"
 msgstr "பால்"
 
-#: givefood/const/item_types.py:11 givefood/const/item_types.py:12
-#: givefood/const/item_types.py:13 givefood/const/item_types.py:26
-#: givefood/const/item_types.py:27 givefood/const/item_types.py:53
 msgid "Drink"
 msgstr "பானம்"
 
-#: givefood/const/item_types.py:12
 msgid "Fruit Juice"
 msgstr "பழச்சாறு"
 
-#: givefood/const/item_types.py:13
 msgid "Squash"
 msgstr "ஸ்குவாஷ்"
 
-#: givefood/const/item_types.py:14
 msgid "Condiment"
 msgstr "மசாலா"
 
-#: givefood/const/item_types.py:14 givefood/const/item_types.py:16
-#: givefood/const/item_types.py:23 givefood/const/item_types.py:28
-#: givefood/const/item_types.py:50
 msgid "Cooking"
 msgstr "சமையல்"
 
-#: givefood/const/item_types.py:15
 msgid "Noodles"
 msgstr "நூடுல்ஸ்"
 
-#: givefood/const/item_types.py:16
 msgid "Cooking Oil"
 msgstr "சமையல் எண்ணெய்"
 
-#: givefood/const/item_types.py:17
 msgid "Tinned Fish"
 msgstr "தகரத்தில் மீன்"
 
-#: givefood/const/item_types.py:18
 msgid "Soup"
 msgstr "சூப்"
 
-#: givefood/const/item_types.py:19
 msgid "Crisps"
 msgstr "சிப்ஸ்"
 
-#: givefood/const/item_types.py:20
 msgid "Biscuits"
 msgstr "பிஸ்கட்"
 
-#: givefood/const/item_types.py:21
 msgid "Baked Beans"
 msgstr "வேகவைத்த பீன்ஸ்"
 
-#: givefood/const/item_types.py:22
 msgid "Tinned Vegetables"
 msgstr "தகரத்தில் காய்கறிகள்"
 
-#: givefood/const/item_types.py:23
 msgid "Pasta Sauce"
 msgstr "பாஸ்தா சாஸ்"
 
-#: givefood/const/item_types.py:24
 msgid "Pasta"
 msgstr "பாஸ்தா"
 
-#: givefood/const/item_types.py:25
 msgid "Rice"
 msgstr "அரிசி"
 
-#: givefood/const/item_types.py:26
 msgid "Tea"
 msgstr "தேநீர்"
 
-#: givefood/const/item_types.py:27
 msgid "Coffee"
 msgstr "காபி"
 
-#: givefood/const/item_types.py:28
 msgid "Sugar"
 msgstr "சர்க்கரை"
 
-#: givefood/const/item_types.py:29
 msgid "Spread"
 msgstr "ஸ்பிரெட்"
 
-#: givefood/const/item_types.py:30
 msgid "Vegetable"
 msgstr "காய்கறி"
 
-#: givefood/const/item_types.py:31
 msgid "Instant Mash"
 msgstr "இன்ஸ்டன்ட் மேஷ்"
 
-#: givefood/const/item_types.py:32
 msgid "Dessert"
 msgstr "இனிப்பு"
 
-#: givefood/const/item_types.py:33
 msgid "Washing Up Liquid"
 msgstr "பாத்திரம் கழுவும் திரவம்"
 
-#: givefood/const/item_types.py:33 givefood/const/item_types.py:40
-#: givefood/const/item_types.py:46 givefood/const/item_types.py:47
 msgid "Cleaning"
 msgstr "சுத்தம்"
 
-#: givefood/const/item_types.py:34
 msgid "Toilet Roll"
 msgstr "கழிவறை ரோல்"
 
-#: givefood/const/item_types.py:34 givefood/const/item_types.py:35
-#: givefood/const/item_types.py:36 givefood/const/item_types.py:37
-#: givefood/const/item_types.py:38 givefood/const/item_types.py:39
-#: givefood/const/item_types.py:41 givefood/const/item_types.py:52
 msgid "Toiletries"
 msgstr "கழிவறைப் பொருட்கள்"
 
-#: givefood/const/item_types.py:35
 msgid "Shower Gel"
 msgstr "ஷவர் ஜெல்"
 
-#: givefood/const/item_types.py:36
 msgid "Shampoo"
 msgstr "ஷாம்பு"
 
-#: givefood/const/item_types.py:37
 msgid "Soap"
 msgstr "சோப்"
 
-#: givefood/const/item_types.py:38
 msgid "Dental"
 msgstr "பல் பராமரிப்பு"
 
-#: givefood/const/item_types.py:39
 msgid "Deodorant"
 msgstr "டியோடரன்ட்"
 
-#: givefood/const/item_types.py:40
 msgid "Laundry"
 msgstr "சலவை"
 
-#: givefood/const/item_types.py:41
 msgid "Sanitary Products"
 msgstr "சுகாதாரப் பொருட்கள்"
 
-#: givefood/const/item_types.py:42
 msgid "Baby Food"
 msgstr "குழந்தை உணவு"
 
-#: givefood/const/item_types.py:42 givefood/const/item_types.py:43
-#: givefood/const/item_types.py:44 givefood/const/item_types.py:45
 msgid "Baby Supplies"
 msgstr "குழந்தைப் பொருட்கள்"
 
-#: givefood/const/item_types.py:43
 msgid "Baby Milk"
 msgstr "குழந்தை பால்"
 
-#: givefood/const/item_types.py:44
 msgid "Nappies"
 msgstr "நாப்பிஸ்"
 
-#: givefood/const/item_types.py:45
 msgid "Wipes"
 msgstr "வைப்ஸ்"
 
-#: givefood/const/item_types.py:46
 msgid "Kitchen Roll"
 msgstr "சமையலறை ரோல்"
 
-#: givefood/const/item_types.py:47
 msgid "Household Supplies"
 msgstr "வீட்டுப் பொருட்கள்"
 
-#: givefood/const/item_types.py:48
 msgid "Pet Food"
 msgstr "செல்ல பிராணி உணவு"
 
-#: givefood/const/item_types.py:48 givefood/const/item_types.py:49
-#: givefood/const/item_types.py:51
 msgid "Other"
 msgstr "மற்றவை"
 
-#: givefood/const/item_types.py:49
 msgid "Carrier Bags"
 msgstr "கேரியர் பைகள்"
 
-#: givefood/const/item_types.py:50
 msgid "Sauce"
 msgstr "சாஸ்"
 
-#: givefood/const/item_types.py:53
 msgid "Hot Chocolate"
 msgstr "ஹாட் சாக்லேட்"
 
-#: givefood/models.py:267 givefood/models.py:269
 msgid "Foodbank"
 msgstr "உணவு வங்கி"
 
-#: givefood/models.py:1069
 msgid "Closed"
 msgstr "மூடப்பட்டது"
 
-#: givefood/templates/403.html:4 givefood/templates/403.html:19
 msgid "403 - Forbidden"
 msgstr "403 - தடைசெய்யப்பட்டுள்ளது"
 
-#: givefood/templates/403.html:25 givefood/templates/500.html:25
 msgid ""
 "Sorry, something has gone wrong there and we can't serve that page. This "
 "error has been logged and we'll look into it."
@@ -792,21 +596,15 @@ msgstr ""
 "மன்னிக்கவும், அங்கே ஏதோ தவறு நடந்துவிட்டது, அந்தப் பக்கத்தை எங்களால் வழங்க முடியவில்லை. "
 "இந்தப் பிழை பதிவு செய்யப்பட்டுள்ளது, நாங்கள் அதைப் பார்ப்போம்."
 
-#: givefood/templates/403.html:28 givefood/templates/404.html:28
-#: givefood/templates/500.html:28
 msgid "Homepage"
 msgstr "முகப்பு"
 
-#: givefood/templates/403.html:29 givefood/templates/404.html:29
-#: givefood/templates/500.html:29
 msgid "Find what food banks need"
 msgstr "உணவு வங்கிகளுக்கு என்ன தேவை என்பதைக் கண்டறியவும்."
 
-#: givefood/templates/404.html:4 givefood/templates/404.html:19
 msgid "404 - Not Found"
 msgstr "404 - கிடைக்கவில்லை"
 
-#: givefood/templates/404.html:25
 msgid ""
 "Sorry, we can't find that page. It may have been removed or you might have "
 "entered an incorrect URL."
@@ -814,19 +612,12 @@ msgstr ""
 "மன்னிக்கவும், அந்தப் பக்கத்தை எங்களால் கண்டுபிடிக்க முடியவில்லை. அது அகற்றப்பட்டிருக்கலாம் "
 "அல்லது நீங்கள் தவறான URL ஐ உள்ளிட்டிருக்கலாம்."
 
-#: givefood/templates/500.html:4 givefood/templates/500.html:19
 msgid "500 - Internal Server Error"
 msgstr "500 - உள் சேவையகப் பிழை"
 
-#: givefood/templates/public/about_us.html:5
-#: givefood/templates/public/about_us.html:22
-#: givefood/templates/public/country.html:53
-#: givefood/templates/public/index.html:50
-#: givefood/templates/public/page.html:58
 msgid "About us"
 msgstr "எங்களைப் பற்றி"
 
-#: givefood/templates/public/about_us.html:24
 msgid ""
 "\n"
 "                <p>Give Food is a UK charity that uses data to highlight "
@@ -912,16 +703,9 @@ msgstr ""
 "\n"
 "            "
 
-#: givefood/templates/public/ar/index.html:5
-#: givefood/templates/public/ar/index.html:22
-#: givefood/templates/public/page.html:56
 msgid "Annual reports"
 msgstr "ஆண்டு அறிக்கைகள்"
 
-#: givefood/templates/public/ar/index.html:8
-#: givefood/templates/public/donate.html:8
-#: givefood/templates/public/managed_donation.html:10
-#: givefood/templates/public/managed_donation_items.html:10
 msgid ""
 "Give Food is a UK charity that uses data to highlight local and structural "
 "food insecurity then provides tools to help alleviate it."
@@ -930,37 +714,30 @@ msgstr ""
 "பாதுகாப்பின்மையை முன்னிலைப்படுத்த தரவைப் பயன்படுத்துகிறது, பின்னர் அதைப் போக்க உதவும் "
 "கருவிகளை வழங்குகிறது."
 
-#: givefood/templates/public/ar/index.html:25
+msgid "Even more AI, translations and mobile apps"
+msgstr ""
+
 msgid "AI, general election, site translation"
 msgstr "AI, பொதுத் தேர்தல், தள மொழிபெயர்ப்பு"
 
-#: givefood/templates/public/ar/index.html:28
 msgid "Rebrand, refresh, rewrite &amp; categorisation"
 msgstr "மறுபெயரிடுதல், புதுப்பித்தல், மீண்டும் எழுதுதல் & வகைப்படுத்துதல்"
 
-#: givefood/templates/public/ar/index.html:31
 msgid "Write to your MP tool, surplus monitoring, data audits"
 msgstr "உங்கள் MP கருவிக்கு எழுதுங்கள், உபரி கண்காணிப்பு, தரவு தணிக்கைகள்"
 
-#: givefood/templates/public/ar/index.html:34
 msgid "Data &amp; UX review, dashboards, charity reporting"
 msgstr "தரவு & UX மதிப்பாய்வு, டாஷ்போர்டுகள், தொண்டு அறிக்கையிடல்"
 
-#: givefood/templates/public/ar/index.html:37
 msgid "Pandemic response, becoming a charity, publishing our data"
 msgstr "தொற்றுநோய் எதிர்ப்பு, ஒரு தொண்டு நிறுவனமாக மாறுதல், எங்கள் தரவை வெளியிடுதல்"
 
-#: givefood/templates/public/ar/index.html:40
 msgid "Initial deliveries, Christmas"
 msgstr "ஆரம்ப விநியோகங்கள், கிறிஸ்துமஸ்"
 
-#: givefood/templates/public/colophon.html:5
-#: givefood/templates/public/colophon.html:19
-#: givefood/templates/public/page.html:59
 msgid "Colophon"
 msgstr "கோலோஃபோன்"
 
-#: givefood/templates/public/country.html:9
 #, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help by "
@@ -970,12 +747,10 @@ msgstr ""
 "அளிப்பதன் மூலமோ அல்லது தன்னார்வத் தொண்டு செய்வதன் மூலமோ நீங்கள் எவ்வாறு உதவ முடியும் "
 "என்பதையும் காண்க."
 
-#: givefood/templates/public/country.html:13
 #, python-format
 msgid "Food banks in %(country)s"
 msgstr "%(country)s இல் உள்ள உணவு வங்கிகள்"
 
-#: givefood/templates/public/country.html:14
 #, python-format
 msgid ""
 "Find food banks in %(country)s, see what they need and how you can help."
@@ -983,37 +758,24 @@ msgstr ""
 "%(country)s இல் உணவு வங்கிகளைக் கண்டுபிடி, அவர்களுக்கு என்ன தேவை, நீங்கள் எவ்வாறு உதவ "
 "முடியும் என்பதைப் பாருங்கள்."
 
-#: givefood/templates/public/country.html:49
-#: givefood/templates/public/index.html:46
 msgid "Write to your MP"
 msgstr "உங்கள் எம்.பி.க்கு எழுதுங்கள்."
 
-#: givefood/templates/public/country.html:49
-#: givefood/templates/public/index.html:46
-#: givefood/templates/public/page.html:55
 msgid "English"
 msgstr "ஆங்கிலம்"
 
-#: givefood/templates/public/country.html:52
-#: givefood/templates/public/index.html:49
 msgid "Register a foodbank"
 msgstr "உணவு வங்கியைப் பதிவு செய்யவும்"
 
-#: givefood/templates/public/country.html:56
-#: givefood/templates/public/index.html:55
 msgid "Recently updated"
 msgstr "சமீபத்தில் புதுப்பிக்கப்பட்டது"
 
-#: givefood/templates/public/country.html:62
-#: givefood/templates/public/index.html:61
 msgid "Most viewed this week"
 msgstr "இந்த வாரம் அதிகம் பார்க்கப்பட்டவை"
 
-#: givefood/templates/public/donate.html:27
 msgid "To"
 msgstr "To"
 
-#: givefood/templates/public/donate.html:28
 msgid ""
 "All donations from the public to Give Food are used directly to efficiently "
 "and quickly deliver requested food and supplies to UK food banks."
@@ -1022,15 +784,12 @@ msgstr ""
 "வங்கிகளுக்கு கோரப்பட்ட உணவு மற்றும் பொருட்களை திறமையாகவும் விரைவாகவும் வழங்க நேரடியாகப் "
 "பயன்படுத்தப்படுகின்றன."
 
-#: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
 msgstr "CAF நன்கொடையைப் பயன்படுத்தி நன்கொடை அளிக்கவும்"
 
-#: givefood/templates/public/donate.html:32
 msgid "To a food bank"
 msgstr "உணவு வங்கிக்கு"
 
-#: givefood/templates/public/donate.html:33
 msgid ""
 "Use our tool to find a local food bank and see what they need. Then donate "
 "food, household supplies, toiletries, money or your time."
@@ -1039,15 +798,12 @@ msgstr ""
 "என்பதைப் பாருங்கள். பின்னர் உணவு, வீட்டுப் பொருட்கள், கழிப்பறைப் பொருட்கள், பணம் அல்லது உங்கள் "
 "நேரத்தை நன்கொடையாக வழங்குங்கள்."
 
-#: givefood/templates/public/donate.html:34
 msgid "Find a food bank"
 msgstr "உணவு வங்கியைக் கண்டறியவும்."
 
-#: givefood/templates/public/donate.html:40
 msgid "Managed donations"
 msgstr "நிர்வகிக்கப்பட்ட நன்கொடைகள்"
 
-#: givefood/templates/public/donate.html:41
 msgid ""
 "For donations or grants of £500 or more we can provide a managed service. "
 "Leveraging our data and logistical expertise we can ensure your donation is "
@@ -1061,11 +817,9 @@ msgstr ""
 "திறம்பட வழங்க பயன்படுத்தப்படுவதை உறுதிசெய்ய முடியும். நிகழ்நேர அறிக்கைகள் மற்றும் உங்கள் "
 "நன்கொடை எவ்வாறு பயன்படுத்தப்படுகிறது என்பதற்கான கண்காணிப்பு வழங்கப்படுகிறது."
 
-#: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"
 msgstr "ஏதாவது தவறாகக் கொடியிடுங்கள்"
 
-#: givefood/templates/public/flag.html:31
 msgid ""
 "Sorry that you've found something wrong. We'll review your report within 24 "
 "hours, usually quicker."
@@ -1073,81 +827,60 @@ msgstr ""
 "மன்னிக்கவும், நீங்கள் ஏதோ தவறாகக் கண்டுபிடித்தீர்கள். உங்கள் அறிக்கையை 24 மணி நேரத்திற்குள் "
 "மதிப்பாய்வு செய்வோம், பொதுவாக இது விரைவாக நடக்கும்."
 
-#: givefood/templates/public/human.html:4
 msgid "Human check"
 msgstr "மனித சோதனை"
 
-#: givefood/templates/public/human.html:21
 msgid "Sorry, but we just have to check you are a human..."
 msgstr "மன்னிக்கவும், நீங்கள் ஒரு மனிதர்தானா என்பதை நாங்கள் சரிபார்க்க வேண்டும்..."
 
-#: givefood/templates/public/includes/appbadges.html:4
 msgid "Download on the App Store"
 msgstr "App Store-ல் பதிவிறக்கவும்"
 
-#: givefood/templates/public/includes/appbadges.html:7
 msgid "Get it on Google Play"
 msgstr "Google Play-ல் பெறவும்"
 
-#: givefood/templates/public/includes/country.html:2
 msgid "England"
 msgstr "இங்கிலாந்து"
 
-#: givefood/templates/public/includes/country.html:3
 msgid "Wales"
 msgstr "வேல்ஸ்"
 
-#: givefood/templates/public/includes/country.html:4
 msgid "Scotland"
 msgstr "ஸ்காட்லாந்து"
 
-#: givefood/templates/public/includes/country.html:5
 msgid "Northern Ireland"
 msgstr "வடக்கு அயர்லாந்து"
 
-#: givefood/templates/public/includes/country.html:6
 msgid "Isle of Man"
 msgstr "ஐல் ஆஃப் மேன்"
 
-#: givefood/templates/public/includes/country.html:7
 msgid "Jersey"
 msgstr "ஜெர்சி"
 
-#: givefood/templates/public/includes/country.html:8
 msgid "Guernsey"
 msgstr "கெர்ன்சி"
 
-#: givefood/templates/public/includes/debugcomment.html:3
 msgid "Hello"
 msgstr "வணக்கம்"
 
-#: givefood/templates/public/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "அமைப்பு"
 
-#: givefood/templates/public/includes/maplegend.html:4
-#: givefood/templates/public/includes/maplegend.html:5
-#: givefood/templates/public/includes/maplegend.html:7
 msgid "marker"
 msgstr "குறிப்பான்"
 
-#: givefood/templates/public/includes/maplegend.html:5
 msgid "Location"
 msgstr "இடம்"
 
-#: givefood/templates/public/includes/maplegend.html:6
 msgid "Service area"
 msgstr "சேவை பகுதி"
 
-#: givefood/templates/public/includes/maplegend.html:7
 msgid "Donation point"
 msgstr "நன்கொடை புள்ளி"
 
-#: givefood/templates/public/includes/serviceareadisclaimer.html:3
 msgid "Service areas are approximate. You should check with the food bank"
 msgstr "சேவைப் பகுதிகள் தோராயமானவை. நீங்கள் உணவு வங்கியைத் தொடர்பு கொள்ள வேண்டும்."
 
-#: givefood/templates/public/index.html:9
 msgid ""
 "Give Food a UK charity uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
@@ -1156,8 +889,6 @@ msgstr ""
 "முன்னிலைப்படுத்த தரவைப் பயன்படுத்துகிறது, பின்னர் அதைப் போக்க உதவும் கருவிகளை "
 "வழங்குகிறது."
 
-#: givefood/templates/public/index.html:14
-#: givefood/templates/public/index.html:31
 msgid ""
 "We're a UK charity that uses data to highlight local and structural food "
 "insecurity then provides tools to help alleviate it."
@@ -1165,7 +896,6 @@ msgstr ""
 "நாங்கள் ஒரு UK தொண்டு நிறுவனம், உள்ளூர் மற்றும் கட்டமைப்பு உணவுப் பாதுகாப்பின்மையை "
 "முன்னிலைப்படுத்த தரவைப் பயன்படுத்தி, பின்னர் அதைப் போக்க உதவும் கருவிகளை வழங்குகிறோம்."
 
-#: givefood/templates/public/index.html:32
 msgid ""
 "Use our unique database to find a food bank near you, see what they need and "
 "how you can help by donating or volunteering."
@@ -1174,19 +904,15 @@ msgstr ""
 "பயன்படுத்தவும், அவர்களுக்கு என்ன தேவை என்பதையும், நன்கொடை அளிப்பதன் மூலமோ அல்லது தன்னார்வத் "
 "தொண்டு செய்வதன் மூலமோ நீங்கள் எவ்வாறு உதவலாம் என்பதையும் காணவும்."
 
-#: givefood/templates/public/index.html:84
 msgid "We've worked with"
 msgstr "நாங்கள் இணைந்து பணியாற்றியுள்ளோம்"
 
-#: givefood/templates/public/index.html:105
 msgid "How we can help"
 msgstr "நாங்கள் எப்படி உதவ முடியும்"
 
-#: givefood/templates/public/index.html:111
 msgid "Public"
 msgstr "பொது"
 
-#: givefood/templates/public/index.html:112
 msgid ""
 "Use our tool to find your local food banks, then donate, volunteer or take "
 "political action."
@@ -1194,11 +920,9 @@ msgstr ""
 "உங்கள் உள்ளூர் உணவு வங்கிகளைக் கண்டறிய எங்கள் கருவியைப் பயன்படுத்தவும், பின்னர் நன்கொடை "
 "அளிக்கவும், தன்னார்வத் தொண்டு செய்யவும் அல்லது அரசியல் நடவடிக்கை எடுக்கவும்."
 
-#: givefood/templates/public/index.html:113
 msgid "Find out how to help"
 msgstr "எப்படி உதவுவது என்று அறிக"
 
-#: givefood/templates/public/index.html:117
 msgid ""
 "Register a food bank to be included in our database and allow users to find "
 "you and what you need."
@@ -1206,17 +930,12 @@ msgstr ""
 "எங்கள் தரவுத்தளத்தில் சேர்க்க ஒரு உணவு வங்கியைப் பதிவுசெய்து, பயனர்கள் உங்களையும் "
 "உங்களுக்குத் தேவையானதையும் கண்டறிய அனுமதிக்கவும்."
 
-#: givefood/templates/public/index.html:118
-#: givefood/templates/public/register_foodbank.html:9
-#: givefood/templates/public/register_foodbank.html:21
 msgid "Register a food bank"
 msgstr "உணவு வங்கியைப் பதிவு செய்யவும்"
 
-#: givefood/templates/public/index.html:121
 msgid "Media"
 msgstr "ஊடகம்"
 
-#: givefood/templates/public/index.html:122
 msgid ""
 "Journalists, in particular data journalists, can use our data for stories "
 "around food poverty."
@@ -1224,16 +943,12 @@ msgstr ""
 "பத்திரிகையாளர்கள், குறிப்பாக தரவு பத்திரிகையாளர்கள், உணவு வறுமை பற்றிய கதைகளுக்கு "
 "எங்கள் தரவைப் பயன்படுத்தலாம்."
 
-#: givefood/templates/public/index.html:123
-#: givefood/templates/public/index.html:128
 msgid "Use our API"
 msgstr "எங்கள் API ஐப் பயன்படுத்தவும்"
 
-#: givefood/templates/public/index.html:126
 msgid "Researchers & students"
 msgstr "ஆராய்ச்சியாளர்கள் & மாணவர்கள்"
 
-#: givefood/templates/public/index.html:127
 msgid ""
 "We can provide our data in bulk, plus advice on how to interpret it, to "
 "researchers. Have a look at our API or email us."
@@ -1242,84 +957,63 @@ msgstr ""
 "ஆராய்ச்சியாளர்களுக்கு வழங்க முடியும். எங்கள் API ஐப் பாருங்கள் அல்லது எங்களுக்கு மின்னஞ்சல் "
 "அனுப்புங்கள்."
 
-#: givefood/templates/public/index.html:134
 msgid "Statistics"
 msgstr "புள்ளிவிவரங்கள்"
 
-#: givefood/templates/public/index.html:148
 msgid "Items requested"
 msgstr "கோரப்பட்ட பொருட்கள்"
 
-#: givefood/templates/public/index.html:152
 msgid "Meals delivered"
 msgstr "உணவுகள் டெலிவரி செய்யப்பட்டன"
 
-#: givefood/templates/public/index.html:156
-#: givefood/templates/public/page.html:41
 msgid "Last updated"
 msgstr "கடைசியாகப் புதுப்பிக்கப்பட்டது"
 
-#: givefood/templates/public/index.html:168
 msgid "Read our"
 msgstr "எங்கள்"
 
-#: givefood/templates/public/index.html:168
 msgid "annual report"
 msgstr "ஆண்டு அறிக்கை"
 
-#: givefood/templates/public/page.html:36
 msgid "Something wrong in this page?"
 msgstr "இந்தப் பக்கத்தில் ஏதாவது தவறு உள்ளதா?"
 
-#: givefood/templates/public/page.html:42
 msgid "food bank needs viewed this week"
 msgstr "இந்த வாரம் பார்க்க வேண்டிய உணவு வங்கிகள்"
 
-#: givefood/templates/public/page.html:45
 msgid "Give Food is a registered charity in England & Wales"
 msgstr "கிவ் ஃபுட் என்பது இங்கிலாந்து & வேல்ஸில் பதிவுசெய்யப்பட்ட ஒரு தொண்டு நிறுவனமாகும்."
 
-#: givefood/templates/public/page.html:46
 msgid "Registered with the"
 msgstr "பதிவுசெய்யப்பட்டது"
 
-#: givefood/templates/public/page.html:47
 msgid "ICO Data Protection Registration"
 msgstr "ICO தரவு பாதுகாப்பு பதிவு"
 
-#: givefood/templates/public/page.html:54
 msgid "Dashboards"
 msgstr "டாஷ்போர்டுகள்"
 
-#: givefood/templates/public/page.html:60
 msgid "Privacy policy"
 msgstr "தனியுரிமைக் கொள்கை"
 
-#: givefood/views.py:65
 msgid "e.g. EH12 5PJ or Glasgow"
 msgstr "எ.கா. EH12 5PJ அல்லது கிளாஸ்கோ"
 
-#: givefood/views.py:66
 msgid "e.g. HA9 0WS or Manchester"
 msgstr "எ.கா. HA9 0WS அல்லது மான்செஸ்டர்"
 
-#: givefood/views.py:67
 msgid "e.g. CF10 1NS or Cardiff"
 msgstr "எ.கா. CF10 1NS அல்லது கார்டிஃப்"
 
-#: givefood/views.py:68
 msgid "e.g. BT12 6LW or Belfast"
 msgstr "எ.கா. BT12 6LW அல்லது பெல்ஃபாஸ்ட்"
 
-#: givefood/views.py:898
 msgid "minutes"
 msgstr "நிமிடங்கள்"
 
-#: givefood/views.py:899
 msgid "Under a minute ago"
 msgstr "ஒரு நிமிடத்திற்கும் குறைவாகவே"
 
-#: givefood/views.py:901
 msgid "ago"
 msgstr "முன்பு"
 

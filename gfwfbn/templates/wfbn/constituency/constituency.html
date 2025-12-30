@@ -40,12 +40,12 @@
       <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{% url 'index' %}">{% blocktrans %}Home{% endblocktrans %}</a></li>
-                <li><a href="{% url 'wfbn:constituencies' %}">Constituencies</a></li>
+                <li><a href="{% url 'wfbn:constituencies' %}">{% trans "Constituencies" %}</a></li>
                 <li class="is-active"><a href="#" aria-current="page">{{ constituency }}</a></li>
             </ul>
       </nav>
 
-      <h1>Food banks in {{ constituency }}</h1>
+      <h1>{% blocktrans with constituency_name=constituency.name %}Food banks in {{ constituency_name }}{% endblocktrans %}</h1>
 
       <div class="columns">
 
@@ -55,28 +55,28 @@
 
           <div class="column is-6">
             {% if enable_write %}
-              <p>{{ constituency.name }} constituency is represented by <a href="https://www.google.co.uk/search?q={{ constituency.mp|urlencode }}%20MP">{{ constituency.mp }} MP</a>
+              <p>{% blocktrans with constituency_name=constituency.name mp_name=constituency.mp mp_url=constituency.mp|urlencode %}{{ constituency_name }} constituency is represented by{% endblocktrans %} <a href="https://www.google.co.uk/search?q={{ constituency.mp|urlencode }}%20MP">{{ constituency.mp }} MP</a>
                 {% if constituency.mp_party == "Speaker" %}
-                  who is the Speaker of the House of Commons.
+                  {% trans "who is the Speaker of the House of Commons." %}
                 {% else %}
-                  of the {{ constituency.mp_party }} party.
+                  {% blocktrans with mp_party=constituency.mp_party %}of the {{ mp_party }} party.{% endblocktrans %}
                 {% endif %}
               </p>
-              <a href="{% url 'write:index' %}" class="button is-light is-info">Write</a><br><br>
+              <a href="{% url 'write:index' %}" class="button is-light is-info">{% trans "Write" %}</a><br><br>
             {% endif %}
 
-            <p>The following food banks operate in the {{ constituency.name }} constituency. Here is what they are requesting to have donated.</p>
+            <p>{% blocktrans with constituency_name=constituency.name %}The following food banks operate in the {{ constituency_name }} constituency. Here is what they are requesting to have donated.{% endblocktrans %}</p>
             <table class="table is-narrow is-fullwidth">
               {% for foodbank in constituency.foodbanks %}
                 <tr>
                   <td class="foodbank_name">
                     <a href="{{ foodbank.gf_url }}">{{ foodbank.name }}</a>
                     {% if foodbank.type == "location" %}
-                      <div class="parent_org">Part of <a href="/needs/at/{{ foodbank.foodbank_name|slugify }}/">{{ foodbank.foodbank_name }}</a></div>
+                      <div class="parent_org">{% blocktrans with foodbank_slug=foodbank.foodbank_name|slugify foodbank_name=foodbank.foodbank_name %}Part of <a href="/needs/at/{{ foodbank_slug }}/">{{ foodbank_name }}</a>{% endblocktrans %}</div>
                     {% endif %}
                   </td>
                   <td>
-                    {% with change_text=foodbank.needs.change_text %}
+                    {% with change_text=foodbank.needs.get_change_text %}
                       {% if change_text == "Unknown" %}
                         {% if foodbank.phone_number %}
                           <img src="/static/img/phone.svg" alt="{% blocktrans %}Phone{% endblocktrans %}" class="contact-icon"> <a href="tel:{{ foodbank.phone_number|full_phone }}">{{ foodbank.phone_number|friendly_phone }}</a>
@@ -108,7 +108,7 @@
             <div id="map" class="sidemap"></div>
             {% include "public/includes/maplegend.html" %}
 
-            <h2>Nearby Constituencies</h2>
+            <h2>{% trans "Nearby Constituencies" %}</h2>
             <ul>
               {% for nearby_constituency in constituency.nearby %}
                 <li><a href="{% url 'wfbn:constituency' nearby_constituency.slug %}">{{ nearby_constituency }}</a></li>
