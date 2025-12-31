@@ -206,7 +206,7 @@ def build_foodbank_row(foodbank, location=None):
             "network_id": foodbank.network_id,
             "is_school": foodbank.is_school,
             "is_mobile": location.is_mobile,
-            "is_area": bool(location.boundary_geojson),
+            "is_area": location.is_area(),
             "boundary": location.boundary_geojson,
             "created": foodbank.created,
             "modified": location.modified,
