@@ -2435,10 +2435,21 @@ def webpush_tester_send(request):
 
 def crawl_sets(request):
 
+    crawl_type_options = ["need", "article", "charity", "discrepancy", "check", "urls"]
+    crawl_type_filter = request.GET.get("type", "")
+    
+    if crawl_type_filter and crawl_type_filter not in crawl_type_options:
+        return HttpResponseForbidden()
+
     crawl_sets = CrawlSet.objects.annotate(
         item_count=Count('crawlitem'),
         object_count=Count('crawlitem', filter=Q(crawlitem__object_id__isnull=False))
-    ).order_by("-start")[:50]
+    )
+    
+    if crawl_type_filter:
+        crawl_sets = crawl_sets.filter(crawl_type=crawl_type_filter)
+    
+    crawl_sets = crawl_sets.order_by("-start")[:50]
 
     # Get CrawlItems without CrawlSets
     orphaned_crawl_items = CrawlItem.objects.filter(crawl_set__isnull=True).select_related('foodbank').order_by("-start")[:50]
@@ -2447,6 +2458,8 @@ def crawl_sets(request):
         "section":"settings",
         "crawl_sets":crawl_sets,
         "orphaned_crawl_items":orphaned_crawl_items,
+        "crawl_type_options":crawl_type_options,
+        "crawl_type_filter":crawl_type_filter,
     }
 
     return render(request, "admin/crawl_sets.html", template_vars)
