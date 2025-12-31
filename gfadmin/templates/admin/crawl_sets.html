@@ -11,6 +11,19 @@
 
       <h2>Crawl Sets</h2>
 
+      <div class="field is-pulled-right">
+        <div class="control">
+          <div class="select">
+            <select onchange="javascript:window.location.href=this.value">
+              <option value="?type=">All Types</option>
+              {% for type in crawl_type_options %}
+                <option value="?type={{ type }}"{% if crawl_type_filter == type %} selected{% endif %}>{{ type }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
       <table class="table is-fullwidth is-hoverable">
         <thead>
             <tr>
