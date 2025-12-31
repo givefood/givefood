@@ -9,9 +9,11 @@ from givefood.models import Foodbank, CrawlSet
 
 class Command(BaseCommand):
 
-    help = 'Runs a specific view function from the command line.'
+    help = 'Checks all food banks for updated needs and updates the database.'
 
     def handle(self, *args, **options):
+
+        self.stdout.write("Crawling all food banks for needs...")
 
         crawl_set = CrawlSet(
             crawl_type = "need",
