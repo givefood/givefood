@@ -2439,7 +2439,7 @@ def crawl_sets(request):
     crawl_type_filter = request.GET.get("type", "")
     
     if crawl_type_filter and crawl_type_filter not in crawl_type_options:
-        return HttpResponseForbidden()
+        return HttpResponseForbidden("Invalid crawl type filter")
 
     crawl_sets = CrawlSet.objects.annotate(
         item_count=Count('crawlitem'),
