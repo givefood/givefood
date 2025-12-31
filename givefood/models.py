@@ -853,6 +853,9 @@ class FoodbankLocation(models.Model):
     def boundary_geojson_dict(self):
         return geojson_dict(self.boundary_geojson)
 
+    def is_area(self):
+        return bool(self.boundary_geojson)
+
     def delete(self, *args, **kwargs):
 
         super(FoodbankLocation, self).delete(*args, **kwargs)
