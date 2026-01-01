@@ -5,37 +5,7 @@ from django.urls import path, re_path
 
 
 import givefood.views
-from givefood.func import get_slug_redirects
-from givefood.const.general import RICK_ASTLEY, FOODBANK_SUBPAGES
-
-
-def generate_slug_redirect_patterns():
-    """Generate URL redirect patterns for old food bank slugs."""
-    from functools import partial
-    
-    old_foodbank_slugs = get_slug_redirects()
-    
-    redirect_patterns = []
-    for old_slug, new_slug in old_foodbank_slugs.items():
-        # Main foodbank page redirect - use custom view that preserves language
-        redirect_patterns.append(
-            path(
-                f"needs/at/{old_slug}/",
-                partial(givefood.views.slug_redirect, old_slug=old_slug, new_slug=new_slug),
-                name=f"redirect_{old_slug}"
-            )
-        )
-        # Subpage redirects
-        for subpage in FOODBANK_SUBPAGES:
-            redirect_patterns.append(
-                path(
-                    f"needs/at/{old_slug}/{subpage}/",
-                    partial(givefood.views.slug_redirect, old_slug=old_slug, new_slug=new_slug, subpage=subpage),
-                    name=f"redirect_{old_slug}_{subpage}"
-                )
-            )
-    
-    return redirect_patterns
+from givefood.const.general import RICK_ASTLEY
 
 
 urlpatterns = []
@@ -46,9 +16,6 @@ urlpatterns += [
 
 # Translated pages
 urlpatterns += i18n_patterns(
-
-    # Old food bank slug redirects - must be inside i18n_patterns to work for all languages
-    *generate_slug_redirect_patterns(),
 
     # Public
     path("", givefood.views.index, name="index"),

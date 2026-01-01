@@ -149,3 +149,53 @@ class GeoJSONPreload:
                 response['Link'] = link_header
 
         return response
+
+
+# Redirect old food bank slugs to new ones
+class SlugRedirectMiddleware:
+    """
+    Middleware to handle old food bank slug redirects.
+    
+    This checks if a requested URL path contains an old food bank slug
+    that should be redirected to a new slug. If so, it performs a 301
+    permanent redirect to the new URL while preserving the language prefix.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        from django.utils.translation import get_language
+        from givefood.models import SlugRedirect
+        from givefood.const.general import FOODBANK_SUBPAGES
+        import re
+        
+        path = request.path
+        
+        # Check if this is a needs/at/ URL that might need redirecting
+        # Pattern: /needs/at/<slug>/ or /<lang>/needs/at/<slug>/ or with subpages
+        pattern = r'^(/[a-z]{2})?/needs/at/([-\w]+)(/[-\w]+)?/?$'
+        match = re.match(pattern, path)
+        
+        if match:
+            lang_prefix = match.group(1) or ''  # e.g., '/ar' or empty string
+            old_slug = match.group(2)
+            subpath = match.group(3) or ''  # e.g., '/news' or empty string
+            subpage = subpath.strip('/') if subpath else None
+            
+            # Check if this slug needs redirecting
+            try:
+                redirect_obj = SlugRedirect.objects.get(old_slug=old_slug)
+                
+                # Build the new URL
+                if subpage:
+                    new_path = f"{lang_prefix}/needs/at/{redirect_obj.new_slug}/{subpage}/"
+                else:
+                    new_path = f"{lang_prefix}/needs/at/{redirect_obj.new_slug}/"
+                
+                return redirect(new_path, permanent=True)
+            except SlugRedirect.DoesNotExist:
+                # No redirect needed, continue with normal request processing
+                pass
+        
+        return self.get_response(request)

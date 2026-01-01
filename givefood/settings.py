@@ -92,6 +92,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     # "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "givefood.middleware.SlugRedirectMiddleware",
     "givefood.middleware.LoginRequiredAccess",
     "givefood.middleware.OfflineKeyCheck",
     "givefood.middleware.GeoJSONPreload",
