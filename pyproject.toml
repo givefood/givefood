@@ -55,6 +55,7 @@ dependencies = [
     "pywebpush==1.14.1",
     "pytest>=8.4.2",
     "pytest-django>=4.11.1",
+    "pytest-html>=4.1.1",
 ]
 
 [project.optional-dependencies]
@@ -62,6 +63,7 @@ dev = [
     "pytest",
     "pytest-django",
     "pytest-cov",
+    "pytest-html",
 ]
 
 [project.urls]
