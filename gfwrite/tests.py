@@ -1,6 +1,7 @@
 """
 Tests for the gfwrite (Write to MP) app.
 """
+import uuid
 import pytest
 from django.test import Client
 from django.urls import reverse
@@ -9,8 +10,14 @@ from givefood.models import ParliamentaryConstituency
 
 @pytest.fixture
 def create_test_constituency():
-    """Factory fixture for creating test constituencies with default values."""
-    def _create_constituency(name="Test Constituency", slug="test-constituency", **kwargs):
+    """Factory fixture for creating test constituencies with unique values."""
+    def _create_constituency(name=None, slug=None, **kwargs):
+        # Generate unique identifiers to avoid conflicts
+        unique_id = str(uuid.uuid4())[:8]
+        if name is None:
+            name = f"Test Constituency {unique_id}"
+        if slug is None:
+            slug = f"test-constituency-{unique_id}"
         defaults = {
             "mp": "Test MP",
             "mp_party": "Test Party",

@@ -20,7 +20,8 @@ class TestDashboardIndex:
         response = client.get('/dashboard/')
         assert response.status_code == 200
         # Check that template renders correctly
-        assert b'Dashboard' in response.content or b'dashboard' in response.content.lower()
+        content = response.content.decode('utf-8')
+        assert 'Dashboard' in content or 'dashboard' in content
 
 
 @pytest.mark.django_db
