@@ -368,8 +368,24 @@ def build_donationpoint_row(donationpoint, is_location=False):
 
 
 def row_to_csv_values(row, fields):
-    """Convert a row dict to a list of values in the order of fields."""
-    return [row[field] for field in fields]
+    """Convert a row dict to a list of values in the order of fields.
+    
+    Special handling for phone number fields to preserve leading zeros in Excel:
+    Phone numbers are formatted as ="value" which forces Excel to treat them as text.
+    """
+    # List of fields that contain phone numbers
+    phone_fields = {'phone_number', 'secondary_phone_number'}
+    
+    values = []
+    for field in fields:
+        value = row[field]
+        # If this is a phone number field and has a value, format it for Excel
+        if field in phone_fields and value:
+            # Prefix with = and wrap in quotes to force text formatting in Excel
+            values.append(f'="{value}"')
+        else:
+            values.append(value)
+    return values
 
 
 class Command(BaseCommand):

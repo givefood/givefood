@@ -414,3 +414,68 @@ class TestDumpCommand:
         # All three should have the same fields
         assert csv_fields == json_fields, f"CSV and JSON have different fields"
         assert csv_fields == xml_fields, f"CSV and XML have different fields. CSV only: {csv_fields - xml_fields}, XML only: {xml_fields - csv_fields}"
+
+    def test_phone_numbers_preserve_leading_zero_in_csv(self):
+        """Test that phone numbers with leading zeros are preserved in CSV dumps."""
+        # Create a test foodbank with a phone number starting with 0
+        foodbank = Foodbank(
+            name="Test Food Bank Phone",
+            slug="test-food-bank-phone",
+            address="123 Phone Street",
+            postcode="SW1A 8HH",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://phone.example.com",
+            shopping_list_url="https://phone.example.com/shopping",
+            contact_email="phone@example.com",
+            phone_number="07123456789",  # UK mobile number with leading 0
+            secondary_phone_number="01234567890",  # UK landline with leading 0
+            is_closed=False,
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need so latest_need is not None
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Goods",
+            published=True,
+        )
+        need.save(do_translate=False)
+        
+        foodbank.latest_need = need
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Run the dump command
+        call_command('dump')
+
+        # Get the latest CSV dump
+        dump = Dump.objects.filter(dump_type='foodbanks', dump_format='csv').latest('created')
+
+        # Check the raw CSV content to verify phone number formatting
+        csv_content = dump.the_dump
+        
+        # Phone numbers should be formatted as ="07123456789" which when quoted by CSV becomes "=""07123456789"""
+        # This preserves the leading zero in Excel - Excel will interpret "=""value""" as a formula that returns "value"
+        assert '="07123456789"' in csv_content or '=""07123456789""' in csv_content, "Phone number should be formatted with = prefix to preserve leading zero"
+        assert '="01234567890"' in csv_content or '=""01234567890""' in csv_content, "Secondary phone number should be formatted with = prefix to preserve leading zero"
+
+        # Parse the CSV normally
+        csv_reader = csv.DictReader(io.StringIO(csv_content))
+        rows = list(csv_reader)
+        
+        # Find our test foodbank
+        test_row = None
+        for row in rows:
+            if row['organisation_name'] == 'Test Food Bank Phone':
+                test_row = row
+                break
+        
+        assert test_row is not None, "Test foodbank not found in dump"
+        
+        # The CSV reader will read the ="value" format correctly
+        # Note: csv.DictReader will interpret ="07123456789" as the formula string
+        assert '07123456789' in test_row['phone_number'], "Phone number should contain the digits with leading zero"
+        assert '01234567890' in test_row['secondary_phone_number'], "Secondary phone number should contain the digits with leading zero"
