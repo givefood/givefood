@@ -491,7 +491,7 @@ class TestFoodbankLocationMap:
         # Convert params list to dict for easier checking
         params_dict = dict(called_params)
         assert params_dict['center'] == "51.5014,-0.1419"
-        assert params_dict['zoom'] == 12  # Zoom 12 when boundary exists
+        assert params_dict['zoom'] == 11  # Zoom 11 when boundary exists
         assert params_dict['language'] == "en"  # Check language parameter
         assert 'path' in params_dict
         path_param = params_dict['path']

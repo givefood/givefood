@@ -990,6 +990,8 @@ def slug_redirect(request, old_slug, new_slug, subpage=None):
     This view is used for i18n-aware redirects that maintain the current language
     prefix in the URL. For example, /ar/needs/at/durham/ redirects to 
     /ar/needs/at/county-durham/ (preserving the 'ar' language code).
+    
+    Note: This view is called by SlugRedirectMiddleware, not directly by URL patterns.
     """
     from django.utils.translation import get_language
     
