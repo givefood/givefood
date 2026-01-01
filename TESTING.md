@@ -74,6 +74,70 @@ Tests for the API v2 endpoints:
 - **TestAPI2Foodbanks** (3 tests)
   - Food banks list endpoint (JSON, XML, GeoJSON formats)
 
+#### gfapi3/tests.py
+Tests for the API v3 endpoints:
+
+- **TestAPI3Index** (2 tests)
+  - API v3 index page accessibility
+  - API v3 content verification
+
+*Note: Company endpoint tests require PostgreSQL and are skipped in SQLite test environments.*
+
+#### gfdash/tests.py
+Tests for the dashboard app:
+
+- **TestDashboardIndex** (2 tests)
+  - Dashboard index page accessibility
+
+- **TestMostRequestedItems** (4 tests)
+  - Most requested items page
+  - Days parameter validation
+
+- **TestMostExcessItems** (3 tests)
+  - Most excess items page
+  - Days parameter validation
+
+- **TestItemCategories** (1 test)
+- **TestItemGroups** (1 test)
+- **TestWeeklyItemcount** (2 tests)
+- **TestArticles** (1 test)
+- **TestExcess** (1 test)
+- **TestFoodbanksFound** (1 test)
+- **TestSupermarkets** (1 test)
+- **TestTrussellTrust** (2 tests)
+- **TestPricePerKg** (1 test)
+- **TestPricePerCalorie** (1 test)
+- **TestCharityIncomeExpenditure** (1 test)
+
+*Note: Some dashboard tests require PostgreSQL-specific features and are skipped in SQLite test environments.*
+
+#### gfwrite/tests.py
+Tests for the Write to MP tool:
+
+- **TestWriteIndex** (2 tests)
+  - Write index page accessibility
+  - Postcode form presence
+
+- **TestWriteConstituency** (3 tests)
+  - Constituency page with valid/invalid slugs
+  - MP information display
+
+- **TestWriteEmail** (1 test)
+  - Email page GET request handling
+
+- **TestWriteDone** (3 tests)
+  - Done/confirmation page
+  - Email parameter handling
+
+#### gfauth/tests.py
+Tests for the authentication app:
+
+- **TestSignIn** (2 tests)
+  - Sign in page accessibility
+  - Template rendering
+
+*Note: Sign out and OAuth receiver tests require session data/credentials and are skipped.*
+
 ## Running Tests
 
 ### Basic Usage
@@ -107,14 +171,20 @@ pytest --cov=givefood --cov=gfapi2 --cov-report=html
 
 ## Test Statistics
 
-- **Total Tests**: 39
-- **Passing**: 39 (100%)
+- **Total Tests**: 290
+- **Passing**: 278 (with SQLite test database)
+- **Skipped**: 1
+- **Known Failures**: 11 (PostgreSQL-specific features not available in SQLite)
 - **Coverage Areas**:
   - Text processing utilities
   - Geographic calculations
-  - API endpoints
+  - API endpoints (v2 and v3)
   - View accessibility
   - JSON/GeoJSON handling
+  - Dashboard views
+  - Write to MP tool
+  - Authentication pages
+  - Data dumps
 
 ## Test Approach
 
