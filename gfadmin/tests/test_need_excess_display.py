@@ -1,5 +1,6 @@
 """Test that excess comparison is displayed correctly on the admin need page."""
 import pytest
+from bs4 import BeautifulSoup
 from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
@@ -137,18 +138,20 @@ class TestExcessComparison:
         response = client.get(url)
         
         assert response.status_code == 200
-        content = response.content.decode('utf-8')
         
-        # Check that published excess panel has its own unique ID
-        assert 'id="published-excess-panel"' in content
+        # Parse HTML with BeautifulSoup for robust testing
+        soup = BeautifulSoup(response.content, 'html.parser')
         
-        # Count occurrences of nonpert-panel - should only appear in the actual nonpert section
-        # and not in any published section
-        lines = content.split('\n')
-        for i, line in enumerate(lines):
-            # If we find a line with published class and nonpert-panel id, that's the bug
-            if 'class="published' in line and 'is-half' in line:
-                # Check the surrounding lines for nonpert-panel
-                context = '\n'.join(lines[max(0, i-2):min(len(lines), i+3)])
-                assert 'id="nonpert-panel"' not in context, \
-                    "Published column incorrectly uses nonpert-panel ID"
+        # Find all published columns
+        published_divs = soup.find_all('div', class_='published')
+        
+        # Check that no published div has the nonpert-panel id
+        for div in published_divs:
+            assert div.get('id') != 'nonpert-panel', \
+                "Published column incorrectly uses nonpert-panel ID"
+        
+        # Verify published-excess-panel exists
+        excess_panel = soup.find('div', id='published-excess-panel')
+        assert excess_panel is not None, "published-excess-panel not found"
+        assert 'published' in excess_panel.get('class', []), \
+            "published-excess-panel should have published class"
