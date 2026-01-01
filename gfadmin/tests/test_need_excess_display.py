@@ -66,9 +66,11 @@ def prev_published_need(foodbank, current_need):
         input_method='typed'
     )
     prev_need.save(do_translate=False, do_foodbank_save=False)
-    # Update created timestamp to be before current need
+    # Update created timestamp to be before current need using Django ORM
+    # The created field is auto-populated by Django's auto_now_add
+    prev_need.refresh_from_db()
     FoodbankChange.objects.filter(pk=prev_need.pk).update(
-        created=current_need.created - timezone.timedelta(days=1)
+        created=prev_need.created - timezone.timedelta(days=1)
     )
     prev_need.refresh_from_db()
     return prev_need
@@ -140,21 +142,13 @@ class TestExcessComparison:
         # Check that published excess panel has its own unique ID
         assert 'id="published-excess-panel"' in content
         
-        # The published excess section should NOT have id="nonpert-panel"
-        # (this was the bug - it was using nonpert-panel id)
-        published_section_start = content.find('class="published column is-half tabcontent"')
-        if published_section_start > 0:
-            # Get the section content
-            next_div = content.find('</div>', published_section_start)
-            section = content[published_section_start:next_div]
-            
-            # Make sure the excess column (second published column) doesn't have wrong ID
-            # We need to find the second occurrence
-            second_published = content.find('class="published column is-half tabcontent"', published_section_start + 1)
-            if second_published > 0:
-                next_div = content.find('</div>', second_published)
-                excess_section = content[second_published:next_div]
-                
-                # This section should NOT contain id="nonpert-panel"
-                assert 'id="nonpert-panel"' not in excess_section, \
-                    "Excess comparison section incorrectly uses nonpert-panel ID"
+        # Count occurrences of nonpert-panel - should only appear in the actual nonpert section
+        # and not in any published section
+        lines = content.split('\n')
+        for i, line in enumerate(lines):
+            # If we find a line with published class and nonpert-panel id, that's the bug
+            if 'class="published' in line and 'is-half' in line:
+                # Check the surrounding lines for nonpert-panel
+                context = '\n'.join(lines[max(0, i-2):min(len(lines), i+3)])
+                assert 'id="nonpert-panel"' not in context, \
+                    "Published column incorrectly uses nonpert-panel ID"
