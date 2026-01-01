@@ -89,18 +89,27 @@ class TestExcessComparison:
         response = client.get(url)
         
         assert response.status_code == 200
-        content = response.content.decode('utf-8')
         
-        # Check that the published tab's excess comparison div exists and is NOT hidden initially
-        # It should have class="published" but NOT class="is-hidden"
-        assert 'class="published column is-half tabcontent"' in content
-        assert 'id="published-excess-panel"' in content
+        # Parse HTML with BeautifulSoup for robust testing
+        soup = BeautifulSoup(response.content, 'html.parser')
         
-        # Check that it has correct aria attributes for published tab
-        assert 'aria-labelledby="published-tab"' in content
+        # Find the published excess panel
+        excess_panel = soup.find('div', id='published-excess-panel')
+        assert excess_panel is not None, "published-excess-panel not found"
         
-        # Check that the inner content uses published tab
-        assert 'data-tab="published"' in content
+        # Check that it has the published class
+        assert 'published' in excess_panel.get('class', [])
+        
+        # Check that it does NOT have is-hidden class
+        assert 'is-hidden' not in excess_panel.get('class', []), \
+            "published-excess-panel should not be hidden by default"
+        
+        # Check aria attributes
+        assert excess_panel.get('aria-labelledby') == 'published-tab'
+        
+        # Check inner data-tab attribute
+        inner_div = excess_panel.find('div', attrs={'data-tab': 'published'})
+        assert inner_div is not None, "Inner div with data-tab='published' not found"
         
     def test_excess_content_displayed(self, current_need, prev_published_need):
         """Test that actual excess comparison content is present."""
@@ -122,13 +131,17 @@ class TestExcessComparison:
         response = client.get(url)
         
         assert response.status_code == 200
-        content = response.content.decode('utf-8')
         
-        # Count the published tab content divs - should be 2 (one for Need, one for Excess)
-        published_divs = content.count('class="published column is-half tabcontent"')
+        # Parse HTML with BeautifulSoup for robust testing
+        soup = BeautifulSoup(response.content, 'html.parser')
         
-        # There should be at least 2 published divs (Need and Excess columns)
-        assert published_divs >= 2, f"Expected at least 2 published column divs, found {published_divs}"
+        # Find all published column divs
+        published_divs = soup.find_all('div', class_='published')
+        published_columns = [d for d in published_divs if 'column' in d.get('class', [])]
+        
+        # There should be at least 2 published column divs (Need and Excess columns)
+        assert len(published_columns) >= 2, \
+            f"Expected at least 2 published column divs, found {len(published_columns)}"
         
     def test_no_conflicting_panel_ids(self, current_need, prev_published_need):
         """Test that panel IDs don't conflict (published-excess should not use nonpert-panel id)."""
