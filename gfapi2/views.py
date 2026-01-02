@@ -213,6 +213,7 @@ def foodbank(request, slug):
                     "postcode":donationpoint.postcode,
                     "lat_lng":donationpoint.lat_lng,
                     "phone":donationpoint.phone_number,
+                    "url":donationpoint.url,
                     "opening_hours":donationpoint.opening_hours,
                     "wheelchair_accessible":donationpoint.wheelchair_accessible,
                     "politics": {
@@ -350,6 +351,7 @@ def foodbank(request, slug):
                         "slug": donationpoint.slug,
                         "address": donationpoint.full_address(),
                         "url": "https://www.givefood.org.uk/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
+                        "web": donationpoint.url,
                         "network": donationpoint.foodbank_network,
                         "telephone": donationpoint.phone_number,
                         "opening_hours": donationpoint.opening_hours,
