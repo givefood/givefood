@@ -774,8 +774,8 @@ def donationpoint_search(request):
             item_dict["urls"] = {
                 "html": "https://www.givefood.org.uk/needs/at/%s/donationpoint/%s/" % (donationpoint.foodbank_slug, donationpoint.slug),
             }
-            if hasattr(donationpoint, 'url') and donationpoint.url:
-                item_dict["urls"]["homepage"] = donationpoint.url
+            if hasattr(donationpoint, 'homepage_url') and donationpoint.homepage_url:
+                item_dict["urls"]["homepage"] = donationpoint.homepage_url
         elif donationpoint.type == "location":
             item_dict["phone"] = donationpoint.phone_or_foodbank_phone()
             item_dict["email"] = donationpoint.email_or_foodbank_email()
