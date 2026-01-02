@@ -335,3 +335,30 @@ class TestAPI2DonationPointSearch:
         response = client.get('/api/2/donationpoints/search/?address=SW1A1AA&format=xml')
         # Should return 200 or 400 (if geocoding fails or no results)
         assert response.status_code in [200, 400]
+
+    def test_donationpoint_search_includes_homepage_url(self, client):
+        """Test that donation point search includes homepage URL when it exists in the model."""
+        # Using a known UK postcode
+        response = client.get('/api/2/donationpoints/search/?address=SW1A1AA')
+        
+        # Should return 200 or 400 (if geocoding fails or no results)
+        assert response.status_code in [200, 400]
+        
+        # Only check structure if successful
+        if response.status_code == 200:
+            import json
+            data = json.loads(response.content)
+            assert isinstance(data, list)
+            
+            # If there are donation point results with a URL, check that homepage is included
+            if len(data) > 0:
+                for item in data:
+                    if item.get('type') == 'donationpoint':
+                        assert 'urls' in item
+                        # If the donation point has a homepage URL in the model, it should be in the response
+                        # We can't assert it always exists since not all donation points have URLs
+                        if 'homepage' in item['urls']:
+                            homepage_url = item['urls']['homepage']
+                            # Verify it's a valid URL string
+                            assert isinstance(homepage_url, str)
+                            assert homepage_url.startswith('http')

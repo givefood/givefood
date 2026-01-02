@@ -1166,6 +1166,8 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
             donationpoint.url = reverse("wfbn:foodbank_location", kwargs={"slug":donationpoint.foodbank_slug, "locslug":donationpoint.slug})
             donationpoint.photo_url = reverse("wfbn-generic:foodbank_location_photo", kwargs={"slug":donationpoint.foodbank_slug, "locslug":donationpoint.slug})
         if donationpoint.type == "donationpoint":
+            # Preserve the original homepage URL before overwriting
+            donationpoint.homepage_url = donationpoint.url
             donationpoint.url = reverse("wfbn:foodbank_donationpoint", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
             donationpoint.photo_url = reverse("wfbn-generic:foodbank_donationpoint_photo", kwargs={"slug":donationpoint.foodbank_slug, "dpslug":donationpoint.slug})
         donationpoint.distance_mi = miles(donationpoint.distance)
