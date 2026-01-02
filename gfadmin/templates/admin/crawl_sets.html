@@ -15,9 +15,9 @@
         <div class="control">
           <div class="select">
             <select onchange="javascript:window.location.href=this.value">
-              <option value="?type=">All Types</option>
+              <option value="?type={% if adhoc_type_filter %}&adhoc_type={{ adhoc_type_filter }}{% endif %}">All Types</option>
               {% for type in crawl_type_options %}
-                <option value="?type={{ type }}"{% if crawl_type_filter == type %} selected{% endif %}>{{ type }}</option>
+                <option value="?type={{ type }}{% if adhoc_type_filter %}&adhoc_type={{ adhoc_type_filter }}{% endif %}"{% if crawl_type_filter == type %} selected{% endif %}>{{ type }}</option>
               {% endfor %}
             </select>
           </div>
@@ -72,6 +72,19 @@
 
     <div class="column is-one-quarter">
       <h2>Ad Hoc Crawls</h2>
+      
+      <div class="field is-pulled-right">
+        <div class="control">
+          <div class="select">
+            <select onchange="javascript:window.location.href=this.value">
+              <option value="?{% if crawl_type_filter %}type={{ crawl_type_filter }}&{% endif %}adhoc_type=">All Types</option>
+              {% for type in crawl_type_options %}
+                <option value="?{% if crawl_type_filter %}type={{ crawl_type_filter }}&{% endif %}adhoc_type={{ type }}"{% if adhoc_type_filter == type %} selected{% endif %}>{{ type }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
       
       <table class="table is-fullwidth is-hoverable">
         <thead>
