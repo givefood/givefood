@@ -2437,9 +2437,13 @@ def crawl_sets(request):
 
     crawl_type_options = ["need", "article", "charity", "discrepancy", "check", "urls"]
     crawl_type_filter = request.GET.get("type", "")
+    adhoc_type_filter = request.GET.get("adhoc_type", "")
     
     if crawl_type_filter and crawl_type_filter not in crawl_type_options:
         return HttpResponseForbidden("Invalid crawl type filter")
+    
+    if adhoc_type_filter and adhoc_type_filter not in crawl_type_options:
+        return HttpResponseForbidden("Invalid adhoc type filter")
 
     crawl_sets = CrawlSet.objects.annotate(
         item_count=Count('crawlitem'),
@@ -2452,7 +2456,12 @@ def crawl_sets(request):
     crawl_sets = crawl_sets.order_by("-start")[:50]
 
     # Get CrawlItems without CrawlSets
-    orphaned_crawl_items = CrawlItem.objects.filter(crawl_set__isnull=True).select_related('foodbank').order_by("-start")[:50]
+    orphaned_crawl_items = CrawlItem.objects.filter(crawl_set__isnull=True).select_related('foodbank')
+    
+    if adhoc_type_filter:
+        orphaned_crawl_items = orphaned_crawl_items.filter(crawl_type=adhoc_type_filter)
+    
+    orphaned_crawl_items = orphaned_crawl_items.order_by("-start")[:50]
 
     template_vars = {
         "section":"settings",
@@ -2460,6 +2469,7 @@ def crawl_sets(request):
         "orphaned_crawl_items":orphaned_crawl_items,
         "crawl_type_options":crawl_type_options,
         "crawl_type_filter":crawl_type_filter,
+        "adhoc_type_filter":adhoc_type_filter,
     }
 
     return render(request, "admin/crawl_sets.html", template_vars)
