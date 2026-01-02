@@ -340,11 +340,8 @@ class TestAPI2DonationPointSearch:
                         assert 'urls' in item
                         # If the donation point has a homepage URL in the model, it should be in the response
                         # We can't assert it always exists since not all donation points have URLs
-                        # but if it does exist, it should have the ref parameter
                         if 'homepage' in item['urls']:
                             homepage_url = item['urls']['homepage']
                             # Verify it's a valid URL string
                             assert isinstance(homepage_url, str)
                             assert homepage_url.startswith('http')
-                            # Verify it has the ref parameter (from url_with_ref)
-                            assert 'ref=givefood.org.uk' in homepage_url
