@@ -624,6 +624,24 @@
       </table>
     </div>
 
+    <div class="column tabcontent subscribers is-hidden" role="tabpanel">
+      <h3>WhatsApp</h3>
+      <table class="table is-fullwidth is-hoverable">
+        <tr>
+          <th>Phone Number</th>
+          <th>Created</th>
+          <th>Last Notified</th>
+        </tr>
+        {% for subscription in whatsapp_subscribers %}
+          <tr>
+            <td>{{ subscription.phone_number }}</td>
+            <td>{{ subscription.created }}</td>
+            <td>{{ subscription.last_notified|default:"-" }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+
     {# Crawls #}
     <div class="column tabcontent crawls is-hidden" role="tabpanel" id="crawls-panel" aria-labelledby="crawls-tab">
 

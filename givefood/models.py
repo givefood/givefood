@@ -2395,3 +2395,30 @@ class MobileSubscriber(models.Model):
     created = models.DateTimeField(auto_now_add=True, editable=False)
     class Meta:
         app_label = 'givefood'
+
+
+class WhatsappSubscriber(models.Model):
+    """
+    Stores WhatsApp subscriptions for food bank need notifications.
+    Users subscribe by sending "subscribe foodbank-slug" to the WhatsApp number.
+    """
+
+    phone_number = models.CharField(max_length=20, help_text="WhatsApp phone number in international format")
+    foodbank = models.ForeignKey(Foodbank, on_delete=models.CASCADE, related_name='whatsapp_subscriptions')
+    foodbank_name = models.CharField(max_length=100, editable=False, null=True, blank=True)
+
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+    last_notified = models.DateTimeField(null=True, blank=True, editable=False)
+
+    class Meta:
+        app_label = 'givefood'
+        unique_together = ('phone_number', 'foodbank')
+
+    def __str__(self):
+        return f"WhatsApp: {self.phone_number} - {self.foodbank_name}"
+
+    def save(self, *args, **kwargs):
+        # Denorm food bank name
+        if self.foodbank:
+            self.foodbank_name = self.foodbank.name
+        super(WhatsappSubscriber, self).save(*args, **kwargs)
