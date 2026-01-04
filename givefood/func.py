@@ -2356,7 +2356,7 @@ def send_whatsapp_notification(need):
     Returns:
         Number of notifications sent successfully
     """
-    from datetime import timezone as tz
+    from django.utils import timezone
     from givefood.models import WhatsappSubscriber
     
     # Get all WhatsApp subscriptions for this food bank
@@ -2373,7 +2373,7 @@ def send_whatsapp_notification(need):
         if success:
             sent_count += 1
             # Update last_notified timestamp
-            subscription.last_notified = datetime.now(tz.utc)
+            subscription.last_notified = timezone.now()
             subscription.save()
     
     logging.info(f"Sent {sent_count} WhatsApp notifications for need {need.need_id}")
