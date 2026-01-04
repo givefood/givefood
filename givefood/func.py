@@ -2187,3 +2187,194 @@ def send_single_webpush_notification(subscription, need):
         logging.info(f"Deleted invalid web push subscription {subscription.id}")
     
     return success
+
+
+# WhatsApp Integration Constants
+WHATSAPP_PHONE_NUMBER_ID = "890504590819478"
+WHATSAPP_FROM_NUMBER = "+442039206758"
+
+
+def send_whatsapp_message(to_phone, message):
+    """
+    Send a plain text WhatsApp message.
+    
+    Args:
+        to_phone: Phone number in international format (e.g., +447123456789)
+        message: Text message to send
+        
+    Returns:
+        True if sent successfully, False otherwise
+    """
+    access_token = get_cred("whatsapp_accesstoken")
+    if not access_token:
+        logging.warning("WhatsApp access token not found")
+        return False
+    
+    url = f"https://graph.facebook.com/v18.0/{WHATSAPP_PHONE_NUMBER_ID}/messages"
+    
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json",
+    }
+    
+    # Normalize phone number - remove leading + for WhatsApp API
+    phone_normalized = to_phone.lstrip('+')
+    
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": phone_normalized,
+        "type": "text",
+        "text": {
+            "body": message
+        }
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        if response.status_code == 200:
+            logging.info(f"Successfully sent WhatsApp message to {to_phone}")
+            return True
+        else:
+            logging.error(f"Failed to send WhatsApp message: {response.status_code} - {response.text}")
+            return False
+    except Exception as e:
+        logging.error(f"Error sending WhatsApp message: {e}")
+        return False
+
+
+def send_whatsapp_template_notification(subscription, need):
+    """
+    Send a WhatsApp template notification for a food bank need.
+    Uses the 'foodbankneed' template.
+    
+    Args:
+        subscription: WhatsappSubscriber instance
+        need: FoodbankChange instance with foodbank and need information
+        
+    Returns:
+        True if sent successfully, False otherwise
+    """
+    access_token = get_cred("whatsapp_accesstoken")
+    if not access_token:
+        logging.warning("WhatsApp access token not found")
+        return False
+    
+    url = f"https://graph.facebook.com/v18.0/{WHATSAPP_PHONE_NUMBER_ID}/messages"
+    
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json",
+    }
+    
+    # Get food bank name and items for template
+    foodbank_name = need.foodbank.name
+    items = need.change_list()
+    
+    # Get 3 items for the template
+    item1 = items[0] if len(items) > 0 else ""
+    item2 = items[1] if len(items) > 1 else ""
+    item3 = items[2] if len(items) > 2 else ""
+    
+    # Normalize phone number - remove leading + for WhatsApp API
+    phone_normalized = subscription.phone_number.lstrip('+')
+    
+    payload = {
+        "messaging_product": "whatsapp",
+        "to": phone_normalized,
+        "type": "template",
+        "template": {
+            "name": "foodbankneed",
+            "language": {
+                "code": "en"
+            },
+            "components": [
+                {
+                    "type": "header",
+                    "parameters": [
+                        {
+                            "type": "text",
+                            "text": foodbank_name
+                        }
+                    ]
+                },
+                {
+                    "type": "body",
+                    "parameters": [
+                        {
+                            "type": "text",
+                            "text": foodbank_name
+                        },
+                        {
+                            "type": "text",
+                            "text": item1
+                        },
+                        {
+                            "type": "text",
+                            "text": item2
+                        },
+                        {
+                            "type": "text",
+                            "text": item3
+                        }
+                    ]
+                },
+                {
+                    "type": "button",
+                    "sub_type": "url",
+                    "index": "0",
+                    "parameters": [
+                        {
+                            "type": "text",
+                            "text": need.foodbank.slug
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        if response.status_code == 200:
+            logging.info(f"Successfully sent WhatsApp notification to {subscription.phone_number} for {foodbank_name}")
+            return True
+        else:
+            logging.error(f"Failed to send WhatsApp notification: {response.status_code} - {response.text}")
+            return False
+    except Exception as e:
+        logging.error(f"Error sending WhatsApp notification: {e}")
+        return False
+
+
+def send_whatsapp_notification(need):
+    """
+    Send WhatsApp notifications to all subscribers of a food bank.
+    
+    Args:
+        need: FoodbankChange instance with foodbank and need information
+        
+    Returns:
+        Number of notifications sent successfully
+    """
+    from datetime import timezone as tz
+    from givefood.models import WhatsappSubscriber
+    
+    # Get all WhatsApp subscriptions for this food bank
+    subscriptions = WhatsappSubscriber.objects.filter(foodbank=need.foodbank)
+    
+    if not subscriptions.exists():
+        logging.info(f"No WhatsApp subscriptions for food bank {need.foodbank.name}")
+        return 0
+    
+    sent_count = 0
+    
+    for subscription in subscriptions:
+        success = send_whatsapp_template_notification(subscription, need)
+        if success:
+            sent_count += 1
+            # Update last_notified timestamp
+            subscription.last_notified = datetime.now(tz.utc)
+            subscription.save()
+    
+    logging.info(f"Sent {sent_count} WhatsApp notifications for need {need.need_id}")
+    return sent_count

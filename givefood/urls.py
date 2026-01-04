@@ -65,6 +65,7 @@ urlpatterns += [
     path("privacy/", givefood.views.privacy, name="privacy"),
     path("firebase-messaging-sw.js", givefood.views.service_worker, name="service_worker"),
     path("sw.js", givefood.views.vapid_service_worker, name="vapid_service_worker"),
+    path("whatsapp_hook/", givefood.views.whatsapp_hook, name="whatsapp_hook"),
 
     # Rickrolling
     path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),

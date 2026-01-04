@@ -23,8 +23,8 @@ from django.db.models import Sum, Q, Count
 from django.contrib.contenttypes.models import ContentType
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification
-from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription
+from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
+from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 
 
@@ -408,6 +408,7 @@ def foodbank(request, slug):
     subscribers = FoodbankSubscriber.objects.filter(foodbank=foodbank)
     webpush_subscribers = WebPushSubscription.objects.filter(foodbank=foodbank)
     mobile_subscribers = MobileSubscriber.objects.filter(foodbank=foodbank)
+    whatsapp_subscribers = WhatsappSubscriber.objects.filter(foodbank=foodbank)
     crawl_items = CrawlItem.objects.filter(foodbank=foodbank).order_by("-finish")[:100]
 
     # Calculate counts from prefetched data where possible
@@ -419,9 +420,10 @@ def foodbank(request, slug):
     subscribers_count = len(subscribers)
     webpush_count = len(webpush_subscribers)
     mobile_count = len(mobile_subscribers)
+    whatsapp_count = len(whatsapp_subscribers)
     crawl_items_count = CrawlItem.objects.filter(foodbank=foodbank).count()  # Count separately as we limit to 100
 
-    subscriber_count = subscribers_count + webpush_count + mobile_count
+    subscriber_count = subscribers_count + webpush_count + mobile_count + whatsapp_count
 
     # Calculate order aggregates in a single query
     order_aggregates = Order.objects.filter(foodbank=foodbank).aggregate(
@@ -457,6 +459,7 @@ def foodbank(request, slug):
         "subscribers": subscribers,
         "webpush_subscribers": webpush_subscribers,
         "mobile_subscribers": mobile_subscribers,
+        "whatsapp_subscribers": whatsapp_subscribers,
         "crawl_items": crawl_items,
         "total_weight_kg": total_weight_kg,
         "total_weight_kg_pkg": total_weight_kg_pkg,
@@ -1456,6 +1459,9 @@ def need_notifications(request, id):
     
     # Send web push notifications (for browsers using django-webpush/VAPID)
     send_webpush_notification(need)
+    
+    # Send WhatsApp notifications
+    send_whatsapp_notification(need)
 
     return redirect("admin:need", id = need.need_id)
 
@@ -2430,6 +2436,39 @@ def webpush_tester_send(request):
     send_single_webpush_notification(subscription, latest_need)
     
     redir_url = "%s?sent=%s" % (reverse("admin:webpush_tester"), subscription_id)
+    return redirect(redir_url)
+
+
+def whatsapp_tester(request):
+
+    subscriptions = WhatsappSubscriber.objects.all().select_related('foodbank').order_by("-created")
+
+    template_vars = {
+        "section":"settings",
+        "subscriptions":subscriptions,
+    }
+    return render(request, "admin/whatsapp_tester.html", template_vars)
+
+
+@require_POST
+def whatsapp_tester_send(request):
+
+    subscription_id = request.POST.get("subscription_id")
+    subscription = get_object_or_404(WhatsappSubscriber, id=subscription_id)
+    
+    # Get the latest published need for this food bank
+    try:
+        latest_need = FoodbankChange.objects.filter(
+            foodbank=subscription.foodbank, 
+            published=True
+        ).latest("created")
+    except FoodbankChange.DoesNotExist:
+        return redirect("admin:whatsapp_tester")
+    
+    # Send the notification
+    send_whatsapp_template_notification(subscription, latest_need)
+    
+    redir_url = "%s?sent=%s" % (reverse("admin:whatsapp_tester"), subscription_id)
     return redirect(redir_url)
 
 

@@ -1173,3 +1173,146 @@ self.addEventListener('activate', function(event) {
 '''
     
     return HttpResponse(sw_content, content_type='application/javascript')
+
+
+def whatsapp_hook(request):
+    """
+    WhatsApp webhook endpoint for receiving messages.
+    Handles both webhook verification (GET) and incoming messages (POST).
+    
+    Message format for subscribing: "subscribe foodbank-slug"
+    Message format for unsubscribing: "unsubscribe foodbank-slug"
+    """
+    from givefood.models import WhatsappSubscriber
+    from givefood.func import get_cred, send_whatsapp_message
+    
+    # Handle webhook verification (GET request)
+    if request.method == 'GET':
+        # Facebook sends these parameters for verification
+        mode = request.GET.get('hub.mode')
+        token = request.GET.get('hub.verify_token')
+        challenge = request.GET.get('hub.challenge')
+        
+        verify_token = get_cred("whatsapp_webhookverifytoken")
+        
+        if mode == 'subscribe' and token == verify_token:
+            return HttpResponse(challenge, content_type='text/plain')
+        else:
+            return HttpResponseForbidden("Verification failed")
+    
+    # Handle incoming messages (POST request)
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return HttpResponse(status=400)
+        
+        # Process the webhook payload
+        # WhatsApp webhook structure: data.entry[].changes[].value.messages[]
+        entries = data.get('entry', [])
+        for entry in entries:
+            changes = entry.get('changes', [])
+            for change in changes:
+                value = change.get('value', {})
+                messages = value.get('messages', [])
+                
+                for message in messages:
+                    # Get the sender's phone number
+                    from_number = message.get('from', '')
+                    # Add + prefix for consistency
+                    if from_number and not from_number.startswith('+'):
+                        from_number = f"+{from_number}"
+                    
+                    # Get the message text
+                    msg_type = message.get('type')
+                    if msg_type == 'text':
+                        text = message.get('text', {}).get('body', '').strip().lower()
+                        
+                        # Parse the command
+                        if text.startswith('subscribe '):
+                            foodbank_slug = text[10:].strip()
+                            _handle_subscribe(from_number, foodbank_slug)
+                        elif text.startswith('unsubscribe '):
+                            foodbank_slug = text[12:].strip()
+                            _handle_unsubscribe(from_number, foodbank_slug)
+        
+        # Always return 200 to acknowledge receipt
+        return HttpResponse(status=200)
+    
+    return HttpResponse(status=405)
+
+
+def _handle_subscribe(phone_number, foodbank_slug):
+    """
+    Handle a subscribe request.
+    
+    Args:
+        phone_number: Phone number in international format
+        foodbank_slug: Slug of the food bank to subscribe to
+    """
+    from givefood.models import WhatsappSubscriber
+    from givefood.func import send_whatsapp_message
+    
+    try:
+        foodbank = Foodbank.objects.get(slug=foodbank_slug)
+    except Foodbank.DoesNotExist:
+        send_whatsapp_message(
+            phone_number,
+            f"Sorry, we couldn't find a food bank with the name '{foodbank_slug}'. Please check the spelling and try again."
+        )
+        return
+    
+    # Check if subscription already exists
+    subscription, created = WhatsappSubscriber.objects.get_or_create(
+        phone_number=phone_number,
+        foodbank=foodbank
+    )
+    
+    if created:
+        send_whatsapp_message(
+            phone_number,
+            f"You've successfully subscribed to updates from {foodbank.name} Food Bank. You'll receive a message when they update their shopping list. To unsubscribe, send 'unsubscribe {foodbank_slug}'."
+        )
+    else:
+        send_whatsapp_message(
+            phone_number,
+            f"You're already subscribed to updates from {foodbank.name} Food Bank."
+        )
+
+
+def _handle_unsubscribe(phone_number, foodbank_slug):
+    """
+    Handle an unsubscribe request.
+    
+    Args:
+        phone_number: Phone number in international format
+        foodbank_slug: Slug of the food bank to unsubscribe from
+    """
+    from givefood.models import WhatsappSubscriber
+    from givefood.func import send_whatsapp_message
+    
+    try:
+        foodbank = Foodbank.objects.get(slug=foodbank_slug)
+    except Foodbank.DoesNotExist:
+        send_whatsapp_message(
+            phone_number,
+            f"Sorry, we couldn't find a food bank with the name '{foodbank_slug}'. Please check the spelling and try again."
+        )
+        return
+    
+    # Try to find and delete the subscription
+    try:
+        subscription = WhatsappSubscriber.objects.get(
+            phone_number=phone_number,
+            foodbank=foodbank
+        )
+        subscription.delete()
+        send_whatsapp_message(
+            phone_number,
+            f"You've been unsubscribed from {foodbank.name} Food Bank. You won't receive any more updates. To subscribe again, send 'subscribe {foodbank_slug}'."
+        )
+    except WhatsappSubscriber.DoesNotExist:
+        send_whatsapp_message(
+            phone_number,
+            f"You weren't subscribed to {foodbank.name} Food Bank."
+        )
