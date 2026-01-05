@@ -158,7 +158,6 @@ class TestManifest:
         
     def test_manifest_has_valid_json_structure(self, client):
         """Test that manifest.json contains valid web app manifest structure."""
-        import json
         response = client.get('/manifest.json')
         assert response.status_code == 200
         data = json.loads(response.content.decode('utf-8'))
@@ -236,7 +235,6 @@ class TestCountryPages:
         
     def test_geojson_has_valid_structure(self, client):
         """Test that GeoJSON endpoints return valid GeoJSON structure."""
-        import json
         response = client.get('/scotland/geo.json')
         assert response.status_code == 200
         data = json.loads(response.content.decode('utf-8'))
