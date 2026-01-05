@@ -16,7 +16,12 @@
                 <a data-tab="email" role="tab"{% if turnstilefail %} aria-selected="true"{% else %} aria-selected="false"{% endif %} aria-controls="email-panel" id="email-tab">
                     <span>{% trans "Email" %}</span>
                 </a>
-                </li>
+            </li>
+            <li role="presentation">
+                <a data-tab="whatsapp" role="tab" aria-selected="false" aria-controls="whatsapp-panel" id="whatsapp-tab">
+                    <span>{% trans "WhatsApp" %}</span>
+                </a>
+            </li>
         </ul>
     </div>
     <div class="sections">
@@ -55,6 +60,10 @@
                     <input type="hidden" name="action" value="subscribe">
                 </form>
             </div>
+        </div>
+        <div class="whatsapp tabcontent is-hidden" role="tabpanel" id="whatsapp-panel" aria-labelledby="whatsapp-tab">
+            <p>{% trans "Get updates on this shopping list via WhatsApp" %}</p>
+            <a href="https://wa.me/442039206758?text=subscribe%20{{ foodbank.slug|urlencode }}" class="button is-link is-light">{% trans "Get WhatsApp updates" %}</a>
         </div>
     </div>
 </div>
