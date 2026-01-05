@@ -1,6 +1,7 @@
 """
 Tests for the main givefood views.
 """
+import json
 import pytest
 from django.test import Client, override_settings
 from givefood.models import Foodbank, ParliamentaryConstituency, FoodbankLocation, FoodbankDonationPoint, Place
@@ -311,7 +312,6 @@ class TestWhatsAppWebhook:
 
     def test_whatsapp_hook_post_without_csrf(self, client):
         """Test that POST requests work without CSRF token (csrf_exempt)."""
-        import json
         # This simulates Facebook/Meta's webhook message notification
         webhook_data = {
             'entry': [{
