@@ -2283,7 +2283,7 @@ def send_whatsapp_template_notification(subscription, need):
         "to": phone_normalized,
         "type": "template",
         "template": {
-            "name": "foodbankneed",
+            "name": "foodbankneed2",
             "language": {
                 "code": "en"
             },
