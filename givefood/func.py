@@ -2210,7 +2210,7 @@ def send_whatsapp_message(to_phone, message):
         logging.warning("WhatsApp access token not found")
         return False
     
-    url = f"https://graph.facebook.com/v18.0/{WHATSAPP_PHONE_NUMBER_ID}/messages"
+    url = f"https://graph.facebook.com/v24.0/{WHATSAPP_PHONE_NUMBER_ID}/messages"
     
     headers = {
         "Authorization": f"Bearer {access_token}",
@@ -2259,7 +2259,7 @@ def send_whatsapp_template_notification(subscription, need):
         logging.warning("WhatsApp access token not found")
         return False
     
-    url = f"https://graph.facebook.com/v18.0/{WHATSAPP_PHONE_NUMBER_ID}/messages"
+    url = f"https://graph.facebook.com/v24.0/{WHATSAPP_PHONE_NUMBER_ID}/messages"
     
     headers = {
         "Authorization": f"Bearer {access_token}",
