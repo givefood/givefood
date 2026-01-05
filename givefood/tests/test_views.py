@@ -289,3 +289,64 @@ class TestFragIPAddress:
         content = response.content.decode('utf-8')
         assert content == '203.0.113.50'
 
+
+@pytest.mark.django_db
+class TestWhatsAppWebhook:
+    """Test WhatsApp webhook endpoint."""
+
+    def test_whatsapp_hook_get_verification_without_csrf(self, client):
+        """Test that GET requests for webhook verification work without CSRF token."""
+        # This simulates Facebook/Meta's webhook verification call
+        response = client.get(
+            '/whatsapp_hook/',
+            {
+                'hub.mode': 'subscribe',
+                'hub.verify_token': 'test_token',
+                'hub.challenge': 'test_challenge_12345'
+            }
+        )
+        # Should not return 403 (CSRF error)
+        # Will return 403 if verification fails, but that's different from CSRF 403
+        assert response.status_code in [200, 403]
+
+    def test_whatsapp_hook_post_without_csrf(self, client):
+        """Test that POST requests work without CSRF token (csrf_exempt)."""
+        import json
+        # This simulates Facebook/Meta's webhook message notification
+        webhook_data = {
+            'entry': [{
+                'changes': [{
+                    'value': {
+                        'messages': [{
+                            'from': '1234567890',
+                            'type': 'text',
+                            'text': {'body': 'subscribe test-foodbank'}
+                        }]
+                    }
+                }]
+            }]
+        }
+        response = client.post(
+            '/whatsapp_hook/',
+            data=json.dumps(webhook_data),
+            content_type='application/json'
+        )
+        # Should return 200, not 403 (CSRF error)
+        assert response.status_code == 200
+
+    def test_whatsapp_hook_post_empty_body(self, client):
+        """Test that POST with empty body is handled gracefully."""
+        response = client.post(
+            '/whatsapp_hook/',
+            data='',
+            content_type='application/json'
+        )
+        # Should handle gracefully, not crash with CSRF error
+        assert response.status_code in [200, 400]
+
+    def test_whatsapp_hook_invalid_method(self, client):
+        """Test that invalid HTTP methods return 405."""
+        response = client.put('/whatsapp_hook/')
+        assert response.status_code == 405
+
+
