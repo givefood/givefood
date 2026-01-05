@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, date
 import requests, json, tomllib, os
 from django.views.decorators.cache import cache_page
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, translate_url
@@ -1175,6 +1176,7 @@ self.addEventListener('activate', function(event) {
     return HttpResponse(sw_content, content_type='application/javascript')
 
 
+@csrf_exempt
 def whatsapp_hook(request):
     """
     WhatsApp webhook endpoint for receiving messages.
