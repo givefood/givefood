@@ -2293,45 +2293,118 @@ def credentials_decache(request):
 
 def subscriptions(request):
 
-    filter = request.GET.get("filter", "all")
+    sub_type = request.GET.get("type", "all")
 
-    if filter == "all":
-        subscriptions = FoodbankSubscriber.objects.all().order_by("-created")
-    else:
-        subscriptions = FoodbankSubscriber.objects.filter(confirmed = False).order_by("-created")
+    # Collect all subscriptions with their type
+    all_subscriptions = []
+
+    # Email subscriptions (FoodbankSubscriber)
+    if sub_type in ["all", "email"]:
+        email_subs = FoodbankSubscriber.objects.select_related('foodbank').all().order_by("-created")
+        for sub in email_subs:
+            all_subscriptions.append({
+                'type': 'email',
+                'identifier': sub.email,
+                'foodbank': sub.foodbank,
+                'foodbank_name': sub.foodbank_name,
+                'foodbank_slug': sub.foodbank_slug(),
+                'created': sub.created,
+                'confirmed': sub.confirmed,
+                'delete_data': {
+                    'type': 'email',
+                    'email': sub.email,
+                    'foodbank': sub.foodbank.slug,
+                }
+            })
+
+    # WhatsApp subscriptions
+    if sub_type in ["all", "whatsapp"]:
+        whatsapp_subs = WhatsappSubscriber.objects.select_related('foodbank').all().order_by("-created")
+        for sub in whatsapp_subs:
+            all_subscriptions.append({
+                'type': 'whatsapp',
+                'identifier': sub.phone_number,
+                'foodbank': sub.foodbank,
+                'foodbank_name': sub.foodbank_name,
+                'foodbank_slug': sub.foodbank.slug,
+                'created': sub.created,
+                'confirmed': None,
+                'delete_data': {
+                    'type': 'whatsapp',
+                    'id': sub.id,
+                }
+            })
+
+    # Mobile subscriptions
+    if sub_type in ["all", "mobile"]:
+        mobile_subs = MobileSubscriber.objects.select_related('foodbank').all().order_by("-created")
+        for sub in mobile_subs:
+            all_subscriptions.append({
+                'type': 'mobile',
+                'identifier': f"{sub.platform} - {sub.device_id[:20]}...",
+                'foodbank': sub.foodbank,
+                'foodbank_name': sub.foodbank.name,
+                'foodbank_slug': sub.foodbank.slug,
+                'created': sub.created,
+                'confirmed': None,
+                'delete_data': {
+                    'type': 'mobile',
+                    'id': sub.id,
+                }
+            })
+
+    # WebPush subscriptions
+    if sub_type in ["all", "webpush"]:
+        webpush_subs = WebPushSubscription.objects.select_related('foodbank').all().order_by("-created")
+        for sub in webpush_subs:
+            all_subscriptions.append({
+                'type': 'webpush',
+                'identifier': f"{sub.browser or 'Unknown'} - {sub.endpoint[:30]}...",
+                'foodbank': sub.foodbank,
+                'foodbank_name': sub.foodbank.name,
+                'foodbank_slug': sub.foodbank.slug,
+                'created': sub.created,
+                'confirmed': None,
+                'delete_data': {
+                    'type': 'webpush',
+                    'id': sub.id,
+                }
+            })
+
+    # Sort all subscriptions by created date (newest first)
+    all_subscriptions.sort(key=lambda x: x['created'], reverse=True)
 
     template_vars = {
         "section":"settings",
-        "filter":filter,
-        "subscriptions":subscriptions,
+        "sub_type":sub_type,
+        "subscriptions":all_subscriptions,
     }
     return render(request, "admin/subscriptions.html", template_vars)
-
-
-def subscriptions_csv(request):
-    
-    subscriptions = FoodbankSubscriber.objects.all().order_by("-created")
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="subscriptions.csv"'
-
-    writer = csv.writer(response)
-    writer.writerow(["Email", "Foodbank","Created"])
-
-    for subscription in subscriptions:
-        writer.writerow([subscription.email, subscription.foodbank_name, subscription.created.date()])
-
-    return response
 
 
 @require_POST
 def delete_subscription(request):
 
-    email = request.POST.get("email")
-    foodbank_slug = request.POST.get("foodbank")
-    foodbank = get_object_or_404(Foodbank, slug = foodbank_slug)
-    subscriber = get_object_or_404(FoodbankSubscriber, email = email, foodbank = foodbank)
-    subscriber.delete()
+    sub_type = request.POST.get("type")
+    
+    if sub_type == "email":
+        email = request.POST.get("email")
+        foodbank_slug = request.POST.get("foodbank")
+        foodbank = get_object_or_404(Foodbank, slug = foodbank_slug)
+        subscriber = get_object_or_404(FoodbankSubscriber, email = email, foodbank = foodbank)
+        subscriber.delete()
+    elif sub_type == "whatsapp":
+        sub_id = request.POST.get("id")
+        subscriber = get_object_or_404(WhatsappSubscriber, id = sub_id)
+        subscriber.delete()
+    elif sub_type == "mobile":
+        sub_id = request.POST.get("id")
+        subscriber = get_object_or_404(MobileSubscriber, id = sub_id)
+        subscriber.delete()
+    elif sub_type == "webpush":
+        sub_id = request.POST.get("id")
+        subscriber = get_object_or_404(WebPushSubscription, id = sub_id)
+        subscriber.delete()
 
     return redirect("admin:subscriptions")
 
