@@ -100,7 +100,6 @@
                     {% for subscription in email_subscriptions %}
                         <li>
                             {{ subscription.email }} - <a href="{% url 'admin:foodbank' subscription.foodbank.slug %}">{{ subscription.foodbank.name }}</a>
-                            {% if subscription.confirmed %}<span class="tag is-success is-light">Confirmed</span>{% else %}<span class="tag is-warning is-light">Unconfirmed</span>{% endif %}
                         </li>
                     {% endfor %}
                 </ul>

@@ -257,8 +257,8 @@ class TestSearchResults:
         assert 'Web Push Subscriptions' in content
         assert 'WebPush Test FB' in content
 
-    def test_search_displays_confirmed_status_for_email(self):
-        """Test that confirmed status is displayed for email subscriptions."""
+    def test_search_only_shows_confirmed_email_subscriptions(self):
+        """Test that search only shows confirmed email subscriptions."""
         from givefood.models import FoodbankSubscriber
         
         foodbank = self._create_foodbank(name='Status Test FB')
@@ -276,15 +276,17 @@ class TestSearchResults:
         client = Client()
         self._setup_authenticated_session(client)
         
-        # Search for confirmed subscription
+        # Search for confirmed subscription - should be found
         response = client.get(reverse('admin:search_results'), {'q': 'confirmed@test.com'})
         content = response.content.decode()
-        assert 'Confirmed' in content
+        assert 'confirmed@test.com' in content
+        assert 'Email Subscriptions' in content
         
-        # Search for unconfirmed subscription
+        # Search for unconfirmed subscription - should NOT be found in results
         response = client.get(reverse('admin:search_results'), {'q': 'unconfirmed@test.com'})
         content = response.content.decode()
-        assert 'Unconfirmed' in content
+        # Email Subscriptions section should not appear for unconfirmed emails
+        assert 'Email Subscriptions' not in content
 
     def test_search_truncates_long_device_ids(self):
         """Test that long device IDs are truncated in search results."""

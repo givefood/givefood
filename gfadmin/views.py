@@ -128,7 +128,8 @@ def search_results(request):
 
     # Search subscriptions across all types
     email_subscriptions = FoodbankSubscriber.objects.filter(
-        Q(email__icontains=query)
+        Q(email__icontains=query) &
+        Q(confirmed=True)
     ).select_related('foodbank')[:100]
 
     whatsapp_subscriptions = WhatsappSubscriber.objects.filter(
