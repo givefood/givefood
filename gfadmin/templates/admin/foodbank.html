@@ -32,13 +32,6 @@
           </a>
         </li>
       {% endif %}
-      {% if foodbank.facebook_page or foodbank.twitter_handle %}
-        <li role="presentation">
-          <a data-tab="socialmedia" role="tab" aria-selected="false" aria-controls="socialmedia-panel" id="socialmedia-tab">
-            <span>Social Media</span>
-          </a>
-        </li>
-      {% endif %}
       <li role="presentation">
         <a data-tab="subscribers" role="tab" aria-selected="false" aria-controls="subscribers-panel" id="subscribers-tab">
           <span>Subscribers <span class="tag is-info is-normal is-light">{{ counts.subscribers }}</span></span>
@@ -555,21 +548,6 @@
             </tr>
           {% endfor %}
         </table>
-      </div>
-    {% endif %}
-
-    {# Social Media #}
-    {% if foodbank.facebook_page %}
-      <div class="column tabcontent socialmedia is-hidden" role="tabpanel" id="socialmedia-panel" aria-labelledby="socialmedia-tab">
-        {% include 'wfbn/includes/facebook_embed.html' with page_name=foodbank.facebook_page %}
-      </div>
-    {% endif %}
-
-    {% if foodbank.twitter_handle %}
-      <div class="column tabcontent socialmedia is-hidden">
-        <div class="twitter-feed">
-          <a class="twitter-timeline" href="https://twitter.com/{{ foodbank.twitter_handle }}">Tweets by {{ foodbank.twitter_handle }}</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        </div>
       </div>
     {% endif %}
 
