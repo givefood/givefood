@@ -23,7 +23,7 @@
 
     <div class="columns">
 
-        {% if not foodbanks and not locations and not donationpoints and not constituencies and not needs and not email_subscriptions and not whatsapp_subscriptions and not mobile_subscriptions and not webpush_subscriptions %}
+        {% if not foodbanks and not locations and not donationpoints and not constituencies and not needs and not subscriptions %}
             <div class="column">
                 <p>No results, have another go</p>
             </div>
@@ -93,55 +93,23 @@
             </div>
         {% endif %}
 
-        {% if email_subscriptions %}
+        {% if subscriptions %}
             <div class="column">
-                <h2>Email Subscriptions</h2>
-                <ul>
-                    {% for subscription in email_subscriptions %}
-                        <li>
-                            {{ subscription.email }} - <a href="{% url 'admin:foodbank' subscription.foodbank.slug %}">{{ subscription.foodbank.name }}</a>
-                        </li>
+                <h2>Subscriptions</h2>
+                <table class="table is-fullwidth is-hoverable">
+                    <tr>
+                        <th>Type</th>
+                        <th>Identifier</th>
+                        <th>Foodbank</th>
+                    </tr>
+                    {% for subscription in subscriptions %}
+                        <tr>
+                            <td>{{ subscription.type_emoji }} {{ subscription.type|title }}</td>
+                            <td>{{ subscription.identifier }}</td>
+                            <td><a href="{% url 'admin:foodbank' subscription.foodbank_slug %}">{{ subscription.foodbank_name }}</a></td>
+                        </tr>
                     {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-
-        {% if whatsapp_subscriptions %}
-            <div class="column">
-                <h2>WhatsApp Subscriptions</h2>
-                <ul>
-                    {% for subscription in whatsapp_subscriptions %}
-                        <li>
-                            {{ subscription.phone_number }} - <a href="{% url 'admin:foodbank' subscription.foodbank.slug %}">{{ subscription.foodbank.name }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-
-        {% if mobile_subscriptions %}
-            <div class="column">
-                <h2>Mobile Subscriptions</h2>
-                <ul>
-                    {% for subscription in mobile_subscriptions %}
-                        <li>
-                            {{ subscription.device_id|slice:":20" }}{% if subscription.device_id|length > 20 %}...{% endif %} ({{ subscription.platform }}) - <a href="{% url 'admin:foodbank' subscription.foodbank.slug %}">{{ subscription.foodbank.name }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-
-        {% if webpush_subscriptions %}
-            <div class="column">
-                <h2>Web Push Subscriptions</h2>
-                <ul>
-                    {% for subscription in webpush_subscriptions %}
-                        <li>
-                            {{ subscription.endpoint|slice:":50" }}{% if subscription.endpoint|length > 50 %}...{% endif %}{% if subscription.browser %} ({{ subscription.browser }}){% endif %} - <a href="{% url 'admin:foodbank' subscription.foodbank.slug %}">{{ subscription.foodbank.name }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
+                </table>
             </div>
         {% endif %}
 

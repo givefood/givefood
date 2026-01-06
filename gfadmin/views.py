@@ -126,23 +126,71 @@ def search_results(request):
         Q(excess_change_text__icontains=query)
     ).order_by("-created")[:100]
 
-    # Search subscriptions across all types
-    email_subscriptions = FoodbankSubscriber.objects.filter(
+    # Search subscriptions across all types and combine into single list
+    subscriptions = []
+    
+    # Email subscriptions (confirmed only)
+    email_subs = FoodbankSubscriber.objects.filter(
         Q(email__icontains=query) &
         Q(confirmed=True)
     ).select_related('foodbank')[:100]
-
-    whatsapp_subscriptions = WhatsappSubscriber.objects.filter(
+    
+    for sub in email_subs:
+        subscriptions.append({
+            'type': 'email',
+            'type_emoji': '📧',
+            'identifier': sub.email,
+            'foodbank': sub.foodbank,
+            'foodbank_name': sub.foodbank_name,
+            'foodbank_slug': sub.foodbank_slug(),
+        })
+    
+    # WhatsApp subscriptions
+    whatsapp_subs = WhatsappSubscriber.objects.filter(
         Q(phone_number__icontains=query)
     ).select_related('foodbank')[:100]
-
-    mobile_subscriptions = MobileSubscriber.objects.filter(
+    
+    for sub in whatsapp_subs:
+        subscriptions.append({
+            'type': 'whatsapp',
+            'type_emoji': '💬',
+            'identifier': sub.phone_number,
+            'foodbank': sub.foodbank,
+            'foodbank_name': sub.foodbank_name,
+            'foodbank_slug': sub.foodbank.slug,
+        })
+    
+    # Mobile subscriptions
+    mobile_subs = MobileSubscriber.objects.filter(
         Q(device_id__icontains=query)
     ).select_related('foodbank')[:100]
-
-    webpush_subscriptions = WebPushSubscription.objects.filter(
+    
+    for sub in mobile_subs:
+        device_id_display = sub.device_id[:20] + "..." if len(sub.device_id) > 20 else sub.device_id
+        subscriptions.append({
+            'type': 'mobile',
+            'type_emoji': '📱',
+            'identifier': f"{sub.platform} - {device_id_display}",
+            'foodbank': sub.foodbank,
+            'foodbank_name': sub.foodbank.name,
+            'foodbank_slug': sub.foodbank.slug,
+        })
+    
+    # WebPush subscriptions
+    webpush_subs = WebPushSubscription.objects.filter(
         Q(endpoint__icontains=query)
     ).select_related('foodbank')[:100]
+    
+    for sub in webpush_subs:
+        endpoint_display = sub.endpoint[:30] + "..." if len(sub.endpoint) > 30 else sub.endpoint
+        subscriptions.append({
+            'type': 'webpush',
+            'type_emoji': '🔔',
+            'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
+            'foodbank': sub.foodbank,
+            'foodbank_name': sub.foodbank.name,
+            'foodbank_slug': sub.foodbank.slug,
+        })
 
     template_vars = {
         "query": query,
@@ -151,10 +199,7 @@ def search_results(request):
         "donationpoints": donationpoints,
         "constituencies": constituencies,
         "needs": needs,
-        "email_subscriptions": email_subscriptions,
-        "whatsapp_subscriptions": whatsapp_subscriptions,
-        "mobile_subscriptions": mobile_subscriptions,
-        "webpush_subscriptions": webpush_subscriptions,
+        "subscriptions": subscriptions,
         "section": "search",
     }
     return render(request, "admin/search.html", template_vars)

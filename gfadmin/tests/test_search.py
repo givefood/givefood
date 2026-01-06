@@ -183,8 +183,9 @@ class TestSearchResults:
         content = response.content.decode()
         assert response.status_code == 200
         assert 'test@subscriber.com' in content
-        assert 'Email Subscriptions' in content
+        assert 'Subscriptions' in content
         assert 'Test Subscription FB' in content
+        assert '📧' in content  # Email emoji
 
     def test_search_finds_whatsapp_subscription(self):
         """Test that search finds WhatsApp subscriptions."""
@@ -203,8 +204,9 @@ class TestSearchResults:
         content = response.content.decode()
         assert response.status_code == 200
         assert '+447700123456' in content
-        assert 'WhatsApp Subscriptions' in content
+        assert 'Subscriptions' in content
         assert 'WhatsApp Test FB' in content
+        assert '💬' in content  # WhatsApp emoji
 
     def test_search_finds_mobile_subscription(self):
         """Test that search finds mobile subscriptions."""
@@ -230,9 +232,10 @@ class TestSearchResults:
         content = response.content.decode()
         assert response.status_code == 200
         assert 'unique-device-id-12345' in content
-        assert 'Mobile Subscriptions' in content
+        assert 'Subscriptions' in content
         assert 'Mobile Test FB' in content
         assert 'iOS' in content
+        assert '📱' in content  # Mobile emoji
 
     def test_search_finds_webpush_subscription(self):
         """Test that search finds WebPush subscriptions."""
@@ -254,8 +257,9 @@ class TestSearchResults:
         content = response.content.decode()
         assert response.status_code == 200
         assert 'example-unique-endpoint.com' in content
-        assert 'Web Push Subscriptions' in content
+        assert 'Subscriptions' in content
         assert 'WebPush Test FB' in content
+        assert '🔔' in content  # WebPush emoji
 
     def test_search_only_shows_confirmed_email_subscriptions(self):
         """Test that search only shows confirmed email subscriptions."""
@@ -280,13 +284,13 @@ class TestSearchResults:
         response = client.get(reverse('admin:search_results'), {'q': 'confirmed@test.com'})
         content = response.content.decode()
         assert 'confirmed@test.com' in content
-        assert 'Email Subscriptions' in content
+        assert 'Subscriptions' in content
         
         # Search for unconfirmed subscription - should NOT be found in results
         response = client.get(reverse('admin:search_results'), {'q': 'unconfirmed@test.com'})
         content = response.content.decode()
-        # Email Subscriptions section should not appear for unconfirmed emails
-        assert 'Email Subscriptions' not in content
+        # Subscriptions section should not appear for unconfirmed emails
+        assert 'Subscriptions' not in content
 
     def test_search_truncates_long_device_ids(self):
         """Test that long device IDs are truncated in search results."""
@@ -336,7 +340,7 @@ class TestSearchResults:
         
         content = response.content.decode()
         assert response.status_code == 200
-        # Should show first 50 characters plus ellipsis
-        assert long_endpoint[:50] in content
+        # Should show first 30 characters plus ellipsis (changed from 50)
+        assert long_endpoint[:30] in content
         assert '...' in content
 
