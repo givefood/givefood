@@ -27,6 +27,10 @@ from givefood.func import diff_html, find_locations, foodbank_article_crawl, gem
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 
+# Constants for subscription display truncation
+DEVICE_ID_TRUNCATE_LENGTH = 20
+ENDPOINT_TRUNCATE_LENGTH = 30
+
 
 def index(request):
 
@@ -427,10 +431,12 @@ def foodbank(request, slug):
 
     # Create unified subscription list for the subscribers tab (similar to /admin/subscriptions/)
     all_subscriptions = []
+    confirmed_email_count = 0
 
     # Email subscriptions - only confirmed
     for sub in subscribers:
         if sub.confirmed:
+            confirmed_email_count += 1
             all_subscriptions.append({
                 'type': 'email',
                 'type_emoji': '📧',
@@ -449,7 +455,7 @@ def foodbank(request, slug):
 
     # Mobile subscriptions
     for sub in mobile_subscribers:
-        device_id_display = sub.device_id[:20] + "..." if len(sub.device_id) > 20 else sub.device_id
+        device_id_display = sub.device_id[:DEVICE_ID_TRUNCATE_LENGTH] + "..." if len(sub.device_id) > DEVICE_ID_TRUNCATE_LENGTH else sub.device_id
         all_subscriptions.append({
             'type': 'mobile',
             'type_emoji': '📱',
@@ -459,7 +465,7 @@ def foodbank(request, slug):
 
     # WebPush subscriptions
     for sub in webpush_subscribers:
-        endpoint_display = sub.endpoint[:30] + "..." if len(sub.endpoint) > 30 else sub.endpoint
+        endpoint_display = sub.endpoint[:ENDPOINT_TRUNCATE_LENGTH] + "..." if len(sub.endpoint) > ENDPOINT_TRUNCATE_LENGTH else sub.endpoint
         all_subscriptions.append({
             'type': 'webpush',
             'type_emoji': '🔔',
@@ -472,7 +478,7 @@ def foodbank(request, slug):
 
     # Counts by subscription type
     subscription_counts = {
-        'email': len([s for s in subscribers if s.confirmed]),
+        'email': confirmed_email_count,
         'whatsapp': whatsapp_count,
         'mobile': mobile_count,
         'webpush': webpush_count,
@@ -2396,7 +2402,7 @@ def subscriptions(request):
         mobile_subs = MobileSubscriber.objects.select_related('foodbank').all().order_by("-created")
         for sub in mobile_subs:
             # Safely truncate device_id
-            device_id_display = sub.device_id[:20] + "..." if len(sub.device_id) > 20 else sub.device_id
+            device_id_display = sub.device_id[:DEVICE_ID_TRUNCATE_LENGTH] + "..." if len(sub.device_id) > DEVICE_ID_TRUNCATE_LENGTH else sub.device_id
             all_subscriptions.append({
                 'type': 'mobile',
                 'type_emoji': '📱',
@@ -2416,7 +2422,7 @@ def subscriptions(request):
         webpush_subs = WebPushSubscription.objects.select_related('foodbank').all().order_by("-created")
         for sub in webpush_subs:
             # Safely truncate endpoint
-            endpoint_display = sub.endpoint[:30] + "..." if len(sub.endpoint) > 30 else sub.endpoint
+            endpoint_display = sub.endpoint[:ENDPOINT_TRUNCATE_LENGTH] + "..." if len(sub.endpoint) > ENDPOINT_TRUNCATE_LENGTH else sub.endpoint
             all_subscriptions.append({
                 'type': 'webpush',
                 'type_emoji': '🔔',
