@@ -126,6 +126,23 @@ def search_results(request):
         Q(excess_change_text__icontains=query)
     ).order_by("-created")[:100]
 
+    # Search subscriptions across all types
+    email_subscriptions = FoodbankSubscriber.objects.filter(
+        Q(email__icontains=query)
+    ).select_related('foodbank')[:100]
+
+    whatsapp_subscriptions = WhatsappSubscriber.objects.filter(
+        Q(phone_number__icontains=query)
+    ).select_related('foodbank')[:100]
+
+    mobile_subscriptions = MobileSubscriber.objects.filter(
+        Q(device_id__icontains=query)
+    ).select_related('foodbank')[:100]
+
+    webpush_subscriptions = WebPushSubscription.objects.filter(
+        Q(endpoint__icontains=query)
+    ).select_related('foodbank')[:100]
+
     template_vars = {
         "query": query,
         "foodbanks": foodbanks,
@@ -133,6 +150,10 @@ def search_results(request):
         "donationpoints": donationpoints,
         "constituencies": constituencies,
         "needs": needs,
+        "email_subscriptions": email_subscriptions,
+        "whatsapp_subscriptions": whatsapp_subscriptions,
+        "mobile_subscriptions": mobile_subscriptions,
+        "webpush_subscriptions": webpush_subscriptions,
         "section": "search",
     }
     return render(request, "admin/search.html", template_vars)
