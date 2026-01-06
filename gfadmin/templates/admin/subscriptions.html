@@ -12,10 +12,13 @@
 
       <div class="field is-pulled-right">
         <div class="control">
-          <div class="select is-small">
+          <div class="select">
             <select onchange="javascript:window.location.href=this.value">
-              <option value="?filter=all"{% if filter == "all" %} selected{% endif %}>All</option>
-              <option value="?filter=unconfirmed"{% if filter == "unconfirmed" %} selected{% endif %}>Unconfirmed</option>
+              <option value="?type=all"{% if sub_type == "all" %} selected{% endif %}>All</option>
+              <option value="?type=email"{% if sub_type == "email" %} selected{% endif %}>📧 Email</option>
+              <option value="?type=whatsapp"{% if sub_type == "whatsapp" %} selected{% endif %}>💬 WhatsApp</option>
+              <option value="?type=mobile"{% if sub_type == "mobile" %} selected{% endif %}>📱 Mobile</option>
+              <option value="?type=webpush"{% if sub_type == "webpush" %} selected{% endif %}>🔔 WebPush</option>
             </select>
           </div>
         </div>
@@ -23,29 +26,70 @@
 
       <table class="table is-fullwidth is-hoverable">
         <tr>
-          <th>Email</th>
+          <th>Type</th>
+          <th>Identifier</th>
           <th>Foodbank</th>
           <th>Created</th>
-          <th>Confirmed</th>
           <th></th>
         </tr>
         {% for subscription in subscriptions %}
           <tr>
-            <td>{{ subscription.email }}</td>
+            <td>{{ subscription.type_emoji }} {{ subscription.type|title }}</td>
+            <td>{{ subscription.identifier }}</td>
             <td><a href="{% url 'admin:foodbank' subscription.foodbank_slug %}">{{ subscription.foodbank_name }}</a></td>
             <td>{{ subscription.created }}</td>
-            <td>{% if subscription.confirmed %}Y{% else %}N{% endif %}</td>
             <td>
               <form action="{% url 'admin:delete_subscription' %}" method="post">
-                <input type="hidden" name="email" value="{{ subscription.email }}">
-                <input type="hidden" name="foodbank" value="{{ subscription.foodbank_name|slugify }}">
-                <input type="submit" value="Delete" onclick="return confirm('Delete {{ subscription.email }}?')" class="button is-danger is-small is-light">
+                <input type="hidden" name="type" value="{{ subscription.delete_data.type }}">
+                {% if subscription.delete_data.email %}
+                  <input type="hidden" name="email" value="{{ subscription.delete_data.email }}">
+                  <input type="hidden" name="foodbank" value="{{ subscription.delete_data.foodbank }}">
+                {% else %}
+                  <input type="hidden" name="id" value="{{ subscription.delete_data.id }}">
+                {% endif %}
+                <input type="submit" value="Delete" onclick="return confirm('Delete {{ subscription.identifier }}?')" class="button is-danger is-small is-light">
                 {% csrf_token %}
               </form>
             </td>
           </tr>
         {% endfor %}
       </table>
+
+      {% if page_obj.has_other_pages %}
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          {% if page_obj.has_previous %}
+            <a class="pagination-previous" href="?type={{ sub_type }}&page={{ page_obj.previous_page_number }}">Previous</a>
+          {% else %}
+            <a class="pagination-previous" disabled>Previous</a>
+          {% endif %}
+          
+          {% if page_obj.has_next %}
+            <a class="pagination-next" href="?type={{ sub_type }}&page={{ page_obj.next_page_number }}">Next</a>
+          {% else %}
+            <a class="pagination-next" disabled>Next</a>
+          {% endif %}
+          
+          <ul class="pagination-list">
+            {% for num in page_obj.paginator.page_range %}
+              {% if page_obj.number == num %}
+                <li><a class="pagination-link is-current" aria-label="Page {{ num }}" aria-current="page">{{ num }}</a></li>
+              {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li><a class="pagination-link" href="?type={{ sub_type }}&page={{ num }}" aria-label="Go to page {{ num }}">{{ num }}</a></li>
+              {% elif num == 1 %}
+                <li><a class="pagination-link" href="?type={{ sub_type }}&page={{ num }}" aria-label="Go to page {{ num }}">{{ num }}</a></li>
+                {% if page_obj.number > 4 %}
+                  <li><span class="pagination-ellipsis">&hellip;</span></li>
+                {% endif %}
+              {% elif num == page_obj.paginator.num_pages %}
+                {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+                  <li><span class="pagination-ellipsis">&hellip;</span></li>
+                {% endif %}
+                <li><a class="pagination-link" href="?type={{ sub_type }}&page={{ num }}" aria-label="Go to page {{ num }}">{{ num }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
 
     </div>
 

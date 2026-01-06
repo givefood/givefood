@@ -2293,45 +2293,138 @@ def credentials_decache(request):
 
 def subscriptions(request):
 
-    filter = request.GET.get("filter", "all")
+    sub_type = request.GET.get("type", "all")
+    page_number = request.GET.get("page", 1)
 
-    if filter == "all":
-        subscriptions = FoodbankSubscriber.objects.all().order_by("-created")
-    else:
-        subscriptions = FoodbankSubscriber.objects.filter(confirmed = False).order_by("-created")
+    # Collect all subscriptions with their type
+    all_subscriptions = []
+
+    # Email subscriptions (FoodbankSubscriber) - only confirmed
+    if sub_type in ["all", "email"]:
+        email_subs = FoodbankSubscriber.objects.select_related('foodbank').filter(confirmed=True).order_by("-created")
+        for sub in email_subs:
+            all_subscriptions.append({
+                'type': 'email',
+                'type_emoji': '📧',
+                'identifier': sub.email,
+                'foodbank': sub.foodbank,
+                'foodbank_name': sub.foodbank_name,
+                'foodbank_slug': sub.foodbank_slug(),
+                'created': sub.created,
+                'delete_data': {
+                    'type': 'email',
+                    'email': sub.email,
+                    'foodbank': sub.foodbank.slug,
+                }
+            })
+
+    # WhatsApp subscriptions
+    if sub_type in ["all", "whatsapp"]:
+        whatsapp_subs = WhatsappSubscriber.objects.select_related('foodbank').all().order_by("-created")
+        for sub in whatsapp_subs:
+            all_subscriptions.append({
+                'type': 'whatsapp',
+                'type_emoji': '💬',
+                'identifier': sub.phone_number,
+                'foodbank': sub.foodbank,
+                'foodbank_name': sub.foodbank_name,
+                'foodbank_slug': sub.foodbank.slug,
+                'created': sub.created,
+                'delete_data': {
+                    'type': 'whatsapp',
+                    'id': sub.id,
+                }
+            })
+
+    # Mobile subscriptions
+    if sub_type in ["all", "mobile"]:
+        mobile_subs = MobileSubscriber.objects.select_related('foodbank').all().order_by("-created")
+        for sub in mobile_subs:
+            # Safely truncate device_id
+            device_id_display = sub.device_id[:20] + "..." if len(sub.device_id) > 20 else sub.device_id
+            all_subscriptions.append({
+                'type': 'mobile',
+                'type_emoji': '📱',
+                'identifier': f"{sub.platform} - {device_id_display}",
+                'foodbank': sub.foodbank,
+                'foodbank_name': sub.foodbank.name,
+                'foodbank_slug': sub.foodbank.slug,
+                'created': sub.created,
+                'delete_data': {
+                    'type': 'mobile',
+                    'id': sub.id,
+                }
+            })
+
+    # WebPush subscriptions
+    if sub_type in ["all", "webpush"]:
+        webpush_subs = WebPushSubscription.objects.select_related('foodbank').all().order_by("-created")
+        for sub in webpush_subs:
+            # Safely truncate endpoint
+            endpoint_display = sub.endpoint[:30] + "..." if len(sub.endpoint) > 30 else sub.endpoint
+            all_subscriptions.append({
+                'type': 'webpush',
+                'type_emoji': '🔔',
+                'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
+                'foodbank': sub.foodbank,
+                'foodbank_name': sub.foodbank.name,
+                'foodbank_slug': sub.foodbank.slug,
+                'created': sub.created,
+                'delete_data': {
+                    'type': 'webpush',
+                    'id': sub.id,
+                }
+            })
+
+    # Sort all subscriptions by created date (newest first)
+    all_subscriptions.sort(key=lambda x: x['created'], reverse=True)
+
+    # Paginate results - 500 per page
+    from django.core.paginator import Paginator
+    paginator = Paginator(all_subscriptions, 500)
+    
+    try:
+        page_obj = paginator.page(page_number)
+    except:
+        page_obj = paginator.page(1)
 
     template_vars = {
         "section":"settings",
-        "filter":filter,
-        "subscriptions":subscriptions,
+        "sub_type":sub_type,
+        "subscriptions":page_obj.object_list,
+        "page_obj":page_obj,
     }
     return render(request, "admin/subscriptions.html", template_vars)
-
-
-def subscriptions_csv(request):
-    
-    subscriptions = FoodbankSubscriber.objects.all().order_by("-created")
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="subscriptions.csv"'
-
-    writer = csv.writer(response)
-    writer.writerow(["Email", "Foodbank","Created"])
-
-    for subscription in subscriptions:
-        writer.writerow([subscription.email, subscription.foodbank_name, subscription.created.date()])
-
-    return response
 
 
 @require_POST
 def delete_subscription(request):
 
-    email = request.POST.get("email")
-    foodbank_slug = request.POST.get("foodbank")
-    foodbank = get_object_or_404(Foodbank, slug = foodbank_slug)
-    subscriber = get_object_or_404(FoodbankSubscriber, email = email, foodbank = foodbank)
-    subscriber.delete()
+    sub_type = request.POST.get("type")
+    
+    # Validate subscription type
+    valid_types = ["email", "whatsapp", "mobile", "webpush"]
+    if sub_type not in valid_types:
+        return HttpResponseForbidden("Invalid subscription type")
+    
+    if sub_type == "email":
+        email = request.POST.get("email")
+        foodbank_slug = request.POST.get("foodbank")
+        foodbank = get_object_or_404(Foodbank, slug = foodbank_slug)
+        subscriber = get_object_or_404(FoodbankSubscriber, email = email, foodbank = foodbank)
+        subscriber.delete()
+    elif sub_type == "whatsapp":
+        sub_id = request.POST.get("id")
+        subscriber = get_object_or_404(WhatsappSubscriber, id = sub_id)
+        subscriber.delete()
+    elif sub_type == "mobile":
+        sub_id = request.POST.get("id")
+        subscriber = get_object_or_404(MobileSubscriber, id = sub_id)
+        subscriber.delete()
+    elif sub_type == "webpush":
+        sub_id = request.POST.get("id")
+        subscriber = get_object_or_404(WebPushSubscription, id = sub_id)
+        subscriber.delete()
 
     return redirect("admin:subscriptions")
 

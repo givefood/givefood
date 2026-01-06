@@ -113,7 +113,6 @@ urlpatterns = (
     path("search/", search_results, name="search_results"),
 
     path("subscriptions/", subscriptions, name="subscriptions"),
-    path("subscriptions/csv/", subscriptions_csv, name="subscriptions_csv"),
     path("subscription/delete/", delete_subscription, name="delete_subscription"),
 
     path("clearcache/", clearcache, name="clearcache"),
