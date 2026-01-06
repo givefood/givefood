@@ -2294,22 +2294,23 @@ def credentials_decache(request):
 def subscriptions(request):
 
     sub_type = request.GET.get("type", "all")
+    page_number = request.GET.get("page", 1)
 
     # Collect all subscriptions with their type
     all_subscriptions = []
 
-    # Email subscriptions (FoodbankSubscriber)
+    # Email subscriptions (FoodbankSubscriber) - only confirmed
     if sub_type in ["all", "email"]:
-        email_subs = FoodbankSubscriber.objects.select_related('foodbank').all().order_by("-created")
+        email_subs = FoodbankSubscriber.objects.select_related('foodbank').filter(confirmed=True).order_by("-created")
         for sub in email_subs:
             all_subscriptions.append({
                 'type': 'email',
+                'type_emoji': '📧',
                 'identifier': sub.email,
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank_name,
                 'foodbank_slug': sub.foodbank_slug(),
                 'created': sub.created,
-                'confirmed': sub.confirmed,
                 'delete_data': {
                     'type': 'email',
                     'email': sub.email,
@@ -2323,12 +2324,12 @@ def subscriptions(request):
         for sub in whatsapp_subs:
             all_subscriptions.append({
                 'type': 'whatsapp',
+                'type_emoji': '💬',
                 'identifier': sub.phone_number,
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank_name,
                 'foodbank_slug': sub.foodbank.slug,
                 'created': sub.created,
-                'confirmed': None,
                 'delete_data': {
                     'type': 'whatsapp',
                     'id': sub.id,
@@ -2343,12 +2344,12 @@ def subscriptions(request):
             device_id_display = sub.device_id[:20] + "..." if len(sub.device_id) > 20 else sub.device_id
             all_subscriptions.append({
                 'type': 'mobile',
+                'type_emoji': '📱',
                 'identifier': f"{sub.platform} - {device_id_display}",
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank.name,
                 'foodbank_slug': sub.foodbank.slug,
                 'created': sub.created,
-                'confirmed': None,
                 'delete_data': {
                     'type': 'mobile',
                     'id': sub.id,
@@ -2363,12 +2364,12 @@ def subscriptions(request):
             endpoint_display = sub.endpoint[:30] + "..." if len(sub.endpoint) > 30 else sub.endpoint
             all_subscriptions.append({
                 'type': 'webpush',
+                'type_emoji': '🔔',
                 'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank.name,
                 'foodbank_slug': sub.foodbank.slug,
                 'created': sub.created,
-                'confirmed': None,
                 'delete_data': {
                     'type': 'webpush',
                     'id': sub.id,
@@ -2378,10 +2379,20 @@ def subscriptions(request):
     # Sort all subscriptions by created date (newest first)
     all_subscriptions.sort(key=lambda x: x['created'], reverse=True)
 
+    # Paginate results - 500 per page
+    from django.core.paginator import Paginator
+    paginator = Paginator(all_subscriptions, 500)
+    
+    try:
+        page_obj = paginator.page(page_number)
+    except:
+        page_obj = paginator.page(1)
+
     template_vars = {
         "section":"settings",
         "sub_type":sub_type,
-        "subscriptions":all_subscriptions,
+        "subscriptions":page_obj.object_list,
+        "page_obj":page_obj,
     }
     return render(request, "admin/subscriptions.html", template_vars)
 
