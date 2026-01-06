@@ -167,3 +167,45 @@ class TestSubscriptionsData:
         assert mobile_subscription.foodbank == foodbank
         assert webpush_subscription.foodbank == foodbank
 
+    def test_device_id_truncation_safe(self, foodbank):
+        """Test that short device IDs don't cause errors"""
+        # Create a mobile subscription with a very short device_id
+        short_device = MobileSubscriber.objects.create(
+            foodbank=foodbank,
+            device_id="abc",  # Only 3 characters
+            platform="iOS",
+            timezone="Europe/London",
+            locale="en-GB",
+            app_version="1.0.0",
+            os_version="17.0",
+            device_model="iPhone",
+            sub_type="foodbank"
+        )
+        assert short_device.device_id == "abc"
+        
+        # Create one with exactly 20 characters
+        exact_device = MobileSubscriber.objects.create(
+            foodbank=foodbank,
+            device_id="12345678901234567890",  # Exactly 20
+            platform="Android",
+            timezone="Europe/London",
+            locale="en-GB",
+            app_version="1.0.0",
+            os_version="17.0",
+            device_model="Pixel",
+            sub_type="foodbank"
+        )
+        assert exact_device.device_id == "12345678901234567890"
+
+    def test_endpoint_truncation_safe(self, foodbank):
+        """Test that short endpoints don't cause errors"""
+        # Create a WebPush subscription with a very short endpoint
+        short_endpoint = WebPushSubscription.objects.create(
+            foodbank=foodbank,
+            endpoint="https://short.url",  # Short URL
+            p256dh="test-key",
+            auth="test-auth",
+            browser="Firefox"
+        )
+        assert short_endpoint.endpoint == "https://short.url"
+

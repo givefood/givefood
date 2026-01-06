@@ -2339,9 +2339,11 @@ def subscriptions(request):
     if sub_type in ["all", "mobile"]:
         mobile_subs = MobileSubscriber.objects.select_related('foodbank').all().order_by("-created")
         for sub in mobile_subs:
+            # Safely truncate device_id
+            device_id_display = sub.device_id[:20] + "..." if len(sub.device_id) > 20 else sub.device_id
             all_subscriptions.append({
                 'type': 'mobile',
-                'identifier': f"{sub.platform} - {sub.device_id[:20]}...",
+                'identifier': f"{sub.platform} - {device_id_display}",
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank.name,
                 'foodbank_slug': sub.foodbank.slug,
@@ -2357,9 +2359,11 @@ def subscriptions(request):
     if sub_type in ["all", "webpush"]:
         webpush_subs = WebPushSubscription.objects.select_related('foodbank').all().order_by("-created")
         for sub in webpush_subs:
+            # Safely truncate endpoint
+            endpoint_display = sub.endpoint[:30] + "..." if len(sub.endpoint) > 30 else sub.endpoint
             all_subscriptions.append({
                 'type': 'webpush',
-                'identifier': f"{sub.browser or 'Unknown'} - {sub.endpoint[:30]}...",
+                'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank.name,
                 'foodbank_slug': sub.foodbank.slug,
@@ -2386,6 +2390,11 @@ def subscriptions(request):
 def delete_subscription(request):
 
     sub_type = request.POST.get("type")
+    
+    # Validate subscription type
+    valid_types = ["email", "whatsapp", "mobile", "webpush"]
+    if sub_type not in valid_types:
+        return HttpResponseForbidden("Invalid subscription type")
     
     if sub_type == "email":
         email = request.POST.get("email")
