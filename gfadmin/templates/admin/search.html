@@ -23,7 +23,7 @@
 
     <div class="columns">
 
-        {% if not foodbanks and not locations and not donationpoints and not constituencies and not needs %}
+        {% if not foodbanks and not locations and not donationpoints and not constituencies and not needs and not subscriptions %}
             <div class="column">
                 <p>No results, have another go</p>
             </div>
@@ -90,6 +90,26 @@
                         <li><a href="{% url 'admin:need' need.need_id %}">{{ need.need_id_short }}</a> {{ need.foodbank_name }}, {{ need.modified }}</li>
                     {% endfor %}
                 </ul>
+            </div>
+        {% endif %}
+
+        {% if subscriptions %}
+            <div class="column">
+                <h2>Subscriptions</h2>
+                <table class="table is-fullwidth is-hoverable">
+                    <tr>
+                        <th>Type</th>
+                        <th>Identifier</th>
+                        <th>Foodbank</th>
+                    </tr>
+                    {% for subscription in subscriptions %}
+                        <tr>
+                            <td>{{ subscription.type_emoji }} {{ subscription.type|title }}</td>
+                            <td>{{ subscription.identifier }}</td>
+                            <td><a href="{% url 'admin:foodbank' subscription.foodbank_slug %}">{{ subscription.foodbank_name }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
         {% endif %}
 

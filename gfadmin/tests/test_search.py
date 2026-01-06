@@ -164,3 +164,183 @@ class TestSearchResults:
         # as the link text (except in the href URL)
         # We can verify this by checking the HTML structure
         assert f'>{truncated_id}</a>' in content
+
+    def test_search_finds_email_subscription(self):
+        """Test that search finds email subscriptions."""
+        from givefood.models import FoodbankSubscriber
+        
+        foodbank = self._create_foodbank(name='Test Subscription FB')
+        FoodbankSubscriber.objects.create(
+            foodbank=foodbank,
+            email='test@subscriber.com',
+            confirmed=True
+        )
+        
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.get(reverse('admin:search_results'), {'q': 'test@subscriber.com'})
+        
+        content = response.content.decode()
+        assert response.status_code == 200
+        assert 'test@subscriber.com' in content
+        assert 'Subscriptions' in content
+        assert 'Test Subscription FB' in content
+        assert '📧' in content  # Email emoji
+
+    def test_search_finds_whatsapp_subscription(self):
+        """Test that search finds WhatsApp subscriptions."""
+        from givefood.models import WhatsappSubscriber
+        
+        foodbank = self._create_foodbank(name='WhatsApp Test FB')
+        WhatsappSubscriber.objects.create(
+            foodbank=foodbank,
+            phone_number='+447700123456'
+        )
+        
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.get(reverse('admin:search_results'), {'q': '+447700123456'})
+        
+        content = response.content.decode()
+        assert response.status_code == 200
+        assert '+447700123456' in content
+        assert 'Subscriptions' in content
+        assert 'WhatsApp Test FB' in content
+        assert '💬' in content  # WhatsApp emoji
+
+    def test_search_finds_mobile_subscription(self):
+        """Test that search finds mobile subscriptions."""
+        from givefood.models import MobileSubscriber
+        
+        foodbank = self._create_foodbank(name='Mobile Test FB')
+        MobileSubscriber.objects.create(
+            foodbank=foodbank,
+            device_id='unique-device-id-12345',
+            platform='iOS',
+            timezone='Europe/London',
+            locale='en-GB',
+            app_version='1.0.0',
+            os_version='17.0',
+            device_model='iPhone 15',
+            sub_type='foodbank'
+        )
+        
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.get(reverse('admin:search_results'), {'q': 'unique-device-id-12345'})
+        
+        content = response.content.decode()
+        assert response.status_code == 200
+        assert 'unique-device-id-12345' in content
+        assert 'Subscriptions' in content
+        assert 'Mobile Test FB' in content
+        assert 'iOS' in content
+        assert '📱' in content  # Mobile emoji
+
+    def test_search_finds_webpush_subscription(self):
+        """Test that search finds WebPush subscriptions."""
+        from givefood.models import WebPushSubscription
+        
+        foodbank = self._create_foodbank(name='WebPush Test FB')
+        WebPushSubscription.objects.create(
+            foodbank=foodbank,
+            endpoint='https://push.example-unique-endpoint.com/subscription/abc123',
+            p256dh='test-key-data',
+            auth='test-auth-data',
+            browser='Chrome'
+        )
+        
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.get(reverse('admin:search_results'), {'q': 'example-unique-endpoint.com'})
+        
+        content = response.content.decode()
+        assert response.status_code == 200
+        assert 'example-unique-endpoint.com' in content
+        assert 'Subscriptions' in content
+        assert 'WebPush Test FB' in content
+        assert '🔔' in content  # WebPush emoji
+
+    def test_search_only_shows_confirmed_email_subscriptions(self):
+        """Test that search only shows confirmed email subscriptions."""
+        from givefood.models import FoodbankSubscriber
+        
+        foodbank = self._create_foodbank(name='Status Test FB')
+        FoodbankSubscriber.objects.create(
+            foodbank=foodbank,
+            email='confirmed@test.com',
+            confirmed=True
+        )
+        FoodbankSubscriber.objects.create(
+            foodbank=foodbank,
+            email='unconfirmed@test.com',
+            confirmed=False
+        )
+        
+        client = Client()
+        self._setup_authenticated_session(client)
+        
+        # Search for confirmed subscription - should be found
+        response = client.get(reverse('admin:search_results'), {'q': 'confirmed@test.com'})
+        content = response.content.decode()
+        assert 'confirmed@test.com' in content
+        assert 'Subscriptions' in content
+        
+        # Search for unconfirmed subscription - should NOT be found in results
+        response = client.get(reverse('admin:search_results'), {'q': 'unconfirmed@test.com'})
+        content = response.content.decode()
+        # Subscriptions section should not appear for unconfirmed emails
+        assert 'Subscriptions' not in content
+
+    def test_search_truncates_long_device_ids(self):
+        """Test that long device IDs are truncated in search results."""
+        from givefood.models import MobileSubscriber
+        
+        foodbank = self._create_foodbank(name='Truncate Test FB')
+        long_device_id = 'very-long-device-id-that-should-be-truncated-in-display'
+        MobileSubscriber.objects.create(
+            foodbank=foodbank,
+            device_id=long_device_id,
+            platform='Android',
+            timezone='Europe/London',
+            locale='en-GB',
+            app_version='1.0.0',
+            os_version='14.0',
+            device_model='Pixel',
+            sub_type='foodbank'
+        )
+        
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.get(reverse('admin:search_results'), {'q': long_device_id})
+        
+        content = response.content.decode()
+        assert response.status_code == 200
+        # Should show first 20 characters plus ellipsis
+        assert long_device_id[:20] in content
+        assert '...' in content
+
+    def test_search_truncates_long_endpoints(self):
+        """Test that long endpoints are truncated in search results."""
+        from givefood.models import WebPushSubscription
+        
+        foodbank = self._create_foodbank(name='Endpoint Truncate FB')
+        long_endpoint = 'https://push.service.example.com/very-long-subscription-endpoint-url-with-many-characters/abc123def456'
+        WebPushSubscription.objects.create(
+            foodbank=foodbank,
+            endpoint=long_endpoint,
+            p256dh='test-key',
+            auth='test-auth',
+            browser='Firefox'
+        )
+        
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.get(reverse('admin:search_results'), {'q': 'very-long-subscription-endpoint'})
+        
+        content = response.content.decode()
+        assert response.status_code == 200
+        # Should show first 30 characters plus ellipsis (changed from 50)
+        assert long_endpoint[:30] in content
+        assert '...' in content
+
