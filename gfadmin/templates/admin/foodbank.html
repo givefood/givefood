@@ -575,71 +575,34 @@
 
     {# Subscribers #}
     <div class="column tabcontent subscribers is-hidden" role="tabpanel" id="subscribers-panel" aria-labelledby="subscribers-tab">
-      <h3>Email</h3>
-      <table class="table is-fullwidth is-hoverable">
-        <tr>
-          <th>Email</th>
-          <th>Created</th>
-          <th>Confirmed</th>
-        </tr>
-        {% for subscription in subscribers %}
-          <tr>
-            <td>{{ subscription.email }}</td>
-            <td>{{ subscription.created }}</td>
-            <td>{% if subscription.confirmed %}Y{% else %}N{% endif %}</td>
-          </tr>
-        {% endfor %}
-      </table>
-    </div>
+      
+      <dl>
+        <dt>📧 Email</dt>
+        <dd>{{ subscription_counts.email }}</dd>
+        <dt>💬 WhatsApp</dt>
+        <dd>{{ subscription_counts.whatsapp }}</dd>
+        <dt>📱 Mobile</dt>
+        <dd>{{ subscription_counts.mobile }}</dd>
+        <dt>🔔 Web Push</dt>
+        <dd>{{ subscription_counts.webpush }}</dd>
+      </dl>
 
-    <div class="column tabcontent subscribers is-hidden" role="tabpanel">
-      <h3>Web Push</h3>
+      <h3>All Subscriptions</h3>
       <table class="table is-fullwidth is-hoverable">
         <tr>
-          <th>Endpoint</th>
+          <th>Type</th>
+          <th>Identifier</th>
           <th>Created</th>
         </tr>
-        {% for subscription in webpush_subscribers %}
+        {% for subscription in all_subscriptions %}
           <tr>
-            <td>{{ subscription.endpoint|truncatechars:50 }}</td>
+            <td>{{ subscription.type_emoji }} {{ subscription.type|title }}</td>
+            <td>{{ subscription.identifier }}</td>
             <td>{{ subscription.created }}</td>
           </tr>
         {% endfor %}
       </table>
-    </div>
 
-    <div class="column tabcontent subscribers is-hidden" role="tabpanel">
-      <h3>Mobile</h3>
-      <table class="table is-fullwidth is-hoverable">
-        <tr>
-          <th>Device ID</th>
-          <th>Created</th>
-        </tr>
-        {% for subscription in mobile_subscribers %}
-          <tr>
-            <td>{{ subscription.device_id|truncatechars:50 }}</td>
-            <td>{{ subscription.created }}</td>
-          </tr>
-        {% endfor %}
-      </table>
-    </div>
-
-    <div class="column tabcontent subscribers is-hidden" role="tabpanel">
-      <h3>WhatsApp</h3>
-      <table class="table is-fullwidth is-hoverable">
-        <tr>
-          <th>Phone Number</th>
-          <th>Created</th>
-          <th>Last Notified</th>
-        </tr>
-        {% for subscription in whatsapp_subscribers %}
-          <tr>
-            <td>{{ subscription.phone_number }}</td>
-            <td>{{ subscription.created }}</td>
-            <td>{{ subscription.last_notified|default:"-" }}</td>
-          </tr>
-        {% endfor %}
-      </table>
     </div>
 
     {# Crawls #}
