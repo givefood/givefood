@@ -20,25 +20,33 @@ class TestFoodbankSocialMediaTabRemoval:
         }
         session.save()
 
-    def test_social_media_tab_not_in_template_without_social_media(self):
-        """Test that social media tab is not displayed when foodbank has no social media."""
-        # Create a test foodbank without social media
-        foodbank = Foodbank(
-            name='Test Foodbank',
-            url='https://example.com',
-            shopping_list_url='https://example.com/shopping',
-            address='123 Test St',
-            postcode='AB12 3CD',
-            country='England',
-            lat_lng='51.5074,-0.1278',
-            contact_email='test@example.com',
-        )
+    def _create_foodbank(self, **kwargs):
+        """Helper to create a foodbank with common defaults."""
+        defaults = {
+            'name': 'Test Foodbank',
+            'url': 'https://example.com',
+            'shopping_list_url': 'https://example.com/shopping',
+            'address': '123 Test St',
+            'postcode': 'AB12 3CD',
+            'country': 'England',
+            'lat_lng': '51.5074,-0.1278',
+            'contact_email': 'test@example.com',
+        }
+        defaults.update(kwargs)
+        foodbank = Foodbank(**defaults)
         foodbank.save(do_geoupdate=False, do_decache=False)
-        
-        # Create a client and setup authenticated session
+        return foodbank
+
+    def _get_foodbank_page(self, foodbank):
+        """Helper to get the foodbank admin page with authentication."""
         client = Client()
         self._setup_authenticated_session(client)
-        response = client.get(reverse('admin:foodbank', kwargs={'slug': foodbank.slug}))
+        return client.get(reverse('admin:foodbank', kwargs={'slug': foodbank.slug}))
+
+    def test_social_media_tab_not_in_template_without_social_media(self):
+        """Test that social media tab is not displayed when foodbank has no social media."""
+        foodbank = self._create_foodbank()
+        response = self._get_foodbank_page(foodbank)
         
         # Verify response
         assert response.status_code == 200
@@ -50,24 +58,8 @@ class TestFoodbankSocialMediaTabRemoval:
 
     def test_social_media_tab_not_in_template_with_facebook(self):
         """Test that social media tab is not displayed even when foodbank has Facebook page."""
-        # Create a test foodbank with Facebook page
-        foodbank = Foodbank(
-            name='Test Foodbank',
-            url='https://example.com',
-            shopping_list_url='https://example.com/shopping',
-            address='123 Test St',
-            postcode='AB12 3CD',
-            country='England',
-            lat_lng='51.5074,-0.1278',
-            contact_email='test@example.com',
-            facebook_page='testfoodbank',
-        )
-        foodbank.save(do_geoupdate=False, do_decache=False)
-        
-        # Create a client and setup authenticated session
-        client = Client()
-        self._setup_authenticated_session(client)
-        response = client.get(reverse('admin:foodbank', kwargs={'slug': foodbank.slug}))
+        foodbank = self._create_foodbank(facebook_page='testfoodbank')
+        response = self._get_foodbank_page(foodbank)
         
         # Verify response
         assert response.status_code == 200
@@ -80,24 +72,8 @@ class TestFoodbankSocialMediaTabRemoval:
 
     def test_social_media_tab_not_in_template_with_twitter(self):
         """Test that social media tab is not displayed even when foodbank has Twitter handle."""
-        # Create a test foodbank with Twitter handle
-        foodbank = Foodbank(
-            name='Test Foodbank',
-            url='https://example.com',
-            shopping_list_url='https://example.com/shopping',
-            address='123 Test St',
-            postcode='AB12 3CD',
-            country='England',
-            lat_lng='51.5074,-0.1278',
-            contact_email='test@example.com',
-            twitter_handle='testfoodbank',
-        )
-        foodbank.save(do_geoupdate=False, do_decache=False)
-        
-        # Create a client and setup authenticated session
-        client = Client()
-        self._setup_authenticated_session(client)
-        response = client.get(reverse('admin:foodbank', kwargs={'slug': foodbank.slug}))
+        foodbank = self._create_foodbank(twitter_handle='testfoodbank')
+        response = self._get_foodbank_page(foodbank)
         
         # Verify response
         assert response.status_code == 200
@@ -110,25 +86,11 @@ class TestFoodbankSocialMediaTabRemoval:
 
     def test_social_media_tab_not_in_template_with_both(self):
         """Test that social media tab is not displayed when foodbank has both Facebook and Twitter."""
-        # Create a test foodbank with both Facebook and Twitter
-        foodbank = Foodbank(
-            name='Test Foodbank',
-            url='https://example.com',
-            shopping_list_url='https://example.com/shopping',
-            address='123 Test St',
-            postcode='AB12 3CD',
-            country='England',
-            lat_lng='51.5074,-0.1278',
-            contact_email='test@example.com',
+        foodbank = self._create_foodbank(
             facebook_page='testfoodbank',
-            twitter_handle='testfoodbank',
+            twitter_handle='testfoodbank'
         )
-        foodbank.save(do_geoupdate=False, do_decache=False)
-        
-        # Create a client and setup authenticated session
-        client = Client()
-        self._setup_authenticated_session(client)
-        response = client.get(reverse('admin:foodbank', kwargs={'slug': foodbank.slug}))
+        response = self._get_foodbank_page(foodbank)
         
         # Verify response
         assert response.status_code == 200
