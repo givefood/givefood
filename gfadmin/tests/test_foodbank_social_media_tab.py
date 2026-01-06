@@ -69,6 +69,9 @@ class TestFoodbankSocialMediaTabRemoval:
         assert 'data-tab="socialmedia"' not in content
         assert 'id="socialmedia-tab"' not in content
         assert 'id="socialmedia-panel"' not in content
+        
+        # Verify Facebook info is still in the "Info" section (General tab)
+        assert 'facebook.com/testfoodbank' in content
 
     def test_social_media_tab_not_in_template_with_twitter(self):
         """Test that social media tab is not displayed even when foodbank has Twitter handle."""
@@ -83,6 +86,9 @@ class TestFoodbankSocialMediaTabRemoval:
         assert 'data-tab="socialmedia"' not in content
         assert 'id="socialmedia-tab"' not in content
         assert 'id="socialmedia-panel"' not in content
+        
+        # Verify Twitter info is still in the "Info" section (General tab)
+        assert 'twitter.com/testfoodbank' in content
 
     def test_social_media_tab_not_in_template_with_both(self):
         """Test that social media tab is not displayed when foodbank has both Facebook and Twitter."""
