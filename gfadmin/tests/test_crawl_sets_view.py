@@ -1,5 +1,6 @@
 """Tests for the crawl_sets view."""
 import pytest
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 
@@ -10,10 +11,21 @@ from givefood.models import CrawlSet, CrawlItem, Foodbank
 class TestCrawlSetsView:
     """Test the crawl_sets view with filters."""
 
+    def _setup_authenticated_session(self, client):
+        """Helper to setup an authenticated session for testing admin views."""
+        session = client.session
+        session['user_data'] = {
+            'email': 'test@givefood.org.uk',
+            'email_verified': True,
+            'hd': 'givefood.org.uk',
+        }
+        session.save()
+
     def setup_method(self):
         """Set up test data."""
-        # Create a test foodbank
-        self.foodbank = Foodbank.objects.create(
+        # Create a test foodbank using save(do_geoupdate=False, do_decache=False)
+        # to avoid external API calls and cache operations
+        self.foodbank = Foodbank(
             name='Test Food Bank',
             slug='test-food-bank',
             address='123 Test St',
@@ -23,13 +35,21 @@ class TestCrawlSetsView:
             latitude=51.5074,
             longitude=-0.1278,
         )
+        self.foodbank.save(do_geoupdate=False, do_decache=False)
 
-    def test_crawl_sets_page_accessible(self, client):
+    def _get_authenticated_client(self):
+        """Helper to get an authenticated client for testing admin views."""
+        client = Client()
+        self._setup_authenticated_session(client)
+        return client
+
+    def test_crawl_sets_page_accessible(self):
         """Test that the crawl sets page is accessible."""
+        client = self._get_authenticated_client()
         response = client.get(reverse('gfadmin:crawl_sets'))
         assert response.status_code == 200
 
-    def test_adhoc_type_filter_parameter(self, client):
+    def test_adhoc_type_filter_parameter(self):
         """Test that adhoc_type filter parameter works."""
         # Create orphaned crawl items with different types
         CrawlItem.objects.create(
@@ -43,13 +63,14 @@ class TestCrawlSetsView:
             crawl_set=None
         )
         
+        client = self._get_authenticated_client()
         # Test with adhoc_type filter for 'need'
         response = client.get(reverse('gfadmin:crawl_sets') + '?adhoc_type=need')
         assert response.status_code == 200
         assert 'adhoc_type_filter' in response.context
         assert response.context['adhoc_type_filter'] == 'need'
 
-    def test_adhoc_filter_filters_orphaned_items(self, client):
+    def test_adhoc_filter_filters_orphaned_items(self):
         """Test that adhoc filter correctly filters orphaned crawl items."""
         # Create orphaned crawl items with different types
         need_item = CrawlItem.objects.create(
@@ -63,6 +84,7 @@ class TestCrawlSetsView:
             crawl_set=None
         )
         
+        client = self._get_authenticated_client()
         # Test filtering by 'need'
         response = client.get(reverse('gfadmin:crawl_sets') + '?adhoc_type=need')
         orphaned_items = list(response.context['orphaned_crawl_items'])
@@ -75,7 +97,7 @@ class TestCrawlSetsView:
         assert len(orphaned_items) == 1
         assert orphaned_items[0].crawl_type == 'article'
 
-    def test_adhoc_filter_independent_from_crawlset_filter(self, client):
+    def test_adhoc_filter_independent_from_crawlset_filter(self):
         """Test that adhoc filter is independent from crawlset filter."""
         # Create a crawl set
         crawl_set = CrawlSet.objects.create(
@@ -94,6 +116,7 @@ class TestCrawlSetsView:
             crawl_set=None
         )
         
+        client = self._get_authenticated_client()
         # Test with both filters
         response = client.get(
             reverse('gfadmin:crawl_sets') + 
@@ -108,14 +131,15 @@ class TestCrawlSetsView:
         assert len(orphaned_items) == 1
         assert orphaned_items[0].crawl_type == 'article'
 
-    def test_invalid_adhoc_type_returns_forbidden(self, client):
+    def test_invalid_adhoc_type_returns_forbidden(self):
         """Test that invalid adhoc_type returns forbidden response."""
+        client = self._get_authenticated_client()
         response = client.get(
             reverse('gfadmin:crawl_sets') + '?adhoc_type=invalid_type'
         )
         assert response.status_code == 403
 
-    def test_empty_adhoc_filter_shows_all_orphaned_items(self, client):
+    def test_empty_adhoc_filter_shows_all_orphaned_items(self):
         """Test that empty adhoc filter shows all orphaned items."""
         # Create orphaned crawl items with different types
         CrawlItem.objects.create(
@@ -129,6 +153,7 @@ class TestCrawlSetsView:
             crawl_set=None
         )
         
+        client = self._get_authenticated_client()
         # Test without adhoc_type filter
         response = client.get(reverse('gfadmin:crawl_sets'))
         orphaned_items = list(response.context['orphaned_crawl_items'])
