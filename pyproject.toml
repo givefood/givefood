@@ -52,7 +52,7 @@ dependencies = [
     "django-tasks>=0.10.0",
     "firebase-admin",
     "django-webpush==0.3.6",
-    "pywebpush==1.14.1",
+    "pywebpush==2.2.0",
     "pytest>=8.4.2",
     "pytest-django>=4.11.1",
     "pytest-html>=4.1.1",
