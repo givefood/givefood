@@ -727,10 +727,15 @@ def foodbank_check(request, slug):
     if foodbank.donation_points_url:
         if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
             if not foodbank.network_id:
-                # Use cached shopping list page if available
-                if foodbank.shopping_list_url in downloaded_pages:
-                    shopping_list_raw = downloaded_pages[foodbank.shopping_list_url]
-                    network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', shopping_list_raw)
+                # Try to get shopping list page from cache, or fetch it if not cached
+                if foodbank.shopping_list_url:
+                    if foodbank.shopping_list_url not in downloaded_pages:
+                        # Fetch if not already cached (e.g., if it was in blacklist)
+                        shopping_list_raw_for_network = fetch_page(foodbank.shopping_list_url)
+                    else:
+                        shopping_list_raw_for_network = downloaded_pages[foodbank.shopping_list_url]
+                    
+                    network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', shopping_list_raw_for_network)
                     if network_id_search:
                         foodbank.network_id = network_id_search.group(1)
                         foodbank.save()
