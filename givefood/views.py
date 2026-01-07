@@ -1260,7 +1260,7 @@ def _handle_subscribe(phone_number, foodbank_slug):
     except Foodbank.DoesNotExist:
         send_whatsapp_message(
             phone_number,
-            f"Sorry, we couldn't find a food bank with the name '{foodbank_slug}'. Please check the spelling and try again."
+            f"Sorry, we couldn't find a foodbank with the name '{foodbank_slug}'. Please check the spelling and try again."
         )
         return
     
@@ -1273,12 +1273,12 @@ def _handle_subscribe(phone_number, foodbank_slug):
     if created:
         send_whatsapp_message(
             phone_number,
-            f"You've successfully subscribed to updates from {foodbank.name} Food Bank. You'll receive a message when they update their shopping list. To unsubscribe, send 'unsubscribe {foodbank_slug}'."
+            f"You've successfully subscribed to updates from {foodbank.name} Foodbank. You'll receive a message when they update their shopping list. To unsubscribe, send 'unsubscribe {foodbank_slug}'."
         )
     else:
         send_whatsapp_message(
             phone_number,
-            f"You're already subscribed to updates from {foodbank.name} Food Bank."
+            f"You're already subscribed to updates from {foodbank.name} Foodbank."
         )
 
 
@@ -1298,7 +1298,7 @@ def _handle_unsubscribe(phone_number, foodbank_slug):
     except Foodbank.DoesNotExist:
         send_whatsapp_message(
             phone_number,
-            f"Sorry, we couldn't find a food bank with the name '{foodbank_slug}'. Please check the spelling and try again."
+            f"Sorry, we couldn't find a foodbank with the name '{foodbank_slug}'. Have a look on https://www.givefood.org.uk to find the correct foodbank."
         )
         return
     
@@ -1311,10 +1311,10 @@ def _handle_unsubscribe(phone_number, foodbank_slug):
         subscription.delete()
         send_whatsapp_message(
             phone_number,
-            f"You've been unsubscribed from {foodbank.name} Food Bank. You won't receive any more updates. To subscribe again, send 'subscribe {foodbank_slug}'."
+            f"You've been unsubscribed from {foodbank.name} Foodbank. You won't receive any more updates. To subscribe again, send 'subscribe {foodbank_slug}'."
         )
     except WhatsappSubscriber.DoesNotExist:
         send_whatsapp_message(
             phone_number,
-            f"You weren't subscribed to {foodbank.name} Food Bank."
+            f"You weren't subscribed to {foodbank.name} Foodbank."
         )
