@@ -272,17 +272,17 @@
         {% endif %}
       </dl>
 
-      <h3>⚠️ Mild Danger Zone</h3>
+      <h3><span class="mdi mdi-alert"></span> Mild Danger Zone</h3>
       <form action="{% url 'admin:foodbank_resave' foodbank.slug %}" method="post">
         <input type="submit" class="button is-warning is-light" value="Resave Everything" onclick="return confirm('Resave {{ foodbank.name}}?')">
       </form>
 
-      <h3>⚠️ Danger Zone</h3>
+      <h3><span class="mdi mdi-alert"></span> Danger Zone</h3>
       <form action="{% url 'admin:foodbank_rfi' foodbank.slug %}" method="post">
         <input type="submit" class="button is-danger is-light" value="Send RFI" onclick="return confirm('Send RFI to {{ foodbank.name}}?')">
       </form>
 
-      <h3>⚠️ Really Dangerous Zone</h3>
+      <h3><span class="mdi mdi-alert"></span> Really Dangerous Zone</h3>
       <form action="{% url 'admin:foodbank_delete' foodbank.slug %}" method="post">
         <input type="submit" class="button is-danger is-light" value="Delete {{ foodbank.full_name }}" onclick="return confirm('DELETE {{ foodbank.name}}?')">
       </form>
