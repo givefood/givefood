@@ -12,33 +12,39 @@
     <ul>
       <li class="is-active" role="presentation">
         <a data-tab="generallocations" role="tab" aria-selected="true" aria-controls="generallocations-panel" id="generallocations-tab">
+          <span class="icon"><i class="mdi mdi-bank"></i></span>
           <span>General &amp; Locations <span class="tag is-info is-normal is-light">{{ counts.locations }}</span></span>
         </a>
       </li>
       <li role="presentation">
         <a data-tab="needsorders" role="tab" aria-selected="false" aria-controls="needsorders-panel" id="needsorders-tab">
+          <span class="icon"><i class="mdi mdi-shopping"></i></span>
           <span>Needs <span class="tag is-info is-normal is-light">{{ counts.needs }}</span> &amp; Orders <span class="tag is-info is-normal is-light">{{ counts.orders }}</span></span>
         </a>
       </li>
       <li role="presentation">
         <a data-tab="donationpoints" role="tab" aria-selected="false" aria-controls="donationpoints-panel" id="donationpoints-tab">
+          <span class="icon"><i class="mdi mdi-store"></i></span>
           <span>Donation Points <span class="tag is-info is-normal is-light">{{ counts.donation_points }}</span></span>
         </a>
       </li>
       {% if articles %}
         <li role="presentation">
           <a data-tab="articles" role="tab" aria-selected="false" aria-controls="articles-panel" id="articles-tab">
+            <span class="icon"><i class="mdi mdi-newspaper-variant-multiple-outline"></i></span>
             <span>Articles <span class="tag is-info is-normal is-light">{{ counts.articles }}</span></span>
           </a>
         </li>
       {% endif %}
       <li role="presentation">
         <a data-tab="subscribers" role="tab" aria-selected="false" aria-controls="subscribers-panel" id="subscribers-tab">
+          <span class="icon"><i class="mdi mdi-bell"></i></span>
           <span>Subscribers <span class="tag is-info is-normal is-light">{{ counts.subscribers }}</span></span>
         </a>
       </li>
       <li role="presentation">
         <a data-tab="crawls" role="tab" aria-selected="false" aria-controls="crawls-panel" id="crawls-tab">
+          <span class="icon"><i class="mdi mdi-robot"></i></span>
           <span>Crawls <span class="tag is-info is-normal is-light">{{ counts.crawls }}</span></span>
         </a>
       </li>
