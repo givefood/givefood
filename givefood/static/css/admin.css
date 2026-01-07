@@ -58,6 +58,12 @@ input[type=checkbox] {
   height:1.6em;
   padding:0 4px;
 }
+.tabs .icon {
+  width:20px;
+}
+.tabs .icon:first-child {
+  margin:0 2px 0 0;
+}
 #fbmap {
   width:1500px;
   height:1500px;
