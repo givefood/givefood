@@ -142,7 +142,7 @@ def search_results(request):
     for sub in email_subs:
         subscriptions.append({
             'type': 'email',
-            'type_emoji': '📧',
+            'type_emoji': '<span class="mdi mdi-email"></span>',
             'identifier': sub.email,
             'foodbank': sub.foodbank,
             'foodbank_name': sub.foodbank_name,
@@ -157,7 +157,7 @@ def search_results(request):
     for sub in whatsapp_subs:
         subscriptions.append({
             'type': 'whatsapp',
-            'type_emoji': '💬',
+            'type_emoji': '<span class="mdi mdi-whatsapp"></span>',
             'identifier': sub.phone_number,
             'foodbank': sub.foodbank,
             'foodbank_name': sub.foodbank_name,
@@ -173,7 +173,7 @@ def search_results(request):
         device_id_display = sub.device_id[:20] + "..." if len(sub.device_id) > 20 else sub.device_id
         subscriptions.append({
             'type': 'mobile',
-            'type_emoji': '📱',
+            'type_emoji': '<span class="mdi mdi-cellphone"></span>',
             'identifier': f"{sub.platform} - {device_id_display}",
             'foodbank': sub.foodbank,
             'foodbank_name': sub.foodbank.name,
@@ -189,7 +189,7 @@ def search_results(request):
         endpoint_display = sub.endpoint[:30] + "..." if len(sub.endpoint) > 30 else sub.endpoint
         subscriptions.append({
             'type': 'webpush',
-            'type_emoji': '🔔',
+            'type_emoji': '<span class="mdi mdi-bell"></span>',
             'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
             'foodbank': sub.foodbank,
             'foodbank_name': sub.foodbank.name,
@@ -506,7 +506,7 @@ def foodbank(request, slug):
             confirmed_email_count += 1
             all_subscriptions.append({
                 'type': 'email',
-                'type_emoji': '📧',
+                'type_emoji': '<span class="mdi mdi-email"></span>',
                 'identifier': sub.email,
                 'created': sub.created,
             })
@@ -515,7 +515,7 @@ def foodbank(request, slug):
     for sub in whatsapp_subscribers:
         all_subscriptions.append({
             'type': 'whatsapp',
-            'type_emoji': '💬',
+            'type_emoji': '<span class="mdi mdi-whatsapp"></span>',
             'identifier': sub.phone_number,
             'created': sub.created,
         })
@@ -525,7 +525,7 @@ def foodbank(request, slug):
         device_id_display = sub.device_id[:DEVICE_ID_TRUNCATE_LENGTH] + "..." if len(sub.device_id) > DEVICE_ID_TRUNCATE_LENGTH else sub.device_id
         all_subscriptions.append({
             'type': 'mobile',
-            'type_emoji': '📱',
+            'type_emoji': '<span class="mdi mdi-cellphone"></span>',
             'identifier': f"{sub.platform} - {device_id_display}",
             'created': sub.created,
         })
@@ -535,7 +535,7 @@ def foodbank(request, slug):
         endpoint_display = sub.endpoint[:ENDPOINT_TRUNCATE_LENGTH] + "..." if len(sub.endpoint) > ENDPOINT_TRUNCATE_LENGTH else sub.endpoint
         all_subscriptions.append({
             'type': 'webpush',
-            'type_emoji': '🔔',
+            'type_emoji': '<span class="mdi mdi-bell"></span>',
             'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
             'created': sub.created,
         })
@@ -2440,7 +2440,7 @@ def subscriptions(request):
         for sub in email_subs:
             all_subscriptions.append({
                 'type': 'email',
-                'type_emoji': '📧',
+                'type_emoji': '<span class="mdi mdi-email"></span>',
                 'identifier': sub.email,
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank_name,
@@ -2459,7 +2459,7 @@ def subscriptions(request):
         for sub in whatsapp_subs:
             all_subscriptions.append({
                 'type': 'whatsapp',
-                'type_emoji': '💬',
+                'type_emoji': '<span class="mdi mdi-whatsapp"></span>',
                 'identifier': sub.phone_number,
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank_name,
@@ -2479,7 +2479,7 @@ def subscriptions(request):
             device_id_display = sub.device_id[:DEVICE_ID_TRUNCATE_LENGTH] + "..." if len(sub.device_id) > DEVICE_ID_TRUNCATE_LENGTH else sub.device_id
             all_subscriptions.append({
                 'type': 'mobile',
-                'type_emoji': '📱',
+                'type_emoji': '<span class="mdi mdi-cellphone"></span>',
                 'identifier': f"{sub.platform} - {device_id_display}",
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank.name,
@@ -2499,7 +2499,7 @@ def subscriptions(request):
             endpoint_display = sub.endpoint[:ENDPOINT_TRUNCATE_LENGTH] + "..." if len(sub.endpoint) > ENDPOINT_TRUNCATE_LENGTH else sub.endpoint
             all_subscriptions.append({
                 'type': 'webpush',
-                'type_emoji': '🔔',
+                'type_emoji': '<span class="mdi mdi-bell"></span>',
                 'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank.name,

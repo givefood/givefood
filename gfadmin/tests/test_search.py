@@ -185,7 +185,7 @@ class TestSearchResults:
         assert 'test@subscriber.com' in content
         assert 'Subscriptions' in content
         assert 'Test Subscription FB' in content
-        assert '📧' in content  # Email emoji
+        assert 'mdi-email' in content  # Email icon
 
     def test_search_finds_whatsapp_subscription(self):
         """Test that search finds WhatsApp subscriptions."""
@@ -206,7 +206,7 @@ class TestSearchResults:
         assert '+447700123456' in content
         assert 'Subscriptions' in content
         assert 'WhatsApp Test FB' in content
-        assert '💬' in content  # WhatsApp emoji
+        assert 'mdi-whatsapp' in content  # WhatsApp icon
 
     def test_search_finds_mobile_subscription(self):
         """Test that search finds mobile subscriptions."""
@@ -235,7 +235,7 @@ class TestSearchResults:
         assert 'Subscriptions' in content
         assert 'Mobile Test FB' in content
         assert 'iOS' in content
-        assert '📱' in content  # Mobile emoji
+        assert 'mdi-cellphone' in content  # Mobile icon
 
     def test_search_finds_webpush_subscription(self):
         """Test that search finds WebPush subscriptions."""
@@ -259,7 +259,7 @@ class TestSearchResults:
         assert 'example-unique-endpoint.com' in content
         assert 'Subscriptions' in content
         assert 'WebPush Test FB' in content
-        assert '🔔' in content  # WebPush emoji
+        assert 'mdi-bell' in content  # Bell icon
 
     def test_search_only_shows_confirmed_email_subscriptions(self):
         """Test that search only shows confirmed email subscriptions."""
