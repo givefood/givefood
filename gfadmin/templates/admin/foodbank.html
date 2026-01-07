@@ -272,17 +272,17 @@
         {% endif %}
       </dl>
 
-      <h3>⚠️ Mild Danger Zone</h3>
+      <h3><span class="mdi mdi-alert"></span> Mild Danger Zone</h3>
       <form action="{% url 'admin:foodbank_resave' foodbank.slug %}" method="post">
         <input type="submit" class="button is-warning is-light" value="Resave Everything" onclick="return confirm('Resave {{ foodbank.name}}?')">
       </form>
 
-      <h3>⚠️ Danger Zone</h3>
+      <h3><span class="mdi mdi-alert"></span> Danger Zone</h3>
       <form action="{% url 'admin:foodbank_rfi' foodbank.slug %}" method="post">
         <input type="submit" class="button is-danger is-light" value="Send RFI" onclick="return confirm('Send RFI to {{ foodbank.name}}?')">
       </form>
 
-      <h3>⚠️ Really Dangerous Zone</h3>
+      <h3><span class="mdi mdi-alert"></span> Really Dangerous Zone</h3>
       <form action="{% url 'admin:foodbank_delete' foodbank.slug %}" method="post">
         <input type="submit" class="button is-danger is-light" value="Delete {{ foodbank.full_name }}" onclick="return confirm('DELETE {{ foodbank.name}}?')">
       </form>
@@ -385,7 +385,7 @@
       <br><br>
 
       {% if foodbank.last_need %}
-        {{ foodbank.latest_need.input_method_emoji }}
+        {{ foodbank.latest_need.input_method_emoji|safe }}
         <strong>
           <a href="{% url 'admin:need' foodbank.latest_need.need_id %}">{{ foodbank.latest_need.need_id_short }}</a>
         </strong>
@@ -499,7 +499,7 @@
                 {% endif %}
               </td>
               <td>
-                {{ need.input_method_emoji }}
+                {{ need.input_method_emoji|safe }}
               </td>
               <td>
                 <a href="{% url 'admin:need' need.need_id %}">{{ need.need_id_short }}</a>
@@ -532,7 +532,7 @@
               <td><a href="{% url 'admin:order' order.order_id %}">{{ order.delivery_datetime|date:"D" }}, {{ order.delivery_datetime }}</a></td>
               <td>{{ order.no_items }}</td>
               <td>£{{ order.natural_cost }}</td>
-              <td>{% if order.notification_email_sent %}✉️{% endif %}</td>
+              <td>{% if order.notification_email_sent %}<span class="mdi mdi-email-outline"></span>{% endif %}</td>
             </tr>
           {% endfor %}
         </table>
@@ -561,13 +561,13 @@
     <div class="column tabcontent subscribers is-hidden" role="tabpanel" id="subscribers-panel" aria-labelledby="subscribers-tab">
       
       <dl>
-        <dt>📧 Email</dt>
+        <dt><span class="mdi mdi-email"></span> Email</dt>
         <dd>{{ subscription_counts.email }}</dd>
-        <dt>💬 WhatsApp</dt>
+        <dt><span class="mdi mdi-whatsapp"></span> WhatsApp</dt>
         <dd>{{ subscription_counts.whatsapp }}</dd>
-        <dt>📱 Mobile</dt>
+        <dt><span class="mdi mdi-cellphone"></span> Mobile</dt>
         <dd>{{ subscription_counts.mobile }}</dd>
-        <dt>🔔 Web Push</dt>
+        <dt><span class="mdi mdi-bell"></span> Web Push</dt>
         <dd>{{ subscription_counts.webpush }}</dd>
       </dl>
 
@@ -580,7 +580,7 @@
         </tr>
         {% for subscription in all_subscriptions %}
           <tr>
-            <td>{{ subscription.type_emoji }} {{ subscription.type|title }}</td>
+            <td>{{ subscription.type_emoji|safe }} {{ subscription.type|title }}</td>
             <td>{{ subscription.identifier }}</td>
             <td>{{ subscription.created }}</td>
           </tr>

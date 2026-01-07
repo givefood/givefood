@@ -21,7 +21,7 @@
         </dd>
         <dt>Input Method</dt>
         <dd>
-          {{ need.input_method_emoji }} {{ need.input_method_human }}
+          {{ need.input_method_emoji|safe }} {{ need.input_method_human }}
         </dd>
         <dt>Created</dt>
         <dd><time datetime="{{ need.created|date:'c' }}" title="{{ need.created }}">{{ need.created|timesince }} ago</time></dd>
@@ -130,7 +130,7 @@
         <li><a href="{% url 'admin:need_email' need.need_id %}?format=txt" data-turbo="false">TXT</a></li>
       </ul>
 
-      <h3>⚠️ Danger Zone</h3>
+      <h3><span class="mdi mdi-alert"></span> Danger Zone</h3>
       <form action="{% url 'admin:need_nonpertinent' need.need_id %}" method="post">
         <input type="submit" class="button is-warning is-light" value="Nonpertinent">
         {% csrf_token %}

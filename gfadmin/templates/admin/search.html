@@ -104,7 +104,7 @@
                     </tr>
                     {% for subscription in subscriptions %}
                         <tr>
-                            <td>{{ subscription.type_emoji }} {{ subscription.type|title }}</td>
+                            <td>{{ subscription.type_emoji|safe }} {{ subscription.type|title }}</td>
                             <td>{{ subscription.identifier }}</td>
                             <td><a href="{% url 'admin:foodbank' subscription.foodbank_slug %}">{{ subscription.foodbank_name }}</a></td>
                         </tr>

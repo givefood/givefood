@@ -9,7 +9,7 @@
     {% for need in needs %}
       <tr>
         <td>
-          {{ need.input_method_emoji }}
+          {{ need.input_method_emoji|safe }}
         </td>
         <td>
           {% if need.foodbank_name %}

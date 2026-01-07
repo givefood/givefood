@@ -1676,13 +1676,13 @@ class FoodbankChange(models.Model):
 
     def input_method_emoji(self):
         if self.input_method == "scrape":
-            return "🕷️"
+            return '<span class="mdi mdi-spider"></span>'
         if self.input_method == "typed":
-            return "⌨️"
+            return '<span class="mdi mdi-keyboard"></span>'
         if self.input_method == "user":
-            return "🧑"
+            return '<span class="mdi mdi-account"></span>'
         if self.input_method == "ai":
-            return "🤖"
+            return '<span class="mdi mdi-robot"></span>'
 
     def change_list(self):
         return self.change_text.split("\n")

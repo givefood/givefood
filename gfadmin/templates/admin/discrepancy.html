@@ -13,7 +13,7 @@
       <dl>
         <dt>Food bank</dt>
         <dd><a href="{% url "admin:foodbank" discrepancy.foodbank_slug %}">{{ discrepancy.foodbank_name }}</a></dd>
-        <dt>🤖 thinks...</dt>
+        <dt><span class="mdi mdi-robot"></span> thinks...</dt>
         <dd>{{ discrepancy.discrepancy_text }}</dd>
         <dt>URL</dt>
         <dd><a href="{{ discrepancy.url }}" target="_blank">{{ discrepancy.url }}</a></dd>
