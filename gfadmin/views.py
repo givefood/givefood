@@ -142,7 +142,7 @@ def search_results(request):
     for sub in email_subs:
         subscriptions.append({
             'type': 'email',
-            'type_emoji': '📧',
+            'type_emoji': '<span class="mdi mdi-email"></span>',
             'identifier': sub.email,
             'foodbank': sub.foodbank,
             'foodbank_name': sub.foodbank_name,
@@ -157,7 +157,7 @@ def search_results(request):
     for sub in whatsapp_subs:
         subscriptions.append({
             'type': 'whatsapp',
-            'type_emoji': '💬',
+            'type_emoji': '<span class="mdi mdi-whatsapp"></span>',
             'identifier': sub.phone_number,
             'foodbank': sub.foodbank,
             'foodbank_name': sub.foodbank_name,
@@ -173,7 +173,7 @@ def search_results(request):
         device_id_display = sub.device_id[:20] + "..." if len(sub.device_id) > 20 else sub.device_id
         subscriptions.append({
             'type': 'mobile',
-            'type_emoji': '📱',
+            'type_emoji': '<span class="mdi mdi-cellphone"></span>',
             'identifier': f"{sub.platform} - {device_id_display}",
             'foodbank': sub.foodbank,
             'foodbank_name': sub.foodbank.name,
@@ -189,7 +189,7 @@ def search_results(request):
         endpoint_display = sub.endpoint[:30] + "..." if len(sub.endpoint) > 30 else sub.endpoint
         subscriptions.append({
             'type': 'webpush',
-            'type_emoji': '🔔',
+            'type_emoji': '<span class="mdi mdi-bell"></span>',
             'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
             'foodbank': sub.foodbank,
             'foodbank_name': sub.foodbank.name,
@@ -506,7 +506,7 @@ def foodbank(request, slug):
             confirmed_email_count += 1
             all_subscriptions.append({
                 'type': 'email',
-                'type_emoji': '📧',
+                'type_emoji': '<span class="mdi mdi-email"></span>',
                 'identifier': sub.email,
                 'created': sub.created,
             })
@@ -515,7 +515,7 @@ def foodbank(request, slug):
     for sub in whatsapp_subscribers:
         all_subscriptions.append({
             'type': 'whatsapp',
-            'type_emoji': '💬',
+            'type_emoji': '<span class="mdi mdi-whatsapp"></span>',
             'identifier': sub.phone_number,
             'created': sub.created,
         })
@@ -525,7 +525,7 @@ def foodbank(request, slug):
         device_id_display = sub.device_id[:DEVICE_ID_TRUNCATE_LENGTH] + "..." if len(sub.device_id) > DEVICE_ID_TRUNCATE_LENGTH else sub.device_id
         all_subscriptions.append({
             'type': 'mobile',
-            'type_emoji': '📱',
+            'type_emoji': '<span class="mdi mdi-cellphone"></span>',
             'identifier': f"{sub.platform} - {device_id_display}",
             'created': sub.created,
         })
@@ -535,7 +535,7 @@ def foodbank(request, slug):
         endpoint_display = sub.endpoint[:ENDPOINT_TRUNCATE_LENGTH] + "..." if len(sub.endpoint) > ENDPOINT_TRUNCATE_LENGTH else sub.endpoint
         all_subscriptions.append({
             'type': 'webpush',
-            'type_emoji': '🔔',
+            'type_emoji': '<span class="mdi mdi-bell"></span>',
             'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
             'created': sub.created,
         })
@@ -687,62 +687,58 @@ def foodbank_check(request, slug):
         "facebook.com",
         "bankthefood.org",
     ]
+    
+    # Cache to avoid downloading the same URL multiple times
+    downloaded_pages = {}  # url -> raw HTML
+    
+    def fetch_page(url):
+        """Fetch a page and cache it, or return cached version if already downloaded."""
+        if url not in downloaded_pages:
+            crawl_item = CrawlItem(
+                foodbank = foodbank,
+                crawl_type = "check",
+                url = url,
+            )
+            crawl_item.save()
+            downloaded_pages[url] = requests.get(url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text
+            crawl_item.finish = datetime.now()
+            crawl_item.save()
+        return downloaded_pages[url]
 
     # Fetch homepage
-    crawl_item = CrawlItem(
-        foodbank = foodbank,
-        crawl_type = "check",
-        url = foodbank.url,
-    )
-    crawl_item.save()
-    homepage = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text
-    crawl_item.finish = datetime.now()
-    crawl_item.save()
+    homepage = fetch_page(foodbank.url)
     foodbank_urls["Home"] = foodbank.url
     
     if foodbank.shopping_list_url and all(x not in foodbank.shopping_list_url for x in url_blacklist):
-        crawl_item = CrawlItem(
-            foodbank = foodbank,
-            crawl_type = "check",
-            url = foodbank.shopping_list_url,
-        )
-        crawl_item.save()
-        shopping_list = htmlbodytext(requests.get(foodbank.shopping_list_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-        crawl_item.finish = datetime.now()
-        crawl_item.save()
+        shopping_list_raw = fetch_page(foodbank.shopping_list_url)
+        shopping_list = htmlbodytext(shopping_list_raw)
         foodbank_urls["Shopping List"] = foodbank.shopping_list_url
         
     if foodbank.locations_url:
-        crawl_item = CrawlItem(
-            foodbank = foodbank,
-            crawl_type = "check",
-            url = foodbank.locations_url,
-        )
-        crawl_item.save()
-        locations = htmlbodytext(requests.get(foodbank.locations_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-        crawl_item.finish = datetime.now()
-        crawl_item.save()
+        locations_raw = fetch_page(foodbank.locations_url)
+        locations = htmlbodytext(locations_raw)
         foodbank_urls["Locations"] = foodbank.locations_url
         
     if foodbank.contacts_url:
-        crawl_item = CrawlItem(
-            foodbank = foodbank,
-            crawl_type = "check",
-            url = foodbank.contacts_url,
-        )
-        crawl_item.save()
-        contacts = htmlbodytext(requests.get(foodbank.contacts_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-        crawl_item.finish = datetime.now()
-        crawl_item.save()
+        contacts_raw = fetch_page(foodbank.contacts_url)
+        contacts = htmlbodytext(contacts_raw)
         foodbank_urls["Contacts"] = foodbank.contacts_url
         
     if foodbank.donation_points_url:
         if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
             if not foodbank.network_id:
-                homepage_text = requests.get(foodbank.shopping_list_url).text
-                network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', homepage_text)
-                foodbank.network_id = network_id_search.group(1)
-                foodbank.save()
+                # Try to get shopping list page from cache, or fetch it if not cached
+                if foodbank.shopping_list_url:
+                    if foodbank.shopping_list_url not in downloaded_pages:
+                        # Fetch if not already cached (e.g., if it was in blacklist)
+                        shopping_list_raw_for_network = fetch_page(foodbank.shopping_list_url)
+                    else:
+                        shopping_list_raw_for_network = downloaded_pages[foodbank.shopping_list_url]
+                    
+                    network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', shopping_list_raw_for_network)
+                    if network_id_search:
+                        foodbank.network_id = network_id_search.group(1)
+                        foodbank.save()
             url = "%s?lat=%s&lng=%s&address=%s"  % (foodbank.donation_points_url, foodbank.latt(), foodbank.long(), foodbank.postcode)
             headers = {
                 "User-Agent": BOT_USER_AGENT,
@@ -763,15 +759,8 @@ def foodbank_check(request, slug):
             crawl_item.finish = datetime.now()
             crawl_item.save()
         else:
-            crawl_item = CrawlItem(
-                foodbank = foodbank,
-                crawl_type = "check",
-                url = foodbank.donation_points_url,
-            )
-            crawl_item.save()
-            donation_points = htmlbodytext(requests.get(foodbank.donation_points_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-            crawl_item.finish = datetime.now()
-            crawl_item.save()
+            donation_points_raw = fetch_page(foodbank.donation_points_url)
+            donation_points = htmlbodytext(donation_points_raw)
             foodbank_urls["Donation Points"] = foodbank.donation_points_url
 
     foodbank_pages = {
@@ -2440,7 +2429,7 @@ def subscriptions(request):
         for sub in email_subs:
             all_subscriptions.append({
                 'type': 'email',
-                'type_emoji': '📧',
+                'type_emoji': '<span class="mdi mdi-email"></span>',
                 'identifier': sub.email,
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank_name,
@@ -2459,7 +2448,7 @@ def subscriptions(request):
         for sub in whatsapp_subs:
             all_subscriptions.append({
                 'type': 'whatsapp',
-                'type_emoji': '💬',
+                'type_emoji': '<span class="mdi mdi-whatsapp"></span>',
                 'identifier': sub.phone_number,
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank_name,
@@ -2479,7 +2468,7 @@ def subscriptions(request):
             device_id_display = sub.device_id[:DEVICE_ID_TRUNCATE_LENGTH] + "..." if len(sub.device_id) > DEVICE_ID_TRUNCATE_LENGTH else sub.device_id
             all_subscriptions.append({
                 'type': 'mobile',
-                'type_emoji': '📱',
+                'type_emoji': '<span class="mdi mdi-cellphone"></span>',
                 'identifier': f"{sub.platform} - {device_id_display}",
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank.name,
@@ -2499,7 +2488,7 @@ def subscriptions(request):
             endpoint_display = sub.endpoint[:ENDPOINT_TRUNCATE_LENGTH] + "..." if len(sub.endpoint) > ENDPOINT_TRUNCATE_LENGTH else sub.endpoint
             all_subscriptions.append({
                 'type': 'webpush',
-                'type_emoji': '🔔',
+                'type_emoji': '<span class="mdi mdi-bell"></span>',
                 'identifier': f"{sub.browser or 'Unknown'} - {endpoint_display}",
                 'foodbank': sub.foodbank,
                 'foodbank_name': sub.foodbank.name,

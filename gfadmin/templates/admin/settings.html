@@ -11,53 +11,53 @@
     <div class="column">
 
         <ul class="settings">
-            <li>🥫 <a href="{% url 'admin:items' %}">Order Items</a></li>
-            <li>🐌 <a href="{% url 'admin:slug_redirects' %}">Slug Redirects</a></li>
-            <li>🏷️ <a href="{% url 'admin:order_groups' %}">Order Groups</a></li>
-            <li>🏘️ <a href="{% url 'admin:foodbank_groups' %}">Food Bank Groups</a></li>
-            <li>🤖 <a href="{% url 'admin:crawl_sets' %}">Crawl Sets</a></li>
+            <li><span class="mdi mdi-food"></span> <a href="{% url 'admin:items' %}">Order Items</a></li>
+            <li><span class="mdi mdi-snail"></span> <a href="{% url 'admin:slug_redirects' %}">Slug Redirects</a></li>
+            <li><span class="mdi mdi-tag"></span> <a href="{% url 'admin:order_groups' %}">Order Groups</a></li>
+            <li><span class="mdi mdi-city"></span> <a href="{% url 'admin:foodbank_groups' %}">Food Bank Groups</a></li>
+            <li><span class="mdi mdi-robot"></span> <a href="{% url 'admin:crawl_sets' %}">Crawl Sets</a></li>
         </ul>
 
         <h3>Testers</h3>
         <ul class="settings">
-            <li>📧 <a href="{% url 'admin:email_tester' %}">Email Tester</a></li>
-            <li>🔔 <a href="{% url 'admin:webpush_tester' %}">Web Push Tester</a></li>
-            <li>💬 <a href="{% url 'admin:whatsapp_tester' %}">WhatsApp Tester</a></li>
+            <li><span class="mdi mdi-email"></span> <a href="{% url 'admin:email_tester' %}">Email Tester</a></li>
+            <li><span class="mdi mdi-bell"></span> <a href="{% url 'admin:webpush_tester' %}">Web Push Tester</a></li>
+            <li><span class="mdi mdi-whatsapp"></span> <a href="{% url 'admin:whatsapp_tester' %}">WhatsApp Tester</a></li>
         </ul>
 
         <h3>Stats</h3>
         <ul class="settings">
           <li>
-            📆 Dated Stats
+            <span class="mdi mdi-calendar"></span> Dated Stats
             <form action="{% url 'admin:quarter_stats' %}" method="get">
               <input type="date" name="start" value="2024-01-01">
               <input type="date" name="end" value="2024-03-31">
               <input type="submit" value="Go">
             </form>
           </li>
-          <li>✍️ <a href="{% url 'admin:edit_stats' %}">Edit Stats</a></li>
-          <li>🔢 <a href="{% url 'admin:order_stats' %}">Order Stats</a></li>
-          <li>✉️ <a href="{% url 'admin:subscriber_stats' %}">Subscriber Stats</a></li>
-          <li>📊 <a href="{% url 'admin:subscriber_graph' %}" data-turbo="false">Subscriber Graph</a></li>
-          <li>🥫 <a href="{% url 'admin:need_stats' %}">Need Stats</a></li>
+          <li><span class="mdi mdi-pencil"></span> <a href="{% url 'admin:edit_stats' %}">Edit Stats</a></li>
+          <li><span class="mdi mdi-numeric"></span> <a href="{% url 'admin:order_stats' %}">Order Stats</a></li>
+          <li><span class="mdi mdi-email-outline"></span> <a href="{% url 'admin:subscriber_stats' %}">Subscriber Stats</a></li>
+          <li><span class="mdi mdi-chart-bar"></span> <a href="{% url 'admin:subscriber_graph' %}" data-turbo="false">Subscriber Graph</a></li>
+          <li><span class="mdi mdi-food"></span> <a href="{% url 'admin:need_stats' %}">Need Stats</a></li>
         </ul>
 
         <h3>User Data</h3>
         <ul class="settings">
-          <li>✉️ <a href="{% url 'admin:subscriptions' %}">Subscriptions</a></li>
+          <li><span class="mdi mdi-email-outline"></span> <a href="{% url 'admin:subscriptions' %}">Subscriptions</a></li>
         </ul>
 
         <h3>Geo</h3>
         <ul class="settings">
-          <li>📢 <a href="{% url 'admin:politics' %}">Parliamentary Constituencies</a>
-          <li>🏙️ <a href="{% url 'admin:places' %}">Places</a>
-          <li>2️ <a href="{% url 'admin:foodbanks_dupe_postcodes' %}">Dupe Food Bank Postcodes</a>
+          <li><span class="mdi mdi-bullhorn"></span> <a href="{% url 'admin:politics' %}">Parliamentary Constituencies</a>
+          <li><span class="mdi mdi-city-variant"></span> <a href="{% url 'admin:places' %}">Places</a>
+          <li><span class="mdi mdi-numeric-2"></span> <a href="{% url 'admin:foodbanks_dupe_postcodes' %}">Dupe Food Bank Postcodes</a>
         </ul>
 
-        <h3>⚠️ DANGER ZONE</h3>
+        <h3><span class="mdi mdi-alert"></span> DANGER ZONE</h3>
         <ul class="settings">
-          <li>🔑 <a href="{% url 'admin:credentials' %}">Credentials</a>
-          <li>🎒 <a href="{% url 'admin:clearcache' %}">Clear Cache</a>
+          <li><span class="mdi mdi-key"></span> <a href="{% url 'admin:credentials' %}">Credentials</a>
+          <li><span class="mdi mdi-bag-personal"></span> <a href="{% url 'admin:clearcache' %}">Clear Cache</a>
         </ul>
 
     </div>

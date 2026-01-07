@@ -221,3 +221,77 @@ class TestFoodbankCheck:
             # (comparing without timezone info for simplicity)
             assert item.start.replace(tzinfo=None) >= start_time.replace(tzinfo=None, microsecond=0)
             assert item.finish.replace(tzinfo=None) <= end_time.replace(tzinfo=None) + datetime.resolution
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_duplicate_urls_only_downloaded_once(self, mock_get, mock_gemini, mock_render):
+        """Test that when multiple fields point to the same URL, it's only downloaded once."""
+        # Create a test foodbank where multiple URL fields point to the same URL
+        same_url = 'https://same.com/page'
+        foodbank = Foodbank(
+            name='Duplicate URL Foodbank',
+            url=same_url,
+            shopping_list_url=same_url,  # Same as url
+            locations_url=same_url,  # Same as url
+            contacts_url='https://different.com/contact',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test content</body></html>'
+        mock_get.return_value = mock_response
+        
+        # Mock gemini response
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Duplicate URL Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '',
+                'contact_email': 'test@example.com',
+                'network': '',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+        
+        # Mock render to prevent template rendering
+        mock_render.return_value = Mock(status_code=200)
+        
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+        
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+        
+        # Verify CrawlItems were created
+        crawl_items = CrawlItem.objects.filter(foodbank=foodbank, crawl_type='check')
+        
+        # Should have created only 2 crawl items (one for the same_url, one for contacts_url)
+        # even though url, shopping_list_url, and locations_url all point to the same URL
+        assert crawl_items.count() == 2
+        
+        # Verify the URLs
+        urls_checked = list(crawl_items.values_list('url', flat=True))
+        assert same_url in urls_checked
+        assert 'https://different.com/contact' in urls_checked
+        
+        # Verify requests.get was only called twice (once for same_url, once for contacts_url)
+        assert mock_get.call_count == 2
+        
+        # Verify all have crawl_type='check' and finish time
+        for item in crawl_items:
+            assert item.crawl_type == 'check'
+            assert item.foodbank == foodbank
+            assert item.finish is not None
