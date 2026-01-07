@@ -687,62 +687,53 @@ def foodbank_check(request, slug):
         "facebook.com",
         "bankthefood.org",
     ]
+    
+    # Cache to avoid downloading the same URL multiple times
+    downloaded_pages = {}  # url -> raw HTML
+    
+    def fetch_page(url):
+        """Fetch a page and cache it, or return cached version if already downloaded."""
+        if url not in downloaded_pages:
+            crawl_item = CrawlItem(
+                foodbank = foodbank,
+                crawl_type = "check",
+                url = url,
+            )
+            crawl_item.save()
+            downloaded_pages[url] = requests.get(url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text
+            crawl_item.finish = datetime.now()
+            crawl_item.save()
+        return downloaded_pages[url]
 
     # Fetch homepage
-    crawl_item = CrawlItem(
-        foodbank = foodbank,
-        crawl_type = "check",
-        url = foodbank.url,
-    )
-    crawl_item.save()
-    homepage = requests.get(foodbank.url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text
-    crawl_item.finish = datetime.now()
-    crawl_item.save()
+    homepage = fetch_page(foodbank.url)
     foodbank_urls["Home"] = foodbank.url
     
     if foodbank.shopping_list_url and all(x not in foodbank.shopping_list_url for x in url_blacklist):
-        crawl_item = CrawlItem(
-            foodbank = foodbank,
-            crawl_type = "check",
-            url = foodbank.shopping_list_url,
-        )
-        crawl_item.save()
-        shopping_list = htmlbodytext(requests.get(foodbank.shopping_list_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-        crawl_item.finish = datetime.now()
-        crawl_item.save()
+        shopping_list_raw = fetch_page(foodbank.shopping_list_url)
+        shopping_list = htmlbodytext(shopping_list_raw)
         foodbank_urls["Shopping List"] = foodbank.shopping_list_url
         
     if foodbank.locations_url:
-        crawl_item = CrawlItem(
-            foodbank = foodbank,
-            crawl_type = "check",
-            url = foodbank.locations_url,
-        )
-        crawl_item.save()
-        locations = htmlbodytext(requests.get(foodbank.locations_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-        crawl_item.finish = datetime.now()
-        crawl_item.save()
+        locations_raw = fetch_page(foodbank.locations_url)
+        locations = htmlbodytext(locations_raw)
         foodbank_urls["Locations"] = foodbank.locations_url
         
     if foodbank.contacts_url:
-        crawl_item = CrawlItem(
-            foodbank = foodbank,
-            crawl_type = "check",
-            url = foodbank.contacts_url,
-        )
-        crawl_item.save()
-        contacts = htmlbodytext(requests.get(foodbank.contacts_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-        crawl_item.finish = datetime.now()
-        crawl_item.save()
+        contacts_raw = fetch_page(foodbank.contacts_url)
+        contacts = htmlbodytext(contacts_raw)
         foodbank_urls["Contacts"] = foodbank.contacts_url
         
     if foodbank.donation_points_url:
         if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
             if not foodbank.network_id:
-                homepage_text = requests.get(foodbank.shopping_list_url).text
-                network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', homepage_text)
-                foodbank.network_id = network_id_search.group(1)
-                foodbank.save()
+                # Use cached shopping list page if available
+                if foodbank.shopping_list_url in downloaded_pages:
+                    shopping_list_raw = downloaded_pages[foodbank.shopping_list_url]
+                    network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', shopping_list_raw)
+                    if network_id_search:
+                        foodbank.network_id = network_id_search.group(1)
+                        foodbank.save()
             url = "%s?lat=%s&lng=%s&address=%s"  % (foodbank.donation_points_url, foodbank.latt(), foodbank.long(), foodbank.postcode)
             headers = {
                 "User-Agent": BOT_USER_AGENT,
@@ -763,15 +754,8 @@ def foodbank_check(request, slug):
             crawl_item.finish = datetime.now()
             crawl_item.save()
         else:
-            crawl_item = CrawlItem(
-                foodbank = foodbank,
-                crawl_type = "check",
-                url = foodbank.donation_points_url,
-            )
-            crawl_item.save()
-            donation_points = htmlbodytext(requests.get(foodbank.donation_points_url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text)
-            crawl_item.finish = datetime.now()
-            crawl_item.save()
+            donation_points_raw = fetch_page(foodbank.donation_points_url)
+            donation_points = htmlbodytext(donation_points_raw)
             foodbank_urls["Donation Points"] = foodbank.donation_points_url
 
     foodbank_pages = {
