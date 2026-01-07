@@ -7,7 +7,8 @@ from django.contrib.contenttypes.models import ContentType
 
 from givefood.models import (
     Foodbank, FoodbankChange, FoodbankChangeTranslation, 
-    FoodbankSubscriber, CrawlSet, CrawlItem
+    FoodbankSubscriber, CrawlSet, CrawlItem, WebPushSubscription, 
+    MobileSubscriber, WhatsappSubscriber
 )
 
 
@@ -111,17 +112,48 @@ class TestNeedView:
         assert need_obj.foodbank.name == 'Test Food Bank'
 
     def test_need_view_includes_subscriber_count(self, need, foodbank):
-        """Test that subscriber count is pre-computed."""
-        # Create some subscribers
+        """Test that subscriber count includes all types and only confirmed email subscribers."""
+        # Create email subscribers (both confirmed and unconfirmed)
         FoodbankSubscriber.objects.create(
             foodbank=foodbank,
-            email='test1@example.com',
+            email='confirmed1@example.com',
             confirmed=True
         )
         FoodbankSubscriber.objects.create(
             foodbank=foodbank,
-            email='test2@example.com',
+            email='confirmed2@example.com',
             confirmed=True
+        )
+        FoodbankSubscriber.objects.create(
+            foodbank=foodbank,
+            email='unconfirmed@example.com',
+            confirmed=False  # This should NOT be counted
+        )
+        
+        # Create other subscriber types (all are automatically confirmed)
+        WebPushSubscription.objects.create(
+            foodbank=foodbank,
+            endpoint='https://push.example.com/1',
+            p256dh='test-key-1',
+            auth='test-auth-1'
+        )
+        
+        MobileSubscriber.objects.create(
+            foodbank=foodbank,
+            device_id='device-123',
+            platform='ios',
+            timezone='UTC',
+            locale='en_US',
+            app_version='1.0',
+            os_version='14.0',
+            device_model='iPhone',
+            sub_type='need'
+        )
+        
+        WhatsappSubscriber.objects.create(
+            foodbank=foodbank,
+            phone_number='+441234567890',
+            foodbank_name=foodbank.name
         )
         
         client = Client()
@@ -130,7 +162,9 @@ class TestNeedView:
         response = client.get(url)
         
         assert 'subscriber_count' in response.context
-        assert response.context['subscriber_count'] == 2
+        # Should count: 2 confirmed email + 1 webpush + 1 mobile + 1 whatsapp = 5
+        # Should NOT count: 1 unconfirmed email
+        assert response.context['subscriber_count'] == 5
 
     def test_need_view_includes_translation_count(self, need):
         """Test that translation count is pre-computed."""
