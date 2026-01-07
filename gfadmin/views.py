@@ -1426,8 +1426,15 @@ def need(request, id):
             diff_from_nonpert = diff_html(prev_nonpert.change_list(), need.change_list())
             diff_from_nonpert_excess = diff_html(prev_nonpert.excess_list(), need.excess_list())
         
-        # Pre-fetch subscriber count
-        subscriber_count = FoodbankSubscriber.objects.filter(foodbank = need.foodbank).count()
+        # Pre-fetch subscriber counts for all types
+        # Email subscribers - only confirmed ones
+        email_subscribers_count = FoodbankSubscriber.objects.filter(foodbank=need.foodbank, confirmed=True).count()
+        # Other subscriber types (all are automatically confirmed)
+        webpush_count = WebPushSubscription.objects.filter(foodbank=need.foodbank).count()
+        mobile_count = MobileSubscriber.objects.filter(foodbank=need.foodbank).count()
+        whatsapp_count = WhatsappSubscriber.objects.filter(foodbank=need.foodbank).count()
+        # Total subscriber count
+        subscriber_count = email_subscribers_count + webpush_count + mobile_count + whatsapp_count
     
     # Pre-fetch crawl_set in a single query with select_related
     # Note: ContentType.objects.get_for_model() uses Django's internal cache
