@@ -26,6 +26,8 @@ from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
+from django_tasks.backends.database.models import DBTaskResult
+from django_tasks.base import TaskResultStatus
 
 # Constants for subscription display truncation
 DEVICE_ID_TRUNCATE_LENGTH = 20
@@ -60,6 +62,15 @@ def index(request):
     # Convert to a dictionary for easy lookup
     crawl_counts = {item['crawl_set__crawl_type']: item['count'] for item in crawl_counts_by_type}
 
+    # Task queue stats
+    tasks_24h = DBTaskResult.objects.filter(
+        finished_at__gte=yesterday
+    ).filter(
+        Q(status=TaskResultStatus.SUCCEEDED) | Q(status=TaskResultStatus.FAILED)
+    ).count()
+    
+    tasks_outstanding = DBTaskResult.objects.filter(status=TaskResultStatus.READY).count()
+
     stats = {
         "oldest_edit":oldest_edit,
         "oldest_edit_days":oldest_edit_days,
@@ -71,6 +82,8 @@ def index(request):
         "latest_need_crawlset":latest_need_crawlset,
         "article_check_24h":crawl_counts.get("article", 0),
         "charity_check_24h":crawl_counts.get("charity", 0),
+        "tasks_24h":tasks_24h,
+        "tasks_outstanding":tasks_outstanding,
     }
 
     # Articles
