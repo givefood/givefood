@@ -64,9 +64,8 @@ def index(request):
 
     # Task queue stats
     tasks_24h = DBTaskResult.objects.filter(
-        finished_at__gte=yesterday
-    ).filter(
-        Q(status=TaskResultStatus.SUCCEEDED) | Q(status=TaskResultStatus.FAILED)
+        finished_at__gte=yesterday,
+        status__in=[TaskResultStatus.SUCCEEDED, TaskResultStatus.FAILED]
     ).count()
     
     tasks_outstanding = DBTaskResult.objects.filter(status=TaskResultStatus.READY).count()
