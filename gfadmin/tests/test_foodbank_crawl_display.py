@@ -101,3 +101,15 @@ class TestFoodbankCrawlDisplay:
         assert crawl_set_discrepancy.crawl_type_icon() == crawl_item_discrepancy.crawl_type_icon()
         assert crawl_set_check.crawl_type_icon() == crawl_item_check.crawl_type_icon()
         assert crawl_set_urls.crawl_type_icon() == crawl_item_urls.crawl_type_icon()
+        
+        # Verify icons are MDI HTML spans, not emoji
+        assert crawl_set_need.crawl_type_icon() == '<span class="mdi mdi-cart"></span>'
+        assert crawl_set_article.crawl_type_icon() == '<span class="mdi mdi-newspaper"></span>'
+        assert crawl_set_charity.crawl_type_icon() == '<span class="mdi mdi-bank"></span>'
+        assert crawl_set_discrepancy.crawl_type_icon() == '<span class="mdi mdi-alert"></span>'
+        assert crawl_set_check.crawl_type_icon() == '<span class="mdi mdi-clipboard-check"></span>'
+        assert crawl_set_urls.crawl_type_icon() == '<span class="mdi mdi-link"></span>'
+        
+        # Test unknown type returns help icon
+        crawl_set_unknown = CrawlSet(crawl_type='unknown')
+        assert crawl_set_unknown.crawl_type_icon() == '<span class="mdi mdi-help-circle"></span>'

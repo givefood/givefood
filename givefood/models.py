@@ -27,7 +27,7 @@ import requests
 
 from givefood.settings import LANGUAGES
 
-from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN
+from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN, CRAWL_TYPE_ICONS, CRAWL_TYPE_ICON_DEFAULT
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import decache_async, gemini, geocode, geojson_dict, get_calories, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, find_parlcons, place_has_photo, pluscode, translate_need_async, validate_postcode
 
@@ -2257,19 +2257,7 @@ class CrawlSet(models.Model):
     crawl_type = models.CharField(max_length=50) # need, article, charity, discrepancy
 
     def crawl_type_icon(self):
-        if self.crawl_type == "need":
-            return "🛒"
-        if self.crawl_type == "article":
-            return "🗞️"
-        if self.crawl_type == "charity":
-            return "🏛️"
-        if self.crawl_type == "discrepancy":
-            return "⚠️"
-        if self.crawl_type == "check":
-            return "🗒️"
-        if self.crawl_type == "urls":
-            return "🔗"
-        return "❓"
+        return CRAWL_TYPE_ICONS.get(self.crawl_type, CRAWL_TYPE_ICON_DEFAULT)
 
     def time_taken(self):
         """Return the time taken for this crawl set, rounded to the nearest second."""
@@ -2298,19 +2286,7 @@ class CrawlItem(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
 
     def crawl_type_icon(self):
-        if self.crawl_type == "need":
-            return "🛒"
-        if self.crawl_type == "article":
-            return "🗞️"
-        if self.crawl_type == "charity":
-            return "🏛️"
-        if self.crawl_type == "discrepancy":
-            return "⚠️"
-        if self.crawl_type == "check":
-            return "🗒️"
-        if self.crawl_type == "urls":
-            return "🔗"
-        return "❓"
+        return CRAWL_TYPE_ICONS.get(self.crawl_type, CRAWL_TYPE_ICON_DEFAULT)
 
     def time_taken_ms(self):
         if self.finish:

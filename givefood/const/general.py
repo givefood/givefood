@@ -59,6 +59,16 @@ DISCREPANCY_STATUSES = [
 ]
 DISCREPANCY_STATUS_CHOICES = tuple((status, status) for status in DISCREPANCY_STATUSES)
 
+CRAWL_TYPE_ICONS = {
+    "need": '<span class="mdi mdi-cart"></span>',
+    "article": '<span class="mdi mdi-newspaper"></span>',
+    "charity": '<span class="mdi mdi-bank"></span>',
+    "discrepancy": '<span class="mdi mdi-alert"></span>',
+    "check": '<span class="mdi mdi-clipboard-check"></span>',
+    "urls": '<span class="mdi mdi-link"></span>',
+}
+CRAWL_TYPE_ICON_DEFAULT = '<span class="mdi mdi-help-circle"></span>'
+
 
 DONATION_POINT_COMPANIES = [
     "Aldi",
