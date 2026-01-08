@@ -2258,18 +2258,18 @@ class CrawlSet(models.Model):
 
     def crawl_type_icon(self):
         if self.crawl_type == "need":
-            return "🛒"
+            return '<span class="mdi mdi-cart"></span>'
         if self.crawl_type == "article":
-            return "🗞️"
+            return '<span class="mdi mdi-newspaper"></span>'
         if self.crawl_type == "charity":
-            return "🏛️"
+            return '<span class="mdi mdi-bank"></span>'
         if self.crawl_type == "discrepancy":
-            return "⚠️"
+            return '<span class="mdi mdi-alert"></span>'
         if self.crawl_type == "check":
-            return "🗒️"
+            return '<span class="mdi mdi-clipboard-check"></span>'
         if self.crawl_type == "urls":
-            return "🔗"
-        return "❓"
+            return '<span class="mdi mdi-link"></span>'
+        return '<span class="mdi mdi-help-circle"></span>'
 
     def time_taken(self):
         """Return the time taken for this crawl set, rounded to the nearest second."""
@@ -2299,18 +2299,18 @@ class CrawlItem(models.Model):
 
     def crawl_type_icon(self):
         if self.crawl_type == "need":
-            return "🛒"
+            return '<span class="mdi mdi-cart"></span>'
         if self.crawl_type == "article":
-            return "🗞️"
+            return '<span class="mdi mdi-newspaper"></span>'
         if self.crawl_type == "charity":
-            return "🏛️"
+            return '<span class="mdi mdi-bank"></span>'
         if self.crawl_type == "discrepancy":
-            return "⚠️"
+            return '<span class="mdi mdi-alert"></span>'
         if self.crawl_type == "check":
-            return "🗒️"
+            return '<span class="mdi mdi-clipboard-check"></span>'
         if self.crawl_type == "urls":
-            return "🔗"
-        return "❓"
+            return '<span class="mdi mdi-link"></span>'
+        return '<span class="mdi mdi-help-circle"></span>'
 
     def time_taken_ms(self):
         if self.finish:
