@@ -31,6 +31,20 @@ from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DE
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import decache_async, gemini, geocode, geojson_dict, get_calories, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, find_parlcons, place_has_photo, pluscode, translate_need_async, validate_postcode
 
+# Load bank holidays data once at module level to avoid repeated file I/O
+_BANK_HOLIDAYS_CACHE = None
+
+def _get_bank_holidays():
+    """Load and cache bank holidays data from JSON file."""
+    global _BANK_HOLIDAYS_CACHE
+    if _BANK_HOLIDAYS_CACHE is None:
+        try:
+            with open("./givefood/data/bank-holidays.json") as f:
+                _BANK_HOLIDAYS_CACHE = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            _BANK_HOLIDAYS_CACHE = {}
+    return _BANK_HOLIDAYS_CACHE
+
 
 class Foodbank(models.Model):
 
@@ -38,7 +52,7 @@ class Foodbank(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     alt_name = models.CharField(max_length=100, null=True, blank=True, help_text="E.g. Welsh version of the name")
-    slug = models.CharField(max_length=100, editable=False)
+    slug = models.CharField(max_length=100, editable=False, db_index=True)
 
     # Address
     address = models.TextField()
@@ -126,7 +140,7 @@ class Foodbank(models.Model):
 
     # Booleans
     address_is_administrative = models.BooleanField(default=False, verbose_name="Is the main address just used for administrative purposes?")
-    is_closed = models.BooleanField(default=False)
+    is_closed = models.BooleanField(default=False, db_index=True)
     is_school = models.BooleanField(default=False)
 
     # Foodbank dates
@@ -686,11 +700,11 @@ class FoodbankLocation(models.Model):
     foodbank_network = models.CharField(max_length=50, editable=False)
     foodbank_phone_number = models.CharField(max_length=50, null=True, blank=True, editable=False)
     foodbank_email = models.EmailField(editable=False)
-    is_closed = models.BooleanField(default=False)
+    is_closed = models.BooleanField(default=False, db_index=True)
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
-    slug = models.CharField(max_length=100, editable=False)
+    slug = models.CharField(max_length=100, editable=False, db_index=True)
     address = models.TextField(null=True, blank=True)
     postcode = models.CharField(max_length=9, null=True, blank=True, validators=[
         RegexValidator(
@@ -936,11 +950,11 @@ class FoodbankDonationPoint(models.Model):
     foodbank_name = models.CharField(max_length=100, editable=False)
     foodbank_slug = models.CharField(max_length=100, editable=False)
     foodbank_network = models.CharField(max_length=50, editable=False)
-    is_closed = models.BooleanField(default=False)
+    is_closed = models.BooleanField(default=False, db_index=True)
 
     uuid = models.UUIDField(default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
-    slug = models.CharField(max_length=100, editable=False)
+    slug = models.CharField(max_length=100, editable=False, db_index=True)
     address = models.TextField()
     postcode = models.CharField(max_length=9, validators=[
         RegexValidator(
@@ -1073,7 +1087,7 @@ class FoodbankDonationPoint(models.Model):
 
         days = opening_hours.split("\n")
         
-        bank_holidays = json.load(open("./givefood/data/bank-holidays.json"))
+        bank_holidays = _get_bank_holidays()
 
         if self.country == "England":
             bank_holidays = bank_holidays["england-and-wales"]
@@ -1602,7 +1616,7 @@ class FoodbankChange(models.Model):
 
     # This is known on the frontend as a 'need'
 
-    created = models.DateTimeField(auto_now_add=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True, editable=False, db_index=True)
     modified = models.DateTimeField(auto_now=True, editable=False)
     need_id = models.UUIDField(default=uuid.uuid4, editable=False)
     need_id_str = models.CharField(max_length=36, editable=False)
@@ -1620,7 +1634,7 @@ class FoodbankChange(models.Model):
     excess_change_text = models.TextField(verbose_name="Excess Items", null=True, blank=True)
     excess_change_text_original = models.TextField(null=True, blank=True)
 
-    published = models.BooleanField(default=False)
+    published = models.BooleanField(default=False, db_index=True)
     nonpertinent = models.BooleanField(default=False, editable=False)
     tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
 
@@ -1922,7 +1936,7 @@ class FoodbankChangeLine(models.Model):
 class ParliamentaryConstituency(models.Model):
 
     name = models.CharField(max_length=50, null=True, blank=True)
-    slug = models.CharField(max_length=50, editable=False)
+    slug = models.CharField(max_length=50, editable=False, db_index=True)
     country = models.CharField(max_length=50, choices=COUNTRIES_CHOICES, null=True, blank=True)
 
     mp = models.CharField(max_length=50, null=True, blank=True, verbose_name="MP")
@@ -1986,7 +2000,7 @@ class ParliamentaryConstituency(models.Model):
         return Foodbank.objects.select_related("latest_need").filter(parliamentary_constituency = self, is_closed = False)
 
     def location_obj(self):
-        return FoodbankLocation.objects.filter(parliamentary_constituency = self, is_closed = False)
+        return FoodbankLocation.objects.filter(parliamentary_constituency = self, is_closed = False).select_related('foodbank')
 
     def foodbanks(self):
 
