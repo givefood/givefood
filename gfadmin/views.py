@@ -128,7 +128,7 @@ def search_results(request):
     needs = FoodbankChange.objects.filter(
         Q(change_text__icontains=query) |
         Q(excess_change_text__icontains=query)
-    ).order_by("-created")[:100]
+    ).select_related('foodbank').order_by("-created")[:100]
 
     # Search subscriptions across all types and combine into single list
     subscriptions = []
@@ -348,7 +348,7 @@ def orders_csv(request):
 
 def needs(request):
 
-    needs = FoodbankChange.objects.order_by("-created")[:200]
+    needs = FoodbankChange.objects.select_related('foodbank').order_by("-created")[:200]
 
     template_vars = {
         "needs":needs,

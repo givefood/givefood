@@ -16,8 +16,9 @@ def company(request, slug):
     from django.db import connection
     
     # Use DISTINCT ON for PostgreSQL, or values().distinct() for SQLite
+    # Use only() to fetch only the field we need for the distinct check
     if connection.vendor == 'postgresql':
-        allowed_slugs = [dp.company_slug for dp in FoodbankDonationPoint.objects.all().distinct("company_slug")]
+        allowed_slugs = list(FoodbankDonationPoint.objects.only('company_slug').distinct("company_slug").values_list('company_slug', flat=True))
     else:
         allowed_slugs = list(FoodbankDonationPoint.objects.values_list('company_slug', flat=True).distinct())
     
