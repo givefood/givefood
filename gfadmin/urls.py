@@ -136,4 +136,6 @@ urlpatterns = (
     path("proxy/", proxy, name="proxy"),
     re_path(r'^proxy/gmaps/(?P<type>textsearch|placedetails)/$', gmap_proxy, name="gmap_proxy"),
     
+    path("frag/<slug:frag>/", frag, name="frag"),
+    
 )

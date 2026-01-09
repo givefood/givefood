@@ -2794,3 +2794,28 @@ def gmap_proxy(request, type):
     params = request.GET.dict()
     response = requests.get(url, params=params)
     return JsonResponse(response.json())
+
+
+def frag(request, frag):
+    """
+    Fragments for client side includes in admin.
+    Similar to /frag/ in public app.
+    """
+    
+    allowed_frags = [
+        "outstandingtaskcount",
+    ]
+    if frag not in allowed_frags:
+        return HttpResponseForbidden()
+    
+    frag_text = None
+    
+    # outstandingtaskcount
+    if frag == "outstandingtaskcount":
+        tasks_outstanding = DBTaskResult.objects.filter(status=TaskResultStatus.READY).count()
+        frag_text = str(tasks_outstanding)
+    
+    if not frag_text:
+        return HttpResponseForbidden()
+    
+    return HttpResponse(frag_text)
