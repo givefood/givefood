@@ -49,11 +49,11 @@ class TestFragEndpoint:
         # Should return zero
         assert response.content.decode() == '0'
 
-    def test_frag_invalid_slug_returns_403(self, client):
-        """Test that an invalid frag slug returns 403 Forbidden."""
+    def test_frag_invalid_slug_returns_404(self, client):
+        """Test that an invalid frag slug returns 404 Not Found."""
         # Get the frag endpoint with invalid slug
         url = reverse('admin:frag', kwargs={'frag': 'invalid'})
         response = client.get(url)
         
-        # Should return 403 Forbidden
-        assert response.status_code == 403
+        # Should return 404 Not Found
+        assert response.status_code == 404

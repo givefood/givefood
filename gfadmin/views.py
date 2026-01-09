@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin, quote
 
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
@@ -2806,7 +2806,7 @@ def frag(request, frag):
         "outstandingtaskcount",
     ]
     if frag not in allowed_frags:
-        return HttpResponseForbidden()
+        raise Http404()
     
     frag_text = None
     
@@ -2815,7 +2815,7 @@ def frag(request, frag):
         tasks_outstanding = DBTaskResult.objects.filter(status=TaskResultStatus.READY).count()
         frag_text = str(tasks_outstanding)
     
-    if not frag_text:
-        return HttpResponseForbidden()
+    if frag_text is None:
+        raise Http404()
     
     return HttpResponse(frag_text)
