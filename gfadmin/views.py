@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin, quote
 
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
 from django.urls import reverse
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
@@ -2794,3 +2794,29 @@ def gmap_proxy(request, type):
     params = request.GET.dict()
     response = requests.get(url, params=params)
     return JsonResponse(response.json())
+
+
+def frag(request, frag):
+    """
+    Fragments for client side includes in admin.
+    Similar to /frag/ in public app.
+    """
+    
+    allowed_frags = [
+        "outstandingtaskcount",
+    ]
+    if frag not in allowed_frags:
+        raise Http404()
+    
+    frag_text = None
+    
+    # outstandingtaskcount
+    if frag == "outstandingtaskcount":
+        tasks_outstanding = DBTaskResult.objects.filter(status=TaskResultStatus.READY).count()
+        frag_text = str(tasks_outstanding)
+    
+    # Safety check for future extensibility - ensures all allowed fragments are handled
+    if frag_text is None:
+        raise Http404()
+    
+    return HttpResponse(frag_text)
