@@ -2815,6 +2815,7 @@ def frag(request, frag):
         tasks_outstanding = DBTaskResult.objects.filter(status=TaskResultStatus.READY).count()
         frag_text = str(tasks_outstanding)
     
+    # Safety check for future extensibility - ensures all allowed fragments are handled
     if frag_text is None:
         raise Http404()
     
