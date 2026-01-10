@@ -7,8 +7,8 @@ Give Food is a registered charity in England & Wales (1188192) that uses data to
 ## About the Charity
 
 - [About Give Food]({{ domain }}/about-us/): Information about the charity, mission, and impact
-- [Annual Reports]({{ domain }}/annual-reports/): Yearly reports on activities, innovations, and impact (2019-2024)
-- [2024 Annual Report]({{ domain }}/ga/2024/): Latest report covering AI enhancements, election engagement, and language accessibility
+- [Annual Reports]({{ domain }}/annual-reports/): Yearly reports on activities, innovations, and impact (2019-2025)
+- [2025 Annual Report]({{ domain }}/2025/): Latest annual report
 - [Donate]({{ domain }}/donate/): Information on how to support Give Food
 - [Register a Food Bank]({{ domain }}/register-foodbank/): Form for food banks to join the database
 - [Privacy Policy]({{ domain }}/privacy/): How we handle data and user privacy
@@ -20,14 +20,38 @@ Give Food is a registered charity in England & Wales (1188192) that uses data to
 - [Find Food Banks Near You]({{ domain }}/needs/): Search by postcode, town, or location to find nearby food banks and what they need
 - [Write to Your MP]({{ domain }}/write/): Contact your Member of Parliament about food insecurity issues
 - [Dashboard]({{ domain }}/dashboard/): Data visualizations and statistics about food bank usage and trends
+- [Android App](https://play.google.com/store/apps/details?id=uk.org.givefood.android): Mobile app to find food banks and their needs
 
-## Dashboard & Visualizations
+## Country Pages
+
+- [England]({{ domain }}/england/): Food banks in England with regional map
+- [Scotland]({{ domain }}/scotland/): Food banks in Scotland with regional map
+- [Wales]({{ domain }}/wales/): Food banks in Wales with regional map
+- [Northern Ireland]({{ domain }}/northern-ireland/): Food banks in Northern Ireland with regional map
+
+## Dashboard & Analytics
 
 - [Main Dashboard]({{ domain }}/dashboard/): Overview of food bank statistics and trends
 - [Items Requested Weekly]({{ domain }}/dashboard/items-requested-weekly/): Chart showing weekly demand trends over time
-- [Beans & Pasta Index]({{ domain }}/dashboard/): Unique index tracking staple item demand as a measure of food insecurity
-- [Most Requested Items]({{ domain }}/dashboard/): Analysis of commonly requested food and hygiene items
-- [Food Bank Locations Map]({{ domain }}/dashboard/): Geographic distribution of food banks across the UK
+- [Items Requested Weekly by Year]({{ domain }}/dashboard/items-requested-weekly/by-year/): Year-over-year comparison
+- [Bean & Pasta Index]({{ domain }}/dashboard/bean-pasta-index/): Unique index tracking staple item demand as a measure of food insecurity
+- [Most Requested Items]({{ domain }}/dashboard/most-requested-items/): Analysis of commonly requested food and hygiene items
+- [Most Excess Items]({{ domain }}/dashboard/most-excess-items/): Items food banks have in surplus
+- [Item Categories]({{ domain }}/dashboard/item-categories/): Items aggregated by category
+- [Charity Income & Expenditure]({{ domain }}/dashboard/charity-income-expenditure/): Financial data for food bank charities
+- [Donation Points by Supermarket]({{ domain }}/dashboard/donationpoints/supermarkets/): Distribution of donation points by retailer
+- [Food Banks Found]({{ domain }}/dashboard/foodbanks-found/): Cumulative count of food banks discovered over time
+
+## Multi-Language Support
+
+The website is available in 20 languages to serve diverse UK communities:
+
+- English (en), Polish (pl), Welsh (cy), Bengali (bn), Romanian (ro)
+- Punjabi (pa), Urdu (ur), Arabic (ar), Gujarati (gu), Spanish (es)
+- Portuguese (pt), Italian (it), French (fr), Tamil (ta), Turkish (tr)
+- Scottish Gaelic (gd), Chinese Simplified (zh-hans), Lithuanian (lt), Irish (ga), Bulgarian (bg)
+
+Access any language via: {{ domain }}/{language-code}/
 
 ## API Documentation
 
@@ -46,6 +70,9 @@ Give Food is a registered charity in England & Wales (1188192) that uses data to
 - [List All Locations]({{ domain }}/api/2/locations/): All food bank distribution points
 - [Search Locations]({{ domain }}/api/2/locations/search/?address={location}): Find distribution points near an address
 
+### Donation Points
+- [List All Donation Points]({{ domain }}/api/2/donationpoints/): All donation collection points (GeoJSON)
+
 ### Needs & Requests
 - [List Recent Needs]({{ domain }}/api/2/needs/): Latest 100 food bank need updates
 - [Get Specific Need]({{ domain }}/api/2/need/{id}/): Individual need request details
@@ -54,10 +81,15 @@ Give Food is a registered charity in England & Wales (1188192) that uses data to
 - [List All Constituencies]({{ domain }}/api/2/constituencies/): UK parliamentary constituencies
 - [Get Constituency Details]({{ domain }}/api/2/constituency/{slug}/): Food banks in a specific constituency
 
-### Geographic Data
-- [GeoJSON - All Data]({{ domain }}/needs/geo.json): All food banks, locations, and donation points in GeoJSON format
-- [GeoJSON - Food Bank]({{ domain }}/needs/at/{slug}/geo.json): Geographic data for a specific food bank
-- [GeoJSON - Constituency]({{ domain }}/needs/in/constituency/{slug}/geo.json): Food banks in a constituency
+### Geographic Data (GeoJSON)
+- [All Food Banks]({{ domain }}/needs/geo.json): All food banks, locations, and donation points
+- [Food Bank]({{ domain }}/needs/at/{slug}/geo.json): Geographic data for a specific food bank
+- [Constituency]({{ domain }}/needs/in/constituency/{slug}/geo.json): Food banks in a constituency
+- [Country]({{ domain }}/{country-slug}/geo.json): Food banks in England, Scotland, Wales, or Northern Ireland
+
+### Response Formats
+API endpoints support multiple formats via `?format=` parameter:
+- `json` (default), `xml`, `yaml`, `geojson`
 
 ## Data Resources
 
@@ -66,38 +98,40 @@ Give Food is a registered charity in England & Wales (1188192) that uses data to
 - [Food Banks CSV](https://github.com/givefood/data/blob/main/foodbanks.csv): Complete list of food banks with metadata
 - [API Usage Guidelines]({{ domain }}/api/): Best practices for using Give Food data responsibly
 
+## Notifications & Subscriptions
+
+- **Email Subscriptions**: Subscribe to food bank updates at {{ domain }}/needs/at/{slug}/subscribe/
+- **WhatsApp Notifications**: Subscribe via WhatsApp by sending "subscribe {foodbank-slug}" to our WhatsApp number
+- **RSS Feeds**: Site-wide feed at {{ domain }}/needs/rss.xml or per-food bank at {{ domain }}/needs/at/{slug}/rss.xml
+
 ## Source Code & Documentation
 
 - [Main Repository](https://github.com/givefood/givefood): Complete source code for the Give Food platform
 - [Project README](https://github.com/givefood/givefood/blob/main/README.md): Repository overview and architecture
 - [Testing Guide](https://github.com/givefood/givefood/blob/main/TESTING.md): How to run tests and contribute
 - [Development Guidelines](https://github.com/givefood/givefood/blob/main/.github/copilot-instructions.md): Coding conventions and best practices
-- [Abbreviations](https://github.com/givefood/givefood/blob/main/docs/abbreviations.md): Common abbreviations used in the codebase
-- [Languages](https://github.com/givefood/givefood/blob/main/docs/languages.md): Internationalization and translation info (Welsh, Scots Gaelic)
-- [Cron Jobs](https://github.com/givefood/givefood/blob/main/docs/crons.md): Scheduled task documentation
+- [Languages Documentation](https://github.com/givefood/givefood/blob/main/docs/languages.md): Internationalization and translation info
 
 ## Technical Components
 
 - [Public App](https://github.com/givefood/givefood/blob/main/givefood/README.md): Core framework and public-facing pages
-- [WFBN Tool](https://github.com/givefood/givefood/blob/main/gfwfbn/README.md): What Food Banks Need search tool
-- [Admin Interface](https://github.com/givefood/givefood/blob/main/gfadmin/README.md): Food bank data management
+- [What Food Banks Need](https://github.com/givefood/givefood/blob/main/gfwfbn/README.md): Food bank search tool
 - [Dashboard](https://github.com/givefood/givefood/blob/main/gfdash/README.md): Data visualization components
-- [Write Tool](https://github.com/givefood/givefood/blob/main/gfwrite/README.md): MP contact functionality
+- [Write to MP](https://github.com/givefood/givefood/blob/main/gfwrite/README.md): MP contact functionality
 - [API v2](https://github.com/givefood/givefood/blob/main/gfapi2/README.md): Current production API
-- [API v1](https://github.com/givefood/givefood/blob/main/gfapi1/README.md): Legacy API (deprecated)
-- [Offline Tasks](https://github.com/givefood/givefood/blob/main/gfoffline/README.md): Background processing and automation
 
-## Key Features & Innovations
+## Key Features
 
-- **AI-Enhanced Data**: Automated categorization of food bank needs and verification of location details
-- **Multi-Language Support**: Website available in English, Welsh, and Scots Gaelic
+- **AI-Enhanced Data**: Automated categorization of food bank needs using Google GenAI
+- **Multi-Language Support**: Website available in 20 languages including Welsh, Polish, Arabic, and more
 - **Comprehensive Coverage**: {{ foodbanks_count|floatformat:"0"|intcomma }} food banks and {{ donationpoints_count|floatformat:"0"|intcomma }}+ donation points including supermarkets, phone boxes, and cathedrals
-- **Real-Time Updates**: Multiple updates per day to keep donation needs current
-- **Political Integration**: Parliamentary constituency mapping and MP contact tools
+- **Real-Time Updates**: Multiple updates per day from web scraping of food bank websites
+- **Political Integration**: Parliamentary constituency mapping and direct MP contact tools
 - **Open Data**: All data freely available via API and GitHub with no registration required
-- **Trusted by**: Governments, councils, universities, NHS, BBC, major supermarkets, and hundreds of news organizations
+- **Notification System**: Email, WhatsApp, and RSS subscriptions for food bank updates
+- **Trusted by**: Governments (UK, Scottish, Welsh), NHS, BBC, Channel 4, major supermarkets, universities, and hundreds of news organizations
 
-## Contact & Social
+## Contact
 
 - Email: mail@givefood.org.uk
 - Twitter: https://twitter.com/GiveFoodCharity
