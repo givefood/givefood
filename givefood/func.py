@@ -461,6 +461,8 @@ def foodbank_article_crawl_ai(foodbank, crawl_set=None):
             "required": ["articles"]
         }
 
+        # Limit HTML content sent to AI to avoid excessive token usage
+        max_html_length = 50000
         prompt = f"""You are analyzing a food bank's news page to extract news articles.
 
 The food bank is: {foodbank.name}
@@ -472,7 +474,7 @@ Below is the text content of the page:
 
 And here is the HTML of the page:
 
-{page_html[:50000]}
+{page_html[:max_html_length]}
 
 Please extract all news articles from this page. For each article, provide:
 1. title: The article headline/title
@@ -510,14 +512,15 @@ Return the articles in reverse chronological order (newest first) if dates are a
                     logging.info(f"Article already exists: {title}")
                     continue
 
-                # Parse published date
-                try:
-                    if published_date_str:
+                # Parse published date, falling back to current time if not available
+                fallback_date = datetime.now()
+                if published_date_str:
+                    try:
                         published_date = datetime.strptime(published_date_str, "%Y-%m-%d")
-                    else:
-                        published_date = datetime.now()
-                except ValueError:
-                    published_date = datetime.now()
+                    except ValueError:
+                        published_date = fallback_date
+                else:
+                    published_date = fallback_date
 
                 # Create new article
                 logging.info(f"Adding article: {title}")
