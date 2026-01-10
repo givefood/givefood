@@ -124,7 +124,6 @@ DONATIONPOINT_FIELDS = [
 
 # Field names for articles dump (used by both CSV and JSON)
 ARTICLE_FIELDS = [
-    "id",
     "title",
     "url",
     "published_date",
@@ -391,7 +390,6 @@ def row_to_csv_values(row, fields):
 def build_article_row(article):
     """Build a row of data for an article."""
     return {
-        "id": article.pk,
         "title": article.title,
         "url": article.url,
         "published_date": article.published_date,
