@@ -477,7 +477,7 @@ And here is the HTML of the page:
 {page_html[:max_html_length]}
 
 Please extract all news articles from this page. For each article, provide:
-1. title: The article headline/title
+1. title: The article headline/title exactly as it appears on the page. Do NOT prefix or modify the title in any way - do not add the food bank name or any other text to the title.
 2. url: The full URL to the article (must be a complete URL starting with http:// or https://)
 3. published_date: The publication date in YYYY-MM-DD format, or empty string if not found
 
