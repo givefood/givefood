@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from givefood.func import decache
-from givefood.models import Dump, Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation
+from givefood.models import Dump, Foodbank, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation
 
 
 # Field names for foodbanks dump (used by both CSV and JSON)
@@ -120,6 +120,16 @@ DONATIONPOINT_FIELDS = [
     "organisation_network",
     "organisation_country",
     "organisation_lat_lng",
+]
+
+# Field names for articles dump (used by both CSV and JSON)
+ARTICLE_FIELDS = [
+    "title",
+    "url",
+    "published_date",
+    "organisation_id",
+    "organisation_name",
+    "organisation_slug",
 ]
 
 
@@ -375,6 +385,18 @@ def row_to_csv_values(row, fields):
     return [row[field] for field in fields]
 
 
+def build_article_row(article):
+    """Build a row of data for an article."""
+    return {
+        "title": article.title,
+        "url": article.url,
+        "published_date": article.published_date,
+        "organisation_id": str(article.foodbank.uuid) if article.foodbank else None,
+        "organisation_name": article.foodbank_name,
+        "organisation_slug": article.foodbank_name_slug() if article.foodbank_name else None,
+    }
+
+
 class Command(BaseCommand):
 
     help = 'Create dumps'
@@ -544,6 +566,58 @@ class Command(BaseCommand):
         self.stdout.write(f"Created XML dump {dump_instance.id} with {row_count} donationpoints")
 
         del donationpoint_rows, donationpoint_csv, donationpoint_json, donationpoint_xml
+
+        # ==================== ARTICLES ====================
+        self.stdout.write("Creating articles dumps...")
+
+        articles = FoodbankArticle.objects.select_related("foodbank").all().order_by("-published_date").iterator()
+
+        # Build rows for both CSV and JSON
+        article_rows = []
+        for article in articles:
+            article_rows.append(build_article_row(article))
+
+        row_count = len(article_rows)
+
+        # CSV dump
+        article_csv = io.StringIO()
+        writer = csv.writer(article_csv, quoting=csv.QUOTE_ALL)
+        writer.writerow(ARTICLE_FIELDS)
+        for row in article_rows:
+            writer.writerow(row_to_csv_values(row, ARTICLE_FIELDS))
+
+        dump_instance = Dump(
+            dump_type="articles",
+            dump_format="csv",
+            the_dump=article_csv.getvalue(),
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created CSV dump {dump_instance.id} with {row_count} articles")
+
+        # JSON dump
+        article_json = json.dumps(article_rows, default=serialize_datetime, indent=2)
+        dump_instance = Dump(
+            dump_type="articles",
+            dump_format="json",
+            the_dump=article_json,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created JSON dump {dump_instance.id} with {row_count} articles")
+
+        # XML dump
+        article_xml = rows_to_xml(article_rows, 'articles', 'article')
+        dump_instance = Dump(
+            dump_type="articles",
+            dump_format="xml",
+            the_dump=article_xml,
+            row_count=row_count,
+        )
+        dump_instance.save()
+        self.stdout.write(f"Created XML dump {dump_instance.id} with {row_count} articles")
+
+        del article_rows, article_csv, article_json, article_xml
 
         # ==================== CLEANUP ====================
         self.stdout.write("Deleting old dumps...")
