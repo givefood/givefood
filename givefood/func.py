@@ -20,7 +20,7 @@ from google import genai
 from google.genai import types
 from google.genai.errors import ServerError
 from bs4 import BeautifulSoup
-from urllib.parse import quote, urlparse
+from urllib.parse import quote
 from furl import furl
 from django_earthdistance.models import EarthDistance, LlToEarth
 from django_tasks import task
@@ -465,30 +465,28 @@ def foodbank_article_crawl_ai(foodbank, crawl_set=None):
         max_html_length = 50000
         prompt = f"""You are analyzing a food bank's news page to extract news articles.
 
-The food bank is: {foodbank.name}
 The news page URL is: {foodbank.news_url}
 
-Below is the text content of the page:
-
-{page_text}
-
-And here is the HTML of the page:
+Here is the HTML of the page:
 
 {page_html[:max_html_length]}
 
 Please extract all news articles from this page. For each article, provide:
 
-1. title: The article headline/title exactly as it appears on the page. 
-   Do NOT prefix or modify the title in any way - do not add the food bank name 
-   or any other text to the title.
+1. title: The article headline/title EXACTLY as it appears on the page.
+   CRITICAL: Do NOT add ANY prefix to the title. Do NOT add the food bank name,
+   location, or any other text before the title. Return ONLY the headline text
+   as it appears in the HTML.
 
-2. url: The ACTUAL full URL to the article as found in the HTML (in href attributes).
+2. url: The URL to the article as found in href attributes in the HTML.
    
-   CRITICALLY IMPORTANT: 
-   - You MUST extract the URL directly from the HTML
-   - DO NOT generate, construct, or fabricate URLs based on the title or date
-   - If you cannot find an actual href link in the HTML for an article, skip that article
-   - The URL must be exactly as it appears in an href attribute
+   CRITICAL URL EXTRACTION RULES:
+   - Extract the EXACT URL from an href attribute in the HTML
+   - The URL may be on a different domain than the news page (e.g., trussell.org.uk)
+   - DO NOT fabricate, construct, or generate URLs
+   - DO NOT create URLs by combining the page URL with dates or slugs
+   - If you cannot find an actual href link for an article, skip that article entirely
+   - Relative URLs should be converted to absolute URLs using the page URL as base
 
 3. published_date: The publication date in YYYY-MM-DD format, or empty string if not found
 
@@ -504,14 +502,6 @@ Return the articles in reverse chronological order (newest first) if dates are a
         )
 
         if result and "articles" in result:
-            # Extract the domain from the foodbank's news_url for comparison
-            news_url_parsed = urlparse(foodbank.news_url)
-            news_url_domain = news_url_parsed.netloc.lower()
-            
-            # If we can't extract a valid domain from news_url, skip domain filtering
-            if not news_url_domain:
-                logging.warning(f"Could not extract domain from news_url: {foodbank.news_url}")
-
             for article_data in result["articles"]:
                 title = article_data.get("title", "").strip()
                 url = article_data.get("url", "").strip()
@@ -524,29 +514,6 @@ Return the articles in reverse chronological order (newest first) if dates are a
                 # Skip if URL doesn't look valid
                 if not url.startswith("http://") and not url.startswith("https://"):
                     continue
-
-                # Only add articles that are on the same domain as the
-                # foodbank's news_url. Skip domain check if we couldn't
-                # extract a valid domain from news_url
-                if news_url_domain:
-                    try:
-                        article_url_parsed = urlparse(url)
-                        article_url_domain = article_url_parsed.netloc.lower()
-                        
-                        # Skip if article domain is empty or doesn't match
-                        should_skip_domain = (
-                            not article_url_domain or
-                            article_url_domain != news_url_domain
-                        )
-                        if should_skip_domain:
-                            logging.info(
-                                f"Skipping article from different domain: {title} "
-                                f"({article_url_domain} != {news_url_domain})"
-                            )
-                            continue
-                    except Exception as e:
-                        logging.warning(f"Error parsing article URL {url}: {e}")
-                        continue
 
                 # Check if article already exists
                 existing_article = FoodbankArticle.objects.filter(url=url).first()
