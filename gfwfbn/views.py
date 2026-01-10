@@ -566,7 +566,7 @@ def foodbank_news(request,slug):
     """
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    if not foodbank.rss_url:
+    if not foodbank.rss_url and not foodbank.news_url:
         return HttpResponseNotFound()
 
     template_vars = {

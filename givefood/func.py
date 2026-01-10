@@ -391,6 +391,166 @@ def foodbank_article_crawl(foodbank, crawl_set = None):
     return True
 
 
+def foodbank_article_crawl_ai(foodbank, crawl_set=None):
+    """
+    Crawl a food bank's news page using AI to extract articles.
+    This is used for food banks with news_url set (non-RSS news pages).
+    """
+    from givefood.models import FoodbankArticle, CrawlItem
+
+    if not foodbank.news_url:
+        return False
+
+    crawl_item = CrawlItem(
+        foodbank=foodbank,
+        crawl_type="article",
+        crawl_set=crawl_set,
+        url=foodbank.news_url,
+    )
+    crawl_item.save()
+
+    found_new_article = False
+
+    try:
+        # Fetch the news page
+        headers = {"User-Agent": BOT_USER_AGENT}
+        response = requests.get(foodbank.news_url, headers=headers, timeout=20)
+        
+        if response.status_code != 200:
+            logging.warning(f"Failed to fetch news page for {foodbank.name}: {response.status_code}")
+            crawl_item.finish = datetime.now()
+            crawl_item.save()
+            return False
+
+        page_html = response.text
+        page_text = htmlbodytext(page_html)
+
+        if not page_text:
+            logging.warning(f"No body text found for {foodbank.name}")
+            crawl_item.finish = datetime.now()
+            crawl_item.save()
+            return False
+
+        # Use Gemini to extract articles
+        response_schema = {
+            "type": "object",
+            "properties": {
+                "articles": {
+                    "type": "array",
+                    "description": "A list of news articles found on the page",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "The title of the article"
+                            },
+                            "url": {
+                                "type": "string",
+                                "description": "The full URL to the article"
+                            },
+                            "published_date": {
+                                "type": "string",
+                                "description": "The published date in YYYY-MM-DD format, or empty string if not found"
+                            }
+                        },
+                        "required": ["title", "url", "published_date"]
+                    }
+                }
+            },
+            "required": ["articles"]
+        }
+
+        # Limit HTML content sent to AI to avoid excessive token usage
+        max_html_length = 50000
+        prompt = f"""You are analyzing a food bank's news page to extract news articles.
+
+The food bank is: {foodbank.name}
+The news page URL is: {foodbank.news_url}
+
+Below is the text content of the page:
+
+{page_text}
+
+And here is the HTML of the page:
+
+{page_html[:max_html_length]}
+
+Please extract all news articles from this page. For each article, provide:
+1. title: The article headline/title exactly as it appears on the page. Do NOT prefix or modify the title in any way - do not add the food bank name or any other text to the title.
+2. url: The full URL to the article (must be a complete URL starting with http:// or https://)
+3. published_date: The publication date in YYYY-MM-DD format, or empty string if not found
+
+Only include actual news articles - not navigation links, category links, or other non-article content.
+If you cannot determine the full URL for an article, skip that article.
+Return the articles in reverse chronological order (newest first) if dates are available."""
+
+        result = gemini(
+            prompt=prompt,
+            temperature=0,
+            response_schema=response_schema,
+            response_mime_type="application/json",
+        )
+
+        if result and "articles" in result:
+            for article_data in result["articles"]:
+                title = article_data.get("title", "").strip()
+                url = article_data.get("url", "").strip()
+                published_date_str = article_data.get("published_date", "").strip()
+
+                # Skip if missing required fields
+                if not title or not url:
+                    continue
+
+                # Skip if URL doesn't look valid
+                if not url.startswith("http://") and not url.startswith("https://"):
+                    continue
+
+                # Check if article already exists
+                existing_article = FoodbankArticle.objects.filter(url=url).first()
+                if existing_article:
+                    logging.info(f"Article already exists: {title}")
+                    continue
+
+                # Parse published date, falling back to current time if not available
+                fallback_date = datetime.now()
+                if published_date_str:
+                    try:
+                        published_date = datetime.strptime(published_date_str, "%Y-%m-%d")
+                    except ValueError:
+                        published_date = fallback_date
+                else:
+                    published_date = fallback_date
+
+                # Create new article
+                logging.info(f"Adding article: {title}")
+                new_article = FoodbankArticle(
+                    foodbank=foodbank,
+                    title=title[:250],  # Truncate to fit field max length
+                    url=url[:250],  # Truncate to fit field max length
+                    published_date=published_date,
+                )
+                new_article.save()
+                found_new_article = True
+
+    except requests.exceptions.RequestException as e:
+        logging.error(f"Request error for {foodbank.name}: {e}")
+    except Exception as e:
+        logging.error(f"Error processing {foodbank.name}: {e}")
+
+    # Update last crawl date
+    foodbank.last_crawl = datetime.now()
+    if found_new_article:
+        foodbank.save(do_decache=True, do_geoupdate=False)
+    else:
+        foodbank.save(do_decache=False, do_geoupdate=False)
+
+    crawl_item.finish = datetime.now()
+    crawl_item.save()
+
+    return found_new_article
+
+
 def foodbank_charity_crawl(foodbank, crawl_set = None):
     """
     Crawl charity details for an individual food bank from the appropriate
