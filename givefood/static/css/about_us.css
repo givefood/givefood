@@ -1,0 +1,87 @@
+.timeline {
+    position: relative;
+    margin: 50px auto;
+    padding: 0 0 20px 0;
+}
+
+/* Vertical Center Line */
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background-color: #ccc; 
+    transform: translateX(-50%);
+}
+
+/* Item Wrapper */
+.timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 0 30px; 
+    box-sizing: border-box;
+}
+
+.timeline dl, .timeline dt, .timeline dd {
+    margin: 0;
+    padding: 0;
+}
+
+/* Odd items (Left) */
+.timeline-item:nth-child(odd) {
+    text-align: right;
+}
+
+/* Even items (Right) */
+.timeline-item:nth-child(even) {
+    margin-left: auto; 
+    text-align: left;
+}
+
+/* --- ALIGNMENT & DOT STYLING --- */
+
+.timeline dt {
+    line-height: 30px; 
+}
+
+/* The Connector Line */
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 15px; 
+    width: 27px; 
+    height: 1px;
+    background-color: #ccc;
+}
+
+/* The Circle - FIXED */
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: #fff; 
+    border: 1px solid #333; 
+    border-radius: 50%;
+    z-index: 1; 
+    top: 12px;
+}
+
+/* Positioning for Left Items */
+.timeline-item:nth-child(odd)::before { right: 0; }
+.timeline-item:nth-child(odd)::after { 
+    right: -3px; 
+}
+
+/* Positioning for Right Items */
+.timeline-item:nth-child(even)::before { left: 0; }
+.timeline-item:nth-child(even)::after { 
+    left: -3px; 
+}
+
+.timeline dd {
+    line-height: 1.5;
+    font-size: 12px;
+}

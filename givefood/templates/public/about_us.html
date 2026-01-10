@@ -5,20 +5,21 @@
 {% block title %}{% trans "About us" %} - Give Food{% endblock %}
 
 {% block head %}
-  <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
+    <link rel="stylesheet" href="/static/css/about_us.css?v={{ version }}">
+    <meta name="description" content="Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.">
 {% endblock %}
 
 {% block body %}
 
     <div class="columns is-centered">
-        <div class="column is-half">
+        <div class="column is-two-thirds">
             <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
             {% include 'public/includes/langswitcher.html' %}
         </div>
     </div>
 
     <div class="columns is-centered">
-        <div class="column is-half content">
+        <div class="column is-one-third content">
             <h1>{% trans "About us" %}</h1>
 
             {% blocktrans %}
@@ -46,6 +47,76 @@
                 </p>
 
             {% endblocktrans %}
+        </div>
+        <div class="column is-one-third">
+
+            <dl class="timeline">
+                <div class="timeline-item">
+                    <dt>{% trans "Apr" %} 2018</dt>
+                    <dd>{% trans "First test grocery deliveries to foodbanks" %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Jun" %} 2019</dt>
+                    <dd>{% trans "Formed Give Food" %}</dd>
+                </div>
+                 <div class="timeline-item">
+                    <dt>{% trans "Jan" %} 2020</dt>
+                    <dd>{% blocktrans %}Released first <a href="/">UK public database of food banks</a>{% endblocktrans %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Feb" %} 2020</dt>
+                    <dd>{% blocktrans %}Became a <a href="https://register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/5147019">registered charity</a>{% endblocktrans %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Dec" %} 2020</dt>
+                    <dd>{% blocktrans %}Open sourced <a href="https://github.com/givefood/">much of our code and versioned data</a>{% endblocktrans %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Oct" %} 2021</dt>
+                    <dd>{% trans "Complete redesign of our website" %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Feb" %} 2022</dt>
+                    <dd>{% blocktrans %}Released our tool to allow the public to easily <a href="/write/">email their MP about food insecurity</a>{% endblocktrans %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Nov" %} 2022</dt>
+                    <dd>{% trans "Started monitoring foodbank item excess in addition to shortages" %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "May" %} 2023</dt>
+                    <dd>{% blocktrans %}Selected to be part of British Library's <a href="https://www.webarchive.org.uk/">UK Web Archive</a>{% endblocktrans %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Nov" %} 2023</dt>
+                    <dd>{% trans "First used AI to augment our data processing" %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Mar" %} 2024</dt>
+                    <dd>{% trans "Added food bank donation points to our data" %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "May" %} 2024</dt>
+                    <dd>{% blocktrans %}Rebuilt our email your MP tool to contact parlimentary candidates for the <a href="/2024/#general-election">UK general election</a>{% endblocktrans %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Sep" %} 2024</dt>
+                    <dd>{% blocktrans %}Launched our site in <a href="/cy/">Welsh</a> and <a href="/gd/">Scots Gaelic</a>{% endblocktrans %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Jun" %} 2025</dt>
+                    <dd>{% trans "Data now includes charity financial information" %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Nov" %} 2025</dt>
+                    <dd>{% blocktrans %}Released <a href="/apps/">mobile apps</a>{% endblocktrans %}</dd>
+                </div>
+                <div class="timeline-item">
+                    <dt>{% trans "Dec" %} 2025</dt>
+                    <dd>{% trans "Website now available in 20 languages" %}</dd>
+                </div>
+            </dl>
+            
         </div>
     </div>
 
