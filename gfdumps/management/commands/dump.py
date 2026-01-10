@@ -130,8 +130,6 @@ ARTICLE_FIELDS = [
     "organisation_id",
     "organisation_name",
     "organisation_slug",
-    "created",
-    "modified",
 ]
 
 
@@ -396,8 +394,6 @@ def build_article_row(article):
         "organisation_id": str(article.foodbank.uuid) if article.foodbank else None,
         "organisation_name": article.foodbank_name,
         "organisation_slug": article.foodbank_name_slug() if article.foodbank_name else None,
-        "created": article.created,
-        "modified": article.modified,
     }
 
 
