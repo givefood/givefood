@@ -1637,12 +1637,38 @@ def need_categorise(request, id):
     need = get_object_or_404(FoodbankChange, need_id = id)
     forms = []
     
+    # Prefetch existing need lines for this need to avoid N+1 queries
+    existing_need_lines = {
+        line.item: line 
+        for line in FoodbankChangeLine.objects.filter(need=need)
+    }
+    
+    # Collect all items we need to check
+    all_items = need.change_text.split("\n")
+    if need.excess_change_text:
+        all_items.extend(need.excess_change_text.split("\n"))
+    
+    # Prefetch latest previous lines for all items to avoid N+1 queries
+    latest_lines_by_item = {}
+    if all_items:
+        # Get the latest line for each unique item
+        from django.db.models import Max
+        latest_line_ids = (
+            FoodbankChangeLine.objects
+            .filter(item__in=all_items)
+            .values('item')
+            .annotate(latest_id=Max('id'))
+            .values_list('latest_id', flat=True)
+        )
+        latest_lines = FoodbankChangeLine.objects.filter(id__in=latest_line_ids)
+        latest_lines_by_item = {line.item: line for line in latest_lines}
+    
     if request.POST:
         for line in need.change_text.split("\n"):
-            try:
-                need_line = FoodbankChangeLine.objects.get(need = need, item = line)
+            need_line = existing_need_lines.get(line)
+            if need_line:
                 form = NeedLineForm(request.POST, prefix=line, instance=need_line)
-            except FoodbankChangeLine.DoesNotExist:
+            else:
                 form = NeedLineForm(request.POST, prefix=line)
 
             if form.is_valid():
@@ -1652,10 +1678,10 @@ def need_categorise(request, id):
 
         if need.excess_change_text:
             for line in need.excess_change_text.split("\n"):
-                try:
-                    need_line = FoodbankChangeLine.objects.get(need = need, item = line)
+                need_line = existing_need_lines.get(line)
+                if need_line:
                     form = NeedLineForm(request.POST, prefix=line, instance=need_line)
-                except FoodbankChangeLine.DoesNotExist:
+                else:
                     form = NeedLineForm(request.POST, prefix=line)
 
                 if form.is_valid():
@@ -1670,28 +1696,28 @@ def need_categorise(request, id):
     
     # Needs
     for line in need.change_text.split("\n"):
-        try:
-            need_line = FoodbankChangeLine.objects.get(need = need, item = line)
+        need_line = existing_need_lines.get(line)
+        if need_line:
             form = NeedLineForm(instance=need_line, prefix=line)
-        except FoodbankChangeLine.DoesNotExist:
-            try:
-                prev_need_line = FoodbankChangeLine.objects.filter(item = line).latest("created")
+        else:
+            prev_need_line = latest_lines_by_item.get(line)
+            if prev_need_line:
                 form = NeedLineForm(initial={"item":line, "type":"need", "category":prev_need_line.category}, prefix=line)
-            except FoodbankChangeLine.DoesNotExist:
+            else:
                 form = NeedLineForm(initial={"item":line, "type":"need"}, prefix=line)
             
         forms.append(form)
     # Excess
     if need.excess_change_text:
         for line in need.excess_change_text.split("\n"):
-            try:
-                need_line = FoodbankChangeLine.objects.get(need = need, item = line)
+            need_line = existing_need_lines.get(line)
+            if need_line:
                 form = NeedLineForm(instance=need_line, prefix=line)
-            except FoodbankChangeLine.DoesNotExist:
-                try:
-                    prev_need_line = FoodbankChangeLine.objects.filter(item = line).latest("created")
+            else:
+                prev_need_line = latest_lines_by_item.get(line)
+                if prev_need_line:
                     form = NeedLineForm(initial={"item":line, "type":"excess", "category":prev_need_line.category}, prefix=line)
-                except FoodbankChangeLine.DoesNotExist:
+                else:
                     form = NeedLineForm(initial={"item":line, "type":"excess"}, prefix=line)
             forms.append(form)
 
