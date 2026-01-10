@@ -414,3 +414,145 @@ class TestDumpCommand:
         # All three should have the same fields
         assert csv_fields == json_fields, f"CSV and JSON have different fields"
         assert csv_fields == xml_fields, f"CSV and XML have different fields. CSV only: {csv_fields - xml_fields}, XML only: {xml_fields - csv_fields}"
+
+    def test_articles_dump_created(self):
+        """Test that articles dump is created with correct structure."""
+        from datetime import datetime
+        from django.utils import timezone
+        from givefood.models import FoodbankArticle
+
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name="Test Food Bank Articles",
+            slug="test-food-bank-articles",
+            address="123 Articles Street",
+            postcode="SW1A 8HH",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://articles.example.com",
+            shopping_list_url="https://articles.example.com/shopping",
+            contact_email="articles@example.com",
+            is_closed=False,
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a test article
+        article = FoodbankArticle(
+            foodbank=foodbank,
+            title="Test Article Title",
+            url="https://news.example.com/test-article",
+            published_date=timezone.now(),
+        )
+        article.save()
+
+        # Run the dump command
+        call_command('dump')
+
+        # Test CSV dump
+        csv_dump = Dump.objects.filter(dump_type='articles', dump_format='csv').latest('created')
+        csv_reader = csv.DictReader(io.StringIO(csv_dump.the_dump))
+        csv_rows = list(csv_reader)
+
+        # Find our test article
+        test_row = None
+        for row in csv_rows:
+            if row['title'] == 'Test Article Title':
+                test_row = row
+                break
+
+        assert test_row is not None, "Test article not found in CSV dump"
+        assert test_row['url'] == 'https://news.example.com/test-article'
+        assert test_row['organisation_name'] == 'Test Food Bank Articles'
+        assert test_row['organisation_slug'] == 'test-food-bank-articles'
+
+        # Test JSON dump
+        json_dump = Dump.objects.filter(dump_type='articles', dump_format='json').latest('created')
+        json_data = json.loads(json_dump.the_dump)
+
+        # Find our test article in JSON
+        test_json_row = None
+        for row in json_data:
+            if row['title'] == 'Test Article Title':
+                test_json_row = row
+                break
+
+        assert test_json_row is not None, "Test article not found in JSON dump"
+        assert test_json_row['url'] == 'https://news.example.com/test-article'
+        assert test_json_row['organisation_name'] == 'Test Food Bank Articles'
+
+        # Test XML dump
+        xml_dump = Dump.objects.filter(dump_type='articles', dump_format='xml').latest('created')
+        root = ET.fromstring(xml_dump.the_dump)
+
+        assert root.tag == 'articles'
+
+        # Find our test article in XML
+        test_element = None
+        for article_elem in root.findall('article'):
+            title = article_elem.find('title')
+            if title is not None and title.text == 'Test Article Title':
+                test_element = article_elem
+                break
+
+        assert test_element is not None, "Test article not found in XML dump"
+        assert test_element.find('url').text == 'https://news.example.com/test-article'
+        assert test_element.find('organisation_name').text == 'Test Food Bank Articles'
+
+    def test_articles_dump_csv_json_xml_have_same_fields(self):
+        """Test that articles dumps have the same fields across all formats."""
+        from datetime import datetime
+        from django.utils import timezone
+        from givefood.models import FoodbankArticle
+
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name="Test Food Bank Articles Fields",
+            slug="test-food-bank-articles-fields",
+            address="123 Articles Fields Street",
+            postcode="SW1A 9II",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://articles-fields.example.com",
+            shopping_list_url="https://articles-fields.example.com/shopping",
+            contact_email="articles-fields@example.com",
+            is_closed=False,
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a test article
+        article = FoodbankArticle(
+            foodbank=foodbank,
+            title="Test Article Fields",
+            url="https://news.example.com/test-article-fields",
+            published_date=timezone.now(),
+        )
+        article.save()
+
+        # Run the dump command
+        call_command('dump')
+
+        # Get the latest dumps
+        csv_dump = Dump.objects.filter(dump_type='articles', dump_format='csv').latest('created')
+        json_dump = Dump.objects.filter(dump_type='articles', dump_format='json').latest('created')
+        xml_dump = Dump.objects.filter(dump_type='articles', dump_format='xml').latest('created')
+
+        # Parse each format
+        csv_reader = csv.DictReader(io.StringIO(csv_dump.the_dump))
+        csv_fields = set(csv_reader.fieldnames)
+
+        json_data = json.loads(json_dump.the_dump)
+        json_fields = set(json_data[0].keys())
+
+        root = ET.fromstring(xml_dump.the_dump)
+        first_article = root.find('article')
+        xml_fields = set(child.tag for child in first_article)
+
+        # All three should have the same fields
+        assert csv_fields == json_fields, f"CSV and JSON have different fields. CSV only: {csv_fields - json_fields}, JSON only: {json_fields - csv_fields}"
+        assert csv_fields == xml_fields, f"CSV and XML have different fields. CSV only: {csv_fields - xml_fields}, XML only: {xml_fields - csv_fields}"
