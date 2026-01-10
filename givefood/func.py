@@ -514,32 +514,17 @@ Return the articles in reverse chronological order (newest first) if dates are a
                 if not url.startswith("http://") and not url.startswith("https://"):
                     continue
 
-                # Only add articles that are on the same domain as the foodbank's news_url
-                # Skip domain check if we couldn't extract a valid domain from news_url
+                # Only add articles that are on the same domain as the
+                # foodbank's news_url. Skip domain check if we couldn't
+                # extract a valid domain from news_url
                 if news_url_domain:
                     try:
                         article_url_parsed = urlparse(url)
                         article_url_domain = article_url_parsed.netloc.lower()
                         
-                        # Skip if article domain is empty
-                        if not article_url_domain:
-                            logging.info(f"Skipping article with empty domain: {title}")
-                            continue
-                        
-                        # Allow articles from the same domain OR from Trussell Trust
-                        # for Trussell network foodbanks
-                        domain_matches = article_url_domain == news_url_domain
-                        is_trussell_article = article_url_domain in [
-                            "www.trussell.org.uk",
-                            "trussell.org.uk"
-                        ]
-                        is_trussell_foodbank = foodbank.network == "Trussell"
-                        
-                        allow_article = (
-                            domain_matches or
-                            (is_trussell_article and is_trussell_foodbank)
-                        )
-                        if not allow_article:
+                        # Skip if article domain is empty or doesn't match
+                        if (not article_url_domain or
+                                article_url_domain != news_url_domain):
                             logging.info(
                                 f"Skipping article from different domain: {title} "
                                 f"({article_url_domain} != {news_url_domain})"
