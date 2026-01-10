@@ -49,7 +49,8 @@ class TestFoodbankTouch:
         content = response.content.decode()
         # The template uses {% url 'admin:foodbank_touch' foodbank.slug %} which resolves to /admin/foodbank/SLUG/touch/
         assert f'/admin/foodbank/{foodbank.slug}/touch/' in content
-        assert 'value="Touch"' in content
+        assert 'hx-post=' in content  # Check for HTMX attribute
+        assert '>Touch</button>' in content  # Check for button text
         # Also check that the Edit button appears
         assert 'Edit Food Bank' in content
 
@@ -114,3 +115,67 @@ class TestFoodbankTouch:
         
         # Should return 405 Method Not Allowed
         assert response.status_code == 405
+
+    def test_touch_htmx_returns_touched_button(self):
+        """Test that touch returns disabled 'Touched' button for HTMX requests."""
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            shopping_list_url='https://example.com/shopping',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a client with authenticated session and touch via HTMX
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.post(
+            reverse('admin:foodbank_touch', kwargs={'slug': foodbank.slug}),
+            HTTP_HX_REQUEST='true'
+        )
+        
+        # Check that we get a 200 response with the disabled button HTML
+        assert response.status_code == 200
+        content = response.content.decode()
+        assert 'Touched</button>' in content
+        assert 'disabled' in content
+        assert 'button is-link is-light' in content
+        
+        # Verify the edited timestamp was updated
+        foodbank.refresh_from_db()
+        time_diff = timezone.now() - foodbank.edited
+        assert time_diff.total_seconds() < 60
+
+    def test_touch_non_htmx_returns_redirect(self):
+        """Test that touch returns redirect for non-HTMX requests."""
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            shopping_list_url='https://example.com/shopping',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Create a client with authenticated session and touch without HTMX
+        client = Client()
+        self._setup_authenticated_session(client)
+        response = client.post(reverse('admin:foodbank_touch', kwargs={'slug': foodbank.slug}))
+        
+        # Check that we're redirected to the foodbanks list
+        assert response.status_code == 302
+        assert response.url == reverse('admin:foodbanks')
+        
+        # Verify the edited timestamp was updated
+        foodbank.refresh_from_db()
+        time_diff = timezone.now() - foodbank.edited
+        assert time_diff.total_seconds() < 60
