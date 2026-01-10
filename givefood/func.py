@@ -20,7 +20,7 @@ from google import genai
 from google.genai import types
 from google.genai.errors import ServerError
 from bs4 import BeautifulSoup
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 from furl import furl
 from django_earthdistance.models import EarthDistance, LlToEarth
 from django_tasks import task
@@ -492,6 +492,10 @@ Return the articles in reverse chronological order (newest first) if dates are a
             response_mime_type="application/json",
         )
 
+        # Extract the domain from the foodbank's news_url for comparison
+        news_url_parsed = urlparse(foodbank.news_url)
+        news_url_domain = news_url_parsed.netloc.lower()
+
         if result and "articles" in result:
             for article_data in result["articles"]:
                 title = article_data.get("title", "").strip()
@@ -504,6 +508,13 @@ Return the articles in reverse chronological order (newest first) if dates are a
 
                 # Skip if URL doesn't look valid
                 if not url.startswith("http://") and not url.startswith("https://"):
+                    continue
+
+                # Only add articles that are on the same domain as the foodbank's news_url
+                article_url_parsed = urlparse(url)
+                article_url_domain = article_url_parsed.netloc.lower()
+                if article_url_domain != news_url_domain:
+                    logging.info(f"Skipping article from different domain: {title} ({article_url_domain} != {news_url_domain})")
                     continue
 
                 # Check if article already exists
