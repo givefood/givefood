@@ -972,7 +972,6 @@ def foodbank_resave(request, slug):
 
 
 @require_POST
-@require_POST
 def foodbank_touch(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
