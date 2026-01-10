@@ -534,11 +534,11 @@ Return the articles in reverse chronological order (newest first) if dates are a
                         article_url_domain = article_url_parsed.netloc.lower()
                         
                         # Skip if article domain is empty or doesn't match
-                        domain_mismatch = (
+                        should_skip_domain = (
                             not article_url_domain or
                             article_url_domain != news_url_domain
                         )
-                        if domain_mismatch:
+                        if should_skip_domain:
                             logging.info(
                                 f"Skipping article from different domain: {title} "
                                 f"({article_url_domain} != {news_url_domain})"
