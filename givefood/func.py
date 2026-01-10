@@ -521,8 +521,17 @@ Return the articles in reverse chronological order (newest first) if dates are a
                         article_url_parsed = urlparse(url)
                         article_url_domain = article_url_parsed.netloc.lower()
                         
-                        # Skip if article domain is empty or doesn't match news domain
-                        if not article_url_domain or article_url_domain != news_url_domain:
+                        # Skip if article domain is empty
+                        if not article_url_domain:
+                            logging.info(f"Skipping article with empty domain: {title}")
+                            continue
+                        
+                        # Allow articles from the same domain OR from Trussell Trust for Trussell network foodbanks
+                        domain_matches = article_url_domain == news_url_domain
+                        is_trussell_article = article_url_domain in ["www.trussell.org.uk", "trussell.org.uk"]
+                        is_trussell_foodbank = foodbank.network == "Trussell"
+                        
+                        if not domain_matches and not (is_trussell_article and is_trussell_foodbank):
                             logging.info(f"Skipping article from different domain: {title} ({article_url_domain} != {news_url_domain})")
                             continue
                     except Exception as e:
