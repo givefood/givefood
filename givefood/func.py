@@ -526,13 +526,24 @@ Return the articles in reverse chronological order (newest first) if dates are a
                             logging.info(f"Skipping article with empty domain: {title}")
                             continue
                         
-                        # Allow articles from the same domain OR from Trussell Trust for Trussell network foodbanks
+                        # Allow articles from the same domain OR from Trussell Trust
+                        # for Trussell network foodbanks
                         domain_matches = article_url_domain == news_url_domain
-                        is_trussell_article = article_url_domain in ["www.trussell.org.uk", "trussell.org.uk"]
+                        is_trussell_article = article_url_domain in [
+                            "www.trussell.org.uk",
+                            "trussell.org.uk"
+                        ]
                         is_trussell_foodbank = foodbank.network == "Trussell"
                         
-                        if not domain_matches and not (is_trussell_article and is_trussell_foodbank):
-                            logging.info(f"Skipping article from different domain: {title} ({article_url_domain} != {news_url_domain})")
+                        allow_article = (
+                            domain_matches or
+                            (is_trussell_article and is_trussell_foodbank)
+                        )
+                        if not allow_article:
+                            logging.info(
+                                f"Skipping article from different domain: {title} "
+                                f"({article_url_domain} != {news_url_domain})"
+                            )
                             continue
                     except Exception as e:
                         logging.warning(f"Error parsing article URL {url}: {e}")
