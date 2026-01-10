@@ -495,6 +495,10 @@ Return the articles in reverse chronological order (newest first) if dates are a
         # Extract the domain from the foodbank's news_url for comparison
         news_url_parsed = urlparse(foodbank.news_url)
         news_url_domain = news_url_parsed.netloc.lower()
+        
+        # If we can't extract a valid domain from news_url, skip domain filtering
+        if not news_url_domain:
+            logging.warning(f"Could not extract domain from news_url: {foodbank.news_url}")
 
         if result and "articles" in result:
             for article_data in result["articles"]:
@@ -511,11 +515,15 @@ Return the articles in reverse chronological order (newest first) if dates are a
                     continue
 
                 # Only add articles that are on the same domain as the foodbank's news_url
-                article_url_parsed = urlparse(url)
-                article_url_domain = article_url_parsed.netloc.lower()
-                if article_url_domain != news_url_domain:
-                    logging.info(f"Skipping article from different domain: {title} ({article_url_domain} != {news_url_domain})")
-                    continue
+                # Skip domain check if we couldn't extract a valid domain from news_url
+                if news_url_domain:
+                    article_url_parsed = urlparse(url)
+                    article_url_domain = article_url_parsed.netloc.lower()
+                    
+                    # Skip if article domain is empty or doesn't match news domain
+                    if not article_url_domain or article_url_domain != news_url_domain:
+                        logging.info(f"Skipping article from different domain: {title} ({article_url_domain} != {news_url_domain})")
+                        continue
 
                 # Check if article already exists
                 existing_article = FoodbankArticle.objects.filter(url=url).first()
