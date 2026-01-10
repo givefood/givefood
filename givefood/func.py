@@ -478,11 +478,11 @@ And here is the HTML of the page:
 
 Please extract all news articles from this page. For each article, provide:
 1. title: The article headline/title exactly as it appears on the page. Do NOT prefix or modify the title in any way - do not add the food bank name or any other text to the title.
-2. url: The full URL to the article (must be a complete URL starting with http:// or https://)
+2. url: The ACTUAL full URL to the article as found in the HTML (in href attributes of links). CRITICALLY IMPORTANT: You MUST extract the URL directly from the HTML - DO NOT generate, construct, or fabricate URLs based on the title or date. If you cannot find an actual href link in the HTML for an article, skip that article entirely. The URL must be exactly as it appears in an href attribute.
 3. published_date: The publication date in YYYY-MM-DD format, or empty string if not found
 
 Only include actual news articles - not navigation links, category links, or other non-article content.
-If you cannot determine the full URL for an article, skip that article.
+If you cannot find the actual URL in an href attribute in the HTML, skip that article.
 Return the articles in reverse chronological order (newest first) if dates are available."""
 
         result = gemini(
