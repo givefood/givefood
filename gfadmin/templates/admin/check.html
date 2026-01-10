@@ -21,7 +21,10 @@
             <div class="column" style="text-align: right;">
                 <a href="{% url 'admin:foodbank_edit' foodbank.slug %}" class="button is-link is-light" target="_blank">Edit</a>
                 <form method="post" action="{% url 'admin:foodbank_touch' foodbank.slug %}" style="margin-top:10px;">
-                    <button type="submit" class="button is-link is-light">Touch</button>
+                    <button type="submit" 
+                            class="button is-link is-light"
+                            hx-post="{% url 'admin:foodbank_touch' foodbank.slug %}"
+                            hx-swap="outerHTML">Touch</button>
                 </form>
             </div>
         </div>

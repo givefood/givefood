@@ -977,6 +977,10 @@ def foodbank_touch(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     foodbank.edited = datetime.now()
     foodbank.save(do_geoupdate=False)
+    
+    # Return button replacement for HTMX requests
+    if request.headers.get('HX-Request'):
+        return HttpResponse('<button type="button" class="button is-link is-light" disabled>Touched</button>')
     return redirect("admin:foodbanks")
 
 
