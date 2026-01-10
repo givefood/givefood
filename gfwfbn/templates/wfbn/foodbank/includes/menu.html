@@ -8,7 +8,7 @@
         {% if foodbank.no_donation_points != 0 %}
             <li><a {% if section == 'donationpoints' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_donationpoints' foodbank.slug %}">{% blocktrans %}Donation points{% endblocktrans %}</a></li>
         {% endif %}
-        {% if foodbank.rss_url %}
+        {% if foodbank.rss_url or foodbank.news_url %}
             <li><a {% if section == 'news' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_news' foodbank.slug %}">{% blocktrans %}News{% endblocktrans %}</a></li>
         {% endif %}
         {% if foodbank.charity_name %}

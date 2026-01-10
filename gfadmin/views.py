@@ -23,7 +23,7 @@ from django.db.models import Sum, Q, Count
 from django.contrib.contenttypes.models import ContentType
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
+from givefood.func import diff_html, find_locations, foodbank_article_crawl, foodbank_article_crawl_ai, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 from django_tasks.backends.database.models import DBTaskResult
@@ -113,6 +113,7 @@ def search_results(request):
         Q(url__icontains=query) |
         Q(shopping_list_url__icontains=query) |
         Q(rss_url__icontains=query) |
+        Q(news_url__icontains=query) |
         Q(donation_points_url__icontains=query) |
         Q(locations_url__icontains=query) |
         Q(contacts_url__icontains=query) |
@@ -918,6 +919,8 @@ def foodbank_crawl(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     if foodbank.rss_url:
         foodbank_article_crawl(foodbank)
+    elif foodbank.news_url:
+        foodbank_article_crawl_ai(foodbank)
     return redirect("admin:foodbank", slug = foodbank.slug)
 
 
@@ -1030,7 +1033,7 @@ def foodbank_urls_form(request, slug):
         initial_data = {}
         suggested_fields = []
         
-        url_fields = ['shopping_list_url', 'rss_url', 'donation_points_url', 'locations_url', 'contacts_url']
+        url_fields = ['shopping_list_url', 'rss_url', 'news_url', 'donation_points_url', 'locations_url', 'contacts_url']
         empty_fields = [field for field in url_fields if not getattr(foodbank, field)]
         
         if empty_fields and foodbank.url:
@@ -1078,6 +1081,7 @@ def foodbank_urls_form(request, slug):
 Please analyze these URLs and suggest the best match for each of these fields (return empty string if no good match):
 - shopping_list_url: URL for the shopping list or what items they need
 - rss_url: URL for RSS feed
+- news_url: URL for news page (not RSS feed)
 - donation_points_url: URL for donation/drop-off points or locations
 - locations_url: URL for locations/where to find them
 - contacts_url: URL for contact information
@@ -1089,11 +1093,12 @@ Only suggest URLs from the list provided. Return as JSON with these exact field 
                             "properties": {
                                 "shopping_list_url": {"type": "string"},
                                 "rss_url": {"type": "string"},
+                                "news_url": {"type": "string"},
                                 "donation_points_url": {"type": "string"},
                                 "locations_url": {"type": "string"},
                                 "contacts_url": {"type": "string"},
                             },
-                            "required": ["shopping_list_url", "rss_url", "donation_points_url", "locations_url", "contacts_url"]
+                            "required": ["shopping_list_url", "rss_url", "news_url", "donation_points_url", "locations_url", "contacts_url"]
                         }
                         
                         suggestions = gemini(prompt, temperature=0, response_mime_type="application/json", response_schema=response_schema)
@@ -1584,6 +1589,8 @@ def need_notifications(request, id):
     # Check for foodbank articles
     if foodbank.rss_url:
         foodbank_article_crawl(foodbank)
+    elif foodbank.news_url:
+        foodbank_article_crawl_ai(foodbank)
 
     # Update tweet time
     need.tweet_sent = datetime.now()

@@ -99,6 +99,13 @@
             <a href="{{ foodbank.rss_url }}">{{ foodbank.rss_url|friendly_url }}</a>
           </dd>
         {% endif %}
+        {% if foodbank.news_url %}
+          <dt>News URL</dt>
+          <dd>
+            <a href="{{ foodbank.news_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a>
+            <a href="{{ foodbank.news_url }}">{{ foodbank.news_url|friendly_url }}</a>
+          </dd>
+        {% endif %}
         {% if foodbank.locations_url %}
           <dt>Locations URL</dt>
           <dd>
@@ -264,7 +271,7 @@
         <dd>{{ foodbank.last_rfi }}</dd>
         <dt>Last Discrepancy Check</dt>
         <dd>{{ foodbank.last_discrepancy_check }}</dd>
-        {% if foodbank.rss_url %}
+        {% if foodbank.rss_url or foodbank.news_url %}
           <dt>Last Crawl</dt>
           <dd>
             {{ foodbank.last_crawl }}
