@@ -1986,7 +1986,7 @@ class ParliamentaryConstituency(models.Model):
         return Foodbank.objects.select_related("latest_need").filter(parliamentary_constituency = self, is_closed = False)
 
     def location_obj(self):
-        return FoodbankLocation.objects.filter(parliamentary_constituency = self, is_closed = False)
+        return FoodbankLocation.objects.select_related('foodbank', 'foodbank__latest_need').filter(parliamentary_constituency = self, is_closed = False)
 
     def foodbanks(self):
 
