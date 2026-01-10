@@ -492,15 +492,15 @@ Return the articles in reverse chronological order (newest first) if dates are a
             response_mime_type="application/json",
         )
 
-        # Extract the domain from the foodbank's news_url for comparison
-        news_url_parsed = urlparse(foodbank.news_url)
-        news_url_domain = news_url_parsed.netloc.lower()
-        
-        # If we can't extract a valid domain from news_url, skip domain filtering
-        if not news_url_domain:
-            logging.warning(f"Could not extract domain from news_url: {foodbank.news_url}")
-
         if result and "articles" in result:
+            # Extract the domain from the foodbank's news_url for comparison
+            news_url_parsed = urlparse(foodbank.news_url)
+            news_url_domain = news_url_parsed.netloc.lower()
+            
+            # If we can't extract a valid domain from news_url, skip domain filtering
+            if not news_url_domain:
+                logging.warning(f"Could not extract domain from news_url: {foodbank.news_url}")
+
             for article_data in result["articles"]:
                 title = article_data.get("title", "").strip()
                 url = article_data.get("url", "").strip()
@@ -517,12 +517,16 @@ Return the articles in reverse chronological order (newest first) if dates are a
                 # Only add articles that are on the same domain as the foodbank's news_url
                 # Skip domain check if we couldn't extract a valid domain from news_url
                 if news_url_domain:
-                    article_url_parsed = urlparse(url)
-                    article_url_domain = article_url_parsed.netloc.lower()
-                    
-                    # Skip if article domain is empty or doesn't match news domain
-                    if not article_url_domain or article_url_domain != news_url_domain:
-                        logging.info(f"Skipping article from different domain: {title} ({article_url_domain} != {news_url_domain})")
+                    try:
+                        article_url_parsed = urlparse(url)
+                        article_url_domain = article_url_parsed.netloc.lower()
+                        
+                        # Skip if article domain is empty or doesn't match news domain
+                        if not article_url_domain or article_url_domain != news_url_domain:
+                            logging.info(f"Skipping article from different domain: {title} ({article_url_domain} != {news_url_domain})")
+                            continue
+                    except Exception as e:
+                        logging.warning(f"Error parsing article URL {url}: {e}")
                         continue
 
                 # Check if article already exists
