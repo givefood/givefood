@@ -2871,7 +2871,7 @@ def article_toggle_featured(request, article_id):
     
     # Return button replacement for HTMX requests
     if request.headers.get('HX-Request'):
-        button_class = "is-warning" if article.featured else "is-light"
+        button_class = "is-warning is-light" if article.featured else "is-light"
         button_text = "★" if article.featured else "☆"
         return HttpResponse(
             f'<button type="submit" '

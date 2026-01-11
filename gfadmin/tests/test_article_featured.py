@@ -70,6 +70,7 @@ class TestArticleFeaturedToggle:
         assert article.featured is True
         assert '★' in response.content.decode()
         assert 'is-warning' in response.content.decode()
+        assert 'is-light' in response.content.decode()
 
     def test_toggle_featured_from_true_to_false(self, client, article):
         """Test toggling featured status from True to False."""
