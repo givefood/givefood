@@ -138,4 +138,6 @@ urlpatterns = (
     
     path("frag/<slug:frag>/", frag, name="frag"),
     
+    path("article/<int:article_id>/toggle-featured/", article_toggle_featured, name="article_toggle_featured"),
+    
 )
