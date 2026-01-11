@@ -295,3 +295,87 @@ class TestFoodbankCheck:
             assert item.crawl_type == 'check'
             assert item.foodbank == foodbank
             assert item.finish is not None
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    @patch('gfadmin.views.requests.post')
+    def test_foodbank_org_uk_donate_food_url_fetches_both_html_and_post(self, mock_post, mock_get, mock_gemini, mock_render):
+        """Test that donation points URLs with foodbank.org.uk/support-us/donate-food fetch both regular HTML and POST response."""
+        # Create a test foodbank with a foodbank.org.uk donation points URL
+        foodbank = Foodbank(
+            name='Trussell Trust Foodbank',
+            url='https://testfoodbank.foodbank.org.uk',
+            donation_points_url='https://testfoodbank.foodbank.org.uk/support-us/donate-food',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+            network_id='test-network-id-12345678',  # Pre-set network_id to avoid additional lookups
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Mock the HTTP GET response (for homepage and regular donation points HTML)
+        mock_get_response = Mock()
+        mock_get_response.status_code = 200
+        mock_get_response.text = '<html><body><h1>Test Foodbank</h1><p>Donation points listed in HTML: Supermarket A, Supermarket B</p></body></html>'
+        mock_get.return_value = mock_get_response
+        
+        # Mock the HTTP POST response (for donation points API response)
+        mock_post_response = Mock()
+        mock_post_response.status_code = 200
+        mock_post_response.text = '{"donation_points": [{"name": "Supermarket C"}]}'
+        mock_post.return_value = mock_post_response
+        
+        # Mock gemini response
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Trussell Trust Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '',
+                'contact_email': 'test@example.com',
+                'network': 'Trussell Trust',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+        
+        # Mock render and capture the context passed to it
+        mock_render.return_value = Mock(status_code=200)
+        
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+        
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+        
+        # Verify that both GET (for HTML) and POST (for API) were called for donation points
+        # GET should be called for: homepage + donation_points_url (regular HTML)
+        assert mock_get.call_count == 2
+        
+        # POST should be called once for the donation points API
+        assert mock_post.call_count == 1
+        
+        # Verify the prompt context was passed with both donation_points and donation_points_html
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]  # Third argument is the context dict
+        
+        # The prompt is rendered by render_to_string, so we need to check that gemini was called
+        # with the prompt that includes both donation_points and donation_points_html
+        gemini_call_args = mock_gemini.call_args
+        prompt = gemini_call_args[0][0]  # First argument is the prompt
+        
+        # The prompt should contain both donation_points (POST response) and donation_points_html
+        assert 'donation_points' in prompt
+        assert 'donation_points_html' in prompt
+        
+        # Verify CrawlItems were created
+        crawl_items = CrawlItem.objects.filter(foodbank=foodbank, crawl_type='check')
+        
+        # Should have 3 crawl items: homepage, donation_points HTML (GET), and donation_points POST
+        assert crawl_items.count() == 3
