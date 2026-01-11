@@ -43,7 +43,7 @@
         <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
       </form>
       
-      <div id="index_intro">
+      <div id="index-intro">
         <ul>
             {% if enable_write %}
               <li><a href="{% url 'write:index' %}">{% trans 'Write to your MP' %}</a>{% if language_code != 'en' %} ({% trans 'English' %}){% endif %}</li>

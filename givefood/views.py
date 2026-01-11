@@ -14,7 +14,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 from django.conf import settings
 
-from givefood.models import Foodbank, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
+from givefood.models import Foodbank, FoodbankArticle, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
 from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, get_user_ip, validate_turnstile
 from givefood.func import send_email
@@ -198,6 +198,8 @@ def index(request):
         .only('name', 'slug')
     )
 
+    # Featured articles
+    articles = FoodbankArticle.objects.filter(featured=True).select_related('foodbank').order_by('-published_date')[:5]
 
     map_config = {
         "geojson":reverse("wfbn:geojson"),
@@ -214,6 +216,7 @@ def index(request):
         "most_viewed":most_viewed,
         "gmap_key":gmap_key,
         "map_config":map_config,
+        "articles":articles,
         "logos":logos,
         "stats":stats,
         "is_home":True,

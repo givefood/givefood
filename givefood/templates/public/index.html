@@ -39,7 +39,9 @@
         <input type="submit" class="button is-light is-info" value="{% trans 'Go' %}">
       </form>
       
-      <div id="index_intro">
+      <div id="index-intro">
+
+        {% include 'public/includes/appbadges.html' %}
 
         <ul>
             {% if enable_write %}
@@ -50,20 +52,30 @@
             <li><a href="{% url 'about_us' %}">{% blocktrans %}About us{% endblocktrans %}</a></li>
         </ul>
 
-        {% include 'public/includes/appbadges.html' %}
-
         <h2>{% blocktrans %}Recently updated{% endblocktrans %}</h2>
         <ul class="recently-updated">
             {% for foodbank in recently_updated %}
                 <li><a href="{% url 'wfbn:foodbank' foodbank.foodbank_name_slug %}">{{ foodbank.foodbank_name }}</a></li>
             {% endfor %}
         </ul>
+
         <h2>{% blocktrans %}Most viewed this week{% endblocktrans %}</h2>
         <ul class="most-viewed">
             {% for foodbank in most_viewed %}
                 <li><a href="{% url 'wfbn:foodbank' foodbank.slug %}">{{ foodbank.name }}</a></li>
             {% endfor %}
         </ul>
+
+        <h2>{% blocktrans %}News from food banks{% endblocktrans %}</h2>
+        <ul class="foodbank-news">
+            {% for article in articles %}
+                <li>
+                  <a href="{{ article.url_with_ref }}">{{ article.title }}</a>
+                  <div class="is-size-7"><a href="{% url 'wfbn:foodbank' article.foodbank.slug %}">{{ article.foodbank.name }}</a> {{ article.published_date|date:"j M" }}</div>
+                </li>
+            {% endfor %}
+        </ul>
+
       </div>
 
     </div>
