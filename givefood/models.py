@@ -1524,6 +1524,7 @@ class FoodbankArticle(models.Model):
     published_date = models.DateTimeField(editable=False)
     title = models.CharField(max_length=250)
     url = models.CharField(max_length=250, unique=True)
+    featured = models.BooleanField(default=False)
 
     def url_with_ref(self):
         added_params = {"ref":"givefood.org.uk"}

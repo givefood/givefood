@@ -2860,3 +2860,24 @@ def frag(request, frag):
         raise Http404()
     
     return HttpResponse(frag_text)
+
+
+@require_POST
+def article_toggle_featured(request, article_id):
+    """Toggle the featured status of an article via HTMX."""
+    article = get_object_or_404(FoodbankArticle, id=article_id)
+    article.featured = not article.featured
+    article.save()
+    
+    # Return button replacement for HTMX requests
+    if request.headers.get('HX-Request'):
+        button_class = "is-warning" if article.featured else "is-light"
+        button_text = "★" if article.featured else "☆"
+        return HttpResponse(
+            f'<button type="submit" '
+            f'class="button is-small {button_class}" '
+            f'hx-post="/admin/article/{article.id}/toggle-featured/" '
+            f'hx-swap="outerHTML">{button_text}</button>'
+        )
+    
+    return redirect(reverse("gfadmin:index"))
