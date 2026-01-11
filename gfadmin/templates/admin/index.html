@@ -128,7 +128,7 @@
                 <td>
                     <form method="post" style="display: inline;">
                         <button type="submit"
-                                class="button is-small {% if article.featured %}is-warning{% else %}is-light{% endif %}"
+                                class="button is-small {% if article.featured %}is-warning is-light{% else %}is-light{% endif %}"
                                 hx-post="{% url 'gfadmin:article_toggle_featured' article.id %}"
                                 hx-swap="outerHTML">{% if article.featured %}★{% else %}☆{% endif %}</button>
                     </form>
