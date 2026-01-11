@@ -21,7 +21,7 @@ class TestFoodbankUrlsForm:
     def test_foodbank_urls_form_has_correct_fields(self):
         """Test that the form has only the URL fields."""
         form = FoodbankUrlsForm()
-        expected_fields = ['url', 'shopping_list_url', 'rss_url', 'donation_points_url', 'locations_url', 'contacts_url']
+        expected_fields = ['url', 'shopping_list_url', 'rss_url', 'news_url', 'donation_points_url', 'locations_url', 'contacts_url']
         assert list(form.fields.keys()) == expected_fields
 
     def test_foodbank_urls_form_inherits_from_model_form(self):
