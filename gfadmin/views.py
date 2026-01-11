@@ -737,8 +737,14 @@ def foodbank_check(request, slug):
         contacts = htmlbodytext(contacts_raw)
         foodbank_urls["Contacts"] = foodbank.contacts_url
         
+    donation_points_html = None
     if foodbank.donation_points_url:
         if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
+            # Fetch the regular HTML page first (without extra headers)
+            donation_points_raw = fetch_page(foodbank.donation_points_url)
+            donation_points_html = htmlbodytext(donation_points_raw)
+            foodbank_urls["Donation Points"] = foodbank.donation_points_url
+            
             if not foodbank.network_id:
                 # Try to get shopping list page from cache, or fetch it if not cached
                 if foodbank.shopping_list_url:
@@ -782,6 +788,7 @@ def foodbank_check(request, slug):
         "locations": locations,
         "contacts": contacts,
         "donation_points": donation_points,
+        "donation_points_html": donation_points_html,
     }
     prompt = render_to_string(
         "admin/prompts/check.txt",
