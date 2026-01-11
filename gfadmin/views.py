@@ -23,7 +23,7 @@ from django.db.models import Sum, Q, Count
 from django.contrib.contenttypes.models import ContentType
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import diff_html, find_locations, foodbank_article_crawl, foodbank_article_crawl_ai, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
+from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 from django_tasks.backends.database.models import DBTaskResult
@@ -919,8 +919,6 @@ def foodbank_crawl(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     if foodbank.rss_url:
         foodbank_article_crawl(foodbank)
-    elif foodbank.news_url:
-        foodbank_article_crawl_ai(foodbank)
     return redirect("admin:foodbank", slug = foodbank.slug)
 
 
@@ -1589,8 +1587,6 @@ def need_notifications(request, id):
     # Check for foodbank articles
     if foodbank.rss_url:
         foodbank_article_crawl(foodbank)
-    elif foodbank.news_url:
-        foodbank_article_crawl_ai(foodbank)
 
     # Update tweet time
     need.tweet_sent = datetime.now()
