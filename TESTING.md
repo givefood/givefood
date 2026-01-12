@@ -144,29 +144,29 @@ Tests for the authentication app:
 
 ```bash
 # Run all tests
-pytest
+uv run pytest
 
 # Run with verbose output
-pytest -v
+uv run pytest -v
 
 # Run specific test file
-pytest givefood/tests/test_utils.py
+uv run pytest givefood/tests/test_utils.py
 
 # Run specific test class
-pytest givefood/tests/test_utils.py::TestTextUtilities
+uv run pytest givefood/tests/test_utils.py::TestTextUtilities
 
 # Run specific test
-pytest givefood/tests/test_utils.py::TestTextUtilities::test_text_for_comparison_lowercase
+uv run pytest givefood/tests/test_utils.py::TestTextUtilities::test_text_for_comparison_lowercase
 ```
 
 ### Coverage Reports
 
 ```bash
 # Generate coverage report
-pytest --cov=givefood --cov=gfapi2
+uv run pytest --cov=givefood --cov=gfapi2
 
 # Generate HTML coverage report
-pytest --cov=givefood --cov=gfapi2 --cov-report=html
+uv run pytest --cov=givefood --cov=gfapi2 --cov-report=html
 ```
 
 ## Test Statistics
