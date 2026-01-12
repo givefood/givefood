@@ -7,6 +7,10 @@ from unittest.mock import patch, MagicMock
 from givefood.models import _get_bank_holidays
 
 
+# Test constant for opening hours
+OPENING_HOURS_SAMPLE = "Monday: 9:00 AM – 5:00 PM\nTuesday: 9:00 AM – 5:00 PM\nWednesday: 9:00 AM – 5:00 PM\nThursday: 9:00 AM – 5:00 PM\nFriday: 9:00 AM – 5:00 PM\nSaturday: Closed\nSunday: Closed"
+
+
 class TestOpeningHoursDays:
     """Test opening_hours_days method of FoodbankDonationPoint."""
 
@@ -23,7 +27,7 @@ class TestOpeningHoursDays:
         """
         # Create a mock donation point
         mock_donation_point = MagicMock()
-        mock_donation_point.opening_hours = "Monday: 9:00 AM – 5:00 PM\nTuesday: 9:00 AM – 5:00 PM\nWednesday: 9:00 AM – 5:00 PM\nThursday: 9:00 AM – 5:00 PM\nFriday: 9:00 AM – 5:00 PM\nSaturday: Closed\nSunday: Closed"
+        mock_donation_point.opening_hours = OPENING_HOURS_SAMPLE
         mock_donation_point.country = "England"
         
         # Import the method and bind it to our mock object
@@ -60,7 +64,7 @@ class TestOpeningHoursDays:
         # (dates are strings) and then converted
         
         mock_donation_point = MagicMock()
-        mock_donation_point.opening_hours = "Monday: 9:00 AM – 5:00 PM\nTuesday: 9:00 AM – 5:00 PM\nWednesday: 9:00 AM – 5:00 PM\nThursday: 9:00 AM – 5:00 PM\nFriday: 9:00 AM – 5:00 PM\nSaturday: Closed\nSunday: Closed"
+        mock_donation_point.opening_hours = OPENING_HOURS_SAMPLE
         mock_donation_point.country = "England"
         
         # Mock the bank holidays cache to return fresh string dates
@@ -90,7 +94,7 @@ class TestOpeningHoursDays:
         # converted to date objects (the bug scenario)
         
         mock_donation_point = MagicMock()
-        mock_donation_point.opening_hours = "Monday: 9:00 AM – 5:00 PM\nTuesday: 9:00 AM – 5:00 PM\nWednesday: 9:00 AM – 5:00 PM\nThursday: 9:00 AM – 5:00 PM\nFriday: 9:00 AM – 5:00 PM\nSaturday: Closed\nSunday: Closed"
+        mock_donation_point.opening_hours = OPENING_HOURS_SAMPLE
         mock_donation_point.country = "England"
         
         # Mock the bank holidays cache to return already converted date objects
