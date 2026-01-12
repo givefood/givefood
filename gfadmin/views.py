@@ -24,7 +24,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
-from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber
+from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber, PlacePhoto
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 from django_tasks.backends.database.models import DBTaskResult
 from django_tasks.base import TaskResultStatus
@@ -577,6 +577,61 @@ def foodbank(request, slug):
     total_weight_kg_pkg = total_weight_kg * PACKAGING_WEIGHT_PC
     total_cost_display = total_cost / 100 if total_cost else 0
 
+    # Collect photos for foodbank, locations, and donation points
+    photos = []
+    place_ids = []
+    
+    # Main foodbank location photo
+    if foodbank.place_id and foodbank.place_has_photo:
+        place_ids.append(foodbank.place_id)
+    
+    # Location photos
+    for location in locations:
+        if location.place_id and location.place_has_photo:
+            place_ids.append(location.place_id)
+    
+    # Donation point photos
+    for dp in donation_points:
+        if dp.place_id and dp.place_has_photo:
+            place_ids.append(dp.place_id)
+    
+    # Fetch all PlacePhotos in a single query (only if we have place_ids)
+    place_photos = {}
+    if place_ids:
+        place_photos = {pp.place_id: pp for pp in PlacePhoto.objects.filter(place_id__in=place_ids)}
+    
+    # Build photos list with place information
+    if foodbank.place_id and foodbank.place_has_photo and foodbank.place_id in place_photos:
+        photos.append({
+            'place_name': foodbank.name,
+            'place_type': 'foodbank',
+            'place_id': foodbank.place_id,
+            'photo': place_photos[foodbank.place_id],
+            'photo_url': f"/needs/at/{foodbank.slug}/photo.jpg",
+        })
+    
+    for location in locations:
+        if location.place_id and location.place_has_photo and location.place_id in place_photos:
+            photos.append({
+                'place_name': location.name,
+                'place_type': 'location',
+                'place_id': location.place_id,
+                'photo': place_photos[location.place_id],
+                'photo_url': f"/needs/at/{foodbank.slug}/{location.slug}/photo.jpg",
+            })
+    
+    for dp in donation_points:
+        if dp.place_id and dp.place_has_photo and dp.place_id in place_photos:
+            photos.append({
+                'place_name': dp.name,
+                'place_type': 'donationpoint',
+                'place_id': dp.place_id,
+                'photo': place_photos[dp.place_id],
+                'photo_url': f"/needs/at/{foodbank.slug}/donationpoint/{dp.slug}/photo.jpg",
+            })
+    
+    photos_count = len(photos)
+
     counts = {
         "locations": locations_count,
         "needs": needs_count,
@@ -585,6 +640,7 @@ def foodbank(request, slug):
         "articles": articles_count,
         "subscribers": subscriber_count,
         "crawls": crawl_items_count,
+        "photos": photos_count,
     }
 
     template_vars = {
@@ -602,6 +658,7 @@ def foodbank(request, slug):
         "all_subscriptions": all_subscriptions,
         "subscription_counts": subscription_counts,
         "crawl_items": crawl_items,
+        "photos": photos,
         "total_weight_kg": total_weight_kg,
         "total_weight_kg_pkg": total_weight_kg_pkg,
         "total_items": total_items,
@@ -1519,6 +1576,45 @@ def donationpoint_delete(request, slug, dp_slug):
     if request.headers.get('HX-Request'):
         return HttpResponse('')
     return redirect("admin:foodbank", slug = foodbank.slug)
+
+
+@require_POST
+def photo_delete(request, slug, photo_id):
+    """Delete a PlacePhoto by ID, verifying it belongs to the foodbank."""
+    foodbank = get_object_or_404(Foodbank, slug=slug)
+    photo = get_object_or_404(PlacePhoto, id=photo_id)
+    
+    # Collect all place_ids associated with this foodbank
+    valid_place_ids = set()
+    
+    # Main foodbank location
+    if foodbank.place_id:
+        valid_place_ids.add(foodbank.place_id)
+    
+    # Locations - use values_list for efficiency
+    location_place_ids = FoodbankLocation.objects.filter(
+        foodbank=foodbank, 
+        place_id__isnull=False
+    ).values_list('place_id', flat=True)
+    valid_place_ids.update(location_place_ids)
+    
+    # Donation points - use values_list for efficiency
+    dp_place_ids = FoodbankDonationPoint.objects.filter(
+        foodbank=foodbank,
+        place_id__isnull=False
+    ).values_list('place_id', flat=True)
+    valid_place_ids.update(dp_place_ids)
+    
+    # Verify the photo belongs to this foodbank
+    if photo.place_id not in valid_place_ids:
+        return HttpResponseForbidden("Photo does not belong to this foodbank")
+    
+    photo.delete()
+
+    # Return empty response for HTMX requests (element will be removed)
+    if request.headers.get('HX-Request'):
+        return HttpResponse('')
+    return redirect("admin:foodbank", slug=foodbank.slug)
 
 
 def need_form(request, id = None):
