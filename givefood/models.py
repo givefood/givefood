@@ -1558,7 +1558,24 @@ class FoodbankArticle(models.Model):
         if self.foodbank:
             self.foodbank_name = self.foodbank.name
 
+        # Check if featured field is changing
+        old_featured = None
+        if self.pk:
+            try:
+                old_instance = FoodbankArticle.objects.get(pk=self.pk)
+                old_featured = old_instance.featured
+            except FoodbankArticle.DoesNotExist:
+                pass
+
         super(FoodbankArticle, self).save(*args, **kwargs)
+
+        # If featured status changed, decache the homepage
+        if old_featured is not None and old_featured != self.featured:
+            from django.urls import reverse
+            urls = [reverse("index")]
+            for language in LANGUAGES:
+                urls.append(translate_url(reverse("index"), language[0]))
+            decache_async.enqueue(urls)
 
     def __str__(self):
         return "%s - %s" % (self.title, self.foodbank_name)
