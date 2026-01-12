@@ -1,5 +1,6 @@
 """Tests for article featured toggle functionality."""
 import pytest
+from unittest.mock import patch
 from django.urls import reverse
 from django.utils import timezone
 
@@ -155,3 +156,41 @@ class TestArticleFeaturedToggle:
         
         # Should show filled star
         assert '★' in content
+
+    def test_toggling_featured_clears_homepage_cache(self, article):
+        """Test that toggling featured status triggers cache clearing for homepage."""
+        with patch('givefood.models.decache_async') as mock_decache:
+            # Toggle featured from False to True
+            article.featured = True
+            article.save()
+            
+            # Verify decache_async.enqueue was called
+            assert mock_decache.enqueue.called
+            call_args = mock_decache.enqueue.call_args[0][0]
+            
+            # Check that homepage URLs are included
+            assert any('/' in url or url == '/' for url in call_args)
+            
+            # Reset mock
+            mock_decache.enqueue.reset_mock()
+            
+            # Toggle featured from True to False
+            article.featured = False
+            article.save()
+            
+            # Verify decache_async.enqueue was called again
+            assert mock_decache.enqueue.called
+            call_args = mock_decache.enqueue.call_args[0][0]
+            
+            # Check that homepage URLs are included
+            assert any('/' in url or url == '/' for url in call_args)
+
+    def test_saving_without_changing_featured_does_not_clear_cache(self, article):
+        """Test that saving an article without changing featured status doesn't clear cache."""
+        with patch('givefood.models.decache_async') as mock_decache:
+            # Save without changing featured status
+            article.title = "Updated Title"
+            article.save()
+            
+            # Verify decache_async.enqueue was NOT called
+            assert not mock_decache.enqueue.called
