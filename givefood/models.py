@@ -1104,7 +1104,8 @@ class FoodbankDonationPoint(models.Model):
         bank_holidays = bank_holidays.get("events", None)
         if bank_holidays:
             for idx, holiday in enumerate(bank_holidays):
-                bank_holidays[idx]["date"] = datetime.strptime(holiday["date"], "%Y-%m-%d").date()
+                if not isinstance(holiday["date"], date):
+                    bank_holidays[idx]["date"] = datetime.strptime(holiday["date"], "%Y-%m-%d").date()
 
         today = date.today()
         day_dates = []
