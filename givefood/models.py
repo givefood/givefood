@@ -31,6 +31,17 @@ from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DE
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import decache_async, gemini, geocode, geojson_dict, get_calories, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, find_parlcons, place_has_photo, pluscode, translate_need_async, validate_postcode
 
+# Cache bank holidays JSON at module level to eliminate repeated file reads
+_BANK_HOLIDAYS_CACHE = None
+
+def _get_bank_holidays():
+    """Load and cache bank holidays JSON data."""
+    global _BANK_HOLIDAYS_CACHE
+    if _BANK_HOLIDAYS_CACHE is None:
+        with open("./givefood/data/bank-holidays.json") as f:
+            _BANK_HOLIDAYS_CACHE = json.load(f)
+    return _BANK_HOLIDAYS_CACHE
+
 
 class Foodbank(models.Model):
 
@@ -1074,16 +1085,18 @@ class FoodbankDonationPoint(models.Model):
 
         days = opening_hours.split("\n")
         
-        bank_holidays = json.load(open("./givefood/data/bank-holidays.json"))
+        bank_holidays_data = _get_bank_holidays()
 
+        bank_holidays = None
         if self.country == "England":
-            bank_holidays = bank_holidays["england-and-wales"]
-        if self.country == "Wales":
-            bank_holidays = bank_holidays["england-and-wales"]
-        if self.country == "Scotland":
-            bank_holidays = bank_holidays["scotland"]
-        if self.country == "Northern Ireland":
-            bank_holidays = bank_holidays["northern-ireland"]
+            bank_holidays = bank_holidays_data["england-and-wales"]
+        elif self.country == "Wales":
+            bank_holidays = bank_holidays_data["england-and-wales"]
+        elif self.country == "Scotland":
+            bank_holidays = bank_holidays_data["scotland"]
+        elif self.country == "Northern Ireland":
+            bank_holidays = bank_holidays_data["northern-ireland"]
+        
         if not bank_holidays:
             bank_holidays = {}
 
