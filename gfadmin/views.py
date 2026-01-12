@@ -595,8 +595,10 @@ def foodbank(request, slug):
         if dp.place_id and dp.place_has_photo:
             place_ids.append(dp.place_id)
     
-    # Fetch all PlacePhotos in a single query
-    place_photos = {pp.place_id: pp for pp in PlacePhoto.objects.filter(place_id__in=place_ids)}
+    # Fetch all PlacePhotos in a single query (only if we have place_ids)
+    place_photos = {}
+    if place_ids:
+        place_photos = {pp.place_id: pp for pp in PlacePhoto.objects.filter(place_id__in=place_ids)}
     
     # Build photos list with place information
     if foodbank.place_id and foodbank.place_has_photo and foodbank.place_id in place_photos:
@@ -1578,9 +1580,35 @@ def donationpoint_delete(request, slug, dp_slug):
 
 @require_POST
 def photo_delete(request, slug, photo_id):
-    """Delete a PlacePhoto by ID."""
+    """Delete a PlacePhoto by ID, verifying it belongs to the foodbank."""
     foodbank = get_object_or_404(Foodbank, slug=slug)
     photo = get_object_or_404(PlacePhoto, id=photo_id)
+    
+    # Collect all place_ids associated with this foodbank
+    valid_place_ids = set()
+    
+    # Main foodbank location
+    if foodbank.place_id:
+        valid_place_ids.add(foodbank.place_id)
+    
+    # Locations - use values_list for efficiency
+    location_place_ids = FoodbankLocation.objects.filter(
+        foodbank=foodbank, 
+        place_id__isnull=False
+    ).values_list('place_id', flat=True)
+    valid_place_ids.update(location_place_ids)
+    
+    # Donation points - use values_list for efficiency
+    dp_place_ids = FoodbankDonationPoint.objects.filter(
+        foodbank=foodbank,
+        place_id__isnull=False
+    ).values_list('place_id', flat=True)
+    valid_place_ids.update(dp_place_ids)
+    
+    # Verify the photo belongs to this foodbank
+    if photo.place_id not in valid_place_ids:
+        return HttpResponseForbidden("Photo does not belong to this foodbank")
+    
     photo.delete()
 
     # Return empty response for HTMX requests (element will be removed)

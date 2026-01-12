@@ -182,3 +182,24 @@ class TestPhotoDelete:
         
         assert response.status_code == 302
         assert not PlacePhoto.objects.filter(pk=self.photo.pk).exists()
+
+    def test_photo_delete_forbidden_for_unrelated_photo(self):
+        """Test that deleting a photo not belonging to the foodbank is forbidden."""
+        from gfadmin.views import photo_delete
+        factory = RequestFactory()
+        
+        # Create another photo that doesn't belong to this foodbank
+        unrelated_photo = PlacePhoto.objects.create(
+            place_id='unrelated_place_id',
+            photo_ref='unrelated_ref',
+            html_attributions='Unrelated Attribution',
+            blob=b'fake_photo_data',
+        )
+        
+        request = factory.post(f'/admin/foodbank/{self.foodbank.slug}/photo/{unrelated_photo.id}/delete/')
+        
+        response = photo_delete(request, slug=self.foodbank.slug, photo_id=unrelated_photo.id)
+        
+        assert response.status_code == 403
+        # Verify the photo was NOT deleted
+        assert PlacePhoto.objects.filter(pk=unrelated_photo.pk).exists()
