@@ -34,6 +34,7 @@ from givefood.func import decache_async, gemini, geocode, geojson_dict, get_calo
 # Cache bank holidays JSON at module level to eliminate repeated file reads
 _BANK_HOLIDAYS_CACHE = None
 
+
 def _get_bank_holidays():
     """Load and cache bank holidays JSON data."""
     global _BANK_HOLIDAYS_CACHE
@@ -1084,7 +1085,7 @@ class FoodbankDonationPoint(models.Model):
         opening_hours = opening_hours.replace("Closed", _("Closed"))
 
         days = opening_hours.split("\n")
-        
+
         bank_holidays_data = _get_bank_holidays()
 
         bank_holidays = None
@@ -1096,7 +1097,7 @@ class FoodbankDonationPoint(models.Model):
             bank_holidays = bank_holidays_data["scotland"]
         elif self.country == "Northern Ireland":
             bank_holidays = bank_holidays_data["northern-ireland"]
-        
+
         if not bank_holidays:
             bank_holidays = {}
 
