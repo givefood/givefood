@@ -52,7 +52,13 @@ Give Food is a registered charity in England & Wales [1188192](https://register-
 
 To set up for local development, run the following:
 
-```uv run manage.py runserver```
+```bash
+# Install dependencies
+uv sync
+
+# Run the development server
+uv run manage.py runserver
+```
 
 ## Running tests
 
@@ -60,17 +66,17 @@ The project includes a basic test suite using pytest. To run the tests:
 
 ```bash
 # Run all tests
-pytest
+uv run pytest
 
 # Run with verbose output
-pytest -v
+uv run pytest -v
 
 # Run tests for a specific app
-pytest givefood/tests/
-pytest gfapi2/tests.py
+uv run pytest givefood/tests/
+uv run pytest gfapi2/tests.py
 
 # Run with coverage report
-pytest --cov=givefood --cov=gfapi2
+uv run pytest --cov=givefood --cov=gfapi2
 ```
 
 The test suite includes:

@@ -94,8 +94,20 @@ API responses include food bank data, needs, locations, and parliamentary consti
 
 ### Local Setup
 
+This project uses `uv` for dependency management. To set up for local development:
+
 ```bash
+# Install dependencies
+uv sync
+
+# Run the development server
 uv run manage.py runserver
+
+# Run tests
+uv run pytest
+
+# Run tests with verbose output
+uv run pytest -v
 ```
 
 ### Environment Variables
@@ -131,8 +143,10 @@ The project uses python-dotenv to load from `.env` file:
 
 ## Testing
 
-- There is currently no formal test infrastructure
-- Manual testing is performed
+- The project uses pytest for testing
+- Install dependencies with `uv sync`
+- Run tests with `uv run pytest`
+- See `TESTING.md` for detailed test documentation
 - When adding features, ensure they work across all supported languages
 
 ## Contact & Contribution
