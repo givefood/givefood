@@ -52,7 +52,7 @@
         <li role="presentation">
           <a data-tab="photos" role="tab" aria-selected="false" aria-controls="photos-panel" id="photos-tab">
             <span class="icon"><i class="mdi mdi-image"></i></span>
-            <span>Photos <span class="tag is-info is-normal is-light">{{ counts.photos }}</span></span>
+            <span>Photos <span class="tag is-info is-normal is-light" id="photos-count">{{ counts.photos }}</span></span>
           </a>
         </li>
       {% endif %}
@@ -659,24 +659,35 @@
               <th></th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="photos-tbody">
             {% for photo in photos %}
-              <tr>
+              <tr id="photo-row-{{ photo.photo.id }}">
                 <td>
-                  {{ photo.place_name }}<br>
-                  <span class="tag is-light">{{ photo.place_type }}</span>
+                  {% if photo.place_type == 'foodbank' %}
+                    <a href="#generallocations">{{ photo.place_name }}</a><br>
+                    <span class="tag is-danger is-light">{{ photo.place_type }}</span>
+                  {% elif photo.place_type == 'location' %}
+                    <a href="#generallocations">{{ photo.place_name }}</a><br>
+                    <span class="tag is-warning is-light">{{ photo.place_type }}</span>
+                  {% elif photo.place_type == 'donationpoint' %}
+                    <a href="#donationpoints">{{ photo.place_name }}</a><br>
+                    <span class="tag is-info is-light">{{ photo.place_type }}</span>
+                  {% endif %}
                 </td>
                 <td>{{ photo.place_id|truncatechars:25 }}</td>
                 <td>
                   <a href="{{ photo.photo_url }}" target="_blank">
-                    <img src="{{ photo.photo_url }}" alt="{{ photo.place_name }}" style="max-width:300px;max-height:300px;" loading="lazy">
+                    <img src="{{ photo.photo_url }}" alt="{{ photo.place_name }}" style="max-width:200px;max-height:200px;" loading="lazy">
                   </a>
                 </td>
                 <td>
-                  <form action="{% url 'admin:photo_delete' foodbank.slug photo.photo.id %}" method="post">
-                    <input type="submit" class="button is-small is-danger is-light" value="Delete" onclick="return confirm('Delete this photo?')">
-                    {% csrf_token %}
-                  </form>
+                  <button type="button" 
+                          class="button is-small is-danger is-light"
+                          hx-post="{% url 'admin:photo_delete' foodbank.slug photo.photo.id %}"
+                          hx-target="#photo-row-{{ photo.photo.id }}"
+                          hx-swap="delete"
+                          hx-confirm="Delete this photo?"
+                          hx-on::after-request="decrementPhotoCount()">Delete</button>
                 </td>
               </tr>
             {% endfor %}
@@ -692,4 +703,13 @@
 
 {% block script %}
   <script src="/static/js/tabber.js" defer></script>
+  <script>
+    function decrementPhotoCount() {
+      const countEl = document.getElementById('photos-count');
+      if (countEl) {
+        const currentCount = parseInt(countEl.textContent, 10);
+        countEl.textContent = currentCount - 1;
+      }
+    }
+  </script>
 {% endblock %}

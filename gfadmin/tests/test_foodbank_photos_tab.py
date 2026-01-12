@@ -105,7 +105,13 @@ class TestFoodbankPhotosTab:
         assert 'Place ID' in content
         assert 'Photo' in content
         assert foodbank.name in content
-        assert 'foodbank' in content  # place_type
+        # Verify foodbank type has red tag
+        assert 'is-danger is-light' in content
+        # Verify HTMX delete button
+        assert 'hx-post' in content
+        assert 'hx-swap="delete"' in content
+        # Verify image max dimensions
+        assert 'max-width:200px;max-height:200px' in content
         
     def test_photos_count_in_tab(self):
         """Test that Photos tab shows correct count."""
@@ -127,8 +133,8 @@ class TestFoodbankPhotosTab:
         content = response.content.decode('utf-8')
         
         # Verify count is shown (should be 1)
-        # The count is shown in a tag like: <span class="tag is-info is-normal is-light">1</span>
-        assert 'Photos <span class="tag is-info is-normal is-light">1</span>' in content
+        # The count is shown in a tag like: <span class="tag is-info is-normal is-light" id="photos-count">1</span>
+        assert 'Photos <span class="tag is-info is-normal is-light" id="photos-count">1</span>' in content
 
 
 @pytest.mark.django_db
