@@ -15,6 +15,7 @@ urlpatterns = (
     path("order/<slug:id>/email/", order_email, name="order_email"),
 
     path("foodbanks/", foodbanks, name="foodbanks"),
+    path("foodbanks/next/", foodbanks_next, name="foodbanks_next"),
     path("foodbanks/dupe_postcodes/", foodbanks_dupe_postcodes, name="foodbanks_dupe_postcodes"),
     path("foodbanks/csv/", foodbanks_csv, name="foodbanks_csv"),
     path("foodbanks/without_need/", foodbanks_without_need, name="foodbanks_without_need"),
