@@ -1571,7 +1571,6 @@ class FoodbankArticle(models.Model):
 
         # If featured status changed, decache the homepage
         if old_featured is not None and old_featured != self.featured:
-            from django.urls import reverse
             urls = [reverse("index")]
             for language in LANGUAGES:
                 urls.append(translate_url(reverse("index"), language[0]))
