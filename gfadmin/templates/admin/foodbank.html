@@ -48,6 +48,14 @@
           <span>Crawls <span class="tag is-info is-normal is-light">{{ counts.crawls }}</span></span>
         </a>
       </li>
+      {% if photos %}
+        <li role="presentation">
+          <a data-tab="photos" role="tab" aria-selected="false" aria-controls="photos-panel" id="photos-tab">
+            <span class="icon"><i class="mdi mdi-image"></i></span>
+            <span>Photos <span class="tag is-info is-normal is-light">{{ counts.photos }}</span></span>
+          </a>
+        </li>
+      {% endif %}
     </ul>
   </div>
 
@@ -638,6 +646,44 @@
     </table>
       
     </div>
+
+    {# Photos #}
+    {% if photos %}
+      <div class="column tabcontent photos is-hidden" role="tabpanel" id="photos-panel" aria-labelledby="photos-tab">
+        <table class="table is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th>Place Name &amp; Type</th>
+              <th>Place ID</th>
+              <th>Photo</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for photo in photos %}
+              <tr>
+                <td>
+                  {{ photo.place_name }}<br>
+                  <span class="tag is-light">{{ photo.place_type }}</span>
+                </td>
+                <td>{{ photo.place_id|truncatechars:25 }}</td>
+                <td>
+                  <a href="{{ photo.photo_url }}" target="_blank">
+                    <img src="{{ photo.photo_url }}" alt="{{ photo.place_name }}" style="max-width:300px;max-height:300px;" loading="lazy">
+                  </a>
+                </td>
+                <td>
+                  <form action="{% url 'admin:photo_delete' foodbank.slug photo.photo.id %}" method="post">
+                    <input type="submit" class="button is-small is-danger is-light" value="Delete" onclick="return confirm('Delete this photo?')">
+                    {% csrf_token %}
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
 
   </div>
 

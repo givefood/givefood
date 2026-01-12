@@ -43,6 +43,8 @@ urlpatterns = (
     path("foodbank/<slug:slug>/donationpoint/<slug:dp_slug>/edit/", donationpoint_form, name="donationpoint_edit"),
     path("foodbank/<slug:slug>/donationpoint/<slug:dp_slug>/delete/", donationpoint_delete, name="donationpoint_delete"),
 
+    path("foodbank/<slug:slug>/photo/<int:photo_id>/delete/", photo_delete, name="photo_delete"),
+
     path("foodbank/<slug:slug>/location/new/", fblocation_form, name="fblocation_new"),
     path("foodbank/<slug:slug>/location/new/area/", fblocation_area_form, name="fblocation_area_new"),
     path("foodbank/<slug:slug>/location/<slug:loc_slug>/edit/", fblocation_form, name="fblocation_edit"),
