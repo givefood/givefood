@@ -317,6 +317,14 @@ def foodbanks_dupe_postcodes(request):
     return render(request, "admin/foodbanks_dupe_postcodes.html", template_vars)
 
 
+def foodbanks_next(request):
+    """Redirects to the foodbank with the oldest edited date that isn't closed."""
+    foodbank = Foodbank.objects.exclude(is_closed=True).order_by("edited").first()
+    if foodbank:
+        return redirect("admin:foodbank", slug=foodbank.slug)
+    return redirect("admin:foodbanks")
+
+
 def orders(request):
 
     sort_options = [
