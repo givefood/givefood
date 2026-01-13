@@ -382,6 +382,10 @@ class TestFoodbankCheck:
         assert 'Supermarket A' in prompt, \
             "HTML body text content should be included in the prompt"
         
+        # Verify prompt content is NOT HTML-escaped (important for AI parsing)
+        assert '&quot;' not in prompt, \
+            "Prompt content should not be HTML-escaped"
+        
         # Verify CrawlItems were created
         crawl_items = CrawlItem.objects.filter(foodbank=foodbank, crawl_type='check')
         
