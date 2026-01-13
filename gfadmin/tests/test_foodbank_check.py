@@ -374,6 +374,14 @@ class TestFoodbankCheck:
         assert 'donation_points' in prompt
         assert 'donation_points_html' in prompt
         
+        # Verify the actual POST response content is in the prompt (not just the key name)
+        assert 'Supermarket C' in prompt, \
+            "POST response content should be included in the prompt"
+        
+        # Verify the HTML body text content is in the prompt
+        assert 'Supermarket A' in prompt, \
+            "HTML body text content should be included in the prompt"
+        
         # Verify CrawlItems were created
         crawl_items = CrawlItem.objects.filter(foodbank=foodbank, crawl_type='check')
         
