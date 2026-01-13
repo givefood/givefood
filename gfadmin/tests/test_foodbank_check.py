@@ -379,3 +379,202 @@ class TestFoodbankCheck:
         
         # Should have 3 crawl items: homepage, donation_points HTML (GET), and donation_points POST
         assert crawl_items.count() == 3
+
+
+@pytest.mark.django_db
+class TestFoodbankCheckPrompt:
+    """Tests for the foodbank check prompt debug URL."""
+
+    @patch('gfadmin.views.requests.get')
+    def test_returns_plain_text(self, mock_get):
+        """Test that the prompt endpoint returns plain text."""
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test content</body></html>'
+        mock_get.return_value = mock_response
+        
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check_prompt
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/prompt/')
+        
+        # Call the view
+        response = foodbank_check_prompt(request, slug=foodbank.slug)
+        
+        # Verify response content type is plain text
+        assert response['Content-Type'] == 'text/plain; charset=utf-8'
+        assert response.status_code == 200
+        
+        # Verify the content contains expected foodbank details
+        content = response.content.decode('utf-8')
+        assert 'Test Foodbank' in content
+        assert 'AB12 3CD' in content
+
+    @patch('gfadmin.views.requests.get')
+    def test_prompt_contains_foodbank_json(self, mock_get):
+        """Test that the prompt contains the foodbank JSON data."""
+        # Create a test foodbank with locations
+        foodbank = Foodbank(
+            name='Foodbank With Locations',
+            url='https://example.com',
+            address='456 Main St',
+            postcode='CD34 5EF',
+            country='Wales',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+            phone_number='01234 567890',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Content</body></html>'
+        mock_get.return_value = mock_response
+        
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check_prompt
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/prompt/')
+        
+        # Call the view
+        response = foodbank_check_prompt(request, slug=foodbank.slug)
+        
+        content = response.content.decode('utf-8')
+        # Check that the content includes foodbank details
+        # (Note: JSON may be HTML-escaped in the template output)
+        assert 'Foodbank With Locations' in content
+        assert 'CD34 5EF' in content
+        assert 'Wales' in content
+
+
+@pytest.mark.django_db
+class TestFoodbankCheckResult:
+    """Tests for the foodbank check result debug URL."""
+
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_returns_json(self, mock_get, mock_gemini):
+        """Test that the result endpoint returns JSON."""
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name='JSON Test Foodbank',
+            url='https://example.com',
+            address='789 Json St',
+            postcode='EF56 7GH',
+            country='Scotland',
+            lat_lng='55.9533,-3.1883',
+            contact_email='json@example.com',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+        
+        # Mock gemini response
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'JSON Test Foodbank',
+                'address': '789 Json St',
+                'postcode': 'EF56 7GH',
+                'country': 'Scotland',
+                'phone_number': '',
+                'contact_email': 'json@example.com',
+                'network': '',
+            },
+            'locations': [
+                {'name': 'Branch A', 'address': '10 Branch A St', 'postcode': 'BR1 1AA'}
+            ],
+            'donation_points': []
+        }
+        
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check_result
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/result/')
+        
+        # Call the view
+        response = foodbank_check_result(request, slug=foodbank.slug)
+        
+        # Verify response content type is JSON
+        assert response['Content-Type'] == 'application/json'
+        assert response.status_code == 200
+        
+        # Verify the content is valid JSON
+        import json
+        result = json.loads(response.content.decode('utf-8'))
+        assert result['details']['name'] == 'JSON Test Foodbank'
+        assert result['details']['postcode'] == 'EF56 7GH'
+        assert len(result['locations']) == 1
+        assert result['locations'][0]['name'] == 'Branch A'
+
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_calls_gemini_with_correct_schema(self, mock_get, mock_gemini):
+        """Test that gemini is called with the correct response schema."""
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name='Schema Test Foodbank',
+            url='https://example.com',
+            address='100 Schema St',
+            postcode='GH78 9IJ',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='schema@example.com',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+        
+        # Mock gemini response
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Schema Test Foodbank',
+                'address': '100 Schema St',
+                'postcode': 'GH78 9IJ',
+                'country': 'England',
+                'phone_number': '',
+                'contact_email': 'schema@example.com',
+                'network': '',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+        
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check_result
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/result/')
+        
+        # Call the view
+        response = foodbank_check_result(request, slug=foodbank.slug)
+        
+        # Verify gemini was called
+        assert mock_gemini.called
+        
+        # Verify the schema includes required fields
+        call_kwargs = mock_gemini.call_args[1]
+        schema = call_kwargs['response_schema']
+        assert 'details' in schema['properties']
+        assert 'locations' in schema['properties']
+        assert 'donation_points' in schema['properties']

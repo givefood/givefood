@@ -721,10 +721,11 @@ def foodbank_form(request, slug = None):
     return render(request, "admin/form.html", template_vars)
 
 
-def foodbank_check(request, slug):
-    
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-
+def _build_foodbank_check_data(foodbank):
+    """
+    Build the check data for a foodbank, including the prompt and fetched pages.
+    Returns a tuple of (foodbank_json, foodbank_urls, prompt).
+    """
     # Prepare foodbank JSON
     foodbank_json = {
         "details":{
@@ -863,100 +864,113 @@ def foodbank_check(request, slug):
             "foodbank_pages":foodbank_pages,
         }
     )
+    
+    return foodbank_json, foodbank_urls, prompt
+
+
+# Response schema for the foodbank check AI result
+FOODBANK_CHECK_RESPONSE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "details": {
+        "type": "object",
+        "properties": {
+            "name": {
+            "type": "string"
+            },
+            "address": {
+            "type": "string"
+            },
+            "postcode": {
+            "type": "string"
+            },
+            "country": {
+            "type": "string"
+            },
+            "phone_number": {
+            "type": "string"
+            },
+            "contact_email": {
+            "type": "string"
+            },
+            "network": {
+            "type": "string"
+            }
+        },
+        "required": [
+            "name",
+            "address",
+            "postcode",
+            "country",
+            "phone_number",
+            "contact_email",
+            "network"
+        ]
+        },
+        "locations": {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+            "name": {
+                "type": "string"
+            },
+            "address": {
+                "type": "string"
+            },
+            "postcode": {
+                "type": "string"
+            }
+            },
+            "required": [
+            "name",
+            "address",
+            "postcode"
+            ]
+        }
+        },
+        "donation_points": {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+            "name": {
+                "type": "string"
+            },
+            "address": {
+                "type": "string"
+            },
+            "postcode": {
+                "type": "string"
+            }
+            },
+            "required": [
+            "name",
+            "address",
+            "postcode"
+            ]
+        }
+        }
+    },
+    "required": [
+        "details",
+        "locations",
+        "donation_points"
+    ]
+}
+
+
+def foodbank_check(request, slug):
+    
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank_json, foodbank_urls, prompt = _build_foodbank_check_data(foodbank)
+
     check_result = gemini(
         prompt,
         0,
         response_mime_type = "application/json",
         model = "gemini-2.5-flash",
-        response_schema = {
-            "type": "object",
-            "properties": {
-                "details": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                    "type": "string"
-                    },
-                    "address": {
-                    "type": "string"
-                    },
-                    "postcode": {
-                    "type": "string"
-                    },
-                    "country": {
-                    "type": "string"
-                    },
-                    "phone_number": {
-                    "type": "string"
-                    },
-                    "contact_email": {
-                    "type": "string"
-                    },
-                    "network": {
-                    "type": "string"
-                    }
-                },
-                "required": [
-                    "name",
-                    "address",
-                    "postcode",
-                    "country",
-                    "phone_number",
-                    "contact_email",
-                    "network"
-                ]
-                },
-                "locations": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "address": {
-                        "type": "string"
-                    },
-                    "postcode": {
-                        "type": "string"
-                    }
-                    },
-                    "required": [
-                    "name",
-                    "address",
-                    "postcode"
-                    ]
-                }
-                },
-                "donation_points": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "address": {
-                        "type": "string"
-                    },
-                    "postcode": {
-                        "type": "string"
-                    }
-                    },
-                    "required": [
-                    "name",
-                    "address",
-                    "postcode"
-                    ]
-                }
-                }
-            },
-            "required": [
-                "details",
-                "locations",
-                "donation_points"
-            ]
-        }
+        response_schema = FOODBANK_CHECK_RESPONSE_SCHEMA
     )
 
     for location in foodbank_json["locations"]:
@@ -983,6 +997,29 @@ def foodbank_check(request, slug):
     }
 
     return render(request, "admin/check.html", template_vars)
+
+
+def foodbank_check_prompt(request, slug):
+    """Debug view: Returns the check prompt as plain text."""
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank_json, foodbank_urls, prompt = _build_foodbank_check_data(foodbank)
+    return HttpResponse(prompt, content_type="text/plain; charset=utf-8")
+
+
+def foodbank_check_result(request, slug):
+    """Debug view: Returns the AI check result as JSON."""
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    foodbank_json, foodbank_urls, prompt = _build_foodbank_check_data(foodbank)
+
+    check_result = gemini(
+        prompt,
+        0,
+        response_mime_type = "application/json",
+        model = "gemini-2.5-flash",
+        response_schema = FOODBANK_CHECK_RESPONSE_SCHEMA
+    )
+
+    return HttpResponse(json.dumps(check_result, indent=2), content_type="application/json")
 
 
 @require_POST
