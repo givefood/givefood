@@ -785,7 +785,8 @@ def _build_foodbank_check_data(foodbank):
         return downloaded_pages[url]
 
     # Fetch homepage
-    homepage = fetch_page(foodbank.url)
+    homepage_raw = fetch_page(foodbank.url)
+    homepage = htmlbodytext(homepage_raw)
     foodbank_urls["Home"] = foodbank.url
     
     if foodbank.shopping_list_url and all(x not in foodbank.shopping_list_url for x in url_blacklist):
@@ -804,12 +805,9 @@ def _build_foodbank_check_data(foodbank):
         foodbank_urls["Contacts"] = foodbank.contacts_url
         
     donation_points_html = None
+    donation_points_results = None
     if foodbank.donation_points_url:
         if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
-            # Fetch the regular HTML page first (without extra headers)
-            donation_points_raw = fetch_page(foodbank.donation_points_url)
-            donation_points_html = htmlbodytext(donation_points_raw)
-            foodbank_urls["Donation Points"] = foodbank.donation_points_url
             
             if not foodbank.network_id:
                 # Try to get shopping list page from cache, or fetch it if not cached
@@ -840,13 +838,15 @@ def _build_foodbank_check_data(foodbank):
                 url = url,
             )
             crawl_item.save()
-            donation_points = requests.post(url, headers=headers, timeout=timeout_sec, json=payload).text
+            donation_points_results = requests.post(url, headers=headers, timeout=timeout_sec, json=payload).text
             crawl_item.finish = datetime.now()
             crawl_item.save()
-        else:
-            donation_points_raw = fetch_page(foodbank.donation_points_url)
-            donation_points = htmlbodytext(donation_points_raw)
-            foodbank_urls["Donation Points"] = foodbank.donation_points_url
+        
+        donation_points_raw = fetch_page(foodbank.donation_points_url)
+        donation_points = htmlbodytext(donation_points_raw)
+        if donation_points_results:
+            donation_points = donation_points + "\n" + donation_points_results
+        foodbank_urls["Donation Points"] = foodbank.donation_points_url
 
     foodbank_pages = {
         "homepage": homepage,
@@ -854,7 +854,6 @@ def _build_foodbank_check_data(foodbank):
         "locations": locations,
         "contacts": contacts,
         "donation_points": donation_points,
-        "donation_points_html": donation_points_html,
     }
     prompt = render_to_string(
         "admin/prompts/check.txt",
