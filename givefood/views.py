@@ -457,6 +457,11 @@ def annual_report(request, year):
     """
     return render(request, "public/ar/%s.html" % (year))
 
+def services(request):
+    """
+    Services for food banks page
+    """
+    return render(request, "public/services.html")
 
 @anonymous_csrf
 def register_foodbank(request):

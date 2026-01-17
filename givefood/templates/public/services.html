@@ -1,0 +1,56 @@
+{% extends "public/page.html" %}
+{% load bulma_tags %}
+{% load i18n %}
+
+{% block title %}Services for food banks - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns is-centered">
+    <div class="column">
+      <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+  </div>
+
+  <div class="columns is-centered">
+    <div class="column">
+        <h1>Services for food banks</h1>
+    </div>
+  </div>
+  
+  <div class="columns is-centered">
+    <div class="column content is-half">
+        <h2>Websites</h2>
+        <p>We can provide food banks with a free website to help them promote their services and share information with their community. Our websites are easy to use and can quickly and easily be customised to fit the needs of your organisation.</p>
+        <ul>
+            <li>Custom domain name (e.g., www.yourfoodbank.org.uk)</li>
+            <li>Mobile-friendly design</li>
+            <li>Content management system for easy updates</li>
+            <li>Fast and friendly email support</li>
+        </ul>
+        <p>For information on how to get started with a website, please contact us at <a href="mailto:mail@givefood.org.uk">mail@givefood.org.uk</a></p>
+        <p>You can view a sample website at <a href="https://www.xyzfoodbank.org.uk">xyzfoodbank.org.uk</a></p>
+        <img src="/static/img/xyzfoodbank.png" alt="Sample website">
+    </div>
+    <div class="column content">
+        <h2>Registration</h2>
+        <p>Give Food runs the only national database of food banks and our data is used millions of times each year by people seeking help and organisations supporting food banks.</p>
+
+        <p>If your food bank is not already registered with us, please consider registering to help more people find you and support your work.</p>
+        
+        <p><a href="/register-foodbank/">Register your food bank</a></p>
+    
+
+    </div>
+    <div class="column content">
+        <h2>Data</h2>
+        <p>Use our data to see what is happening at food banks around you and around the country.</p>
+        <ul>
+            <li><a href="/api/">API</a></li>
+            <li><a href="/dashboard/">Dashboards</a></li>
+        </ul>
+    </div>
+        
+  </div>
+
+{% endblock %}
