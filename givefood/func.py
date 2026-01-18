@@ -1284,14 +1284,13 @@ def pluscode(lat_lng, locality=None):
         # Generate the global Plus Code using openlocationcode library
         global_code = olc.encode(lat, lng)
         
-        # Generate compound code: local code (part after +) with optional locality
-        # The local code is the suffix after the + sign
+        # Generate a shortened local code for compound code format
+        # This creates a 4+2 character code (e.g., "GW6F+M4" from "9C3XGW6F+M4")
         if "+" in global_code:
-            local_code = global_code.split("+")[1]
-            # Include 4 characters before the + for a more useful short code
+            suffix = global_code.split("+")[1]
             prefix_end = global_code.index("+")
             short_prefix = global_code[max(0, prefix_end - 4):prefix_end]
-            local_code = short_prefix + "+" + local_code
+            local_code = short_prefix + "+" + suffix
         else:
             local_code = global_code
         
@@ -1304,7 +1303,7 @@ def pluscode(lat_lng, locality=None):
             "global": global_code,
             "compound": compound_code,
         }
-    except (ValueError, AttributeError):
+    except ValueError:
         return {}
 
 
