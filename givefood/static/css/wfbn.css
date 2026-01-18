@@ -70,7 +70,7 @@
     margin-top:10px;
 }
 .subscribe li.is-active a {
-    background:#FAFAFA !important;
+    background:#FCFCFC !important;
 }
 .subscribe p {
     margin:0 0 10px 0;
@@ -80,7 +80,7 @@
 }
 .subscribe .tabcontent {
     padding:15px;
-    background:#FAFAFA;
+    background:#FCFCFC;
     border:1px solid #D6DAE0;
     border-top:0;
 }
