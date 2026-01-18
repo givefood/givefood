@@ -36,7 +36,7 @@
         <div class="web tabcontent is-hidden" role="tabpanel" id="web-panel" aria-labelledby="web-tab">
             <p>{% blocktrans %}Have this web browser notify when the shopping list changes{% endblocktrans %}</p>
             <div id="webpush-status"></div>
-            <button id="webpush-subscribe-btn" class="button is-link is-light">{% blocktrans %}Get browser notifications{% endblocktrans %}</button>
+            <button id="webpush-subscribe-btn" class="button is-info is-light">{% blocktrans %}Get browser notifications{% endblocktrans %}</button>
         </div>
         <div class="email tabcontent{% if not turnstilefail %} is-hidden{% endif %}" role="tabpanel" id="email-panel" aria-labelledby="email-tab">
             {% if turnstilefail %}
@@ -52,7 +52,7 @@
                             <input class="input" maxlength="254" name="email" type="email" value="{% if email %}{{ email }}{% endif %}" placeholder="{% blocktrans %}Email address{% endblocktrans %}" required="required" autocomplete="email"{% if autofocus %} autofocus{% endif %}>
                         </div>
                         <div class="control">
-                            <button type="submit" class="button is-link is-light" id="subscribe_btn">{% blocktrans %}Get updates{% endblocktrans %}</button>
+                            <button type="submit" class="button is-info is-light" id="subscribe_btn">{% blocktrans %}Get updates{% endblocktrans %}</button>
                         </div>
                     </div>
                     <p class="is-size-7">{% blocktrans %}We'll never use your email address for anything else, and you can unsubscribe at any time{% endblocktrans %}</p>
@@ -63,7 +63,7 @@
         </div>
         <div class="whatsapp tabcontent is-hidden" role="tabpanel" id="whatsapp-panel" aria-labelledby="whatsapp-tab">
             <p>{% trans "Get updates on this shopping list via WhatsApp" %}</p>
-            <a href="https://wa.me/442039206758?text=subscribe%20{{ foodbank.slug|urlencode }}" class="button is-link is-light">{% trans "Get WhatsApp updates" %}</a>
+            <a href="https://wa.me/442039206758?text=subscribe%20{{ foodbank.slug|urlencode }}" class="button is-info is-light">{% trans "Get WhatsApp updates" %}</a>
         </div>
     </div>
 </div>
