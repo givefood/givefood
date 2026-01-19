@@ -1295,7 +1295,7 @@ def pluscode(lat_lng, locality=None):
             local_code = global_code
         
         if locality:
-            compound_code = "%s %s, UK" % (local_code, locality)
+            compound_code = "%s %s" % (local_code, locality)
         else:
             compound_code = local_code
         
