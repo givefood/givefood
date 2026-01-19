@@ -240,7 +240,7 @@ class TestPlusCode:
         """Test that pluscode generates compound code with locality."""
         result = pluscode("51.5117,-0.0772", "Hackney")
         assert "compound" in result
-        assert "Hackney" in result["compound"]
+        assert "Hackney, UK" in result["compound"]
         assert "+" in result["compound"]
 
     def test_pluscode_generates_compound_without_locality(self):
@@ -274,4 +274,4 @@ class TestPlusCode:
         # Coordinates for London (Shoreditch area)
         result = pluscode("51.5117,-0.0772", "City of London")
         assert result["global"] == "9C3XGW6F+M4"
-        assert result["compound"] == "GW6F+M4 City of London"
+        assert result["compound"] == "GW6F+M4 City of London, UK"
