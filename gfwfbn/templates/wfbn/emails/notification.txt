@@ -16,4 +16,6 @@ You can find more details at https://www.givefood.org.uk/needs/at/{{ need.foodba
 {% if need.foodbank.no_donation_points != 0 %}🛒 Find donation points https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/donationpoints/{% endif %}
 🗺️ See other nearby food banks https://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/nearby/
 
+Download our app to get notifications when you are at a donation point https://www.givefood.org.uk/apps/
+
 You're getting these emails because you subscribed to them at www.givefood.org.uk on {{ subscriber.created|date:"jS F Y" }} at {{ subscriber.created|date:"g:i a" }}. To unsubscribe visit http://www.givefood.org.uk/needs/at/{{ need.foodbank.slug }}/updates/unsubscribe/?key={{ subscriber.unsub_key }}
