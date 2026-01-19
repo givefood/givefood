@@ -11,6 +11,7 @@ from givefood.func import (
     distance_meters,
     diff_html,
     geojson_dict,
+    pluscode,
 )
 
 
@@ -223,3 +224,54 @@ class TestGetUserIP:
         request = factory.get('/', HTTP_X_FORWARDED_FOR=' 198.51.100.25 , 192.168.1.1')
         
         assert get_user_ip(request) == '198.51.100.25'
+
+
+class TestPlusCode:
+    """Test Plus Code (Open Location Code) generation."""
+
+    def test_pluscode_generates_global_code(self):
+        """Test that pluscode generates a valid global Plus Code."""
+        result = pluscode("51.5117,-0.0772")
+        assert "global" in result
+        assert result["global"].startswith("9C")  # UK codes start with 9C
+        assert "+" in result["global"]
+
+    def test_pluscode_generates_compound_with_locality(self):
+        """Test that pluscode generates compound code with locality."""
+        result = pluscode("51.5117,-0.0772", "Hackney")
+        assert "compound" in result
+        assert "Hackney" in result["compound"]
+        assert "+" in result["compound"]
+
+    def test_pluscode_generates_compound_without_locality(self):
+        """Test that pluscode generates compound code without locality."""
+        result = pluscode("51.5117,-0.0772")
+        assert "compound" in result
+        assert "+" in result["compound"]
+        # Compound should be the local code (4+2 characters with +)
+        assert len(result["compound"]) == 7  # e.g., "GW6F+M4"
+
+    def test_pluscode_with_none_locality(self):
+        """Test that pluscode handles None locality."""
+        result = pluscode("51.5117,-0.0772", None)
+        assert "global" in result
+        assert "compound" in result
+        # Compound should not contain "None"
+        assert "None" not in result["compound"]
+
+    def test_pluscode_invalid_input_returns_empty_dict(self):
+        """Test that pluscode returns empty dict for invalid input."""
+        result = pluscode("invalid")
+        assert result == {}
+
+    def test_pluscode_empty_string_returns_empty_dict(self):
+        """Test that pluscode returns empty dict for empty string."""
+        result = pluscode("")
+        assert result == {}
+
+    def test_pluscode_known_location(self):
+        """Test pluscode for a known London location."""
+        # Coordinates for London (Shoreditch area)
+        result = pluscode("51.5117,-0.0772", "City of London")
+        assert result["global"] == "9C3XGW6F+M4"
+        assert result["compound"] == "GW6F+M4 City of London"

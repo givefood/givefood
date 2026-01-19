@@ -11,6 +11,7 @@ import difflib
 import requests
 import feedparser
 import random
+from openlocationcode import openlocationcode as olc
 from itertools import chain
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
@@ -1263,17 +1264,46 @@ def admin_regions_from_postcode(postcode):
         return {}
 
 
-def pluscode(lat_lng):
-
-    pc_api_url = "https://plus.codes/api?address=%s&ekey=%s" % (urllib.parse.quote(lat_lng), get_cred("gmap_geocode_key"))
-    request = requests.get(pc_api_url)
-    if request.status_code == 200:
-        pc_api_json = request.json()
+def pluscode(lat_lng, locality=None):
+    """
+    Generate Plus Codes (Open Location Codes) from latitude/longitude coordinates.
+    
+    Args:
+        lat_lng: A string in the format "latitude,longitude"
+        locality: Optional locality name for compound code (e.g., "London, UK")
+    
+    Returns:
+        A dict with 'global' (full Plus Code) and 'compound' (local code + locality) keys,
+        or an empty dict if the input is invalid.
+    """
+    try:
+        lat, lng = lat_lng.split(",")
+        lat = float(lat.strip())
+        lng = float(lng.strip())
+        
+        # Generate the global Plus Code using openlocationcode library
+        global_code = olc.encode(lat, lng)
+        
+        # Generate a shortened local code for compound code format
+        # This creates a 4+2 character code (e.g., "GW6F+M4" from "9C3XGW6F+M4")
+        if "+" in global_code:
+            suffix = global_code.split("+")[1]
+            prefix_end = global_code.index("+")
+            short_prefix = global_code[max(0, prefix_end - 4):prefix_end]
+            local_code = short_prefix + "+" + suffix
+        else:
+            local_code = global_code
+        
+        if locality:
+            compound_code = "%s %s" % (local_code, locality)
+        else:
+            compound_code = local_code
+        
         return {
-            "global":pc_api_json["plus_code"]["global_code"],
-            "compound":"%s %s" % (pc_api_json["plus_code"]["local_code"], pc_api_json["plus_code"]["locality"]["local_address"]),
+            "global": global_code,
+            "compound": compound_code,
         }
-    else:
+    except ValueError:
         return {}
 
 

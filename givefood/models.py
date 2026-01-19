@@ -621,7 +621,7 @@ class Foodbank(models.Model):
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
 
-            pluscodes = pluscode(self.lat_lng)
+            pluscodes = pluscode(self.lat_lng, self.district)
             self.plus_code_compound = pluscodes["compound"]
             self.plus_code_global = pluscodes["global"]
 
@@ -932,7 +932,7 @@ class FoodbankLocation(models.Model):
                 # If no postcode, set country from foodbank
                 self.country = self.foodbank.country
 
-            pluscodes = pluscode(self.lat_lng)
+            pluscodes = pluscode(self.lat_lng, self.district)
             self.plus_code_compound = pluscodes["compound"]
             self.plus_code_global = pluscodes["global"]
 
@@ -1237,7 +1237,7 @@ class FoodbankDonationPoint(models.Model):
                 logging.info("Didn't get parl con %s" % regions.get("parliamentary_constituency", None))
                 self.parliamentary_constituency = None
 
-            pluscodes = pluscode(self.lat_lng)
+            pluscodes = pluscode(self.lat_lng, self.district)
             self.plus_code_compound = pluscodes["compound"]
             self.plus_code_global = pluscodes["global"]
 

@@ -200,14 +200,14 @@ def pluscodes(request):
 
     foodbanks = Foodbank.objects.filter(plus_code_global__isnull=True)
     for foodbank in foodbanks:
-        pluscodes = pluscode(foodbank.lat_lng)
+        pluscodes = pluscode(foodbank.lat_lng, foodbank.district)
         foodbank.plus_code_compound = pluscodes["compound"]
         foodbank.plus_code_global = pluscodes["global"]
         foodbank.save(do_decache=False, do_geoupdate=False)
 
     locations = FoodbankLocation.objects.filter(plus_code_global__isnull=True)
     for location in locations:
-        pluscodes = pluscode(location.lat_lng)
+        pluscodes = pluscode(location.lat_lng, location.district)
         location.plus_code_compound = pluscodes["compound"]
         location.plus_code_global = pluscodes["global"]
         location.save(do_geoupdate=False)
