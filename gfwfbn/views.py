@@ -883,6 +883,15 @@ def constituency(request, slug):
     return render(request, "wfbn/constituency/constituency.html", template_vars)
 
 
+def mp_photo_redirect(request, slug):
+    """
+    Redirect old MP photo URL to the new photo service.
+    Looks up the MP's parliamentary ID from the constituency slug and redirects.
+    """
+    constituency = get_object_or_404(ParliamentaryConstituency, slug=slug)
+    return HttpResponseRedirect(constituency.mp_photo_url())
+
+
 @csrf_exempt
 def updates(request, slug, action):
     """

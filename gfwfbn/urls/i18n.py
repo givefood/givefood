@@ -44,5 +44,6 @@ urlpatterns = [
     path("in/constituencies/", constituencies, name="constituencies"),
     path("in/constituency/", RedirectView.as_view(url="/in/constituencies/")),
     path("in/constituency/<slug:slug>/", constituency, name="constituency"),
+    path("in/constituency/<slug:slug>/mp_photo_threefour.png", mp_photo_redirect, name="mp_photo_redirect"),
     path("in/constituency/<slug:parlcon_slug>/geo.json", geojson, name="constituency_geojson"),
 ]

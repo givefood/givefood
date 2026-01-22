@@ -1564,3 +1564,47 @@ class TestIndexItemCategories:
             assert 'Pasta' in category_names
             assert 'Rice' in category_names
 
+
+
+
+@pytest.fixture
+def create_test_constituency():
+    """Factory fixture for creating test constituencies with unique values."""
+    import uuid
+    from givefood.models import ParliamentaryConstituency
+    def _create_constituency(name=None, slug=None, **kwargs):
+        unique_id = str(uuid.uuid4())[:8]
+        if name is None:
+            name = f"Test Constituency {unique_id}"
+        if slug is None:
+            slug = f"test-constituency-{unique_id}"
+        defaults = {
+            "mp": "Test MP",
+            "mp_party": "Test Party",
+            "mp_parl_id": 12345,
+            "centroid": "51.5074,-0.1278",
+            "latitude": 51.5074,
+            "longitude": -0.1278,
+        }
+        defaults.update(kwargs)
+        return ParliamentaryConstituency.objects.create(name=name, slug=slug, **defaults)
+    return _create_constituency
+
+
+@pytest.mark.django_db
+class TestMpPhotoRedirect:
+    """Test the MP photo redirect endpoint."""
+
+    def test_mp_photo_redirect_returns_redirect(self, client, create_test_constituency):
+        """Test that the MP photo URL redirects to the photo service."""
+        constituency = create_test_constituency(mp_parl_id=67890)
+        
+        response = client.get(f'/needs/in/constituency/{constituency.slug}/mp_photo_threefour.png')
+        
+        assert response.status_code == 302
+        assert response.url == 'https://photos.givefood.org.uk/2024-mp/67890.jpg'
+
+    def test_mp_photo_redirect_with_invalid_slug_returns_404(self, client):
+        """Test that invalid constituency slug returns 404."""
+        response = client.get('/needs/in/constituency/invalid-slug/mp_photo_threefour.png')
+        assert response.status_code == 404
