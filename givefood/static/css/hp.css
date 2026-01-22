@@ -176,6 +176,23 @@ h1 {
     stroke:#363636;
 }
 
+/* COUNTRIES */
+.countries {
+    text-align:center;
+    padding:0 0 3rem 0;
+}
+.countries img {
+    margin-top:20px;
+    height:80px;
+    display:inline;
+    padding:0 10px 0 0;
+    vertical-align: middle;
+}
+.countries .scotland img {
+    height:100px;
+    margin-top:-10px;
+}
+
 /* STATS */
 .stats {
     text-align: center;
