@@ -597,7 +597,7 @@ class TestFoodbankCheckDetailChanges:
             postcode='AB12 3CD',
             country='England',
             lat_lng='51.5074,-0.1278',
-            phone_number='01onal234 567890',
+            phone_number='01234567890',
             contact_email='test@example.com',
             charity_number='12345',
         )
