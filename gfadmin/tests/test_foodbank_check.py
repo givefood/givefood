@@ -578,3 +578,270 @@ class TestFoodbankCheckResult:
         assert 'details' in schema['properties']
         assert 'locations' in schema['properties']
         assert 'donation_points' in schema['properties']
+
+
+@pytest.mark.django_db
+class TestFoodbankCheckDetailChanges:
+    """Tests for the detail_changes highlighting feature."""
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_detail_changes_detects_differences(self, mock_get, mock_gemini, mock_render):
+        """Test that detail_changes is populated when fields differ."""
+        # Create a test foodbank
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            phone_number='01234567890',
+            contact_email='test@example.com',
+            charity_number='12345',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+
+        # Mock gemini response with DIFFERENT values
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '456 Different St',  # Different
+                'postcode': 'XY99 9ZZ',  # Different
+                'country': 'England',
+                'phone_number': '09876 543210',  # Different
+                'contact_email': 'different@example.com',  # Different
+                'network': '',
+                'charity_number': '67890',  # Different
+            },
+            'locations': [],
+            'donation_points': []
+        }
+
+        # Mock render
+        mock_render.return_value = Mock(status_code=200)
+
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        # Verify render was called with detail_changes
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]  # Third argument is the context dict
+
+        assert 'detail_changes' in context
+        detail_changes = context['detail_changes']
+
+        # All fields should be marked as changed
+        assert detail_changes['address'] is True
+        assert detail_changes['phone_number'] is True
+        assert detail_changes['contact_email'] is True
+        assert detail_changes['charity_number'] is True
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_detail_changes_no_differences(self, mock_get, mock_gemini, mock_render):
+        """Test that detail_changes is empty when fields match."""
+        # Create a test foodbank
+        # Note: phone_number gets spaces stripped on save, so use no spaces
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            phone_number='01234567890',  # No spaces - matches saved format
+            contact_email='test@example.com',
+            charity_number='12345',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+
+        # Mock gemini response with SAME values
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '01234567890',  # Must match saved format
+                'contact_email': 'test@example.com',
+                'network': '',
+                'charity_number': '12345',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+
+        # Mock render
+        mock_render.return_value = Mock(status_code=200)
+
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        # Verify render was called with detail_changes
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]  # Third argument is the context dict
+
+        assert 'detail_changes' in context
+        detail_changes = context['detail_changes']
+
+        # No fields should be marked as changed
+        assert detail_changes['address'] is False
+        assert detail_changes['phone_number'] is False
+        assert detail_changes['contact_email'] is False
+        assert detail_changes['charity_number'] is False
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_detail_changes_handles_empty_values(self, mock_get, mock_gemini, mock_render):
+        """Test that detail_changes handles None and empty string values correctly."""
+        # Create a test foodbank with empty fields
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            phone_number='',  # Empty
+            contact_email='test@example.com',
+            charity_number=None,  # None
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+
+        # Mock gemini response with empty values (matching)
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '',  # Empty matches empty
+                'contact_email': 'test@example.com',
+                'network': '',
+                'charity_number': '',  # Empty matches None
+            },
+            'locations': [],
+            'donation_points': []
+        }
+
+        # Mock render
+        mock_render.return_value = Mock(status_code=200)
+
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        # Verify render was called with detail_changes
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]  # Third argument is the context dict
+
+        assert 'detail_changes' in context
+        detail_changes = context['detail_changes']
+
+        # Empty values should match empty values (no changes)
+        assert detail_changes['address'] is False
+        assert detail_changes['phone_number'] is False
+        assert detail_changes['contact_email'] is False
+        assert detail_changes['charity_number'] is False
+
+    @patch('givefood.models.geocode')
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_location_discrepancy_not_shown_for_delivery_address_postcode(self, mock_get, mock_gemini, mock_render, mock_geocode):
+        """Test that locations matching delivery address postcode are not shown as discrepancies."""
+        # Mock geocode to prevent API call
+        mock_geocode.return_value = '51.5074,-0.1278'
+        
+        # Create a test foodbank with a delivery address
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+            delivery_address='Delivery Warehouse\n456 Delivery Road\nXY99 9ZZ',  # Delivery postcode XY99 9ZZ
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+
+        # Mock gemini response with a location matching delivery address postcode
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '',
+                'contact_email': 'test@example.com',
+                'network': '',
+                'charity_number': '',
+            },
+            'locations': [
+                {'name': 'Delivery Warehouse', 'address': '456 Delivery Road', 'postcode': 'XY99 9ZZ'}
+            ],
+            'donation_points': []
+        }
+
+        # Mock render
+        mock_render.return_value = Mock(status_code=200)
+
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        # Verify render was called
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]
+
+        # The location should NOT have discrepancy set because it matches delivery address postcode
+        locations = context['check_result']['locations']
+        assert len(locations) == 1
+        assert 'discrepancy' not in locations[0] or locations[0].get('discrepancy') is not True
