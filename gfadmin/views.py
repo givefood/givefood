@@ -984,14 +984,29 @@ def foodbank_check(request, slug):
         if donation_point["postcode"] not in [x["postcode"] for x in check_result["donation_points"]]:
             donation_point["discrepancy"] = True
 
+    # Extract delivery postcode once for reuse
+    delivery_postcode = None
+    if foodbank.delivery_address:
+        postcode_match = re.search(r'[A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2}', foodbank.delivery_address.upper())
+        if postcode_match:
+            delivery_postcode = postcode_match.group().replace(" ", "")
+
+    def matches_delivery_postcode(postcode):
+        """Check if a postcode matches the delivery address postcode."""
+        if not delivery_postcode:
+            return False
+        return postcode.replace(" ", "").upper() == delivery_postcode
+
     for location in check_result["locations"]:
         if location["postcode"] not in [x["postcode"] for x in foodbank_json["locations"]]:
             if location["postcode"] != foodbank_json["details"]["postcode"]:
-                location["discrepancy"] = True
+                if not matches_delivery_postcode(location["postcode"]):
+                    location["discrepancy"] = True
     for donation_point in check_result["donation_points"]:
         if donation_point["postcode"] not in [x["postcode"] for x in foodbank_json["donation_points"]]:
             if donation_point["postcode"] not in [x["postcode"] for x in foodbank_json["locations"]]:
-                donation_point["discrepancy"] = True
+                if not matches_delivery_postcode(donation_point["postcode"]):
+                    donation_point["discrepancy"] = True
 
     # Compare details fields (address includes postcode for comparison)
     ours_address = (foodbank.address or "") + "\n" + (foodbank.postcode or "")

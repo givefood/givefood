@@ -42,21 +42,32 @@
             </tr>
             <tr>
                 <td>
-                    <p{% if detail_changes.address %} class="check-changed"{% endif %}><strong>Address:</strong><br>{{ foodbank.address|linebreaksbr }}<br>
-                    {{ foodbank.postcode }}</p>
-                    <p{% if detail_changes.phone_number %} class="check-changed"{% endif %}><strong>Phone:</strong> {{ foodbank.phone_number }}</p>
-                    <p{% if detail_changes.contact_email %} class="check-changed"{% endif %}><strong>Email:</strong> {{ foodbank.contact_email }}</p>
-                    <p{% if detail_changes.charity_number %} class="check-changed"{% endif %}><strong>Charity:</strong> {{ foodbank.charity_number }}</p>
-                    {% if foodbank.delivery_address %}
-                        <p><strong>Delivery address:</strong><br>{{ foodbank.delivery_address|linebreaksbr }}</p>
-                    {% endif %}
+                    <dl>
+                        <dt{% if detail_changes.address %} class="check-changed"{% endif %}>Address</dt>
+                        <dd{% if detail_changes.address %} class="check-changed"{% endif %}>{{ foodbank.address|linebreaksbr }}<br>{{ foodbank.postcode }}</dd>
+                        <dt{% if detail_changes.phone_number %} class="check-changed"{% endif %}>Phone</dt>
+                        <dd{% if detail_changes.phone_number %} class="check-changed"{% endif %}>{{ foodbank.phone_number }}</dd>
+                        <dt{% if detail_changes.contact_email %} class="check-changed"{% endif %}>Email</dt>
+                        <dd{% if detail_changes.contact_email %} class="check-changed"{% endif %}>{{ foodbank.contact_email }}</dd>
+                        <dt{% if detail_changes.charity_number %} class="check-changed"{% endif %}>Charity</dt>
+                        <dd{% if detail_changes.charity_number %} class="check-changed"{% endif %}>{{ foodbank.charity_number }}</dd>
+                        {% if foodbank.delivery_address %}
+                            <dt>Delivery address</dt>
+                            <dd>{{ foodbank.delivery_address|linebreaksbr }}</dd>
+                        {% endif %}
+                    </dl>
                 </td>
                 <td>
-                    <p{% if detail_changes.address %} class="check-changed"{% endif %}><strong>Address:</strong><br>{{ check_result.details.address|linebreaksbr }}<br>
-                    {{ check_result.details.postcode }}</p>
-                    <p{% if detail_changes.phone_number %} class="check-changed"{% endif %}><strong>Phone:</strong> {{ check_result.details.phone_number }}</p>
-                    <p{% if detail_changes.contact_email %} class="check-changed"{% endif %}><strong>Email:</strong> {{ check_result.details.contact_email }}</p>
-                    <p{% if detail_changes.charity_number %} class="check-changed"{% endif %}><strong>Charity:</strong> {{ check_result.details.charity_number }}</p>
+                    <dl>
+                        <dt{% if detail_changes.address %} class="check-changed"{% endif %}>Address</dt>
+                        <dd{% if detail_changes.address %} class="check-changed"{% endif %}>{{ check_result.details.address|linebreaksbr }}<br>{{ check_result.details.postcode }}</dd>
+                        <dt{% if detail_changes.phone_number %} class="check-changed"{% endif %}>Phone</dt>
+                        <dd{% if detail_changes.phone_number %} class="check-changed"{% endif %}>{{ check_result.details.phone_number }}</dd>
+                        <dt{% if detail_changes.contact_email %} class="check-changed"{% endif %}>Email</dt>
+                        <dd{% if detail_changes.contact_email %} class="check-changed"{% endif %}>{{ check_result.details.contact_email }}</dd>
+                        <dt{% if detail_changes.charity_number %} class="check-changed"{% endif %}>Charity</dt>
+                        <dd{% if detail_changes.charity_number %} class="check-changed"{% endif %}>{{ check_result.details.charity_number }}</dd>
+                    </dl>
                 </td>
             </tr>
             <tr>

@@ -779,3 +779,69 @@ class TestFoodbankCheckDetailChanges:
         assert detail_changes['phone_number'] is False
         assert detail_changes['contact_email'] is False
         assert detail_changes['charity_number'] is False
+
+    @patch('givefood.models.geocode')
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_location_discrepancy_not_shown_for_delivery_address_postcode(self, mock_get, mock_gemini, mock_render, mock_geocode):
+        """Test that locations matching delivery address postcode are not shown as discrepancies."""
+        # Mock geocode to prevent API call
+        mock_geocode.return_value = '51.5074,-0.1278'
+        
+        # Create a test foodbank with a delivery address
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+            delivery_address='Delivery Warehouse\n456 Delivery Road\nXY99 9ZZ',  # Delivery postcode XY99 9ZZ
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+
+        # Mock gemini response with a location matching delivery address postcode
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '',
+                'contact_email': 'test@example.com',
+                'network': '',
+                'charity_number': '',
+            },
+            'locations': [
+                {'name': 'Delivery Warehouse', 'address': '456 Delivery Road', 'postcode': 'XY99 9ZZ'}
+            ],
+            'donation_points': []
+        }
+
+        # Mock render
+        mock_render.return_value = Mock(status_code=200)
+
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        # Verify render was called
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]
+
+        # The location should NOT have discrepancy set because it matches delivery address postcode
+        locations = context['check_result']['locations']
+        assert len(locations) == 1
+        assert 'discrepancy' not in locations[0] or locations[0].get('discrepancy') is not True
