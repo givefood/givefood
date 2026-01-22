@@ -142,6 +142,11 @@ td.delivery-provider-icon img {
 .checktable li {
   margin-bottom:10px;
 }
+.check-changed {
+  background-color:#fff3cd;
+  padding:2px 4px;
+  border-radius:3px;
+}
 .htmx-fade.htmx-swapping {
   opacity: 0;
   transition: opacity 0.5s ease-out;

@@ -993,11 +993,22 @@ def foodbank_check(request, slug):
             if donation_point["postcode"] not in [x["postcode"] for x in foodbank_json["locations"]]:
                 donation_point["discrepancy"] = True
 
+    # Compare details fields (address includes postcode for comparison)
+    ours_address = (foodbank.address or "") + "\n" + (foodbank.postcode or "")
+    found_address = (check_result["details"].get("address") or "") + "\n" + (check_result["details"].get("postcode") or "")
+    detail_changes = {
+        "address": ours_address.strip() != found_address.strip(),
+        "phone_number": (foodbank.phone_number or "") != (check_result["details"].get("phone_number") or ""),
+        "contact_email": (foodbank.contact_email or "") != (check_result["details"].get("contact_email") or ""),
+        "charity_number": (foodbank.charity_number or "") != (check_result["details"].get("charity_number") or ""),
+    }
+
     template_vars = {
         "foodbank":foodbank,
         "foodbank_json":foodbank_json,
         "check_result":check_result,
         "foodbank_urls":foodbank_urls,
+        "detail_changes":detail_changes,
     }
 
     return render(request, "admin/check.html", template_vars)
