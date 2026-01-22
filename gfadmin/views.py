@@ -583,7 +583,7 @@ def foodbank(request, slug):
     total_items = order_aggregates['total_items']
     total_weight_kg = total_weight / 1000
     total_weight_kg_pkg = total_weight_kg * PACKAGING_WEIGHT_PC
-    total_cost_display = total_cost / 100 if total_cost else 0
+    total_cost_display = float(total_cost.amount) if hasattr(total_cost, 'amount') else float(total_cost) if total_cost else 0
 
     # Collect photos for foodbank, locations, and donation points
     photos = []
@@ -2213,7 +2213,7 @@ def order_stats(request):
     total_weight_pkg = total_weight * PACKAGING_WEIGHT_PC
     total_weight_pkg = round(total_weight_pkg, 2)
 
-    total_cost = float(total_cost) / 100
+    total_cost = float(total_cost.amount) if hasattr(total_cost, 'amount') else float(total_cost) if total_cost else 0
 
     stats = {
         "Total Weight":total_weight,
