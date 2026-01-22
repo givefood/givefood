@@ -183,14 +183,17 @@ h1 {
 }
 .countries img {
     margin-top:20px;
-    height:80px;
+    height:90px;
     display:inline;
     padding:0 10px 0 0;
     vertical-align: middle;
 }
+.countries .england img {
+    width:100px;
+}
 .countries .scotland img {
-    height:100px;
-    margin-top:-10px;
+    height:110px;
+    margin-top:0;
 }
 
 /* STATS */
