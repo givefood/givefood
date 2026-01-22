@@ -143,6 +143,27 @@
 
   <div class="columns">
     <div class="column">
+      <h2>{% trans "Countries" %}</h2>
+    </div>
+  </div>
+
+  <div class="columns countries">
+      <div class="column">
+        <a href="{% url 'country' 'england' %}" class="england"><img src="/static/img/countries/england.svg"> England</a>
+      </div>
+      <div class="column">
+        <a href="{% url 'country' 'scotland' %}" class="scotland"><img src="/static/img/countries/scotland.svg"> Scotland</a>
+      </div>
+      <div class="column">
+        <a href="{% url 'country' 'wales' %}" class="wales"><img src="/static/img/countries/wales.svg"> Wales</a>
+      </div>
+      <div class="column">
+        <a href="{% url 'country' 'northern-ireland' %}" class="northern-ireland"><img src="/static/img/countries/northern-ireland.svg"> Northern Ireland</a>
+      </div>
+  </div>
+
+  <div class="columns">
+    <div class="column">
       <h2>{% trans "Statistics" %}</h2>
     </div>
   </div>
