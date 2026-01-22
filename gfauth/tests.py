@@ -24,7 +24,28 @@ class TestSignIn:
         assert 'sign' in content.lower() or 'google' in content.lower() or 'login' in content.lower()
 
 
-# Note: Sign out and auth receiver tests are skipped as they require:
-# - An active session with user_data for sign out
-# - Valid OAuth credentials for auth_receiver
-# These tests should be tested manually or with proper mocking.
+@pytest.mark.django_db
+class TestSignOut:
+    """Test the sign out functionality."""
+
+    def test_sign_out_without_session_data(self, client):
+        """Test that sign out works even when user_data is not in session."""
+        response = client.get('/auth/sign-out/')
+        # Should redirect to sign in page without raising KeyError
+        assert response.status_code == 302
+        assert response.url == '/auth/'
+
+    def test_sign_out_with_session_data(self, client):
+        """Test that sign out clears user_data from session."""
+        # Set up a session with user_data
+        session = client.session
+        session['user_data'] = {'email': 'test@example.com'}
+        session.save()
+
+        response = client.get('/auth/sign-out/')
+        # Should redirect to sign in page
+        assert response.status_code == 302
+        assert response.url == '/auth/'
+
+        # Verify user_data is removed from session
+        assert 'user_data' not in client.session

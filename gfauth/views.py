@@ -26,5 +26,5 @@ def auth_receiver(request):
     return redirect('auth:sign_in')
 
 def sign_out(request):
-    del request.session['user_data']
+    request.session.pop('user_data', None)
     return redirect('auth:sign_in')
