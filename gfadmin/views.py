@@ -736,6 +736,7 @@ def _build_foodbank_check_data(foodbank):
             "phone_number": foodbank.phone_number,
             "contact_email": foodbank.contact_email,
             "network": foodbank.network,
+            "charity_number": foodbank.charity_number,
         }
     }
     foodbank_locations = []
@@ -894,6 +895,9 @@ FOODBANK_CHECK_RESPONSE_SCHEMA = {
             },
             "network": {
             "type": "string"
+            },
+            "charity_number": {
+            "type": "string"
             }
         },
         "required": [
@@ -903,7 +907,8 @@ FOODBANK_CHECK_RESPONSE_SCHEMA = {
             "country",
             "phone_number",
             "contact_email",
-            "network"
+            "network",
+            "charity_number"
         ]
         },
         "locations": {
