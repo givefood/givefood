@@ -70,6 +70,7 @@
                     </dl>
                 </td>
             </tr>
+            {% if foodbank_json.locations or check_result.locations %}
             <tr>
                 <td colspan="2">Locations</td>
             </tr>
@@ -108,6 +109,8 @@
                     </ul>
                 </td>
             </tr>
+            {% endif %}
+            {% if foodbank_json.donation_points or check_result.donation_points %}
             <tr>
                 <td colspan="2">Donation Points</td>
             </tr>
@@ -146,6 +149,7 @@
                     </ul>
                 </td>
             </tr>
+            {% endif %}
         </table>
     </div>
     <div class="column is-one-third">
