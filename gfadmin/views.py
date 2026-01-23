@@ -2479,8 +2479,20 @@ def places_loader(request):
 
 def settings(request):
 
+    # Calculate current quarter start and end dates
+    today = date.today()
+    current_quarter = (today.month - 1) // 3 + 1
+    quarter_start = date(today.year, (current_quarter - 1) * 3 + 1, 1)
+    # Calculate quarter end (last day of the quarter's last month)
+    if current_quarter == 4:
+        quarter_end = date(today.year, 12, 31)
+    else:
+        quarter_end = date(today.year, current_quarter * 3 + 1, 1) - timedelta(days=1)
+
     template_vars = {
         "section":"settings",
+        "quarter_start": quarter_start.isoformat(),
+        "quarter_end": quarter_end.isoformat(),
     }
     return render(request, "admin/settings.html", template_vars)
 
