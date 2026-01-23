@@ -21,7 +21,7 @@
           {% endif %}
         </td>
         <td>{{ order.no_items }}</td>
-        <td>£{{ order.natural_cost }}</td>
+        <td>£{{ order.natural_cost|floatformat:2 }}</td>
       </tr>
     {% endfor %}
   </table>

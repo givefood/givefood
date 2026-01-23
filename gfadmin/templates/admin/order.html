@@ -36,10 +36,10 @@
         <dd>{{ order.calories|intcomma }}</dd>
 
         <dt>Cost</dt>
-        <dd>£{{ order.natural_cost }}</dd>
+        <dd>£{{ order.natural_cost|floatformat:2 }}</dd>
         {% if order.actual_cost %}
           <dt>Delivered cost</dt>
-          <dd>£{{ order.natural_actual_cost }}</dd>
+          <dd>£{{ order.natural_actual_cost|floatformat:2 }}</dd>
         {% endif %}
 
         {% if order.order_group %}

@@ -56,8 +56,8 @@
             <td>{{ order.no_items }}</td>
             <td>{{ order.weight_kg_pkg|intcomma|floatformat:2 }}</td>
             <td>{{ order.calories|intcomma }}</td>
-            <td>£{{ order.natural_cost }}</td>
-            <td>{% if order.actual_cost %}£{{ order.natural_actual_cost }}{% endif %}</td>
+            <td>£{{ order.natural_cost|floatformat:2 }}</td>
+            <td>{% if order.actual_cost %}£{{ order.natural_actual_cost|floatformat:2 }}{% endif %}</td>
             <td>{{ order.created }}</td>
           </tr>
         {% endfor %}
