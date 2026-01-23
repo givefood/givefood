@@ -73,6 +73,35 @@ label, strong, b, h3 {
     margin:-3px 2px 0 0;
     border:1px solid #3B3B3B;
 }
+/* Buttons */
+.button {
+    border-radius:3px;
+    border:1px solid transparent;
+}
+.button.is-link {
+    background-color: #EAF9FF;
+    color:rgb(53, 55, 64);
+}
+.button.button.is-link:hover {
+    background-color:#d9f2fc;
+    border:1px solid #b9dae8;
+    color:rgb(53, 55, 64);
+}
+.button.is-info.is-light:hover {
+    border:1px solid #b9dae8;
+}
+.button.is-warning:hover {
+    border:1px solid #e0d4ba;
+}
+.button.is-danger:hover {
+    border:1px solid #e5b5bf;
+}
+.button[disabled] {
+    background-color:#f5f5f5 !important;
+    border:1px solid #dbdbdb !important;
+    cursor:not-allowed;
+    opacity:0.7;
+}
 h1 {
     font-size: 26px !important;
     font-family:"Soehne Dreiviertelfett","Helvetica Neue",Helvetica,Arial,sans-serif;
