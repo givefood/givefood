@@ -1548,7 +1548,22 @@ class FoodbankArticle(models.Model):
         return req.url
 
     def title_captialised(self):
-        return capwords(self.title).replace("Uk","UK")
+        # List of words that should not be capitalized (preserve original case)
+        no_cap_words = ['UK', 'AGM', 'CEO', 'NI', 'GCK', 'BBC']
+        
+        result = capwords(self.title)
+        
+        # Replace capitalized acronyms with their correct form
+        for word in no_cap_words:
+            result = result.replace(word.capitalize(), word)
+        
+        # Remove trailing period
+        result = result.rstrip('.')
+        
+        # Replace double spaces with a single space
+        result = result.replace('  ', ' ')
+        
+        return result
 
     def foodbank_name_slug(self):
         return slugify(self.foodbank_name)
