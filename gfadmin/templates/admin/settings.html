@@ -30,9 +30,9 @@
           <li>
             <span class="mdi mdi-calendar"></span> Dated Stats
             <form action="{% url 'admin:quarter_stats' %}" method="get">
-              <input type="date" name="start" value="2024-01-01">
-              <input type="date" name="end" value="2024-03-31">
-              <input type="submit" value="Go">
+              <input type="date" name="start" value="2024-01-01" class="input">
+              <input type="date" name="end" value="2024-03-31" class="input">
+              <input type="submit" value="Go" class="button is-link is-light">
             </form>
           </li>
           <li><span class="mdi mdi-pencil"></span> <a href="{% url 'admin:edit_stats' %}">Edit Stats</a></li>
