@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-30 18:01+0000\n"
-"PO-Revision-Date: 2025-12-14 10:32+0000\n"
+"POT-Creation-Date: 2026-01-23 15:14+0000\n"
+"PO-Revision-Date: 2026-01-23 16:30+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: bn\n"
@@ -19,996 +19,1471 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.8\n"
 
+#: gfdumps/templates/gfdumps/dumps.html:5 gfdumps/templates/gfdumps/dumps.html:25
+#: gfdumps/templates/gfdumps/dumps.html:42
 msgid "Dumps"
 msgstr "ডাম্প"
 
+#: gfdumps/templates/gfdumps/dumps.html:24
+#: gfwfbn/templates/wfbn/constituency/constituency.html:42
+#: gfwfbn/templates/wfbn/constituency/index.html:31
+#: gfwfbn/templates/wfbn/foodbank/charity.html:41
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:46
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:40
+#: gfwfbn/templates/wfbn/foodbank/index.html:48
+#: gfwfbn/templates/wfbn/foodbank/location.html:46
+#: gfwfbn/templates/wfbn/foodbank/locations.html:40
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:40
+#: gfwfbn/templates/wfbn/foodbank/news.html:41
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:40
+#: gfwfbn/templates/wfbn/foodbank/updates.html:40 givefood/templates/public/page.html:56
 msgid "Home"
 msgstr "মূল পাতা"
 
+#: gfdumps/templates/gfdumps/dumps.html:67
 msgid "Date"
 msgstr "তারিখ"
 
+#: gfdumps/templates/gfdumps/dumps.html:68
 msgid "Size"
 msgstr "সাইজ"
 
+#: gfdumps/templates/gfdumps/dumps.html:69
 msgid "Rows"
 msgstr "সারি"
 
+#: gfdumps/templates/gfdumps/dumps.html:75
 msgid "Latest"
 msgstr "সর্বশেষ"
 
-#, fuzzy
-#| msgid "Parliamentary Constituencies"
+#: gfwfbn/templates/wfbn/constituency/constituency.html:43
 msgid "Constituencies"
-msgstr "সংসদীয় নির্বাচনী এলাকা"
+msgstr "নির্বাচনী এলাকা"
 
-#, fuzzy, python-format
-#| msgid "Food banks in %(country)s"
+#: gfwfbn/templates/wfbn/constituency/constituency.html:48
+#, python-format
 msgid "Food banks in %(constituency_name)s"
-msgstr "%(country)s-এ খাদ্য ব্যাংক"
+msgstr "%(constituency_name)s-এ খাদ্য ব্যাংক"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:58
 #, python-format
 msgid "%(constituency_name)s constituency is represented by"
 msgstr "%(constituency_name)s নির্বাচনী এলাকার প্রতিনিধিত্ব করেন"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:60
 msgid "who is the Speaker of the House of Commons."
 msgstr "যিনি হাউস অফ কমন্সের স্পিকার।"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:62
 #, python-format
 msgid "of the %(mp_party)s party."
 msgstr "%(mp_party)s দলের।"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:65
 msgid "Write"
 msgstr "লিখুন"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:68
 #, python-format
 msgid ""
-"The following food banks operate in the %(constituency_name)s constituency. "
-"Here is what they are requesting to have donated."
-msgstr "%(constituency_name)s নির্বাচনী এলাকায় নিম্নলিখিত খাদ্য ব্যাংকগুলি কাজ করে। তারা যা দান করতে অনুরোধ করছে তা এখানে।"
+"The following food banks operate in the %(constituency_name)s constituency. Here is "
+"what they are requesting to have donated."
+msgstr ""
+"%(constituency_name)s নির্বাচনী এলাকায় নিম্নলিখিত খাদ্য ব্যাংকগুলি কাজ করে। তারা যা দান করতে "
+"অনুরোধ করছে তা এখানে।"
 
-#, fuzzy, python-format
-#| msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+#: gfwfbn/templates/wfbn/constituency/constituency.html:75
+#, python-format
 msgid "Part of <a href=\"/needs/at/%(foodbank_slug)s/\">%(foodbank_name)s</a>"
-msgstr "<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> এর জন্য"
+msgstr "<a href=\"/needs/at/%(foodbank_slug)s/\">%(foodbank_name)s</a> এর অংশ"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:82
+#: gfwfbn/templates/wfbn/index.html:116 gfwfbn/templates/wfbn/index.html:216
 msgid "Phone"
 msgstr "মোবাইল"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:86
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
+#: gfwfbn/templates/wfbn/index.html:119 gfwfbn/templates/wfbn/index.html:219
+#: givefood/templates/403.html:30 givefood/templates/404.html:30
+#: givefood/templates/500.html:30
 msgid "Email"
 msgstr "ইমেইল"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:90
+#: gfwfbn/templates/wfbn/index.html:121 gfwfbn/templates/wfbn/index.html:221
 msgid "Check the foodbank's "
 msgstr "ফুডব্যাঙ্কগুলি পরীক্ষা করুন"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:91
+#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:222
 msgid "Facebook page"
 msgstr "ফেসবুক পাতা"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:92
+#: gfwfbn/templates/wfbn/index.html:123 gfwfbn/templates/wfbn/index.html:223
 msgid " for what they need"
 msgstr "তাদের যা প্রয়োজন তার জন্য"
 
+#: gfwfbn/templates/wfbn/constituency/constituency.html:111
 #, fuzzy
 #| msgid "Parliamentary Constituencies"
 msgid "Nearby Constituencies"
 msgstr "সংসদীয় নির্বাচনী এলাকা"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:32
+#: gfwfbn/templates/wfbn/constituency/index.html:36
 msgid "Parliamentary Constituencies"
 msgstr "সংসদীয় নির্বাচনী এলাকা"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:42
 msgid ""
-"Find which food banks operate in your parliamentary constituency, then "
-"donate or take action."
+"Find which food banks operate in your parliamentary constituency, then donate or take "
+"action."
 msgstr ""
-"আপনার সংসদীয় আসনে কোন কোন খাদ্য ব্যাংক কাজ করে তা খুঁজে বের করুন, তারপর দান করুন "
-"অথবা পদক্ষেপ নিন।"
+"আপনার সংসদীয় আসনে কোন কোন খাদ্য ব্যাংক কাজ করে তা খুঁজে বের করুন, তারপর দান করুন অথবা পদক্ষেপ "
+"নিন।"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:46
 msgid "Sorry, we didn't recognise this postcode. Could you try again?"
 msgstr "দুঃখিত, আমরা এই পোস্টকোডটি চিনতে পারিনি। আপনি কি আবার চেষ্টা করতে পারেন?"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Search by postcode"
 msgstr "পোস্টকোড অনুসারে অনুসন্ধান করুন"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:51
 msgid "Postcode"
 msgstr "পোস্ট কোড"
 
+#: gfwfbn/templates/wfbn/constituency/index.html:52 gfwfbn/templates/wfbn/index.html:64
+#: gfwfbn/templates/wfbn/index.html:195 givefood/templates/public/country.html:43
+#: givefood/templates/public/index.html:39
 msgid "Go"
 msgstr "যাও"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:23
+#: gfwfbn/templates/wfbn/foodbank/charity.html:43
+#: gfwfbn/templates/wfbn/foodbank/charity.html:47
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
 msgid "Charity"
 msgstr "দানশীলতা"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s is a registered charity."
 msgstr "%(name)s একটি নিবন্ধিত দাতব্য সংস্থা।"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:57
 #, python-format
 msgid "%(name)s operates under a registered charity."
 msgstr "%(name)s একটি নিবন্ধিত দাতব্য সংস্থার অধীনে পরিচালিত হয়।"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:59
 msgid "Charity name"
 msgstr "দাতব্য প্রতিষ্ঠানের নাম"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:61
 msgid "Regulator"
 msgstr "নিয়ন্ত্রক"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:67
 msgid "Charity number"
 msgstr "দাতব্য নম্বর"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:72
 msgid "Charity type"
 msgstr "দাতব্য প্রতিষ্ঠানের ধরণ"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:76
 msgid "Registration date"
 msgstr "নিবন্ধনের তারিখ"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:81
 msgid "Objectives"
 msgstr "উদ্দেশ্য"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:85
 msgid "Purposes"
 msgstr "উদ্দেশ্য"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:99
 msgid "Year"
 msgstr "বছর"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:100
 msgid "Income"
 msgstr "আয়"
 
+#: gfwfbn/templates/wfbn/foodbank/charity.html:101
 msgid "Expenditure"
 msgstr "ব্যয়"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:48
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:22
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:42
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:46
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9 gfwfbn/templates/wfbn/index.html:87
+#: givefood/templates/public/index.html:177
 msgid "Donation points"
 msgstr "দান পয়েন্ট"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:64
+#: gfwfbn/templates/wfbn/foodbank/index.html:64
+#: gfwfbn/templates/wfbn/foodbank/location.html:63
 msgid "This food bank is closed"
 msgstr "এই খাদ্য ব্যাংকটি বন্ধ।"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 #, python-format
-msgid ""
-"is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
-msgstr ""
+msgid "is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+msgstr "<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> এর জন্য একটি দান বিন্দু"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:67
 msgid "Here they are requesting to have donated..."
 msgstr "এখানে তারা অনুদান দেওয়ার জন্য অনুরোধ করছে..."
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:75
+#: gfwfbn/templates/wfbn/foodbank/index.html:78
+#: gfwfbn/templates/wfbn/foodbank/location.html:77
 msgid "They don't need any more"
 msgstr "তাদের আর কোন প্রয়োজন নেই।"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:81
 msgid "Opening hours"
 msgstr "খোলার ঘন্টা"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
 msgid "Only accepts in-store purchases as donations"
 msgstr "শুধুমাত্র দোকানের কেনাকাটা দান হিসেবে গ্রহণ করা হয়"
 
-msgid ""
-"Although, sometimes you can add items marked as not from the store. Best to "
-"check."
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:92
+msgid "Although, sometimes you can add items marked as not from the store. Best to check."
 msgstr ""
-"যদিও, কখনও কখনও আপনি দোকান থেকে নয় বলে চিহ্নিত জিনিসপত্র যোগ করতে পারেন। চেক "
-"করা ভালো।"
+"যদিও, কখনও কখনও আপনি দোকান থেকে নয় বলে চিহ্নিত জিনিসপত্র যোগ করতে পারেন। চেক করা ভালো।"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:97
 msgid "Wheelchair accessible"
 msgstr "হুইলচেয়ার ব্যবহারের সুবিধা আছে"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:123
+#: gfwfbn/templates/wfbn/foodbank/index.html:140
+#: gfwfbn/templates/wfbn/foodbank/index.html:153
+#: gfwfbn/templates/wfbn/foodbank/location.html:132
+#: gfwfbn/templates/wfbn/foodbank/location.html:144
 msgid "Directions"
 msgstr "দিকনির্দেশনা"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:6
 msgid "Hours may vary because of"
 msgstr "সময় পরিবর্তিত হতে পারে কারণ"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:58
+#: gfwfbn/templates/wfbn/foodbank/locations.html:61
 msgid "Main"
 msgstr "প্রধান"
 
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:66
+#: gfwfbn/templates/wfbn/foodbank/index.html:152
+#: gfwfbn/templates/wfbn/foodbank/location.html:142
+#: gfwfbn/templates/wfbn/foodbank/locations.html:70
 msgid "Delivery"
 msgstr "ডেলিভারি"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
 #, python-format
 msgid ""
 "Charity Registration <a href=\"%(charity_url)s\" "
 "id=\"charity_link\">%(charity_number)s</a>"
 msgstr ""
+"দাতব্য নিবন্ধন <a href=\"%(charity_url)s\" id=\"charity_link\">%(charity_number)s</a>"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
 msgid "Part of"
 msgstr "অংশ"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:13
 msgid "is a registered charity in England &amp; Wales"
 msgstr "ইংল্যান্ড ও ওয়েলসে একটি নিবন্ধিত দাতব্য প্রতিষ্ঠান"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
+#: givefood/templates/public/country.html:51 givefood/templates/public/donate.html:5
+#: givefood/templates/public/donate.html:21 givefood/templates/public/index.html:50
+#: givefood/templates/public/page.html:61
 msgid "Donate"
 msgstr "দান করুন"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:6
 msgid "Food, money or your time"
 msgstr "খাবার, টাকা অথবা আপনার সময়"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:12
 msgid "Donate using "
 msgstr "ব্যবহার করে দান করুন"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
 msgid "Details"
 msgstr "বিস্তারিত"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:6
+#: gfwfbn/templates/wfbn/foodbank/locations.html:22
+#: gfwfbn/templates/wfbn/foodbank/locations.html:42
+#: gfwfbn/templates/wfbn/foodbank/locations.html:46
 msgid "Locations"
 msgstr "ঠিকানা"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
+#: gfwfbn/templates/wfbn/foodbank/news.html:23 gfwfbn/templates/wfbn/foodbank/news.html:43
+#: gfwfbn/templates/wfbn/foodbank/news.html:47
 msgid "News"
 msgstr "খবরাখবর"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:18
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:22
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:42
+#: gfwfbn/templates/wfbn/foodbank/socialmedia.html:46
 msgid "Social media"
 msgstr "সামাজিক যোগাযোগ মাধ্যম"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:20
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:22
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:42
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:46
 msgid "Nearby"
 msgstr "কাছাকাছি"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
+#: givefood/templates/public/page.html:57
 msgid "Apps"
 msgstr "অ্যাপস"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:12
 msgid "Web"
 msgstr "ওয়েব"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:22
+msgid "WhatsApp"
+msgstr "হোয়াটসঅ্যাপ"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:30
 #, python-format
 msgid ""
-"Get a notification of what is needed when you are near a donation point with "
-"our <a href=\"%(apps_url)s\">mobile apps</a>"
+"Get a notification of what is needed when you are near a donation point with our <a "
+"href=\"%(apps_url)s\">mobile apps</a>"
 msgstr ""
-"আমাদের <a href=\"%(apps_url)s\">মোবাইল অ্যাপস</a> ব্যবহার করে দান কেন্দ্রের "
-"কাছাকাছি থাকলে কী প্রয়োজন তার বিজ্ঞপ্তি পান"
+"আমাদের <a href=\"%(apps_url)s\">মোবাইল অ্যাপস</a> ব্যবহার করে দান কেন্দ্রের কাছাকাছি থাকলে "
+"কী প্রয়োজন তার বিজ্ঞপ্তি পান"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:32
 #, python-format
-msgid ""
-"Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</"
-"a>"
+msgid "Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</a>"
 msgstr ""
-"আমাদের <a href=\"%(apps_url)s\">মোবাইল অ্যাপগুলির</a> সাথে কী কী প্রয়োজন সে "
-"সম্পর্কে আপডেট পান"
+"আমাদের <a href=\"%(apps_url)s\">মোবাইল অ্যাপগুলির</a> সাথে কী কী প্রয়োজন সে সম্পর্কে আপডেট "
+"পান"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:37
 msgid "Have this web browser notify when the shopping list changes"
 msgstr "কেনাকাটার তালিকা পরিবর্তন হলে এই ওয়েব ব্রাউজারকে অবহিত করতে বলুন"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:39
 msgid "Get browser notifications"
 msgstr "ব্রাউজার বিজ্ঞপ্তি পান"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:44
 msgid "Sorry, the security check failed. Please try again."
 msgstr "দুঃখিত, নিরাপত্তা পরীক্ষা ব্যর্থ হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:47
 msgid "Get updates on this shopping list via email"
 msgstr "এই কেনাকাটার তালিকার আপডেট ইমেলের মাধ্যমে পান"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:52
 msgid "Email address"
 msgstr "ইমেইল অ্যড্রেস"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:55
 msgid "Get updates"
 msgstr "আপডেট পান"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:58
 msgid ""
-"We'll never use your email address for anything else, and you can "
-"unsubscribe at any time"
+"We'll never use your email address for anything else, and you can unsubscribe at any "
+"time"
 msgstr ""
-"আমরা আপনার ইমেল ঠিকানা অন্য কোনও কাজে ব্যবহার করব না এবং আপনি যেকোনো সময় "
-"সদস্যতা ত্যাগ করতে পারেন।"
+"আমরা আপনার ইমেল ঠিকানা অন্য কোনও কাজে ব্যবহার করব না এবং আপনি যেকোনো সময় সদস্যতা ত্যাগ করতে "
+"পারেন।"
 
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:65
+msgid "Get updates on this shopping list via WhatsApp"
+msgstr "এই শপিং লিস্টের আপডেট WhatsApp এর মাধ্যমে পান"
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:66
+msgid "Get WhatsApp updates"
+msgstr "হোয়াটসঅ্যাপ আপডেট পান"
+
+#: gfwfbn/templates/wfbn/foodbank/index.html:70
 msgid "You can find out what is needed on the foodbank's Facebook page:"
 msgstr "ফুডব্যাঙ্কের ফেসবুক পেজে আপনি কী কী প্রয়োজন তা জানতে পারবেন:"
 
+#: gfwfbn/templates/wfbn/foodbank/index.html:73
 msgid "is currently requesting the following items to be donated:"
 msgstr "বর্তমানে নিম্নলিখিত জিনিসপত্র দান করার জন্য অনুরোধ করছে:"
 
-msgid ""
-"This food bank is located at a school, so may not be open to the public."
-msgstr ""
-"এই খাদ্য ব্যাংকটি একটি স্কুলে অবস্থিত, তাই এটি জনসাধারণের জন্য উন্মুক্ত নাও হতে পারে।"
+#: gfwfbn/templates/wfbn/foodbank/index.html:97
+#: gfwfbn/templates/wfbn/foodbank/index.html:99
+msgid "This food bank is located at a school, so may not be open to the public."
+msgstr "এই খাদ্য ব্যাংকটি একটি স্কুলে অবস্থিত, তাই এটি জনসাধারণের জন্য উন্মুক্ত নাও হতে পারে।"
 
+#: gfwfbn/templates/wfbn/foodbank/index.html:138
+#: gfwfbn/templates/wfbn/foodbank/locations.html:59
 msgid "Administrative"
 msgstr "প্রশাসনিক"
 
+#: gfwfbn/templates/wfbn/foodbank/location.html:81
+#: gfwfbn/templates/wfbn/foodbank/location.html:92
 msgid "This location accepts donations"
 msgstr "এই স্থানটি অনুদান গ্রহণ করে"
 
+#: gfwfbn/templates/wfbn/foodbank/location.html:84
+#: gfwfbn/templates/wfbn/foodbank/location.html:95
 msgid "Mobile food bank location"
 msgstr "ভ্রাম্যমাণ খাদ্য ব্যাংকের অবস্থান"
 
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:65
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:67 gfwfbn/templates/wfbn/index.html:107
+#: gfwfbn/templates/wfbn/index.html:154 gfwfbn/templates/wfbn/index.html:207
 msgid "away"
 msgstr "দূরে"
 
-#, fuzzy
-#| msgid ""
-#| "Sorry. We don't know what's needed here, please contact the food bank"
+#: gfwfbn/templates/wfbn/includes/need_text.html:3
 msgid ""
-"We currently don't know what is needed at this food bank. Please contact "
-"them to find out."
+"We currently don't know what is needed at this food bank. Please contact them to find "
+"out."
 msgstr ""
-"দুঃখিত। এখানে কী প্রয়োজন তা আমরা জানি না, অনুগ্রহ করে ফুড ব্যাংকের সাথে যোগাযোগ "
+"এই খাদ্য ব্যাংকে কী কী প্রয়োজন তা আমরা বর্তমানে জানি না। জানতে অনুগ্রহ করে তাদের সাথে যোগাযোগ "
 "করুন।"
 
+#: gfwfbn/templates/wfbn/includes/need_text.html:6
 msgid ""
-"This food bank isn't requesting anything, but may appreciate other support "
-"like a financial donation or volunteers. Please contact them to find out."
-msgstr "এই খাদ্য ব্যাংক কিছু অনুরোধ করছে না, তবে আর্থিক অনুদান বা স্বেচ্ছাসেবকদের মতো অন্যান্য সহায়তার প্রশংসা করতে পারে। জানতে তাদের সাথে যোগাযোগ করুন।"
+"This food bank isn't requesting anything, but may appreciate other support like a "
+"financial donation or volunteers. Please contact them to find out."
+msgstr ""
+"এই খাদ্য ব্যাংক কিছু অনুরোধ করছে না, তবে আর্থিক অনুদান বা স্বেচ্ছাসেবকদের মতো অন্যান্য সহায়তার "
+"প্রশংসা করতে পারে। জানতে তাদের সাথে যোগাযোগ করুন।"
 
+#: gfwfbn/templates/wfbn/index.html:10
 msgid "What Food Banks Need"
 msgstr "খাদ্য ব্যাংকের কী প্রয়োজন"
 
+#: gfwfbn/templates/wfbn/index.html:11 gfwfbn/templates/wfbn/index.html:12
+#: givefood/views.py:736
 msgid ""
-"Use Give Food's tool to find what food banks near you are requesting to have "
-"donated"
+"Use Give Food's tool to find what food banks near you are requesting to have donated"
 msgstr ""
-"আপনার কাছাকাছি কোন খাদ্য ব্যাংকগুলি অনুদানের জন্য অনুরোধ করছে তা জানতে Give Food-"
-"এর টুল ব্যবহার করুন।"
+"আপনার কাছাকাছি কোন খাদ্য ব্যাংকগুলি অনুদানের জন্য অনুরোধ করছে তা জানতে Give Food-এর টুল ব্যবহার "
+"করুন।"
 
+#: gfwfbn/templates/wfbn/index.html:14
 msgid "Map of UK food banks"
 msgstr "যুক্তরাজ্যের খাদ্য ব্যাংকের মানচিত্র"
 
+#: gfwfbn/templates/wfbn/index.html:32 gfwfbn/templates/wfbn/index.html:40
 msgid "Find Food Banks To Help"
 msgstr "সাহায্যের জন্য খাদ্য ব্যাংক খুঁজুন"
 
+#: gfwfbn/templates/wfbn/index.html:35 gfwfbn/templates/wfbn/index.html:38
 msgid "food banks"
 msgstr "খাদ্য ব্যাংক"
 
+#: gfwfbn/templates/wfbn/index.html:59 givefood/templates/public/country.html:38
+#: givefood/templates/public/index.html:34
 msgid "Use my location"
 msgstr "আমার অবস্থান ব্যবহার করুন"
 
+#: gfwfbn/templates/wfbn/index.html:61 givefood/templates/public/country.html:40
+#: givefood/templates/public/index.html:36
 msgid "Postcode or town"
 msgstr "পোস্টকোড অথবা শহর"
 
+#: gfwfbn/templates/wfbn/index.html:62 givefood/templates/public/index.html:37
 msgid "e.g. EX4 6PX or Sheffield"
 msgstr "যেমন EX4 6PX অথবা শেফিল্ড"
 
+#: gfwfbn/templates/wfbn/index.html:67
 #, python-format
 msgid "Foodbanks in %(location)s"
 msgstr "%(location)s এ খাদ্য ব্যাংক"
 
+#: gfwfbn/templates/wfbn/index.html:68
 #, python-format
 msgid ""
-"Find a food bank near %(location)s, see what they need and how you can help "
-"by donating or volunteering."
+"Find a food bank near %(location)s, see what they need and how you can help by donating "
+"or volunteering."
 msgstr ""
-"%(location)s এর কাছাকাছি একটি খাদ্য ব্যাংক খুঁজুন, তাদের কী প্রয়োজন এবং আপনি "
-"কীভাবে দান বা স্বেচ্ছাসেবক হিসেবে সাহায্য করতে পারেন তা দেখুন।"
+"%(location)s এর কাছাকাছি একটি খাদ্য ব্যাংক খুঁজুন, তাদের কী প্রয়োজন এবং আপনি কীভাবে দান বা "
+"স্বেচ্ছাসেবক হিসেবে সাহায্য করতে পারেন তা দেখুন।"
 
+#: gfwfbn/templates/wfbn/index.html:72
 msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
 msgstr "দুঃখিত, আমরা সেই স্থানটি ব্যবহার করতে পারিনি। এটি কি যুক্তরাজ্যের ভিতরে?"
 
+#: gfwfbn/templates/wfbn/index.html:78
 msgid "Search results"
 msgstr "অনুসন্ধানের ফলাফল"
 
+#: gfwfbn/templates/wfbn/index.html:82 givefood/templates/public/index.html:128
+#: givefood/templates/public/index.html:173
 msgid "Food banks"
 msgstr "খাদ্য ব্যাংক"
 
+#: gfwfbn/templates/wfbn/index.html:92
 msgid "By item"
 msgstr "আইটেম অনুসারে"
 
+#: gfwfbn/templates/wfbn/index.html:105 gfwfbn/templates/wfbn/index.html:205
 #, python-format
 msgid "Part of <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
 msgstr "<a href=\"%(parent_url)s\">%(foodbank_name)s</a> এর অংশ"
 
+#: gfwfbn/templates/wfbn/index.html:113 gfwfbn/templates/wfbn/index.html:159
+#: gfwfbn/templates/wfbn/index.html:213
 msgid "Nothing right now, thanks"
 msgstr "এখন কিছুই নেই, ধন্যবাদ।"
 
+#: gfwfbn/templates/wfbn/index.html:153
 #, python-format
 msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
 msgstr "<a href=\"%(foodbank_url)s\">%(foodbank_name)s</a> এর জন্য"
 
+#: gfwfbn/templates/wfbn/index.html:161
 msgid "Sorry. We don't know what's needed here, please contact the food bank"
-msgstr ""
-"দুঃখিত। এখানে কী প্রয়োজন তা আমরা জানি না, অনুগ্রহ করে ফুড ব্যাংকের সাথে যোগাযোগ "
-"করুন।"
+msgstr "দুঃখিত। এখানে কী প্রয়োজন তা আমরা জানি না, অনুগ্রহ করে ফুড ব্যাংকের সাথে যোগাযোগ করুন।"
 
-#, fuzzy
-#| msgid "Find a food bank"
+#: gfwfbn/templates/wfbn/index.html:178
 msgid "Find an item needed by a food bank nearby"
-msgstr "একটি খাদ্য ব্যাংক খুঁজুন"
+msgstr "কাছাকাছি কোনও ফুড ব্যাংকের প্রয়োজনীয় জিনিসপত্র খুঁজুন।"
 
+#: gfwfbn/templates/wfbn/index.html:186
 msgid "Select an item category"
 msgstr "একটি আইটেম বিভাগ নির্বাচন করুন"
 
+#: gfwfbn/templates/wfbn/index.html:235
 msgid "We don't know of any food banks nearby that need this item right now."
-msgstr ""
-"আমরা কোনো নিকটবর্তী ফুড ব্যাংকের কথা জানি না যা এই মুহূর্তে এই আইটেমটির প্রয়োজন।"
+msgstr "আমরা কোনো নিকটবর্তী ফুড ব্যাংকের কথা জানি না যা এই মুহূর্তে এই আইটেমটির প্রয়োজন।"
 
+#: gfwfbn/views.py:148
 msgid "items requested at"
 msgstr "অনুরোধকৃত জিনিসপত্র"
 
+#: givefood/const/item_types.py:4
 msgid "Tinned Tomatoes"
 msgstr "টিনজাত টমেটো"
 
+#: givefood/const/item_types.py:4 givefood/const/item_types.py:5
+#: givefood/const/item_types.py:6 givefood/const/item_types.py:7
+#: givefood/const/item_types.py:9 givefood/const/item_types.py:10
+#: givefood/const/item_types.py:15 givefood/const/item_types.py:17
+#: givefood/const/item_types.py:18 givefood/const/item_types.py:21
+#: givefood/const/item_types.py:22 givefood/const/item_types.py:24
+#: givefood/const/item_types.py:25 givefood/const/item_types.py:29
+#: givefood/const/item_types.py:30 givefood/const/item_types.py:31
+#: givefood/const/item_types.py:32
 msgid "Meal Food"
 msgstr "খাবারের জন্য খাদ্য"
 
+#: givefood/const/item_types.py:5
 msgid "Tinned Meat"
 msgstr "টিনজাত মাংস"
 
+#: givefood/const/item_types.py:6
 msgid "Tinned Vegetarian"
 msgstr "টিনজাত নিরামিষ"
 
+#: givefood/const/item_types.py:7
 msgid "Tinned Pasta"
 msgstr "টিনজাত পাস্তা"
 
+#: givefood/const/item_types.py:8
 msgid "Confectionery"
 msgstr "মিষ্টান্ন"
 
+#: givefood/const/item_types.py:8 givefood/const/item_types.py:19
+#: givefood/const/item_types.py:20
 msgid "Snack Food"
 msgstr "স্ন্যাক খাবার"
 
+#: givefood/const/item_types.py:9
 msgid "Cereal"
 msgstr "সিরিয়াল"
 
+#: givefood/const/item_types.py:10
 msgid "Tinned Fruit"
 msgstr "টিনজাত ফল"
 
+#: givefood/const/item_types.py:11
 msgid "Milk"
 msgstr "দুধ"
 
+#: givefood/const/item_types.py:11 givefood/const/item_types.py:12
+#: givefood/const/item_types.py:13 givefood/const/item_types.py:26
+#: givefood/const/item_types.py:27 givefood/const/item_types.py:53
 msgid "Drink"
 msgstr "পানীয়"
 
+#: givefood/const/item_types.py:12
 msgid "Fruit Juice"
 msgstr "ফলের রস"
 
+#: givefood/const/item_types.py:13
 msgid "Squash"
 msgstr "স্কোয়াশ"
 
+#: givefood/const/item_types.py:14
 msgid "Condiment"
 msgstr "মসলা"
 
+#: givefood/const/item_types.py:14 givefood/const/item_types.py:16
+#: givefood/const/item_types.py:23 givefood/const/item_types.py:28
+#: givefood/const/item_types.py:50
 msgid "Cooking"
 msgstr "রান্না"
 
+#: givefood/const/item_types.py:15
 msgid "Noodles"
 msgstr "নুডলস"
 
+#: givefood/const/item_types.py:16
 msgid "Cooking Oil"
 msgstr "রান্নার তেল"
 
+#: givefood/const/item_types.py:17
 msgid "Tinned Fish"
 msgstr "টিনজাত মাছ"
 
+#: givefood/const/item_types.py:18
 msgid "Soup"
 msgstr "স্যুপ"
 
+#: givefood/const/item_types.py:19
 msgid "Crisps"
 msgstr "চিপস"
 
+#: givefood/const/item_types.py:20
 msgid "Biscuits"
 msgstr "বিস্কুট"
 
+#: givefood/const/item_types.py:21
 msgid "Baked Beans"
 msgstr "বেকড বিনস"
 
+#: givefood/const/item_types.py:22
 msgid "Tinned Vegetables"
 msgstr "টিনজাত সবজি"
 
+#: givefood/const/item_types.py:23
 msgid "Pasta Sauce"
 msgstr "পাস্তা সস"
 
+#: givefood/const/item_types.py:24
 msgid "Pasta"
 msgstr "পাস্তা"
 
+#: givefood/const/item_types.py:25
 msgid "Rice"
 msgstr "চাল"
 
+#: givefood/const/item_types.py:26
 msgid "Tea"
 msgstr "চা"
 
+#: givefood/const/item_types.py:27
 msgid "Coffee"
 msgstr "কফি"
 
+#: givefood/const/item_types.py:28
 msgid "Sugar"
 msgstr "চিনি"
 
+#: givefood/const/item_types.py:29
 msgid "Spread"
 msgstr "স্প্রেড"
 
+#: givefood/const/item_types.py:30
 msgid "Vegetable"
 msgstr "সবজি"
 
+#: givefood/const/item_types.py:31
 msgid "Instant Mash"
 msgstr "ইনস্ট্যান্ট ম্যাশ"
 
+#: givefood/const/item_types.py:32
 msgid "Dessert"
 msgstr "ডেজার্ট"
 
+#: givefood/const/item_types.py:33
 msgid "Washing Up Liquid"
 msgstr "বাসন ধোয়ার তরল"
 
+#: givefood/const/item_types.py:33 givefood/const/item_types.py:40
+#: givefood/const/item_types.py:46 givefood/const/item_types.py:47
 msgid "Cleaning"
 msgstr "পরিষ্কার"
 
+#: givefood/const/item_types.py:34
 msgid "Toilet Roll"
 msgstr "টয়লেট রোল"
 
+#: givefood/const/item_types.py:34 givefood/const/item_types.py:35
+#: givefood/const/item_types.py:36 givefood/const/item_types.py:37
+#: givefood/const/item_types.py:38 givefood/const/item_types.py:39
+#: givefood/const/item_types.py:41 givefood/const/item_types.py:52
 msgid "Toiletries"
 msgstr "প্রসাধন সামগ্রী"
 
+#: givefood/const/item_types.py:35
 msgid "Shower Gel"
 msgstr "শাওয়ার জেল"
 
+#: givefood/const/item_types.py:36
 msgid "Shampoo"
 msgstr "শ্যাম্পু"
 
+#: givefood/const/item_types.py:37
 msgid "Soap"
 msgstr "সাবান"
 
+#: givefood/const/item_types.py:38
 msgid "Dental"
 msgstr "দাঁতের যত্ন"
 
+#: givefood/const/item_types.py:39
 msgid "Deodorant"
 msgstr "ডিওডোরেন্ট"
 
+#: givefood/const/item_types.py:40
 msgid "Laundry"
 msgstr "কাপড় ধোয়া"
 
+#: givefood/const/item_types.py:41
 msgid "Sanitary Products"
 msgstr "স্যানিটারি পণ্য"
 
+#: givefood/const/item_types.py:42
 msgid "Baby Food"
 msgstr "শিশুখাদ্য"
 
+#: givefood/const/item_types.py:42 givefood/const/item_types.py:43
+#: givefood/const/item_types.py:44 givefood/const/item_types.py:45
 msgid "Baby Supplies"
 msgstr "শিশুর জিনিসপত্র"
 
+#: givefood/const/item_types.py:43
 msgid "Baby Milk"
 msgstr "শিশুর দুধ"
 
+#: givefood/const/item_types.py:44
 msgid "Nappies"
 msgstr "ন্যাপি"
 
+#: givefood/const/item_types.py:45
 msgid "Wipes"
 msgstr "ওয়াইপস"
 
+#: givefood/const/item_types.py:46
 msgid "Kitchen Roll"
 msgstr "কিচেন রোল"
 
+#: givefood/const/item_types.py:47
 msgid "Household Supplies"
 msgstr "গৃহস্থালি সামগ্রী"
 
+#: givefood/const/item_types.py:48
 msgid "Pet Food"
 msgstr "পোষা প্রাণীর খাবার"
 
+#: givefood/const/item_types.py:48 givefood/const/item_types.py:49
+#: givefood/const/item_types.py:51
 msgid "Other"
 msgstr "অন্যান্য"
 
+#: givefood/const/item_types.py:49
 msgid "Carrier Bags"
 msgstr "বহনযোগ্য ব্যাগ"
 
+#: givefood/const/item_types.py:50
 msgid "Sauce"
 msgstr "সস"
 
+#: givefood/const/item_types.py:53
 msgid "Hot Chocolate"
 msgstr "হট চকলেট"
 
+#: givefood/models.py:280 givefood/models.py:282
 msgid "Foodbank"
 msgstr "ফুডব্যাংক"
 
+#: givefood/models.py:1085
 msgid "Closed"
 msgstr "বন্ধ আছে"
 
+#: givefood/templates/403.html:4 givefood/templates/403.html:19
 msgid "403 - Forbidden"
 msgstr "403 - নিষিদ্ধ"
 
+#: givefood/templates/403.html:25 givefood/templates/500.html:25
 msgid ""
-"Sorry, something has gone wrong there and we can't serve that page. This "
-"error has been logged and we'll look into it."
+"Sorry, something has gone wrong there and we can't serve that page. This error has been "
+"logged and we'll look into it."
 msgstr ""
-"দুঃখিত, কিছু একটা সমস্যা হয়েছে এবং আমরা সেই পৃষ্ঠাটি পরিবেশন করতে পারছি না। এই "
-"ত্রুটিটি লগ করা হয়েছে এবং আমরা এটি খতিয়ে দেখব।"
+"দুঃখিত, কিছু একটা সমস্যা হয়েছে এবং আমরা সেই পৃষ্ঠাটি পরিবেশন করতে পারছি না। এই ত্রুটিটি লগ করা "
+"হয়েছে এবং আমরা এটি খতিয়ে দেখব।"
 
+#: givefood/templates/403.html:28 givefood/templates/404.html:28
+#: givefood/templates/500.html:28
 msgid "Homepage"
 msgstr "হোমপেজ"
 
+#: givefood/templates/403.html:29 givefood/templates/404.html:29
+#: givefood/templates/500.html:29
 msgid "Find what food banks need"
 msgstr "খাদ্য ব্যাংকগুলির কী প্রয়োজন তা খুঁজে বের করুন"
 
+#: givefood/templates/404.html:4 givefood/templates/404.html:19
 msgid "404 - Not Found"
 msgstr "৪০৪ - পাওয়া যায়নি"
 
+#: givefood/templates/404.html:25
 msgid ""
-"Sorry, we can't find that page. It may have been removed or you might have "
-"entered an incorrect URL."
+"Sorry, we can't find that page. It may have been removed or you might have entered an "
+"incorrect URL."
 msgstr ""
-"দুঃখিত, আমরা সেই পৃষ্ঠাটি খুঁজে পাচ্ছি না। এটি হয়তো সরানো হয়েছে অথবা আপনি ভুল URL "
-"লিখেছেন।"
+"দুঃখিত, আমরা সেই পৃষ্ঠাটি খুঁজে পাচ্ছি না। এটি হয়তো সরানো হয়েছে অথবা আপনি ভুল URL লিখেছেন।"
 
+#: givefood/templates/500.html:4 givefood/templates/500.html:19
 msgid "500 - Internal Server Error"
 msgstr "৫০০ - অভ্যন্তরীণ সার্ভার ত্রুটি"
 
+#: givefood/templates/public/about_us.html:5 givefood/templates/public/about_us.html:23
+#: givefood/templates/public/country.html:53 givefood/templates/public/index.html:52
+#: givefood/templates/public/page.html:62
 msgid "About us"
 msgstr "আমাদের সম্পর্কে"
 
+#: givefood/templates/public/about_us.html:25
 msgid ""
 "\n"
-"                <p>Give Food is a UK charity that uses data to highlight "
-"local and structural food insecurity, then provides tools to help alleviate "
-"it.</p>\n"
+"                <p>Give Food is a UK charity that uses data to highlight local and "
+"structural food insecurity, then provides tools to help alleviate it.</p>\n"
 "\n"
-"                <p>We run the only <a href=\"/needs/\">national public "
-"database of food banks</a>, tracking in realtime what they are requesting to "
-"have donated.</p>\n"
+"                <p>We run the only <a href=\"/needs/\">national public database of food "
+"banks</a>, tracking in realtime what they are requesting to have donated.</p>\n"
 "\n"
-"                <p>Working with a wide variety of public and private "
-"organisations, including many other charities, we share our data with "
-"millions of users each year, helping people learn about and engage with food "
-"poverty causes.</p>\n"
+"                <p>Working with a wide variety of public and private organisations, "
+"including many other charities, we share our data with millions of users each year, "
+"helping people learn about and engage with food poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">charity</a> in February 2020, just weeks before the UK "
-"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
-"local food insecurity alleviation organisations delivering hundreds of "
-"tonnes of vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">charity</a> in February 2020, just weeks before the UK entered COVID-19 "
+"lockdowns, and since then we've worked with hundreds of local food insecurity "
+"alleviation organisations delivering hundreds of tonnes of vitally needed supplies.</"
+"p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a "
-"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
-"from Penzance to Lerwick as safe as possible whilst continuing to support "
-"their communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a href=\"/2020/#ppe-"
+"supplies\">1.2m items of PPE</a> to help keep food banks from Penzance to Lerwick as "
+"safe as possible whilst continuing to support their communities.</p>\n"
 "\n"
-"                <p>We help the public act on food insecurity by using our "
-"data to show which food banks are in their parliamentary constituency, and "
-"provide a <a href=\"/write/\">tool to easily email their Member of "
-"Parliament</a> asking what action they are taking to remedy it.</p>\n"
+"                <p>We help the public act on food insecurity by using our data to show "
+"which food banks are in their parliamentary constituency, and provide a <a href=\"/"
+"write/\">tool to easily email their Member of Parliament</a> asking what action they "
+"are taking to remedy it.</p>\n"
 "\n"
-"                <p>Our operations are open source and transparent, with "
-"almost all of our current and historical <a href=\"https://github.com/"
-"givefood/givefood\">code</a> and <a href=\"/api/\">data</a> published, plus "
-"<a href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
-"search/-/charity-details/5147019/accounts-and-annual-returns\">accounts</a> "
-"and <a href=\"/annual-reports/\">annual reports</a> available to view.</p>\n"
+"                <p>Our operations are open source and transparent, with almost all of "
+"our current and historical <a href=\"https://github.com/givefood/givefood\">code</a> "
+"and <a href=\"/api/\">data</a> published, plus <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/accounts-"
+"and-annual-returns\">accounts</a> and <a href=\"/annual-reports/\">annual reports</a> "
+"available to view.</p>\n"
 "\n"
-"                <p>Please don't hesitate to contact us with any suggestions, "
-"comments, criticism or encouragement.</p>\n"
+"                <p>Please don't hesitate to contact us with any suggestions, comments, "
+"criticism or encouragement.</p>\n"
 "\n"
 "                <p>\n"
 "                    <em>The Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
-"org.uk</a>\n"
+"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
 msgstr ""
 "\n"
-"                <p>গিভ ফুড হল যুক্তরাজ্যের একটি দাতব্য সংস্থা যা স্থানীয় এবং "
-"কাঠামোগত খাদ্য নিরাপত্তাহীনতা তুলে ধরার জন্য তথ্য ব্যবহার করে, তারপর এটি দূর করতে "
-"সাহায্য করার জন্য সরঞ্জাম সরবরাহ করে।</p><p> আমরা <a href=\"/needs/\">খাদ্য "
-"ব্যাংকগুলির একমাত্র জাতীয় পাবলিক ডাটাবেস</a> পরিচালনা করি, তারা কী অনুদানের জন্য "
-"অনুরোধ করছে তা রিয়েলটাইমে ট্র্যাক করি।</p><p> বিভিন্ন ধরণের সরকারি ও বেসরকারি "
-"সংস্থার সাথে কাজ করে, যার মধ্যে রয়েছে অন্যান্য অনেক দাতব্য প্রতিষ্ঠান, প্রতি বছর লক্ষ "
-"লক্ষ ব্যবহারকারীর সাথে আমাদের তথ্য ভাগ করে নিই, যা মানুষকে খাদ্য দারিদ্র্যের "
-"কারণগুলি সম্পর্কে জানতে এবং তাদের সাথে যুক্ত হতে সাহায্য করে।</p><p> যুক্তরাজ্যে "
-"কোভিড-১৯ লকডাউন শুরু হওয়ার মাত্র কয়েক সপ্তাহ আগে, ২০২০ সালের ফেব্রুয়ারিতে আমরা "
-"একটি <a href=\"https://register-of-charities.charitycommission.gov.uk/en/"
-"charity-search/-/charity-details/5147019\">দাতব্য প্রতিষ্ঠানে</a> পরিণত "
-"হয়েছিলাম, এবং তারপর থেকে আমরা শত শত স্থানীয় খাদ্য নিরাপত্তাহীনতা দূরীকরণ সংস্থার "
-"সাথে কাজ করে শত শত টন অত্যাবশ্যকীয় সরবরাহ সরবরাহ করেছি।</p><p> উদাহরণস্বরূপ, "
-"মহামারী চলাকালীন আমরা পেনজ্যান্স থেকে লারউইক পর্যন্ত খাদ্য ব্যাংকগুলিকে যতটা সম্ভব "
-"নিরাপদ রাখতে এবং তাদের সম্প্রদায়গুলিকে সহায়তা অব্যাহত রাখতে <a href=\"/2020/#ppe-"
-"supplies\">১.২ মিলিয়ন পিপিই আইটেম</a> সরবরাহ করেছি।</p><p> আমরা জনসাধারণকে "
-"খাদ্য নিরাপত্তাহীনতার বিরুদ্ধে পদক্ষেপ নিতে সাহায্য করি, আমাদের তথ্য ব্যবহার করে "
-"দেখাই যে তাদের সংসদীয় নির্বাচনী এলাকায় কোন খাদ্য ব্যাংক রয়েছে, এবং <a href=\"/"
-"write/\">তাদের সংসদ সদস্যদের ইমেল করে তাদের প্রতিকারের জন্য তারা কী পদক্ষেপ "
-"নিচ্ছেন তা জানতে একটি টুল</a> প্রদান করি।</p><p> আমাদের কার্যক্রম ওপেন সোর্স এবং "
-"স্বচ্ছ, আমাদের প্রায় সমস্ত বর্তমান এবং ঐতিহাসিক <a href=\"https://github.com/"
-"givefood/givefood\">কোড</a> এবং <a href=\"/api/\">ডেটা</a> প্রকাশিত হয়েছে, "
-"এবং <a href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
-"search/-/charity-details/5147019/accounts-and-annual-returns\">অ্যাকাউন্ট</a> "
-"এবং <a href=\"/annual-reports/\">বার্ষিক প্রতিবেদনগুলি</a> দেখার জন্য উপলব্ধ।</"
-"p><p> যেকোনো পরামর্শ, মন্তব্য, সমালোচনা বা উৎসাহের জন্য আমাদের সাথে যোগাযোগ করতে "
-"দ্বিধা করবেন না।</p><p> <em>গিভ ফুড ট্রাস্টিরা</em></p><p> <a href=\"mailto:"
-"mail@givefood.org.uk\">mail@givefood.org.uk ঠিকানা</a></p>\n"
+"                <p>গিভ ফুড হল যুক্তরাজ্যের একটি দাতব্য সংস্থা যা স্থানীয় এবং কাঠামোগত খাদ্য "
+"নিরাপত্তাহীনতা তুলে ধরার জন্য তথ্য ব্যবহার করে, তারপর এটি দূর করতে সাহায্য করার জন্য সরঞ্জাম "
+"সরবরাহ করে।</p><p> আমরা <a href=\"/needs/\">খাদ্য ব্যাংকগুলির একমাত্র জাতীয় পাবলিক ডাটাবেস</"
+"a> পরিচালনা করি, তারা কী অনুদানের জন্য অনুরোধ করছে তা রিয়েলটাইমে ট্র্যাক করি।</p><p> বিভিন্ন "
+"ধরণের সরকারি ও বেসরকারি সংস্থার সাথে কাজ করে, যার মধ্যে রয়েছে অন্যান্য অনেক দাতব্য প্রতিষ্ঠান, "
+"প্রতি বছর লক্ষ লক্ষ ব্যবহারকারীর সাথে আমাদের তথ্য ভাগ করে নিই, যা মানুষকে খাদ্য দারিদ্র্যের "
+"কারণগুলি সম্পর্কে জানতে এবং তাদের সাথে যুক্ত হতে সাহায্য করে।</p><p> যুক্তরাজ্যে কোভিড-১৯ লকডাউন "
+"শুরু হওয়ার মাত্র কয়েক সপ্তাহ আগে, ২০২০ সালের ফেব্রুয়ারিতে আমরা একটি <a href=\"https://"
+"register-of-charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">দাতব্য প্রতিষ্ঠানে</a> পরিণত হয়েছিলাম, এবং তারপর থেকে আমরা শত শত স্থানীয় খাদ্য "
+"নিরাপত্তাহীনতা দূরীকরণ সংস্থার সাথে কাজ করে শত শত টন অত্যাবশ্যকীয় সরবরাহ সরবরাহ করেছি।</"
+"p><p> উদাহরণস্বরূপ, মহামারী চলাকালীন আমরা পেনজ্যান্স থেকে লারউইক পর্যন্ত খাদ্য ব্যাংকগুলিকে যতটা "
+"সম্ভব নিরাপদ রাখতে এবং তাদের সম্প্রদায়গুলিকে সহায়তা অব্যাহত রাখতে <a href=\"/2020/#ppe-"
+"supplies\">১.২ মিলিয়ন পিপিই আইটেম</a> সরবরাহ করেছি।</p><p> আমরা জনসাধারণকে খাদ্য "
+"নিরাপত্তাহীনতার বিরুদ্ধে পদক্ষেপ নিতে সাহায্য করি, আমাদের তথ্য ব্যবহার করে দেখাই যে তাদের "
+"সংসদীয় নির্বাচনী এলাকায় কোন খাদ্য ব্যাংক রয়েছে, এবং <a href=\"/write/\">তাদের সংসদ সদস্যদের "
+"ইমেল করে তাদের প্রতিকারের জন্য তারা কী পদক্ষেপ নিচ্ছেন তা জানতে একটি টুল</a> প্রদান করি।</"
+"p><p> আমাদের কার্যক্রম ওপেন সোর্স এবং স্বচ্ছ, আমাদের প্রায় সমস্ত বর্তমান এবং ঐতিহাসিক <a "
+"href=\"https://github.com/givefood/givefood\">কোড</a> এবং <a href=\"/api/\">ডেটা</a> "
+"প্রকাশিত হয়েছে, এবং <a href=\"https://register-of-charities.charitycommission.gov.uk/"
+"charity-search/-/charity-details/5147019/accounts-and-annual-returns\">অ্যাকাউন্ট</a> এবং "
+"<a href=\"/annual-reports/\">বার্ষিক প্রতিবেদনগুলি</a> দেখার জন্য উপলব্ধ।</p><p> যেকোনো "
+"পরামর্শ, মন্তব্য, সমালোচনা বা উৎসাহের জন্য আমাদের সাথে যোগাযোগ করতে দ্বিধা করবেন না।</p><p> "
+"<em>গিভ ফুড ট্রাস্টিরা</em></p><p> <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk ঠিকানা</a></p>\n"
 "\n"
 "            "
 
+#: givefood/templates/public/about_us.html:55
+msgid "Apr"
+msgstr "এপ্রিল"
+
+#: givefood/templates/public/about_us.html:56
+msgid "First test grocery deliveries to foodbanks"
+msgstr "ফুডব্যাঙ্কগুলিতে প্রথমবারের মতো পরীক্ষামূলক মুদিখানা সরবরাহ"
+
+#: givefood/templates/public/about_us.html:59 givefood/templates/public/about_us.html:107
+msgid "Jun"
+msgstr "জুন"
+
+#: givefood/templates/public/about_us.html:60
+msgid "Formed Give Food"
+msgstr "খাদ্য দিন গঠন"
+
+#: givefood/templates/public/about_us.html:63
+msgid "Jan"
+msgstr "জানু"
+
+#: givefood/templates/public/about_us.html:64
+msgid "Released first <a href=\"/\">UK public database of food banks</a>"
+msgstr "<a href=\"/\">যুক্তরাজ্যে খাদ্য ব্যাংকের প্রথম পাবলিক ডাটাবেস</a> প্রকাশ করা হয়েছে"
+
+#: givefood/templates/public/about_us.html:67 givefood/templates/public/about_us.html:79
+msgid "Feb"
+msgstr "ফেব্রু"
+
+#: givefood/templates/public/about_us.html:68
+msgid ""
+"Became a <a href=\"https://register-of-charities.charitycommission.gov.uk/en/charity-"
+"search/-/charity-details/5147019\">registered charity</a>"
+msgstr ""
+"একটি <a href=\"https://register-of-charities.charitycommission.gov.uk/en/charity-"
+"search/-/charity-details/5147019\">নিবন্ধিত দাতব্য প্রতিষ্ঠানে</a> পরিণত হয়েছে"
+
+#: givefood/templates/public/about_us.html:71 givefood/templates/public/about_us.html:115
+msgid "Dec"
+msgstr "ডিসে"
+
+#: givefood/templates/public/about_us.html:72
+msgid ""
+"Open sourced <a href=\"https://github.com/givefood/\">much of our code and versioned "
+"data</a>"
+msgstr ""
+"<a href=\"https://github.com/givefood/\">আমাদের কোড এবং ভার্সন করা ডেটার বেশিরভাগই</a> "
+"ওপেন সোর্স করা হয়েছে"
+
+#: givefood/templates/public/about_us.html:75
+msgid "Oct"
+msgstr "অক্টোবর"
+
+#: givefood/templates/public/about_us.html:76
+msgid "Complete redesign of our website"
+msgstr "আমাদের ওয়েবসাইটের সম্পূর্ণ পুনঃডিজাইন"
+
+#: givefood/templates/public/about_us.html:80
+msgid ""
+"Released our tool to allow the public to easily <a href=\"/write/\">email their MP "
+"about food insecurity</a>"
+msgstr ""
+"<a href=\"/write/\">খাদ্য নিরাপত্তাহীনতা সম্পর্কে জনগণকে তাদের এমপিকে সহজেই ইমেল করার</a> "
+"সুযোগ করে দেওয়ার জন্য আমাদের টুলটি প্রকাশ করা হয়েছে।"
+
+#: givefood/templates/public/about_us.html:83 givefood/templates/public/about_us.html:91
+#: givefood/templates/public/about_us.html:111
+msgid "Nov"
+msgstr "নভে"
+
+#: givefood/templates/public/about_us.html:84
+msgid "Started monitoring foodbank item excess in addition to shortages"
+msgstr "খাদ্যব্যাংকের অতিরিক্ত পণ্যের অভাবের পাশাপাশি তা পর্যবেক্ষণ শুরু করেছে"
+
+#: givefood/templates/public/about_us.html:87 givefood/templates/public/about_us.html:99
+msgid "May"
+msgstr "মে"
+
+#: givefood/templates/public/about_us.html:88
+msgid ""
+"Selected to be part of British Library's <a href=\"https://www.webarchive.org.uk/\">UK "
+"Web Archive</a>"
+msgstr ""
+"ব্রিটিশ লাইব্রেরির <a href=\"https://www.webarchive.org.uk/\">ইউকে ওয়েব আর্কাইভের</a> অংশ "
+"হিসেবে নির্বাচিত।"
+
+#: givefood/templates/public/about_us.html:92
+msgid "First used AI to augment our data processing"
+msgstr "আমাদের ডেটা প্রক্রিয়াকরণ বৃদ্ধির জন্য প্রথমে AI ব্যবহার করা হয়েছিল"
+
+#: givefood/templates/public/about_us.html:95
+msgid "Mar"
+msgstr "মার্চ"
+
+#: givefood/templates/public/about_us.html:96
+msgid "Added food bank donation points to our data"
+msgstr "আমাদের তথ্যে খাদ্য ব্যাংকের অনুদানের পয়েন্ট যোগ করা হয়েছে"
+
+#: givefood/templates/public/about_us.html:100
+msgid ""
+"Rebuilt our email your MP tool to contact parlimentary candidates for the <a href=\"/"
+"2024/#general-election\">UK general election</a>"
+msgstr ""
+"<a href=\"/2024/#general-election\">যুক্তরাজ্যের সাধারণ নির্বাচনের</a> জন্য সংসদীয় প্রার্থীদের "
+"সাথে যোগাযোগ করার জন্য আমাদের ইমেল আপনার এমপি টুলটি পুনর্নির্মাণ করুন।"
+
+#: givefood/templates/public/about_us.html:103
+msgid "Sep"
+msgstr "সেপ্টে"
+
+#: givefood/templates/public/about_us.html:104
+msgid ""
+"Launched our site in <a href=\"/cy/\">Welsh</a> and <a href=\"/gd/\">Scots Gaelic</a>"
+msgstr ""
+"<a href=\"/cy/\">ওয়েলশ</a> এবং <a href=\"/gd/\">স্কটস গ্যালিক</a> ভাষায় আমাদের সাইট চালু "
+"করা হয়েছে"
+
+#: givefood/templates/public/about_us.html:108
+msgid "Data now includes charity financial information"
+msgstr "তথ্যে এখন দাতব্য প্রতিষ্ঠানের আর্থিক তথ্য অন্তর্ভুক্ত রয়েছে"
+
+#: givefood/templates/public/about_us.html:112
+msgid "Released <a href=\"/apps/\">mobile apps</a>"
+msgstr "প্রকাশিত <a href=\"/apps/\">মোবাইল অ্যাপস</a>"
+
+#: givefood/templates/public/about_us.html:116
+msgid "Website now available in 20 languages"
+msgstr "ওয়েবসাইট এখন ২০টি ভাষায় উপলব্ধ"
+
+#: givefood/templates/public/ar/index.html:5 givefood/templates/public/ar/index.html:22
+#: givefood/templates/public/page.html:60
 msgid "Annual reports"
 msgstr "বার্ষিক প্রতিবেদন"
 
+#: givefood/templates/public/ar/index.html:8 givefood/templates/public/donate.html:8
+#: givefood/templates/public/managed_donation.html:10
+#: givefood/templates/public/managed_donation_items.html:10
 msgid ""
-"Give Food is a UK charity that uses data to highlight local and structural "
-"food insecurity then provides tools to help alleviate it."
+"Give Food is a UK charity that uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
 msgstr ""
-"গিভ ফুড হল যুক্তরাজ্যের একটি দাতব্য সংস্থা যা স্থানীয় এবং কাঠামোগত খাদ্য "
-"নিরাপত্তাহীনতা তুলে ধরার জন্য তথ্য ব্যবহার করে এবং তারপর তা দূর করতে সাহায্য করার "
-"জন্য সরঞ্জাম সরবরাহ করে।"
+"গিভ ফুড হল যুক্তরাজ্যের একটি দাতব্য সংস্থা যা স্থানীয় এবং কাঠামোগত খাদ্য নিরাপত্তাহীনতা তুলে ধরার "
+"জন্য তথ্য ব্যবহার করে এবং তারপর তা দূর করতে সাহায্য করার জন্য সরঞ্জাম সরবরাহ করে।"
 
+#: givefood/templates/public/ar/index.html:25
 msgid "Even more AI, translations and mobile apps"
-msgstr ""
+msgstr "আরও বেশি AI, অনুবাদ এবং মোবাইল অ্যাপস"
 
+#: givefood/templates/public/ar/index.html:28
 msgid "AI, general election, site translation"
 msgstr "এআই, সাধারণ নির্বাচন, সাইট অনুবাদ"
 
+#: givefood/templates/public/ar/index.html:31
 msgid "Rebrand, refresh, rewrite &amp; categorisation"
 msgstr "রিব্র্যান্ডিং, রিফ্রেশ, পুনর্লিখন এবং শ্রেণীবদ্ধকরণ"
 
+#: givefood/templates/public/ar/index.html:34
 msgid "Write to your MP tool, surplus monitoring, data audits"
 msgstr "আপনার এমপি টুলে লিখুন, উদ্বৃত্ত পর্যবেক্ষণ, ডেটা অডিট"
 
+#: givefood/templates/public/ar/index.html:37
 msgid "Data &amp; UX review, dashboards, charity reporting"
 msgstr "ডেটা এবং ইউএক্স পর্যালোচনা, ড্যাশবোর্ড, দাতব্য প্রতিবেদন"
 
+#: givefood/templates/public/ar/index.html:40
 msgid "Pandemic response, becoming a charity, publishing our data"
 msgstr "মহামারী মোকাবেলা, দাতব্য প্রতিষ্ঠানে পরিণত হওয়া, আমাদের তথ্য প্রকাশ করা"
 
+#: givefood/templates/public/ar/index.html:43
 msgid "Initial deliveries, Christmas"
 msgstr "প্রাথমিক ডেলিভারি, বড়দিন"
 
+#: givefood/templates/public/colophon.html:5 givefood/templates/public/colophon.html:19
+#: givefood/templates/public/page.html:63
 msgid "Colophon"
 msgstr "কলোফোন"
 
+#: givefood/templates/public/country.html:9
 #, python-format
 msgid ""
-"Find food banks in %(country)s, see what they need and how you can help by "
-"donating or volunteering."
+"Find food banks in %(country)s, see what they need and how you can help by donating or "
+"volunteering."
 msgstr ""
-"%(country)s-এ খাদ্য ব্যাংক খুঁজুন, তাদের কী প্রয়োজন এবং দান বা স্বেচ্ছাসেবক হিসেবে "
-"আপনি কীভাবে সাহায্য করতে পারেন তা দেখুন।"
+"%(country)s-এ খাদ্য ব্যাংক খুঁজুন, তাদের কী প্রয়োজন এবং দান বা স্বেচ্ছাসেবক হিসেবে আপনি কীভাবে "
+"সাহায্য করতে পারেন তা দেখুন।"
 
+#: givefood/templates/public/country.html:13
 #, python-format
 msgid "Food banks in %(country)s"
 msgstr "%(country)s-এ খাদ্য ব্যাংক"
 
+#: givefood/templates/public/country.html:14
 #, python-format
-msgid ""
-"Find food banks in %(country)s, see what they need and how you can help."
+msgid "Find food banks in %(country)s, see what they need and how you can help."
 msgstr ""
-"%(country)s-এ খাদ্য ব্যাংক খুঁজুন, তাদের কী প্রয়োজন এবং আপনি কীভাবে সাহায্য করতে "
-"পারেন তা দেখুন।"
+"%(country)s-এ খাদ্য ব্যাংক খুঁজুন, তাদের কী প্রয়োজন এবং আপনি কীভাবে সাহায্য করতে পারেন তা দেখুন।"
 
+#: givefood/templates/public/country.html:49 givefood/templates/public/index.html:48
 msgid "Write to your MP"
 msgstr "তোমার এমপিকে লিখো।"
 
+#: givefood/templates/public/country.html:49 givefood/templates/public/index.html:48
+#: givefood/templates/public/page.html:59
 msgid "English"
 msgstr "ইংরেজী"
 
+#: givefood/templates/public/country.html:52
 msgid "Register a foodbank"
 msgstr "একটি ফুডব্যাংক নিবন্ধন করুন"
 
+#: givefood/templates/public/country.html:56 givefood/templates/public/index.html:55
 msgid "Recently updated"
 msgstr "সম্প্রতি আপডেট করা হয়েছে"
 
+#: givefood/templates/public/country.html:62 givefood/templates/public/index.html:62
 msgid "Most viewed this week"
 msgstr "এই সপ্তাহে সর্বাধিক দেখা হয়েছে"
 
+#: givefood/templates/public/donate.html:27
 msgid "To"
 msgstr "থেকে"
 
+#: givefood/templates/public/donate.html:28
 msgid ""
-"All donations from the public to Give Food are used directly to efficiently "
-"and quickly deliver requested food and supplies to UK food banks."
+"All donations from the public to Give Food are used directly to efficiently and quickly "
+"deliver requested food and supplies to UK food banks."
 msgstr ""
-"গিভ ফুডের জন্য জনসাধারণের কাছ থেকে প্রাপ্ত সমস্ত অনুদান সরাসরি যুক্তরাজ্যের খাদ্য "
-"ব্যাংকগুলিতে অনুরোধকৃত খাদ্য এবং সরবরাহ দ্রুত এবং দক্ষতার সাথে সরবরাহ করার জন্য ব্যবহৃত "
-"হয়।"
+"গিভ ফুডের জন্য জনসাধারণের কাছ থেকে প্রাপ্ত সমস্ত অনুদান সরাসরি যুক্তরাজ্যের খাদ্য ব্যাংকগুলিতে "
+"অনুরোধকৃত খাদ্য এবং সরবরাহ দ্রুত এবং দক্ষতার সাথে সরবরাহ করার জন্য ব্যবহৃত হয়।"
 
+#: givefood/templates/public/donate.html:29
 msgid "Donate using CAF Donate"
 msgstr "CAF Donate ব্যবহার করে দান করুন"
 
+#: givefood/templates/public/donate.html:32
 msgid "To a food bank"
 msgstr "একটি খাদ্য ব্যাংকে"
 
+#: givefood/templates/public/donate.html:33
 msgid ""
-"Use our tool to find a local food bank and see what they need. Then donate "
-"food, household supplies, toiletries, money or your time."
+"Use our tool to find a local food bank and see what they need. Then donate food, "
+"household supplies, toiletries, money or your time."
 msgstr ""
-"আমাদের টুল ব্যবহার করে স্থানীয় খাদ্য ব্যাংক খুঁজে বের করুন এবং তাদের কী প্রয়োজন তা "
-"দেখুন। তারপর খাবার, গৃহস্থালীর জিনিসপত্র, প্রসাধন সামগ্রী, টাকা অথবা আপনার সময় দান "
-"করুন।"
+"আমাদের টুল ব্যবহার করে স্থানীয় খাদ্য ব্যাংক খুঁজে বের করুন এবং তাদের কী প্রয়োজন তা দেখুন। তারপর "
+"খাবার, গৃহস্থালীর জিনিসপত্র, প্রসাধন সামগ্রী, টাকা অথবা আপনার সময় দান করুন।"
 
+#: givefood/templates/public/donate.html:34
 msgid "Find a food bank"
 msgstr "একটি খাদ্য ব্যাংক খুঁজুন"
 
+#: givefood/templates/public/donate.html:40
 msgid "Managed donations"
 msgstr "পরিচালিত অনুদান"
 
+#: givefood/templates/public/donate.html:41
 msgid ""
-"For donations or grants of £500 or more we can provide a managed service. "
-"Leveraging our data and logistical expertise we can ensure your donation is "
-"used to effectively deliver the required items to food banks that match your "
-"charitable aims. Realtime reports and tracking of how your donation is used "
-"are provided."
+"For donations or grants of £500 or more we can provide a managed service. Leveraging "
+"our data and logistical expertise we can ensure your donation is used to effectively "
+"deliver the required items to food banks that match your charitable aims. Realtime "
+"reports and tracking of how your donation is used are provided."
 msgstr ""
-"£৫০০ বা তার বেশি অনুদান বা অনুদানের জন্য আমরা একটি পরিচালিত পরিষেবা প্রদান করতে "
-"পারি। আমাদের তথ্য এবং লজিস্টিক দক্ষতা ব্যবহার করে আমরা নিশ্চিত করতে পারি যে আপনার "
-"দাতব্য লক্ষ্যের সাথে মেলে এমন খাদ্য ব্যাংকগুলিতে প্রয়োজনীয় জিনিসপত্র কার্যকরভাবে "
-"সরবরাহ করার জন্য আপনার অনুদান ব্যবহার করা হচ্ছে। আপনার অনুদান কীভাবে ব্যবহৃত হচ্ছে "
-"তার রিয়েলটাইম রিপোর্ট এবং ট্র্যাকিং সরবরাহ করা হয়।"
+"£৫০০ বা তার বেশি অনুদান বা অনুদানের জন্য আমরা একটি পরিচালিত পরিষেবা প্রদান করতে পারি। "
+"আমাদের তথ্য এবং লজিস্টিক দক্ষতা ব্যবহার করে আমরা নিশ্চিত করতে পারি যে আপনার দাতব্য লক্ষ্যের "
+"সাথে মেলে এমন খাদ্য ব্যাংকগুলিতে প্রয়োজনীয় জিনিসপত্র কার্যকরভাবে সরবরাহ করার জন্য আপনার অনুদান "
+"ব্যবহার করা হচ্ছে। আপনার অনুদান কীভাবে ব্যবহৃত হচ্ছে তার রিয়েলটাইম রিপোর্ট এবং ট্র্যাকিং সরবরাহ "
+"করা হয়।"
 
+#: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
 msgid "Flag something wrong"
 msgstr "কিছু ভুল চিহ্নিত করুন"
 
+#: givefood/templates/public/flag.html:31
 msgid ""
-"Sorry that you've found something wrong. We'll review your report within 24 "
-"hours, usually quicker."
+"Sorry that you've found something wrong. We'll review your report within 24 hours, "
+"usually quicker."
 msgstr ""
-"দুঃখিত যে আপনি কিছু ভুল খুঁজে পেয়েছেন। আমরা আপনার প্রতিবেদনটি ২৪ ঘন্টার মধ্যে "
-"পর্যালোচনা করব, সাধারণত দ্রুত।"
+"দুঃখিত যে আপনি কিছু ভুল খুঁজে পেয়েছেন। আমরা আপনার প্রতিবেদনটি ২৪ ঘন্টার মধ্যে পর্যালোচনা করব, "
+"সাধারণত দ্রুত।"
 
+#: givefood/templates/public/human.html:4
 msgid "Human check"
 msgstr "মানুষের পরীক্ষা"
 
+#: givefood/templates/public/human.html:21
 msgid "Sorry, but we just have to check you are a human..."
 msgstr "দুঃখিত, কিন্তু আমাদের শুধু পরীক্ষা করতে হবে যে তুমি একজন মানুষ..."
 
+#: givefood/templates/public/includes/appbadges.html:4
 msgid "Download on the App Store"
 msgstr "অ্যাপ স্টোর থেকে ডাউনলোড করুন"
 
+#: givefood/templates/public/includes/appbadges.html:7
 msgid "Get it on Google Play"
 msgstr "গুগল প্লে থেকে পান"
 
+#: givefood/templates/public/includes/country.html:2
 msgid "England"
 msgstr "ইংল্যান্ড"
 
+#: givefood/templates/public/includes/country.html:3
 msgid "Wales"
 msgstr "ওয়েলস"
 
+#: givefood/templates/public/includes/country.html:4
 msgid "Scotland"
 msgstr "স্কটল্যান্ড"
 
+#: givefood/templates/public/includes/country.html:5
 msgid "Northern Ireland"
 msgstr "উত্তর আয়ারল্যান্ড"
 
+#: givefood/templates/public/includes/country.html:6
 msgid "Isle of Man"
 msgstr "আইল অব ম্যান"
 
+#: givefood/templates/public/includes/country.html:7
 msgid "Jersey"
 msgstr "জার্সি"
 
+#: givefood/templates/public/includes/country.html:8
 msgid "Guernsey"
 msgstr "গেঁজি"
 
+#: givefood/templates/public/includes/debugcomment.html:3
 msgid "Hello"
 msgstr "হ্যালো"
 
+#: givefood/templates/public/includes/maplegend.html:4
 msgid "Organisation"
 msgstr "সংগঠন"
 
+#: givefood/templates/public/includes/maplegend.html:4
+#: givefood/templates/public/includes/maplegend.html:5
+#: givefood/templates/public/includes/maplegend.html:7
 msgid "marker"
 msgstr "চিহ্নিতকারী"
 
+#: givefood/templates/public/includes/maplegend.html:5
 msgid "Location"
 msgstr "অবস্থান"
 
+#: givefood/templates/public/includes/maplegend.html:6
 msgid "Service area"
 msgstr "পরিষেবা এলাকা"
 
+#: givefood/templates/public/includes/maplegend.html:7
 msgid "Donation point"
 msgstr "দান বিন্দু"
 
+#: givefood/templates/public/includes/serviceareadisclaimer.html:3
 msgid "Service areas are approximate. You should check with the food bank"
 msgstr "পরিষেবা এলাকাগুলি আনুমানিক। আপনার খাদ্য ব্যাংকের সাথে যোগাযোগ করা উচিত"
 
+#: givefood/templates/public/index.html:9
 msgid ""
-"Give Food a UK charity uses data to highlight local and structural food "
-"insecurity then provides tools to help alleviate it."
+"Give Food a UK charity uses data to highlight local and structural food insecurity then "
+"provides tools to help alleviate it."
 msgstr ""
-"যুক্তরাজ্যের একটি দাতব্য সংস্থা গিভ ফুড স্থানীয় এবং কাঠামোগত খাদ্য নিরাপত্তাহীনতা তুলে "
-"ধরার জন্য তথ্য ব্যবহার করে এবং তারপর তা দূর করতে সাহায্য করার জন্য সরঞ্জাম সরবরাহ "
-"করে।"
+"যুক্তরাজ্যের একটি দাতব্য সংস্থা গিভ ফুড স্থানীয় এবং কাঠামোগত খাদ্য নিরাপত্তাহীনতা তুলে ধরার জন্য "
+"তথ্য ব্যবহার করে এবং তারপর তা দূর করতে সাহায্য করার জন্য সরঞ্জাম সরবরাহ করে।"
 
+#: givefood/templates/public/index.html:14 givefood/templates/public/index.html:31
 msgid ""
-"We're a UK charity that uses data to highlight local and structural food "
-"insecurity then provides tools to help alleviate it."
+"We're a UK charity that uses data to highlight local and structural food insecurity "
+"then provides tools to help alleviate it."
 msgstr ""
-"আমরা যুক্তরাজ্যের একটি দাতব্য সংস্থা যা স্থানীয় এবং কাঠামোগত খাদ্য নিরাপত্তাহীনতা "
-"তুলে ধরার জন্য তথ্য ব্যবহার করে এবং তারপর তা দূর করতে সাহায্য করার জন্য সরঞ্জাম "
-"সরবরাহ করে।"
+"আমরা যুক্তরাজ্যের একটি দাতব্য সংস্থা যা স্থানীয় এবং কাঠামোগত খাদ্য নিরাপত্তাহীনতা তুলে ধরার জন্য "
+"তথ্য ব্যবহার করে এবং তারপর তা দূর করতে সাহায্য করার জন্য সরঞ্জাম সরবরাহ করে।"
 
+#: givefood/templates/public/index.html:32
 msgid ""
-"Use our unique database to find a food bank near you, see what they need and "
-"how you can help by donating or volunteering."
+"Use our unique database to find a food bank near you, see what they need and how you "
+"can help by donating or volunteering."
 msgstr ""
-"আমাদের অনন্য ডাটাবেস ব্যবহার করে আপনার কাছাকাছি একটি খাদ্য ব্যাংক খুঁজে বের করুন, "
-"তাদের কী প্রয়োজন এবং আপনি কীভাবে দান বা স্বেচ্ছাসেবক হিসেবে সাহায্য করতে পারেন "
-"তা দেখুন।"
+"আমাদের অনন্য ডাটাবেস ব্যবহার করে আপনার কাছাকাছি একটি খাদ্য ব্যাংক খুঁজে বের করুন, তাদের কী "
+"প্রয়োজন এবং আপনি কীভাবে দান বা স্বেচ্ছাসেবক হিসেবে সাহায্য করতে পারেন তা দেখুন।"
 
+#: givefood/templates/public/index.html:51 givefood/templates/public/index.html:130
+msgid "Services for food banks"
+msgstr "খাদ্য ব্যাংকের জন্য পরিষেবা"
+
+#: givefood/templates/public/index.html:69
+msgid "News from food banks"
+msgstr "খাদ্য ব্যাংক থেকে খবর"
+
+#: givefood/templates/public/index.html:96
 msgid "We've worked with"
 msgstr "আমরা এর সাথে কাজ করেছি"
 
+#: givefood/templates/public/index.html:117
 msgid "How we can help"
 msgstr "আমরা কীভাবে সাহায্য করতে পারি"
 
+#: givefood/templates/public/index.html:123
 msgid "Public"
 msgstr "পাবলিক"
 
+#: givefood/templates/public/index.html:124
 msgid ""
-"Use our tool to find your local food banks, then donate, volunteer or take "
-"political action."
+"Use our tool to find your local food banks, then donate, volunteer or take political "
+"action."
 msgstr ""
-"আপনার স্থানীয় খাদ্য ব্যাংকগুলি খুঁজে পেতে আমাদের টুলটি ব্যবহার করুন, তারপর দান করুন, "
-"স্বেচ্ছাসেবক হোন অথবা রাজনৈতিক পদক্ষেপ নিন।"
+"আপনার স্থানীয় খাদ্য ব্যাংকগুলি খুঁজে পেতে আমাদের টুলটি ব্যবহার করুন, তারপর দান করুন, স্বেচ্ছাসেবক "
+"হোন অথবা রাজনৈতিক পদক্ষেপ নিন।"
 
+#: givefood/templates/public/index.html:125
 msgid "Find out how to help"
 msgstr "কীভাবে সাহায্য করবেন তা জেনে নিন"
 
+#: givefood/templates/public/index.html:129
 msgid ""
-"Register a food bank to be included in our database and allow users to find "
-"you and what you need."
+"Free websites, entry in our data and open data services to support your important work."
 msgstr ""
-"আমাদের ডাটাবেসে অন্তর্ভুক্ত করার জন্য একটি খাদ্য ব্যাংক নিবন্ধন করুন এবং "
-"ব্যবহারকারীদের আপনাকে এবং আপনার যা প্রয়োজন তা খুঁজে পেতে অনুমতি দিন।"
+"আপনার গুরুত্বপূর্ণ কাজে সহায়তা করার জন্য বিনামূল্যে ওয়েবসাইট, আমাদের ডেটা প্রবেশ এবং উন্মুক্ত ডেটা "
+"পরিষেবা।"
 
-msgid "Register a food bank"
-msgstr "একটি খাদ্য ব্যাংক নিবন্ধন করুন"
-
+#: givefood/templates/public/index.html:133
 msgid "Media"
 msgstr "মিডিয়া"
 
+#: givefood/templates/public/index.html:134
 msgid ""
-"Journalists, in particular data journalists, can use our data for stories "
-"around food poverty."
+"Journalists, in particular data journalists, can use our data for stories around food "
+"poverty."
 msgstr ""
-"সাংবাদিকরা, বিশেষ করে ডেটা সাংবাদিকরা, খাদ্য দারিদ্র্যের গল্পের জন্য আমাদের ডেটা "
-"ব্যবহার করতে পারেন।"
+"সাংবাদিকরা, বিশেষ করে ডেটা সাংবাদিকরা, খাদ্য দারিদ্র্যের গল্পের জন্য আমাদের ডেটা ব্যবহার করতে "
+"পারেন।"
 
+#: givefood/templates/public/index.html:135 givefood/templates/public/index.html:140
 msgid "Use our API"
 msgstr "আমাদের API ব্যবহার করুন"
 
+#: givefood/templates/public/index.html:138
 msgid "Researchers & students"
 msgstr "গবেষক ও শিক্ষার্থীরা"
 
+#: givefood/templates/public/index.html:139
 msgid ""
-"We can provide our data in bulk, plus advice on how to interpret it, to "
-"researchers. Have a look at our API or email us."
+"We can provide our data in bulk, plus advice on how to interpret it, to researchers. "
+"Have a look at our API or email us."
 msgstr ""
-"আমরা গবেষকদের কাছে আমাদের তথ্য বাল্ক সরবরাহ করতে পারি, এবং কীভাবে এটি ব্যাখ্যা "
-"করতে হয় সে সম্পর্কে পরামর্শও দিতে পারি। আমাদের API দেখুন অথবা আমাদের ইমেল করুন।"
+"আমরা গবেষকদের কাছে আমাদের তথ্য বাল্ক সরবরাহ করতে পারি, এবং কীভাবে এটি ব্যাখ্যা করতে হয় সে "
+"সম্পর্কে পরামর্শও দিতে পারি। আমাদের API দেখুন অথবা আমাদের ইমেল করুন।"
 
+#: givefood/templates/public/index.html:146
+msgid "Countries"
+msgstr "দেশগুলি"
+
+#: givefood/templates/public/index.html:167
 msgid "Statistics"
 msgstr "পরিসংখ্যান"
 
+#: givefood/templates/public/index.html:181
 msgid "Items requested"
 msgstr "অনুরোধ করা আইটেম"
 
+#: givefood/templates/public/index.html:185
 msgid "Meals delivered"
 msgstr "খাবার বিতরণ করা হয়েছে"
 
+#: givefood/templates/public/index.html:189 givefood/templates/public/page.html:45
 msgid "Last updated"
 msgstr "সর্বশেষ আপডেট করা হয়েছে"
 
+#: givefood/templates/public/index.html:201
 msgid "Read our"
 msgstr "আমাদের পড়ুন"
 
+#: givefood/templates/public/index.html:201
 msgid "annual report"
 msgstr "বার্ষিক প্রতিবেদন"
 
+#: givefood/templates/public/page.html:40
 msgid "Something wrong in this page?"
 msgstr "এই পৃষ্ঠায় কিছু ভুল?"
 
+#: givefood/templates/public/page.html:46
 msgid "food bank needs viewed this week"
 msgstr "এই সপ্তাহে যে ফুড ব্যাংকটি দেখা প্রয়োজন"
 
+#: givefood/templates/public/page.html:49
 msgid "Give Food is a registered charity in England & Wales"
 msgstr "গিভ ফুড ইংল্যান্ড ও ওয়েলসে একটি নিবন্ধিত দাতব্য প্রতিষ্ঠান।"
 
+#: givefood/templates/public/page.html:50
 msgid "Registered with the"
 msgstr "এর সাথে নিবন্ধিত"
 
+#: givefood/templates/public/page.html:51
 msgid "ICO Data Protection Registration"
 msgstr "ICO ডেটা সুরক্ষা নিবন্ধন"
 
+#: givefood/templates/public/page.html:58
 msgid "Dashboards"
 msgstr "ড্যাশবোর্ড"
 
+#: givefood/templates/public/page.html:64
 msgid "Privacy policy"
 msgstr "গোপনীয়তা নীতি"
 
+#: givefood/templates/public/register_foodbank.html:9
+#: givefood/templates/public/register_foodbank.html:21
+msgid "Register a food bank"
+msgstr "একটি খাদ্য ব্যাংক নিবন্ধন করুন"
+
+#: givefood/views.py:66
 msgid "e.g. EH12 5PJ or Glasgow"
 msgstr "যেমন EH12 5PJ অথবা গ্লাসগো"
 
+#: givefood/views.py:67
 msgid "e.g. HA9 0WS or Manchester"
 msgstr "যেমন HA9 0WS অথবা ম্যানচেস্টার"
 
+#: givefood/views.py:68
 msgid "e.g. CF10 1NS or Cardiff"
 msgstr "যেমন CF10 1NS অথবা কার্ডিফ"
 
+#: givefood/views.py:69
 msgid "e.g. BT12 6LW or Belfast"
 msgstr "যেমন BT12 6LW অথবা বেলফাস্ট"
 
+#: givefood/views.py:915
 msgid "minutes"
 msgstr "মিনিট"
 
+#: givefood/views.py:916
 msgid "Under a minute ago"
 msgstr "এক মিনিটেরও কম আগে"
 
+#: givefood/views.py:918
 msgid "ago"
 msgstr "পূর্বে"
 
-#~ msgid "is a donation point for"
-#~ msgstr "এটি একটি দান বিন্দু যার জন্য"
+#~ msgid ""
+#~ "Register a food bank to be included in our database and allow users to find you and "
+#~ "what you need."
+#~ msgstr ""
+#~ "আমাদের ডাটাবেসে অন্তর্ভুক্ত করার জন্য একটি খাদ্য ব্যাংক নিবন্ধন করুন এবং ব্যবহারকারীদের আপনাকে "
+#~ "এবং আপনার যা প্রয়োজন তা খুঁজে পেতে অনুমতি দিন।"
 
 #~ msgid "Charity Registration"
 #~ msgstr "দাতব্য নিবন্ধন"
@@ -1027,12 +1502,12 @@ msgstr "পূর্বে"
 
 #, fuzzy
 #~| msgid ""
-#~| "Find a food bank near you, see what they need and how you can help by "
-#~| "donating or volunteering."
+#~| "Find a food bank near you, see what they need and how you can help by donating or "
+#~| "volunteering."
 #~ msgid "see what they need and how you can help by donating or volunteering."
 #~ msgstr ""
-#~ "আপনার কাছাকাছি একটি খাদ্য ব্যাংক খুঁজুন, তাদের কী প্রয়োজন এবং আপনি কীভাবে দান "
-#~ "বা স্বেচ্ছাসেবক হিসেবে সাহায্য করতে পারেন তা দেখুন।"
+#~ "আপনার কাছাকাছি একটি খাদ্য ব্যাংক খুঁজুন, তাদের কী প্রয়োজন এবং আপনি কীভাবে দান বা "
+#~ "স্বেচ্ছাসেবক হিসেবে সাহায্য করতে পারেন তা দেখুন।"
 
 #~ msgid "Browse by parliamentary constituency"
 #~ msgstr "সংসদীয় নির্বাচনী এলাকা অনুসারে ব্রাউজ করুন"
