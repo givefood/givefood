@@ -15,7 +15,8 @@ class TestMigrateCostToMoneyCommand:
         output = out.getvalue()
         
         assert 'DRY RUN' in output
-        assert 'Starting cost migration' in output
+        assert 'Starting cost field migration' in output
+        assert 'Adding MoneyField columns' in output
         assert 'Migrating Order records' in output
         assert 'Migrating OrderLine records' in output
 
@@ -25,7 +26,8 @@ class TestMigrateCostToMoneyCommand:
         call_command('migrate_cost_to_money', stdout=out)
         output = out.getvalue()
         
-        assert 'Starting cost migration' in output
+        assert 'Starting cost field migration' in output
+        assert 'Adding MoneyField columns' in output
         assert 'Migration complete' in output
 
     def test_command_accepts_batch_size_argument(self):
