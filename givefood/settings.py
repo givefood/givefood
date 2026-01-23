@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     "django.contrib.humanize",
 
     "bulma",
-    "djmoney",
     "django_tasks",
     "django_tasks.backends.database",
     "webpush",
