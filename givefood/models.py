@@ -1549,7 +1549,7 @@ class FoodbankArticle(models.Model):
 
     def title_captialised(self):
         # List of words that should not be capitalized (preserve original case)
-        no_cap_words = ['UK', 'AGM', 'CEO', 'NI', 'GCK', 'BBC']
+        no_cap_words = ['UK', 'AGM', 'CEO', 'NI', 'GCK', 'BBC', 'COVID', 'MP', 'NHS', 'ID', 'TV', 'UN', 'FC', 'UHT']
         
         result = capwords(self.title)
         
