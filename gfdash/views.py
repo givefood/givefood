@@ -447,7 +447,7 @@ def charity_income_expenditure(request):
 @cache_page(SECONDS_IN_HOUR)
 def price_per_kg(request):
 
-    months = Order.objects.annotate(month = TruncMonth('delivery_datetime'), year = TruncYear('delivery_datetime')).values('month', 'year').annotate(total_weight = Sum('weight'),total_cost = Sum('cost')/100,price_per_kg = Sum('cost')*1000/Sum('weight')).order_by('month')
+    months = Order.objects.annotate(month = TruncMonth('delivery_datetime'), year = TruncYear('delivery_datetime')).values('month', 'year').annotate(total_weight = Sum('weight'),total_cost = Sum('cost'),price_per_kg = Sum('cost')*100000/Sum('weight')).order_by('month')
 
     items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]
     weight = Order.objects.aggregate(Sum("weight"))["weight__sum"]/1000000
@@ -475,8 +475,8 @@ def price_per_calorie(request):
         'year'
     ).annotate(
         total_calories=Sum('calories'),
-        total_cost=Sum('line_cost') / 100,
-        price_per_calorie=Sum('line_cost') * 2000 / Sum('calories')
+        total_cost=Sum('line_cost'),
+        price_per_calorie=Sum('line_cost') * 200000 / Sum('calories')
     ).order_by('month')
     
     items = Order.objects.aggregate(Sum("no_items"))["no_items__sum"]

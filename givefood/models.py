@@ -22,12 +22,15 @@ from django.db.models import Max, Min
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
+from djmoney.models.fields import MoneyField
+from djmoney.money import Money
+
 from requests import PreparedRequest
 import requests
 
 from givefood.settings import LANGUAGES
 
-from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN, CRAWL_TYPE_ICONS, CRAWL_TYPE_ICON_DEFAULT
+from givefood.const.general import DEFAULT_CURRENCY, DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN, CRAWL_TYPE_ICONS, CRAWL_TYPE_ICON_DEFAULT
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
 from givefood.func import decache_async, gemini, geocode, geojson_dict, get_calories, clean_foodbank_need_text, admin_regions_from_postcode, make_url_friendly, find_foodbanks, get_cred, diff_html, find_parlcons, place_has_photo, pluscode, translate_need_async, validate_postcode
 
@@ -503,7 +506,7 @@ class Foodbank(models.Model):
         if not cost:
             return 0
         else:
-            return cost / 100
+            return float(cost.amount) if hasattr(cost, 'amount') else float(cost)
 
     def total_items(self):
         return Order.objects.filter(foodbank = self).aggregate(models.Sum('no_items'))['no_items__sum']
@@ -1272,8 +1275,8 @@ class Order(models.Model):
 
     weight = models.PositiveIntegerField(editable=False)
     calories = models.PositiveIntegerField(editable=False)
-    cost = models.PositiveIntegerField(editable=False) # Pence, the cost when ordered
-    actual_cost = models.PositiveIntegerField(null=True, blank=True, verbose_name="Delivered cost", help_text="In pence") # Pence, the cost when delivered
+    cost = MoneyField(max_digits=6, decimal_places=2, default=0, default_currency=DEFAULT_CURRENCY, editable=False)
+    actual_cost = MoneyField(max_digits=6, decimal_places=2, null=True, blank=True, default_currency=DEFAULT_CURRENCY, verbose_name="Delivered cost")
     no_lines = models.PositiveIntegerField(editable=False)
     no_items = models.PositiveIntegerField(editable=False)
 
@@ -1296,11 +1299,13 @@ class Order(models.Model):
         return self.delivery_hour + 1
 
     def natural_cost(self):
-        return float(self.cost/100)
+        if self.cost:
+            return float(self.cost.amount)
+        return 0.0
     
     def natural_actual_cost(self):
         if self.actual_cost:
-            return float(self.actual_cost/100)
+            return float(self.actual_cost.amount)
         else:
             return None
 
@@ -1341,7 +1346,7 @@ class Order(models.Model):
 
         self.weight = 0
         self.calories = 0
-        self.cost = 0
+        self.cost = Money(0, DEFAULT_CURRENCY)
         self.no_lines = 0
         self.no_items = 0
 
@@ -1411,8 +1416,8 @@ class Order(models.Model):
                 order = self,
                 name = order_line.get("name"),
                 quantity = order_line["quantity"],
-                item_cost = order_line["item_cost"],
-                line_cost = line_cost,
+                item_cost = Money(order_line["item_cost"] / 100, DEFAULT_CURRENCY),  # Convert pence to pounds
+                line_cost = Money(line_cost / 100, DEFAULT_CURRENCY),  # Convert pence to pounds
                 weight = line_weight,
                 calories = order_line["calories"],
             )
@@ -1421,7 +1426,7 @@ class Order(models.Model):
         # Order aggregated stats
         self.weight = order_weight
         self.calories = order_calories
-        self.cost = order_cost
+        self.cost = Money(order_cost / 100, DEFAULT_CURRENCY)  # Convert pence to pounds
         self.no_lines = len(order_lines)
         self.no_items = order_items
 
@@ -1458,8 +1463,8 @@ class OrderLine(models.Model):
 
     name = models.CharField(max_length=100)
     quantity = models.PositiveIntegerField()
-    item_cost = models.PositiveIntegerField() #pence
-    line_cost = models.PositiveIntegerField()
+    item_cost = MoneyField(max_digits=6, decimal_places=2, default_currency=DEFAULT_CURRENCY)
+    line_cost = MoneyField(max_digits=6, decimal_places=2, default_currency=DEFAULT_CURRENCY)
 
     weight = models.PositiveIntegerField(editable=False,null=True)
     calories = models.PositiveIntegerField(editable=False,null=True)
@@ -1474,7 +1479,9 @@ class OrderLine(models.Model):
         return self.weight/1000
     
     def natural_cost(self):
-        return float(self.line_cost/100)
+        if self.line_cost:
+            return float(self.line_cost.amount)
+        return 0.0
 
     class Meta:
         app_label = 'givefood'
