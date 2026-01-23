@@ -96,6 +96,13 @@ input[type=checkbox] {
 .button.is-danger:hover {
   border:1px solid #e5b5bf;
 }
+.button[disabled] {
+  background-color:#f5f5f5 !important;
+  color:#7a7a7a !important;
+  border:1px solid #dbdbdb !important;
+  cursor:not-allowed;
+  opacity:0.7;
+}
 
 h1 {
   margin:10px 0;
