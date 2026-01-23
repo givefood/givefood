@@ -90,6 +90,9 @@ input[type=checkbox] {
   border:1px solid #b9dae8;
   color:rgb(53, 55, 64);
 }
+.button.is-info.is-light:hover {
+  border:1px solid #b9dae8;
+}
 .button.is-warning:hover {
   border:1px solid #e0d4ba;
 }
