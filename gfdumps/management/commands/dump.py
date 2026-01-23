@@ -622,7 +622,7 @@ class Command(BaseCommand):
         # ==================== CLEANUP ====================
         self.stdout.write("Deleting old dumps...")
 
-        cutoff_date = timezone.now() - timedelta(days=28)
+        cutoff_date = timezone.now() - timedelta(days=14)
         old_dumps = Dump.objects.filter(created__lt=cutoff_date).exclude(created__day=1)
         deleted_count = old_dumps.count()
         old_dumps.delete()
