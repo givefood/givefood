@@ -1560,8 +1560,9 @@ class FoodbankArticle(models.Model):
         # Remove trailing period
         result = result.rstrip('.')
         
-        # Replace double spaces with a single space
-        result = result.replace('  ', ' ')
+        # Replace multiple consecutive spaces with a single space
+        while '  ' in result:
+            result = result.replace('  ', ' ')
         
         return result
 

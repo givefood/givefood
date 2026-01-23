@@ -141,6 +141,16 @@ class TestFoodbankArticleTitleCapitalised:
         )
         assert article.title_captialised() == 'Food Bank Opens Today'
 
+    def test_multiple_consecutive_spaces_replaced(self, foodbank):
+        """Test that multiple consecutive spaces (more than two) are replaced with a single space."""
+        article = FoodbankArticle.objects.create(
+            foodbank=foodbank,
+            title='food bank   opens    today',
+            url='https://example.com/multi-space-test',
+            published_date=timezone.now(),
+        )
+        assert article.title_captialised() == 'Food Bank Opens Today'
+
     def test_combined_improvements(self, foodbank):
         """Test multiple improvements combined: UK, trailing period, double spaces."""
         article = FoodbankArticle.objects.create(
