@@ -91,7 +91,7 @@ input[type=checkbox] {
   color:rgb(53, 55, 64);
 }
 .button.is-warning:hover {
-  border:1px solid #f9e8c2;
+  border:1px solid #e0d4ba;
 }
 .button.is-danger:hover {
   border:1px solid #e5b5bf;
