@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-23 15:14+0000\n"
-"PO-Revision-Date: 2025-12-14 10:28+0000\n"
+"PO-Revision-Date: 2026-01-23 16:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: lt\n"
@@ -61,16 +61,13 @@ msgid "Latest"
 msgstr "Naujausi"
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:43
-#, fuzzy
-#| msgid "Parliamentary Constituencies"
 msgid "Constituencies"
-msgstr "Parlamento rinkimų apygardos"
+msgstr "Rinkimų apygardos"
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:48
-#, fuzzy, python-format
-#| msgid "Food banks in %(country)s"
+#, python-format
 msgid "Food banks in %(constituency_name)s"
-msgstr "Maisto bankai %(country)s"
+msgstr "Maisto bankai %(constituency_name)s"
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:58
 #, python-format
@@ -100,10 +97,9 @@ msgstr ""
 "jie prašo paaukoti."
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:75
-#, fuzzy, python-format
-#| msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+#, python-format
 msgid "Part of <a href=\"/needs/at/%(foodbank_slug)s/\">%(foodbank_name)s</a>"
-msgstr "Skirta <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+msgstr "Dalis <a href=\"/needs/at/%(foodbank_slug)s/\">%(foodbank_name)s</a>"
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:82
 #: gfwfbn/templates/wfbn/index.html:116 gfwfbn/templates/wfbn/index.html:216
@@ -134,10 +130,8 @@ msgid " for what they need"
 msgstr "už tai, ko jiems reikia"
 
 #: gfwfbn/templates/wfbn/constituency/constituency.html:111
-#, fuzzy
-#| msgid "Parliamentary Constituencies"
 msgid "Nearby Constituencies"
-msgstr "Parlamento rinkimų apygardos"
+msgstr "Netoliese esančios rinkimų apygardos"
 
 #: gfwfbn/templates/wfbn/constituency/index.html:32
 #: gfwfbn/templates/wfbn/constituency/index.html:36
@@ -383,7 +377,7 @@ msgstr "Interneto svetainė"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:22
 msgid "WhatsApp"
-msgstr ""
+msgstr "WhatsApp"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:30
 #, python-format
@@ -438,16 +432,12 @@ msgstr ""
 "bet kada atsisakyti prenumeratos."
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:65
-#, fuzzy
-#| msgid "Get updates on this shopping list via email"
 msgid "Get updates on this shopping list via WhatsApp"
-msgstr "Gaukite šio pirkinių sąrašo atnaujinimus el. paštu"
+msgstr "Gaukite šio pirkinių sąrašo atnaujinimus per „WhatsApp“"
 
 #: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:66
-#, fuzzy
-#| msgid "Get updates"
 msgid "Get WhatsApp updates"
-msgstr "Gaukite atnaujinimus"
+msgstr "Gaukite „WhatsApp“ atnaujinimus"
 
 #: gfwfbn/templates/wfbn/foodbank/index.html:70
 msgid "You can find out what is needed on the foodbank's Facebook page:"
@@ -486,13 +476,12 @@ msgid "away"
 msgstr "toli"
 
 #: gfwfbn/templates/wfbn/includes/need_text.html:3
-#, fuzzy
-#| msgid ""
-#| "Sorry. We don't know what's needed here, please contact the food bank"
 msgid ""
 "We currently don't know what is needed at this food bank. Please contact "
 "them to find out."
-msgstr "Atsiprašome. Nežinome, ko čia reikia, susisiekite su maisto banku."
+msgstr ""
+"Šiuo metu nežinome, ko reikia šiam maisto bankui. Norėdami sužinoti, "
+"susisiekite su jais."
 
 #: gfwfbn/templates/wfbn/includes/need_text.html:6
 msgid ""
@@ -597,10 +586,8 @@ msgid "Sorry. We don't know what's needed here, please contact the food bank"
 msgstr "Atsiprašome. Nežinome, ko čia reikia, susisiekite su maisto banku."
 
 #: gfwfbn/templates/wfbn/index.html:178
-#, fuzzy
-#| msgid "Find what food banks need"
 msgid "Find an item needed by a food bank nearby"
-msgstr "Sužinokite, ko reikia maisto bankams"
+msgstr "Raskite netoliese esančiam maisto bankui reikalingą prekę"
 
 #: gfwfbn/templates/wfbn/index.html:186
 msgid "Select an item category"
@@ -929,17 +916,17 @@ msgid ""
 "millions of users each year, helping people learn about and engage with food "
 "poverty causes.</p>\n"
 "\n"
-"                <p>We became a <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">charity</a> in February 2020, just weeks before the UK "
-"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
-"local food insecurity alleviation organisations delivering hundreds of "
-"tonnes of vitally needed supplies.</p>\n"
+"                <p>We became a <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">charity</a> in February 2020, just weeks before the UK entered "
+"COVID-19 lockdowns, and since then we've worked with hundreds of local food "
+"insecurity alleviation organisations delivering hundreds of tonnes of "
+"vitally needed supplies.</p>\n"
 "\n"
-"                <p>For example, during the pandemic we delivered <a "
-"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
-"from Penzance to Lerwick as safe as possible whilst continuing to support "
-"their communities.</p>\n"
+"                <p>For example, during the pandemic we delivered <a href=\"/"
+"2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks from "
+"Penzance to Lerwick as safe as possible whilst continuing to support their "
+"communities.</p>\n"
 "\n"
 "                <p>We help the public act on food insecurity by using our "
 "data to show which food banks are in their parliamentary constituency, and "
@@ -960,8 +947,8 @@ msgid ""
 "                    <em>The Give Food Trustees</em>\n"
 "                </p>\n"
 "                <p>\n"
-"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
-"org.uk</a>\n"
+"                    <a "
+"href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a>\n"
 "                </p>\n"
 "\n"
 "            "
@@ -975,161 +962,167 @@ msgstr ""
 "viešosiomis ir privačiomis organizacijomis, įskaitant daugelį kitų labdaros "
 "organizacijų, kasmet dalijamės savo duomenimis su milijonais vartotojų, "
 "padėdami žmonėms sužinoti apie maisto nepritekliaus priežastis ir įsitraukti "
-"į jų sprendimą.</p><p> Tapome <a href=\"https://register-of-charities."
-"charitycommission.gov.uk/en/charity-search/-/charity-"
-"details/5147019\">labdaros organizacija</a> 2020 m. vasarį, likus vos "
-"kelioms savaitėms iki JK įvesto karantino dėl COVID-19, ir nuo tada "
-"bendradarbiavome su šimtais vietos maisto nepritekliaus mažinimo "
-"organizacijų, pristatydami šimtus tonų gyvybiškai reikalingų atsargų.</p><p> "
-"Pavyzdžiui, pandemijos metu pristatėme <a href=\"/2020/#ppe-supplies\">1,2 "
-"mln. asmeninių apsaugos priemonių</a> , kad padėtume užtikrinti kuo didesnį "
-"maisto bankų nuo Penzanso iki Lerviko saugumą ir toliau remti jų "
-"bendruomenes.</p><p> Mes padedame visuomenei spręsti maisto nepritekliaus "
-"problemą, naudodamiesi savo duomenimis, kad parodytume, kurie maisto bankai "
-"yra jų parlamento rinkimų apygardoje, ir suteikiame <a href=\"/write/"
-"\">įrankį, leidžiantį lengvai el. paštu išsiųsti savo parlamento nariui</a> "
-"klausimą, kokių veiksmų jis imasi, kad išspręstų šią problemą.</p><p> Mūsų "
-"veikla yra atvirojo kodo ir skaidri, beveik visas mūsų dabartinis ir "
-"istorinis <a href=\"https://github.com/givefood/givefood\">kodas</a> bei <a "
-"href=\"/api/\">duomenys</a> yra publikuojami, o <a href=\"https://register-"
-"of-charities.charitycommission.gov.uk/charity-search/-/charity-"
-"details/5147019/accounts-and-annual-returns\">ataskaitos</a> ir <a href=\"/"
-"annual-reports/\">metinės ataskaitos</a> yra prieinamos peržiūrėti.</p><p> "
-"Nedvejodami kreipkitės į mus su bet kokiais pasiūlymais, komentarais, "
-"kritika ar padrąsinimais.</p><p> <em>„Give Food Trusts“</em></p><p> <a "
+"į jų sprendimą.</p><p> Tapome <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/en/charity-search/-/charity-details/"
+"5147019\">labdaros organizacija</a> 2020 m. vasarį, likus vos kelioms "
+"savaitėms iki JK įvesto karantino dėl COVID-19, ir nuo tada bendradarbiavome "
+"su šimtais vietos maisto nepritekliaus mažinimo organizacijų, pristatydami "
+"šimtus tonų gyvybiškai reikalingų atsargų.</p><p> Pavyzdžiui, pandemijos "
+"metu pristatėme <a href=\"/2020/#ppe-supplies\">1,2 mln. asmeninių apsaugos "
+"priemonių</a> , kad padėtume užtikrinti kuo didesnį maisto bankų nuo "
+"Penzanso iki Lerviko saugumą ir toliau remti jų bendruomenes.</p><p> Mes "
+"padedame visuomenei spręsti maisto nepritekliaus problemą, naudodamiesi savo "
+"duomenimis, kad parodytume, kurie maisto bankai yra jų parlamento rinkimų "
+"apygardoje, ir suteikiame <a href=\"/write/\">įrankį, leidžiantį lengvai el. "
+"paštu išsiųsti savo parlamento nariui</a> klausimą, kokių veiksmų jis imasi, "
+"kad išspręstų šią problemą.</p><p> Mūsų veikla yra atvirojo kodo ir skaidri, "
+"beveik visas mūsų dabartinis ir istorinis <a href=\"https://github.com/"
+"givefood/givefood\">kodas</a> bei <a href=\"/api/\">duomenys</a> yra "
+"publikuojami, o <a href=\"https://register-of-"
+"charities.charitycommission.gov.uk/charity-search/-/charity-details/5147019/"
+"accounts-and-annual-returns\">ataskaitos</a> ir <a href=\"/annual-reports/"
+"\">metinės ataskaitos</a> yra prieinamos peržiūrėti.</p><p> Nedvejodami "
+"kreipkitės į mus su bet kokiais pasiūlymais, komentarais, kritika ar "
+"padrąsinimais.</p><p> <em>„Give Food Trusts“</em></p><p> <a "
 "href=\"mailto:mail@givefood.org.uk\">mail@givefood.org.uk</a></p>\n"
 "\n"
 "            "
 
 #: givefood/templates/public/about_us.html:55
 msgid "Apr"
-msgstr ""
+msgstr "Bal"
 
 #: givefood/templates/public/about_us.html:56
 msgid "First test grocery deliveries to foodbanks"
-msgstr ""
+msgstr "Pirmieji bandomieji maisto produktų pristatymai į maisto bankus"
 
 #: givefood/templates/public/about_us.html:59
 #: givefood/templates/public/about_us.html:107
 msgid "Jun"
-msgstr ""
+msgstr "Bir"
 
 #: givefood/templates/public/about_us.html:60
 msgid "Formed Give Food"
-msgstr ""
+msgstr "Suformuotas duoti maisto"
 
 #: givefood/templates/public/about_us.html:63
 msgid "Jan"
-msgstr ""
+msgstr "Sau"
 
 #: givefood/templates/public/about_us.html:64
 msgid "Released first <a href=\"/\">UK public database of food banks</a>"
-msgstr ""
+msgstr "Išleista pirmoji <a href=\"/\">vieša JK maisto bankų duomenų bazė</a>"
 
 #: givefood/templates/public/about_us.html:67
 #: givefood/templates/public/about_us.html:79
-#, fuzzy
-#| msgid "Web"
 msgid "Feb"
-msgstr "Interneto svetainė"
+msgstr "Vas"
 
 #: givefood/templates/public/about_us.html:68
 msgid ""
 "Became a <a href=\"https://register-of-charities.charitycommission.gov.uk/en/"
 "charity-search/-/charity-details/5147019\">registered charity</a>"
 msgstr ""
+"Tapo <a href=\"https://register-of-charities.charitycommission.gov.uk/en/"
+"charity-search/-/charity-details/5147019\">registruota labdaros "
+"organizacija</a>"
 
 #: givefood/templates/public/about_us.html:71
 #: givefood/templates/public/about_us.html:115
 msgid "Dec"
-msgstr ""
+msgstr "Gruo"
 
 #: givefood/templates/public/about_us.html:72
 msgid ""
 "Open sourced <a href=\"https://github.com/givefood/\">much of our code and "
 "versioned data</a>"
 msgstr ""
+"<a href=\"https://github.com/givefood/\">Didelė dalis mūsų kodo ir versuotų "
+"duomenų</a> yra atvirojo kodo"
 
 #: givefood/templates/public/about_us.html:75
 msgid "Oct"
-msgstr ""
+msgstr "Spa"
 
 #: givefood/templates/public/about_us.html:76
 msgid "Complete redesign of our website"
-msgstr ""
+msgstr "Visiškas mūsų svetainės atnaujinimas"
 
 #: givefood/templates/public/about_us.html:80
 msgid ""
 "Released our tool to allow the public to easily <a href=\"/write/\">email "
 "their MP about food insecurity</a>"
 msgstr ""
+"Išleidome įrankį, leidžiantį visuomenei lengvai <a href=\"/write/\">siųsti "
+"el. laiškus savo parlamento nariams apie maisto trūkumą</a>"
 
 #: givefood/templates/public/about_us.html:83
 #: givefood/templates/public/about_us.html:91
 #: givefood/templates/public/about_us.html:111
 msgid "Nov"
-msgstr ""
+msgstr "Lap"
 
 #: givefood/templates/public/about_us.html:84
 msgid "Started monitoring foodbank item excess in addition to shortages"
-msgstr ""
+msgstr "Pradėta stebėti maisto banko prekių perteklių, taip pat ir trūkumą."
 
 #: givefood/templates/public/about_us.html:87
 #: givefood/templates/public/about_us.html:99
 msgid "May"
-msgstr ""
+msgstr "Gegužė"
 
 #: givefood/templates/public/about_us.html:88
 msgid ""
-"Selected to be part of British Library's <a href=\"https://www.webarchive."
-"org.uk/\">UK Web Archive</a>"
+"Selected to be part of British Library's <a href=\"https://"
+"www.webarchive.org.uk/\">UK Web Archive</a>"
 msgstr ""
+"Atrinkta būti Britų bibliotekos <a href=\"https://www.webarchive.org.uk/"
+"\">JK žiniatinklio archyvo</a> dalimi"
 
 #: givefood/templates/public/about_us.html:92
 msgid "First used AI to augment our data processing"
-msgstr ""
+msgstr "Pirmą kartą panaudojo dirbtinį intelektą duomenų apdorojimui pagerinti"
 
 #: givefood/templates/public/about_us.html:95
 msgid "Mar"
-msgstr ""
+msgstr "Kov"
 
 #: givefood/templates/public/about_us.html:96
 msgid "Added food bank donation points to our data"
-msgstr ""
+msgstr "Į mūsų duomenis įtraukti maisto banko aukojimo taškai"
 
 #: givefood/templates/public/about_us.html:100
 msgid ""
 "Rebuilt our email your MP tool to contact parlimentary candidates for the <a "
 "href=\"/2024/#general-election\">UK general election</a>"
 msgstr ""
+"Atnaujinome mūsų el. pašto įrankį „Jūsų parlamento narys“, skirtą susisiekti "
+"su kandidatais į <a href=\"/2024/#general-election\">JK visuotinius "
+"rinkimus</a>"
 
 #: givefood/templates/public/about_us.html:103
 msgid "Sep"
-msgstr ""
+msgstr "Rug"
 
 #: givefood/templates/public/about_us.html:104
 msgid ""
 "Launched our site in <a href=\"/cy/\">Welsh</a> and <a href=\"/gd/\">Scots "
 "Gaelic</a>"
 msgstr ""
+"Paleidome svetainę <a href=\"/cy/\">valų</a> ir <a href=\"/gd/\">škotų gėlų "
+"kalbomis</a>"
 
 #: givefood/templates/public/about_us.html:108
 msgid "Data now includes charity financial information"
-msgstr ""
+msgstr "Duomenys dabar apima ir labdaros organizacijų finansinę informaciją"
 
 #: givefood/templates/public/about_us.html:112
-#, fuzzy
-#| msgid ""
-#| "Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile "
-#| "apps</a>"
 msgid "Released <a href=\"/apps/\">mobile apps</a>"
-msgstr ""
-"Gaukite naujienas apie tai, ko reikia mūsų <a "
-"href=\"%(apps_url)s\">mobiliosioms programėlėms</a>"
+msgstr "Išleistos <a href=\"/apps/\">mobiliosios programėlės</a>"
 
 #: givefood/templates/public/about_us.html:116
 msgid "Website now available in 20 languages"
-msgstr ""
+msgstr "Svetainė dabar prieinama 20 kalbų"
 
 #: givefood/templates/public/ar/index.html:5
 #: givefood/templates/public/ar/index.html:22
@@ -1151,7 +1144,7 @@ msgstr ""
 
 #: givefood/templates/public/ar/index.html:25
 msgid "Even more AI, translations and mobile apps"
-msgstr ""
+msgstr "Dar daugiau dirbtinio intelekto, vertimų ir mobiliųjų programėlių"
 
 #: givefood/templates/public/ar/index.html:28
 msgid "AI, general election, site translation"
@@ -1399,16 +1392,12 @@ msgstr ""
 
 #: givefood/templates/public/index.html:51
 #: givefood/templates/public/index.html:130
-#, fuzzy
-#| msgid "Register a food bank"
 msgid "Services for food banks"
-msgstr "Registruokite maisto banką"
+msgstr "Paslaugos maisto bankams"
 
 #: givefood/templates/public/index.html:69
-#, fuzzy
-#| msgid "food banks"
 msgid "News from food banks"
-msgstr "maisto bankai"
+msgstr "Naujienos iš maisto bankų"
 
 #: givefood/templates/public/index.html:96
 msgid "We've worked with"
@@ -1439,6 +1428,8 @@ msgid ""
 "Free websites, entry in our data and open data services to support your "
 "important work."
 msgstr ""
+"Nemokamos svetainės, prieiga prie mūsų duomenų ir atvirų duomenų paslaugos, "
+"skirtos paremti jūsų svarbų darbą."
 
 #: givefood/templates/public/index.html:133
 msgid "Media"
@@ -1470,10 +1461,8 @@ msgstr ""
 "juos interpretuoti. Peržiūrėkite mūsų API arba parašykite mums el. laišką."
 
 #: givefood/templates/public/index.html:146
-#, fuzzy
-#| msgid "Toiletries"
 msgid "Countries"
-msgstr "Tualeto reikmenys"
+msgstr "Šalys"
 
 #: givefood/templates/public/index.html:167
 msgid "Statistics"
