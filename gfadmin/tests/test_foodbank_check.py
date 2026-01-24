@@ -1073,3 +1073,61 @@ class TestFoodbankCheckDetailChanges:
         assert detail_changes['donation_points_url'] is False
         assert detail_changes['locations_url'] is False
         assert detail_changes['contacts_url'] is False
+
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_detail_changes_handles_nullish_bankuet(self, mock_get, mock_gemini, mock_render):
+        """Bankuet null/None textual values should be treated as empty."""
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            bankuet_slug='',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        mock_response = Mock(status_code=200, text='<html></html>')
+        mock_get.return_value = mock_response
+
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '',
+                'contact_email': '',
+                'network': '',
+                'charity_number': '',
+                'facebook_page': '',
+                'twitter_handle': '',
+                'bankuet_slug': 'None',
+                'rss_url': '',
+                'news_url': '',
+                'donation_points_url': '',
+                'locations_url': '',
+                'contacts_url': '',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+
+        mock_render.return_value = Mock(status_code=200)
+
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        context = mock_render.call_args[0][2]
+        detail_changes = context['detail_changes']
+
+        # Treated as empty, so no change flagged and rendered value is empty string
+        assert detail_changes['bankuet_slug'] is False
+        assert context['check_result']['details']['bankuet_slug'] == ''

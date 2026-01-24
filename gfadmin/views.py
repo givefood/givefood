@@ -1050,6 +1050,11 @@ def foodbank_check(request, slug):
                 if not matches_delivery_postcode(donation_point["postcode"]):
                     donation_point["discrepancy"] = True
 
+    # Normalise AI-provided values that may come back as textual nulls
+    bankuet_slug_value = check_result["details"].get("bankuet_slug")
+    if isinstance(bankuet_slug_value, str) and bankuet_slug_value.strip().lower() in ("none", "null", "nothing"):
+        check_result["details"]["bankuet_slug"] = ""
+
     # Compare details fields (address includes postcode for comparison)
     ours_address = (foodbank.address or "") + "\n" + (foodbank.postcode or "")
     found_address = (check_result["details"].get("address") or "") + "\n" + (check_result["details"].get("postcode") or "")
