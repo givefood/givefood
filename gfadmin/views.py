@@ -1125,6 +1125,39 @@ def foodbank_touch(request, slug):
 
 
 @require_POST
+def foodbank_use_ai_detail(request, slug, field):
+    """
+    HTMX endpoint to update a foodbank field with AI-found data.
+    Supports fields: phone_number, contact_email, charity_number
+    """
+    ALLOWED_FIELDS = ['phone_number', 'contact_email', 'charity_number']
+    
+    if field not in ALLOWED_FIELDS:
+        return HttpResponse('Invalid field', status=400)
+    
+    foodbank = get_object_or_404(Foodbank, slug=slug)
+    value = request.POST.get('value', '')
+    
+    # Basic validation for email field
+    if field == 'contact_email' and value:
+        from django.core.validators import validate_email
+        from django.core.exceptions import ValidationError as DjangoValidationError
+        try:
+            validate_email(value)
+        except DjangoValidationError:
+            return HttpResponse('Invalid email format', status=400)
+    
+    setattr(foodbank, field, value)
+    foodbank.edited = timezone.now()
+    foodbank.save(do_geoupdate=False)
+    
+    # Return disabled button for HTMX requests
+    if request.headers.get('HX-Request'):
+        return HttpResponse('<button type="button" class="button is-small is-success is-light" disabled>Used</button>')
+    return redirect("admin:foodbank_check", slug=foodbank.slug)
+
+
+@require_POST
 def foodbank_delete(request, slug):
     
     foodbank = get_object_or_404(Foodbank, slug = slug)

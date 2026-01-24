@@ -62,11 +62,44 @@
                         <dt{% if detail_changes.address %} class="check-changed"{% endif %}>Address</dt>
                         <dd{% if detail_changes.address %} class="check-changed"{% endif %}>{{ check_result.details.address|linebreaksbr }}<br>{{ check_result.details.postcode }}</dd>
                         <dt{% if detail_changes.phone_number %} class="check-changed"{% endif %}>Phone</dt>
-                        <dd{% if detail_changes.phone_number %} class="check-changed"{% endif %}>{{ check_result.details.phone_number }}</dd>
+                        <dd{% if detail_changes.phone_number %} class="check-changed"{% endif %}>{{ check_result.details.phone_number }}
+                            {% if detail_changes.phone_number and check_result.details.phone_number %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'phone_number' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.phone_number }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'phone_number' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
                         <dt{% if detail_changes.contact_email %} class="check-changed"{% endif %}>Email</dt>
-                        <dd{% if detail_changes.contact_email %} class="check-changed"{% endif %}>{{ check_result.details.contact_email }}</dd>
+                        <dd{% if detail_changes.contact_email %} class="check-changed"{% endif %}>{{ check_result.details.contact_email }}
+                            {% if detail_changes.contact_email and check_result.details.contact_email %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'contact_email' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.contact_email }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'contact_email' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
                         <dt{% if detail_changes.charity_number %} class="check-changed"{% endif %}>Charity</dt>
-                        <dd{% if detail_changes.charity_number %} class="check-changed"{% endif %}>{{ check_result.details.charity_number }}</dd>
+                        <dd{% if detail_changes.charity_number %} class="check-changed"{% endif %}>{{ check_result.details.charity_number }}
+                            {% if detail_changes.charity_number and check_result.details.charity_number %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'charity_number' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.charity_number }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'charity_number' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
                     </dl>
                 </td>
             </tr>
