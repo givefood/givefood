@@ -845,3 +845,171 @@ class TestFoodbankCheckDetailChanges:
         locations = context['check_result']['locations']
         assert len(locations) == 1
         assert 'discrepancy' not in locations[0] or locations[0].get('discrepancy') is not True
+
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_detail_changes_detects_new_field_differences(self, mock_get, mock_gemini, mock_render):
+        """Test that detail_changes is populated when new fields (facebook, twitter, urls) differ."""
+        # Create a test foodbank with all the new fields populated
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+            facebook_page='oldfacebook',
+            twitter_handle='oldtwitter',
+            bankuet_slug='oldbankuet',
+            rss_url='https://example.com/old.rss',
+            news_url='https://example.com/old-news',
+            donation_points_url='https://example.com/old-donate',
+            locations_url='https://example.com/old-locations',
+            contacts_url='https://example.com/old-contacts',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+
+        # Mock gemini response with DIFFERENT values for new fields
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '',
+                'contact_email': 'test@example.com',
+                'network': '',
+                'charity_number': '',
+                'facebook_page': 'newfacebook',
+                'twitter_handle': 'newtwitter',
+                'bankuet_slug': 'newbankuet',
+                'rss_url': 'https://example.com/new.rss',
+                'news_url': 'https://example.com/new-news',
+                'donation_points_url': 'https://example.com/new-donate',
+                'locations_url': 'https://example.com/new-locations',
+                'contacts_url': 'https://example.com/new-contacts',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+
+        # Mock render
+        mock_render.return_value = Mock(status_code=200)
+
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        # Verify render was called with detail_changes
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]
+
+        assert 'detail_changes' in context
+        detail_changes = context['detail_changes']
+
+        # All new fields should be marked as changed
+        assert detail_changes['facebook_page'] is True
+        assert detail_changes['twitter_handle'] is True
+        assert detail_changes['bankuet_slug'] is True
+        assert detail_changes['rss_url'] is True
+        assert detail_changes['news_url'] is True
+        assert detail_changes['donation_points_url'] is True
+        assert detail_changes['locations_url'] is True
+        assert detail_changes['contacts_url'] is True
+
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_detail_changes_no_differences_for_new_fields(self, mock_get, mock_gemini, mock_render):
+        """Test that detail_changes shows no changes when new fields match."""
+        # Create a test foodbank with new fields populated
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+            facebook_page='samefacebook',
+            twitter_handle='sametwitter',
+            bankuet_slug='samebankuet',
+            rss_url='https://example.com/same.rss',
+            news_url='https://example.com/same-news',
+            donation_points_url='https://example.com/same-donate',
+            locations_url='https://example.com/same-locations',
+            contacts_url='https://example.com/same-contacts',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+
+        # Mock gemini response with SAME values
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '',
+                'contact_email': 'test@example.com',
+                'network': '',
+                'charity_number': '',
+                'facebook_page': 'samefacebook',
+                'twitter_handle': 'sametwitter',
+                'bankuet_slug': 'samebankuet',
+                'rss_url': 'https://example.com/same.rss',
+                'news_url': 'https://example.com/same-news',
+                'donation_points_url': 'https://example.com/same-donate',
+                'locations_url': 'https://example.com/same-locations',
+                'contacts_url': 'https://example.com/same-contacts',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+
+        # Mock render
+        mock_render.return_value = Mock(status_code=200)
+
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        # Verify render was called with detail_changes
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]
+
+        assert 'detail_changes' in context
+        detail_changes = context['detail_changes']
+
+        # No new fields should be marked as changed
+        assert detail_changes['facebook_page'] is False
+        assert detail_changes['twitter_handle'] is False
+        assert detail_changes['bankuet_slug'] is False
+        assert detail_changes['rss_url'] is False
+        assert detail_changes['news_url'] is False
+        assert detail_changes['donation_points_url'] is False
+        assert detail_changes['locations_url'] is False
+        assert detail_changes['contacts_url'] is False
