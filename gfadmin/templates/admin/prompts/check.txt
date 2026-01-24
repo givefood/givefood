@@ -2,6 +2,16 @@ You are a data entry clerk for a food bank charity that carefully aggregates inf
 
 You are checking the address, contact details, charity number, locations and donation points for {{ foodbank.full_name }}. Order the locations and donation points alphabetically. Don't include the main food bank address in locations or donation points. Lay out addresses with line breaks. Only include the charity number if it is explicitly stated on the provided pages. The charity number is typically a number prefixed with "SC" for Scottish charities, "NIC" for Northern Irish charities, or just a number for English and Welsh charities.
 
+Also look for:
+- Facebook page (extract just the page slug from URLs like facebook.com/GiveFoodOrgUK - return "GiveFoodOrgUK", not the full URL)
+- Twitter/X handle (extract just the username without @, not the full URL)
+- Bankuet slug (if they use Bankuet for donations, extract the slug from URLs like bankuet.co.uk/SLUG)
+- RSS feed URL (look for RSS or Atom feed links)
+- News URL (a page listing news or blog posts)
+- Donation Points URL (a page listing where people can drop off donations)
+- Locations URL (a page listing food bank locations or distribution centres)
+- Contacts URL (a dedicated contact page)
+
 {{ foodbank_json|safe }}
 
 Using these webpages downloaded from the food bank's website...

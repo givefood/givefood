@@ -51,6 +51,22 @@
                         <dd{% if detail_changes.contact_email %} class="check-changed"{% endif %}>{{ foodbank.contact_email }}</dd>
                         <dt{% if detail_changes.charity_number %} class="check-changed"{% endif %}>Charity</dt>
                         <dd{% if detail_changes.charity_number %} class="check-changed"{% endif %}>{{ foodbank.charity_number }}</dd>
+                        <dt{% if detail_changes.facebook_page %} class="check-changed"{% endif %}>Facebook</dt>
+                        <dd{% if detail_changes.facebook_page %} class="check-changed"{% endif %}>{{ foodbank.facebook_page }}</dd>
+                        <dt{% if detail_changes.twitter_handle %} class="check-changed"{% endif %}>Twitter</dt>
+                        <dd{% if detail_changes.twitter_handle %} class="check-changed"{% endif %}>{{ foodbank.twitter_handle }}</dd>
+                        <dt{% if detail_changes.bankuet_slug %} class="check-changed"{% endif %}>Bankuet</dt>
+                        <dd{% if detail_changes.bankuet_slug %} class="check-changed"{% endif %}>{{ foodbank.bankuet_slug }}</dd>
+                        <dt{% if detail_changes.rss_url %} class="check-changed"{% endif %}>RSS URL</dt>
+                        <dd{% if detail_changes.rss_url %} class="check-changed"{% endif %}>{{ foodbank.rss_url }}</dd>
+                        <dt{% if detail_changes.news_url %} class="check-changed"{% endif %}>News URL</dt>
+                        <dd{% if detail_changes.news_url %} class="check-changed"{% endif %}>{{ foodbank.news_url }}</dd>
+                        <dt{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>Donation Points URL</dt>
+                        <dd{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>{{ foodbank.donation_points_url }}</dd>
+                        <dt{% if detail_changes.locations_url %} class="check-changed"{% endif %}>Locations URL</dt>
+                        <dd{% if detail_changes.locations_url %} class="check-changed"{% endif %}>{{ foodbank.locations_url }}</dd>
+                        <dt{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>Contacts URL</dt>
+                        <dd{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>{{ foodbank.contacts_url }}</dd>
                         {% if foodbank.delivery_address %}
                             <dt>Delivery address</dt>
                             <dd>{{ foodbank.delivery_address|linebreaksbr }}</dd>
@@ -95,6 +111,110 @@
                                     <button type="submit" 
                                             class="button is-small is-success is-light"
                                             hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'charity_number' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
+                        <dt{% if detail_changes.facebook_page %} class="check-changed"{% endif %}>Facebook</dt>
+                        <dd{% if detail_changes.facebook_page %} class="check-changed"{% endif %}>{{ check_result.details.facebook_page }}
+                            {% if detail_changes.facebook_page and check_result.details.facebook_page %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'facebook_page' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.facebook_page }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'facebook_page' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
+                        <dt{% if detail_changes.twitter_handle %} class="check-changed"{% endif %}>Twitter</dt>
+                        <dd{% if detail_changes.twitter_handle %} class="check-changed"{% endif %}>{{ check_result.details.twitter_handle }}
+                            {% if detail_changes.twitter_handle and check_result.details.twitter_handle %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'twitter_handle' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.twitter_handle }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'twitter_handle' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
+                        <dt{% if detail_changes.bankuet_slug %} class="check-changed"{% endif %}>Bankuet</dt>
+                        <dd{% if detail_changes.bankuet_slug %} class="check-changed"{% endif %}>{{ check_result.details.bankuet_slug }}
+                            {% if detail_changes.bankuet_slug and check_result.details.bankuet_slug %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'bankuet_slug' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.bankuet_slug }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'bankuet_slug' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
+                        <dt{% if detail_changes.rss_url %} class="check-changed"{% endif %}>RSS URL</dt>
+                        <dd{% if detail_changes.rss_url %} class="check-changed"{% endif %}>{{ check_result.details.rss_url }}
+                            {% if detail_changes.rss_url and check_result.details.rss_url %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'rss_url' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.rss_url }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'rss_url' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
+                        <dt{% if detail_changes.news_url %} class="check-changed"{% endif %}>News URL</dt>
+                        <dd{% if detail_changes.news_url %} class="check-changed"{% endif %}>{{ check_result.details.news_url }}
+                            {% if detail_changes.news_url and check_result.details.news_url %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'news_url' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.news_url }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'news_url' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
+                        <dt{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>Donation Points URL</dt>
+                        <dd{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>{{ check_result.details.donation_points_url }}
+                            {% if detail_changes.donation_points_url and check_result.details.donation_points_url %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'donation_points_url' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.donation_points_url }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'donation_points_url' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
+                        <dt{% if detail_changes.locations_url %} class="check-changed"{% endif %}>Locations URL</dt>
+                        <dd{% if detail_changes.locations_url %} class="check-changed"{% endif %}>{{ check_result.details.locations_url }}
+                            {% if detail_changes.locations_url and check_result.details.locations_url %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'locations_url' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.locations_url }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'locations_url' %}"
+                                            hx-include="closest form"
+                                            hx-swap="outerHTML">Use</button>
+                                </form>
+                            {% endif %}
+                        </dd>
+                        <dt{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>Contacts URL</dt>
+                        <dd{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>{{ check_result.details.contacts_url }}
+                            {% if detail_changes.contacts_url and check_result.details.contacts_url %}
+                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'contacts_url' %}" style="display:inline;">
+                                    <input type="hidden" name="value" value="{{ check_result.details.contacts_url }}">
+                                    <button type="submit" 
+                                            class="button is-small is-success is-light"
+                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'contacts_url' %}"
                                             hx-include="closest form"
                                             hx-swap="outerHTML">Use</button>
                                 </form>

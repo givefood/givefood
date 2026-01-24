@@ -21,6 +21,8 @@ from django.core.cache import cache
 from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
 from django.contrib.contenttypes.models import ContentType
+from django.core.validators import validate_email, URLValidator
+from django.core.exceptions import ValidationError as DjangoValidationError
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
@@ -737,6 +739,14 @@ def _build_foodbank_check_data(foodbank):
             "contact_email": foodbank.contact_email,
             "network": foodbank.network,
             "charity_number": foodbank.charity_number,
+            "facebook_page": foodbank.facebook_page,
+            "twitter_handle": foodbank.twitter_handle,
+            "bankuet_slug": foodbank.bankuet_slug,
+            "rss_url": foodbank.rss_url,
+            "news_url": foodbank.news_url,
+            "donation_points_url": foodbank.donation_points_url,
+            "locations_url": foodbank.locations_url,
+            "contacts_url": foodbank.contacts_url,
         }
     }
     foodbank_locations = []
@@ -898,6 +908,30 @@ FOODBANK_CHECK_RESPONSE_SCHEMA = {
             },
             "charity_number": {
             "type": "string"
+            },
+            "facebook_page": {
+            "type": "string"
+            },
+            "twitter_handle": {
+            "type": "string"
+            },
+            "bankuet_slug": {
+            "type": "string"
+            },
+            "rss_url": {
+            "type": "string"
+            },
+            "news_url": {
+            "type": "string"
+            },
+            "donation_points_url": {
+            "type": "string"
+            },
+            "locations_url": {
+            "type": "string"
+            },
+            "contacts_url": {
+            "type": "string"
             }
         },
         "required": [
@@ -908,7 +942,15 @@ FOODBANK_CHECK_RESPONSE_SCHEMA = {
             "phone_number",
             "contact_email",
             "network",
-            "charity_number"
+            "charity_number",
+            "facebook_page",
+            "twitter_handle",
+            "bankuet_slug",
+            "rss_url",
+            "news_url",
+            "donation_points_url",
+            "locations_url",
+            "contacts_url"
         ]
         },
         "locations": {
@@ -1016,6 +1058,14 @@ def foodbank_check(request, slug):
         "phone_number": (foodbank.phone_number or "") != (check_result["details"].get("phone_number") or ""),
         "contact_email": (foodbank.contact_email or "") != (check_result["details"].get("contact_email") or ""),
         "charity_number": (foodbank.charity_number or "") != (check_result["details"].get("charity_number") or ""),
+        "facebook_page": (foodbank.facebook_page or "") != (check_result["details"].get("facebook_page") or ""),
+        "twitter_handle": (foodbank.twitter_handle or "") != (check_result["details"].get("twitter_handle") or ""),
+        "bankuet_slug": (foodbank.bankuet_slug or "") != (check_result["details"].get("bankuet_slug") or ""),
+        "rss_url": (foodbank.rss_url or "") != (check_result["details"].get("rss_url") or ""),
+        "news_url": (foodbank.news_url or "") != (check_result["details"].get("news_url") or ""),
+        "donation_points_url": (foodbank.donation_points_url or "") != (check_result["details"].get("donation_points_url") or ""),
+        "locations_url": (foodbank.locations_url or "") != (check_result["details"].get("locations_url") or ""),
+        "contacts_url": (foodbank.contacts_url or "") != (check_result["details"].get("contacts_url") or ""),
     }
 
     template_vars = {
@@ -1128,9 +1178,16 @@ def foodbank_touch(request, slug):
 def foodbank_use_ai_detail(request, slug, field):
     """
     HTMX endpoint to update a foodbank field with AI-found data.
-    Supports fields: phone_number, contact_email, charity_number
+    Supports fields: phone_number, contact_email, charity_number, facebook_page,
+    twitter_handle, bankuet_slug, rss_url, news_url, donation_points_url, 
+    locations_url, contacts_url
     """
-    ALLOWED_FIELDS = ['phone_number', 'contact_email', 'charity_number']
+    ALLOWED_FIELDS = [
+        'phone_number', 'contact_email', 'charity_number',
+        'facebook_page', 'twitter_handle', 'bankuet_slug',
+        'rss_url', 'news_url', 'donation_points_url',
+        'locations_url', 'contacts_url',
+    ]
     
     if field not in ALLOWED_FIELDS:
         return HttpResponse('Invalid field', status=400)
@@ -1138,14 +1195,24 @@ def foodbank_use_ai_detail(request, slug, field):
     foodbank = get_object_or_404(Foodbank, slug=slug)
     value = request.POST.get('value', '')
     
+    # Remove spaces from phone number
+    if field == 'phone_number' and value:
+        value = value.replace(' ', '')
+    
     # Basic validation for email field
     if field == 'contact_email' and value:
-        from django.core.validators import validate_email
-        from django.core.exceptions import ValidationError as DjangoValidationError
         try:
             validate_email(value)
         except DjangoValidationError:
             return HttpResponse('Invalid email format', status=400)
+    
+    # Basic validation for URL fields
+    url_fields = ['rss_url', 'news_url', 'donation_points_url', 'locations_url', 'contacts_url']
+    if field in url_fields and value:
+        try:
+            URLValidator()(value)
+        except DjangoValidationError:
+            return HttpResponse('Invalid URL format', status=400)
     
     setattr(foodbank, field, value)
     foodbank.edited = timezone.now()
