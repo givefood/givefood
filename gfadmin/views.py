@@ -21,6 +21,8 @@ from django.core.cache import cache
 from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
 from django.contrib.contenttypes.models import ContentType
+from django.core.validators import validate_email, URLValidator
+from django.core.exceptions import ValidationError as DjangoValidationError
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
@@ -1183,8 +1185,8 @@ def foodbank_use_ai_detail(request, slug, field):
     ALLOWED_FIELDS = [
         'phone_number', 'contact_email', 'charity_number',
         'facebook_page', 'twitter_handle', 'bankuet_slug',
-        'rss_url', 'news_url', 'donation_points_url', 
-        'locations_url', 'contacts_url'
+        'rss_url', 'news_url', 'donation_points_url',
+        'locations_url', 'contacts_url',
     ]
     
     if field not in ALLOWED_FIELDS:
@@ -1195,8 +1197,6 @@ def foodbank_use_ai_detail(request, slug, field):
     
     # Basic validation for email field
     if field == 'contact_email' and value:
-        from django.core.validators import validate_email
-        from django.core.exceptions import ValidationError as DjangoValidationError
         try:
             validate_email(value)
         except DjangoValidationError:
@@ -1205,8 +1205,6 @@ def foodbank_use_ai_detail(request, slug, field):
     # Basic validation for URL fields
     url_fields = ['rss_url', 'news_url', 'donation_points_url', 'locations_url', 'contacts_url']
     if field in url_fields and value:
-        from django.core.validators import URLValidator
-        from django.core.exceptions import ValidationError as DjangoValidationError
         try:
             URLValidator()(value)
         except DjangoValidationError:
