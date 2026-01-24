@@ -1131,3 +1131,64 @@ class TestFoodbankCheckDetailChanges:
         # Treated as empty, so no change flagged and rendered value is empty string
         assert detail_changes['bankuet_slug'] is False
         assert context['check_result']['details']['bankuet_slug'] == ''
+
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
+    def test_detail_changes_normalises_all_nullish_fields(self, mock_get, mock_gemini, mock_render):
+        """All detail fields should normalise textual nulls to empty strings."""
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        mock_response = Mock(status_code=200, text='<html></html>')
+        mock_get.return_value = mock_response
+
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': 'none',
+                'contact_email': 'Null',
+                'network': 'nothing',
+                'charity_number': 'null',
+                'facebook_page': 'none',
+                'twitter_handle': 'none',
+                'bankuet_slug': 'NONE',
+                'rss_url': 'nothing',
+                'news_url': 'none',
+                'donation_points_url': 'null',
+                'locations_url': 'None',
+                'contacts_url': 'null',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+
+        mock_render.return_value = Mock(status_code=200)
+
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        context = mock_render.call_args[0][2]
+        details = context['check_result']['details']
+        detail_changes = context['detail_changes']
+
+        # All nullish strings should be empty
+        for key in mock_gemini.return_value['details'].keys():
+            if key not in ('name', 'address', 'postcode', 'country'):
+                assert details[key] == ''
+                # Since ours are also empty, no change flagged
+                assert detail_changes[key] is False

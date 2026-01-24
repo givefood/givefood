@@ -1049,11 +1049,14 @@ def foodbank_check(request, slug):
             if donation_point["postcode"] not in [x["postcode"] for x in foodbank_json["locations"]]:
                 if not matches_delivery_postcode(donation_point["postcode"]):
                     donation_point["discrepancy"] = True
-
     # Normalise AI-provided values that may come back as textual nulls
-    bankuet_slug_value = check_result["details"].get("bankuet_slug")
-    if isinstance(bankuet_slug_value, str) and bankuet_slug_value.strip().lower() in ("none", "null", "nothing"):
-        check_result["details"]["bankuet_slug"] = ""
+    def _normalise_nullish(value):
+        if isinstance(value, str) and value.strip().lower() in ("none", "null", "nothing"):
+            return ""
+        return value
+
+    for key, value in check_result["details"].items():
+        check_result["details"][key] = _normalise_nullish(value)
 
     # Compare details fields (address includes postcode for comparison)
     ours_address = (foodbank.address or "") + "\n" + (foodbank.postcode or "")
