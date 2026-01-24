@@ -1055,7 +1055,7 @@ def foodbank_check(request, slug):
     found_address = (check_result["details"].get("address") or "") + "\n" + (check_result["details"].get("postcode") or "")
     detail_changes = {
         "address": ours_address.strip() != found_address.strip(),
-        "phone_number": (foodbank.phone_number or "") != (check_result["details"].get("phone_number") or ""),
+        "phone_number": (foodbank.phone_number or "").replace(" ", "") != (check_result["details"].get("phone_number") or "").replace(" ", ""),
         "contact_email": (foodbank.contact_email or "") != (check_result["details"].get("contact_email") or ""),
         "charity_number": (foodbank.charity_number or "") != (check_result["details"].get("charity_number") or ""),
         "facebook_page": (foodbank.facebook_page or "") != (check_result["details"].get("facebook_page") or ""),

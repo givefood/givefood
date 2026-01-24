@@ -718,6 +718,66 @@ class TestFoodbankCheckDetailChanges:
     @patch('gfadmin.views.render')
     @patch('gfadmin.views.gemini')
     @patch('gfadmin.views.requests.get')
+    def test_phone_number_comparison_ignores_spaces(self, mock_get, mock_gemini, mock_render):
+        """Test that phone number comparison ignores spaces."""
+        # Create a test foodbank with phone number without spaces
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            phone_number='01234567890',  # No spaces
+            contact_email='test@example.com',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Mock the HTTP response
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.text = '<html><body>Test</body></html>'
+        mock_get.return_value = mock_response
+
+        # Mock gemini response with phone number WITH spaces (should match)
+        mock_gemini.return_value = {
+            'details': {
+                'name': 'Test Foodbank',
+                'address': '123 Test St',
+                'postcode': 'AB12 3CD',
+                'country': 'England',
+                'phone_number': '01234 567890',  # Same number but with space
+                'contact_email': 'test@example.com',
+                'network': '',
+            },
+            'locations': [],
+            'donation_points': []
+        }
+
+        # Mock render
+        mock_render.return_value = Mock(status_code=200)
+
+        # Make a GET request to the view
+        from gfadmin.views import foodbank_check
+        factory = RequestFactory()
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/check/')
+
+        # Call the view
+        response = foodbank_check(request, slug=foodbank.slug)
+
+        # Verify render was called with detail_changes
+        render_call_args = mock_render.call_args
+        context = render_call_args[0][2]  # Third argument is the context dict
+
+        assert 'detail_changes' in context
+        detail_changes = context['detail_changes']
+
+        # Phone number should NOT be marked as changed (spaces are ignored)
+        assert detail_changes['phone_number'] is False
+
+    @patch('gfadmin.views.render')
+    @patch('gfadmin.views.gemini')
+    @patch('gfadmin.views.requests.get')
     def test_detail_changes_handles_empty_values(self, mock_get, mock_gemini, mock_render):
         """Test that detail_changes handles None and empty string values correctly."""
         # Create a test foodbank with empty fields
