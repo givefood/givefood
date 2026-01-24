@@ -1195,6 +1195,10 @@ def foodbank_use_ai_detail(request, slug, field):
     foodbank = get_object_or_404(Foodbank, slug=slug)
     value = request.POST.get('value', '')
     
+    # Remove spaces from phone number
+    if field == 'phone_number' and value:
+        value = value.replace(' ', '')
+    
     # Basic validation for email field
     if field == 'contact_email' and value:
         try:

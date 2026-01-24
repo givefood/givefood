@@ -43,6 +43,37 @@ class TestFoodbankUseAiDetail:
         assert b'Used' in response.content
         assert b'disabled' in response.content
 
+    def test_update_phone_number_removes_spaces(self):
+        """Test that phone number spaces are removed when updating via HTMX."""
+        foodbank = Foodbank(
+            name='Test Foodbank',
+            url='https://example.com',
+            shopping_list_url='https://example.com/shopping',
+            address='123 Test St',
+            postcode='AB12 3CD',
+            country='England',
+            lat_lng='51.5074,-0.1278',
+            contact_email='test@example.com',
+            phone_number='0123456789',
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        
+        from gfadmin.views import foodbank_use_ai_detail
+        factory = RequestFactory()
+        request = factory.post(
+            f'/admin/foodbank/{foodbank.slug}/use-ai/phone_number/',
+            data={'value': '01onal 234 567 890'},  # Phone number with spaces
+            **{'HTTP_HX-Request': 'true'}
+        )
+        
+        response = foodbank_use_ai_detail(request, slug=foodbank.slug, field='phone_number')
+        
+        foodbank.refresh_from_db()
+        
+        # Spaces should be removed
+        assert foodbank.phone_number == '01onal234567890'
+        assert response.status_code == 200
+
     def test_update_email_with_htmx(self):
         """Test updating email via HTMX."""
         foodbank = Foodbank(
