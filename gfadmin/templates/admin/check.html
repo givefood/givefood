@@ -58,15 +58,15 @@
                         <dt{% if detail_changes.bankuet_slug %} class="check-changed"{% endif %}>Bankuet</dt>
                         <dd{% if detail_changes.bankuet_slug %} class="check-changed"{% endif %}>{{ foodbank.bankuet_slug }}</dd>
                         <dt{% if detail_changes.rss_url %} class="check-changed"{% endif %}>RSS URL</dt>
-                        <dd{% if detail_changes.rss_url %} class="check-changed"{% endif %}>{{ foodbank.rss_url }}</dd>
+                        <dd{% if detail_changes.rss_url %} class="check-changed"{% endif %}>{% if foodbank.rss_url %}<a href="{{ foodbank.rss_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ foodbank.rss_url }}</dd>
                         <dt{% if detail_changes.news_url %} class="check-changed"{% endif %}>News URL</dt>
-                        <dd{% if detail_changes.news_url %} class="check-changed"{% endif %}>{{ foodbank.news_url }}</dd>
+                        <dd{% if detail_changes.news_url %} class="check-changed"{% endif %}>{% if foodbank.news_url %}<a href="{{ foodbank.news_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ foodbank.news_url }}</dd>
                         <dt{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>Donation Points URL</dt>
-                        <dd{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>{{ foodbank.donation_points_url }}</dd>
+                        <dd{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>{% if foodbank.donation_points_url %}<a href="{{ foodbank.donation_points_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ foodbank.donation_points_url }}</dd>
                         <dt{% if detail_changes.locations_url %} class="check-changed"{% endif %}>Locations URL</dt>
-                        <dd{% if detail_changes.locations_url %} class="check-changed"{% endif %}>{{ foodbank.locations_url }}</dd>
+                        <dd{% if detail_changes.locations_url %} class="check-changed"{% endif %}>{% if foodbank.locations_url %}<a href="{{ foodbank.locations_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ foodbank.locations_url }}</dd>
                         <dt{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>Contacts URL</dt>
-                        <dd{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>{{ foodbank.contacts_url }}</dd>
+                        <dd{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>{% if foodbank.contacts_url %}<a href="{{ foodbank.contacts_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ foodbank.contacts_url }}</dd>
                         {% if foodbank.delivery_address %}
                             <dt>Delivery address</dt>
                             <dd>{{ foodbank.delivery_address|linebreaksbr }}</dd>
@@ -156,7 +156,7 @@
                             {% endif %}
                         </dd>
                         <dt{% if detail_changes.rss_url %} class="check-changed"{% endif %}>RSS URL</dt>
-                        <dd{% if detail_changes.rss_url %} class="check-changed"{% endif %}>{{ check_result.details.rss_url }}
+                        <dd{% if detail_changes.rss_url %} class="check-changed"{% endif %}>{% if check_result.details.rss_url %}<a href="{{ check_result.details.rss_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ check_result.details.rss_url }}
                             {% if detail_changes.rss_url and check_result.details.rss_url %}
                                 <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'rss_url' %}" style="display:inline;">
                                     <input type="hidden" name="value" value="{{ check_result.details.rss_url }}">
@@ -169,7 +169,7 @@
                             {% endif %}
                         </dd>
                         <dt{% if detail_changes.news_url %} class="check-changed"{% endif %}>News URL</dt>
-                        <dd{% if detail_changes.news_url %} class="check-changed"{% endif %}>{{ check_result.details.news_url }}
+                        <dd{% if detail_changes.news_url %} class="check-changed"{% endif %}>{% if check_result.details.news_url %}<a href="{{ check_result.details.news_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ check_result.details.news_url }}
                             {% if detail_changes.news_url and check_result.details.news_url %}
                                 <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'news_url' %}" style="display:inline;">
                                     <input type="hidden" name="value" value="{{ check_result.details.news_url }}">
@@ -182,7 +182,7 @@
                             {% endif %}
                         </dd>
                         <dt{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>Donation Points URL</dt>
-                        <dd{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>{{ check_result.details.donation_points_url }}
+                        <dd{% if detail_changes.donation_points_url %} class="check-changed"{% endif %}>{% if check_result.details.donation_points_url %}<a href="{{ check_result.details.donation_points_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ check_result.details.donation_points_url }}
                             {% if detail_changes.donation_points_url and check_result.details.donation_points_url %}
                                 <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'donation_points_url' %}" style="display:inline;">
                                     <input type="hidden" name="value" value="{{ check_result.details.donation_points_url }}">
@@ -195,7 +195,7 @@
                             {% endif %}
                         </dd>
                         <dt{% if detail_changes.locations_url %} class="check-changed"{% endif %}>Locations URL</dt>
-                        <dd{% if detail_changes.locations_url %} class="check-changed"{% endif %}>{{ check_result.details.locations_url }}
+                        <dd{% if detail_changes.locations_url %} class="check-changed"{% endif %}>{% if check_result.details.locations_url %}<a href="{{ check_result.details.locations_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ check_result.details.locations_url }}
                             {% if detail_changes.locations_url and check_result.details.locations_url %}
                                 <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'locations_url' %}" style="display:inline;">
                                     <input type="hidden" name="value" value="{{ check_result.details.locations_url }}">
@@ -208,7 +208,7 @@
                             {% endif %}
                         </dd>
                         <dt{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>Contacts URL</dt>
-                        <dd{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>{{ check_result.details.contacts_url }}
+                        <dd{% if detail_changes.contacts_url %} class="check-changed"{% endif %}>{% if check_result.details.contacts_url %}<a href="{{ check_result.details.contacts_url }}" target="_blank" class="newwindow"><img src="/static/img/newwindow.svg" alt="New window"></a> {% endif %}{{ check_result.details.contacts_url }}
                             {% if detail_changes.contacts_url and check_result.details.contacts_url %}
                                 <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'contacts_url' %}" style="display:inline;">
                                     <input type="hidden" name="value" value="{{ check_result.details.contacts_url }}">
