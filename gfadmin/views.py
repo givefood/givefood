@@ -3063,7 +3063,7 @@ def crawl_sets(request):
     orphaned_crawl_items = orphaned_crawl_items.order_by("-start")[:50]
 
     template_vars = {
-        "section":"settings",
+        "section":"crawl_sets",
         "crawl_sets":crawl_sets,
         "orphaned_crawl_items":orphaned_crawl_items,
         "crawl_type_options":crawl_type_options,
@@ -3080,7 +3080,7 @@ def crawl_set(request, crawl_set_id):
     crawl_items = CrawlItem.objects.filter(crawl_set=crawl_set).select_related('foodbank').order_by("object_id", "-start")
 
     template_vars = {
-        "section":"settings",
+        "section":"crawl_sets",
         "crawl_set":crawl_set,
         "crawl_items":crawl_items
     }
