@@ -533,26 +533,19 @@ def foodbank(request, slug):
     webpush_subscribers = WebPushSubscription.objects.filter(foodbank=foodbank)
     mobile_subscribers = MobileSubscriber.objects.filter(foodbank=foodbank)
     whatsapp_subscribers = WhatsappSubscriber.objects.filter(foodbank=foodbank)
-    
-    # Limit crawl items as already done
-    crawl_items = (
-        CrawlItem.objects
-        .filter(foodbank=foodbank)
-        .only('id', 'crawl_type', 'url', 'start', 'finish', 'foodbank_id')
-        .order_by("-finish")[:100]
-    )
+    crawl_items = CrawlItem.objects.filter(foodbank=foodbank).order_by("-start")[:100]
 
-    # Use count() for more efficient counting (don't evaluate full querysets)
-    locations_count = locations.count()
-    donation_points_count = donation_points.count()
-    needs_count = FoodbankChange.objects.filter(foodbank=foodbank).count()
-    orders_count = Order.objects.filter(foodbank=foodbank).count()
-    articles_count = articles.count()  # Keep this as-is since we limit to 20
-    subscribers_count = subscribers.count()
-    webpush_count = webpush_subscribers.count()
-    mobile_count = mobile_subscribers.count()
-    whatsapp_count = whatsapp_subscribers.count()
-    crawl_items_count = CrawlItem.objects.filter(foodbank=foodbank).count()
+    # Calculate counts from prefetched data where possible
+    locations_count = len(locations)
+    donation_points_count = len(donation_points)
+    needs_count = len(needs)
+    orders_count = len(orders)
+    articles_count = len(articles)
+    subscribers_count = len(subscribers)
+    webpush_count = len(webpush_subscribers)
+    mobile_count = len(mobile_subscribers)
+    whatsapp_count = len(whatsapp_subscribers)
+    crawl_items_count = CrawlItem.objects.filter(foodbank=foodbank).count()  # Count separately as we limit to 100
 
     subscriber_count = subscribers_count + webpush_count + mobile_count + whatsapp_count
 
