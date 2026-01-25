@@ -1186,9 +1186,9 @@ class TestFoodbankCheckDetailChanges:
         details = context['check_result']['details']
         detail_changes = context['detail_changes']
 
-        # All nullish strings should be empty
+        # All nullish strings should be None
         for key in mock_gemini.return_value['details'].keys():
             if key not in ('name', 'address', 'postcode', 'country'):
-                assert details[key] == ''
-                # Since ours are also empty, no change flagged
+                assert details[key] is None
+                # Since ours are also None/empty, no change flagged
                 assert detail_changes[key] is False

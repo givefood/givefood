@@ -1052,7 +1052,7 @@ def foodbank_check(request, slug):
     # Normalise AI-provided values that may come back as textual nulls
     def _normalise_nullish(value):
         if isinstance(value, str) and value.strip().lower() in ("none", "null", "nothing"):
-            return ""
+            return None
         return value
 
     for key, value in check_result["details"].items():
