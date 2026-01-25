@@ -503,7 +503,7 @@ def foodbank(request, slug):
     webpush_subscribers = WebPushSubscription.objects.filter(foodbank=foodbank)
     mobile_subscribers = MobileSubscriber.objects.filter(foodbank=foodbank)
     whatsapp_subscribers = WhatsappSubscriber.objects.filter(foodbank=foodbank)
-    crawl_items = CrawlItem.objects.filter(foodbank=foodbank).order_by("-finish")[:100]
+    crawl_items = CrawlItem.objects.filter(foodbank=foodbank).order_by("-start")[:100]
 
     # Calculate counts from prefetched data where possible
     locations_count = len(locations)
