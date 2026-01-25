@@ -494,11 +494,41 @@ def foodbank(request, slug):
     foodbank = get_object_or_404(Foodbank.objects.select_related('latest_need', 'foodbank_group'), slug = slug)
 
     # Prefetch all related data to avoid N+1 queries in template
-    locations = FoodbankLocation.objects.filter(foodbank=foodbank).order_by("name")
-    donation_points = FoodbankDonationPoint.objects.filter(foodbank=foodbank).order_by("name")
-    needs = FoodbankChange.objects.filter(foodbank=foodbank).order_by("-created")
-    orders = Order.objects.filter(foodbank=foodbank).order_by("-delivery_datetime")
-    articles = FoodbankArticle.objects.filter(foodbank=foodbank).order_by("-published_date")[:20]
+    # Optimize related object queries with only() to fetch only needed fields
+    locations = (
+        FoodbankLocation.objects
+        .filter(foodbank=foodbank)
+        .only('id', 'name', 'slug', 'address', 'postcode', 'place_id', 'place_has_photo')
+        .order_by("name")
+    )
+    
+    donation_points = (
+        FoodbankDonationPoint.objects
+        .filter(foodbank=foodbank)
+        .only('id', 'name', 'slug', 'address', 'postcode', 'place_id', 'place_has_photo')
+        .order_by("name")
+    )
+    
+    # Limit needs to most recent 200 to prevent loading thousands of records
+    needs = (
+        FoodbankChange.objects
+        .filter(foodbank=foodbank)
+        .order_by("-created")[:200]
+    )
+    
+    # Limit orders to most recent 200
+    orders = (
+        Order.objects
+        .filter(foodbank=foodbank)
+        .order_by("-delivery_datetime")[:200]
+    )
+    
+    articles = (
+        FoodbankArticle.objects
+        .filter(foodbank=foodbank)
+        .order_by("-published_date")[:20]
+    )
+    
     subscribers = FoodbankSubscriber.objects.filter(foodbank=foodbank)
     webpush_subscribers = WebPushSubscription.objects.filter(foodbank=foodbank)
     mobile_subscribers = MobileSubscriber.objects.filter(foodbank=foodbank)
@@ -608,7 +638,12 @@ def foodbank(request, slug):
     # Fetch all PlacePhotos in a single query (only if we have place_ids)
     place_photos = {}
     if place_ids:
-        place_photos = {pp.place_id: pp for pp in PlacePhoto.objects.filter(place_id__in=place_ids)}
+        place_photos = {
+            pp.place_id: pp 
+            for pp in PlacePhoto.objects
+                .filter(place_id__in=place_ids)
+                .only('place_id', 'photo_ref', 'html_attributions')
+        }
     
     # Build photos list with place information
     if foodbank.place_id and foodbank.place_has_photo and foodbank.place_id in place_photos:

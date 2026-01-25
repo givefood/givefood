@@ -750,6 +750,9 @@ class FoodbankLocation(models.Model):
     class Meta:
        unique_together = ('foodbank', 'name',)
        app_label = 'givefood'
+       indexes = [
+           models.Index(fields=['foodbank', 'name']),
+       ]
 
     def __str__(self):
         return self.name
@@ -1004,6 +1007,9 @@ class FoodbankDonationPoint(models.Model):
     class Meta:
        unique_together = ('foodbank', 'name',)
        app_label = 'givefood'
+       indexes = [
+           models.Index(fields=['foodbank', 'name']),
+       ]
 
     def __str__(self):
         return self.name
@@ -1283,6 +1289,9 @@ class Order(models.Model):
        # as unassigned orders are distinguished by their order_id which includes a timestamp.
        unique_together = ('foodbank', 'delivery_date', 'delivery_provider')
        app_label = 'givefood'
+       indexes = [
+           models.Index(fields=['foodbank', '-delivery_datetime']),
+       ]
 
     def __str__(self):
         return self.order_id
@@ -1598,6 +1607,9 @@ class FoodbankArticle(models.Model):
     
     class Meta:
         app_label = 'givefood'
+        indexes = [
+            models.Index(fields=['foodbank', '-published_date']),
+        ]
 
 
 class FoodbankGroup(models.Model):
@@ -1927,6 +1939,10 @@ class FoodbankChange(models.Model):
 
     class Meta:
         app_label = 'givefood'
+        indexes = [
+            models.Index(fields=['foodbank', '-created']),
+            models.Index(fields=['published', 'foodbank']),
+        ]
 
 
 class FoodbankChangeTranslation(models.Model):
@@ -2170,6 +2186,9 @@ class FoodbankSubscriber(models.Model):
     class Meta:
         unique_together = ('email', 'foodbank',)
         app_label = 'givefood'
+        indexes = [
+            models.Index(fields=['foodbank', 'confirmed']),
+        ]
 
     def foodbank_slug(self):
         return slugify(self.foodbank_name)
@@ -2346,6 +2365,12 @@ class CrawlItem(models.Model):
     def object_class_name(self):
         return self.content_object.__class__.__name__
     
+    class Meta:
+        app_label = 'givefood'
+        indexes = [
+            models.Index(fields=['foodbank', '-finish']),
+        ]
+
 
 class Dump(models.Model):
 
@@ -2400,6 +2425,9 @@ class WebPushSubscription(models.Model):
     class Meta:
         app_label = 'givefood'
         unique_together = ('foodbank', 'endpoint')
+        indexes = [
+            models.Index(fields=['foodbank', '-created']),
+        ]
     
     def __str__(self):
         return f"WebPush: {self.foodbank.name} - {self.endpoint[:50]}..."
@@ -2419,8 +2447,12 @@ class MobileSubscriber(models.Model):
     foodbank = models.ForeignKey(Foodbank, on_delete=models.CASCADE)
     donationpoint = models.ForeignKey(FoodbankDonationPoint, on_delete=models.CASCADE, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
+    
     class Meta:
         app_label = 'givefood'
+        indexes = [
+            models.Index(fields=['foodbank', '-created']),
+        ]
 
 
 class WhatsappSubscriber(models.Model):
@@ -2439,6 +2471,9 @@ class WhatsappSubscriber(models.Model):
     class Meta:
         app_label = 'givefood'
         unique_together = ('phone_number', 'foodbank')
+        indexes = [
+            models.Index(fields=['foodbank', '-created']),
+        ]
 
     def __str__(self):
         return f"WhatsApp: {self.phone_number} - {self.foodbank_name}"
