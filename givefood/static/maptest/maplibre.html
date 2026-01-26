@@ -116,6 +116,17 @@
                         'icon-image': props.icon,
                         'icon-size': props.size,
                         'icon-allow-overlap': true,
+                        'text-field': ['step', ['zoom'], '', 10, ['get', 'name']],
+                        'text-offset': [1, 0],
+                        'text-anchor': 'left',
+                        'text-size': 12,
+                        'text-max-width': 15,
+                        'text-optional': true,
+                    },
+                    'paint': {
+                        'text-color': '#333',
+                        'text-halo-color': '#fff',
+                        'text-halo-width': 1,
                     },
                     'filter': ['==', 'type', props.filter],
                 });
