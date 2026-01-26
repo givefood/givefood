@@ -45,6 +45,24 @@
     <script src="https://unpkg.com/maplibre-gl@^5.16.0/dist/maplibre-gl.js"></script>
     <script>
 
+        // Parse hash for initial map position
+        function getHashParams() {
+            const hash = window.location.hash.replace('#', '');
+            if (!hash) return null;
+            const parts = hash.split('/');
+            if (parts.length === 3) {
+                const zoom = parseFloat(parts[0]);
+                const lat = parseFloat(parts[1]);
+                const lng = parseFloat(parts[2]);
+                if (!isNaN(zoom) && !isNaN(lat) && !isNaN(lng)) {
+                    return { zoom, lat, lng };
+                }
+            }
+            return null;
+        }
+
+        const hashParams = getHashParams();
+
         function slugify(str) {
             str = str.replace(/^\s+|\s+$/g, ''); // trim
             str = str.toLowerCase();
@@ -66,8 +84,18 @@
         const map = new maplibregl.Map({
             container: 'map',
             style: 'https://tiles.openfreemap.org/styles/bright',
-            center: [-4, 55.4], 
-            zoom: 5,
+            center: hashParams ? [hashParams.lng, hashParams.lat] : [-4, 55.4], 
+            zoom: hashParams ? hashParams.zoom : 5,
+            hash: false,
+        });
+
+        // Update URL hash when map moves
+        map.on('moveend', () => {
+            const center = map.getCenter();
+            const zoom = map.getZoom().toFixed(2);
+            const lat = center.lat.toFixed(5);
+            const lng = center.lng.toFixed(5);
+            history.replaceState(null, null, `#${zoom}/${lat}/${lng}`);
         });
 
         const nav = new maplibregl.NavigationControl();
