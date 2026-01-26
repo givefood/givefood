@@ -22,6 +22,10 @@
             font-weight: 400;
             color:rgb(53, 55, 64);
         }
+        .maplibregl-popup-content .popup-title {
+            font-weight: 700;
+            margin-bottom: 0.5em;
+        }
         .maplibregl-popup-content .button {
             margin-top:10px;
         }
@@ -134,9 +138,9 @@
                 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
             }
 
-            html = "<div>" + name + "</div>"
+            html = "<div class='popup-title'>" + name + "</div>"
             if (address) {
-                html += "<br><address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>"
+                html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>"
             }
             if (type != "f") {
                 if (type == "l") {
