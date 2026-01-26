@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MapLibre</title>
-    <link href="https://unpkg.com/maplibre-gl@^5.5.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <link href="/static/css/maplibre-gl.css" rel="stylesheet" />
     <link rel="stylesheet" href="/static/css/bulma.min.css">
     <link rel="stylesheet" href="/static/css/gf.css">
     <link rel="stylesheet" href="/static/css/wfbn.css">
@@ -21,20 +21,47 @@
             font-size:16px;
             font-weight: 400;
             color:rgb(53, 55, 64);
+            padding:10px;
+        }
+        .maplibregl-popup-content .popup-title {
+            font-weight: 700;
+            margin-bottom: 0.5em;
         }
         .maplibregl-popup-content .button {
-            margin-top:10px;
+            margin-top:0.5em;
         }
         .maplibregl-popup-close-button {
             display:none;
+        }
+        .maplibregl-popup-content p {
+            padding:0;
+            margin-bottom:0.25em;
         }
     </style>
 </head>
 <body>
     <p>Some sample text before the map.</p>
     <div id="map"></div>
-    <script src="https://unpkg.com/maplibre-gl@^5.5.0/dist/maplibre-gl.js"></script>
+    <script src="/static/js/maplibre-gl.js"></script>
     <script>
+
+        // Parse hash for initial map position (format: x,y,zoom where x=lng, y=lat)
+        function getHashParams() {
+            const hash = window.location.hash.replace('#', '');
+            if (!hash) return null;
+            const parts = hash.split(',');
+            if (parts.length === 3) {
+                const lng = parseFloat(parts[0]);
+                const lat = parseFloat(parts[1]);
+                const zoom = parseFloat(parts[2]);
+                if (!isNaN(zoom) && !isNaN(lat) && !isNaN(lng)) {
+                    return { zoom, lat, lng };
+                }
+            }
+            return null;
+        }
+
+        const hashParams = getHashParams();
 
         function slugify(str) {
             str = str.replace(/^\s+|\s+$/g, ''); // trim
@@ -57,8 +84,18 @@
         const map = new maplibregl.Map({
             container: 'map',
             style: 'https://tiles.openfreemap.org/styles/bright',
-            center: [-4, 55.4], 
-            zoom: 5,
+            center: hashParams ? [hashParams.lng, hashParams.lat] : [-4, 55.4], 
+            zoom: hashParams ? hashParams.zoom : 5,
+            hash: false,
+        });
+
+        // Update URL hash when map moves (format: x,y,zoom where x=lng, y=lat)
+        map.on('moveend', () => {
+            const center = map.getCenter();
+            const zoom = map.getZoom().toFixed(2);
+            const lat = center.lat.toFixed(5);
+            const lng = center.lng.toFixed(5);
+            history.replaceState(null, null, `#${lng},${lat},${zoom}`);
         });
 
         const nav = new maplibregl.NavigationControl();
@@ -107,6 +144,17 @@
                         'icon-image': props.icon,
                         'icon-size': props.size,
                         'icon-allow-overlap': true,
+                        'text-field': ['step', ['zoom'], '', 12, ['get', 'name']],
+                        'text-offset': [1, 0],
+                        'text-anchor': 'left',
+                        'text-size': 12,
+                        'text-max-width': 15,
+                        'text-optional': true,
+                    },
+                    'paint': {
+                        'text-color': '#333',
+                        'text-halo-color': '#fff',
+                        'text-halo-width': 1,
                     },
                     'filter': ['==', 'type', props.filter],
                 });
@@ -134,9 +182,9 @@
                 coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
             }
 
-            html = "<div>" + name + "</div>"
+            html = "<div class='popup-title'>" + name + "</div>"
             if (address) {
-                html += "<br><address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>"
+                html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>"
             }
             if (type != "f") {
                 if (type == "l") {
@@ -146,7 +194,7 @@
                 }
                 html += "<a href='/needs/at/" + slugify(foodbank) + "/'>" + foodbank + "</a> Food Bank.</p>"
             }
-            html += "<a href='" + url + "' class='button is-info is-small'>More Information</a>"
+            html += "<a href='" + url + "' class='button is-info is-small is-light'>More Information</a>"
 
             new maplibregl.Popup()
                 .setLngLat(coordinates)
