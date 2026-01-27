@@ -189,7 +189,7 @@
         });
       }
 
-      // Add service area (local bounds) layer for boundary polygons
+      // Add location boundary layer for foodbank location polygons (type "lb")
       map.addLayer({
         'id': 'service-area',
         'type': 'fill',
@@ -265,14 +265,14 @@
         .addTo(map);
     });
 
-    // Handle service area (polygon) clicks separately - use click location for popup
+    // Handle location boundary (polygon) clicks separately - use click location for popup
     map.on('click', 'service-area', (e) => {
       const name = e.features[0].properties.name;
       const url = e.features[0].properties.url;
       const foodbank = e.features[0].properties.foodbank;
 
       let html = "<div class='popup-title'>" + name + "</div>"
-      html += "<p>Service area for <a href='/needs/at/" + slugify(foodbank) + "/'>" + foodbank + "</a> Food Bank.</p>"
+      html += "<p>Location boundary for <a href='/needs/at/" + slugify(foodbank) + "/'>" + foodbank + "</a> Food Bank.</p>"
       html += "<a href='" + url + "' class='button is-info is-small is-light'>More Information</a>"
 
       new maplibregl.Popup()

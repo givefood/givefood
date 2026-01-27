@@ -155,7 +155,7 @@ function initMap() {
             });
         }
 
-        // Add service area (local bounds) layer if needed
+        // Add location boundary layer for foodbank location polygons
         map.addLayer({
             'id': 'service-area',
             'type': 'fill',
@@ -240,12 +240,12 @@ function initMap() {
         }
     });
 
-    // Handle service area clicks
+    // Handle location boundary clicks
     map.on('click', 'service-area', (e) => {
         handleServiceAreaClick(e);
     });
 
-    // Set cursor for service area polygons
+    // Set cursor for location boundary polygons
     map.on('mouseenter', 'service-area', () => {
         map.getCanvas().style.cursor = 'pointer';
     });
@@ -267,7 +267,7 @@ function initMap() {
 }
 
 /**
- * Handle click on service area polygon
+ * Handle click on location boundary polygon
  * @param {object} e - Click event
  */
 function handleServiceAreaClick(e) {
@@ -346,7 +346,7 @@ function handleNavigationClick(e) {
 /**
  * Build HTML content for popup
  * @param {string} name - Location name
- * @param {string} type - Location type (f, l, d)
+ * @param {string} type - Location type (f, l, d, lb)
  * @param {string} address - Location address
  * @param {string} url - Location URL
  * @param {string} foodbank - Parent foodbank name
@@ -366,7 +366,7 @@ function buildPopupContent(name, type, address, url, foodbank) {
         } else if (type === "d") {
             html += "<p>Donation point for ";
         } else if (type === "lb") {
-            html += "<p>Service area for ";
+            html += "<p>Location boundary for ";
         }
         html += "<a href='/needs/at/" + foodbankSlug + "/'>" + foodbank + "</a> Food Bank.</p>";
     }
