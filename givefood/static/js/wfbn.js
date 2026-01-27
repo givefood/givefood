@@ -210,9 +210,22 @@ function initMap() {
         });
 
         // Fit bounds if no initial position specified
-        // Fetch the GeoJSON directly to calculate accurate bounds
-        if (!hasPosition && config.geojson) {
-            fitMapToBoundsFromGeoJSON(config.geojson);
+        if (!hasPosition) {
+            // Use precomputed bounds if available (faster, no extra request)
+            if (config.bounds) {
+                const bounds = [
+                    [config.bounds.west, config.bounds.south],  // SW corner
+                    [config.bounds.east, config.bounds.north]   // NE corner
+                ];
+                const maxZoom = config.max_zoom || 15;
+                map.fitBounds(bounds, {
+                    padding: 50,
+                    maxZoom: maxZoom,
+                });
+            } else if (config.geojson) {
+                // Fall back to fetching GeoJSON for bounds calculation
+                fitMapToBoundsFromGeoJSON(config.geojson);
+            }
         }
 
         // Add location marker if configured
