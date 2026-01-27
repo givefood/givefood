@@ -273,6 +273,8 @@ def foodbank(request, slug):
                 "registration_id":foodbank.charity_number,
                 "register_url":foodbank.charity_register_url(),
             },
+            "delivery_address":foodbank.delivery_address,
+            "delivery_lat_lng":foodbank.delivery_lat_lng,
             "locations": location_list,
             "donationpoints": donationpoint_list,
             "politics": {
