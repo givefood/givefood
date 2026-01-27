@@ -201,9 +201,13 @@ function initMap() {
             'filter': ['has', 'PCON24NM'],
         });
 
-        // Fit bounds if no initial position specified
+        // Fit bounds if no initial position specified - wait for source to load
         if (!hasPosition) {
-            fitMapToBounds();
+            map.once('sourcedata', (e) => {
+                if (e.sourceId === 'givefood' && e.isSourceLoaded) {
+                    fitMapToBounds();
+                }
+            });
         }
 
         // Add location marker if configured
@@ -380,29 +384,57 @@ function buildPopupContent(name, type, address, url, foodbank) {
  * Fit map to show all markers
  */
 function fitMapToBounds() {
-    // Query all features from the source using the public API
-    const features = map.querySourceFeatures('givefood');
-    if (!features || features.length === 0) return;
-
+    // Query features from all visible layers
+    const allLayers = [...layerList, 'service-area', 'constituency'];
     const bounds = new maplibregl.LngLatBounds();
+    let hasFeatures = false;
 
-    features.forEach((feature) => {
-        if (feature.geometry.type === 'Point') {
-            bounds.extend(feature.geometry.coordinates);
-        } else if (feature.geometry.type === 'Polygon') {
-            feature.geometry.coordinates[0].forEach((coord) => {
-                bounds.extend(coord);
+    allLayers.forEach((layerId) => {
+        try {
+            const features = map.querySourceFeatures('givefood', { sourceLayer: layerId });
+            features.forEach((feature) => {
+                hasFeatures = true;
+                if (feature.geometry.type === 'Point') {
+                    bounds.extend(feature.geometry.coordinates);
+                } else if (feature.geometry.type === 'Polygon') {
+                    feature.geometry.coordinates[0].forEach((coord) => {
+                        bounds.extend(coord);
+                    });
+                } else if (feature.geometry.type === 'MultiPolygon') {
+                    feature.geometry.coordinates.forEach((polygon) => {
+                        polygon[0].forEach((coord) => {
+                            bounds.extend(coord);
+                        });
+                    });
+                }
             });
-        } else if (feature.geometry.type === 'MultiPolygon') {
-            feature.geometry.coordinates.forEach((polygon) => {
-                polygon[0].forEach((coord) => {
-                    bounds.extend(coord);
-                });
-            });
+        } catch (e) {
+            // Layer might not exist, continue
         }
     });
 
-    if (!bounds.isEmpty()) {
+    // Fallback: try querying without sourceLayer filter
+    if (!hasFeatures) {
+        const features = map.querySourceFeatures('givefood');
+        features.forEach((feature) => {
+            hasFeatures = true;
+            if (feature.geometry.type === 'Point') {
+                bounds.extend(feature.geometry.coordinates);
+            } else if (feature.geometry.type === 'Polygon') {
+                feature.geometry.coordinates[0].forEach((coord) => {
+                    bounds.extend(coord);
+                });
+            } else if (feature.geometry.type === 'MultiPolygon') {
+                feature.geometry.coordinates.forEach((polygon) => {
+                    polygon[0].forEach((coord) => {
+                        bounds.extend(coord);
+                    });
+                });
+            }
+        });
+    }
+
+    if (hasFeatures && !bounds.isEmpty()) {
         const maxZoom = window.gfMapConfig.max_zoom || 15;
         map.fitBounds(bounds, {
             padding: 50,
