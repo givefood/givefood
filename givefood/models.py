@@ -315,7 +315,7 @@ class Foodbank(models.Model):
     def has_service_area(self):
         if self.no_locations == 0:
             return False
-        locations = FoodbankLocation.objects.filter(foodbank = self, boundary_geojson__isnull = False).count()
+        locations = FoodbankLocation.objects.filter(foodbank = self).exclude(boundary_geojson__isnull = True).exclude(boundary_geojson = '').count()
         if locations == 0:
             return False
         return True
@@ -480,6 +480,10 @@ class Foodbank(models.Model):
         # FB coordinates as base
         fb_lat = float(self.latitude)
         fb_lng = float(self.longitude)
+
+        # If the model hasn't been saved yet, just use the foodbank coordinates
+        if not self.pk:
+            return (fb_lat, fb_lat, fb_lng, fb_lng)
 
         # Locations
         loc_max_lat = FoodbankLocation.objects.filter(foodbank=self).aggregate(Max('latitude'))['latitude__max']
