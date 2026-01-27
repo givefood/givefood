@@ -601,6 +601,13 @@ def about_us(request):
     return render(request, "public/about_us.html")
 
 
+def maplibre_test(request):
+    """
+    MapLibre test page - test page for MapLibre GL JS map rendering
+    """
+    return render(request, "public/tests/maplibre.html")
+
+
 @cache_page(SECONDS_IN_WEEK)
 def api(request):
     """

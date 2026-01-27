@@ -45,6 +45,22 @@ class TestStaticPages:
 
 
 @pytest.mark.django_db
+class TestTestPages:
+    """Test test/development pages."""
+
+    def test_maplibre_test_page(self, client):
+        """Test that the MapLibre test page is accessible."""
+        response = client.get('/tests/maplibre/')
+        assert response.status_code == 200
+        # Verify key elements are present
+        content = response.content.decode('utf-8')
+        assert 'MapLibre Test' in content
+        assert 'maplibre-gl.css' in content
+        assert 'maplibre-gl.js' in content
+        assert 'legendtemplate' in content
+
+
+@pytest.mark.django_db
 class TestFoodbankPages:
     """Test food bank related pages."""
 

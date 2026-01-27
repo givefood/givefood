@@ -68,6 +68,9 @@ urlpatterns += [
     path("whatsapp_hook/", givefood.views.whatsapp_hook, name="whatsapp_hook"),
     path("services/", givefood.views.services, name="services"),
 
+    # Test pages
+    path("tests/maplibre/", givefood.views.maplibre_test, name="maplibre_test"),
+
     # Rickrolling
     path("wp-login.php", RedirectView.as_view(url=RICK_ASTLEY)),
 
