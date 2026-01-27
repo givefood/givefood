@@ -100,17 +100,36 @@ function initMap() {
     // Determine initial center and zoom
     // Use hasPosition to check if we should use a fixed position or fit to bounds later
     const hasPosition = typeof config.lat !== "undefined" && typeof config.lng !== "undefined";
-    // Default center is UK, default zoom is 5 to show the whole UK
-    const initialCenter = hasPosition ? [parseFloat(config.lng), parseFloat(config.lat)] : [-4, 55.4];
-    const initialZoom = hasPosition ? (config.zoom || 13) : 5;
     
-    map = new maplibregl.Map({
+    // Build map options
+    const mapOptions = {
         container: 'map',
         style: 'https://tiles.openfreemap.org/styles/bright',
-        center: initialCenter,
-        zoom: initialZoom,
         attributionControl: false, // Disable default attribution
-    });
+    };
+
+    // Set initial view based on available config
+    if (hasPosition) {
+        // Use explicit lat/lng/zoom
+        mapOptions.center = [parseFloat(config.lng), parseFloat(config.lat)];
+        mapOptions.zoom = config.zoom || 13;
+    } else if (config.bounds) {
+        // Use precomputed bounds for initial view (no animation needed)
+        mapOptions.bounds = [
+            [config.bounds.west, config.bounds.south],  // SW corner
+            [config.bounds.east, config.bounds.north]   // NE corner
+        ];
+        mapOptions.fitBoundsOptions = {
+            padding: 50,
+            maxZoom: config.max_zoom || 15,
+        };
+    } else {
+        // Default to UK center
+        mapOptions.center = [-4, 55.4];
+        mapOptions.zoom = 5;
+    }
+    
+    map = new maplibregl.Map(mapOptions);
 
     // Add compact attribution control (collapsed by default)
     map.addControl(new maplibregl.AttributionControl({
@@ -209,23 +228,11 @@ function initMap() {
             'filter': ['has', 'PCON24NM'],
         });
 
-        // Fit bounds if no initial position specified
-        if (!hasPosition) {
-            // Use precomputed bounds if available (faster, no extra request)
-            if (config.bounds) {
-                const bounds = [
-                    [config.bounds.west, config.bounds.south],  // SW corner
-                    [config.bounds.east, config.bounds.north]   // NE corner
-                ];
-                const maxZoom = config.max_zoom || 15;
-                map.fitBounds(bounds, {
-                    padding: 50,
-                    maxZoom: maxZoom,
-                });
-            } else if (config.geojson) {
-                // Fall back to fetching GeoJSON for bounds calculation
-                fitMapToBoundsFromGeoJSON(config.geojson);
-            }
+        // Fit bounds if no initial position and no precomputed bounds
+        // (precomputed bounds are handled at map creation time)
+        if (!hasPosition && !config.bounds && config.geojson) {
+            // Fall back to fetching GeoJSON for bounds calculation
+            fitMapToBoundsFromGeoJSON(config.geojson);
         }
 
         // Add location marker if configured
