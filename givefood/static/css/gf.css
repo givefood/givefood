@@ -307,17 +307,19 @@ del {
     background:#fff;
     padding:5px;
     margin:5px;
-    border:1px solid rgb(53, 55, 64);
+    border:1px solid #dbdbdb;
+    border-radius:4px;
+    font-size:0.85em;
 }
 #legend img {
-    width:22px;
+    width:18px;
     vertical-align:middle;
 }
 #legend .deliveryarea {
     display:inline-block;
-    margin:4px;
-    width:14px;
-    height:14px;
+    margin:3px;
+    width:12px;
+    height:12px;
     vertical-align:middle;
     background:rgb(247, 167, 35, 0.2);
     border:1px solid rgb(247, 167, 35);
@@ -327,6 +329,35 @@ del {
     font-size:0.9em;
     font-style:italic;
 }
+/* MapLibre popup styles */
+.maplibregl-popup {
+    max-width: 300px;
+}
+.maplibregl-popup-content {
+    font-family:"Soehne Buch","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:16px;
+    font-weight: 400;
+    color:rgb(53, 55, 64);
+    padding:10px;
+}
+.maplibregl-popup-content .popup-title {
+    font-weight: 700;
+    margin-bottom: 0.5em;
+}
+.maplibregl-popup-content .button {
+    margin-top:0.5em;
+}
+.maplibregl-popup-close-button {
+    display:none;
+}
+.maplibregl-popup-content p {
+    padding:0;
+    margin-bottom:0.25em;
+}
+.maplibregl-popup-content address {
+    margin-bottom:0.5em;
+}
+/* Legacy Google Maps styles - kept for backwards compatibility */
 .gm-style-iw {
     width: auto !important;
     height: auto !important;
@@ -363,7 +394,7 @@ address {
     margin:1cm;
 }
 @media print {
-    .breadcrumb, .menu-col, .cta, .subscribe-form, .directions-btn, footer, .gm-fullscreen-control, .subscribe, .links, #usemylocationbtn, #addressform {
+    .breadcrumb, .menu-col, .cta, .subscribe-form, .directions-btn, footer, .maplibregl-ctrl, .subscribe, .links, #usemylocationbtn, #addressform {
         display:none;
     }
 }

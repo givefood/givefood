@@ -116,7 +116,13 @@
       center: hashParams ? [hashParams.lng, hashParams.lat] : [-4, 55.4], 
       zoom: hashParams ? hashParams.zoom : 5,
       hash: false,
+      attributionControl: false,
     });
+
+    // Add compact attribution control (collapsed by default)
+    map.addControl(new maplibregl.AttributionControl({
+      compact: true,
+    }));
 
     // Update URL hash when map moves (format: x,y,zoom where x=lng, y=lat)
     map.on('moveend', () => {
@@ -189,6 +195,29 @@
         });
       }
 
+      // Add location boundary layer for foodbank location polygons (type "lb")
+      map.addLayer({
+        'id': 'service-area',
+        'type': 'fill',
+        'source': 'givefood',
+        'paint': {
+          'fill-color': '#f7a723',
+          'fill-opacity': 0.2,
+        },
+        'filter': ['==', 'type', 'lb'],
+      });
+
+      map.addLayer({
+        'id': 'service-area-outline',
+        'type': 'line',
+        'source': 'givefood',
+        'paint': {
+          'line-color': '#f7a723',
+          'line-width': 1,
+        },
+        'filter': ['==', 'type', 'lb'],
+      });
+
       // Show legend on top of map after map loads
       const legendTemplate = document.querySelector("#legendtemplate");
       if (legendTemplate) {
@@ -199,11 +228,14 @@
 
     });
 
-    map.on('mouseenter', layer_list, () => {
+    // Include service-area in the list of clickable layers
+    const allClickableLayers = [...layer_list, 'service-area'];
+
+    map.on('mouseenter', allClickableLayers, () => {
       map.getCanvas().style.cursor = 'pointer';
     });
 
-    map.on('mouseleave', layer_list, () => {
+    map.on('mouseleave', allClickableLayers, () => {
       map.getCanvas().style.cursor = '';
     });
 
@@ -235,6 +267,22 @@
 
       new maplibregl.Popup()
         .setLngLat(coordinates)
+        .setHTML(html)
+        .addTo(map);
+    });
+
+    // Handle location boundary (polygon) clicks separately - use click location for popup
+    map.on('click', 'service-area', (e) => {
+      const name = e.features[0].properties.name;
+      const url = e.features[0].properties.url;
+      const foodbank = e.features[0].properties.foodbank;
+
+      let html = "<div class='popup-title'>" + name + "</div>"
+      html += "<p>Location boundary for <a href='/needs/at/" + slugify(foodbank) + "/'>" + foodbank + "</a> Food Bank.</p>"
+      html += "<a href='" + url + "' class='button is-info is-small is-light'>More Information</a>"
+
+      new maplibregl.Popup()
+        .setLngLat(e.lngLat)
         .setHTML(html)
         .addTo(map);
     });

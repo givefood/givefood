@@ -205,7 +205,7 @@ def index(request):
         "geojson":reverse("wfbn:geojson"),
         "lat": 55.4,
         "lng": -4,
-        "zoom": 6,
+        "zoom": 5,
         "location_marker": False,
     }
     map_config = json.dumps(map_config)
@@ -526,7 +526,7 @@ def managed_donation(request, slug, key):
         "geojson":reverse("managed_donation_geojson", kwargs={"slug":slug, "key":key}),
         "lat": 55.4,
         "lng": -4,
-        "zoom": 6,
+        "zoom": 5,
         "location_marker": False,
     }
     map_config = json.dumps(map_config)
