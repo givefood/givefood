@@ -125,14 +125,13 @@ document.addEventListener('DOMContentLoaded', function() {
             },
         });
 
-        // Fit bounds to constituencies
-        const source = map.getSource('constituencies');
+        // Fit bounds to constituencies using public API
         map.once('sourcedata', (e) => {
             if (e.sourceId === 'constituencies' && e.isSourceLoaded) {
                 const bounds = new maplibregl.LngLatBounds();
-                const data = source._data;
-                if (data && data.features) {
-                    data.features.forEach((feature) => {
+                const features = map.querySourceFeatures('constituencies');
+                if (features && features.length > 0) {
+                    features.forEach((feature) => {
                         if (feature.geometry.type === 'Polygon') {
                             feature.geometry.coordinates[0].forEach((coord) => {
                                 bounds.extend(coord);

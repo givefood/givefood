@@ -380,15 +380,13 @@ function buildPopupContent(name, type, address, url, foodbank) {
  * Fit map to show all markers
  */
 function fitMapToBounds() {
-    const source = map.getSource('givefood');
-    if (!source) return;
-
-    const data = source._data;
-    if (!data || !data.features || data.features.length === 0) return;
+    // Query all features from the source using the public API
+    const features = map.querySourceFeatures('givefood');
+    if (!features || features.length === 0) return;
 
     const bounds = new maplibregl.LngLatBounds();
 
-    data.features.forEach((feature) => {
+    features.forEach((feature) => {
         if (feature.geometry.type === 'Point') {
             bounds.extend(feature.geometry.coordinates);
         } else if (feature.geometry.type === 'Polygon') {
