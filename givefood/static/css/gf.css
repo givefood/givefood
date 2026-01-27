@@ -308,16 +308,17 @@ del {
     padding:5px;
     margin:5px;
     border:1px solid rgb(53, 55, 64);
+    font-size:0.85em;
 }
 #legend img {
-    width:22px;
+    width:18px;
     vertical-align:middle;
 }
 #legend .deliveryarea {
     display:inline-block;
-    margin:4px;
-    width:14px;
-    height:14px;
+    margin:3px;
+    width:12px;
+    height:12px;
     vertical-align:middle;
     background:rgb(247, 167, 35, 0.2);
     border:1px solid rgb(247, 167, 35);

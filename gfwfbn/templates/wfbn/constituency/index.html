@@ -94,7 +94,13 @@ document.addEventListener('DOMContentLoaded', function() {
         style: 'https://tiles.openfreemap.org/styles/bright',
         center: [-4, 55],
         zoom: 5,
+        attributionControl: false,
     });
+
+    // Add compact attribution control (collapsed by default)
+    map.addControl(new maplibregl.AttributionControl({
+        compact: true,
+    }));
 
     const nav = new maplibregl.NavigationControl();
     map.addControl(nav, 'top-right');

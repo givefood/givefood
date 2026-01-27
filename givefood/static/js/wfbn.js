@@ -109,7 +109,13 @@ function initMap() {
         style: 'https://tiles.openfreemap.org/styles/bright',
         center: initialCenter,
         zoom: initialZoom,
+        attributionControl: false, // Disable default attribution
     });
+
+    // Add compact attribution control (collapsed by default)
+    map.addControl(new maplibregl.AttributionControl({
+        compact: true,
+    }));
 
     // Add navigation controls
     const nav = new maplibregl.NavigationControl();
@@ -454,17 +460,13 @@ function addMapLegend() {
         const legendClone = legendTemplate.content.cloneNode(true);
         const legend = legendClone.querySelector("#legend");
         
-        // Find the map container and append the legend
-        const mapContainer = mapElement.closest('.map-container') || mapElement.parentElement;
-        if (mapContainer) {
-            // Set position relative on parent if needed
-            if (getComputedStyle(mapContainer).position === 'static') {
-                mapContainer.style.position = 'relative';
-            }
-            mapContainer.appendChild(legend);
+        // Append to the map's container element (inside the map div)
+        // MapLibre creates a canvas-container inside the map element
+        if (mapElement) {
+            mapElement.appendChild(legend);
             legend.style.display = 'block';
             legend.style.position = 'absolute';
-            legend.style.bottom = '10px';
+            legend.style.bottom = '30px';
             legend.style.left = '10px';
             legend.style.zIndex = '1';
         }
