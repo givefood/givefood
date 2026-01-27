@@ -1,9 +1,5 @@
+<link rel="stylesheet" href="/static/css/maplibre-gl.css">
+<script src="/static/js/maplibre-gl.js"></script>
 <script>
-    // Combined map configuration
-    window.gfMapConfig = Object.assign({}, {{ map_config|safe }}, {
-        apiKey: '{{ gmap_key }}',
-        libraries: 'places,marker',
-        region: 'GB',
-        language: '{{ language_code }}'
-    });
+    window.gfMapConfig = {{ map_config|safe }};
 </script>

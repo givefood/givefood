@@ -164,6 +164,12 @@ class Foodbank(models.Model):
     days_between_needs = models.IntegerField(editable=False, default=0)
     footprint = models.IntegerField(editable=False, default=0)
 
+    # Map bounds (precomputed bounding box for all locations/donation points)
+    bounds_north = models.FloatField(editable=False, null=True, blank=True, help_text="Northern boundary latitude")
+    bounds_south = models.FloatField(editable=False, null=True, blank=True, help_text="Southern boundary latitude")
+    bounds_east = models.FloatField(editable=False, null=True, blank=True, help_text="Eastern boundary longitude")
+    bounds_west = models.FloatField(editable=False, null=True, blank=True, help_text="Western boundary longitude")
+
     def __str__(self):
         return self.name
 
@@ -466,6 +472,34 @@ class Foodbank(models.Model):
         area_m2 = height_m * width_m
         return int(area_m2)
     
+    def get_bounds(self):
+        """
+        Calculate the bounding box for all foodbank locations and donation points.
+        Returns a tuple of (north, south, east, west) latitudes/longitudes or None if no locations.
+        """
+        # FB coordinates as base
+        fb_lat = float(self.latitude)
+        fb_lng = float(self.longitude)
+
+        # Locations
+        loc_max_lat = FoodbankLocation.objects.filter(foodbank=self).aggregate(Max('latitude'))['latitude__max']
+        loc_min_lat = FoodbankLocation.objects.filter(foodbank=self).aggregate(Min('latitude'))['latitude__min']
+        loc_max_lng = FoodbankLocation.objects.filter(foodbank=self).aggregate(Max('longitude'))['longitude__max']
+        loc_min_lng = FoodbankLocation.objects.filter(foodbank=self).aggregate(Min('longitude'))['longitude__min']
+
+        # Donation Points
+        dp_max_lat = FoodbankDonationPoint.objects.filter(foodbank=self).aggregate(Max('latitude'))['latitude__max']
+        dp_min_lat = FoodbankDonationPoint.objects.filter(foodbank=self).aggregate(Min('latitude'))['latitude__min']
+        dp_max_lng = FoodbankDonationPoint.objects.filter(foodbank=self).aggregate(Max('longitude'))['longitude__max']
+        dp_min_lng = FoodbankDonationPoint.objects.filter(foodbank=self).aggregate(Min('longitude'))['longitude__min']
+
+        north = max(x for x in [fb_lat, loc_max_lat, dp_max_lat] if x is not None)
+        south = min(x for x in [fb_lat, loc_min_lat, dp_min_lat] if x is not None)
+        east = max(x for x in [fb_lng, loc_max_lng, dp_max_lng] if x is not None)
+        west = min(x for x in [fb_lng, loc_min_lng, dp_min_lng] if x is not None)
+
+        return (north, south, east, west)
+
 
     def get_no_locations(self):
         if not self.pk:
@@ -574,6 +608,13 @@ class Foodbank(models.Model):
 
         # Footprint
         self.footprint = self.get_footprint()
+
+        # Map bounds
+        bounds = self.get_bounds()
+        self.bounds_north = bounds[0]
+        self.bounds_south = bounds[1]
+        self.bounds_east = bounds[2]
+        self.bounds_west = bounds[3]
 
         # Cleanup phone numbers
         if self.phone_number:

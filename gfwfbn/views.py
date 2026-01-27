@@ -355,6 +355,14 @@ def foodbank(request, slug):
         "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
         "max_zoom":14,
     }
+    # Add precomputed bounds if available
+    if foodbank.bounds_north is not None:
+        map_config["bounds"] = {
+            "north": foodbank.bounds_north,
+            "south": foodbank.bounds_south,
+            "east": foodbank.bounds_east,
+            "west": foodbank.bounds_west,
+        }
     map_config = json.dumps(map_config)
 
     template_vars = {
@@ -525,6 +533,14 @@ def foodbank_locations(request,slug):
     map_config = {
         "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
     }
+    # Add precomputed bounds if available
+    if foodbank.bounds_north is not None:
+        map_config["bounds"] = {
+            "north": foodbank.bounds_north,
+            "south": foodbank.bounds_south,
+            "east": foodbank.bounds_east,
+            "west": foodbank.bounds_west,
+        }
     map_config = json.dumps(map_config)
 
     template_vars = {
@@ -549,6 +565,14 @@ def foodbank_donationpoints(request,slug):
     map_config = {
         "geojson":reverse("wfbn:foodbank_geojson", kwargs={"slug":foodbank.slug}),
     }
+    # Add precomputed bounds if available
+    if foodbank.bounds_north is not None:
+        map_config["bounds"] = {
+            "north": foodbank.bounds_north,
+            "south": foodbank.bounds_south,
+            "east": foodbank.bounds_east,
+            "west": foodbank.bounds_west,
+        }
     map_config = json.dumps(map_config)
 
     template_vars = {

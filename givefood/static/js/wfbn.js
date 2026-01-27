@@ -1,6 +1,5 @@
-// Configuration
-const IP_GEOLOCATION_URL = "/needs/getlocation/";
-const GMAP_MAPID = "d149d3a77fb8625a";
+// MapLibre-based map functionality for Give Food
+// Replaces the previous Google Maps implementation
 
 // DOM Elements
 const addressField = document.querySelector("#address_field");
@@ -11,164 +10,38 @@ const mapElement = document.querySelector("#map");
 
 // Global Variables
 let map;
-let autocomplete;
-let googleMapsLoaded = false;
-let googleMapsLoading = false;
-let autocompleteInitialized = false;
+let currentPopup = null;
+
+// Layer configuration for different marker types
+const layers = {
+    'donationpoints': {
+        'icon': 'dpmrkr',
+        'size': 0.15,
+        'filter': 'd',
+    },
+    'locations': {
+        'icon': 'locmrkr',
+        'size': 0.2,
+        'filter': 'l',
+    },
+    'foodbanks': {
+        'icon': 'orgmrkr',
+        'size': 0.25,
+        'filter': 'f',
+    },
+};
+const layerList = Object.keys(layers);
 
 /**
  * Initialize the page functionality
  */
 function init() {
-    // Check if Google Maps is already loaded (via old callback method)
-    if (typeof google !== 'undefined' && google.maps) {
-        googleMapsLoaded = true;
-        onGoogleMapsLoaded();
-        return;
-    }
-
-    if (addressForm) {
-        // For address autocomplete, we need Google Maps API loaded immediately
-        // Load first to avoid race condition with map observer
-        loadGoogleMapsAPI();
-    } else if (mapElement) {
-        // Only use lazy loading if there's no address form
-        observeMapElement();
+    if (mapElement && typeof window.gfMapConfig !== 'undefined') {
+        initMap();
     }
 
     if (useMyLocationBtn) {
         initLocationButton();
-    }
-}
-
-/**
- * Observe map element and load Google Maps when it enters viewport
- */
-function observeMapElement() {
-    // Check if IntersectionObserver is supported
-    if (!('IntersectionObserver' in window)) {
-        // Fallback: load immediately if IntersectionObserver not supported
-        loadGoogleMapsAPI();
-        return;
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting && !googleMapsLoaded && !googleMapsLoading) {
-                loadGoogleMapsAPI();
-                // Unobserve after loading starts
-                observer.unobserve(mapElement);
-            }
-        });
-    }, {
-        // Start loading slightly before element enters viewport
-        rootMargin: '50px'
-    });
-
-    observer.observe(mapElement);
-}
-
-/**
- * Dynamically load Google Maps API
- */
-function loadGoogleMapsAPI() {
-    if (googleMapsLoaded || googleMapsLoading) {
-        return;
-    }
-
-    // Check if already loaded by script tag
-    if (typeof google !== 'undefined' && google.maps) {
-        googleMapsLoaded = true;
-        onGoogleMapsLoaded();
-        return;
-    }
-
-    googleMapsLoading = true;
-
-    // Get configuration from window object set by template
-    if (typeof window.gfMapConfig === 'undefined') {
-        console.error('Google Maps configuration not found');
-        googleMapsLoading = false;
-        return;
-    }
-
-    const config = window.gfMapConfig;
-    const script = document.createElement('script');
-    
-    // Properly encode URL parameters to prevent injection and handle special characters
-    const params = new URLSearchParams({
-        key: config.apiKey,
-        libraries: config.libraries,
-        region: config.region,
-        language: config.language
-    });
-    
-    script.src = `https://maps.googleapis.com/maps/api/js?${params.toString()}`;
-    script.async = true;
-    script.defer = true;
-
-    script.onload = () => {
-        // Wait for Google Maps API to be fully initialized
-        const checkGoogleMaps = () => {
-            if (typeof google !== 'undefined' && google.maps && google.maps.Map) {
-                googleMapsLoaded = true;
-                googleMapsLoading = false;
-                onGoogleMapsLoaded();
-            } else {
-                // Retry after a short delay if not yet initialized
-                setTimeout(checkGoogleMaps, 50);
-            }
-        };
-        checkGoogleMaps();
-    };
-
-    script.onerror = () => {
-        console.error('Failed to load Google Maps API');
-        googleMapsLoading = false;
-    };
-
-    document.head.appendChild(script);
-}
-
-/**
- * Called when Google Maps API has finished loading
- */
-function onGoogleMapsLoaded() {
-    if (mapElement) {
-        initMap();
-    }
-
-    if (addressForm && !autocompleteInitialized) {
-        initAddressAutocomplete();
-    }
-}
-
-/**
- * Initialize Google Places autocomplete
- */
-function initAddressAutocomplete() {
-    if (autocompleteInitialized) {
-        return;
-    }
-    
-    try {
-        autocomplete = new google.maps.places.Autocomplete(addressField, {
-            types: ["geocode"]
-        });
-        
-        autocomplete.setComponentRestrictions({
-            country: ["gb", "im", "je", "gg"]
-        });
-        
-        autocomplete.addListener("place_changed", () => {
-            const place = autocomplete.getPlace();
-            const location = place.geometry.location;
-            latLngField.value = `${location.lat()},${location.lng()}`;
-        });
-        
-        autocompleteInitialized = true;
-    } catch (error) {
-        console.error('Failed to initialize address autocomplete:', error);
     }
 }
 
@@ -186,41 +59,13 @@ function initLocationButton() {
             navigator.geolocation.getCurrentPosition((position) => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
-                addressField.value = "";
+                if (addressField) {
+                    addressField.value = "";
+                }
                 window.location = `${url}?lat_lng=${lat},${lng}`;
             });
         }
     });
-}
-
-/**
- * Move map to specified location and add optional marker
- * @param {number} lat - Latitude
- * @param {number} lng - Longitude
- * @param {number} zoom - Zoom level
- */
-function move_map(lat, lng, zoom) {
-    if (typeof map === "undefined") {
-        return;
-    }
-
-    map.panTo(new google.maps.LatLng(lat, lng));
-    map.setZoom(zoom);
-
-    if (window.gfMapConfig.location_marker === true) {
-        new google.maps.Marker({
-            position: new google.maps.LatLng(lat, lng),
-            map: map,
-            icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 7,
-                fillColor: "#4385F4",
-                fillOpacity: 0.8,
-                strokeColor: "#fff",
-                strokeWeight: 2,
-            },
-        });
-    }
 }
 
 /**
@@ -247,64 +92,382 @@ function slugify(str) {
 }
 
 /**
- * Initialize Google Map with food bank locations
+ * Initialize MapLibre map with food bank locations
  */
 function initMap() {
-    const infowindow = new google.maps.InfoWindow();
+    const config = window.gfMapConfig;
     
-    map = new google.maps.Map(mapElement, {
-        center: new google.maps.LatLng(55.4, -4),
-        zoom: 6,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: false,
-        fullscreenControl: false,
-        streetViewControl: false,
-        mapId: GMAP_MAPID,
-    });
+    // Determine initial center and zoom
+    // Use hasPosition to check if we should use a fixed position or fit to bounds later
+    const hasPosition = typeof config.lat !== "undefined" && typeof config.lng !== "undefined";
+    
+    // Build map options
+    const mapOptions = {
+        container: 'map',
+        style: 'https://tiles.openfreemap.org/styles/bright',
+        attributionControl: false, // Disable default attribution
+    };
 
-    const data = new google.maps.Data();
+    // Set initial view based on available config
+    if (hasPosition) {
+        // Use explicit lat/lng/zoom
+        mapOptions.center = [parseFloat(config.lng), parseFloat(config.lat)];
+        mapOptions.zoom = config.zoom || 13;
+    } else if (config.bounds) {
+        // Use precomputed bounds for initial view (no animation needed)
+        mapOptions.bounds = [
+            [config.bounds.west, config.bounds.south],  // SW corner
+            [config.bounds.east, config.bounds.north]   // NE corner
+        ];
+        mapOptions.fitBoundsOptions = {
+            padding: 50,
+            maxZoom: config.max_zoom || 15,
+        };
+    } else {
+        // Default to UK center
+        mapOptions.center = [-4, 55.4];
+        mapOptions.zoom = 5;
+    }
     
-    data.loadGeoJson(window.gfMapConfig.geojson, null, () => {
-        if (typeof window.gfMapConfig.lat === "undefined") {
-            fitMapToBounds(data);
+    map = new maplibregl.Map(mapOptions);
+
+    // Add compact attribution control (collapsed by default)
+    map.addControl(new maplibregl.AttributionControl({
+        compact: true,
+    }));
+
+    // Add navigation controls
+    const nav = new maplibregl.NavigationControl();
+    map.addControl(nav, 'top-right');
+
+    map.on('load', async () => {
+        // Load marker images
+        const orgimg = await map.loadImage('/static/img/mapmarkers/red.png');
+        const locimg = await map.loadImage('/static/img/mapmarkers/yellow.png');
+        const dpimg = await map.loadImage('/static/img/mapmarkers/blue.png');
+
+        map.addImage('orgmrkr', orgimg.data);
+        map.addImage('locmrkr', locimg.data);
+        map.addImage('dpmrkr', dpimg.data);
+
+        // Add GeoJSON source
+        map.addSource('givefood', {
+            type: 'geojson',
+            data: config.geojson,
+        });
+
+        // Add layers for each marker type
+        for (const [layer, props] of Object.entries(layers)) {
+            map.addLayer({
+                'id': layer,
+                'type': 'symbol',
+                'source': 'givefood',
+                'layout': {
+                    'icon-image': props.icon,
+                    'icon-size': props.size,
+                    'icon-allow-overlap': true,
+                    'text-field': ['step', ['zoom'], '', 12, ['get', 'name']],
+                    'text-offset': [1, 0],
+                    'text-anchor': 'left',
+                    'text-size': 12,
+                    'text-max-width': 15,
+                    'text-optional': true,
+                },
+                'paint': {
+                    'text-color': '#333',
+                    'text-halo-color': '#fff',
+                    'text-halo-width': 1,
+                },
+                'filter': ['==', 'type', props.filter],
+            });
         }
-        
+
+        // Add location boundary layer for foodbank location polygons
+        map.addLayer({
+            'id': 'service-area',
+            'type': 'fill',
+            'source': 'givefood',
+            'paint': {
+                'fill-color': '#f7a723',
+                'fill-opacity': 0.2,
+            },
+            'filter': ['==', 'type', 'lb'],
+        });
+
+        map.addLayer({
+            'id': 'service-area-outline',
+            'type': 'line',
+            'source': 'givefood',
+            'paint': {
+                'line-color': '#f7a723',
+                'line-width': 1,
+            },
+            'filter': ['==', 'type', 'lb'],
+        });
+
+        // Add parliamentary constituency layer if needed
+        map.addLayer({
+            'id': 'constituency',
+            'type': 'fill',
+            'source': 'givefood',
+            'paint': {
+                'fill-color': '#000',
+                'fill-opacity': 0.1,
+            },
+            'filter': ['has', 'PCON24NM'],
+        });
+
+        map.addLayer({
+            'id': 'constituency-outline',
+            'type': 'line',
+            'source': 'givefood',
+            'paint': {
+                'line-color': '#000',
+                'line-width': 1,
+            },
+            'filter': ['has', 'PCON24NM'],
+        });
+
+        // Fit bounds if no initial position and no precomputed bounds
+        // (precomputed bounds are handled at map creation time)
+        if (!hasPosition && !config.bounds && config.geojson) {
+            // Fall back to fetching GeoJSON for bounds calculation
+            fitMapToBoundsFromGeoJSON(config.geojson);
+        }
+
+        // Add location marker if configured
+        if (hasPosition && config.location_marker === true) {
+            addLocationMarker(parseFloat(config.lat), parseFloat(config.lng));
+        }
+
+        // Show legend
         addMapLegend();
     });
 
-    data.setStyle((feature) => getFeatureStyle(feature));
-    data.addListener("click", (event) => handleMarkerClick(event, infowindow));
-    data.setMap(map);
+    // Set cursor to pointer on hover over markers
+    map.on('mouseenter', layerList, () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
 
-    if (typeof window.gfMapConfig.lat !== "undefined") {
-        move_map(window.gfMapConfig.lat, window.gfMapConfig.lng, window.gfMapConfig.zoom);
+    map.on('mouseleave', layerList, () => {
+        map.getCanvas().style.cursor = '';
+    });
+
+    // Handle marker clicks
+    map.on('click', layerList, (e) => {
+        handleMarkerClick(e);
+    });
+
+    // Handle constituency clicks for navigation
+    map.on('click', 'constituency', (e) => {
+        if (config.onClick === 'navigate') {
+            const name = e.features[0].properties.PCON24NM;
+            if (name) {
+                const slug = slugify(name);
+                window.location = '/write/to/' + slug + '/';
+            }
+        }
+    });
+
+    // Handle location boundary clicks
+    map.on('click', 'service-area', (e) => {
+        handleServiceAreaClick(e);
+    });
+
+    // Set cursor for location boundary polygons
+    map.on('mouseenter', 'service-area', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', 'service-area', () => {
+        map.getCanvas().style.cursor = '';
+    });
+
+    // Set cursor for constituency polygons
+    map.on('mouseenter', 'constituency', () => {
+        if (config.onClick === 'navigate') {
+            map.getCanvas().style.cursor = 'pointer';
+        }
+    });
+
+    map.on('mouseleave', 'constituency', () => {
+        map.getCanvas().style.cursor = '';
+    });
+}
+
+/**
+ * Handle click on location boundary polygon
+ * @param {object} e - Click event
+ */
+function handleServiceAreaClick(e) {
+    const properties = e.features[0].properties;
+    const name = properties.name;
+    const url = properties.url;
+    const foodbank = properties.foodbank;
+
+    const html = buildPopupContent(name, 'lb', null, url, foodbank);
+
+    // Close any existing popup
+    if (currentPopup) {
+        currentPopup.remove();
+    }
+
+    // Use click location for popup position (polygon doesn't have a single coordinate)
+    currentPopup = new maplibregl.Popup()
+        .setLngLat(e.lngLat)
+        .setHTML(html)
+        .addTo(map);
+}
+
+/**
+ * Handle click on map marker
+ * @param {object} e - Click event
+ */
+function handleMarkerClick(e) {
+    const config = window.gfMapConfig;
+    
+    // Check for custom click handler in config
+    if (config.onClick === 'navigate') {
+        handleNavigationClick(e);
+        return;
+    }
+
+    const coordinates = e.features[0].geometry.coordinates.slice();
+    const properties = e.features[0].properties;
+    const name = properties.name;
+    const type = properties.type;
+    const address = properties.address;
+    const url = properties.url;
+    const foodbank = properties.foodbank;
+
+    // Ensure that if the map is zoomed out such that multiple
+    // copies of the feature are visible, the popup appears
+    // over the copy being pointed to
+    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+    }
+
+    const html = buildPopupContent(name, type, address, url, foodbank);
+
+    // Close any existing popup
+    if (currentPopup) {
+        currentPopup.remove();
+    }
+
+    currentPopup = new maplibregl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(html)
+        .addTo(map);
+}
+
+/**
+ * Handle navigation click for parliamentary constituencies
+ * @param {object} e - Click event
+ */
+function handleNavigationClick(e) {
+    const name = e.features[0].properties.PCON24NM;
+    if (name) {
+        const slug = slugify(name);
+        window.location = '/write/to/' + slug + '/';
     }
 }
 
 /**
- * Fit map to show all markers
- * @param {google.maps.Data} data - Map data layer
+ * Build HTML content for popup
+ * @param {string} name - Location name
+ * @param {string} type - Location type (f, l, d, lb)
+ * @param {string} address - Location address
+ * @param {string} url - Location URL
+ * @param {string} foodbank - Parent foodbank name
+ * @returns {string} HTML content
  */
-function fitMapToBounds(data) {
-    const bounds = new google.maps.LatLngBounds();
+function buildPopupContent(name, type, address, url, foodbank) {
+    let html = "<div class='popup-title'>" + name + "</div>";
     
-    data.forEach((feature) => {
-        const geometry = feature.getGeometry();
-        geometry.forEachLatLng((latLng) => {
-            bounds.extend(latLng);
-        });
-    });
-
-    google.maps.event.addListenerOnce(map, "bounds_changed", () => {
-        const maxZoom = window.gfMapConfig.max_zoom || 15;
-        if (map.getZoom() > maxZoom) {
-            map.setZoom(maxZoom);
+    if (address) {
+        html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>";
+    }
+    
+    if (type !== "f") {
+        const foodbankSlug = slugify(foodbank);
+        if (type === "l") {
+            html += "<p>Part of ";
+        } else if (type === "d") {
+            html += "<p>Donation point for ";
+        } else if (type === "lb") {
+            html += "<p>Location boundary for ";
         }
-    });
+        html += "<a href='/needs/at/" + foodbankSlug + "/'>" + foodbank + "</a> Food Bank.</p>";
+    }
+    
+    html += "<a href='" + url + "' class='button is-info is-small is-light'>More Information</a>";
 
-    const padding = { left: 50, right: 50, bottom: 50, top: 50 };
-    map.fitBounds(bounds, padding);
-    map.panToBounds(bounds);
+    return html;
+}
+
+/**
+ * Fit map to show all markers by fetching GeoJSON directly
+ * This is more reliable than querySourceFeatures which only returns visible tiles
+ * @param {string} geojsonUrl - URL to the GeoJSON data
+ */
+async function fitMapToBoundsFromGeoJSON(geojsonUrl) {
+    try {
+        const response = await fetch(geojsonUrl);
+        if (!response.ok) return;
+        
+        const data = await response.json();
+        if (!data.features || data.features.length === 0) return;
+        
+        const bounds = new maplibregl.LngLatBounds();
+        
+        data.features.forEach((feature) => {
+            if (feature.geometry.type === 'Point') {
+                bounds.extend(feature.geometry.coordinates);
+            } else if (feature.geometry.type === 'Polygon') {
+                feature.geometry.coordinates[0].forEach((coord) => {
+                    bounds.extend(coord);
+                });
+            } else if (feature.geometry.type === 'MultiPolygon') {
+                feature.geometry.coordinates.forEach((polygon) => {
+                    polygon[0].forEach((coord) => {
+                        bounds.extend(coord);
+                    });
+                });
+            }
+        });
+
+        if (!bounds.isEmpty()) {
+            const maxZoom = window.gfMapConfig.max_zoom || 15;
+            map.fitBounds(bounds, {
+                padding: 50,
+                maxZoom: maxZoom,
+            });
+        }
+    } catch (e) {
+        // If fetch fails, use default view
+        console.warn('Failed to fetch GeoJSON for bounds calculation:', e);
+    }
+}
+
+/**
+ * Add a location marker for the user's searched location
+ * @param {number} lat - Latitude
+ * @param {number} lng - Longitude
+ */
+function addLocationMarker(lat, lng) {
+    // Create a simple circle marker for the user's location
+    const el = document.createElement('div');
+    el.className = 'location-marker';
+    el.style.width = '14px';
+    el.style.height = '14px';
+    el.style.borderRadius = '50%';
+    el.style.backgroundColor = '#4385F4';
+    el.style.border = '2px solid #fff';
+    el.style.boxShadow = '0 0 4px rgba(0,0,0,0.3)';
+
+    new maplibregl.Marker({ element: el })
+        .setLngLat([lng, lat])
+        .addTo(map);
 }
 
 /**
@@ -316,142 +479,33 @@ function addMapLegend() {
     if (legendTemplate) {
         const legendClone = legendTemplate.content.cloneNode(true);
         const legend = legendClone.querySelector("#legend");
-        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
-        legend.style.display = "block";
+        
+        // Append to the map's container element (inside the map div)
+        // MapLibre creates a canvas-container inside the map element
+        if (mapElement) {
+            mapElement.appendChild(legend);
+            legend.style.display = 'block';
+            legend.style.position = 'absolute';
+            legend.style.bottom = '3px';
+            legend.style.left = '3px';
+            legend.style.zIndex = '1';
+        }
     }
 }
 
 /**
- * Get style for map feature based on type
- * @param {google.maps.Data.Feature} feature - Map feature
- * @returns {object} Style configuration
+ * Move map to specified location (for compatibility)
+ * @param {number} lat - Latitude
+ * @param {number} lng - Longitude
+ * @param {number} zoom - Zoom level
  */
-function getFeatureStyle(feature) {
-    const type = feature.getProperty("type");
-
-    if (type === "lb") {
-        return {
-            fillColor: "#f7a723",
-            fillOpacity: 0.2,
-            strokeColor: "#f7a723",
-            strokeWeight: 1,
-        };
-    }
-
-    // Check if this is a parliamentary constituency polygon (has PCON24NM property)
-    if (feature.getProperty("PCON24NM")) {
-        return {
-            fillColor: "#000",
-            fillOpacity: 0.1,
-            strokeColor: "#000",
-            strokeWeight: 1,
-            cursor: 'pointer',
-        };
-    }
-
-    const markerConfig = {
-        f: { colour: "red", size: 34 },
-        l: { colour: "yellow", size: 28 },
-        d: { colour: "blue", size: 24 },
-        b: { colour: "", size: 0 },
-    };
-
-    const config = markerConfig[type] || { colour: "", size: 0 };
-
-    return {
-        icon: {
-            url: `/static/img/mapmarkers/${config.colour}.png`,
-            scaledSize: new google.maps.Size(config.size, config.size),
-        },
-        strokeWeight: 1,
-        title: feature.getProperty("name"),
-    };
-}
-
-/**
- * Handle click on map marker
- * @param {object} event - Click event
- * @param {google.maps.InfoWindow} infowindow - Info window instance
- */
-function handleMarkerClick(event, infowindow) {
-    const feature = event.feature;
-    
-    // Check for custom click handler in config
-    if (window.gfMapConfig.onClick === 'navigate') {
-        handleNavigationClick(event);
-        return;
-    }
-    
-    const type = feature.getProperty("type");
-
-    if (type === "b") {
+function move_map(lat, lng, zoom) {
+    if (typeof map === "undefined" || !map) {
         return;
     }
 
-    const html = buildInfoWindowContent(feature);
-    
-    infowindow.setContent(html);
-    
-    if (event.latLng) {
-        infowindow.setPosition(event.latLng);
-    }
-    
-    infowindow.setOptions({
-        maxWidth: 250,
-        pixelOffset: new google.maps.Size(0, -28),
+    map.flyTo({
+        center: [lng, lat],
+        zoom: zoom,
     });
-    
-    infowindow.open(map);
-}
-
-/**
- * Handle navigation click for parliamentary constituencies
- * @param {object} event - Click event
- */
-function handleNavigationClick(event) {
-    const feature = event.feature;
-    const name = feature.getProperty('PCON24NM');
-    if (name) {
-        const slug = slugify(name);
-        window.location = '/write/to/' + slug + '/';
-    }
-}
-
-/**
- * Build HTML content for info window
- * @param {google.maps.Data.Feature} feature - Map feature
- * @returns {string} HTML content
- */
-function buildInfoWindowContent(feature) {
-    const type = feature.getProperty("type");
-    const title = feature.getProperty("name");
-    const url = feature.getProperty("url");
-    const address = feature.getProperty("address");
-    const foodbank = feature.getProperty("foodbank");
-
-    let html = "<div class='infowindow'>";
-    html += `<h3>${title}</h3>`;
-
-    if (type !== "f") {
-        const typeLabels = {
-            l: "Location for",
-            d: "Donation point for",
-            lb: "Service area for",
-        };
-        
-        const label = typeLabels[type] || "";
-        const foodbankSlug = slugify(foodbank);
-        
-        html += `<p>${label} <a href='/needs/at/${foodbankSlug}/'>${foodbank}</a> Food Bank.</p>`;
-    }
-
-    if (address) {
-        const formattedAddress = address.replace(/(\r\n|\r|\n)/g, "<br>");
-        html += `<address>${formattedAddress}</address>`;
-    }
-
-    html += `<a href='${url}' class='button is-info is-small is-light'>More Information</a>`;
-    html += "</div>";
-
-    return html;
 }
