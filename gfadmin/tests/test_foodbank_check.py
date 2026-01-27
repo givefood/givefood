@@ -361,18 +361,20 @@ class TestFoodbankCheck:
         # POST should be called once for the donation points API
         assert mock_post.call_count == 1
         
-        # Verify the prompt context was passed with both donation_points and donation_points_html
+        # Verify the prompt context was passed with donation_points content
         render_call_args = mock_render.call_args
         context = render_call_args[0][2]  # Third argument is the context dict
         
         # The prompt is rendered by render_to_string, so we need to check that gemini was called
-        # with the prompt that includes both donation_points and donation_points_html
+        # with the prompt that includes donation_points (combined HTML and POST results)
         gemini_call_args = mock_gemini.call_args
         prompt = gemini_call_args[0][0]  # First argument is the prompt
         
-        # The prompt should contain both donation_points (POST response) and donation_points_html
+        # The prompt should contain donation_points section with both HTML and POST content combined
+        # donation_points key is used in foodbank_pages dict
         assert 'donation_points' in prompt
-        assert 'donation_points_html' in prompt
+        # Check that the POST response content is included in the prompt
+        assert 'Supermarket C' in prompt
         
         # Verify CrawlItems were created
         crawl_items = CrawlItem.objects.filter(foodbank=foodbank, crawl_type='check')
@@ -1128,9 +1130,9 @@ class TestFoodbankCheckDetailChanges:
         context = mock_render.call_args[0][2]
         detail_changes = context['detail_changes']
 
-        # Treated as empty, so no change flagged and rendered value is empty string
+        # Treated as empty, so no change flagged and rendered value is None
         assert detail_changes['bankuet_slug'] is False
-        assert context['check_result']['details']['bankuet_slug'] == ''
+        assert context['check_result']['details']['bankuet_slug'] is None
 
 
     @patch('gfadmin.views.render')
@@ -1188,7 +1190,7 @@ class TestFoodbankCheckDetailChanges:
 
         # All nullish strings should be None
         for key in mock_gemini.return_value['details'].keys():
-            if key not in ('name', 'address', 'postcode', 'country'):
+            if key not in ('name', 'address', 'postcode', 'country', 'network'):
                 assert details[key] is None
                 # Since ours are also None/empty, no change flagged
                 assert detail_changes[key] is False

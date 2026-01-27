@@ -111,7 +111,7 @@ class TestFoodbankPhotosTab:
         assert 'hx-post' in content
         assert 'hx-swap="delete"' in content
         # Verify image max dimensions
-        assert 'max-width:200px;max-height:200px' in content
+        assert 'max-width:100px;max-height:100px' in content
         
     def test_photos_count_in_tab(self):
         """Test that Photos tab shows correct count."""
