@@ -81,49 +81,108 @@
 
 {% block script %}
 
-<script src="/static/js/wfbn.js?v={{ version }}" defer></script>
-<script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=places,marker"></script>
 <script>
-
-const parl_con_geojson_url = "/static/geojson/parlcon.json"
-
-
-var map
-var bounds = new google.maps.LatLngBounds();
-
-function init_map() {
-  var mapOptions = {
-    center: new google.maps.LatLng(55,-4),
-    zoom: 6,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
+  window.gfMapConfig = {
+    "geojson": "/static/geojson/parlcon.json",
+    "onClick": "constituency"
   };
-  map = new google.maps.Map(document.getElementById("map"), mapOptions);
-  map.data.loadGeoJson(parl_con_geojson_url);
-  google.maps.event.addListener(map.data,'addfeature',function(e){
-    var bounds = new google.maps.LatLngBounds(); 
-    map.data.forEach(function(feature){
-      feature.getGeometry().forEachLatLng(function(latlng){
-        bounds.extend(latlng);
-      });
+</script>
+<link rel="stylesheet" href="/static/css/maplibre-gl.css">
+<script src="/static/js/maplibre-gl.js"></script>
+<script src="/static/js/wfbn.js?v={{ version }}" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mapElement = document.querySelector("#map");
+    if (!mapElement) return;
+
+    const map = new maplibregl.Map({
+        container: 'map',
+        style: 'https://tiles.openfreemap.org/styles/bright',
+        center: [-4, 55],
+        zoom: 5,
     });
 
-    map.fitBounds(bounds);
-  })
-  map.data.addListener('click', (event) => {
-        const name = event.feature.getProperty('PCON24NM');
-        const slug = slugify(name)
-        window.location = '/needs/in/constituency/'+ slug +'/';
+    const nav = new maplibregl.NavigationControl();
+    map.addControl(nav, 'top-right');
+
+    map.on('load', () => {
+        map.addSource('constituencies', {
+            type: 'geojson',
+            data: '/static/geojson/parlcon.json',
+        });
+
+        map.addLayer({
+            'id': 'constituencies-fill',
+            'type': 'fill',
+            'source': 'constituencies',
+            'paint': {
+                'fill-color': '#000',
+                'fill-opacity': 0.1,
+            },
+        });
+
+        map.addLayer({
+            'id': 'constituencies-outline',
+            'type': 'line',
+            'source': 'constituencies',
+            'paint': {
+                'line-color': '#000',
+                'line-width': 1,
+            },
+        });
+
+        // Fit bounds to constituencies
+        const source = map.getSource('constituencies');
+        map.once('sourcedata', (e) => {
+            if (e.sourceId === 'constituencies' && e.isSourceLoaded) {
+                const bounds = new maplibregl.LngLatBounds();
+                const data = source._data;
+                if (data && data.features) {
+                    data.features.forEach((feature) => {
+                        if (feature.geometry.type === 'Polygon') {
+                            feature.geometry.coordinates[0].forEach((coord) => {
+                                bounds.extend(coord);
+                            });
+                        } else if (feature.geometry.type === 'MultiPolygon') {
+                            feature.geometry.coordinates.forEach((polygon) => {
+                                polygon[0].forEach((coord) => {
+                                    bounds.extend(coord);
+                                });
+                            });
+                        }
+                    });
+                    if (!bounds.isEmpty()) {
+                        map.fitBounds(bounds, { padding: 20 });
+                    }
+                }
+            }
+        });
     });
 
-    map.data.setStyle({
-      fillColor: "#000",
-      strokeWeight: 1,
+    // Handle constituency clicks
+    map.on('click', 'constituencies-fill', (e) => {
+        const name = e.features[0].properties.PCON24NM;
+        if (name) {
+            // slugify the name
+            let slug = name.replace(/^\s+|\s+$/g, "").toLowerCase();
+            const from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+            const to = "aaaaeeeeiiiioooouuuunc------";
+            for (let i = 0; i < from.length; i++) {
+                slug = slug.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
+            }
+            slug = slug.replace(/[^a-z0-9 -]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+            window.location = '/needs/in/constituency/' + slug + '/';
+        }
     });
-}
 
+    map.on('mouseenter', 'constituencies-fill', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
 
-google.maps.event.addDomListener(window, 'load', init_map);
-
+    map.on('mouseleave', 'constituencies-fill', () => {
+        map.getCanvas().style.cursor = '';
+    });
+});
 </script>
 
 {% endblock %}

@@ -119,42 +119,82 @@
 {% block script %}
     <script src="/static/js/tabber.js" defer></script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ gmap_key }}&libraries=marker"></script>
+    <link rel="stylesheet" href="/static/css/maplibre-gl.css">
+    <script src="/static/js/maplibre-gl.js"></script>
     <script>
+        const foodbanks = {{ time_since_json|safe }};
 
-        const foodbanks = {{ time_since_json|safe }}
-
-        var map_main
-
-        function init_map() {
-            map_main = new google.maps.Map(document.getElementById("the-map"), {
-                center: new google.maps.LatLng(55,-4),
+        document.addEventListener('DOMContentLoaded', function() {
+            const map = new maplibregl.Map({
+                container: 'the-map',
+                style: 'https://tiles.openfreemap.org/styles/bright',
+                center: [-4, 55],
                 zoom: 6,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                mapId: 'DEMO_MAP_ID'
             });
 
-            for (let i = 0; i < foodbanks.length; i++) {
-                const foodbank = foodbanks[i];
+            const nav = new maplibregl.NavigationControl();
+            map.addControl(nav, 'top-right');
 
-                marker = new google.maps.marker.AdvancedMarkerElement({
-                    position: new google.maps.LatLng(foodbank.lat, foodbank.lng),
-                    map: map_main,
-                    title: foodbank.foodbank,
-                });
-                marker['infowindow'] = new google.maps.InfoWindow({
-                    content: '<strong><a href="/needs/at/' + foodbank.slug + '">' + foodbank.foodbank + '</a></strong><br><br>' + foodbank.change_text.replaceAll("\n", "<br>")
-                });
-                marker.addListener('click', function() {
-                    this['infowindow'].open({
-                        map: map_main,
-                        anchor: this
-                    });
-                });
-            }
-        }
+            map.on('load', async () => {
+                // Load marker image
+                const orgimg = await map.loadImage('/static/img/mapmarkers/red.png');
+                map.addImage('orgmrkr', orgimg.data);
 
-        google.maps.event.addDomListener(window, 'load', init_map);
+                // Convert foodbanks array to GeoJSON
+                const geojson = {
+                    type: 'FeatureCollection',
+                    features: foodbanks.map(fb => ({
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [fb.lng, fb.lat]
+                        },
+                        properties: {
+                            name: fb.foodbank,
+                            slug: fb.slug,
+                            change_text: fb.change_text
+                        }
+                    }))
+                };
+
+                map.addSource('beautybanks', {
+                    type: 'geojson',
+                    data: geojson,
+                });
+
+                map.addLayer({
+                    'id': 'beautybanks-markers',
+                    'type': 'symbol',
+                    'source': 'beautybanks',
+                    'layout': {
+                        'icon-image': 'orgmrkr',
+                        'icon-size': 0.25,
+                        'icon-allow-overlap': true,
+                    },
+                });
+
+                // Handle marker clicks
+                map.on('click', 'beautybanks-markers', (e) => {
+                    const coordinates = e.features[0].geometry.coordinates.slice();
+                    const props = e.features[0].properties;
+
+                    const html = '<strong><a href="/needs/at/' + props.slug + '">' + props.name + '</a></strong><br><br>' + props.change_text.replaceAll("\n", "<br>");
+
+                    new maplibregl.Popup()
+                        .setLngLat(coordinates)
+                        .setHTML(html)
+                        .addTo(map);
+                });
+
+                map.on('mouseenter', 'beautybanks-markers', () => {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+
+                map.on('mouseleave', 'beautybanks-markers', () => {
+                    map.getCanvas().style.cursor = '';
+                });
+            });
+        });
     </script>
 
 {% endblock %}
