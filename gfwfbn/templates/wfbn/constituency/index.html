@@ -81,12 +81,6 @@
 
 {% block script %}
 
-<script>
-  window.gfMapConfig = {
-    "geojson": "/static/geojson/parlcon.json",
-    "onClick": "constituency"
-  };
-</script>
 <link rel="stylesheet" href="/static/css/maplibre-gl.css">
 <script src="/static/js/maplibre-gl.js"></script>
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
@@ -159,18 +153,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle constituency clicks
+    // Handle constituency clicks - navigate to constituency page
     map.on('click', 'constituencies-fill', (e) => {
         const name = e.features[0].properties.PCON24NM;
         if (name) {
-            // slugify the name
-            let slug = name.replace(/^\s+|\s+$/g, "").toLowerCase();
-            const from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-            const to = "aaaaeeeeiiiioooouuuunc------";
-            for (let i = 0; i < from.length; i++) {
-                slug = slug.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
-            }
-            slug = slug.replace(/[^a-z0-9 -]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-");
+            const slug = slugify(name);
             window.location = '/needs/in/constituency/' + slug + '/';
         }
     });
