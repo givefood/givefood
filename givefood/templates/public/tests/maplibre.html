@@ -1,0 +1,242 @@
+{% extends "public/page.html" %}
+{% load i18n %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/css/maplibre-gl.css">
+  <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
+  <style>
+    #map {
+      width:700px;
+      height:1000px;
+      border-radius: 0.25rem;
+    }
+    .maplibregl-popup {
+      max-width: 400px;
+    }
+    .maplibregl-popup-content {
+      font-family:"Soehne Buch","Helvetica Neue",Helvetica,Arial,sans-serif;
+      font-size:16px;
+      font-weight: 400;
+      color:rgb(53, 55, 64);
+      padding:10px;
+    }
+    .maplibregl-popup-content .popup-title {
+      font-weight: 700;
+      margin-bottom: 0.5em;
+    }
+    .maplibregl-popup-content .button {
+      margin-top:0.5em;
+    }
+    .maplibregl-popup-close-button {
+      display:none;
+    }
+    .maplibregl-popup-content p {
+      padding:0;
+      margin-bottom:0.25em;
+    }
+    .map-container {
+      position: relative;
+    }
+    #legend {
+      display: block;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      z-index: 1;
+    }
+  </style>
+{% endblock %}
+
+{% block title %}MapLibre Test - Give Food{% endblock %}
+
+{% block body %}
+
+  <div class="columns is-centered">
+    <div class="column is-half">
+      <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+    </div>
+  </div>
+
+  <div class="columns is-centered">
+    <div class="column is-half">
+      <h1>MapLibre Test</h1>
+      <p>Test page for MapLibre GL JS map rendering.</p>
+      <div class="map-container">
+        <div id="map"></div>
+        {% include "public/includes/maplegend.html" %}
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+  <script src="/static/js/maplibre-gl.js"></script>
+  <script>
+
+    // Parse hash for initial map position (format: x,y,zoom where x=lng, y=lat)
+    function getHashParams() {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return null;
+      const parts = hash.split(',');
+      if (parts.length === 3) {
+        const lng = parseFloat(parts[0]);
+        const lat = parseFloat(parts[1]);
+        const zoom = parseFloat(parts[2]);
+        if (!isNaN(zoom) && !isNaN(lat) && !isNaN(lng)) {
+          return { zoom, lat, lng };
+        }
+      }
+      return null;
+    }
+
+    const hashParams = getHashParams();
+
+    function slugify(str) {
+      str = str.replace(/^\s+|\s+$/g, ''); // trim
+      str = str.toLowerCase();
+
+      // remove accents, swap ñ for n, etc
+      var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+      var to   = "aaaaeeeeiiiioooouuuunc------";
+      for (var i=0, l=from.length ; i<l ; i++) {
+        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+      }
+
+      str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+        .replace(/\s+/g, '-') // collapse whitespace and replace by -
+        .replace(/-+/g, '-'); // collapse dashes
+
+      return str;
+    }
+
+    const map = new maplibregl.Map({
+      container: 'map',
+      style: 'https://tiles.openfreemap.org/styles/bright',
+      center: hashParams ? [hashParams.lng, hashParams.lat] : [-4, 55.4], 
+      zoom: hashParams ? hashParams.zoom : 5,
+      hash: false,
+    });
+
+    // Update URL hash when map moves (format: x,y,zoom where x=lng, y=lat)
+    map.on('moveend', () => {
+      const center = map.getCenter();
+      const zoom = map.getZoom().toFixed(2);
+      const lat = center.lat.toFixed(5);
+      const lng = center.lng.toFixed(5);
+      history.replaceState(null, null, `#${lng},${lat},${zoom}`);
+    });
+
+    const nav = new maplibregl.NavigationControl();
+    map.addControl(nav, 'top-right');
+
+    layers = {
+      'donationpoints': {
+        'icon': 'dpmrkr',
+        'size': 0.15,
+        'filter': 'd',
+      },
+      'locations': {
+        'icon': 'locmrkr',
+        'size': 0.2,
+        'filter': 'l',
+      },
+      'foodbanks': {
+        'icon': 'orgmrkr',
+        'size': 0.25,
+        'filter': 'f',
+      },
+    }
+    layer_list = Object.keys(layers);
+
+    map.on('load', async () => {
+
+      const orgimg = await map.loadImage('/static/img/mapmarkers/red.png');
+      const locimg = await map.loadImage('/static/img/mapmarkers/yellow.png');
+      const dpimg = await map.loadImage('/static/img/mapmarkers/blue.png');
+
+      map.addImage('orgmrkr', orgimg.data);
+      map.addImage('locmrkr', locimg.data);
+      map.addImage('dpmrkr', dpimg.data);
+
+      map.addSource('givefood', {
+        type: 'geojson',
+        data: '/needs/geo.json',
+      });
+
+      for (const [layer, props] of Object.entries(layers)) {
+        map.addLayer({
+          'id': layer,
+          'type': 'symbol',
+          'source': 'givefood',
+          'layout': {
+            'icon-image': props.icon,
+            'icon-size': props.size,
+            'icon-allow-overlap': true,
+            'text-field': ['step', ['zoom'], '', 12, ['get', 'name']],
+            'text-offset': [1, 0],
+            'text-anchor': 'left',
+            'text-size': 12,
+            'text-max-width': 15,
+            'text-optional': true,
+          },
+          'paint': {
+            'text-color': '#333',
+            'text-halo-color': '#fff',
+            'text-halo-width': 1,
+          },
+          'filter': ['==', 'type', props.filter],
+        });
+      }
+
+      // Show legend on top of map after map loads
+      const legendTemplate = document.querySelector("#legendtemplate");
+      if (legendTemplate) {
+        const legendClone = legendTemplate.content.cloneNode(true);
+        const legend = legendClone.querySelector("#legend");
+        document.querySelector(".map-container").appendChild(legend);
+      }
+
+    });
+
+    map.on('mouseenter', layer_list, () => {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', layer_list, () => {
+      map.getCanvas().style.cursor = '';
+    });
+
+    map.on('click', layer_list, (e) => {
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const name = e.features[0].properties.name;
+      const type = e.features[0].properties.type;
+      const address = e.features[0].properties.address;
+      const url = e.features[0].properties.url;
+      const foodbank = e.features[0].properties.foodbank;
+
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      let html = "<div class='popup-title'>" + name + "</div>"
+      if (address) {
+        html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>"
+      }
+      if (type != "f") {
+        if (type == "l") {
+          html += "<p>Part of "
+        } else {
+          html += "<p>Donation point for "
+        }
+        html += "<a href='/needs/at/" + slugify(foodbank) + "/'>" + foodbank + "</a> Food Bank.</p>"
+      }
+      html += "<a href='" + url + "' class='button is-info is-small is-light'>More Information</a>"
+
+      new maplibregl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(html)
+        .addTo(map);
+    });
+  </script>
+{% endblock %}
