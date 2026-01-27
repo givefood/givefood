@@ -34,8 +34,15 @@
       padding:0;
       margin-bottom:0.25em;
     }
+    .map-container {
+      position: relative;
+    }
     #legend {
-      display:block;
+      display: block;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      z-index: 1;
     }
   </style>
 {% endblock %}
@@ -54,8 +61,10 @@
     <div class="column is-half">
       <h1>MapLibre Test</h1>
       <p>Test page for MapLibre GL JS map rendering.</p>
-      <div id="map"></div>
-      {% include "public/includes/maplegend.html" %}
+      <div class="map-container">
+        <div id="map"></div>
+        {% include "public/includes/maplegend.html" %}
+      </div>
     </div>
   </div>
 
@@ -180,13 +189,12 @@
         });
       }
 
-      // Show legend after map loads
+      // Show legend on top of map after map loads
       const legendTemplate = document.querySelector("#legendtemplate");
       if (legendTemplate) {
         const legendClone = legendTemplate.content.cloneNode(true);
         const legend = legendClone.querySelector("#legend");
-        document.querySelector("#map").insertAdjacentElement('afterend', legend);
-        legend.style.display = "block";
+        document.querySelector(".map-container").appendChild(legend);
       }
 
     });
