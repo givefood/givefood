@@ -475,13 +475,14 @@ class Foodbank(models.Model):
     def get_bounds(self):
         """
         Calculate the bounding box for all foodbank locations and donation points.
-        Returns a tuple of (north, south, east, west) latitudes/longitudes or None if no locations.
+        Returns a tuple of (north, south, east, west) latitudes/longitudes.
         """
         # FB coordinates as base
         fb_lat = float(self.latitude)
         fb_lng = float(self.longitude)
 
-        # If the model hasn't been saved yet, just use the foodbank coordinates
+        # If the foodbank hasn't been saved yet, there can't be any related locations/donation points
+        # Django also prevents filtering by unsaved model instances
         if not self.pk:
             return (fb_lat, fb_lat, fb_lng, fb_lng)
 
