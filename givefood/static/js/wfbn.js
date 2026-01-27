@@ -98,9 +98,11 @@ function initMap() {
     const config = window.gfMapConfig;
     
     // Determine initial center and zoom
+    // Use hasPosition to check if we should use a fixed position or fit to bounds later
     const hasPosition = typeof config.lat !== "undefined" && typeof config.lng !== "undefined";
+    // Default center is UK, default zoom is 5 to show the whole UK
     const initialCenter = hasPosition ? [parseFloat(config.lng), parseFloat(config.lat)] : [-4, 55.4];
-    const initialZoom = hasPosition ? (config.zoom || 13) : 6;
+    const initialZoom = hasPosition ? (config.zoom || 13) : 5;
     
     map = new maplibregl.Map({
         container: 'map',
@@ -201,13 +203,10 @@ function initMap() {
             'filter': ['has', 'PCON24NM'],
         });
 
-        // Fit bounds if no initial position specified - wait for source to load
-        if (!hasPosition) {
-            map.once('sourcedata', (e) => {
-                if (e.sourceId === 'givefood' && e.isSourceLoaded) {
-                    fitMapToBounds();
-                }
-            });
+        // Fit bounds if no initial position specified
+        // Fetch the GeoJSON directly to calculate accurate bounds
+        if (!hasPosition && config.geojson) {
+            fitMapToBoundsFromGeoJSON(config.geojson);
         }
 
         // Add location marker if configured
@@ -381,43 +380,21 @@ function buildPopupContent(name, type, address, url, foodbank) {
 }
 
 /**
- * Fit map to show all markers
+ * Fit map to show all markers by fetching GeoJSON directly
+ * This is more reliable than querySourceFeatures which only returns visible tiles
+ * @param {string} geojsonUrl - URL to the GeoJSON data
  */
-function fitMapToBounds() {
-    // Query features from all visible layers
-    const allLayers = [...layerList, 'service-area', 'constituency'];
-    const bounds = new maplibregl.LngLatBounds();
-    let hasFeatures = false;
-
-    allLayers.forEach((layerId) => {
-        try {
-            const features = map.querySourceFeatures('givefood', { sourceLayer: layerId });
-            features.forEach((feature) => {
-                hasFeatures = true;
-                if (feature.geometry.type === 'Point') {
-                    bounds.extend(feature.geometry.coordinates);
-                } else if (feature.geometry.type === 'Polygon') {
-                    feature.geometry.coordinates[0].forEach((coord) => {
-                        bounds.extend(coord);
-                    });
-                } else if (feature.geometry.type === 'MultiPolygon') {
-                    feature.geometry.coordinates.forEach((polygon) => {
-                        polygon[0].forEach((coord) => {
-                            bounds.extend(coord);
-                        });
-                    });
-                }
-            });
-        } catch (e) {
-            // Layer might not exist, continue
-        }
-    });
-
-    // Fallback: try querying without sourceLayer filter
-    if (!hasFeatures) {
-        const features = map.querySourceFeatures('givefood');
-        features.forEach((feature) => {
-            hasFeatures = true;
+async function fitMapToBoundsFromGeoJSON(geojsonUrl) {
+    try {
+        const response = await fetch(geojsonUrl);
+        if (!response.ok) return;
+        
+        const data = await response.json();
+        if (!data.features || data.features.length === 0) return;
+        
+        const bounds = new maplibregl.LngLatBounds();
+        
+        data.features.forEach((feature) => {
             if (feature.geometry.type === 'Point') {
                 bounds.extend(feature.geometry.coordinates);
             } else if (feature.geometry.type === 'Polygon') {
@@ -432,14 +409,17 @@ function fitMapToBounds() {
                 });
             }
         });
-    }
 
-    if (hasFeatures && !bounds.isEmpty()) {
-        const maxZoom = window.gfMapConfig.max_zoom || 15;
-        map.fitBounds(bounds, {
-            padding: 50,
-            maxZoom: maxZoom,
-        });
+        if (!bounds.isEmpty()) {
+            const maxZoom = window.gfMapConfig.max_zoom || 15;
+            map.fitBounds(bounds, {
+                padding: 50,
+                maxZoom: maxZoom,
+            });
+        }
+    } catch (e) {
+        // If fetch fails, use default view
+        console.warn('Failed to fetch GeoJSON for bounds calculation:', e);
     }
 }
 
