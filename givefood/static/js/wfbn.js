@@ -486,8 +486,8 @@ function addMapLegend() {
             mapElement.appendChild(legend);
             legend.style.display = 'block';
             legend.style.position = 'absolute';
-            legend.style.bottom = '30px';
-            legend.style.left = '10px';
+            legend.style.bottom = '0';
+            legend.style.left = '0';
             legend.style.zIndex = '1';
         }
     }
