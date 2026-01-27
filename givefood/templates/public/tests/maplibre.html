@@ -200,18 +200,18 @@
     });
 
     map.on('click', layer_list, (e) => {
-      coordinates = e.features[0].geometry.coordinates.slice();
-      name = e.features[0].properties.name;
-      type = e.features[0].properties.type;
-      address = e.features[0].properties.address;
-      url = e.features[0].properties.url;
-      foodbank = e.features[0].properties.foodbank;
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const name = e.features[0].properties.name;
+      const type = e.features[0].properties.type;
+      const address = e.features[0].properties.address;
+      const url = e.features[0].properties.url;
+      const foodbank = e.features[0].properties.foodbank;
 
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
       }
 
-      html = "<div class='popup-title'>" + name + "</div>"
+      let html = "<div class='popup-title'>" + name + "</div>"
       if (address) {
         html += "<address>" + address.replace(/(\r\n|\r|\n)/g, '<br>') + "</address>"
       }
