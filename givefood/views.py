@@ -42,22 +42,22 @@ COUNTRY_MAP_CONFIG = {
     'Scotland': {
         'lat': 57.7,
         'lng': -4,
-        'zoom': 7
+        'zoom': 6
     },
     'England': {
         'lat': 53,
         'lng': -1.8,
-        'zoom': 7
+        'zoom': 6
     },
     'Wales': {
         'lat': 52.3,
         'lng': -3.7,
-        'zoom': 8
+        'zoom': 7
     },
     'Northern Ireland': {
         'lat': 54.6,
         'lng': -6.5,
-        'zoom': 8
+        'zoom': 7
     },
 }
 
