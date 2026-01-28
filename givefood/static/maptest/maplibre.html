@@ -87,6 +87,7 @@
             center: hashParams ? [hashParams.lng, hashParams.lat] : [-4, 55.4], 
             zoom: hashParams ? hashParams.zoom : 5,
             hash: false,
+            cooperativeGestures: true,
         });
 
         // Update URL hash when map moves (format: x,y,zoom where x=lng, y=lat)
