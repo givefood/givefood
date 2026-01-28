@@ -72,7 +72,12 @@
 
 {% block script %}
   <script src="/static/js/maplibre-gl.js"></script>
+  <script src="/static/js/pmtiles.js"></script>
   <script>
+
+    // Register PMTiles protocol
+    let protocol = new pmtiles.Protocol();
+    maplibregl.addProtocol("pmtiles", protocol.tile);
 
     // Parse hash for initial map position (format: x,y,zoom where x=lng, y=lat)
     function getHashParams() {
@@ -110,9 +115,107 @@
       return str;
     }
 
+    // PMTiles style configuration
+    const pmtilesStyle = {
+      version: 8,
+      glyphs: "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
+      sprite: "https://protomaps.github.io/basemaps-assets/sprites/v4/light",
+      sources: {
+        protomaps: {
+          type: "vector",
+          url: "pmtiles://https://mt.givefood.org.uk/uk.pmtiles",
+          attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }
+      },
+      layers: [
+        {
+          id: "background",
+          type: "background",
+          paint: { "background-color": "#e0e0e0" }
+        },
+        {
+          id: "earth",
+          type: "fill",
+          source: "protomaps",
+          "source-layer": "earth",
+          paint: { "fill-color": "#f5f5f5" }
+        },
+        {
+          id: "landuse_park",
+          type: "fill",
+          source: "protomaps",
+          "source-layer": "landuse",
+          filter: ["any", ["==", "pmap:kind", "park"], ["==", "pmap:kind", "nature_reserve"], ["==", "pmap:kind", "protected_area"]],
+          paint: { "fill-color": "#c8e6c9" }
+        },
+        {
+          id: "landuse_urban",
+          type: "fill",
+          source: "protomaps",
+          "source-layer": "landuse",
+          filter: ["any", ["==", "pmap:kind", "residential"], ["==", "pmap:kind", "commercial"], ["==", "pmap:kind", "industrial"]],
+          paint: { "fill-color": "#e8e8e8" }
+        },
+        {
+          id: "water",
+          type: "fill",
+          source: "protomaps",
+          "source-layer": "water",
+          paint: { "fill-color": "#a5d6f1" }
+        },
+        {
+          id: "roads_other",
+          type: "line",
+          source: "protomaps",
+          "source-layer": "roads",
+          filter: ["all", ["!=", "pmap:kind", "highway"], ["!=", "pmap:kind", "major_road"]],
+          paint: { "line-color": "#ffffff", "line-width": 1 }
+        },
+        {
+          id: "roads_major",
+          type: "line",
+          source: "protomaps",
+          "source-layer": "roads",
+          filter: ["==", "pmap:kind", "major_road"],
+          paint: { "line-color": "#ffffff", "line-width": 2 }
+        },
+        {
+          id: "roads_highway",
+          type: "line",
+          source: "protomaps",
+          "source-layer": "roads",
+          filter: ["==", "pmap:kind", "highway"],
+          paint: { "line-color": "#ffcc80", "line-width": 3 }
+        },
+        {
+          id: "buildings",
+          type: "fill",
+          source: "protomaps",
+          "source-layer": "buildings",
+          paint: { "fill-color": "#d4d4d4" }
+        },
+        {
+          id: "place_labels",
+          type: "symbol",
+          source: "protomaps",
+          "source-layer": "places",
+          layout: {
+            "text-field": ["get", "name"],
+            "text-font": ["Noto Sans Regular"],
+            "text-size": ["interpolate", ["linear"], ["zoom"], 6, 10, 12, 14]
+          },
+          paint: {
+            "text-color": "#333333",
+            "text-halo-color": "#ffffff",
+            "text-halo-width": 1
+          }
+        }
+      ]
+    };
+
     const map = new maplibregl.Map({
       container: 'map',
-      style: 'https://tiles.openfreemap.org/styles/bright',
+      style: pmtilesStyle,
       center: hashParams ? [hashParams.lng, hashParams.lat] : [-4, 55.4], 
       zoom: hashParams ? hashParams.zoom : 5,
       hash: false,
