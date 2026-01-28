@@ -87,7 +87,14 @@
             center: hashParams ? [hashParams.lng, hashParams.lat] : [-4, 55.4], 
             zoom: hashParams ? hashParams.zoom : 5,
             hash: false,
+            attributionControl: false,
+            cooperativeGestures: true,
         });
+
+        // Add compact attribution control (collapsed by default)
+        map.addControl(new maplibregl.AttributionControl({
+            compact: true,
+        }));
 
         // Update URL hash when map moves (format: x,y,zoom where x=lng, y=lat)
         map.on('moveend', () => {
