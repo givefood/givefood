@@ -107,6 +107,7 @@ function initMap() {
         style: 'https://tiles.openfreemap.org/styles/bright',
         attributionControl: false, // Disable default attribution
         cooperativeGestures: true, // Require Ctrl+scroll to zoom
+        generateId: true, // Auto-generate feature IDs for better performance
     };
 
     // Set initial view based on available config
