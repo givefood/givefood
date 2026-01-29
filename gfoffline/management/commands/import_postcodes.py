@@ -48,6 +48,12 @@ class Command(BaseCommand):
         skipped_not_in_use = 0
         skipped_existing = 0
         skipped_missing_data = 0
+        missing_field_counts = {
+            'postcode': 0,
+            'latitude': 0,
+            'longitude': 0,
+            'country': 0,
+        }
         errors = 0
         total_rows = 0
         batch = []
@@ -75,6 +81,7 @@ class Command(BaseCommand):
                 # Skip if postcode is empty
                 if not postcode:
                     skipped_missing_data += 1
+                    missing_field_counts['postcode'] += 1
                     continue
 
                 # Skip if postcode already exists (restartable support)
@@ -92,6 +99,10 @@ class Command(BaseCommand):
                 # Skip postcodes with missing coordinates
                 if not latitude or not longitude:
                     skipped_missing_data += 1
+                    if not latitude:
+                        missing_field_counts['latitude'] += 1
+                    if not longitude:
+                        missing_field_counts['longitude'] += 1
                     continue
                 
                 lat_lng = f"{latitude},{longitude}"
@@ -100,6 +111,7 @@ class Command(BaseCommand):
                 country = row.get('Country', '').strip()
                 if not country:
                     skipped_missing_data += 1
+                    missing_field_counts['country'] += 1
                     continue
 
                 if dry_run:
@@ -170,6 +182,10 @@ class Command(BaseCommand):
         self.stdout.write(f"  Skipped (not in use): {skipped_not_in_use}")
         self.stdout.write(f"  Skipped (already existing): {skipped_existing}")
         self.stdout.write(f"  Skipped (missing data): {skipped_missing_data}")
+        if skipped_missing_data > 0:
+            for field, count in missing_field_counts.items():
+                if count > 0:
+                    self.stdout.write(f"    - missing {field}: {count}")
         self.stdout.write(f"  Errors: {errors}")
 
         if dry_run:

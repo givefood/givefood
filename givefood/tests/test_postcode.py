@@ -241,7 +241,9 @@ class TestImportPostcodesCommand:
             assert Postcode.objects.count() == 1
             assert Postcode.objects.filter(postcode='SW1A 2AA').exists()
             assert not Postcode.objects.filter(postcode='SW1A 1AA').exists()
-            assert 'missing data' in out.getvalue().lower()
+            output = out.getvalue().lower()
+            assert 'missing data' in output
+            assert 'missing latitude' in output
         finally:
             os.unlink(csv_path)
 
@@ -270,7 +272,9 @@ class TestImportPostcodesCommand:
             assert Postcode.objects.count() == 1
             assert Postcode.objects.filter(postcode='SW1A 2AA').exists()
             assert not Postcode.objects.filter(postcode='SW1A 1AA').exists()
-            assert 'missing data' in out.getvalue().lower()
+            output = out.getvalue().lower()
+            assert 'missing data' in output
+            assert 'missing country' in output
         finally:
             os.unlink(csv_path)
 
