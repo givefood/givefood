@@ -32,6 +32,10 @@ const layers = {
 };
 const layerList = Object.keys(layers);
 
+// Autocomplete Variables
+let autocompleteDropdown = null;
+let autocompleteTimeout = null;
+
 /**
  * Initialize the page functionality
  */
@@ -42,6 +46,10 @@ function init() {
 
     if (useMyLocationBtn) {
         initLocationButton();
+    }
+
+    if (addressField) {
+        initAddressAutocomplete();
     }
 }
 
@@ -64,6 +72,195 @@ function initLocationButton() {
                 }
                 window.location = `${url}?lat_lng=${lat},${lng}`;
             });
+        }
+    });
+}
+
+/**
+ * Initialize address autocomplete functionality
+ */
+function initAddressAutocomplete() {
+    // Create autocomplete dropdown container
+    autocompleteDropdown = document.createElement('div');
+    autocompleteDropdown.id = 'autocomplete-dropdown';
+    autocompleteDropdown.className = 'autocomplete-dropdown';
+    addressField.parentNode.insertBefore(autocompleteDropdown, addressField.nextSibling);
+
+    // Add input event listener with debounce
+    addressField.addEventListener('input', (event) => {
+        const query = event.target.value.trim();
+
+        // Clear any pending timeout
+        if (autocompleteTimeout) {
+            clearTimeout(autocompleteTimeout);
+        }
+
+        // Clear lat_lng field when user types
+        if (latLngField) {
+            latLngField.value = '';
+        }
+
+        // Only search if query has more than 2 characters
+        if (query.length > 2) {
+            autocompleteTimeout = setTimeout(() => {
+                fetchAutocomplete(query);
+            }, 200);
+        } else {
+            hideAutocomplete();
+        }
+    });
+
+    // Handle keyboard navigation
+    addressField.addEventListener('keydown', handleAutocompleteKeydown);
+
+    // Hide autocomplete when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!addressField.contains(event.target) && !autocompleteDropdown.contains(event.target)) {
+            hideAutocomplete();
+        }
+    });
+}
+
+/**
+ * Fetch autocomplete suggestions from the API
+ * @param {string} query - Search query
+ */
+async function fetchAutocomplete(query) {
+    try {
+        const response = await fetch(`/aac/?q=${encodeURIComponent(query)}`);
+        if (!response.ok) {
+            hideAutocomplete();
+            return;
+        }
+
+        const results = await response.json();
+        displayAutocomplete(results);
+    } catch (error) {
+        console.warn('Autocomplete fetch failed:', error);
+        hideAutocomplete();
+    }
+}
+
+/**
+ * Display autocomplete suggestions
+ * @param {Array} results - Array of autocomplete results
+ */
+function displayAutocomplete(results) {
+    if (!results || results.length === 0) {
+        hideAutocomplete();
+        return;
+    }
+
+    // Clear existing items
+    autocompleteDropdown.innerHTML = '';
+
+    results.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'autocomplete-item';
+        div.setAttribute('data-index', index);
+        div.setAttribute('data-lat-lng', item.l);
+
+        // Format display: "name, county" for places, just "name" for postcodes
+        if (item.t === 'p') {
+            div.textContent = `${item.n}, ${item.c}`;
+        } else {
+            div.textContent = item.n;
+        }
+
+        div.addEventListener('click', () => selectAutocompleteItem(item));
+        div.addEventListener('mouseenter', () => {
+            // Remove active class from all items
+            autocompleteDropdown.querySelectorAll('.autocomplete-item').forEach(el => {
+                el.classList.remove('active');
+            });
+            div.classList.add('active');
+        });
+
+        autocompleteDropdown.appendChild(div);
+    });
+
+    autocompleteDropdown.style.display = 'block';
+}
+
+/**
+ * Hide autocomplete dropdown
+ */
+function hideAutocomplete() {
+    if (autocompleteDropdown) {
+        autocompleteDropdown.style.display = 'none';
+        autocompleteDropdown.innerHTML = '';
+    }
+}
+
+/**
+ * Select an autocomplete item
+ * @param {Object} item - The selected item
+ */
+function selectAutocompleteItem(item) {
+    // Set address field value
+    if (item.t === 'p') {
+        addressField.value = `${item.n}, ${item.c}`;
+    } else {
+        addressField.value = item.n;
+    }
+
+    // Set lat_lng field
+    if (latLngField) {
+        latLngField.value = item.l;
+    }
+
+    hideAutocomplete();
+}
+
+/**
+ * Handle keyboard navigation in autocomplete
+ * @param {KeyboardEvent} event - Keyboard event
+ */
+function handleAutocompleteKeydown(event) {
+    if (!autocompleteDropdown || autocompleteDropdown.style.display === 'none') {
+        return;
+    }
+
+    const items = autocompleteDropdown.querySelectorAll('.autocomplete-item');
+    if (items.length === 0) return;
+
+    const activeItem = autocompleteDropdown.querySelector('.autocomplete-item.active');
+    let activeIndex = activeItem ? parseInt(activeItem.getAttribute('data-index')) : -1;
+
+    switch (event.key) {
+        case 'ArrowDown':
+            event.preventDefault();
+            activeIndex = Math.min(activeIndex + 1, items.length - 1);
+            break;
+        case 'ArrowUp':
+            event.preventDefault();
+            activeIndex = Math.max(activeIndex - 1, 0);
+            break;
+        case 'Enter':
+            if (activeItem) {
+                event.preventDefault();
+                const latLng = activeItem.getAttribute('data-lat-lng');
+                const text = activeItem.textContent;
+                addressField.value = text;
+                if (latLngField) {
+                    latLngField.value = latLng;
+                }
+                hideAutocomplete();
+            }
+            return;
+        case 'Escape':
+            hideAutocomplete();
+            return;
+        default:
+            return;
+    }
+
+    // Update active state
+    items.forEach((item, index) => {
+        if (index === activeIndex) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
         }
     });
 }
