@@ -666,6 +666,7 @@ def sitemap(request):
         'no_locations',
         'no_donation_points',
         'rss_url',
+        'news_url',
         'charity_name',
         'facebook_page',
     )
