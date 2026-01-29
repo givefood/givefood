@@ -775,7 +775,6 @@ def _build_foodbank_check_data(foodbank):
             "network": foodbank.network,
             "charity_number": foodbank.charity_number,
             "facebook_page": foodbank.facebook_page,
-            "twitter_handle": foodbank.twitter_handle,
             "bankuet_slug": foodbank.bankuet_slug,
             "rss_url": foodbank.rss_url,
             "news_url": foodbank.news_url,
@@ -947,9 +946,6 @@ FOODBANK_CHECK_RESPONSE_SCHEMA = {
             "facebook_page": {
             "type": "string"
             },
-            "twitter_handle": {
-            "type": "string"
-            },
             "bankuet_slug": {
             "type": "string"
             },
@@ -979,7 +975,6 @@ FOODBANK_CHECK_RESPONSE_SCHEMA = {
             "network",
             "charity_number",
             "facebook_page",
-            "twitter_handle",
             "bankuet_slug",
             "rss_url",
             "news_url",
@@ -1102,7 +1097,6 @@ def foodbank_check(request, slug):
         "contact_email": (foodbank.contact_email or "") != (check_result["details"].get("contact_email") or ""),
         "charity_number": (foodbank.charity_number or "") != (check_result["details"].get("charity_number") or ""),
         "facebook_page": (foodbank.facebook_page or "") != (check_result["details"].get("facebook_page") or ""),
-        "twitter_handle": (foodbank.twitter_handle or "") != (check_result["details"].get("twitter_handle") or ""),
         "bankuet_slug": (foodbank.bankuet_slug or "") != (check_result["details"].get("bankuet_slug") or ""),
         "rss_url": (foodbank.rss_url or "") != (check_result["details"].get("rss_url") or ""),
         "news_url": (foodbank.news_url or "") != (check_result["details"].get("news_url") or ""),
@@ -1222,12 +1216,12 @@ def foodbank_use_ai_detail(request, slug, field):
     """
     HTMX endpoint to update a foodbank field with AI-found data.
     Supports fields: phone_number, contact_email, charity_number, facebook_page,
-    twitter_handle, bankuet_slug, rss_url, news_url, donation_points_url, 
+    bankuet_slug, rss_url, news_url, donation_points_url, 
     locations_url, contacts_url
     """
     ALLOWED_FIELDS = [
         'phone_number', 'contact_email', 'charity_number',
-        'facebook_page', 'twitter_handle', 'bankuet_slug',
+        'facebook_page', 'bankuet_slug',
         'rss_url', 'news_url', 'donation_points_url',
         'locations_url', 'contacts_url',
     ]
@@ -1909,8 +1903,8 @@ def need_notifications(request, id):
     if foodbank.rss_url:
         foodbank_article_crawl(foodbank)
 
-    # Update tweet time
-    need.tweet_sent = datetime.now()
+    # Update notification time
+    need.notified = datetime.now()
     need.save(do_foodbank_save=False, do_translate=False)
 
     # Email subscriptions

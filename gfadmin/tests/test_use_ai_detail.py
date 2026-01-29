@@ -217,36 +217,6 @@ class TestFoodbankUseAiDetail:
         assert response.status_code == 200
         assert b'Used' in response.content
 
-    def test_update_twitter_handle_with_htmx(self):
-        """Test updating Twitter handle via HTMX."""
-        foodbank = Foodbank(
-            name='Test Foodbank',
-            url='https://example.com',
-            shopping_list_url='https://example.com/shopping',
-            address='123 Test St',
-            postcode='AB12 3CD',
-            country='England',
-            lat_lng='51.5074,-0.1278',
-            contact_email='test@example.com',
-            twitter_handle='oldhandle',
-        )
-        foodbank.save(do_geoupdate=False, do_decache=False)
-        
-        from gfadmin.views import foodbank_use_ai_detail
-        factory = RequestFactory()
-        request = factory.post(
-            f'/admin/foodbank/{foodbank.slug}/use-ai/twitter_handle/',
-            data={'value': 'newhandle'},
-            **{'HTTP_HX-Request': 'true'}
-        )
-        
-        response = foodbank_use_ai_detail(request, slug=foodbank.slug, field='twitter_handle')
-        
-        foodbank.refresh_from_db()
-        
-        assert foodbank.twitter_handle == 'newhandle'
-        assert b'Used' in response.content
-
     def test_update_bankuet_slug_with_htmx(self):
         """Test updating Bankuet slug via HTMX."""
         foodbank = Foodbank(

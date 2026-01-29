@@ -668,7 +668,6 @@ def sitemap(request):
         'rss_url',
         'charity_name',
         'facebook_page',
-        'twitter_handle'
     )
     constituencies = ParliamentaryConstituency.objects.all().only('slug')
     locations = (

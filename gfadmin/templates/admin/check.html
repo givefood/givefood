@@ -53,8 +53,6 @@
                         <dd{% if detail_changes.charity_number %} class="check-changed"{% endif %}>{{ foodbank.charity_number }}</dd>
                         <dt{% if detail_changes.facebook_page %} class="check-changed"{% endif %}>Facebook</dt>
                         <dd{% if detail_changes.facebook_page %} class="check-changed"{% endif %}>{{ foodbank.facebook_page }}</dd>
-                        <dt{% if detail_changes.twitter_handle %} class="check-changed"{% endif %}>Twitter</dt>
-                        <dd{% if detail_changes.twitter_handle %} class="check-changed"{% endif %}>{{ foodbank.twitter_handle }}</dd>
                         <dt{% if detail_changes.bankuet_slug %} class="check-changed"{% endif %}>Bankuet</dt>
                         <dd{% if detail_changes.bankuet_slug %} class="check-changed"{% endif %}>{{ foodbank.bankuet_slug }}</dd>
                         <dt{% if detail_changes.rss_url %} class="check-changed"{% endif %}>RSS URL</dt>
@@ -124,19 +122,6 @@
                                     <button type="submit" 
                                             class="button is-small is-success is-light"
                                             hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'facebook_page' %}"
-                                            hx-include="closest form"
-                                            hx-swap="outerHTML">Use</button>
-                                </form>
-                            {% endif %}
-                        </dd>
-                        <dt{% if detail_changes.twitter_handle %} class="check-changed"{% endif %}>Twitter</dt>
-                        <dd{% if detail_changes.twitter_handle %} class="check-changed"{% endif %}>{{ check_result.details.twitter_handle }}
-                            {% if detail_changes.twitter_handle and check_result.details.twitter_handle %}
-                                <form method="post" action="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'twitter_handle' %}" style="display:inline;">
-                                    <input type="hidden" name="value" value="{{ check_result.details.twitter_handle }}">
-                                    <button type="submit" 
-                                            class="button is-small is-success is-light"
-                                            hx-post="{% url 'admin:foodbank_use_ai_detail' foodbank.slug 'twitter_handle' %}"
                                             hx-include="closest form"
                                             hx-swap="outerHTML">Use</button>
                                 </form>

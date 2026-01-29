@@ -112,7 +112,6 @@ class Foodbank(models.Model):
 
     # Social IDs
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
-    twitter_handle = models.CharField(max_length=50, null=True, blank=True)
     bankuet_slug = models.CharField(max_length=50, null=True, blank=True)
     fsa_id = models.CharField(max_length=50, null=True, blank=True, verbose_name="Food Standards Agency Business ID")
 
@@ -265,8 +264,6 @@ class Foodbank(models.Model):
             schema_dict["sameAs"].append(self.fsa_url())
         if self.facebook_page:
             schema_dict["sameAs"].append("https://www.facebook.com/%s" % self.facebook_page)
-        if self.twitter_handle:
-            schema_dict["sameAs"].append("https://x.com/%s" % self.twitter_handle)
         
         if not as_sub_property:
             schema_dict["@context"] = "https://schema.org"
@@ -1730,7 +1727,7 @@ class FoodbankChange(models.Model):
 
     published = models.BooleanField(default=False)
     nonpertinent = models.BooleanField(default=False, editable=False)
-    tweet_sent = models.DateTimeField(null=True, blank=True, editable=False)
+    notified = models.DateTimeField(null=True, blank=True, editable=False)
 
     input_method = models.CharField(max_length=10, choices=NEED_INPUT_TYPES_CHOICES)
     is_categorised = models.BooleanField(default=False, editable=False)

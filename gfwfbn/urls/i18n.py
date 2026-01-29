@@ -22,7 +22,6 @@ urlpatterns = [
     path("at/<slug:slug>/geo.json", geojson, name="foodbank_geojson"),
     path("at/<slug:slug>/news/", foodbank_news, name="foodbank_news"),
     path("at/<slug:slug>/charity/", foodbank_charity, name="foodbank_charity"),
-    path("at/<slug:slug>/socialmedia/", foodbank_socialmedia, name="foodbank_socialmedia"),
     path("at/<slug:slug>/nearby/", foodbank_nearby, name="foodbank_nearby"),
     re_path(r"^at/(?P<slug>[-\w]+)/updates/(?P<action>subscribe|confirm|unsubscribe)/", updates, name="updates"),
     path("at/<slug:slug>/map.png", foodbank_map, name="foodbank_map"),

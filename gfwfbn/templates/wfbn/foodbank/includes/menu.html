@@ -14,9 +14,6 @@
         {% if foodbank.charity_name %}
             <li><a {% if section == 'charity' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_charity' foodbank.slug %}">{% blocktrans %}Charity{% endblocktrans %}</a></li>
         {% endif %}
-        {% if foodbank.facebook_page or foodbank.twitter_handle %}
-            <li><a  {% if section == 'socialmedia' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}">{% blocktrans %}Social media{% endblocktrans %}</a></li>
-        {% endif %}
         <li><a {% if section == 'nearby' %}class="is-active" {% endif %}href="{% url 'wfbn:foodbank_nearby' foodbank.slug %}">{% blocktrans %}Nearby{% endblocktrans %}</a></li>
     </ul>
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">

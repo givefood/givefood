@@ -136,6 +136,9 @@ a.pluscode {
 .contacts .email {
     background-image:url(/static/img/email.svg);
 }
+.contacts .facebook {
+    background-image:url(/static/img/facebook.svg);
+}
 .contact-icon {
     width:16px;
     display:inline-block;

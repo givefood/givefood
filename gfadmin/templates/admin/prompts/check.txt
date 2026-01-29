@@ -4,7 +4,6 @@ You are checking the address, contact details, charity number, locations and don
 
 Also look for:
 - Facebook page (extract just the page slug from URLs like facebook.com/GiveFoodOrgUK - return "GiveFoodOrgUK", not the full URL)
-- Twitter/X handle (extract just the username without @, not the full URL)
 - Bankuet slug (if they use Bankuet for donations, extract the slug from URLs like bankuet.co.uk/SLUG)
 - RSS feed URL (look for RSS or Atom feed links)
 - News URL (a page listing news or blog posts)
