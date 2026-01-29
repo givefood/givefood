@@ -1,6 +1,7 @@
 import csv
 import logging
 from django.core.management.base import BaseCommand
+from django.db import IntegrityError
 
 from givefood.models import Postcode
 
@@ -43,8 +44,10 @@ class Command(BaseCommand):
             self.stdout.write(f"Found {existing_count} existing postcodes - will skip these (restartable import)")
 
         imported = 0
+        would_import = 0  # Counter for dry-run mode
         skipped_not_in_use = 0
         skipped_existing = 0
+        skipped_missing_data = 0
         errors = 0
         total_rows = 0
         batch = []
@@ -63,71 +66,110 @@ class Command(BaseCommand):
                     skipped_not_in_use += 1
                     # Progress every 100,000 rows
                     if total_rows % 100000 == 0:
-                        self.stdout.write(f"Processing row {total_rows}... (imported: {imported}, skipped not in use: {skipped_not_in_use}, skipped existing: {skipped_existing})")
+                        count = would_import if dry_run else imported
+                        self.stdout.write(f"Processing row {total_rows}... (imported: {count}, skipped not in use: {skipped_not_in_use}, skipped existing: {skipped_existing})")
                     continue
 
                 postcode = row.get('Postcode', '').strip()
                 
                 # Skip if postcode is empty
                 if not postcode:
-                    errors += 1
+                    skipped_missing_data += 1
                     continue
 
                 # Skip if postcode already exists (restartable support)
                 if postcode in existing_postcodes:
                     skipped_existing += 1
                     if total_rows % 100000 == 0:
-                        self.stdout.write(f"Processing row {total_rows}... (imported: {imported}, skipped not in use: {skipped_not_in_use}, skipped existing: {skipped_existing})")
+                        count = would_import if dry_run else imported
+                        self.stdout.write(f"Processing row {total_rows}... (imported: {count}, skipped not in use: {skipped_not_in_use}, skipped existing: {skipped_existing})")
                     continue
 
                 # Build lat_lng from Latitude and Longitude
                 latitude = row.get('Latitude', '').strip()
                 longitude = row.get('Longitude', '').strip()
                 
-                if latitude and longitude:
-                    lat_lng = f"{latitude},{longitude}"
-                else:
-                    lat_lng = ""
+                # Skip postcodes with missing coordinates
+                if not latitude or not longitude:
+                    skipped_missing_data += 1
+                    continue
+                
+                lat_lng = f"{latitude},{longitude}"
 
-                if not dry_run:
+                # Get and validate country (required field)
+                country = row.get('Country', '').strip()
+                if not country:
+                    skipped_missing_data += 1
+                    continue
+
+                if dry_run:
+                    would_import += 1
+                else:
                     postcode_obj = Postcode(
                         postcode=postcode,
                         lat_lng=lat_lng,
                         county=row.get('County', '').strip() or None,
                         district=row.get('District', '').strip() or None,
                         ward=row.get('Ward', '').strip() or None,
-                        country=row.get('Country', '').strip(),
+                        country=country,
                         region=row.get('Region', '').strip() or None,
                         lsoa_code=row.get('LSOA Code', '').strip() or None,
                         msoa_code=row.get('MSOA Code', '').strip() or None,
                         police=row.get('Police force', '').strip() or None,
                     )
                     batch.append(postcode_obj)
+                    existing_postcodes.add(postcode)  # Track newly imported
 
                     # Bulk create when batch is full
                     if len(batch) >= batch_size:
-                        Postcode.objects.bulk_create(batch, ignore_conflicts=True)
+                        try:
+                            Postcode.objects.bulk_create(batch, ignore_conflicts=True)
+                            imported += len(batch)
+                        except (IntegrityError, Exception) as e:
+                            # Log the error and try to insert one by one
+                            logging.warning(f"Batch insert failed, trying individual inserts: {e}")
+                            for obj in batch:
+                                try:
+                                    obj.save()
+                                    imported += 1
+                                except Exception as obj_error:
+                                    errors += 1
+                                    logging.error(f"Failed to save postcode {obj.postcode}: {obj_error}")
                         batch = []
 
-                imported += 1
-                existing_postcodes.add(postcode)  # Track newly imported
-
                 # Progress every 10,000 imported postcodes
-                if imported % 10000 == 0:
-                    self.stdout.write(f"Imported {imported} postcodes... (row {total_rows})")
-                    logging.info(f"Imported {imported} postcodes at row {total_rows}")
+                count = would_import if dry_run else imported
+                if count > 0 and count % 10000 == 0:
+                    self.stdout.write(f"Imported {count} postcodes... (row {total_rows})")
+                    logging.info(f"Imported {count} postcodes at row {total_rows}")
 
         # Save any remaining batch
         if batch and not dry_run:
-            Postcode.objects.bulk_create(batch, ignore_conflicts=True)
+            try:
+                Postcode.objects.bulk_create(batch, ignore_conflicts=True)
+                imported += len(batch)
+            except (IntegrityError, Exception) as e:
+                # Log the error and try to insert one by one
+                logging.warning(f"Final batch insert failed, trying individual inserts: {e}")
+                for obj in batch:
+                    try:
+                        obj.save()
+                        imported += 1
+                    except Exception as obj_error:
+                        errors += 1
+                        logging.error(f"Failed to save postcode {obj.postcode}: {obj_error}")
 
         # Summary
         self.stdout.write("")
         self.stdout.write(self.style.SUCCESS("Import complete!"))
         self.stdout.write(f"  Total rows processed: {total_rows}")
-        self.stdout.write(f"  Imported: {imported}")
+        if dry_run:
+            self.stdout.write(f"  Would import: {would_import}")
+        else:
+            self.stdout.write(f"  Imported: {imported}")
         self.stdout.write(f"  Skipped (not in use): {skipped_not_in_use}")
         self.stdout.write(f"  Skipped (already existing): {skipped_existing}")
+        self.stdout.write(f"  Skipped (missing data): {skipped_missing_data}")
         self.stdout.write(f"  Errors: {errors}")
 
         if dry_run:

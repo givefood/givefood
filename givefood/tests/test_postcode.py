@@ -215,3 +215,101 @@ class TestImportPostcodesCommand:
             assert postcode.police == 'Metropolitan Police'
         finally:
             os.unlink(csv_path)
+
+    def test_import_skips_missing_coordinates(self):
+        """Test that postcodes with missing coordinates are skipped."""
+        csv_path = self.create_csv_file([
+            # Postcode with missing latitude
+            ['SW1A 1AA', 'Yes', '', '-0.141588', '', '', '', 'Greater London',
+             'Westminster', 'St James', '', '', 'England', '', '', '', '', '', '', '',
+             '', '', '', 'London', '', '', 'E01004736', '', 'E02000977', '', '', '', '',
+             '', '', '', '', '', '', '', 'Metropolitan Police', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            # Postcode with valid coordinates
+            ['SW1A 2AA', 'Yes', '51.501', '-0.141', '', '', '', 'Greater London',
+             'Westminster', 'St James', '', '', 'England', '', '', '', '', '', '', '',
+             '', '', '', 'London', '', '', 'E01004737', '', 'E02000978', '', '', '', '',
+             '', '', '', '', '', '', '', 'Metropolitan Police', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ])
+        
+        try:
+            out = StringIO()
+            call_command('import_postcodes', csv_path, stdout=out)
+            
+            # Only the valid postcode should be imported
+            assert Postcode.objects.count() == 1
+            assert Postcode.objects.filter(postcode='SW1A 2AA').exists()
+            assert not Postcode.objects.filter(postcode='SW1A 1AA').exists()
+            assert 'missing data' in out.getvalue().lower()
+        finally:
+            os.unlink(csv_path)
+
+    def test_import_skips_missing_country(self):
+        """Test that postcodes with missing country are skipped."""
+        csv_path = self.create_csv_file([
+            # Postcode with missing country
+            ['SW1A 1AA', 'Yes', '51.501009', '-0.141588', '', '', '', 'Greater London',
+             'Westminster', 'St James', '', '', '', '', '', '', '', '', '', '',  # Country is empty
+             '', '', '', 'London', '', '', 'E01004736', '', 'E02000977', '', '', '', '',
+             '', '', '', '', '', '', '', 'Metropolitan Police', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            # Postcode with valid country
+            ['SW1A 2AA', 'Yes', '51.501', '-0.141', '', '', '', 'Greater London',
+             'Westminster', 'St James', '', '', 'England', '', '', '', '', '', '', '',
+             '', '', '', 'London', '', '', 'E01004737', '', 'E02000978', '', '', '', '',
+             '', '', '', '', '', '', '', 'Metropolitan Police', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ])
+        
+        try:
+            out = StringIO()
+            call_command('import_postcodes', csv_path, stdout=out)
+            
+            # Only the valid postcode should be imported
+            assert Postcode.objects.count() == 1
+            assert Postcode.objects.filter(postcode='SW1A 2AA').exists()
+            assert not Postcode.objects.filter(postcode='SW1A 1AA').exists()
+            assert 'missing data' in out.getvalue().lower()
+        finally:
+            os.unlink(csv_path)
+
+    def test_import_batch_size(self):
+        """Test that batching works correctly with different batch sizes."""
+        # Create 5 postcodes
+        csv_path = self.create_csv_file([
+            ['SW1A 1AA', 'Yes', '51.501', '-0.141', '', '', '', '',
+             '', '', '', '', 'England', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['SW1A 2AA', 'Yes', '51.502', '-0.142', '', '', '', '',
+             '', '', '', '', 'England', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['SW1A 3AA', 'Yes', '51.503', '-0.143', '', '', '', '',
+             '', '', '', '', 'England', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['SW1A 4AA', 'Yes', '51.504', '-0.144', '', '', '', '',
+             '', '', '', '', 'England', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+            ['SW1A 5AA', 'Yes', '51.505', '-0.145', '', '', '', '',
+             '', '', '', '', 'England', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+             '', '', '', '', '', '', '', '', '', '', '', '', ''],
+        ])
+        
+        try:
+            # Use batch size of 2 so we have 2 full batches + 1 remaining
+            call_command('import_postcodes', csv_path, '--batch-size=2')
+            
+            # All 5 postcodes should be imported
+            assert Postcode.objects.count() == 5
+        finally:
+            os.unlink(csv_path)
