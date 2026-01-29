@@ -1362,18 +1362,43 @@ def address_autocomplete(request):
     
     results = []
     
-    # Search places (towns, cities, etc.)
-    places = Place.objects.filter(
-        name__icontains=query
-    ).values('name', 'lat_lng', 'county').distinct('name', 'county')[:10]
+    # Search places (towns, cities, etc.) - startswith first, then contains
+    places_startswith = Place.objects.filter(
+        name__istartswith=query
+    ).values('name', 'lat_lng', 'county')[:10]
     
-    for place in places:
-        results.append({
-            "n": place['name'],
-            "l": place['lat_lng'],
-            "t": "p",
-            "c": place['county']
-        })
+    place_names_added = set()
+    for place in places_startswith:
+        key = (place['name'], place['county'])
+        if key not in place_names_added:
+            results.append({
+                "n": place['name'],
+                "l": place['lat_lng'],
+                "t": "p",
+                "c": place['county']
+            })
+            place_names_added.add(key)
+    
+    # Fall back to contains if we need more results
+    if len(results) < 10:
+        places_contains = Place.objects.filter(
+            name__icontains=query
+        ).exclude(
+            name__istartswith=query
+        ).values('name', 'lat_lng', 'county')[:20]  # Fetch more to filter duplicates
+        
+        for place in places_contains:
+            if len(results) >= 10:
+                break
+            key = (place['name'], place['county'])
+            if key not in place_names_added:
+                results.append({
+                    "n": place['name'],
+                    "l": place['lat_lng'],
+                    "t": "p",
+                    "c": place['county']
+                })
+                place_names_added.add(key)
     
     # Search postcodes - normalize by removing spaces from both query and stored postcodes
     postcode_query = query.upper().replace(" ", "")

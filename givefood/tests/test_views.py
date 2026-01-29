@@ -522,4 +522,34 @@ class TestAddressAutocomplete:
         assert len(data) > 0
         assert any(item['n'] == 'EC1A 1BB' for item in data)
 
+    def test_aac_place_startswith_before_contains(self, client):
+        """Test that places starting with query appear before places containing query."""
+        # Create place that starts with "Win"
+        Place.objects.create(
+            gbpnid=99990,
+            name='Winchester',
+            lat_lng='51.0632,-1.3082',
+        )
+        # Create place that contains "win" but doesn't start with it
+        Place.objects.create(
+            gbpnid=99991,
+            name='Darwin',
+            lat_lng='51.4816,-3.1791',
+        )
+        
+        response = client.get('/aac/?q=win')
+        data = json.loads(response.content)
+        
+        # Filter to just places
+        places = [item for item in data if item['t'] == 'p']
+        
+        assert len(places) >= 2
+        # Winchester should appear before Darwin because it starts with "win"
+        winchester_idx = next((i for i, p in enumerate(places) if p['n'] == 'Winchester'), None)
+        darwin_idx = next((i for i, p in enumerate(places) if p['n'] == 'Darwin'), None)
+        
+        assert winchester_idx is not None
+        assert darwin_idx is not None
+        assert winchester_idx < darwin_idx, "Places starting with query should appear first"
+
 
