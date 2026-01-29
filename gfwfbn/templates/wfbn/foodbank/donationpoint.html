@@ -118,7 +118,7 @@
             {% endif %}
 
             <div id="map" class="sidemap"></div>
-            {% include "public/includes/maplegend.html" %}
+            {% include "public/includes/maplegend.html" with show_service_area=True %}
 
             <a href="https://www.google.com/maps?saddr=My+Location&daddr={{ donationpoint.lat_lng }}" class="{% if language_direction == 'ltr' %}is-pulled-right{% else %}is-pulled-left{% endif %} button is-info is-small is-light directions-btn">{% blocktrans %}Directions{% endblocktrans %}</a>
             <address>
