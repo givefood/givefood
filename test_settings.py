@@ -12,6 +12,13 @@ DATABASES = {
     }
 }
 
+# Disable caching for tests
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 # Disable django-earthdistance for tests since SQLite doesn't support it
 INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django_earthdistance']
 

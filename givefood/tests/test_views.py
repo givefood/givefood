@@ -4,7 +4,7 @@ Tests for the main givefood views.
 import json
 import pytest
 from django.test import Client, override_settings
-from givefood.models import Foodbank, ParliamentaryConstituency, FoodbankLocation, FoodbankDonationPoint, Place
+from givefood.models import Foodbank, ParliamentaryConstituency, FoodbankLocation, FoodbankDonationPoint, Place, Postcode
 
 
 @pytest.mark.django_db
@@ -430,11 +430,8 @@ class TestAddressAutocomplete:
         data = json.loads(response.content)
         assert isinstance(data, list)
 
-    def test_aac_result_structure(self, client):
-        """Test that results have expected structure with name and lat_lng."""
-        # Create test data
-        from givefood.models import Place, Postcode
-        
+    def test_aac_place_result_structure(self, client):
+        """Test that Place results have expected structure with name and lat_lng."""
         Place.objects.create(
             gbpnid=99999,
             name='Test Place',
@@ -445,9 +442,64 @@ class TestAddressAutocomplete:
         assert response.status_code == 200
         data = json.loads(response.content)
         
-        if len(data) > 0:
-            item = data[0]
-            assert 'name' in item
-            assert 'lat_lng' in item
+        assert len(data) > 0
+        item = data[0]
+        assert 'name' in item
+        assert 'lat_lng' in item
+        assert item['name'] == 'Test Place'
+        assert item['lat_lng'] == '51.5074,-0.1278'
+
+    def test_aac_postcode_result_structure(self, client):
+        """Test that Postcode results have expected structure with name and lat_lng."""
+        Postcode.objects.create(
+            postcode='SW1A 1AA',
+            lat_lng='51.5015,-0.1419',
+            country='England',
+        )
+        
+        response = client.get('/aac/?q=sw1')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        
+        assert len(data) > 0
+        item = data[0]
+        assert 'name' in item
+        assert 'lat_lng' in item
+        assert item['name'] == 'SW1A 1AA'
+        assert item['lat_lng'] == '51.5015,-0.1419'
+
+    def test_aac_case_insensitive_place_search(self, client):
+        """Test that place search is case insensitive."""
+        Place.objects.create(
+            gbpnid=99998,
+            name='Swindon',
+            lat_lng='51.5558,-1.7797',
+        )
+        
+        # Test lowercase query
+        response = client.get('/aac/?q=swindon')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert data[0]['name'] == 'Swindon'
+        
+        # Test uppercase query
+        response = client.get('/aac/?q=SWINDON')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert data[0]['name'] == 'Swindon'
+
+    def test_aac_postcode_case_handling(self, client):
+        """Test that postcode search handles different cases correctly."""
+        Postcode.objects.create(
+            postcode='SW1A 2AA',
+            lat_lng='51.5033,-0.1276',
+            country='England',
+        )
+        
+        # Test lowercase query - should still find the postcode
+        response = client.get('/aac/?q=sw1')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert any(item['name'] == 'SW1A 2AA' for item in data)
 
 
