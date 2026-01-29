@@ -115,7 +115,7 @@
             {% include "wfbn/foodbank/includes/ctas.html" %}
 
             <div id="map" class="sidemap"></div>
-            {% include "public/includes/maplegend.html" %}
+            {% include "public/includes/maplegend.html" with show_service_area=True %}
             {% if foodbank.latest_need.change_text == "Unknown" or foodbank.latest_need.change_text == "Nothing" %}
             {% else %}
               {% include "public/includes/serviceareadisclaimer.html" %}
