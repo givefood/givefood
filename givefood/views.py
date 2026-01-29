@@ -900,12 +900,14 @@ def frag(request, frag):
     """
     Fragments for client side includes.
     ip-address is handled inside and returns early (not cached).
+    news returns HTML from a template.
     """
 
     allowed_frags = [
         "ip-address",
         "last-updated",
         "need-hits",
+        "news",
     ]
     if frag not in allowed_frags:
         raise Http404()
@@ -928,6 +930,11 @@ def frag(request, frag):
     if frag == "need-hits":
         number_hits = FoodbankHit.objects.filter(day__gte=datetime.now() - timedelta(days=7)).aggregate(Sum('hits'))["hits__sum"]
         frag_text = intcomma(number_hits, False)
+
+    # news - returns HTML from template
+    if frag == "news":
+        articles = FoodbankArticle.objects.filter(featured=True).select_related('foodbank').order_by('-published_date')[:5]
+        return render(request, "public/frags/news.html", {"articles": articles})
     
     if not frag_text:
         return HttpResponseForbidden()

@@ -1,0 +1,9 @@
+{% load i18n %}
+<ul class="foodbank-news">
+    {% for article in articles %}
+        <li>
+          <a href="{{ article.url_with_ref }}">{{ article.title_captialised }}</a>
+          <div class="is-size-7"><a href="{% url 'wfbn:foodbank' article.foodbank.slug %}">{{ article.foodbank.name }}</a> {{ article.published_date|date:"j M" }}</div>
+        </li>
+    {% endfor %}
+</ul>

@@ -306,6 +306,30 @@ class TestFragIPAddress:
 
 
 @pytest.mark.django_db
+class TestFragNews:
+    """Test the news fragment endpoint."""
+
+    def test_frag_news_accessible(self, client):
+        """Test that the news fragment endpoint is accessible."""
+        response = client.get('/frag/news/')
+        assert response.status_code == 200
+
+    def test_frag_news_returns_html(self, client):
+        """Test that the news fragment returns HTML content."""
+        response = client.get('/frag/news/')
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        # Should return HTML with the foodbank-news list
+        assert '<ul class="foodbank-news">' in content
+        assert '</ul>' in content
+
+    def test_frag_invalid_returns_404(self, client):
+        """Test that an invalid frag slug returns 404."""
+        response = client.get('/frag/invalid/')
+        assert response.status_code == 404
+
+
+@pytest.mark.django_db
 class TestWhatsAppWebhook:
     """Test WhatsApp webhook endpoint."""
 
