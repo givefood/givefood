@@ -12,6 +12,14 @@ DATABASES = {
     }
 }
 
+# Use local memory cache for tests (allows caching tests to work while being isolated)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
 # Disable django-earthdistance for tests since SQLite doesn't support it
 INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django_earthdistance']
 

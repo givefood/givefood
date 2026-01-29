@@ -2309,6 +2309,7 @@ class Place(models.Model):
     police = models.CharField(max_length=100, null=True, blank=True)
     region = models.CharField(max_length=100, null=True, blank=True)
     type = models.CharField(max_length=100, null=True, blank=True)
+    county = models.CharField(max_length=100, null=True, blank=True)
 
     name_slug = models.CharField(max_length=100, editable=False)
     county_slug = models.CharField(max_length=100, editable=False)
@@ -2326,8 +2327,10 @@ class Place(models.Model):
 
         self.name_slug = slugify(self.name)
         if self.uniauth:
+            self.county = self.uniauth
             self.county_slug = slugify(self.uniauth)
         else:
+            self.county = self.adcounty
             self.county_slug = slugify(self.adcounty)
 
         super(Place, self).save(*args, **kwargs)

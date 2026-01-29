@@ -8,13 +8,15 @@ from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
 from django.db.models import Sum
+from django.db.models.functions import Replace
+from django.db.models import Value
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 from django.conf import settings
 
-from givefood.models import Foodbank, FoodbankArticle, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
+from givefood.models import Foodbank, FoodbankArticle, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place, Postcode
 from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, get_user_ip, validate_turnstile
 from givefood.func import send_email
@@ -1340,3 +1342,83 @@ def _handle_unsubscribe(phone_number, foodbank_slug):
             phone_number,
             f"You weren't subscribed to {foodbank.name} Foodbank."
         )
+
+
+@cache_page(SECONDS_IN_DAY)
+def address_autocomplete(request):
+    """
+    Address autocomplete API endpoint.
+    
+    Accepts a query parameter 'q' for partial address search.
+    Searches both Place and Postcode models.
+    Returns JSON with name and lat_lng for matching results.
+    
+    Example: /aac/?q=sw
+    """
+    query = request.GET.get("q", "").strip()
+    
+    if not query or len(query) < 2:
+        return JsonResponse([], safe=False)
+    
+    results = []
+    
+    # Search places (towns, cities, etc.) - startswith first, then contains
+    places_startswith = Place.objects.filter(
+        name__istartswith=query
+    ).values('name', 'lat_lng', 'county')[:10]
+    
+    place_names_added = set()
+    for place in places_startswith:
+        key = (place['name'], place['county'])
+        if key not in place_names_added:
+            results.append({
+                "n": place['name'],
+                "l": place['lat_lng'],
+                "t": "p",
+                "c": place['county']
+            })
+            place_names_added.add(key)
+    
+    # Fall back to contains if we need more results
+    if len(results) < 10:
+        places_contains = Place.objects.filter(
+            name__icontains=query
+        ).exclude(
+            name__istartswith=query
+        ).values('name', 'lat_lng', 'county')[:20]  # Fetch more to filter duplicates
+        
+        for place in places_contains:
+            if len(results) >= 10:
+                break
+            key = (place['name'], place['county'])
+            if key not in place_names_added:
+                results.append({
+                    "n": place['name'],
+                    "l": place['lat_lng'],
+                    "t": "p",
+                    "c": place['county']
+                })
+                place_names_added.add(key)
+    
+    # Search postcodes - normalize by removing spaces from both query and stored postcodes
+    postcode_query = query.upper().replace(" ", "")
+    postcodes = Postcode.objects.annotate(
+        postcode_normalized=Replace('postcode', Value(' '), Value(''))
+    ).filter(
+        postcode_normalized__istartswith=postcode_query
+    ).values('postcode', 'lat_lng', 'county')[:10]
+    
+    for postcode in postcodes:
+        results.append({
+            "n": postcode['postcode'],
+            "l": postcode['lat_lng'],
+            "t": "c",
+            "c": postcode['county']
+        })
+    
+    # Limit total results
+    results = results[:20]
+    
+    response = JsonResponse(results, safe=False, json_dumps_params={'indent': 2})
+    response["Access-Control-Allow-Origin"] = "*"
+    return response

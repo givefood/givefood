@@ -67,6 +67,7 @@ urlpatterns += [
     path("sw.js", givefood.views.vapid_service_worker, name="vapid_service_worker"),
     path("whatsapp_hook/", givefood.views.whatsapp_hook, name="whatsapp_hook"),
     path("services/", givefood.views.services, name="services"),
+    path("aac/", givefood.views.address_autocomplete, name="address_autocomplete"),
 
     # Test pages
     path("tests/maplibre/", givefood.views.maplibre_test, name="maplibre_test"),

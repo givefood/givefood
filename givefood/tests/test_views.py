@@ -4,7 +4,7 @@ Tests for the main givefood views.
 import json
 import pytest
 from django.test import Client, override_settings
-from givefood.models import Foodbank, ParliamentaryConstituency, FoodbankLocation, FoodbankDonationPoint, Place
+from givefood.models import Foodbank, ParliamentaryConstituency, FoodbankLocation, FoodbankDonationPoint, Place, Postcode
 
 
 @pytest.mark.django_db
@@ -386,5 +386,170 @@ class TestWhatsAppWebhook:
         """Test that invalid HTTP methods return 405."""
         response = client.put('/whatsapp_hook/')
         assert response.status_code == 405
+
+
+@pytest.mark.django_db
+class TestAddressAutocomplete:
+    """Test address autocomplete endpoint."""
+
+    def test_aac_accessible(self, client):
+        """Test that the address autocomplete endpoint is accessible."""
+        response = client.get('/aac/')
+        assert response.status_code == 200
+
+    def test_aac_returns_json(self, client):
+        """Test that the endpoint returns JSON."""
+        response = client.get('/aac/?q=sw')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+
+    def test_aac_returns_cors_header(self, client):
+        """Test that the endpoint returns CORS header."""
+        response = client.get('/aac/?q=sw')
+        assert response.status_code == 200
+        assert response['Access-Control-Allow-Origin'] == '*'
+
+    def test_aac_empty_query_returns_empty_list(self, client):
+        """Test that empty query returns empty list."""
+        response = client.get('/aac/')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data == []
+
+    def test_aac_short_query_returns_empty_list(self, client):
+        """Test that query with less than 2 characters returns empty list."""
+        response = client.get('/aac/?q=s')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data == []
+
+    def test_aac_valid_query_returns_list(self, client):
+        """Test that valid query returns a list."""
+        response = client.get('/aac/?q=london')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert isinstance(data, list)
+
+    def test_aac_place_result_structure(self, client):
+        """Test that Place results have expected structure with n (name) and l (lat_lng)."""
+        Place.objects.create(
+            gbpnid=99999,
+            name='Test Place',
+            lat_lng='51.5074,-0.1278',
+        )
+        
+        response = client.get('/aac/?q=test')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        
+        assert len(data) > 0
+        item = data[0]
+        assert 'n' in item
+        assert 'l' in item
+        assert item['n'] == 'Test Place'
+        assert item['l'] == '51.5074,-0.1278'
+
+    def test_aac_postcode_result_structure(self, client):
+        """Test that Postcode results have expected structure with n (name) and l (lat_lng)."""
+        Postcode.objects.create(
+            postcode='SW1A 1AA',
+            lat_lng='51.5015,-0.1419',
+            country='England',
+        )
+        
+        response = client.get('/aac/?q=sw1')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        
+        assert len(data) > 0
+        item = data[0]
+        assert 'n' in item
+        assert 'l' in item
+        assert item['n'] == 'SW1A 1AA'
+        assert item['l'] == '51.5015,-0.1419'
+
+    def test_aac_case_insensitive_place_search(self, client):
+        """Test that place search is case insensitive."""
+        Place.objects.create(
+            gbpnid=99998,
+            name='Swindon',
+            lat_lng='51.5558,-1.7797',
+        )
+        
+        # Test lowercase query
+        response = client.get('/aac/?q=swindon')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert data[0]['n'] == 'Swindon'
+        
+        # Test uppercase query
+        response = client.get('/aac/?q=SWINDON')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert data[0]['n'] == 'Swindon'
+
+    def test_aac_postcode_case_handling(self, client):
+        """Test that postcode search handles different cases correctly."""
+        Postcode.objects.create(
+            postcode='SE1A 2BB',
+            lat_lng='51.5033,-0.1276',
+            country='England',
+        )
+        
+        # Test lowercase query - should still find the postcode
+        response = client.get('/aac/?q=se1')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert any(item['n'] == 'SE1A 2BB' for item in data)
+
+    def test_aac_postcode_search_ignores_spaces(self, client):
+        """Test that postcode search ignores spaces in query - 'SW1A0' should match 'SW1A 0AA'."""
+        Postcode.objects.create(
+            postcode='EC1A 1BB',
+            lat_lng='51.5188,-0.1029',
+            country='England',
+        )
+        
+        # Search without space should still find the postcode with space
+        response = client.get('/aac/?q=ec1a1')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert any(item['n'] == 'EC1A 1BB' for item in data)
+        
+        # Search with space should also work
+        response = client.get('/aac/?q=ec1a 1')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert any(item['n'] == 'EC1A 1BB' for item in data)
+
+    def test_aac_place_startswith_before_contains(self, client):
+        """Test that places starting with query appear before places containing query."""
+        # Create place that starts with "Win"
+        Place.objects.create(
+            gbpnid=99990,
+            name='Winchester',
+            lat_lng='51.0632,-1.3082',
+        )
+        # Create place that contains "win" but doesn't start with it
+        Place.objects.create(
+            gbpnid=99991,
+            name='Darwin',
+            lat_lng='51.4816,-3.1791',
+        )
+        
+        response = client.get('/aac/?q=win')
+        data = json.loads(response.content)
+        
+        # Filter to just places
+        places = [item for item in data if item['t'] == 'p']
+        
+        assert len(places) >= 2
+        # Winchester should appear before Darwin because it starts with "win"
+        winchester_idx = next((i for i, p in enumerate(places) if p['n'] == 'Winchester'), None)
+        darwin_idx = next((i for i, p in enumerate(places) if p['n'] == 'Darwin'), None)
+        
+        assert winchester_idx is not None
+        assert darwin_idx is not None
+        assert winchester_idx < darwin_idx, "Places starting with query should appear first"
 
 
