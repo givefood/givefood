@@ -431,7 +431,7 @@ class TestAddressAutocomplete:
         assert isinstance(data, list)
 
     def test_aac_place_result_structure(self, client):
-        """Test that Place results have expected structure with name and lat_lng."""
+        """Test that Place results have expected structure with n (name) and l (lat_lng)."""
         Place.objects.create(
             gbpnid=99999,
             name='Test Place',
@@ -444,13 +444,13 @@ class TestAddressAutocomplete:
         
         assert len(data) > 0
         item = data[0]
-        assert 'name' in item
-        assert 'lat_lng' in item
-        assert item['name'] == 'Test Place'
-        assert item['lat_lng'] == '51.5074,-0.1278'
+        assert 'n' in item
+        assert 'l' in item
+        assert item['n'] == 'Test Place'
+        assert item['l'] == '51.5074,-0.1278'
 
     def test_aac_postcode_result_structure(self, client):
-        """Test that Postcode results have expected structure with name and lat_lng."""
+        """Test that Postcode results have expected structure with n (name) and l (lat_lng)."""
         Postcode.objects.create(
             postcode='SW1A 1AA',
             lat_lng='51.5015,-0.1419',
@@ -463,10 +463,10 @@ class TestAddressAutocomplete:
         
         assert len(data) > 0
         item = data[0]
-        assert 'name' in item
-        assert 'lat_lng' in item
-        assert item['name'] == 'SW1A 1AA'
-        assert item['lat_lng'] == '51.5015,-0.1419'
+        assert 'n' in item
+        assert 'l' in item
+        assert item['n'] == 'SW1A 1AA'
+        assert item['l'] == '51.5015,-0.1419'
 
     def test_aac_case_insensitive_place_search(self, client):
         """Test that place search is case insensitive."""
@@ -480,13 +480,13 @@ class TestAddressAutocomplete:
         response = client.get('/aac/?q=swindon')
         data = json.loads(response.content)
         assert len(data) > 0
-        assert data[0]['name'] == 'Swindon'
+        assert data[0]['n'] == 'Swindon'
         
         # Test uppercase query
         response = client.get('/aac/?q=SWINDON')
         data = json.loads(response.content)
         assert len(data) > 0
-        assert data[0]['name'] == 'Swindon'
+        assert data[0]['n'] == 'Swindon'
 
     def test_aac_postcode_case_handling(self, client):
         """Test that postcode search handles different cases correctly."""
@@ -500,6 +500,26 @@ class TestAddressAutocomplete:
         response = client.get('/aac/?q=se1')
         data = json.loads(response.content)
         assert len(data) > 0
-        assert any(item['name'] == 'SE1A 2BB' for item in data)
+        assert any(item['n'] == 'SE1A 2BB' for item in data)
+
+    def test_aac_postcode_search_ignores_spaces(self, client):
+        """Test that postcode search ignores spaces in query - 'SW1A0' should match 'SW1A 0AA'."""
+        Postcode.objects.create(
+            postcode='EC1A 1BB',
+            lat_lng='51.5188,-0.1029',
+            country='England',
+        )
+        
+        # Search without space should still find the postcode with space
+        response = client.get('/aac/?q=ec1a1')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert any(item['n'] == 'EC1A 1BB' for item in data)
+        
+        # Search with space should also work
+        response = client.get('/aac/?q=ec1a 1')
+        data = json.loads(response.content)
+        assert len(data) > 0
+        assert any(item['n'] == 'EC1A 1BB' for item in data)
 
 

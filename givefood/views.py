@@ -8,6 +8,8 @@ from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
 from django.db.models import Sum
+from django.db.models.functions import Replace
+from django.db.models import Value
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
@@ -1373,9 +1375,12 @@ def address_autocomplete(request):
             "c": place['county']
         })
     
-    # Search postcodes
-    postcodes = Postcode.objects.filter(
-        postcode__istartswith=query.upper()
+    # Search postcodes - normalize by removing spaces from both query and stored postcodes
+    postcode_query = query.upper().replace(" ", "")
+    postcodes = Postcode.objects.annotate(
+        postcode_normalized=Replace('postcode', Value(' '), Value(''))
+    ).filter(
+        postcode_normalized__istartswith=postcode_query
     ).values('postcode', 'lat_lng', 'county')[:10]
     
     for postcode in postcodes:
