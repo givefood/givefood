@@ -112,7 +112,6 @@ class Foodbank(models.Model):
 
     # Social IDs
     facebook_page = models.CharField(max_length=50, null=True, blank=True)
-    twitter_handle = models.CharField(max_length=50, null=True, blank=True)
     bankuet_slug = models.CharField(max_length=50, null=True, blank=True)
     fsa_id = models.CharField(max_length=50, null=True, blank=True, verbose_name="Food Standards Agency Business ID")
 
