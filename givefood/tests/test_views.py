@@ -491,15 +491,15 @@ class TestAddressAutocomplete:
     def test_aac_postcode_case_handling(self, client):
         """Test that postcode search handles different cases correctly."""
         Postcode.objects.create(
-            postcode='SW1A 2AA',
+            postcode='SE1A 2BB',
             lat_lng='51.5033,-0.1276',
             country='England',
         )
         
         # Test lowercase query - should still find the postcode
-        response = client.get('/aac/?q=sw1')
+        response = client.get('/aac/?q=se1')
         data = json.loads(response.content)
         assert len(data) > 0
-        assert any(item['name'] == 'SW1A 2AA' for item in data)
+        assert any(item['name'] == 'SE1A 2BB' for item in data)
 
 

@@ -12,10 +12,11 @@ DATABASES = {
     }
 }
 
-# Disable caching for tests
+# Use local memory cache for tests (allows caching tests to work while being isolated)
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
     }
 }
 
