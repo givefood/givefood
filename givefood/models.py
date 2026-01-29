@@ -2526,3 +2526,33 @@ class WhatsappSubscriber(models.Model):
         if self.foodbank:
             self.foodbank_name = self.foodbank.name
         super(WhatsappSubscriber, self).save(*args, **kwargs)
+
+
+class Postcode(models.Model):
+    """
+    UK postcode with geographic and administrative boundary information.
+    Data sourced from postcodes.csv containing 2.7m rows.
+    """
+
+    postcode = models.CharField(max_length=9, unique=True, db_index=True, validators=[
+        RegexValidator(
+            regex=POSTCODE_REGEX,
+            message="Not a valid postcode",
+            code="invalid_postcode",
+        ),
+    ])
+    lat_lng = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    county = models.CharField(max_length=100, null=True, blank=True)
+    district = models.CharField(max_length=100, null=True, blank=True)
+    ward = models.CharField(max_length=100, null=True, blank=True)
+    country = models.CharField(max_length=50)
+    region = models.CharField(max_length=100, null=True, blank=True)
+    lsoa_code = models.CharField(max_length=20, null=True, blank=True, verbose_name="LSOA Code")
+    msoa_code = models.CharField(max_length=20, null=True, blank=True, verbose_name="MSOA Code")
+    police = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        app_label = 'givefood'
+
+    def __str__(self):
+        return self.postcode
