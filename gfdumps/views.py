@@ -31,7 +31,7 @@ def dump_type(request, dump_type):
 
 @cache_page(SECONDS_IN_HOUR)
 def dump_format(request, dump_type, dump_format):
-    dumps = Dump.objects.filter(dump_type=dump_type, dump_format=dump_format).order_by('-created').only('id', 'dump_type', 'dump_format', 'created')
+    dumps = Dump.objects.filter(dump_type=dump_type, dump_format=dump_format).order_by('-created').only('id', 'dump_type', 'dump_format', 'created', 'size', 'row_count')
 
     template_vars = {
         "dump_type": dump_type,
