@@ -113,8 +113,8 @@ class Command(BaseCommand):
                         ward=row.get('Ward', '').strip() or None,
                         country=country,
                         region=row.get('Region', '').strip() or None,
-                        lsoa_code=row.get('LSOA Code', '').strip() or None,
-                        msoa_code=row.get('MSOA Code', '').strip() or None,
+                        lsoa=row.get('LSOA Code', '').strip() or None,
+                        msoa=row.get('MSOA Code', '').strip() or None,
                         police=row.get('Police force', '').strip() or None,
                     )
                     batch.append(postcode_obj)
