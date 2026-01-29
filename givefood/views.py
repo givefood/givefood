@@ -1363,23 +1363,27 @@ def address_autocomplete(request):
     # Search places (towns, cities, etc.)
     places = Place.objects.filter(
         name__istartswith=query
-    ).values('name', 'lat_lng')[:10]
+    ).values('name', 'lat_lng', 'county')[:10]
     
     for place in places:
         results.append({
-            "name": place['name'],
-            "lat_lng": place['lat_lng'],
+            "n": place['name'],
+            "l": place['lat_lng'],
+            "t": "p",
+            "c": place['county']
         })
     
     # Search postcodes
     postcodes = Postcode.objects.filter(
         postcode__istartswith=query.upper()
-    ).values('postcode', 'lat_lng')[:10]
+    ).values('postcode', 'lat_lng', 'county')[:10]
     
     for postcode in postcodes:
         results.append({
-            "name": postcode['postcode'],
-            "lat_lng": postcode['lat_lng'],
+            "n": postcode['postcode'],
+            "l": postcode['lat_lng'],
+            "t": "c",
+            "c": postcode['county']
         })
     
     # Limit total results
