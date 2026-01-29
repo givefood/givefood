@@ -60,7 +60,7 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Opening CSV file: {csv_file}")
 
-        with open(csv_file, 'r', encoding='utf-8') as f:
+        with open(csv_file, 'r', encoding='utf-8-sig') as f:
             reader = csv.DictReader(f)
 
             for row in reader:
