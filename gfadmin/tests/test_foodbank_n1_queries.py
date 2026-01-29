@@ -1,23 +1,11 @@
 """Tests for N+1 query prevention on the foodbank admin page."""
 import pytest
-from django.test import Client, RequestFactory
-from django.urls import reverse
+from django.test import RequestFactory
 from unittest.mock import patch
 
 from givefood.models import (
     Foodbank, FoodbankLocation, FoodbankDonationPoint
 )
-
-
-def _setup_authenticated_session(client):
-    """Set up a session that will pass the LoginRequiredAccess middleware."""
-    session = client.session
-    session['user_data'] = {
-        'email': 'test@givefood.org.uk',
-        'email_verified': True,
-        'hd': 'givefood.org.uk'
-    }
-    session.save()
 
 
 @pytest.mark.django_db
