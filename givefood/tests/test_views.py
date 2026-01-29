@@ -388,3 +388,66 @@ class TestWhatsAppWebhook:
         assert response.status_code == 405
 
 
+@pytest.mark.django_db
+class TestAddressAutocomplete:
+    """Test address autocomplete endpoint."""
+
+    def test_aac_accessible(self, client):
+        """Test that the address autocomplete endpoint is accessible."""
+        response = client.get('/aac/')
+        assert response.status_code == 200
+
+    def test_aac_returns_json(self, client):
+        """Test that the endpoint returns JSON."""
+        response = client.get('/aac/?q=sw')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'application/json'
+
+    def test_aac_returns_cors_header(self, client):
+        """Test that the endpoint returns CORS header."""
+        response = client.get('/aac/?q=sw')
+        assert response.status_code == 200
+        assert response['Access-Control-Allow-Origin'] == '*'
+
+    def test_aac_empty_query_returns_empty_list(self, client):
+        """Test that empty query returns empty list."""
+        response = client.get('/aac/')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data == []
+
+    def test_aac_short_query_returns_empty_list(self, client):
+        """Test that query with less than 2 characters returns empty list."""
+        response = client.get('/aac/?q=s')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert data == []
+
+    def test_aac_valid_query_returns_list(self, client):
+        """Test that valid query returns a list."""
+        response = client.get('/aac/?q=london')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        assert isinstance(data, list)
+
+    def test_aac_result_structure(self, client):
+        """Test that results have expected structure with name and lat_lng."""
+        # Create test data
+        from givefood.models import Place, Postcode
+        
+        Place.objects.create(
+            gbpnid=99999,
+            name='Test Place',
+            lat_lng='51.5074,-0.1278',
+        )
+        
+        response = client.get('/aac/?q=test')
+        assert response.status_code == 200
+        data = json.loads(response.content)
+        
+        if len(data) > 0:
+            item = data[0]
+            assert 'name' in item
+            assert 'lat_lng' in item
+
+

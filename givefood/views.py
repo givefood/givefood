@@ -14,7 +14,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 from django.conf import settings
 
-from givefood.models import Foodbank, FoodbankArticle, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place
+from givefood.models import Foodbank, FoodbankArticle, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place, Postcode
 from givefood.forms import FoodbankRegistrationForm, FlagForm
 from givefood.func import get_cred, get_user_ip, validate_turnstile
 from givefood.func import send_email
@@ -1340,3 +1340,51 @@ def _handle_unsubscribe(phone_number, foodbank_slug):
             phone_number,
             f"You weren't subscribed to {foodbank.name} Foodbank."
         )
+
+
+@cache_page(SECONDS_IN_DAY)
+def address_autocomplete(request):
+    """
+    Address autocomplete API endpoint.
+    
+    Accepts a query parameter 'q' for partial address search.
+    Searches both Place and Postcode models.
+    Returns JSON with name and lat_lng for matching results.
+    
+    Example: /aac/?q=sw
+    """
+    query = request.GET.get("q", "").strip()
+    
+    if not query or len(query) < 2:
+        return JsonResponse([], safe=False)
+    
+    results = []
+    
+    # Search places (towns, cities, etc.)
+    places = Place.objects.filter(
+        name__istartswith=query
+    ).values('name', 'lat_lng')[:10]
+    
+    for place in places:
+        results.append({
+            "name": place['name'],
+            "lat_lng": place['lat_lng'],
+        })
+    
+    # Search postcodes
+    postcodes = Postcode.objects.filter(
+        postcode__istartswith=query.upper()
+    ).values('postcode', 'lat_lng')[:10]
+    
+    for postcode in postcodes:
+        results.append({
+            "name": postcode['postcode'],
+            "lat_lng": postcode['lat_lng'],
+        })
+    
+    # Limit total results
+    results = results[:20]
+    
+    response = JsonResponse(results, safe=False, json_dumps_params={'indent': 2})
+    response["Access-Control-Allow-Origin"] = "*"
+    return response
