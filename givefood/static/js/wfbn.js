@@ -35,6 +35,7 @@ const layerList = Object.keys(layers);
 // Autocomplete Variables
 let autocompleteDropdown = null;
 let autocompleteTimeout = null;
+let autocompleteAbortController = null;
 
 /**
  * Initialize the page functionality
@@ -80,11 +81,24 @@ function initLocationButton() {
  * Initialize address autocomplete functionality
  */
 function initAddressAutocomplete() {
-    // Create autocomplete dropdown container
+    // Prevent duplicate initialization
+    if (document.getElementById('autocomplete-dropdown')) {
+        return;
+    }
+
+    // Create autocomplete dropdown container with ARIA attributes
     autocompleteDropdown = document.createElement('div');
     autocompleteDropdown.id = 'autocomplete-dropdown';
     autocompleteDropdown.className = 'autocomplete-dropdown';
+    autocompleteDropdown.setAttribute('role', 'listbox');
+    autocompleteDropdown.setAttribute('aria-label', 'Address suggestions');
     addressField.parentNode.insertBefore(autocompleteDropdown, addressField.nextSibling);
+
+    // Add ARIA attributes to address field
+    addressField.setAttribute('role', 'combobox');
+    addressField.setAttribute('aria-autocomplete', 'list');
+    addressField.setAttribute('aria-expanded', 'false');
+    addressField.setAttribute('aria-controls', 'autocomplete-dropdown');
 
     // Add input event listener with debounce
     addressField.addEventListener('input', (event) => {
@@ -93,6 +107,11 @@ function initAddressAutocomplete() {
         // Clear any pending timeout
         if (autocompleteTimeout) {
             clearTimeout(autocompleteTimeout);
+        }
+
+        // Cancel any pending fetch request
+        if (autocompleteAbortController) {
+            autocompleteAbortController.abort();
         }
 
         // Clear lat_lng field when user types
@@ -114,11 +133,31 @@ function initAddressAutocomplete() {
     addressField.addEventListener('keydown', handleAutocompleteKeydown);
 
     // Hide autocomplete when clicking outside
-    document.addEventListener('click', (event) => {
-        if (!addressField.contains(event.target) && !autocompleteDropdown.contains(event.target)) {
-            hideAutocomplete();
-        }
-    });
+    document.addEventListener('click', handleClickOutside);
+}
+
+/**
+ * Handle click outside autocomplete to close it
+ * @param {Event} event - Click event
+ */
+function handleClickOutside(event) {
+    if (addressField && autocompleteDropdown && 
+        !addressField.contains(event.target) && 
+        !autocompleteDropdown.contains(event.target)) {
+        hideAutocomplete();
+    }
+}
+
+/**
+ * Format an autocomplete item for display
+ * @param {Object} item - The item to format
+ * @returns {string} Formatted display string
+ */
+function formatAutocompleteItem(item) {
+    if (item.t === 'p') {
+        return `${item.n}, ${item.c}`;
+    }
+    return item.n;
 }
 
 /**
@@ -126,8 +165,18 @@ function initAddressAutocomplete() {
  * @param {string} query - Search query
  */
 async function fetchAutocomplete(query) {
+    // Cancel any pending request
+    if (autocompleteAbortController) {
+        autocompleteAbortController.abort();
+    }
+    
+    // Create new abort controller for this request
+    autocompleteAbortController = new AbortController();
+    
     try {
-        const response = await fetch(`/aac/?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`/aac/?q=${encodeURIComponent(query)}`, {
+            signal: autocompleteAbortController.signal
+        });
         if (!response.ok) {
             hideAutocomplete();
             return;
@@ -136,6 +185,10 @@ async function fetchAutocomplete(query) {
         const results = await response.json();
         displayAutocomplete(results);
     } catch (error) {
+        // Ignore abort errors
+        if (error.name === 'AbortError') {
+            return;
+        }
         console.warn('Autocomplete fetch failed:', error);
         hideAutocomplete();
     }
@@ -154,32 +207,33 @@ function displayAutocomplete(results) {
     // Clear existing items
     autocompleteDropdown.innerHTML = '';
 
-    results.forEach((item, index) => {
+    // Filter valid results and display
+    const validResults = results.filter(item => item && item.n && item.l);
+    
+    if (validResults.length === 0) {
+        hideAutocomplete();
+        return;
+    }
+
+    validResults.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = 'autocomplete-item';
+        div.id = `autocomplete-item-${index}`;
+        div.setAttribute('role', 'option');
         div.setAttribute('data-index', index);
         div.setAttribute('data-lat-lng', item.l);
-
-        // Format display: "name, county" for places, just "name" for postcodes
-        if (item.t === 'p') {
-            div.textContent = `${item.n}, ${item.c}`;
-        } else {
-            div.textContent = item.n;
-        }
+        div.textContent = formatAutocompleteItem(item);
 
         div.addEventListener('click', () => selectAutocompleteItem(item));
         div.addEventListener('mouseenter', () => {
-            // Remove active class from all items
-            autocompleteDropdown.querySelectorAll('.autocomplete-item').forEach(el => {
-                el.classList.remove('active');
-            });
-            div.classList.add('active');
+            setActiveAutocompleteItem(index);
         });
 
         autocompleteDropdown.appendChild(div);
     });
 
     autocompleteDropdown.style.display = 'block';
+    addressField.setAttribute('aria-expanded', 'true');
 }
 
 /**
@@ -190,6 +244,28 @@ function hideAutocomplete() {
         autocompleteDropdown.style.display = 'none';
         autocompleteDropdown.innerHTML = '';
     }
+    if (addressField) {
+        addressField.setAttribute('aria-expanded', 'false');
+        addressField.removeAttribute('aria-activedescendant');
+    }
+}
+
+/**
+ * Set the active autocomplete item
+ * @param {number} index - Index of the item to activate
+ */
+function setActiveAutocompleteItem(index) {
+    const items = autocompleteDropdown.querySelectorAll('.autocomplete-item');
+    items.forEach((el, i) => {
+        if (i === index) {
+            el.classList.add('active');
+            el.setAttribute('aria-selected', 'true');
+            addressField.setAttribute('aria-activedescendant', el.id);
+        } else {
+            el.classList.remove('active');
+            el.setAttribute('aria-selected', 'false');
+        }
+    });
 }
 
 /**
@@ -197,12 +273,8 @@ function hideAutocomplete() {
  * @param {Object} item - The selected item
  */
 function selectAutocompleteItem(item) {
-    // Set address field value
-    if (item.t === 'p') {
-        addressField.value = `${item.n}, ${item.c}`;
-    } else {
-        addressField.value = item.n;
-    }
+    // Set address field value using shared formatting function
+    addressField.value = formatAutocompleteItem(item);
 
     // Set lat_lng field
     if (latLngField) {
@@ -230,11 +302,20 @@ function handleAutocompleteKeydown(event) {
     switch (event.key) {
         case 'ArrowDown':
             event.preventDefault();
-            activeIndex = Math.min(activeIndex + 1, items.length - 1);
+            // If no selection, go to first item; otherwise go to next
+            if (activeIndex === -1) {
+                activeIndex = 0;
+            } else {
+                activeIndex = Math.min(activeIndex + 1, items.length - 1);
+            }
             break;
         case 'ArrowUp':
             event.preventDefault();
-            activeIndex = Math.max(activeIndex - 1, 0);
+            // If no selection or at first item, do nothing
+            if (activeIndex <= 0) {
+                return;
+            }
+            activeIndex = activeIndex - 1;
             break;
         case 'Enter':
             if (activeItem) {
@@ -255,14 +336,8 @@ function handleAutocompleteKeydown(event) {
             return;
     }
 
-    // Update active state
-    items.forEach((item, index) => {
-        if (index === activeIndex) {
-            item.classList.add('active');
-        } else {
-            item.classList.remove('active');
-        }
-    });
+    // Update active state using shared function
+    setActiveAutocompleteItem(activeIndex);
 }
 
 /**
