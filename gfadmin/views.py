@@ -498,14 +498,20 @@ def foodbank(request, slug):
     locations = (
         FoodbankLocation.objects
         .filter(foodbank=foodbank)
-        .only('id', 'name', 'slug', 'address', 'postcode', 'place_id', 'place_has_photo')
+        .only(
+            'id', 'name', 'slug', 'address', 'postcode', 'place_id', 'place_has_photo',
+            'phone_number', 'email', 'lat_lng', 'is_donation_point', 'boundary_geojson'
+        )
         .order_by("name")
     )
     
     donation_points = (
         FoodbankDonationPoint.objects
         .filter(foodbank=foodbank)
-        .only('id', 'name', 'slug', 'address', 'postcode', 'place_id', 'place_has_photo')
+        .only(
+            'id', 'name', 'slug', 'address', 'postcode', 'place_id', 'place_has_photo',
+            'lat_lng', 'company', 'store_id', 'in_store_only', 'notes'
+        )
         .order_by("name")
     )
     
