@@ -2541,7 +2541,7 @@ class Postcode(models.Model):
             code="invalid_postcode",
         ),
     ])
-    lat_lng = models.CharField(max_length=50, verbose_name="Latitude, Longitude")
+    lat_lng = models.CharField(max_length=100, verbose_name="Latitude, Longitude")
     county = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True)
     ward = models.CharField(max_length=100, null=True, blank=True)
