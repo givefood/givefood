@@ -22,8 +22,8 @@ class TestPostcodeModel:
             ward="St James's",
             country="England",
             region="London",
-            lsoa_code="E01004736",
-            msoa_code="E02000977",
+            lsoa="E01004736",
+            msoa="E02000977",
             police="Metropolitan Police",
         )
         
@@ -34,8 +34,8 @@ class TestPostcodeModel:
         assert postcode.ward == "St James's"
         assert postcode.country == "England"
         assert postcode.region == "London"
-        assert postcode.lsoa_code == "E01004736"
-        assert postcode.msoa_code == "E02000977"
+        assert postcode.lsoa == "E01004736"
+        assert postcode.msoa == "E02000977"
         assert postcode.police == "Metropolitan Police"
 
     def test_postcode_str(self):
@@ -70,8 +70,8 @@ class TestPostcodeModel:
         assert postcode.district is None
         assert postcode.ward is None
         assert postcode.region is None
-        assert postcode.lsoa_code is None
-        assert postcode.msoa_code is None
+        assert postcode.lsoa is None
+        assert postcode.msoa is None
         assert postcode.police is None
 
 
@@ -210,8 +210,8 @@ class TestImportPostcodesCommand:
             assert postcode.ward == 'St James'
             assert postcode.country == 'England'
             assert postcode.region == 'London'
-            assert postcode.lsoa_code == 'E01004736'
-            assert postcode.msoa_code == 'E02000977'
+            assert postcode.lsoa == 'E01004736'
+            assert postcode.msoa == 'E02000977'
             assert postcode.police == 'Metropolitan Police'
         finally:
             os.unlink(csv_path)

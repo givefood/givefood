@@ -2547,8 +2547,8 @@ class Postcode(models.Model):
     ward = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=50)
     region = models.CharField(max_length=100, null=True, blank=True)
-    lsoa_code = models.CharField(max_length=20, null=True, blank=True, verbose_name="LSOA Code")
-    msoa_code = models.CharField(max_length=20, null=True, blank=True, verbose_name="MSOA Code")
+    lsoa = models.CharField(max_length=20, null=True, blank=True, verbose_name="LSOA Code")
+    msoa = models.CharField(max_length=20, null=True, blank=True, verbose_name="MSOA Code")
     police = models.CharField(max_length=100, null=True, blank=True)
 
     class Meta:
