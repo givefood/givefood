@@ -1,7 +1,6 @@
 /* Address autocomplete styles */
 #addressform {
     position: relative;
-    display: inline-block;
 }
 .autocomplete-dropdown {
     display: none;
