@@ -1364,7 +1364,7 @@ def address_autocomplete(request):
     
     # Search places (towns, cities, etc.)
     places = Place.objects.filter(
-        name__istartswith=query
+        name__icontains=query
     ).values('name', 'lat_lng', 'county').distinct('name')[:10]
     
     for place in places:
