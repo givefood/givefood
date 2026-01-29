@@ -622,24 +622,6 @@ def foodbank_charity(request, slug):
     return render(request, "wfbn/foodbank/charity.html", template_vars)
 
 
-@cache_page(SECONDS_IN_DAY)
-def foodbank_socialmedia(request, slug):
-    """
-    Food bank social media links
-    """
-
-    foodbank = get_object_or_404(Foodbank, slug = slug)
-    if not foodbank.facebook_page and not foodbank.twitter_handle:
-        return HttpResponseNotFound()
-
-    template_vars = {
-        "section":"socialmedia",
-        "foodbank":foodbank,
-    }
-
-    return render(request, "wfbn/foodbank/socialmedia.html", template_vars)
-
-
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_nearby(request, slug):
     """

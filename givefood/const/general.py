@@ -155,7 +155,6 @@ FOODBANK_SUBPAGES = [
     "news",
     "politics",
     "donationpoints",
-    "socialmedia",
     "nearby",
     "subscribe",
     "charity",

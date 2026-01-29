@@ -25,9 +25,6 @@
 		{% if foodbank.charity_name %}
 			<url><loc>{{ domain }}{% url 'wfbn:foodbank_charity' foodbank.slug %}</loc></url>
 		{% endif %}
-		{% if foodbank.facebook_page or foodbank.twitter_handle %}
-			<url><loc>{{ domain }}{% url 'wfbn:foodbank_socialmedia' foodbank.slug %}</loc></url>
-		{% endif %}
 	{% endfor %}
 	{% for location in locations %}
 		<url><loc>{{ domain }}{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %}</loc></url>

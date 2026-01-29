@@ -18,7 +18,6 @@ class FoodbankRegistrationForm(forms.Form):
     website = forms.URLField(help_text="E.g. http://www.sidvalleyfoodbank.org.uk")
     shopping_list_link = forms.URLField(help_text="Optional. E.g. http://www.sidvalleyfoodbank.org.uk/shopping-list/", required=False)
     facebook = forms.URLField(help_text="Optional. E.g. https://www.facebook.com/SidValleyFoodBank", required=False)
-    twitter = forms.URLField(help_text="Optional. E.g. https://twitter.com/BrixtonFoodbank/", required=False)
 
 
 class FlagForm(forms.Form):

@@ -89,6 +89,9 @@
                   {% if foodbank.secondary_phone_number %}<a href="tel:{{ foodbank.secondary_phone_number|full_phone }}"  class="phone">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}
                 {% endif %}
                 <a href="mailto:{{ foodbank.contact_email }}" class="email">{{ foodbank.contact_email|truncatechars:40 }}</a>
+                {% if foodbank.facebook_page %}
+                  <a href="https://www.facebook.com/{{ foodbank.facebook_page }}" class="facebook">{{ foodbank.facebook_page }}</a>
+                {% endif %}
               </div>
             {% endif %}
 
@@ -164,6 +167,9 @@
                   {% if foodbank.secondary_phone_number %}<a href="tel:{{ foodbank.secondary_phone_number|full_phone }}"  class="phone">{{ foodbank.secondary_phone_number|friendly_phone }}</a>{% endif %}
                 {% endif %}
                 <a href="mailto:{{ foodbank.contact_email }}" class="email">{{ foodbank.contact_email|truncatechars:40 }}</a>
+                {% if foodbank.facebook_page %}
+                  <a href="https://www.facebook.com/{{ foodbank.facebook_page }}" class="facebook">{{ foodbank.facebook_page }}</a>
+                {% endif %}
               </div>
 
               {% include "wfbn/foodbank/includes/charitynetwork.html" %}

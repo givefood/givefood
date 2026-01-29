@@ -913,7 +913,7 @@ class TestFoodbankCheckDetailChanges:
     @patch('gfadmin.views.gemini')
     @patch('gfadmin.views.requests.get')
     def test_detail_changes_detects_new_field_differences(self, mock_get, mock_gemini, mock_render):
-        """Test that detail_changes is populated when new fields (facebook, twitter, urls) differ."""
+        """Test that detail_changes is populated when new fields (facebook, urls) differ."""
         # Create a test foodbank with all the new fields populated
         foodbank = Foodbank(
             name='Test Foodbank',
@@ -924,7 +924,6 @@ class TestFoodbankCheckDetailChanges:
             lat_lng='51.5074,-0.1278',
             contact_email='test@example.com',
             facebook_page='oldfacebook',
-            twitter_handle='oldtwitter',
             bankuet_slug='oldbankuet',
             rss_url='https://example.com/old.rss',
             news_url='https://example.com/old-news',
@@ -952,7 +951,6 @@ class TestFoodbankCheckDetailChanges:
                 'network': '',
                 'charity_number': '',
                 'facebook_page': 'newfacebook',
-                'twitter_handle': 'newtwitter',
                 'bankuet_slug': 'newbankuet',
                 'rss_url': 'https://example.com/new.rss',
                 'news_url': 'https://example.com/new-news',
@@ -984,7 +982,6 @@ class TestFoodbankCheckDetailChanges:
 
         # All new fields should be marked as changed
         assert detail_changes['facebook_page'] is True
-        assert detail_changes['twitter_handle'] is True
         assert detail_changes['bankuet_slug'] is True
         assert detail_changes['rss_url'] is True
         assert detail_changes['news_url'] is True
@@ -1008,7 +1005,6 @@ class TestFoodbankCheckDetailChanges:
             lat_lng='51.5074,-0.1278',
             contact_email='test@example.com',
             facebook_page='samefacebook',
-            twitter_handle='sametwitter',
             bankuet_slug='samebankuet',
             rss_url='https://example.com/same.rss',
             news_url='https://example.com/same-news',
@@ -1036,7 +1032,6 @@ class TestFoodbankCheckDetailChanges:
                 'network': '',
                 'charity_number': '',
                 'facebook_page': 'samefacebook',
-                'twitter_handle': 'sametwitter',
                 'bankuet_slug': 'samebankuet',
                 'rss_url': 'https://example.com/same.rss',
                 'news_url': 'https://example.com/same-news',
@@ -1068,7 +1063,6 @@ class TestFoodbankCheckDetailChanges:
 
         # No new fields should be marked as changed
         assert detail_changes['facebook_page'] is False
-        assert detail_changes['twitter_handle'] is False
         assert detail_changes['bankuet_slug'] is False
         assert detail_changes['rss_url'] is False
         assert detail_changes['news_url'] is False
@@ -1107,7 +1101,6 @@ class TestFoodbankCheckDetailChanges:
                 'network': '',
                 'charity_number': '',
                 'facebook_page': '',
-                'twitter_handle': '',
                 'bankuet_slug': 'None',
                 'rss_url': '',
                 'news_url': '',
@@ -1164,7 +1157,6 @@ class TestFoodbankCheckDetailChanges:
                 'network': 'nothing',
                 'charity_number': 'null',
                 'facebook_page': 'none',
-                'twitter_handle': 'none',
                 'bankuet_slug': 'NONE',
                 'rss_url': 'nothing',
                 'news_url': 'none',
