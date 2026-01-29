@@ -222,7 +222,19 @@ function displayAutocomplete(results) {
         div.setAttribute('role', 'option');
         div.setAttribute('data-index', index);
         div.setAttribute('data-lat-lng', item.l);
-        div.textContent = formatAutocompleteItem(item);
+        
+        // Format with county in a span for styling
+        if (item.t === 'p') {
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = item.n;
+            const countySpan = document.createElement('span');
+            countySpan.className = 'autocomplete-county';
+            countySpan.textContent = `, ${item.c}`;
+            div.appendChild(nameSpan);
+            div.appendChild(countySpan);
+        } else {
+            div.textContent = item.n;
+        }
 
         div.addEventListener('click', () => selectAutocompleteItem(item));
         div.addEventListener('mouseenter', () => {
