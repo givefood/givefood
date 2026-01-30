@@ -2544,6 +2544,7 @@ class Postcode(models.Model):
             code="invalid_postcode",
         ),
     ])
+    postcode_normalized = models.CharField(max_length=9, blank=True, db_index=True, editable=False)
     lat_lng = models.CharField(max_length=100, verbose_name="Latitude, Longitude")
     county = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True)
@@ -2559,3 +2560,8 @@ class Postcode(models.Model):
 
     def __str__(self):
         return self.postcode
+    
+    def save(self, *args, **kwargs):
+        # Auto-populate normalized postcode on save
+        self.postcode_normalized = self.postcode.upper().replace(' ', '')
+        super().save(*args, **kwargs)

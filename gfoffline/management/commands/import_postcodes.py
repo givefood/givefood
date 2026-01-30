@@ -119,6 +119,7 @@ class Command(BaseCommand):
                 else:
                     postcode_obj = Postcode(
                         postcode=postcode,
+                        postcode_normalized=postcode.upper().replace(' ', ''),
                         lat_lng=lat_lng,
                         county=row.get('County', '').strip() or None,
                         district=row.get('District', '').strip() or None,

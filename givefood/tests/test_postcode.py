@@ -74,6 +74,29 @@ class TestPostcodeModel:
         assert postcode.msoa is None
         assert postcode.police is None
 
+    def test_postcode_normalized_field_populated(self):
+        """Test that postcode_normalized is automatically populated."""
+        postcode = Postcode.objects.create(
+            postcode='SW1A 1AA',
+            lat_lng='51.5015,-0.1419',
+            country='England',
+        )
+        
+        # Refresh from DB to get saved value
+        postcode.refresh_from_db()
+        assert postcode.postcode_normalized == 'SW1A1AA'
+    
+    def test_postcode_normalized_field_uppercase(self):
+        """Test that postcode_normalized converts to uppercase."""
+        postcode = Postcode.objects.create(
+            postcode='sw1a 1aa',
+            lat_lng='51.5015,-0.1419',
+            country='England',
+        )
+        
+        postcode.refresh_from_db()
+        assert postcode.postcode_normalized == 'SW1A1AA'
+
 
 @pytest.mark.django_db
 class TestImportPostcodesCommand:
@@ -213,6 +236,7 @@ class TestImportPostcodesCommand:
             assert postcode.lsoa == 'E01004736'
             assert postcode.msoa == 'E02000977'
             assert postcode.police == 'Metropolitan Police'
+            assert postcode.postcode_normalized == 'SW1A1AA'
         finally:
             os.unlink(csv_path)
 
