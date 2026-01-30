@@ -64,7 +64,7 @@ function initAddressAutocomplete(addressField) {
         if (query.length > 2) {
             autocompleteTimeout = setTimeout(() => {
                 fetchAutocomplete(query, addressField, latLngField);
-            }, 200);
+            }, 100);
         } else {
             hideAutocomplete(addressField);
         }
