@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
-from django.db.models import Sum, Case, When, Value, IntegerField
+from django.db.models import Sum, Case, When, Value, IntegerField, Q
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
@@ -1348,9 +1348,7 @@ def address_autocomplete(request):
     Address autocomplete API endpoint.
     
     Accepts a query parameter 'q' for partial address search.
-    Searches both Place and Postcode models using LIKE queries
-    that benefit from trigram indexes for performance.
-    Results are ordered so places starting with the query appear first.
+    Searches both Place and Postcode models.
     Returns JSON with name and lat_lng for matching results.
     
     Example: /aac/?q=sw
@@ -1362,56 +1360,41 @@ def address_autocomplete(request):
     
     results = []
     
-    # Search places (towns, cities, etc.) using LIKE query with trigram index
-    # Order by whether name starts with query (0 = starts with, 1 = contains)
+    # Use a single query with Q objects for places - prioritize startswith matches
     places = Place.objects.filter(
-        name__icontains=query
+        Q(name__istartswith=query) | Q(name__icontains=query)
     ).annotate(
-        starts_with=Case(
-            When(name__istartswith=query, then=Value(0)),
-            default=Value(1),
-            output_field=IntegerField()
+        # Add a priority field: 0 for startswith (higher priority), 1 for contains
+        priority=Case(
+            When(name__istartswith=query, then=0),
+            default=1,
+            output_field=IntegerField(),
         )
-    ).order_by('starts_with', 'name').values('name', 'lat_lng', 'county')[:20]
+    ).order_by('priority', 'name').values('name', 'lat_lng', 'county').distinct()[:10]
     
-    place_names_added = set()
     for place in places:
-        if len(results) >= 10:
-            break
-        key = (place['name'], place['county'])
-        if key not in place_names_added:
-            results.append({
-                "n": place['name'],
-                "l": place['lat_lng'],
-                "t": "p",
-                "c": place['county']
-            })
-            place_names_added.add(key)
-    
-    # Search postcodes using LIKE query with trigram index
-    # Order by whether postcode starts with query (0 = starts with, 1 = contains)
-    postcode_query = query.upper().replace(" ", "")
-    postcodes = Postcode.objects.filter(
-        postcode_normalized__icontains=postcode_query
-    ).annotate(
-        starts_with=Case(
-            When(postcode_normalized__startswith=postcode_query, then=Value(0)),
-            default=Value(1),
-            output_field=IntegerField()
-        )
-    ).order_by('starts_with', 'postcode').values('postcode', 'lat_lng', 'county')[:10]
-    
-    for postcode in postcodes:
         results.append({
-            "n": postcode['postcode'],
-            "l": postcode['lat_lng'],
-            "t": "c",
-            "c": postcode['county']
+            "n": place['name'],
+            "l": place['lat_lng'],
+            "t": "p",
+            "c": place['county']
         })
     
-    # Limit total results
-    results = results[:20]
+    # Search postcodes - only fetch if we have room for more results
+    if len(results) < 20:
+        postcode_query = query.upper().replace(" ", "")
+        postcodes = Postcode.objects.filter(
+            postcode_normalized__startswith=postcode_query
+        ).values('postcode', 'lat_lng', 'county')[:min(10, 20 - len(results))]
+        
+        for postcode in postcodes:
+            results.append({
+                "n": postcode['postcode'],
+                "l": postcode['lat_lng'],
+                "t": "c",
+                "c": postcode['county']
+            })
     
-    response = JsonResponse(results, safe=False, json_dumps_params={'indent': 2})
+    response = JsonResponse(results, safe=False)
     response["Access-Control-Allow-Origin"] = "*"
     return response
