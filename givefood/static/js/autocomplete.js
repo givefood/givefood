@@ -154,9 +154,6 @@ function displayAutocomplete(results, addressField, latLngField) {
         return;
     }
 
-    // Set dropdown width to match input field width
-    autocompleteDropdown.style.width = addressField.offsetWidth + 'px';
-
     validResults.forEach((item, index) => {
         const div = document.createElement('div');
         div.className = 'autocomplete-item';
