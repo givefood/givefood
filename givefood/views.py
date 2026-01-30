@@ -1401,7 +1401,7 @@ def address_autocomplete(request):
     # Search postcodes - normalize query and use pre-computed normalized field
     postcode_query = query.upper().replace(" ", "")
     postcodes = Postcode.objects.filter(
-        postcode_normalized__istartswith=postcode_query
+        postcode_normalized__startswith=postcode_query
     ).values('postcode', 'lat_lng', 'county')[:10]
     
     for postcode in postcodes:

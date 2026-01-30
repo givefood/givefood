@@ -236,6 +236,7 @@ class TestImportPostcodesCommand:
             assert postcode.lsoa == 'E01004736'
             assert postcode.msoa == 'E02000977'
             assert postcode.police == 'Metropolitan Police'
+            assert postcode.postcode_normalized == 'SW1A1AA'
         finally:
             os.unlink(csv_path)
 
