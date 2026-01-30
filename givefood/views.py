@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
-from django.db.models import Sum
+from django.db.models import Sum, Case, When, Value, IntegerField
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
@@ -1348,7 +1348,9 @@ def address_autocomplete(request):
     Address autocomplete API endpoint.
     
     Accepts a query parameter 'q' for partial address search.
-    Searches both Place and Postcode models.
+    Searches both Place and Postcode models using LIKE queries
+    that benefit from trigram indexes for performance.
+    Results are ordered so places starting with the query appear first.
     Returns JSON with name and lat_lng for matching results.
     
     Example: /aac/?q=sw
@@ -1360,13 +1362,22 @@ def address_autocomplete(request):
     
     results = []
     
-    # Search places (towns, cities, etc.) - startswith first, then contains
-    places_startswith = Place.objects.filter(
-        name__istartswith=query
-    ).values('name', 'lat_lng', 'county')[:10]
+    # Search places (towns, cities, etc.) using LIKE query with trigram index
+    # Order by whether name starts with query (0 = starts with, 1 = contains)
+    places = Place.objects.filter(
+        name__icontains=query
+    ).annotate(
+        starts_with=Case(
+            When(name__istartswith=query, then=Value(0)),
+            default=Value(1),
+            output_field=IntegerField()
+        )
+    ).order_by('starts_with', 'name').values('name', 'lat_lng', 'county')[:20]
     
     place_names_added = set()
-    for place in places_startswith:
+    for place in places:
+        if len(results) >= 10:
+            break
         key = (place['name'], place['county'])
         if key not in place_names_added:
             results.append({
@@ -1377,32 +1388,18 @@ def address_autocomplete(request):
             })
             place_names_added.add(key)
     
-    # Fall back to contains if we need more results
-    if len(results) < 10:
-        places_contains = Place.objects.filter(
-            name__icontains=query
-        ).exclude(
-            name__istartswith=query
-        ).values('name', 'lat_lng', 'county')[:20]  # Fetch more to filter duplicates
-        
-        for place in places_contains:
-            if len(results) >= 10:
-                break
-            key = (place['name'], place['county'])
-            if key not in place_names_added:
-                results.append({
-                    "n": place['name'],
-                    "l": place['lat_lng'],
-                    "t": "p",
-                    "c": place['county']
-                })
-                place_names_added.add(key)
-    
-    # Search postcodes - normalize query and use pre-computed normalized field
+    # Search postcodes using LIKE query with trigram index
+    # Order by whether postcode starts with query (0 = starts with, 1 = contains)
     postcode_query = query.upper().replace(" ", "")
     postcodes = Postcode.objects.filter(
-        postcode_normalized__startswith=postcode_query
-    ).values('postcode', 'lat_lng', 'county')[:10]
+        postcode_normalized__icontains=postcode_query
+    ).annotate(
+        starts_with=Case(
+            When(postcode_normalized__startswith=postcode_query, then=Value(0)),
+            default=Value(1),
+            output_field=IntegerField()
+        )
+    ).order_by('starts_with', 'postcode').values('postcode', 'lat_lng', 'county')[:10]
     
     for postcode in postcodes:
         results.append({

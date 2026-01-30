@@ -552,4 +552,35 @@ class TestAddressAutocomplete:
         assert darwin_idx is not None
         assert winchester_idx < darwin_idx, "Places starting with query should appear first"
 
+    def test_aac_contains_search_finds_substring(self, client):
+        """Test that LIKE query finds substring matches in place names."""
+        # Create place with query in middle of name
+        Place.objects.create(
+            gbpnid=99985,
+            name='Newmarket',
+            lat_lng='52.2467,0.4064',
+        )
+        
+        # Search for "market" which is in the middle of "Newmarket"
+        response = client.get('/aac/?q=market')
+        data = json.loads(response.content)
+        
+        places = [item for item in data if item['t'] == 'p']
+        assert any(p['n'] == 'Newmarket' for p in places), "Should find places with query in middle of name"
+
+    def test_aac_postcode_contains_search(self, client):
+        """Test that LIKE query finds postcode containing query."""
+        Postcode.objects.create(
+            postcode='W1A 1AB',
+            lat_lng='51.5188,-0.1447',
+            country='England',
+        )
+        
+        # Search for "1a1" which is in the middle of normalized postcode "W1A1AB"
+        response = client.get('/aac/?q=1a1')
+        data = json.loads(response.content)
+        
+        postcodes = [item for item in data if item['t'] == 'c']
+        assert any(p['n'] == 'W1A 1AB' for p in postcodes), "Should find postcodes with query in middle"
+
 
