@@ -5,6 +5,7 @@
 {% block head %}
 
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
+  <link rel="stylesheet" href="/static/css/autocomplete.css?v={{ version }}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="{% blocktrans %}What Food Banks Need{% endblocktrans %}">
@@ -252,6 +253,7 @@
 {% block script %}
 
   {% include 'public/includes/mapconfig.html' %}
+  <script src="/static/js/autocomplete.js?v={{ version }}" defer></script>
   <script src="/static/js/wfbn.js?v={{ version }}" defer onload="init()"></script>
   <script src="/static/js/tabber.js?v={{ version }}" defer></script>
 

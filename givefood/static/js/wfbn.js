@@ -43,6 +43,11 @@ function init() {
     if (useMyLocationBtn) {
         initLocationButton();
     }
+
+    // Initialize autocomplete if the external script is loaded
+    if (typeof initAutocomplete === 'function') {
+        initAutocomplete();
+    }
 }
 
 /**

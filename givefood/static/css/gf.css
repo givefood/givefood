@@ -147,7 +147,7 @@ tfoot {
     content: '';
 }
 #postcode_field, #address_field {
-    width:245px;
+    width:300px;
 }
 #addressform {
     margin-bottom:1rem;
