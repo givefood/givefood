@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
-from django.db.models import Sum, Case, When, Value, IntegerField, Q
+from django.db.models import Sum, Case, When, Value, IntegerField
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
@@ -1349,6 +1349,8 @@ def address_autocomplete(request):
     
     Accepts a query parameter 'q' for partial address search.
     Searches both Place and Postcode models.
+    Results are ordered with places starting with the query appearing first,
+    followed by places containing the query.
     Returns JSON with name and lat_lng for matching results.
     
     Example: /aac/?q=sw
@@ -1360,14 +1362,14 @@ def address_autocomplete(request):
     
     results = []
     
-    # Use a single query with Q objects for places - prioritize startswith matches
+    # Search places - use icontains to capture all matches, then prioritize with annotation
     places = Place.objects.filter(
-        Q(name__istartswith=query) | Q(name__icontains=query)
+        name__icontains=query
     ).annotate(
         # Add a priority field: 0 for startswith (higher priority), 1 for contains
         priority=Case(
-            When(name__istartswith=query, then=0),
-            default=1,
+            When(name__istartswith=query, then=Value(0, output_field=IntegerField())),
+            default=Value(1, output_field=IntegerField()),
             output_field=IntegerField(),
         )
     ).order_by('priority', 'name').values('name', 'lat_lng', 'county').distinct()[:10]
