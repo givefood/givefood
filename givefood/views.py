@@ -8,7 +8,6 @@ from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
 from django.db.models import Sum, Case, When, Value, IntegerField
-from django.db.models.functions import Lower
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.contrib.humanize.templatetags.humanize import intcomma
