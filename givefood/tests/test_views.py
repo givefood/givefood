@@ -568,19 +568,19 @@ class TestAddressAutocomplete:
         places = [item for item in data if item['t'] == 'p']
         assert any(p['n'] == 'Newmarket' for p in places), "Should find places with query in middle of name"
 
-    def test_aac_postcode_contains_search(self, client):
-        """Test that LIKE query finds postcode containing query."""
+    def test_aac_postcode_startswith_search(self, client):
+        """Test that postcode search finds postcodes starting with query."""
         Postcode.objects.create(
             postcode='W1A 1AB',
             lat_lng='51.5188,-0.1447',
             country='England',
         )
         
-        # Search for "1a1" which is in the middle of normalized postcode "W1A1AB"
-        response = client.get('/aac/?q=1a1')
+        # Search for "w1a" which matches the start of normalized postcode "W1A1AB"
+        response = client.get('/aac/?q=w1a')
         data = json.loads(response.content)
         
         postcodes = [item for item in data if item['t'] == 'c']
-        assert any(p['n'] == 'W1A 1AB' for p in postcodes), "Should find postcodes with query in middle"
+        assert any(p['n'] == 'W1A 1AB' for p in postcodes), "Should find postcodes starting with query"
 
 
