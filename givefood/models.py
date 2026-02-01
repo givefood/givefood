@@ -1605,9 +1605,9 @@ class FoodbankArticle(models.Model):
         
         result = capwords(self.title)
         
-        # Replace capitalized acronyms with their correct form
+        # Replace capitalized acronyms with their correct form (whole words only)
         for word in no_cap_words:
-            result = result.replace(word.capitalize(), word)
+            result = re.sub(r'\b' + re.escape(word.capitalize()) + r'\b', word, result)
         
         # Remove trailing period
         result = result.rstrip('.')

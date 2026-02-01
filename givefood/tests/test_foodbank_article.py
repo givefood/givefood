@@ -181,3 +181,35 @@ class TestFoodbankArticleTitleCapitalised:
         )
         # Only trailing period should be removed
         assert article.title_captialised() == 'Dr. Smith Opens Food Bank'
+
+    def test_un_acronym_does_not_affect_united(self, foodbank):
+        """Test that UN acronym replacement does not affect words like 'United'."""
+        article = FoodbankArticle.objects.create(
+            foodbank=foodbank,
+            title='okehampton food bank thanks okehampton united charities',
+            url='https://example.com/united-test',
+            published_date=timezone.now(),
+        )
+        # "United" should remain "United", not "UNited"
+        assert article.title_captialised() == 'Okehampton Food Bank Thanks Okehampton United Charities'
+
+    def test_un_acronym_still_works(self, foodbank):
+        """Test that UN acronym is still correctly capitalised when standalone."""
+        article = FoodbankArticle.objects.create(
+            foodbank=foodbank,
+            title='un supports food banks worldwide',
+            url='https://example.com/un-test',
+            published_date=timezone.now(),
+        )
+        assert article.title_captialised() == 'UN Supports Food Banks Worldwide'
+
+    def test_acronyms_in_words_not_affected(self, foodbank):
+        """Test that acronyms within other words are not affected."""
+        article = FoodbankArticle.objects.create(
+            foodbank=foodbank,
+            title='nick helps uniting community at food bank',
+            url='https://example.com/ni-uniting-test',
+            published_date=timezone.now(),
+        )
+        # "Nick" should be "Nick", not "NIck", and "Uniting" should be "Uniting", not "UNiting"
+        assert article.title_captialised() == 'Nick Helps Uniting Community At Food Bank'
