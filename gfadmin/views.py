@@ -25,6 +25,7 @@ from django.core.validators import validate_email, URLValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
+from givefood.const.item_types import ITEM_CATEGORIES
 from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber, PlacePhoto
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
@@ -1960,6 +1961,24 @@ def need_email(request, id):
     return render(request, "wfbn/emails/notification.%s" % (extension), template_vars, content_type = content_type)
 
 
+def get_ai_category(item):
+    """Get a category for an item using AI when no previous category exists."""
+    prompt = render_to_string(
+        "categorisation_prompt.txt",
+        {
+            "item": item,
+            "item_categories": ITEM_CATEGORIES,
+        }
+    )
+    ai_response = gemini(
+        prompt=prompt,
+        temperature=0.1,
+    )
+    if ai_response in ITEM_CATEGORIES:
+        return ai_response
+    return "Other"
+
+
 def need_categorise(request, id):
 
     need = get_object_or_404(FoodbankChange, need_id = id)
@@ -2032,7 +2051,8 @@ def need_categorise(request, id):
             if prev_need_line:
                 form = NeedLineForm(initial={"item":line, "type":"need", "category":prev_need_line.category}, prefix=line)
             else:
-                form = NeedLineForm(initial={"item":line, "type":"need"}, prefix=line)
+                ai_category = get_ai_category(line)
+                form = NeedLineForm(initial={"item":line, "type":"need", "category":ai_category}, prefix=line)
             
         forms.append(form)
     # Excess
@@ -2046,7 +2066,8 @@ def need_categorise(request, id):
                 if prev_need_line:
                     form = NeedLineForm(initial={"item":line, "type":"excess", "category":prev_need_line.category}, prefix=line)
                 else:
-                    form = NeedLineForm(initial={"item":line, "type":"excess"}, prefix=line)
+                    ai_category = get_ai_category(line)
+                    form = NeedLineForm(initial={"item":line, "type":"excess", "category":ai_category}, prefix=line)
             forms.append(form)
 
     template_vars = {

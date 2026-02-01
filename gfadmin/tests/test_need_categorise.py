@@ -1,10 +1,18 @@
 """Tests for the admin need categorisation view optimizations."""
 import pytest
+from unittest.mock import patch
 from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankChangeLine
+
+
+@pytest.fixture(autouse=True)
+def mock_ai_category():
+    """Mock the AI categorisation function to avoid API calls during tests."""
+    with patch('gfadmin.views.get_ai_category', return_value='Other'):
+        yield
 
 
 def _setup_authenticated_session(client):
@@ -288,3 +296,74 @@ class TestNeedCategoriseView:
         assert 'forms' in response.context
         # Should have only 2 forms for need items
         assert len(response.context['forms']) == 2
+
+    def test_need_categorise_ai_category_called_for_new_items(self, foodbank):
+        """Test that AI categorisation is called for items without previous categories."""
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text='Pasta',
+            excess_change_text=None,
+            published=False,
+            input_method='typed'
+        )
+        need.save(do_translate=False, do_foodbank_save=False)
+        
+        client = Client()
+        _setup_authenticated_session(client)
+        
+        # Use a specific mock value so we can verify it was used
+        with patch('gfadmin.views.get_ai_category', return_value='Pasta') as mock_ai:
+            url = reverse('admin:need_categorise', args=[need.need_id])
+            response = client.get(url)
+            
+            # The AI function should have been called for 'Pasta' item
+            mock_ai.assert_called_once_with('Pasta')
+            
+            # Verify the form has the AI-generated category as initial value
+            forms = response.context['forms']
+            assert len(forms) == 1
+            assert forms[0].initial.get('category') == 'Pasta'
+
+    def test_need_categorise_ai_category_not_called_for_existing_items(self, foodbank):
+        """Test that AI categorisation is not called for items with previous categories."""
+        # Create a previous need line
+        prev_need = FoodbankChange(
+            foodbank=foodbank,
+            change_text='Pasta',
+            published=True,
+            input_method='typed'
+        )
+        prev_need.save(do_translate=False, do_foodbank_save=False)
+        FoodbankChangeLine.objects.create(
+            need=prev_need,
+            foodbank=foodbank,
+            item='Pasta',
+            type='need',
+            category='Pasta',
+            created=prev_need.created
+        )
+        
+        # Create a new need with the same item
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text='Pasta',
+            excess_change_text=None,
+            published=False,
+            input_method='typed'
+        )
+        need.save(do_translate=False, do_foodbank_save=False)
+        
+        client = Client()
+        _setup_authenticated_session(client)
+        
+        with patch('gfadmin.views.get_ai_category') as mock_ai:
+            url = reverse('admin:need_categorise', args=[need.need_id])
+            response = client.get(url)
+            
+            # The AI function should NOT have been called since we have a previous category
+            mock_ai.assert_not_called()
+            
+            # Verify the form has the previous category as initial value
+            forms = response.context['forms']
+            assert len(forms) == 1
+            assert forms[0].initial.get('category') == 'Pasta'
