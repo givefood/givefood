@@ -1964,8 +1964,12 @@ def need_email(request, id):
 def get_ai_category(item):
     """Get a category for an item using AI when no previous category exists.
     
-    Returns a valid category from ITEM_CATEGORIES, or "Other" if the AI 
-    response is invalid.
+    Args:
+        item: The food bank item name to categorize (str).
+    
+    Returns:
+        A valid category from ITEM_CATEGORIES, or "Other" if the AI 
+        response is invalid.
     """
     prompt = render_to_string(
         "categorisation_prompt.txt",

@@ -298,6 +298,15 @@ class TestNeedCategoriseView:
         # Should have only 2 forms for need items
         assert len(response.context['forms']) == 2
 
+
+@pytest.mark.django_db
+class TestNeedCategoriseViewAiBehavior:
+    """Tests for AI categorisation behavior in the need_categorise view.
+    
+    These tests do not use the mock_ai_category fixture so they can verify
+    specific AI function call behavior.
+    """
+
     def test_need_categorise_ai_category_called_for_new_items(self, foodbank):
         """Test that AI categorisation is called for items without previous categories."""
         need = FoodbankChange(
