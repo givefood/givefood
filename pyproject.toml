@@ -27,7 +27,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "django==6.0.1",
+    "django==6.0.2",
     "django-session-csrf",
     "python-dateutil",
     "requests-toolbelt",
