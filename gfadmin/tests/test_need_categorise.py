@@ -1,5 +1,6 @@
 """Tests for the admin need categorisation view optimizations."""
 import pytest
+from unittest.mock import patch
 from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
@@ -110,7 +111,15 @@ def previous_need_lines(foodbank):
     return prev_need
 
 
+@pytest.fixture
+def mock_ai_category():
+    """Mock the AI categorisation function to avoid API calls during tests."""
+    with patch('gfadmin.views.get_ai_category', return_value='Other'):
+        yield
+
+
 @pytest.mark.django_db
+@pytest.mark.usefixtures('mock_ai_category')
 class TestNeedCategoriseView:
     """Test the admin need categorise view."""
 
@@ -288,3 +297,134 @@ class TestNeedCategoriseView:
         assert 'forms' in response.context
         # Should have only 2 forms for need items
         assert len(response.context['forms']) == 2
+
+
+@pytest.mark.django_db
+class TestNeedCategoriseViewAiBehavior:
+    """Tests for AI categorisation behavior in the need_categorise view.
+    
+    These tests do not use the mock_ai_category fixture so they can verify
+    specific AI function call behavior.
+    """
+
+    def test_need_categorise_ai_category_called_for_new_items(self, foodbank):
+        """Test that AI categorisation is called for items without previous categories."""
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text='Pasta',
+            excess_change_text=None,
+            published=False,
+            input_method='typed'
+        )
+        need.save(do_translate=False, do_foodbank_save=False)
+        
+        client = Client()
+        _setup_authenticated_session(client)
+        
+        # Use a specific mock value so we can verify it was used
+        with patch('gfadmin.views.get_ai_category', return_value='Pasta') as mock_ai:
+            url = reverse('admin:need_categorise', args=[need.need_id])
+            response = client.get(url)
+            
+            # The AI function should have been called for 'Pasta' item
+            mock_ai.assert_called_once_with('Pasta')
+            
+            # Verify the form has the AI-generated category as initial value
+            forms = response.context['forms']
+            assert len(forms) == 1
+            assert forms[0].initial.get('category') == 'Pasta'
+
+    def test_need_categorise_ai_category_not_called_for_existing_items(self, foodbank):
+        """Test that AI categorisation is not called for items with previous categories."""
+        # Create a previous need line
+        prev_need = FoodbankChange(
+            foodbank=foodbank,
+            change_text='Pasta',
+            published=True,
+            input_method='typed'
+        )
+        prev_need.save(do_translate=False, do_foodbank_save=False)
+        FoodbankChangeLine.objects.create(
+            need=prev_need,
+            foodbank=foodbank,
+            item='Pasta',
+            type='need',
+            category='Pasta',
+            created=prev_need.created
+        )
+        
+        # Create a new need with the same item
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text='Pasta',
+            excess_change_text=None,
+            published=False,
+            input_method='typed'
+        )
+        need.save(do_translate=False, do_foodbank_save=False)
+        
+        client = Client()
+        _setup_authenticated_session(client)
+        
+        with patch('gfadmin.views.get_ai_category') as mock_ai:
+            url = reverse('admin:need_categorise', args=[need.need_id])
+            response = client.get(url)
+            
+            # The AI function should NOT have been called since we have a previous category
+            mock_ai.assert_not_called()
+            
+            # Verify the form has the previous category as initial value
+            forms = response.context['forms']
+            assert len(forms) == 1
+            assert forms[0].initial.get('category') == 'Pasta'
+
+
+@pytest.mark.django_db
+class TestGetAiCategory:
+    """Tests for the get_ai_category helper function."""
+
+    def test_get_ai_category_returns_valid_category(self):
+        """Test that valid AI responses are returned as-is."""
+        from gfadmin.views import get_ai_category
+        with patch('gfadmin.views.gemini', return_value='Pasta'):
+            result = get_ai_category('Spaghetti')
+            assert result == 'Pasta'
+
+    def test_get_ai_category_returns_other_for_invalid_response(self):
+        """Test that invalid AI responses fall back to 'Other'."""
+        from gfadmin.views import get_ai_category
+        with patch('gfadmin.views.gemini', return_value='InvalidCategory'):
+            result = get_ai_category('SomeItem')
+            assert result == 'Other'
+
+    def test_get_ai_category_returns_other_for_none_response(self):
+        """Test that None AI responses fall back to 'Other'."""
+        from gfadmin.views import get_ai_category
+        with patch('gfadmin.views.gemini', return_value=None):
+            result = get_ai_category('SomeItem')
+            assert result == 'Other'
+
+    def test_get_ai_category_uses_correct_prompt_template(self):
+        """Test that the function uses the categorisation_prompt.txt template."""
+        from gfadmin.views import get_ai_category
+        with patch('gfadmin.views.gemini', return_value='Other') as mock_gemini:
+            with patch('gfadmin.views.render_to_string') as mock_render:
+                mock_render.return_value = 'test prompt'
+                get_ai_category('TestItem')
+                
+                # Verify render_to_string was called with correct template
+                mock_render.assert_called_once()
+                args, kwargs = mock_render.call_args
+                assert args[0] == 'categorisation_prompt.txt'
+                assert 'item' in args[1]
+                assert args[1]['item'] == 'TestItem'
+                assert 'item_categories' in args[1]
+
+    def test_get_ai_category_uses_low_temperature(self):
+        """Test that the AI is called with low temperature for deterministic results."""
+        from gfadmin.views import get_ai_category
+        with patch('gfadmin.views.gemini', return_value='Pasta') as mock_gemini:
+            get_ai_category('Spaghetti')
+            mock_gemini.assert_called_once()
+            _, kwargs = mock_gemini.call_args
+            assert kwargs['temperature'] == 0.1
