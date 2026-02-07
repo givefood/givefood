@@ -25,7 +25,7 @@ from django.core.validators import validate_email, URLValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import diff_html, find_locations, foodbank_article_crawl, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_webpush_notification, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_template_notification
+from givefood.func import diff_html, find_locations, foodbank_article_crawl, foodbank_article_crawl_async, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_firebase_notification_async, send_webpush_notification, send_webpush_notification_async, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_notification_async, send_whatsapp_template_notification
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber, PlacePhoto
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 from django_tasks.backends.database.models import DBTaskResult
@@ -1907,7 +1907,7 @@ def need_notifications(request, id):
 
     # Check for foodbank articles
     if foodbank.rss_url:
-        foodbank_article_crawl(foodbank)
+        foodbank_article_crawl_async.enqueue(foodbank.slug)
 
     # Update notification time
     need.notified = datetime.now()
@@ -1919,13 +1919,13 @@ def need_notifications(request, id):
         post_to_subscriber(need, subscriber)
     
     # Send Firebase notification (for mobile apps)
-    send_firebase_notification(need)
+    send_firebase_notification_async.enqueue(need.need_id_str)
     
     # Send web push notifications (for browsers using django-webpush/VAPID)
-    send_webpush_notification(need)
+    send_webpush_notification_async.enqueue(need.need_id_str)
     
     # Send WhatsApp notifications
-    send_whatsapp_notification(need)
+    send_whatsapp_notification_async.enqueue(need.need_id_str)
 
     return redirect("admin:need", id = need.need_id)
 
