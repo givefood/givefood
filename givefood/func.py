@@ -149,7 +149,7 @@ def get_all_constituencies():
     return all_parlcon
 
 
-@task(queue_name="decache")
+@task(queue_name="decache", priority=1)
 def decache_async(urls = None, prefixes = None):
     decache(urls = urls, prefixes = prefixes)
     return True
@@ -389,6 +389,14 @@ def foodbank_article_crawl(foodbank, crawl_set = None):
     crawl_item.finish = datetime.now()
     crawl_item.save()
 
+    return True
+
+
+@task(priority=2)
+def foodbank_article_crawl_async(foodbank_slug):
+    from givefood.models import Foodbank
+    foodbank = Foodbank.objects.get(slug=foodbank_slug)
+    foodbank_article_crawl(foodbank)
     return True
 
 
@@ -2049,6 +2057,14 @@ def send_firebase_notification(need):
         return None
 
 
+@task(priority=-1)
+def send_firebase_notification_async(need_id_str):
+    from givefood.models import FoodbankChange
+    need = FoodbankChange.objects.get(need_id_str=need_id_str)
+    send_firebase_notification(need)
+    return True
+
+
 def _get_vapid_credentials():
     """
     Get VAPID credentials from database.
@@ -2196,6 +2212,14 @@ def send_webpush_notification(need):
     
     logging.info(f"Sent {sent_count} web push notifications for need {need.need_id}")
     return sent_count
+
+
+@task(priority=-1)
+def send_webpush_notification_async(need_id_str):
+    from givefood.models import FoodbankChange
+    need = FoodbankChange.objects.get(need_id_str=need_id_str)
+    send_webpush_notification(need)
+    return True
 
 
 def send_single_webpush_notification(subscription, need):
@@ -2419,3 +2443,11 @@ def send_whatsapp_notification(need):
     
     logging.info(f"Sent {sent_count} WhatsApp notifications for need {need.need_id}")
     return sent_count
+
+
+@task(priority=-1)
+def send_whatsapp_notification_async(need_id_str):
+    from givefood.models import FoodbankChange
+    need = FoodbankChange.objects.get(need_id_str=need_id_str)
+    send_whatsapp_notification(need)
+    return True
