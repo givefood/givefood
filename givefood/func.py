@@ -149,7 +149,7 @@ def get_all_constituencies():
     return all_parlcon
 
 
-@task(queue_name="decache", priority=1)
+@task(queue_name="decache", priority=20)
 def decache_async(urls = None, prefixes = None):
     decache(urls = urls, prefixes = prefixes)
     return True
@@ -392,7 +392,7 @@ def foodbank_article_crawl(foodbank, crawl_set = None):
     return True
 
 
-@task(priority=2)
+@task(priority=30)
 def foodbank_article_crawl_async(foodbank_slug):
     from givefood.models import Foodbank
     foodbank = Foodbank.objects.get(slug=foodbank_slug)
@@ -2057,7 +2057,7 @@ def send_firebase_notification(need):
         return None
 
 
-@task(priority=-1)
+@task(priority=10)
 def send_firebase_notification_async(need_id_str):
     from givefood.models import FoodbankChange
     need = FoodbankChange.objects.get(need_id_str=need_id_str)
@@ -2214,7 +2214,7 @@ def send_webpush_notification(need):
     return sent_count
 
 
-@task(priority=-1)
+@task(priority=10)
 def send_webpush_notification_async(need_id_str):
     from givefood.models import FoodbankChange
     need = FoodbankChange.objects.get(need_id_str=need_id_str)
@@ -2445,7 +2445,7 @@ def send_whatsapp_notification(need):
     return sent_count
 
 
-@task(priority=-1)
+@task(priority=10)
 def send_whatsapp_notification_async(need_id_str):
     from givefood.models import FoodbankChange
     need = FoodbankChange.objects.get(need_id_str=need_id_str)

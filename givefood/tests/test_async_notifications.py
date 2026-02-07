@@ -13,19 +13,19 @@ class TestAsyncTaskPriorities:
     """Test that async task wrappers have correct priorities."""
 
     def test_decache_async_priority(self):
-        assert decache_async.priority == 1
+        assert decache_async.priority == 20
 
     def test_foodbank_article_crawl_async_priority(self):
-        assert foodbank_article_crawl_async.priority == 2
+        assert foodbank_article_crawl_async.priority == 30
 
     def test_send_firebase_notification_async_priority(self):
-        assert send_firebase_notification_async.priority == -1
+        assert send_firebase_notification_async.priority == 10
 
     def test_send_webpush_notification_async_priority(self):
-        assert send_webpush_notification_async.priority == -1
+        assert send_webpush_notification_async.priority == 10
 
     def test_send_whatsapp_notification_async_priority(self):
-        assert send_whatsapp_notification_async.priority == -1
+        assert send_whatsapp_notification_async.priority == 10
 
     def test_article_crawl_higher_priority_than_decache(self):
         assert foodbank_article_crawl_async.priority > decache_async.priority
