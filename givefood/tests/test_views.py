@@ -584,3 +584,16 @@ class TestAddressAutocomplete:
         assert any(p['n'] == 'W1A 1AB' for p in postcodes), "Should find postcodes starting with query"
 
 
+@pytest.mark.django_db
+class TestMarkdownPages:
+    """Test markdown versions of pages."""
+
+    def test_md_sitemap_accessible(self, client):
+        """Test that the markdown sitemap is accessible."""
+        response = client.get('/md/sitemap.xml')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert '# Sitemap' in content
+
+
