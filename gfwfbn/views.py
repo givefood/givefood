@@ -650,6 +650,150 @@ def foodbank_nearby(request, slug):
     return render(request, "wfbn/foodbank/nearby.html", template_vars)
 
 
+@cache_page(SECONDS_IN_DAY)
+def md_foodbank(request, slug):
+    """
+    Markdown version of the food bank index
+    """
+
+    foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
+
+    template_vars = {
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/md/index.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_DAY)
+def md_foodbank_locations(request, slug):
+    """
+    Markdown version of food bank locations
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    if foodbank.no_locations == 0:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/md/locations.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_DAY)
+def md_foodbank_location(request, slug, locslug):
+    """
+    Markdown version of food bank location
+    """
+
+    foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
+    location = get_object_or_404(FoodbankLocation, slug = locslug, foodbank = foodbank)
+
+    template_vars = {
+        "foodbank":foodbank,
+        "location":location,
+    }
+
+    return render(request, "wfbn/foodbank/md/location.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_DAY)
+def md_foodbank_donationpoints(request, slug):
+    """
+    Markdown version of food bank donation points
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    if foodbank.no_donation_points == 0:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/md/donationpoints.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_DAY)
+def md_foodbank_donationpoint(request, slug, dpslug):
+    """
+    Markdown version of food bank donation point
+    """
+
+    foodbank = get_object_or_404(Foodbank.objects.select_related("latest_need"), slug = slug)
+    donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
+
+    change_text = foodbank.latest_need.change_text
+    if change_text == "Unknown" or change_text == "Nothing" or change_text == "Facebook":
+        has_need = False
+    else:
+        has_need = True
+
+    template_vars = {
+        "foodbank":foodbank,
+        "has_need":has_need,
+        "donationpoint":donationpoint,
+    }
+
+    return render(request, "wfbn/foodbank/md/donationpoint.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_DAY)
+def md_foodbank_news(request, slug):
+    """
+    Markdown version of food bank news
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    if not foodbank.rss_url and not foodbank.news_url:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "foodbank":foodbank,
+    }
+
+    return render(request, "wfbn/foodbank/md/news.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_DAY)
+def md_foodbank_charity(request, slug):
+    """
+    Markdown version of food bank charity
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    charity_years = CharityYear.objects.filter(foodbank = foodbank).order_by("-date")
+
+    if not foodbank.charity_name:
+        return HttpResponseNotFound()
+
+    template_vars = {
+        "foodbank":foodbank,
+        "charity_years":charity_years,
+    }
+
+    return render(request, "wfbn/foodbank/md/charity.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_WEEK)
+def md_foodbank_nearby(request, slug):
+    """
+    Markdown version of food bank nearby
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    nearby_locations = find_locations(foodbank.lat_lng, 20, True)
+
+    template_vars = {
+        "foodbank":foodbank,
+        "nearby":nearby_locations,
+    }
+
+    return render(request, "wfbn/foodbank/md/nearby.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
 @cache_page(SECONDS_IN_WEEK)
 
 

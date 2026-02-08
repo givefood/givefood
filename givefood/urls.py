@@ -77,6 +77,11 @@ urlpatterns += [
 
     # Old URL redirects
     path("what-food-banks-need/", RedirectView.as_view(url='/needs/')),
+
+    # Markdown versions
+    path("md/", givefood.views.md_index, name="md_index"),
+    path("md/sitemap.xml", givefood.views.md_sitemap, name="md_sitemap"),
+    path("md/needs/", include('gfwfbn.urls.md', namespace="wfbn-md")),
 ]
 
 

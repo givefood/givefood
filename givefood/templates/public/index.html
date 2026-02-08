@@ -7,6 +7,7 @@
 {% block head %}
   <link rel="stylesheet" href="/static/css/hp.css?v={{ version }}">
   <link rel="stylesheet" href="/static/css/autocomplete.css?v={{ version }}">
+  <link rel="alternate" type="text/markdown" href="{% url 'md_index' %}">
   <meta name="description" content="{% blocktrans %}Give Food a UK charity uses data to highlight local and structural food insecurity then provides tools to help alleviate it.{% endblocktrans %}">
   <link rel="alternate" type="application/rss+xml" title="Give Food RSS" href="{% url 'wfbn:rss' %}">
   <meta name="twitter:card" content="summary">

@@ -720,6 +720,9 @@ class Foodbank(models.Model):
             prefixes.append(reverse("api2:foodbank", kwargs={"slug":self.slug}))
             prefixes.append(reverse("api2:constituency", kwargs={"slug":self.parliamentary_constituency_slug}))
 
+            # Markdown URLs
+            prefixes.append(reverse("wfbn-md:md_foodbank", kwargs={"slug":self.slug}))
+
             api_urls = [
                 reverse("sitemap"),
                 "%s?format=csv" % (reverse("api_foodbanks")),
@@ -731,6 +734,7 @@ class Foodbank(models.Model):
             ]
 
             urls = translated_urls + api_urls
+            urls.append(reverse("md_index"))
             decache_async.enqueue(urls, prefixes)
 
 

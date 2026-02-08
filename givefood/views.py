@@ -699,6 +699,89 @@ def sitemap(request):
     )
 
 
+@cache_page(SECONDS_IN_HOUR)
+def md_index(request):
+    """
+    Markdown version of the homepage
+    """
+
+    stats = {
+        "foodbanks":Foodbank.objects.count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.count(),
+        "donationpoints":FoodbankDonationPoint.objects.count() + Foodbank.objects.exclude(address_is_administrative = True).count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.filter(is_donation_point = True).count(),
+        "items":FoodbankChange.objects.count(),
+        "meals":int(Order.objects.aggregate(Sum("calories"))["calories__sum"]/500),
+    }
+
+    exclude_change_text = ["Unknown", "Facebook", "Nothing"]
+    recently_updated = (
+        FoodbankChange.objects
+        .filter(published=True)
+        .exclude(change_text__in=exclude_change_text)
+        .only('foodbank_name')
+        .order_by("-created")[:10]
+    )
+
+    most_viewed = (
+        Foodbank.objects
+        .filter(
+            foodbankhit__day__gte=date.today() - timedelta(days=7),
+            foodbankhit__day__lte=date.today()
+        )
+        .annotate(total_hits=Sum('foodbankhit__hits'))
+        .order_by('-total_hits')[:10]
+        .only('name', 'slug')
+    )
+
+    template_vars = {
+        "SITE_DOMAIN":SITE_DOMAIN,
+        "recently_updated":recently_updated,
+        "most_viewed":most_viewed,
+        "stats":stats,
+    }
+    return render(request, "public/md/index.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_WEEK)
+def md_sitemap(request):
+    """
+    Markdown version of the sitemap
+    """
+
+    url_names = [
+        "index",
+        "about_us",
+        "donate",
+        "annual_report_index",
+        "privacy",
+    ]
+
+    country_slugs = ['scotland', 'england', 'wales', 'northern-ireland']
+
+    foodbanks = Foodbank.objects.all().exclude(is_closed=True).only('slug', 'name')
+    constituencies = ParliamentaryConstituency.objects.all().only('slug', 'name')
+    locations = (
+        FoodbankLocation.objects.all()
+        .exclude(is_closed=True)
+        .only('foodbank_slug', 'slug', 'name')
+    )
+    donationpoints = (
+        FoodbankDonationPoint.objects.all()
+        .exclude(is_closed=True)
+        .only('foodbank_slug', 'slug', 'name')
+    )
+
+    template_vars = {
+        "domain": SITE_DOMAIN,
+        "url_names": url_names,
+        "country_slugs": country_slugs,
+        "foodbanks": foodbanks,
+        "constituencies": constituencies,
+        "locations": locations,
+        "donationpoints": donationpoints,
+    }
+    return render(request, "public/md/sitemap.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
 @cache_page(SECONDS_IN_WEEK)
 def robotstxt(request):
     """
