@@ -1,6 +1,6 @@
-# {{ donationpoint.name }} - {{ foodbank.full_name }}
+{% autoescape off %}# {{ donationpoint.name }} - {{ foodbank.full_name }}
 
-{{ donationpoint.name }} is a donation point for [{{ foodbank.full_name }}]({% url 'wfbn:foodbank' foodbank.slug %}).
+{{ donationpoint.name }} is a donation point for [{{ foodbank.full_name }}]({% url 'wfbn-md:md_foodbank' foodbank.slug %}).
 
 {% if has_need %}## Items needed
 
@@ -27,6 +27,7 @@
 
 ## Contact
 
-{% if donationpoint.url %}- Website: {{ donationpoint.url }}
-{% endif %}{% if donationpoint.phone_number %}- Phone: {{ donationpoint.phone_number }}
+{% if donationpoint.url %}- Website: [{{ donationpoint.url }}]({{ donationpoint.url }})
+{% endif %}{% if donationpoint.phone_number %}- Phone: [{{ donationpoint.phone_number }}](tel:{{ donationpoint.phone_number }})
 {% endif %}
+{% endautoescape %}

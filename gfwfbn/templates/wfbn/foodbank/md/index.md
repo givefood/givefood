@@ -1,4 +1,4 @@
-# {{ foodbank.full_name }}
+{% autoescape off %}# {{ foodbank.full_name }}
 
 {% if foodbank.is_closed %}**This food bank is closed.**
 
@@ -24,15 +24,21 @@
 
 ## Contact
 
-- Website: {{ foodbank.url }}
-{% if foodbank.phone_number %}- Phone: {{ foodbank.phone_number }}
-{% endif %}{% if foodbank.secondary_phone_number %}- Phone: {{ foodbank.secondary_phone_number }}
-{% endif %}- Email: {{ foodbank.contact_email }}
+- Website: [{{ foodbank.url }}]({{ foodbank.url }})
+{% if foodbank.phone_number %}- Phone: [{{ foodbank.phone_number }}](tel:{{ foodbank.phone_number }})
+{% endif %}{% if foodbank.secondary_phone_number %}- Phone: [{{ foodbank.secondary_phone_number }}](tel:{{ foodbank.secondary_phone_number }})
+{% endif %}- Email: [{{ foodbank.contact_email }}](mailto:{{ foodbank.contact_email }})
+{% if foodbank.facebook_page %}- Facebook: [{{ foodbank.facebook_page }}](https://www.facebook.com/{{ foodbank.facebook_page }})
+{% endif %}
+{% if foodbank.network and foodbank.network != "Independent" %}## Network
 
+[{{ foodbank.network }}]({{ foodbank.network_url }})
+{% endif %}
 ## Links
 
-- [Locations]({% url 'wfbn:foodbank_locations' foodbank.slug %})
-- [Donation points]({% url 'wfbn:foodbank_donationpoints' foodbank.slug %})
-- [News]({% url 'wfbn:foodbank_news' foodbank.slug %})
-- [Charity]({% url 'wfbn:foodbank_charity' foodbank.slug %})
-- [Nearby]({% url 'wfbn:foodbank_nearby' foodbank.slug %})
+- [Locations]({% url 'wfbn-md:md_foodbank_locations' foodbank.slug %})
+- [Donation points]({% url 'wfbn-md:md_foodbank_donationpoints' foodbank.slug %})
+- [News]({% url 'wfbn-md:md_foodbank_news' foodbank.slug %})
+- [Charity]({% url 'wfbn-md:md_foodbank_charity' foodbank.slug %})
+- [Nearby]({% url 'wfbn-md:md_foodbank_nearby' foodbank.slug %})
+{% endautoescape %}

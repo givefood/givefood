@@ -1,4 +1,4 @@
-# Sitemap
+{% autoescape off %}# Sitemap
 
 ## Pages
 
@@ -12,20 +12,21 @@
 
 ## Food Banks
 
-{% for foodbank in foodbanks %}- [{{ foodbank.name }}]({{ domain }}{% url 'wfbn:foodbank' foodbank.slug %})
+{% for foodbank in foodbanks %}- [{{ foodbank.name }}]({% url 'wfbn-md:md_foodbank' foodbank.slug %})
 {% endfor %}
 
 ## Locations
 
-{% for location in locations %}- [{{ location.name }}]({{ domain }}{% url 'wfbn:foodbank_location' location.foodbank_slug location.slug %})
+{% for location in locations %}- [{{ location.name }}]({% url 'wfbn-md:md_foodbank_location' location.foodbank_slug location.slug %})
 {% endfor %}
 
 ## Donation Points
 
-{% for donationpoint in donationpoints %}- [{{ donationpoint.name }}]({{ domain }}{% url 'wfbn:foodbank_donationpoint' donationpoint.foodbank_slug donationpoint.slug %})
+{% for donationpoint in donationpoints %}- [{{ donationpoint.name }}]({% url 'wfbn-md:md_foodbank_donationpoint' donationpoint.foodbank_slug donationpoint.slug %})
 {% endfor %}
 
 ## Constituencies
 
 {% for constituency in constituencies %}- [{{ constituency.name }}]({{ domain }}{% url 'wfbn:constituency' constituency.slug %})
 {% endfor %}
+{% endautoescape %}

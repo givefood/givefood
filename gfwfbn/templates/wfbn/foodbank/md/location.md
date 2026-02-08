@@ -1,4 +1,4 @@
-# {{ location.name }} - {{ foodbank.full_name }}
+{% autoescape off %}# {{ location.name }} - {{ foodbank.full_name }}
 
 {% if foodbank.is_closed %}**This food bank is closed.**
 
@@ -24,10 +24,11 @@
 
 ## Contact
 
-- Website: {{ foodbank.url }}
-{% if foodbank.phone_number %}- Phone: {{ foodbank.phone_number }}
-{% endif %}- Email: {{ foodbank.contact_email }}
+- Website: [{{ foodbank.url }}]({{ foodbank.url }})
+{% if foodbank.phone_number %}- Phone: [{{ foodbank.phone_number }}](tel:{{ foodbank.phone_number }})
+{% endif %}- Email: [{{ foodbank.contact_email }}](mailto:{{ foodbank.contact_email }})
 
 ## Parent food bank
 
-[{{ foodbank.full_name }}]({% url 'wfbn:foodbank' foodbank.slug %})
+[{{ foodbank.full_name }}]({% url 'wfbn-md:md_foodbank' foodbank.slug %})
+{% endautoescape %}

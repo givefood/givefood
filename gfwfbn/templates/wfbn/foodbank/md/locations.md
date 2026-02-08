@@ -1,4 +1,4 @@
-# Locations - {{ foodbank.full_name }}
+{% autoescape off %}# Locations - {{ foodbank.full_name }}
 
 ## Main
 
@@ -15,5 +15,6 @@
 {% if location.address %}{{ location.address }}
 {% endif %}{% if location.postcode %}{{ location.postcode }}{% endif %}
 
-[View details]({% url 'wfbn:foodbank_location' foodbank.slug location.slug %})
+[View details]({% url 'wfbn-md:md_foodbank_location' foodbank.slug location.slug %})
 {% endfor %}
+{% endautoescape %}

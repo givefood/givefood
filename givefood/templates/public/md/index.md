@@ -1,4 +1,4 @@
-{% load humanize %}# Give Food
+{% autoescape off %}{% load humanize %}# Give Food
 
 We're a UK charity that uses data to highlight local and structural food insecurity then provides tools to help alleviate it.
 
@@ -6,12 +6,12 @@ Use our unique database to find a food bank near you, see what they need and how
 
 ## Recently updated
 
-{% for foodbank in recently_updated %}- [{{ foodbank.foodbank_name }}]({{ SITE_DOMAIN }}{% url 'wfbn:foodbank' foodbank.foodbank_name_slug %})
+{% for foodbank in recently_updated %}- [{{ foodbank.foodbank_name }}]({% url 'wfbn-md:md_foodbank' foodbank.foodbank_name_slug %})
 {% endfor %}
 
 ## Most viewed this week
 
-{% for foodbank in most_viewed %}- [{{ foodbank.name }}]({{ SITE_DOMAIN }}{% url 'wfbn:foodbank' foodbank.slug %})
+{% for foodbank in most_viewed %}- [{{ foodbank.name }}]({% url 'wfbn-md:md_foodbank' foodbank.slug %})
 {% endfor %}
 
 ## Statistics
@@ -34,3 +34,4 @@ Use our unique database to find a food bank near you, see what they need and how
 - [Donate]({{ SITE_DOMAIN }}{% url 'donate' %})
 - [About us]({{ SITE_DOMAIN }}{% url 'about_us' %})
 - [API]({{ SITE_DOMAIN }}/api/)
+{% endautoescape %}
