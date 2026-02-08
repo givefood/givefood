@@ -7,6 +7,7 @@
   {% if foodbank.latest_need.change_text != "Unknown" and foodbank.latest_need.change_text != "Nothing" %}
     <link rel="alternate" type="application/rss+xml" title="RSS feed for {{ foodbank.full_name }}" href="{% url 'wfbn:foodbank_rss' foodbank.slug %}">
   {% endif %}
+  <link rel="alternate" type="text/markdown" href="{% url 'wfbn-md:md_foodbank_location' foodbank.slug location.slug %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="{{ location }}, {{ foodbank.full_name }}">

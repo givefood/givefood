@@ -1608,3 +1608,203 @@ class TestMpPhotoRedirect:
         """Test that invalid constituency slug returns 404."""
         response = client.get('/needs/in/constituency/invalid-slug/mp_photo_threefour.png')
         assert response.status_code == 404
+
+
+@pytest.mark.django_db
+class TestMarkdownFoodbankViews:
+    """Test the markdown versions of food bank pages"""
+
+    def test_md_foodbank_returns_markdown(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/ returns markdown content."""
+        foodbank = create_test_foodbank()
+        need = FoodbankChange.objects.create(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes, Pasta, Rice",
+            published=True,
+        )
+        foodbank.latest_need = need
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        response = client.get(f'/md/needs/at/{foodbank.slug}/')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert foodbank.name in content
+
+    def test_md_foodbank_locations_returns_markdown(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/locations/ returns markdown content."""
+        foodbank = create_test_foodbank()
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location",
+            slug="test-location",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        response = client.get(f'/md/needs/at/{foodbank.slug}/locations/')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert 'Locations' in content
+
+    def test_md_foodbank_location_returns_markdown(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/<locslug>/ returns markdown content."""
+        foodbank = create_test_foodbank(name="Test Food Bank MD Loc", slug="test-food-bank-md-loc")
+        need = FoodbankChange.objects.create(
+            foodbank=foodbank,
+            change_text="Tinned Beans",
+            published=True,
+        )
+        foodbank.latest_need = need
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        location = FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            foodbank_phone_number="",
+            foodbank_email="test@example.com",
+            name="Test Location",
+            slug="test-location",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        )
+        location.save(do_geoupdate=False, do_foodbank_resave=False)
+
+        response = client.get(f'/md/needs/at/{foodbank.slug}/{location.slug}/')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert location.name in content
+
+    def test_md_foodbank_donationpoints_returns_markdown(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/donationpoints/ returns markdown content."""
+        foodbank = create_test_foodbank(name="Test Food Bank MD DP", slug="test-food-bank-md-dp")
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test Donation Point",
+            slug="test-donation-point",
+            address="456 Test Ave",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        response = client.get(f'/md/needs/at/{foodbank.slug}/donationpoints/')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert 'Donation Points' in content
+
+    def test_md_foodbank_donationpoint_returns_markdown(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/donationpoint/<dpslug>/ returns markdown."""
+        foodbank = create_test_foodbank(name="Test Food Bank MD DP2", slug="test-food-bank-md-dp2")
+        need = FoodbankChange.objects.create(
+            foodbank=foodbank,
+            change_text="Tinned Soup",
+            published=True,
+        )
+        foodbank.latest_need = need
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test DP",
+            slug="test-dp",
+            address="789 Test Rd",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+
+        response = client.get(f'/md/needs/at/{foodbank.slug}/donationpoint/{donationpoint.slug}/')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert donationpoint.name in content
+
+    def test_md_foodbank_news_returns_markdown(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/news/ returns markdown content."""
+        foodbank = create_test_foodbank(
+            name="Test Food Bank MD News", slug="test-food-bank-md-news",
+            rss_url="https://test.example.com/rss",
+        )
+
+        response = client.get(f'/md/needs/at/{foodbank.slug}/news/')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert 'News' in content
+
+    def test_md_foodbank_charity_returns_markdown(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/charity/ returns markdown content."""
+        foodbank = create_test_foodbank(
+            name="Test Food Bank MD Charity", slug="test-food-bank-md-charity",
+            charity_name="Test Charity",
+            charity_number="12345",
+        )
+
+        response = client.get(f'/md/needs/at/{foodbank.slug}/charity/')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert 'Charity' in content
+        assert 'Test Charity' in content
+
+    def test_md_foodbank_nearby_returns_markdown(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/nearby/ returns markdown content."""
+        foodbank = create_test_foodbank(name="Test Food Bank MD Nearby", slug="test-food-bank-md-nearby")
+
+        with patch('gfwfbn.views.find_locations', return_value=[]):
+            response = client.get(f'/md/needs/at/{foodbank.slug}/nearby/')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert 'Nearby' in content
+
+    def test_md_foodbank_404_for_invalid_slug(self, client):
+        """Test that /md/needs/at/<invalid>/ returns 404."""
+        response = client.get('/md/needs/at/nonexistent-food-bank/')
+        assert response.status_code == 404
+
+    def test_md_foodbank_news_404_when_no_rss(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/news/ returns 404 when no rss_url."""
+        foodbank = create_test_foodbank(name="Test No News", slug="test-no-news")
+        response = client.get(f'/md/needs/at/{foodbank.slug}/news/')
+        assert response.status_code == 404
+
+    def test_md_foodbank_charity_404_when_no_charity(self, client, create_test_foodbank):
+        """Test that /md/needs/at/<slug>/charity/ returns 404 when no charity."""
+        foodbank = create_test_foodbank(name="Test No Charity", slug="test-no-charity")
+        response = client.get(f'/md/needs/at/{foodbank.slug}/charity/')
+        assert response.status_code == 404

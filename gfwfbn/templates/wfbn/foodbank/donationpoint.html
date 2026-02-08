@@ -4,6 +4,7 @@
 
 {% block head %}
   <link rel="stylesheet" href="/static/css/wfbn.css?v={{ version }}">
+  <link rel="alternate" type="text/markdown" href="{% url 'wfbn-md:md_foodbank_donationpoint' foodbank.slug donationpoint.slug %}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@GiveFoodCharity">
   <meta property="og:title" content="{{ donationpoint }}, {{ foodbank.full_name }}">
