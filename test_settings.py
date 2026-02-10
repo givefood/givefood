@@ -20,8 +20,8 @@ CACHES = {
     }
 }
 
-# Disable django-earthdistance for tests since SQLite doesn't support it
-INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django_earthdistance']
+# Disable django-earthdistance and django_tasks.backends.database for tests since SQLite doesn't support them
+INSTALLED_APPS = [app for app in INSTALLED_APPS if app not in ['django_earthdistance', 'django_tasks.backends.database']]
 
 # Disable Sentry for tests
 SENTRY_DSN = None

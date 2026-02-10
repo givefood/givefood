@@ -1774,7 +1774,20 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             website_discrepancy.save()
             foodbank.last_need_check = datetime.now()
             foodbank.save(do_decache=False, do_geoupdate=False)
-            return e
+            
+            # Return proper template variables instead of exception object
+            return {
+                "foodbank": foodbank,
+                "need_prompt": f"Error: {str(e)}",
+                "is_nonpertinent": False,
+                "is_change": False,
+                "change_state": ["Connection failed"],
+                "need_text": "",
+                "excess_text": "",
+                "last_published_need": None,
+                "last_nonpublished_needs": [],
+                "error": str(e),
+            }
         
         foodbank_shoppinglist_html = foodbank_shoppinglist_page.text
         foodbank_shoppinglist_page = htmlbodytext(foodbank_shoppinglist_page.text)
