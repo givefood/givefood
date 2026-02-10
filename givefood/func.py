@@ -1779,7 +1779,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             # Exception details are logged in FoodbankDiscrepancy for debugging
             return {
                 "foodbank": foodbank,
-                "need_prompt": "Connection error: Unable to retrieve needs from foodbank website",
+                "need_prompt": "Connection error: Unable to retrieve needs from foodbank website. Please try again later.",
                 "is_nonpertinent": False,
                 "is_change": False,
                 "change_state": ["Connection failed"],
