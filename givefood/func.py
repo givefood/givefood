@@ -1776,12 +1776,13 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             foodbank.save(do_decache=False, do_geoupdate=False)
             
             # Return proper template variables instead of exception object
+            # Exception details are logged in FoodbankDiscrepancy for debugging
             return {
                 "foodbank": foodbank,
-                "need_prompt": f"Connection error: Unable to retrieve needs from foodbank website ({type(e).__name__})",
+                "need_prompt": "Connection error: Unable to retrieve needs from foodbank website",
                 "is_nonpertinent": False,
                 "is_change": False,
-                "change_state": [f"Connection failed: {type(e).__name__}"],
+                "change_state": ["Connection failed"],
                 "need_text": "",
                 "excess_text": "",
                 "last_published_need": None,
