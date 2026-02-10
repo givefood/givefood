@@ -1778,15 +1778,14 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             # Return proper template variables instead of exception object
             return {
                 "foodbank": foodbank,
-                "need_prompt": f"Error: {str(e)}",
+                "need_prompt": f"Connection error: Unable to retrieve needs from {foodbank.shopping_list_url}",
                 "is_nonpertinent": False,
                 "is_change": False,
-                "change_state": ["Connection failed"],
+                "change_state": [f"Connection failed: {type(e).__name__}"],
                 "need_text": "",
                 "excess_text": "",
                 "last_published_need": None,
                 "last_nonpublished_needs": [],
-                "error": str(e),
             }
         
         foodbank_shoppinglist_html = foodbank_shoppinglist_page.text
