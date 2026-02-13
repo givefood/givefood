@@ -102,6 +102,9 @@
                                 'heatmap-opacity': 0.8,
                             },
                         });
+                    })
+                    .catch(err => {
+                        console.error('Failed to load food bank data:', err);
                     });
             });
         });
