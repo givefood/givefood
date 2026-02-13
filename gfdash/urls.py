@@ -23,6 +23,7 @@ urlpatterns = (
     path("donationpoints/supermarkets/", supermarkets, name="supermarkets"),
     path("charity-income-expenditure/", charity_income_expenditure, name="charity_income_expenditure"),
     path("price-per/kg/", price_per_kg, name="price_per_kg"),
+    path("heatmap/", heatmap, name="heatmap"),
     path("price-per/calorie/", price_per_calorie, name="price_per_calorie"),
     path("price-per-kg/", RedirectView.as_view(url='/dashboard/price-per/kg/', permanent=True)),
 
