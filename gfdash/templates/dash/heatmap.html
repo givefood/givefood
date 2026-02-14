@@ -78,13 +78,14 @@
                             id: 'foodbanks-heat',
                             type: 'heatmap',
                             source: 'foodbanks',
+                            maxzoom: 12,
                             paint: {
                                 'heatmap-weight': 1,
                                 'heatmap-intensity': [
                                     'interpolate', ['linear'], ['zoom'],
-                                    0, 0.05,
-                                    5, 0.15,
-                                    8, 0.5,
+                                    0, 0.01,
+                                    5, 0.05,
+                                    9, 0.8,
                                     12, 2
                                 ],
                                 'heatmap-color': [
@@ -99,11 +100,37 @@
                                 'heatmap-radius': [
                                     'interpolate', ['linear'], ['zoom'],
                                     0, 1,
-                                    5, 3,
-                                    8, 10,
+                                    5, 2,
+                                    9, 15,
                                     12, 25
                                 ],
-                                'heatmap-opacity': 0.8,
+                                'heatmap-opacity': [
+                                    'interpolate', ['linear'], ['zoom'],
+                                    7, 0.8,
+                                    12, 0
+                                ],
+                            },
+                        });
+
+                        map.addLayer({
+                            id: 'foodbanks-point',
+                            type: 'circle',
+                            source: 'foodbanks',
+                            minzoom: 8,
+                            paint: {
+                                'circle-radius': [
+                                    'interpolate', ['linear'], ['zoom'],
+                                    8, 2,
+                                    14, 6
+                                ],
+                                'circle-color': 'rgb(178,24,43)',
+                                'circle-stroke-color': 'white',
+                                'circle-stroke-width': 1,
+                                'circle-opacity': [
+                                    'interpolate', ['linear'], ['zoom'],
+                                    8, 0,
+                                    12, 1
+                                ],
                             },
                         });
                     })
