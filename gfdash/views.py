@@ -462,6 +462,11 @@ def price_per_kg(request):
     return render(request, "dash/price_per_kg.html", template_vars)
 
 
+@cache_page(SECONDS_IN_DAY)
+def heatmap(request):
+    return render(request, "dash/heatmap.html")
+
+
 @cache_page(SECONDS_IN_HOUR)
 def price_per_calorie(request):
 

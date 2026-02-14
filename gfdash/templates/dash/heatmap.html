@@ -1,0 +1,115 @@
+{% extends "public/page.html" %}
+
+{% block title %}Food Bank Heatmap - Give Food{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+        <div class="column">
+            <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Heatmap</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <h1>Food Bank Heatmap</h1>
+            <p>Heatmap of food bank and location density across the UK</p>
+            <div id="the-map" style="width:700px;height:1000px;"></div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+
+    <link rel="stylesheet" href="/static/css/maplibre-gl.css">
+    <script src="/static/js/maplibre-gl.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const map = new maplibregl.Map({
+                container: 'the-map',
+                style: 'https://tiles.openfreemap.org/styles/bright',
+                center: [-4, 55],
+                zoom: 5,
+                attributionControl: false,
+                cooperativeGestures: true,
+                generateId: true,
+            });
+
+            map.addControl(new maplibregl.AttributionControl({
+                compact: true,
+            }));
+
+            const nav = new maplibregl.NavigationControl();
+            map.addControl(nav, 'top-right');
+
+            map.on('load', () => {
+                fetch('/needs/geo.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Filter to only foodbanks (f) and locations (l) point features
+                        const filtered = {
+                            type: 'FeatureCollection',
+                            features: data.features.filter(f =>
+                                (f.properties.type === 'f' || f.properties.type === 'l') &&
+                                f.geometry.type === 'Point'
+                            )
+                        };
+
+                        map.addSource('foodbanks', {
+                            type: 'geojson',
+                            data: filtered,
+                        });
+
+                        map.addLayer({
+                            id: 'foodbanks-heat',
+                            type: 'heatmap',
+                            source: 'foodbanks',
+                            paint: {
+                                'heatmap-weight': 1,
+                                'heatmap-intensity': [
+                                    'interpolate', ['linear'], ['zoom'],
+                                    0, 0.1,
+                                    5, 0.3,
+                                    9, 1.5
+                                ],
+                                'heatmap-color': [
+                                    'interpolate', ['linear'], ['heatmap-density'],
+                                    0, 'rgba(33,102,172,0)',
+                                    0.1, 'rgb(103,169,207)',
+                                    0.3, 'rgb(209,229,240)',
+                                    0.5, 'rgb(253,219,199)',
+                                    0.7, 'rgb(239,138,98)',
+                                    1, 'rgb(178,24,43)'
+                                ],
+                                'heatmap-radius': [
+                                    'interpolate', ['linear'], ['zoom'],
+                                    0, 1,
+                                    5, 8,
+                                    9, 18
+                                ],
+                                'heatmap-opacity': 0.8,
+                            },
+                        });
+                    })
+                    .catch(err => {
+                        console.error('Failed to load food bank data:', err);
+                    });
+            });
+        });
+    </script>
+
+{% endblock %}

@@ -198,6 +198,16 @@ class TestPricePerCalorie:
 
 
 @pytest.mark.django_db
+class TestHeatmap:
+    """Test the heatmap dashboard page."""
+
+    def test_heatmap_accessible(self, client):
+        """Test that the heatmap page is accessible."""
+        response = client.get('/dashboard/heatmap/')
+        assert response.status_code == 200
+
+
+@pytest.mark.django_db
 class TestCharityIncomeExpenditure:
     """Test the charity income/expenditure dashboard page."""
 
