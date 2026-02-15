@@ -13,6 +13,9 @@ OPENING_HOURS_SAMPLE = "Monday: 9:00 AM – 5:00 PM\nTuesday: 9:00 AM – 5:00 P
 # Sunday open 10am-4pm sample (from the issue)
 OPENING_HOURS_SUNDAY_SAMPLE = "Monday: 7:00 AM – 10:00 PM\nTuesday: 7:00 AM – 10:00 PM\nWednesday: 7:00 AM – 10:00 PM\nThursday: 7:00 AM – 10:00 PM\nFriday: 7:00 AM – 10:00 PM\nSaturday: 7:00 AM – 10:00 PM\nSunday: 10:00 AM – 4:00 PM"
 
+# Midnight closing time sample (e.g. 6:00 AM – 12:00 AM)
+OPENING_HOURS_MIDNIGHT_SAMPLE = "Monday: 6:00 AM – 12:00 AM\nTuesday: 6:00 AM – 12:00 AM\nWednesday: 6:00 AM – 12:00 AM\nThursday: 6:00 AM – 12:00 AM\nFriday: 6:00 AM – 12:00 AM\nSaturday: 6:00 AM – 10:00 PM\nSunday: 10:00 AM – 4:00 PM"
+
 
 class TestOpeningHoursDays:
     """Test opening_hours_days method of FoodbankDonationPoint."""
@@ -246,4 +249,54 @@ class TestIsOpen:
 
         from givefood.models import FoodbankDonationPoint
         assert FoodbankDonationPoint.is_open.fget(mock_dp) is None
+
+    def test_is_open_handles_hyphen_separator(self):
+        """Test that is_open works with a regular hyphen separator."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = "Monday: 9:00 AM - 5:00 PM\nTuesday: 9:00 AM - 5:00 PM\nWednesday: 9:00 AM - 5:00 PM\nThursday: 9:00 AM - 5:00 PM\nFriday: 9:00 AM - 5:00 PM\nSaturday: Closed\nSunday: Closed"
+
+        mock_now = datetime(2026, 2, 16, 14, 0)  # Monday at 2pm
+        from givefood.models import FoodbankDonationPoint
+        with patch('givefood.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime = datetime.strptime
+            assert FoodbankDonationPoint.is_open.fget(mock_dp) is True
+
+    def test_is_open_handles_em_dash_separator(self):
+        """Test that is_open works with an em-dash separator."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = "Monday: 9:00 AM \u2014 5:00 PM\nTuesday: 9:00 AM \u2014 5:00 PM\nWednesday: 9:00 AM \u2014 5:00 PM\nThursday: 9:00 AM \u2014 5:00 PM\nFriday: 9:00 AM \u2014 5:00 PM\nSaturday: Closed\nSunday: Closed"
+
+        mock_now = datetime(2026, 2, 16, 14, 0)  # Monday at 2pm
+        from givefood.models import FoodbankDonationPoint
+        with patch('givefood.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime = datetime.strptime
+            assert FoodbankDonationPoint.is_open.fget(mock_dp) is True
+
+    def test_is_open_handles_midnight_closing(self):
+        """Test that is_open works when closing time is 12:00 AM (midnight)."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = OPENING_HOURS_MIDNIGHT_SAMPLE  # Mon 6am-12am
+
+        # Monday at 5:13pm should be open (6am-midnight)
+        mock_now = datetime(2026, 2, 16, 17, 13)  # Monday
+        from givefood.models import FoodbankDonationPoint
+        with patch('givefood.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime = datetime.strptime
+            assert FoodbankDonationPoint.is_open.fget(mock_dp) is True
+
+    def test_is_open_handles_midnight_closing_before_open(self):
+        """Test that is_open returns False before opening when closing is midnight."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = OPENING_HOURS_MIDNIGHT_SAMPLE  # Mon 6am-12am
+
+        # Monday at 5am should be closed (before 6am)
+        mock_now = datetime(2026, 2, 16, 5, 0)  # Monday
+        from givefood.models import FoodbankDonationPoint
+        with patch('givefood.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime = datetime.strptime
+            assert FoodbankDonationPoint.is_open.fget(mock_dp) is False
 

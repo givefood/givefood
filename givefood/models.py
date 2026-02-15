@@ -1206,7 +1206,7 @@ class FoodbankDonationPoint(models.Model):
             return None
 
         hours = day_parts[1]
-        time_parts = hours.split(" – ")
+        time_parts = re.split(r"\s*[–—\-]\s*", hours)
         if len(time_parts) != 2:
             return None
 
@@ -1216,7 +1216,10 @@ class FoodbankDonationPoint(models.Model):
         except ValueError:
             return None
 
-        return open_time <= now.time() < close_time
+        current_time = now.time()
+        if close_time <= open_time:
+            return current_time >= open_time
+        return open_time <= current_time < close_time
         
     def clean(self):
         if self.postcode:
