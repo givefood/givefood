@@ -1186,6 +1186,40 @@ class FoodbankDonationPoint(models.Model):
                 relative_days[idx]["holiday"] = next((holiday for holiday in bank_holidays if holiday["date"] == day_date), None)
 
         return relative_days
+
+    @property
+    def is_open(self):
+
+        if not self.opening_hours:
+            return None
+
+        now = datetime.now()
+        day_of_week = now.weekday()
+        days = self.opening_hours.split("\n")
+        day_text = days[day_of_week]
+
+        if "Closed" in day_text:
+            return False
+
+        day_parts = day_text.split(": ", 1)
+        if len(day_parts) < 2:
+            return None
+
+        hours = day_parts[1]
+        time_parts = re.split(r"\s*[–—\-]\s*", hours)
+        if len(time_parts) != 2:
+            return None
+
+        try:
+            open_time = datetime.strptime(time_parts[0].strip(), "%I:%M %p").time()
+            close_time = datetime.strptime(time_parts[1].strip(), "%I:%M %p").time()
+        except ValueError:
+            return None
+
+        current_time = now.time()
+        if close_time <= open_time:
+            return current_time >= open_time
+        return open_time <= current_time < close_time
         
     def clean(self):
         if self.postcode:
