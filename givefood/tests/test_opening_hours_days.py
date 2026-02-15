@@ -115,3 +115,60 @@ class TestOpeningHoursDays:
             assert result is not False
             assert len(result) == 7
 
+    def test_opening_hours_days_includes_day_name_and_hours(self):
+        """Test that opening_hours_days returns day_name and hours fields."""
+        mock_donation_point = MagicMock()
+        mock_donation_point.opening_hours = OPENING_HOURS_SAMPLE
+        mock_donation_point.country = "England"
+
+        mock_holidays = {"england-and-wales": {"events": []}}
+
+        with patch('givefood.models._get_bank_holidays', return_value=mock_holidays):
+            from givefood.models import FoodbankDonationPoint
+            result = FoodbankDonationPoint.opening_hours_days(mock_donation_point)
+
+            for day in result:
+                assert "day_name" in day
+                assert "hours" in day
+                assert "is_today" in day
+                # day_name should not contain the hours part
+                assert "–" not in day["day_name"]
+
+    def test_opening_hours_days_splits_day_name_and_hours_correctly(self):
+        """Test that day_name and hours are correctly split from the text."""
+        mock_donation_point = MagicMock()
+        mock_donation_point.opening_hours = OPENING_HOURS_SAMPLE
+        mock_donation_point.country = "England"
+
+        # Use a fixed date (a Wednesday) to make assertions predictable
+        mock_holidays = {"england-and-wales": {"events": []}}
+
+        with patch('givefood.models._get_bank_holidays', return_value=mock_holidays):
+            with patch('givefood.models.date') as mock_date:
+                mock_date.today.return_value = date(2026, 2, 16)  # A Monday
+                mock_date.side_effect = lambda *args, **kw: date(*args, **kw)
+                from givefood.models import FoodbankDonationPoint
+                result = FoodbankDonationPoint.opening_hours_days(mock_donation_point)
+
+                # First day should be Monday (today in mock)
+                assert result[0]["is_today"] is True
+                # A weekday should have hours
+                assert result[0]["hours"] == "9:00 AM – 5:00 PM"
+
+    def test_opening_hours_days_is_today_only_for_first_day(self):
+        """Test that is_today is True only for the first day (today)."""
+        mock_donation_point = MagicMock()
+        mock_donation_point.opening_hours = OPENING_HOURS_SAMPLE
+        mock_donation_point.country = "England"
+
+        mock_holidays = {"england-and-wales": {"events": []}}
+
+        with patch('givefood.models._get_bank_holidays', return_value=mock_holidays):
+            from givefood.models import FoodbankDonationPoint
+            result = FoodbankDonationPoint.opening_hours_days(mock_donation_point)
+
+            # Only the first day (today) should have is_today = True
+            assert result[0]["is_today"] is True
+            for day in result[1:]:
+                assert day["is_today"] is False
+

@@ -1170,10 +1170,17 @@ class FoodbankDonationPoint(models.Model):
 
         for idx, day_date in enumerate(day_dates):
             day_of_week = day_date.weekday()
+            day_text = days[day_of_week]
+            day_parts = day_text.split(": ", 1)
+            day_name = day_parts[0] if len(day_parts) > 1 else day_text
+            hours = day_parts[1] if len(day_parts) > 1 else ""
             relative_days.append({
-                "text": days[day_of_week],
+                "text": day_text,
+                "day_name": day_name,
+                "hours": hours,
                 "date": day_date,
-                "is_closed": "Closed" in days[day_of_week],
+                "is_closed": "Closed" in day_text,
+                "is_today": day_date == today,
             })
             if bank_holidays:
                 relative_days[idx]["holiday"] = next((holiday for holiday in bank_holidays if holiday["date"] == day_date), None)
