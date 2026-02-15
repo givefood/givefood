@@ -8,7 +8,7 @@ Give Food is a UK charity that uses data to highlight local and structural food 
 
 ## Technology Stack
 
-- **Framework:** Django 5.2.7
+- **Framework:** Django 6.0.2
 - **Python Version:** 3.12
 - **Database:** PostgreSQL with django-earthdistance for geographic queries
 - **Frontend:** Bulma CSS framework via django-bulma
@@ -47,8 +47,10 @@ The project follows Django's app-based architecture with multiple specialized ap
 - **Templates:** Located in each app's `templates/` directory
 - **Static Files:** Located in `givefood/static/`
 - **Middleware:** Custom middleware in `givefood.middleware` includes:
+  - `SlugRedirectMiddleware` - Old food bank slug redirects
   - `LoginRequiredAccess` - Access control
   - `OfflineKeyCheck` - API key validation
+  - `GeoJSONPreload` - GeoJSON Link header preloading
   - `RenderTime` - Performance monitoring
   - `RedirectToWWW` - Canonical URL enforcement
 
@@ -116,6 +118,10 @@ The project uses python-dotenv to load from `.env` file:
 - `SECRET_KEY` - Django secret key
 - `SENTRY_DSN` - Error tracking
 - `COOLIFY_FQDN` - Deployment domain
+- `DB_NAME` - Database name
+- `DB_USER` - Database user
+- `DB_PASS` - Database password
+- `DB_HOST` - Database host
 
 ### Important Files
 
