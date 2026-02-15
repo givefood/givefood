@@ -10,7 +10,7 @@ The test suite is organized as follows:
 
 ### Configuration Files
 
-- **pytest.ini** - Main pytest configuration file
+- **pyproject.toml** `[tool.pytest.ini_options]` - Main pytest configuration
   - Uses `test_settings.py` for Django settings
   - Configured for test discovery patterns
   - Uses `--reuse-db` and `--nomigrations` for faster test runs
@@ -30,111 +30,92 @@ The test suite is organized as follows:
 The givefood app has multiple test files organized in a tests directory:
 
 **test_utils.py** - Unit tests for utility functions in `givefood/func.py`:
-
-- **TestTextUtilities** (12 tests)
-  - Text comparison and normalization functions
-  - Food bank need text cleaning
-  - Letter removal utilities
-
-- **TestGeographicUtilities** (9 tests)
-  - UK location validation
-  - Miles/meters conversion
-  - Distance calculations using Haversine formula
-
-- **TestDiffUtilities** (3 tests)
-  - HTML diff generation
-
-- **TestJSONUtilities** (3 tests)
-  - GeoJSON parsing and validation
+- Text comparison and normalization functions
+- Geographic utilities (UK location validation, distance calculations)
+- HTML diff generation
+- GeoJSON parsing and validation
+- User IP detection
+- Plus code handling
 
 **test_views.py** - Integration tests for main application views:
+- Homepage, static pages, food bank pages
+- Sitemap, manifest, llms.txt
+- Country pages
+- Fragment views, WhatsApp webhook
+- Address autocomplete
+- Markdown pages
 
-- **TestHomepage** (1 test)
-  - Homepage accessibility (handles empty database gracefully)
+**test_postcode.py** - Postcode model and import command tests
 
-- **TestStaticPages** (2 tests)
-  - About page
-  - API landing page
+**test_foodbank_article.py** - Food bank article title capitalisation tests
 
-- **TestFoodbankPages** (2 tests)
-  - Needs page
-  - Food bank search
+**test_foodbank_bounds.py** - Food bank geographic bounds tests
+
+**test_foodbank_change.py** - Food bank change translation and text tests
+
+**test_foodbank_service_area.py** - Food bank service area tests
+
+**test_slug_redirect.py** - Slug redirect model, caching, and URL tests
+
+**test_order.py** - Order model and nullable food bank tests
+
+**test_dump_model.py** - Data dump model tests
+
+**test_mobile_location.py** - Mobile location tests
+
+**test_opening_hours_days.py** - Opening hours and days tests
+
+**test_credentials_caching.py** - Credentials caching tests
+
+**test_template_tags.py** - Custom template tag tests
+
+**test_async_notifications.py** - Async task priority and delegation tests
+
+**test_firebase_notifications.py** - Firebase notification tests
+
+**test_middleware.py** - GeoJSON preload, GZip, and render time middleware tests
+
+#### gfadmin/tests/
+The admin app has an extensive test suite across 27 test files covering:
+- Food bank management (check, touch, URLs, partial forms, photos, social media, crawl display, tab icons)
+- Need views and categorisation
+- Crawl sets (view, navigation, time taken)
+- Search functionality
+- Slug redirect admin
+- HTMX delete operations
+- Index and settings views
+- Subscriptions and article management
+- Task statistics
+- AI detail views
+- Fragment endpoints
+- Food bank location area forms
+- N+1 query prevention
 
 #### gfapi2/tests.py
-Tests for the API v2 endpoints:
-
-- **TestAPI2Index** (2 tests)
-  - API index page accessibility
-  - API documentation content
-
-- **TestAPI2Docs** (2 tests)
-  - API documentation page
-  - Example content
-
-- **TestAPI2Foodbanks** (3 tests)
-  - Food banks list endpoint (JSON, XML, GeoJSON formats)
+Tests for the API v2 endpoints covering index, documentation, food banks, food bank detail, needs, locations, and parliamentary constituency endpoints.
 
 #### gfapi3/tests.py
 Tests for the API v3 endpoints:
-
-- **TestAPI3Index** (2 tests)
-  - API v3 index page accessibility
-  - API v3 content verification
+- API v3 index page accessibility and content verification
 
 *Note: Company endpoint tests require PostgreSQL and are skipped in SQLite test environments.*
 
 #### gfdash/tests.py
-Tests for the dashboard app:
-
-- **TestDashboardIndex** (2 tests)
-  - Dashboard index page accessibility
-
-- **TestMostRequestedItems** (4 tests)
-  - Most requested items page
-  - Days parameter validation
-
-- **TestMostExcessItems** (3 tests)
-  - Most excess items page
-  - Days parameter validation
-
-- **TestItemCategories** (1 test)
-- **TestItemGroups** (1 test)
-- **TestWeeklyItemcount** (2 tests)
-- **TestArticles** (1 test)
-- **TestExcess** (1 test)
-- **TestFoodbanksFound** (1 test)
-- **TestSupermarkets** (1 test)
-- **TestTrussellTrust** (2 tests)
-- **TestPricePerKg** (1 test)
-- **TestPricePerCalorie** (1 test)
-- **TestCharityIncomeExpenditure** (1 test)
+Tests for the dashboard app covering index, most requested items, most excess items, item categories, item groups, weekly item count, articles, excess, food banks found, supermarkets, Trussell Trust, price per kg, price per calorie, and charity income/expenditure views.
 
 *Note: Some dashboard tests require PostgreSQL-specific features and are skipped in SQLite test environments.*
 
+#### gfwfbn/tests.py
+Tests for the What Food Banks Need tool covering index, food bank pages, location pages, search, donation points, nearby food banks, news pages, charity pages, markdown pages, GeoJSON endpoints, and subscription pages.
+
+#### gfdumps/tests.py
+Tests for the data dumps app covering index page, dump list, dump format, and CSV content.
+
 #### gfwrite/tests.py
-Tests for the Write to MP tool:
-
-- **TestWriteIndex** (2 tests)
-  - Write index page accessibility
-  - Postcode form presence
-
-- **TestWriteConstituency** (3 tests)
-  - Constituency page with valid/invalid slugs
-  - MP information display
-
-- **TestWriteEmail** (1 test)
-  - Email page GET request handling
-
-- **TestWriteDone** (3 tests)
-  - Done/confirmation page
-  - Email parameter handling
+Tests for the Write to MP tool covering index, constituency pages, email handling, and done/confirmation pages.
 
 #### gfauth/tests.py
-Tests for the authentication app:
-
-- **TestSignIn** (2 tests)
-  - Sign in page accessibility
-  - Template rendering
+Tests for the authentication app covering sign in page accessibility and template rendering.
 
 *Note: Sign out and OAuth receiver tests require session data/credentials and are skipped.*
 
@@ -171,10 +152,7 @@ uv run pytest --cov=givefood --cov=gfapi2 --cov-report=html
 
 ## Test Statistics
 
-- **Total Tests**: 290
-- **Passing**: 278 (with SQLite test database)
-- **Skipped**: 1
-- **Known Failures**: 11 (PostgreSQL-specific features not available in SQLite)
+- **Total Tests**: ~500
 - **Coverage Areas**:
   - Text processing utilities
   - Geographic calculations
@@ -185,6 +163,12 @@ uv run pytest --cov=givefood --cov=gfapi2 --cov-report=html
   - Write to MP tool
   - Authentication pages
   - Data dumps
+  - Admin tool views and forms
+  - What Food Banks Need pages
+  - Middleware
+  - Models (postcodes, orders, food bank articles, slug redirects)
+  - Template tags
+  - Background tasks and notifications
 
 ## Test Approach
 
@@ -216,13 +200,8 @@ uv run pytest --cov=givefood --cov=gfapi2 --cov-report=html
 
 Potential areas for test expansion:
 
-1. Model tests for database schema and relationships
-2. Form validation tests
-3. Template rendering tests
-4. Authentication and permission tests
-5. Background task tests
-6. Data migration tests
-7. Performance/load tests for API endpoints
+1. Data migration tests
+2. Performance/load tests for API endpoints
 
 ## Contributing
 
