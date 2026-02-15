@@ -1216,7 +1216,7 @@ class FoodbankDonationPoint(models.Model):
         except ValueError:
             return None
 
-        return open_time <= now.time() <= close_time
+        return open_time <= now.time() < close_time
         
     def clean(self):
         if self.postcode:
