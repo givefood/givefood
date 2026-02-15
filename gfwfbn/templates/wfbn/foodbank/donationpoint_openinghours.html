@@ -1,5 +1,13 @@
 {% load i18n %}
-{% for day in donationpoint.opening_hours_days %}{% if day.is_today %}{% if day.is_closed %}<span class="tag is-danger">{% blocktrans %}Closed{% endblocktrans %}</span>{% else %}<span class="tag is-success">{% blocktrans %}Open{% endblocktrans %}</span>{% endif %}{% endif %}{% endfor %}
+{% for day in donationpoint.opening_hours_days %}
+    {% if day.is_today %}
+        {% if day.is_closed %}
+            <span class="tag is-danger">{% blocktrans %}Closed{% endblocktrans %}</span>
+        {% else %}
+            <span class="tag is-success">{% blocktrans %}Open{% endblocktrans %}</span>
+        {% endif %}
+    {% endif %}
+{% endfor %}
 <table class="table">
 {% for day in donationpoint.opening_hours_days %}
     <tr>
