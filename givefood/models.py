@@ -215,6 +215,7 @@ class Foodbank(models.Model):
             need_list = needs.splitlines()
             for need in need_list:
                 seeks.append({
+                    "@type": "Demand",
                     "itemOffered": {
                         "@type":"Product",
                         "name":need,
@@ -228,20 +229,27 @@ class Foodbank(models.Model):
             if self.network == "IFAN":
                 member_of = IFAN_SCHEMA
 
+        address_dict = {
+            "@type": "PostalAddress",
+            "postalCode": self.postcode,
+            "addressCountry": self.country,
+            "streetAddress": self.address,
+        }
+        if self.district:
+            address_dict["addressLocality"] = self.district
+
         schema_dict = {
             "@type": "NGO",
+            "@id": "%s%s" % (SITE_DOMAIN, reverse("wfbn:foodbank", kwargs={"slug": self.slug})),
+            "additionalType": "https://www.wikidata.org/wiki/Q1070824",
             "name": self.full_name(),
             "alternateName": self.alt_name,
             "url": self.url,
             "email": self.contact_email,
             "telephone": self.phone_number,
-            "address": {
-                "@type": "PostalAddress",
-                "postalCode": self.postcode,
-                "addressCountry": self.country,
-                "streetAddress": self.address,
-            },
+            "address": address_dict,
             "location": {
+                "@type": "Place",
                 "geo": {
                     "@type": "GeoCoordinates",
                     "latitude": self.latt(),
@@ -251,6 +259,12 @@ class Foodbank(models.Model):
             "identifier": self.charity_number,
             "memberOf": member_of,
         }
+
+        if self.parliamentary_constituency_name:
+            schema_dict["areaServed"] = {
+                "@type": "AdministrativeArea",
+                "name": self.parliamentary_constituency_name,
+            }
 
         # sameAs
         schema_dict["sameAs"] = []
@@ -826,6 +840,7 @@ class FoodbankLocation(models.Model):
             need_list = needs.splitlines()
             for need in need_list:
                 seeks.append({
+                    "@type": "Demand",
                     "itemOffered": {
                         "@type":"Product",
                         "name":need,
@@ -842,11 +857,13 @@ class FoodbankLocation(models.Model):
         schema_dict = {
             "@context": "https://schema.org",
             "@type": "NGO",
+            "@id": "%s%s" % (SITE_DOMAIN, reverse("wfbn:foodbank_location", kwargs={"slug": self.foodbank_slug, "locslug": self.slug})),
             "name": self.full_name(),
             "url": self.foodbank.url,
             "email": self.email_or_foodbank_email(),
             "telephone": self.phone_or_foodbank_phone(),
             "location": {
+                "@type": "Place",
                 "geo": {
                     "@type": "GeoCoordinates",
                     "latitude": self.latt(),
@@ -868,6 +885,8 @@ class FoodbankLocation(models.Model):
                 address_dict["postalCode"] = self.postcode
             if self.address:
                 address_dict["streetAddress"] = self.address
+            if self.district:
+                address_dict["addressLocality"] = self.district
             schema_dict["address"] = address_dict
         
         if not as_sub_property:
@@ -1091,11 +1110,21 @@ class FoodbankDonationPoint(models.Model):
             need_list = needs.splitlines()
             for need in need_list:
                 seeks.append({
+                    "@type": "Demand",
                     "itemOffered": {
                         "@type":"Product",
                         "name":need,
                     }
                 })
+
+        address_dict = {
+            "@type": "PostalAddress",
+            "postalCode": self.postcode,
+            "addressCountry": self.country,
+            "streetAddress": self.address,
+        }
+        if self.district:
+            address_dict["addressLocality"] = self.district
 
         schema_dict = {
             "@context": "https://schema.org",
@@ -1104,20 +1133,54 @@ class FoodbankDonationPoint(models.Model):
             "url": self.url,
             "telephone": self.phone_number,
             "isAccessibleForFree": self.wheelchair_accessible,
-            "address": {
-                "@type": "PostalAddress",
-                "postalCode": self.postcode,
-                "addressCountry": self.country,
-                "streetAddress": self.address,
-            },
+            "address": address_dict,
             "location": {
+                "@type": "Place",
                 "geo": {
                     "@type": "GeoCoordinates",
                     "latitude": self.latt(),
                     "longitude": self.long(),
                 },
-            }
+            },
+            "parentOrganization": self.foodbank.schema_org(as_sub_property = True),
         }
+
+        if self.opening_hours:
+            schema_org_days = {
+                "Monday": "https://schema.org/Monday",
+                "Tuesday": "https://schema.org/Tuesday",
+                "Wednesday": "https://schema.org/Wednesday",
+                "Thursday": "https://schema.org/Thursday",
+                "Friday": "https://schema.org/Friday",
+                "Saturday": "https://schema.org/Saturday",
+                "Sunday": "https://schema.org/Sunday",
+            }
+            hours_specs = []
+            days = self.opening_hours.split("\n")
+            for day_text in days:
+                day_parts = day_text.split(": ", 1)
+                if len(day_parts) < 2:
+                    continue
+                day_name = day_parts[0].strip()
+                hours = day_parts[1].strip()
+                if "Closed" in hours or day_name not in schema_org_days:
+                    continue
+                time_parts = re.split(r"\s*[–—\-]\s*", hours)
+                if len(time_parts) != 2:
+                    continue
+                try:
+                    open_time = datetime.strptime(time_parts[0].strip(), "%I:%M %p").strftime("%H:%M")
+                    close_time = datetime.strptime(time_parts[1].strip(), "%I:%M %p").strftime("%H:%M")
+                except ValueError:
+                    continue
+                hours_specs.append({
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": schema_org_days[day_name],
+                    "opens": open_time,
+                    "closes": close_time,
+                })
+            if hours_specs:
+                schema_dict["openingHoursSpecification"] = hours_specs
 
         if seeks:
             schema_dict["seeks"] = seeks
@@ -2124,7 +2187,7 @@ class ParliamentaryConstituency(models.Model):
             "@type": "AdministrativeArea",
             "name": self.name,
             "containsPlace": contains_place,
-            "sameAs": "https://en.wikipedia.org/wiki/%s_(UK_Parliament_constituency)" % (self.name.replace(" ","_")),
+            "sameAs": "https://en.wikipedia.org/wiki/%s_(UK_Parliament_constituency)" % (quote_plus(self.name.replace(" ","_"))),
         }
 
         return schema_dict

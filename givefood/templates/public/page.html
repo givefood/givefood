@@ -24,6 +24,20 @@
   {% if page_translatable %}{% for language in languages %}
   <link rel="alternate" hreflang="{{ language.code }}" href="{{ domain }}{{ language.url }}">{% endfor %}{% endif %}
   {% block head %}{% endblock %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NGO",
+    "@id": "https://www.givefood.org.uk/#organization",
+    "name": "Give Food",
+    "url": "https://www.givefood.org.uk",
+    "logo": "https://www.givefood.org.uk/static/img/logo.svg",
+    "sameAs": [
+      "https://register-of-charities.charitycommission.gov.uk/{% if language_code == 'cy' %}cy{% else %}en{% endif %}/charity-search/-/charity-details/5147019"
+    ],
+    "description": "A UK charity that uses data to highlight food insecurity and provides tools to help alleviate it."
+  }
+  </script>
   <title>{% block title %}{% endblock %}</title>
 </head>
 <body data-instant-allow-query-string data-instant-allow-external-links>
