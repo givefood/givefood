@@ -79,7 +79,6 @@
             {% endif %}
 
             {% if donationpoint.opening_hours %}
-                <h3>{% blocktrans %}Opening hours{% endblocktrans %}</h3>
                 <p data-include="{% url 'wfbn:foodbank_donationpoint_openinghours' foodbank.slug donationpoint.slug %}" data-update="3600"></p>
             {% endif %}
 

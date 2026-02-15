@@ -2,16 +2,16 @@
 {% for day in donationpoint.opening_hours_days %}
     {% if day.is_today %}
         {% if day.is_closed %}
-            <span class="tag is-danger">{% blocktrans %}Closed{% endblocktrans %}</span>
+            <span class="tag is-danger is-pulled-right">{% blocktrans %}Closed{% endblocktrans %}</span>
         {% else %}
-            <span class="tag is-success">{% blocktrans %}Open{% endblocktrans %}</span>
+            <span class="tag is-success is-pulled-right">{% blocktrans %}Open{% endblocktrans %}</span>
         {% endif %}
     {% endif %}
 {% endfor %}
-<table class="table">
+<table>
 {% for day in donationpoint.opening_hours_days %}
     <tr>
-        <td><strong>{{ day.day_name }}</strong></td>
+        <td class="dayname"><strong>{{ day.day_name }}</strong></td>
         <td>
             {{ day.hours }}
             {% if not day.is_closed %}
