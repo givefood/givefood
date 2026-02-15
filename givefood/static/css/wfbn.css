@@ -158,6 +158,9 @@ p.needs {
     padding:0 21px 2px 0;
     background-position:right center;
 }
+.dayname {
+    padding-right:20px;
+}
 .cta {
     margin-bottom: 1.3rem;
 }
