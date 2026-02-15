@@ -18,7 +18,7 @@ def _make_mock_foodbank(**kwargs):
     mock.alt_name = kwargs.get("alt_name", None)
     mock.url = kwargs.get("url", "https://example.com")
     mock.contact_email = kwargs.get("contact_email", "test@example.com")
-    mock.phone_number = kwargs.get("phone_number", "01onal234567")
+    mock.phone_number = kwargs.get("phone_number", "01234567890")
     mock.postcode = kwargs.get("postcode", "SW1A 1AA")
     mock.country = kwargs.get("country", "England")
     mock.address = kwargs.get("address", "123 Test Street")
