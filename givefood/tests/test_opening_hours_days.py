@@ -1,14 +1,17 @@
 """
-Tests for the opening_hours_days method of FoodbankDonationPoint.
+Tests for the opening_hours_days method and is_open property of FoodbankDonationPoint.
 """
 import pytest
-from datetime import date
+from datetime import date, datetime
 from unittest.mock import patch, MagicMock
 from givefood.models import _get_bank_holidays
 
 
 # Test constant for opening hours
 OPENING_HOURS_SAMPLE = "Monday: 9:00 AM – 5:00 PM\nTuesday: 9:00 AM – 5:00 PM\nWednesday: 9:00 AM – 5:00 PM\nThursday: 9:00 AM – 5:00 PM\nFriday: 9:00 AM – 5:00 PM\nSaturday: Closed\nSunday: Closed"
+
+# Sunday open 10am-4pm sample (from the issue)
+OPENING_HOURS_SUNDAY_SAMPLE = "Monday: 7:00 AM – 10:00 PM\nTuesday: 7:00 AM – 10:00 PM\nWednesday: 7:00 AM – 10:00 PM\nThursday: 7:00 AM – 10:00 PM\nFriday: 7:00 AM – 10:00 PM\nSaturday: 7:00 AM – 10:00 PM\nSunday: 10:00 AM – 4:00 PM"
 
 
 class TestOpeningHoursDays:
@@ -171,4 +174,76 @@ class TestOpeningHoursDays:
             assert result[0]["is_today"] is True
             for day in result[1:]:
                 assert day["is_today"] is False
+
+
+class TestIsOpen:
+    """Test is_open property of FoodbankDonationPoint."""
+
+    def test_is_open_returns_none_without_opening_hours(self):
+        """Test that is_open returns None when no opening hours are set."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = None
+
+        from givefood.models import FoodbankDonationPoint
+        assert FoodbankDonationPoint.is_open.fget(mock_dp) is None
+
+    def test_is_open_returns_false_on_closed_day(self):
+        """Test that is_open returns False when today is marked as Closed."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = OPENING_HOURS_SAMPLE  # Saturday and Sunday are Closed
+
+        # Mock datetime.now() to a Saturday at noon
+        mock_now = datetime(2026, 2, 14, 12, 0)  # Saturday
+        from givefood.models import FoodbankDonationPoint
+        with patch('givefood.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime = datetime.strptime
+            assert FoodbankDonationPoint.is_open.fget(mock_dp) is False
+
+    def test_is_open_returns_true_during_opening_hours(self):
+        """Test that is_open returns True when current time is within opening hours."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = OPENING_HOURS_SAMPLE  # Mon-Fri 9am-5pm
+
+        # Mock datetime.now() to a Monday at 2pm
+        mock_now = datetime(2026, 2, 16, 14, 0)  # Monday
+        from givefood.models import FoodbankDonationPoint
+        with patch('givefood.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime = datetime.strptime
+            assert FoodbankDonationPoint.is_open.fget(mock_dp) is True
+
+    def test_is_open_returns_false_after_closing_time(self):
+        """Test that is_open returns False after closing time (the bug from the issue)."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = OPENING_HOURS_SUNDAY_SAMPLE  # Sunday 10am-4pm
+
+        # Mock datetime.now() to Sunday at 5pm (after 4pm closing)
+        mock_now = datetime(2026, 2, 15, 17, 0)  # Sunday
+        from givefood.models import FoodbankDonationPoint
+        with patch('givefood.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime = datetime.strptime
+            assert FoodbankDonationPoint.is_open.fget(mock_dp) is False
+
+    def test_is_open_returns_false_before_opening_time(self):
+        """Test that is_open returns False before opening time."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = OPENING_HOURS_SAMPLE  # Mon-Fri 9am-5pm
+
+        # Mock datetime.now() to a Monday at 7am (before 9am opening)
+        mock_now = datetime(2026, 2, 16, 7, 0)  # Monday
+        from givefood.models import FoodbankDonationPoint
+        with patch('givefood.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = mock_now
+            mock_datetime.strptime = datetime.strptime
+            assert FoodbankDonationPoint.is_open.fget(mock_dp) is False
+
+    def test_is_open_returns_none_with_empty_opening_hours(self):
+        """Test that is_open returns None with empty opening hours string."""
+        mock_dp = MagicMock()
+        mock_dp.opening_hours = ""
+
+        from givefood.models import FoodbankDonationPoint
+        assert FoodbankDonationPoint.is_open.fget(mock_dp) is None
 
