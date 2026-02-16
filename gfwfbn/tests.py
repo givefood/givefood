@@ -2,6 +2,7 @@ import pytest
 from unittest.mock import patch, Mock
 from django.test import Client
 from django.urls import reverse
+from django.core.cache import cache
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankChange, FoodbankLocation
 
 
@@ -154,6 +155,76 @@ class TestGeojsonView:
         response = client.get(reverse('wfbn:foodbank_location_geojson', 
                                      kwargs={'slug': 'test-food-bank-2', 'locslug': 'non-existent-location'}))
         assert response.status_code == 404
+
+    def test_geojson_all_items_omits_addresses_and_boundary_features(self, client, create_test_foodbank):
+        """Test all-items geojson strips addresses and excludes location boundary polygons."""
+        cache.clear()
+        foodbank = create_test_foodbank()
+
+        FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            name="Test Location Boundary",
+            slug="test-location-boundary",
+            address="Location Address",
+            postcode="SW1A 2AA",
+            lat_lng="51.5024,-0.1429",
+            latitude=51.5024,
+            longitude=-0.1429,
+            country="England",
+            boundary_geojson='{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-0.1419,51.5014],[-0.1420,51.5015],[-0.1418,51.5016],[-0.1419,51.5014]]]},"properties":{}}',
+        ).save(do_geoupdate=False, do_foodbank_resave=False)
+
+        FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test Donation Point",
+            slug="test-donation-point",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        ).save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+
+        response = client.get(reverse('wfbn:geojson'))
+        assert response.status_code == 200
+        features = response.json()["features"]
+
+        assert {"f", "l", "d"} <= {feature["properties"]["type"] for feature in features}
+        assert "lb" not in {feature["properties"]["type"] for feature in features}
+        assert all(feature["geometry"]["type"] == "Point" for feature in features)
+        assert all("address" not in feature["properties"] for feature in features)
+
+    def test_geojson_foodbank_includes_location_boundary_features(self, client, create_test_foodbank):
+        """Test foodbank geojson includes location boundary polygon features."""
+        cache.clear()
+        foodbank = create_test_foodbank(name="Boundary Test Food Bank", slug="boundary-test-food-bank")
+
+        FoodbankLocation(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            name="Test Location Boundary",
+            slug="test-location-boundary",
+            address="Location Address",
+            postcode="SW1A 2AA",
+            lat_lng="51.5024,-0.1429",
+            latitude=51.5024,
+            longitude=-0.1429,
+            country="England",
+            boundary_geojson='{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[-0.1419,51.5014],[-0.1420,51.5015],[-0.1418,51.5016],[-0.1419,51.5014]]]},"properties":{}}',
+        ).save(do_geoupdate=False, do_foodbank_resave=False)
+
+        response = client.get(reverse('wfbn:foodbank_geojson', kwargs={'slug': foodbank.slug}))
+        assert response.status_code == 200
+        features = response.json()["features"]
+
+        assert "lb" in {feature["properties"]["type"] for feature in features}
 
         
 @pytest.mark.django_db
