@@ -1208,9 +1208,7 @@ def find_parlcons(lattlong, quantity = 10, skip_first = False):
 
 
 def remove_letters(the_string):
-
-    the_string = re.sub(r'[a-z]+', '', the_string, re.I) 
-    return the_string
+    return re.sub(r'[a-z]+', '', the_string, flags=re.I)
 
 
 def miles(meters):
