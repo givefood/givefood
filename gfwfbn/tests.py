@@ -224,6 +224,10 @@ class TestGeojsonView:
         assert response.status_code == 200
         features = response.json()["features"]
 
+        # Foodbank-specific geojson should include addresses for foodbank features
+        foodbank_features = [f for f in features if f["properties"].get("type") == "f"]
+        if foodbank_features:
+            assert "address" in foodbank_features[0]["properties"]
         lb_features = [feature for feature in features if feature["properties"]["type"] == "lb"]
         assert len(lb_features) == 1
 
