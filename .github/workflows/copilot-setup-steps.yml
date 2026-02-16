@@ -1,5 +1,6 @@
 name: Setup Copilot Agent
-on: [push, pull_request]
+on:
+  workflow_dispatch
 
 jobs:
   copilot-setup-steps:
