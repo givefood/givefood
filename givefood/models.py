@@ -241,7 +241,7 @@ class Foodbank(models.Model):
         schema_dict = {
             "@type": "NGO",
             "@id": "%s%s" % (SITE_DOMAIN, reverse("wfbn:foodbank", kwargs={"slug": self.slug})),
-            "additionalType": "https://www.wikidata.org/wiki/Q1070824",
+            "additionalType": "https://www.wikidata.org/wiki/Q113603",
             "name": self.full_name(),
             "alternateName": self.alt_name,
             "url": self.url,

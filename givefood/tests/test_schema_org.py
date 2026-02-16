@@ -70,7 +70,7 @@ class TestFoodbankSchemaOrg:
         mock = _make_mock_foodbank()
         from givefood.models import Foodbank
         result = Foodbank.schema_org(mock)
-        assert result["additionalType"] == "https://www.wikidata.org/wiki/Q1070824"
+        assert result["additionalType"] == "https://www.wikidata.org/wiki/Q113603"
 
     def test_has_area_served(self):
         """Schema should include areaServed when constituency is available."""
