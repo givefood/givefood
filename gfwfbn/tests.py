@@ -224,8 +224,14 @@ class TestGeojsonView:
         assert response.status_code == 200
         features = response.json()["features"]
 
-        assert "lb" in {feature["properties"]["type"] for feature in features}
+        lb_features = [feature for feature in features if feature["properties"]["type"] == "lb"]
+        assert len(lb_features) == 1
 
+        lb_feature = lb_features[0]
+        assert lb_feature["geometry"]["type"] == "Polygon"
+        assert lb_feature["properties"]["name"] == "Test Location Boundary"
+        assert "foodbank" in lb_feature["properties"]
+        assert "url" in lb_feature["properties"]
         
 @pytest.mark.django_db
 class TestDonationPointPreloadHeaders:
