@@ -69,11 +69,7 @@ class TestTextUtilities:
 
     def test_remove_letters_with_uppercase(self):
         """Test that remove_letters handles mixed case text."""
-        # Note: The current implementation only removes lowercase letters
-        # due to incorrect use of re.I flag as positional argument
-        result = remove_letters("ABC123DEF456")
-        # Should still have uppercase letters and numbers
-        assert "123" in result and "456" in result and "ABC" in result
+        assert remove_letters("ABC123DEF456") == "123456"
 
 
 class TestGeographicUtilities:
