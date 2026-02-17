@@ -1581,7 +1581,11 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
         json = request_body,
     )
 
-    return True
+    if result.status_code == 200:
+        return True
+    else:
+        logging.error(f"Failed to send email to {to}: {result.status_code} - {result.text}")
+        return False
 
   
 def group_list(lst):
