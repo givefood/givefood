@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from django.core.management.base import BaseCommand
 
@@ -30,7 +30,7 @@ class Command(BaseCommand):
             if len(needs) == number_of_needs:
                 last_need_date = needs[number_of_needs-1].created
                 days_since_earliest_sample_need = (
-                    last_need_date - datetime.now()
+                    last_need_date - timezone.now()
                 ).days
                 days_between_needs = int(
                     -days_since_earliest_sample_need / number_of_needs

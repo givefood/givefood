@@ -15,7 +15,7 @@ from openlocationcode import openlocationcode as olc
 from itertools import chain
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
-from datetime import datetime
+from django.utils import timezone
 from time import mktime, sleep
 from google import genai
 from google.genai import types
@@ -380,13 +380,13 @@ def foodbank_article_crawl(foodbank, crawl_set = None):
                     found_new_article = True
 
     # Update last crawl date
-    foodbank.last_crawl = datetime.now()
+    foodbank.last_crawl = timezone.now()
     if found_new_article:
         foodbank.save(do_decache=True, do_geoupdate=False)
     else:
         foodbank.save(do_decache=False, do_geoupdate=False)
 
-    crawl_item.finish = datetime.now()
+    crawl_item.finish = timezone.now()
     crawl_item.save()
 
     return True
@@ -427,7 +427,6 @@ def foodbank_charity_crawl(foodbank, crawl_set = None):
 
 def _crawl_charity_ew(foodbank, crawl_set = None):
     """Crawl charity details from England & Wales Charity Commission API."""
-    from datetime import timezone as tz
     from givefood.models import CharityYear, CrawlItem
 
     ew_charity_api_key = get_cred("ew_charity_api_key")
@@ -485,10 +484,10 @@ def _crawl_charity_ew(foodbank, crawl_set = None):
                 )
                 charity_year.save()
 
-    foodbank.last_charity_check = datetime.now(tz.utc)
+    foodbank.last_charity_check = timezone.now()
     foodbank.save(do_decache=False, do_geoupdate=False)
 
-    crawl_item.finish = datetime.now()
+    crawl_item.finish = timezone.now()
     crawl_item.save()
 
     return True
@@ -496,7 +495,6 @@ def _crawl_charity_ew(foodbank, crawl_set = None):
 
 def _crawl_charity_scotland(foodbank, crawl_set = None):
     """Crawl charity details from Scottish Charity Regulator (OSCR) API."""
-    from datetime import timezone as tz
     from givefood.models import CharityYear, CrawlItem
 
     sc_charity_api_key = get_cred("scot_charity_api_key")
@@ -544,10 +542,10 @@ def _crawl_charity_scotland(foodbank, crawl_set = None):
                 )
                 charity_year.save()
 
-    foodbank.last_charity_check = datetime.now(tz.utc)
+    foodbank.last_charity_check = timezone.now()
     foodbank.save(do_decache=False, do_geoupdate=False)
 
-    crawl_item.finish = datetime.now()
+    crawl_item.finish = timezone.now()
     crawl_item.save()
 
     return True
@@ -557,7 +555,6 @@ def _crawl_charity_ni(foodbank, crawl_set = None):
     """Crawl charity details from Charity Commission for Northern Ireland CSV export."""
     import csv
     from io import StringIO
-    from datetime import timezone as tz
     from givefood.models import CrawlItem
 
     reg_id = foodbank.charity_number.replace("NIC","")
@@ -596,10 +593,10 @@ def _crawl_charity_ni(foodbank, crawl_set = None):
                 objectives = re.sub(r",(?!\s)", "\n", objectives)
             foodbank.charity_purpose = objectives
 
-    foodbank.last_charity_check = datetime.now(tz.utc)
+    foodbank.last_charity_check = timezone.now()
     foodbank.save(do_decache=False, do_geoupdate=False)
 
-    crawl_item.finish = datetime.now()
+    crawl_item.finish = timezone.now()
     crawl_item.save()
 
     return True
@@ -1770,7 +1767,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
                 url = foodbank.url,
             )
             website_discrepancy.save()
-            foodbank.last_need_check = datetime.now()
+            foodbank.last_need_check = timezone.now()
             foodbank.save(do_decache=False, do_geoupdate=False)
             
             # Return proper template variables instead of exception object
@@ -1925,10 +1922,10 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         crawl_item.content_type = foodbank_change_content_type
         crawl_item.object_id = foodbank_change.id
 
-    foodbank.last_need_check = datetime.now()
+    foodbank.last_need_check = timezone.now()
     foodbank.save(do_decache=False, do_geoupdate=False)
 
-    crawl_item.finish = datetime.now()
+    crawl_item.finish = timezone.now()
     crawl_item.save()
 
     return {
@@ -2432,7 +2429,6 @@ def send_whatsapp_notification(need):
     Returns:
         Number of notifications sent successfully
     """
-    from django.utils import timezone
     from givefood.models import WhatsappSubscriber
     
     # Get all WhatsApp subscriptions for this food bank

@@ -1,6 +1,5 @@
-from datetime import datetime
-
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 from givefood.func import foodbank_charity_crawl
 from givefood.models import Foodbank, CrawlSet
@@ -30,5 +29,5 @@ class Command(BaseCommand):
 
             the_counter += 1
 
-        crawl_set.finish = datetime.now()
+        crawl_set.finish = timezone.now()
         crawl_set.save()

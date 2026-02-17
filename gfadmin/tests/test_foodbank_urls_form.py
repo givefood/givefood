@@ -1,9 +1,9 @@
 """Tests for the foodbank URLs edit form."""
 import pytest
 from unittest.mock import patch, Mock
-from datetime import datetime
 from django.urls import reverse
 from django.test import RequestFactory
+from django.utils import timezone
 
 from givefood.forms import FoodbankUrlsForm
 from givefood.models import Foodbank, CrawlItem
@@ -118,7 +118,7 @@ class TestFoodbankUrlsForm:
         mock_render.return_value = Mock(status_code=200)
         
         # Record time before the request
-        start_time = datetime.now()
+        start_time = timezone.now()
         
         # Make a GET request to the view
         from gfadmin.views import foodbank_urls_form
@@ -129,7 +129,7 @@ class TestFoodbankUrlsForm:
         response = foodbank_urls_form(request, slug=foodbank.slug)
         
         # Record time after the request
-        end_time = datetime.now()
+        end_time = timezone.now()
         
         # Verify a CrawlItem was created with finish time
         crawl_items = CrawlItem.objects.filter(foodbank=foodbank, crawl_type='urls')

@@ -46,7 +46,7 @@ def index(request):
     discrepancies = FoodbankDiscrepancy.objects.filter(status = 'New').select_related('foodbank').order_by("-created")[:20]
 
     # Stats
-    yesterday = datetime.now() - timedelta(days=1)
+    yesterday = timezone.now() - timedelta(days=1)
     
     # Get latest need crawlset
     latest_need_crawlset = CrawlSet.objects.filter(crawl_type="need").order_by("-start").first()
@@ -476,7 +476,7 @@ def order_send_notification(request, id = None):
         html_body = html_body,
     )
 
-    order.notification_email_sent = datetime.now()
+    order.notification_email_sent = timezone.now()
     order.save()
     redir_url = "%s?donenotification=true" % (reverse("admin:order", kwargs={'id': order.order_id}))
     return redirect(redir_url)
@@ -831,7 +831,7 @@ def _build_foodbank_check_data(foodbank):
             )
             crawl_item.save()
             downloaded_pages[url] = requests.get(url, headers={"User-Agent": BOT_USER_AGENT}, timeout=timeout_sec).text
-            crawl_item.finish = datetime.now()
+            crawl_item.finish = timezone.now()
             crawl_item.save()
         return downloaded_pages[url]
 
@@ -890,7 +890,7 @@ def _build_foodbank_check_data(foodbank):
             )
             crawl_item.save()
             donation_points_results = requests.post(url, headers=headers, timeout=timeout_sec, json=payload).text
-            crawl_item.finish = datetime.now()
+            crawl_item.finish = timezone.now()
             crawl_item.save()
         
         donation_points_raw = fetch_page(foodbank.donation_points_url)
@@ -1177,7 +1177,7 @@ def foodbank_rfi(request, slug):
         html_body = render_to_string("admin/emails/rfi.html",{"foodbank":foodbank}),
     )
 
-    foodbank.last_rfi = datetime.now()
+    foodbank.last_rfi = timezone.now()
     foodbank.save()
 
     return redirect("admin:foodbank", slug = foodbank.slug)
@@ -1208,7 +1208,7 @@ def foodbank_resave(request, slug):
 def foodbank_touch(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
-    foodbank.edited = datetime.now()
+    foodbank.edited = timezone.now()
     foodbank.save(do_geoupdate=False)
     
     # Return button replacement for HTMX requests
@@ -1390,13 +1390,13 @@ Only suggest URLs from the list provided. Return as JSON with these exact field 
                                 suggested_fields.append(field)
 
                 # Record finish time
-                crawl_item.finish = datetime.now()
+                crawl_item.finish = timezone.now()
                 crawl_item.save()
             except Exception as e:
                 logging.warning(f"Failed to fetch URL suggestions for {foodbank.slug}: {e}")
                 # Record finish time even on error
                 if 'crawl_item' in locals():
-                    crawl_item.finish = datetime.now()
+                    crawl_item.finish = timezone.now()
                     crawl_item.save()
         
         form = FoodbankUrlsForm(instance=foodbank, initial=initial_data)
@@ -1910,7 +1910,7 @@ def need_notifications(request, id):
         foodbank_article_crawl_async.enqueue(foodbank.slug)
 
     # Update notification time
-    need.notified = datetime.now()
+    need.notified = timezone.now()
     need.save(do_foodbank_save=False, do_translate=False)
 
     # Email subscriptions
@@ -2988,7 +2988,7 @@ def email_tester_test(request):
         "order":order,
         "sub_key":"SUBKEY123456789",
         "subscriber":{
-            "created":datetime.now(),
+            "created":timezone.now(),
             "unsub_key":"UNSUBKEY123456789",
         }
     }

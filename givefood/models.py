@@ -17,6 +17,7 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse, translate_url
 from django.utils.translation import gettext as _
 from django.utils.translation import get_language
+from django.utils import timezone
 from django.template.loader import render_to_string
 from django.db.models import Max, Min
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -384,7 +385,7 @@ class Foodbank(models.Model):
             return "Nothing"
     
     def need_irrelevant(self):
-        cut_off = datetime.now() - timedelta(days=180)
+        cut_off = timezone.now() - timedelta(days=180)
         return self.last_need.replace(tzinfo=None) < cut_off
 
     def latest_need_id(self):
@@ -587,7 +588,7 @@ class Foodbank(models.Model):
             return None
         
     def articles_month(self):
-        return FoodbankArticle.objects.filter(foodbank = self, published_date__gte = datetime.now() - timedelta(days=28)).order_by("-published_date")
+        return FoodbankArticle.objects.filter(foodbank = self, published_date__gte = timezone.now() - timedelta(days=28)).order_by("-published_date")
     
     class Meta:
         app_label = 'givefood'
@@ -1256,7 +1257,7 @@ class FoodbankDonationPoint(models.Model):
         if not self.opening_hours:
             return None
 
-        now = datetime.now()
+        now = timezone.now()
         day_of_week = now.weekday()
         days = self.opening_hours.split("\n")
         day_text = days[day_of_week]
@@ -2356,10 +2357,10 @@ class FoodbankSubscriber(models.Model):
         if not self.sub_key:
             salt = get_cred("salt")
 
-            sub_key_str = "sub-%s-%s" % (datetime.now(), salt)
+            sub_key_str = "sub-%s-%s" % (timezone.now(), salt)
             sub_key_str = sub_key_str.encode('utf-8')
 
-            unsub_key_str = "unsub-%s-%s" % (datetime.now(), salt)
+            unsub_key_str = "unsub-%s-%s" % (timezone.now(), salt)
             unsub_key_str = unsub_key_str.encode('utf-8')
 
             self.sub_key = hashlib.sha256(sub_key_str).hexdigest()[:16]
