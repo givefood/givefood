@@ -14,7 +14,7 @@ import random
 from openlocationcode import openlocationcode as olc
 from itertools import chain
 from math import radians, cos, sin, asin, sqrt
-from collections import OrderedDict 
+from collections import Counter
 from datetime import datetime
 from time import mktime, sleep
 from google import genai
@@ -1587,9 +1587,8 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
 
   
 def group_list(lst):
-      
-    res =  [(el, lst.count(el)) for el in lst]
-    return list(OrderedDict(res).items())
+
+    return list(Counter(lst).items())
 
 
 def filter_change_text(change_text, filter_list):
