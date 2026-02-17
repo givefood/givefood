@@ -4,7 +4,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import redirect
 from django.urls import resolve, reverse
 
-from givefood.func import get_cred
+from givefood.utils.cache import get_cred
 
 
 # Inject the render time into the response content
@@ -165,7 +165,7 @@ class SlugRedirectMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        from givefood.func import get_slug_redirects
+        from givefood.utils.cache import get_slug_redirects
         import re
 
         path = request.path

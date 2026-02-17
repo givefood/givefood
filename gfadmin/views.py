@@ -25,7 +25,12 @@ from django.core.validators import validate_email, URLValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
 
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
-from givefood.func import diff_html, find_locations, foodbank_article_crawl, foodbank_article_crawl_async, gemini, get_all_foodbanks, get_all_locations, htmlbodytext, post_to_subscriber, send_email, get_cred, distance_meters, send_firebase_notification, send_firebase_notification_async, send_webpush_notification, send_webpush_notification_async, delete_all_cached_credentials, send_single_webpush_notification, send_whatsapp_notification, send_whatsapp_notification_async, send_whatsapp_template_notification
+from givefood.utils.cache import delete_all_cached_credentials, get_all_foodbanks, get_all_locations, get_cred
+from givefood.utils.crawlers import foodbank_article_crawl, foodbank_article_crawl_async
+from givefood.utils.general import gemini
+from givefood.utils.geo import distance_meters, find_locations
+from givefood.utils.notifications import post_to_subscriber, send_email, send_firebase_notification, send_firebase_notification_async, send_single_webpush_notification, send_webpush_notification, send_webpush_notification_async, send_whatsapp_notification, send_whatsapp_notification_async, send_whatsapp_template_notification
+from givefood.utils.text import diff_html, htmlbodytext
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber, PlacePhoto
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
 from django_tasks.backends.database.models import DBTaskResult
@@ -1159,7 +1164,7 @@ def foodbank_charity_crawl(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
     if foodbank.charity_number:
-        from givefood.func import foodbank_charity_crawl as do_charity_crawl
+        from givefood.utils.crawlers import foodbank_charity_crawl as do_charity_crawl
         do_charity_crawl(foodbank)
     return redirect("admin:foodbank", slug = foodbank.slug)
     

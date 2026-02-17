@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 from django.urls import reverse
 from django.utils import timezone
 
-from givefood.func import decache
+from givefood.utils.cache import decache
 from givefood.models import Dump, Foodbank, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation
 
 

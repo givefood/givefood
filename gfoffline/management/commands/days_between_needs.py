@@ -2,7 +2,7 @@ from django.utils import timezone
 
 from django.core.management.base import BaseCommand
 
-from givefood.func import get_all_open_foodbanks
+from givefood.utils.cache import get_all_open_foodbanks
 from givefood.models import FoodbankChange
 
 

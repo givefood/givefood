@@ -1,13 +1,13 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from givefood.func import send_email
+from givefood.utils.notifications import send_email
 
 
 class TestSendEmail:
     """Test send_email checks the API response."""
 
-    @patch('givefood.func.requests.post')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.requests.post')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_email_returns_true_on_success(self, mock_get_cred, mock_post):
         mock_get_cred.return_value = "test-token"
         mock_response = MagicMock()
@@ -22,8 +22,8 @@ class TestSendEmail:
 
         assert result is True
 
-    @patch('givefood.func.requests.post')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.requests.post')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_email_returns_false_on_error(self, mock_get_cred, mock_post):
         mock_get_cred.return_value = "test-token"
         mock_response = MagicMock()
@@ -39,9 +39,9 @@ class TestSendEmail:
 
         assert result is False
 
-    @patch('givefood.func.logging')
-    @patch('givefood.func.requests.post')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.logging')
+    @patch('givefood.utils.notifications.requests.post')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_email_logs_on_failure(self, mock_get_cred, mock_post, mock_logging):
         mock_get_cred.return_value = "test-token"
         mock_response = MagicMock()

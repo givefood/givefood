@@ -12,7 +12,8 @@ from django.db.models import Q, Count, Sum
 from django.utils import timezone
 
 from givefood.models import CharityYear, Foodbank, FoodbankChange, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, Order, OrderLine
-from givefood.func import group_list, get_all_foodbanks, filter_change_text
+from givefood.utils.cache import get_all_foodbanks
+from givefood.utils.text import filter_change_text, group_list
 from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR
 from django.db.models.functions import TruncMonth, TruncYear
 

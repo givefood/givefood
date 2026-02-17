@@ -1,11 +1,11 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from givefood.func import (
+from givefood.utils.cache import decache_async
+from givefood.utils.crawlers import foodbank_article_crawl_async
+from givefood.utils.notifications import (
     send_firebase_notification_async,
     send_webpush_notification_async,
     send_whatsapp_notification_async,
-    foodbank_article_crawl_async,
-    decache_async,
 )
 
 
@@ -65,7 +65,7 @@ class TestAsyncTaskCallsDelegates:
         need.save(do_foodbank_save=False, do_translate=False)
         return need
 
-    @patch('givefood.func.send_firebase_notification')
+    @patch('givefood.utils.notifications.send_firebase_notification')
     def test_send_firebase_notification_async_calls_sync(self, mock_send):
         foodbank = self._create_foodbank()
         need = self._create_need(foodbank)
@@ -74,7 +74,7 @@ class TestAsyncTaskCallsDelegates:
         mock_send.assert_called_once()
         assert mock_send.call_args[0][0].need_id_str == need.need_id_str
 
-    @patch('givefood.func.send_webpush_notification')
+    @patch('givefood.utils.notifications.send_webpush_notification')
     def test_send_webpush_notification_async_calls_sync(self, mock_send):
         foodbank = self._create_foodbank()
         need = self._create_need(foodbank)
@@ -83,7 +83,7 @@ class TestAsyncTaskCallsDelegates:
         mock_send.assert_called_once()
         assert mock_send.call_args[0][0].need_id_str == need.need_id_str
 
-    @patch('givefood.func.send_whatsapp_notification')
+    @patch('givefood.utils.notifications.send_whatsapp_notification')
     def test_send_whatsapp_notification_async_calls_sync(self, mock_send):
         foodbank = self._create_foodbank()
         need = self._create_need(foodbank)
@@ -92,7 +92,7 @@ class TestAsyncTaskCallsDelegates:
         mock_send.assert_called_once()
         assert mock_send.call_args[0][0].need_id_str == need.need_id_str
 
-    @patch('givefood.func.foodbank_article_crawl')
+    @patch('givefood.utils.crawlers.foodbank_article_crawl')
     def test_foodbank_article_crawl_async_calls_sync(self, mock_crawl):
         foodbank = self._create_foodbank()
 

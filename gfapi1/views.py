@@ -6,7 +6,8 @@ from django.views.decorators.cache import cache_page
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
-from givefood.func import find_foodbanks, get_all_foodbanks, geocode
+from givefood.utils.cache import get_all_foodbanks
+from givefood.utils.geo import find_foodbanks, geocode
 from givefood.models import Foodbank, FoodbankChange
 from givefood.const.general import API_DOMAIN
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH
