@@ -17,8 +17,10 @@ from django.conf import settings
 
 from givefood.models import Foodbank, FoodbankArticle, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place, Postcode
 from givefood.forms import FoodbankRegistrationForm, FlagForm
-from givefood.func import get_cred, get_user_ip, validate_turnstile
-from givefood.func import send_email
+from givefood.utils.cache import get_cred
+from givefood.utils.general import validate_turnstile
+from givefood.utils.notifications import send_email
+from givefood.utils.text import get_user_ip
 from givefood.const.general import BOT_USER_AGENT, SITE_DOMAIN, PLACES_PER_SITEMAP
 from givefood.const.cache_times import (
     SECONDS_IN_DAY,
@@ -1124,7 +1126,7 @@ def service_worker(request):
     as Firebase SDK expects this specific filename.
     The Firebase config is embedded directly in the service worker.
     """
-    from givefood.func import get_cred
+    from givefood.utils.cache import get_cred
     
     # Get Firebase config
     api_key = get_cred("firebase_api_key") or ""
@@ -1292,7 +1294,8 @@ def whatsapp_hook(request):
     Message format for unsubscribing: "unsubscribe foodbank-slug"
     """
     from givefood.models import WhatsappSubscriber
-    from givefood.func import get_cred, send_whatsapp_message
+    from givefood.utils.cache import get_cred
+    from givefood.utils.notifications import send_whatsapp_message
     
     # Handle webhook verification (GET request)
     if request.method == 'GET':
@@ -1359,7 +1362,7 @@ def _handle_subscribe(phone_number, foodbank_slug):
         foodbank_slug: Slug of the food bank to subscribe to
     """
     from givefood.models import WhatsappSubscriber
-    from givefood.func import send_whatsapp_message
+    from givefood.utils.notifications import send_whatsapp_message
     
     try:
         foodbank = Foodbank.objects.get(slug=foodbank_slug)
@@ -1397,7 +1400,7 @@ def _handle_unsubscribe(phone_number, foodbank_slug):
         foodbank_slug: Slug of the food bank to unsubscribe from
     """
     from givefood.models import WhatsappSubscriber
-    from givefood.func import send_whatsapp_message
+    from givefood.utils.notifications import send_whatsapp_message
     
     try:
         foodbank = Foodbank.objects.get(slug=foodbank_slug)

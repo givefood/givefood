@@ -2,16 +2,18 @@
 Tests for the main givefood app utility functions.
 """
 import pytest
-from givefood.func import (
-    text_for_comparison,
-    clean_foodbank_need_text,
-    is_uk,
-    remove_letters,
-    miles,
+from givefood.utils.geo import (
     distance_meters,
-    diff_html,
     geojson_dict,
+    is_uk,
+    miles,
     pluscode,
+)
+from givefood.utils.text import (
+    clean_foodbank_need_text,
+    diff_html,
+    remove_letters,
+    text_for_comparison,
 )
 
 
@@ -168,7 +170,7 @@ class TestGetUserIP:
 
     def test_get_user_ip_with_cloudflare_header(self):
         """Test get_user_ip with CF-Connecting-IP header."""
-        from givefood.func import get_user_ip
+        from givefood.utils.text import get_user_ip
         from django.test import RequestFactory
         
         factory = RequestFactory()
@@ -178,7 +180,7 @@ class TestGetUserIP:
 
     def test_get_user_ip_with_x_forwarded_for(self):
         """Test get_user_ip with X-Forwarded-For header."""
-        from givefood.func import get_user_ip
+        from givefood.utils.text import get_user_ip
         from django.test import RequestFactory
         
         factory = RequestFactory()
@@ -188,7 +190,7 @@ class TestGetUserIP:
 
     def test_get_user_ip_cloudflare_takes_precedence(self):
         """Test that CF-Connecting-IP takes precedence over X-Forwarded-For."""
-        from givefood.func import get_user_ip
+        from givefood.utils.text import get_user_ip
         from django.test import RequestFactory
         
         factory = RequestFactory()
@@ -202,7 +204,7 @@ class TestGetUserIP:
 
     def test_get_user_ip_fallback_to_remote_addr(self):
         """Test get_user_ip falls back to REMOTE_ADDR."""
-        from givefood.func import get_user_ip
+        from givefood.utils.text import get_user_ip
         from django.test import RequestFactory
         
         factory = RequestFactory()
@@ -213,7 +215,7 @@ class TestGetUserIP:
 
     def test_get_user_ip_x_forwarded_for_with_spaces(self):
         """Test get_user_ip strips spaces from X-Forwarded-For header."""
-        from givefood.func import get_user_ip
+        from givefood.utils.text import get_user_ip
         from django.test import RequestFactory
         
         factory = RequestFactory()

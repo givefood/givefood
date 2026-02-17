@@ -17,7 +17,11 @@ from givefood.const.general import SITE_DOMAIN
 from givefood.const.item_types import ITEM_CATEGORIES_CHOICES
 
 from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, MobileSubscriber, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle, Place
-from givefood.func import geocode, find_locations, find_locations_by_category, find_donationpoints, admin_regions_from_postcode, get_cred, get_screenshot, get_user_ip, is_uk, photo_from_place_id, send_email, get_all_constituencies, validate_turnstile
+from givefood.utils.cache import get_all_constituencies, get_cred
+from givefood.utils.general import get_screenshot, validate_turnstile
+from givefood.utils.geo import admin_regions_from_postcode, find_donationpoints, find_locations, find_locations_by_category, geocode, is_uk, photo_from_place_id
+from givefood.utils.notifications import send_email
+from givefood.utils.text import get_user_ip
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 from django.db.models import Sum
 

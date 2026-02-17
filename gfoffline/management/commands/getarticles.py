@@ -3,7 +3,7 @@ import time
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from givefood.func import foodbank_article_crawl
+from givefood.utils.crawlers import foodbank_article_crawl
 from givefood.models import Foodbank, CrawlSet
 
 

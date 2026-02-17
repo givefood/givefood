@@ -1,5 +1,5 @@
 import os
-from givefood.func import get_cred
+from givefood.utils.cache import get_cred
 
 def gmap_keys(request):
 

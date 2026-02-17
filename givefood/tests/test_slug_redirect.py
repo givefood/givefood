@@ -69,7 +69,7 @@ class TestSlugRedirectCaching:
 
     def test_slug_redirects_are_cached(self, populate_slug_redirects):
         """Test that slug redirects are cached after first access."""
-        from givefood.func import get_slug_redirects
+        from givefood.utils.cache import get_slug_redirects
         
         cache.clear()
         
@@ -92,7 +92,7 @@ class TestSlugRedirectCaching:
 
     def test_cache_can_be_invalidated(self, populate_slug_redirects):
         """Test that cache can be cleared and reloaded."""
-        from givefood.func import get_slug_redirects
+        from givefood.utils.cache import get_slug_redirects
         
         cache.clear()
         
@@ -116,7 +116,7 @@ class TestSlugRedirectCaching:
 
     def test_get_slug_redirects_returns_dict(self, populate_slug_redirects):
         """Test that get_slug_redirects returns a dictionary."""
-        from givefood.func import get_slug_redirects
+        from givefood.utils.cache import get_slug_redirects
         
         cache.clear()
         redirects = get_slug_redirects()

@@ -2,7 +2,7 @@ import pytest
 import json
 from unittest.mock import patch, MagicMock, call
 from givefood.models import Foodbank, FoodbankChange
-from givefood.func import send_firebase_notification
+from givefood.utils.notifications import send_firebase_notification
 
 
 @pytest.mark.django_db
@@ -11,7 +11,7 @@ class TestFirebaseNotifications:
 
     @patch('firebase_admin.messaging.send')
     @patch('firebase_admin.get_app')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_firebase_notification_success(self, mock_get_cred, mock_get_app, mock_send):
         """Test successful Firebase notification sending."""
         # Mock credentials
@@ -81,7 +81,7 @@ class TestFirebaseNotifications:
     @patch('firebase_admin.initialize_app')
     @patch('firebase_admin.get_app')
     @patch('firebase_admin.messaging.send')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_firebase_notification_initializes_app(self, mock_get_cred, mock_send, mock_get_app, mock_init_app, mock_cert):
         """Test that Firebase app is initialized if not already initialized."""
         # Mock credentials
@@ -141,7 +141,7 @@ class TestFirebaseNotifications:
         assert mock_send.called
 
     @patch('firebase_admin.get_app')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_firebase_notification_no_credentials(self, mock_get_cred, mock_get_app):
         """Test that function returns None when credentials are not available."""
         # Mock no credentials
@@ -183,7 +183,7 @@ class TestFirebaseNotifications:
 
     @patch('firebase_admin.messaging.send')
     @patch('firebase_admin.get_app')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_firebase_notification_handles_errors(self, mock_get_cred, mock_get_app, mock_send):
         """Test that function handles errors gracefully."""
         # Mock credentials
@@ -238,7 +238,7 @@ class TestFirebaseNotifications:
 
     @patch('firebase_admin.messaging.send')
     @patch('firebase_admin.get_app')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_firebase_notification_formats_correctly(self, mock_get_cred, mock_get_app, mock_send):
         """Test that notification is formatted correctly with first 4 items."""
         # Mock credentials
@@ -298,7 +298,7 @@ class TestFirebaseNotifications:
 
     @patch('firebase_admin.messaging.send')
     @patch('firebase_admin.get_app')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_firebase_notification_respects_4kb_limit(self, mock_get_cred, mock_get_app, mock_send):
         """Test that notification body respects the 4KB limit."""
         # Mock credentials
@@ -373,7 +373,7 @@ class TestFirebaseNotifications:
 
     @patch('firebase_admin.messaging.send')
     @patch('firebase_admin.get_app')
-    @patch('givefood.func.get_cred')
+    @patch('givefood.utils.notifications.get_cred')
     def test_send_firebase_notification_webpush_structure(self, mock_get_cred, mock_get_app, mock_send):
         """Test that notification includes WebpushNotification for web browser compatibility."""
         # Mock credentials

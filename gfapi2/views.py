@@ -8,7 +8,8 @@ from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
-from givefood.func import find_locations, find_donationpoints, get_all_open_foodbanks, get_all_open_locations, geocode, is_uk, miles
+from givefood.utils.cache import get_all_open_foodbanks, get_all_open_locations
+from givefood.utils.geo import find_donationpoints, find_locations, geocode, is_uk, miles
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
 from givefood.models import Dump
 

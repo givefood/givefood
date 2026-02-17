@@ -13,7 +13,11 @@ from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
 from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY
-from givefood.func import do_foodbank_need_check, gemini, get_cred, htmlbodytext, mpid_from_name, oc_geocode, get_all_open_foodbanks, get_place_id, pluscode, translate_need
+from givefood.utils.cache import get_all_open_foodbanks, get_cred
+from givefood.utils.crawlers import do_foodbank_need_check
+from givefood.utils.general import gemini, translate_need
+from givefood.utils.geo import get_place_id, mpid_from_name, oc_geocode, pluscode
+from givefood.utils.text import htmlbodytext
 from django.template.loader import render_to_string
 
 

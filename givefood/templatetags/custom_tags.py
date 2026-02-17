@@ -1,5 +1,5 @@
 from django import template
-from givefood.func import make_friendly_phone, make_full_phone, make_url_friendly
+from givefood.utils.text import make_friendly_phone, make_full_phone, make_url_friendly
 
 register = template.Library()
 

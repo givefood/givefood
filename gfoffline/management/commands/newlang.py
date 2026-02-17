@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 
-from givefood.func import translate_need
+from givefood.utils.general import translate_need
 from givefood.models import Foodbank
 from givefood.settings import LANGUAGES
 

@@ -5,7 +5,8 @@ from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.urls import reverse
 
-from givefood.func import admin_regions_from_postcode, send_email
+from givefood.utils.geo import admin_regions_from_postcode
+from givefood.utils.notifications import send_email
 from givefood.models import ConstituencySubscriber, ParliamentaryConstituency
 from gfwrite.forms import ConstituentDetailsForm, EmailForm
 
