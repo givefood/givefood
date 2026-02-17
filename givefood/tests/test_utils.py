@@ -2,7 +2,9 @@
 Tests for the main givefood app utility functions.
 """
 import pytest
+from unittest.mock import patch
 from givefood.utils.geo import (
+    _foodbank_queryset,
     distance_meters,
     geojson_dict,
     is_uk,
@@ -265,3 +267,28 @@ class TestPlusCode:
         result = pluscode("51.5117,-0.0772", "City of London")
         assert result["global"] == "9C3XGW6F+M4"
         assert result["compound"] == "GW6F+M4 City of London"
+
+
+class TestFoodbankQueryset:
+    """Test _foodbank_queryset helper function."""
+
+    @patch("django.utils.translation.get_language", return_value="en")
+    def test_foodbank_queryset_english_no_translation_prefetch(self, mock_lang):
+        """Test that English language does not add translation prefetch."""
+        qs = _foodbank_queryset()
+        prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
+        assert "latest_need__foodbankchangetranslation_set" not in prefetches
+
+    @patch("django.utils.translation.get_language", return_value="es")
+    def test_foodbank_queryset_non_english_adds_translation_prefetch(self, mock_lang):
+        """Test that non-English language adds translation prefetch."""
+        qs = _foodbank_queryset()
+        prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
+        assert "latest_need__foodbankchangetranslation_set" in prefetches
+
+    @patch("django.utils.translation.get_language", return_value=None)
+    def test_foodbank_queryset_none_language_no_translation_prefetch(self, mock_lang):
+        """Test that None language does not add translation prefetch."""
+        qs = _foodbank_queryset()
+        prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
+        assert "latest_need__foodbankchangetranslation_set" not in prefetches

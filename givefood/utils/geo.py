@@ -165,51 +165,43 @@ def find_foodbanks(lattlong, quantity = 10, skip_first = False):
     return sorted_foodbanks[first_item:quantity]
 
 
-def find_locations(lat_lng, quantity = 10, skip_first = False):
-
-    from givefood.models import Foodbank, FoodbankLocation, FoodbankChangeTranslation
+def _foodbank_queryset():
+    """Build a Foodbank queryset with select_related and conditional translation prefetch."""
+    from givefood.models import Foodbank, FoodbankChangeTranslation
     from django.db.models import Prefetch
     from django.utils.translation import get_language
+
+    qs = Foodbank.objects.select_related("latest_need")
+    current_language = get_language()
+    if current_language and current_language != "en":
+        qs = qs.prefetch_related(
+            Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
+        )
+    return qs
+
+
+def find_locations(lat_lng, quantity = 10, skip_first = False):
+
+    from givefood.models import FoodbankLocation
+    from django.db.models import Prefetch
 
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
 
-    current_language = get_language()
+    foodbanks = _foodbank_queryset().filter(is_closed = False).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).annotate(type=Value("organisation")).order_by("distance")[:quantity]
 
-    # Only prefetch translations for non-English languages to avoid unnecessary queries
-    if current_language and current_language != "en":
-        foodbanks = Foodbank.objects.filter(is_closed = False).select_related("latest_need").prefetch_related(
-            Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
-        ).annotate(
-            distance=EarthDistance([
-                LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
-            ])).annotate(type=Value("organisation")).order_by("distance")[:quantity]
-        
-        locations = FoodbankLocation.objects.filter(is_closed = False).prefetch_related(
-            Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need").prefetch_related(
-                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
-            ))
-        ).annotate(
-            distance=EarthDistance([
-                LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
-            ])).annotate(type=Value("location")).order_by("distance")[:quantity]
-    else:
-        foodbanks = Foodbank.objects.filter(is_closed = False).select_related("latest_need").annotate(
-            distance=EarthDistance([
-                LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
-            ])).annotate(type=Value("organisation")).order_by("distance")[:quantity]
-        
-        locations = FoodbankLocation.objects.filter(is_closed = False).prefetch_related(
-            Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need"))
-        ).annotate(
-            distance=EarthDistance([
-                LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
-            ])).annotate(type=Value("location")).order_by("distance")[:quantity]
-    
+    locations = FoodbankLocation.objects.filter(is_closed = False).prefetch_related(
+        Prefetch("foodbank", queryset=_foodbank_queryset())
+    ).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])).annotate(type=Value("location")).order_by("distance")[:quantity]
+
     for foodbank in foodbanks:
         foodbank.distance_mi = miles(foodbank.distance)
         foodbank.distance_km = foodbank.distance / 1000
@@ -260,14 +252,11 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         List of foodbanks and locations that need items in the specified category,
         ordered by distance
     """
-    from givefood.models import Foodbank, FoodbankLocation, FoodbankChangeLine, FoodbankChangeTranslation
+    from givefood.models import Foodbank, FoodbankLocation, FoodbankChangeLine
     from django.db.models import Prefetch, Exists, OuterRef
-    from django.utils.translation import get_language
 
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
-
-    current_language = get_language()
 
     # Subquery to check if latest_need has the specified category
     has_category = FoodbankChangeLine.objects.filter(
@@ -277,94 +266,47 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
     )
 
     # Base foodbank query with category filter
-    if current_language and current_language != "en":
-        foodbanks = Foodbank.objects.filter(
+    foodbanks = _foodbank_queryset().filter(
+        is_closed=False,
+        latest_need__isnull=False
+    ).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ]),
+        needs_category=Exists(has_category)
+    ).filter(
+        distance__lte=max_distance_meters,
+        needs_category=True
+    ).annotate(type=Value("organisation")).order_by("distance")[:quantity]
+
+    # Get the IDs of foodbanks that need the category
+    foodbank_ids_with_category = list(
+        Foodbank.objects.filter(
             is_closed=False,
             latest_need__isnull=False
-        ).select_related("latest_need").prefetch_related(
-            Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
         ).annotate(
-            distance=EarthDistance([
-                LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
-            ]),
             needs_category=Exists(has_category)
         ).filter(
-            distance__lte=max_distance_meters,
             needs_category=True
-        ).annotate(type=Value("organisation")).order_by("distance")[:quantity]
+        ).values_list('id', flat=True)
+    )
 
-        # Get the IDs of foodbanks that need the category (within extended distance to catch all relevant locations)
-        foodbank_ids_with_category = list(
-            Foodbank.objects.filter(
-                is_closed=False,
-                latest_need__isnull=False
-            ).annotate(
-                needs_category=Exists(has_category)
-            ).filter(
-                needs_category=True
-            ).values_list('id', flat=True)
-        )
-
-        # Query locations whose foodbank needs the category
-        # Filter by foodbank_id instead of using Exists subquery to avoid column ambiguity
-        locations = FoodbankLocation.objects.filter(
-            is_closed=False,
-            foodbank_id__in=foodbank_ids_with_category
-        ).prefetch_related(
-            Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need").prefetch_related(
-                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
-            ))
-        ).annotate(
-            distance=EarthDistance([
-                LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
-            ])
-        ).filter(
-            distance__lte=max_distance_meters
-        ).annotate(type=Value("location")).order_by("distance")[:quantity]
-    else:
-        foodbanks = Foodbank.objects.filter(
-            is_closed=False,
-            latest_need__isnull=False
-        ).select_related("latest_need").annotate(
-            distance=EarthDistance([
-                LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
-            ]),
-            needs_category=Exists(has_category)
-        ).filter(
-            distance__lte=max_distance_meters,
-            needs_category=True
-        ).annotate(type=Value("organisation")).order_by("distance")[:quantity]
-
-        # Get the IDs of foodbanks that need the category
-        foodbank_ids_with_category = list(
-            Foodbank.objects.filter(
-                is_closed=False,
-                latest_need__isnull=False
-            ).annotate(
-                needs_category=Exists(has_category)
-            ).filter(
-                needs_category=True
-            ).values_list('id', flat=True)
-        )
-
-        # Query locations whose foodbank needs the category
-        # Filter by foodbank_id instead of using Exists subquery to avoid column ambiguity
-        locations = FoodbankLocation.objects.filter(
-            is_closed=False,
-            foodbank_id__in=foodbank_ids_with_category
-        ).prefetch_related(
-            Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need"))
-        ).annotate(
-            distance=EarthDistance([
-                LlToEarth([lat, lng]),
-                LlToEarth(['latitude', 'longitude'])
-            ])
-        ).filter(
-            distance__lte=max_distance_meters
-        ).annotate(type=Value("location")).order_by("distance")[:quantity]
+    # Query locations whose foodbank needs the category
+    # Filter by foodbank_id instead of using Exists subquery to avoid column ambiguity
+    locations = FoodbankLocation.objects.filter(
+        is_closed=False,
+        foodbank_id__in=foodbank_ids_with_category
+    ).prefetch_related(
+        Prefetch("foodbank", queryset=_foodbank_queryset())
+    ).annotate(
+        distance=EarthDistance([
+            LlToEarth([lat, lng]),
+            LlToEarth(['latitude', 'longitude'])
+        ])
+    ).filter(
+        distance__lte=max_distance_meters
+    ).annotate(type=Value("location")).order_by("distance")[:quantity]
 
     # Process foodbanks
     for foodbank in foodbanks:
@@ -401,52 +343,27 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
 
 def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
 
-    from givefood.models import Foodbank, FoodbankLocation, FoodbankDonationPoint, FoodbankChangeTranslation
+    from givefood.models import FoodbankLocation, FoodbankDonationPoint
     from django.db.models import Prefetch
-    from django.utils.translation import get_language
 
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
 
-    current_language = get_language()
+    donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).prefetch_related(
+        Prefetch("foodbank", queryset=_foodbank_queryset())
+    ).annotate(
+    distance=EarthDistance([
+        LlToEarth([lat, lng]),
+        LlToEarth(['latitude', 'longitude'])
+    ])).annotate(type=Value("donationpoint")).order_by("distance")[:quantity]
 
-    # Only prefetch translations for non-English languages to avoid unnecessary queries
-    if current_language and current_language != "en":
-        donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).prefetch_related(
-            Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need").prefetch_related(
-                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
-            ))
-        ).annotate(
-        distance=EarthDistance([
-            LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("donationpoint")).order_by("distance")[:quantity]
-
-        location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).prefetch_related(
-            Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need").prefetch_related(
-                Prefetch("latest_need__foodbankchangetranslation_set", queryset=FoodbankChangeTranslation.objects.filter(language=current_language))
-            ))
-        ).annotate(
-        distance=EarthDistance([
-            LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("location")).order_by("distance")[:quantity]
-    else:
-        donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).prefetch_related(
-            Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need"))
-        ).annotate(
-        distance=EarthDistance([
-            LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("donationpoint")).order_by("distance")[:quantity]
-
-        location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).prefetch_related(
-            Prefetch("foodbank", queryset=Foodbank.objects.select_related("latest_need"))
-        ).annotate(
-        distance=EarthDistance([
-            LlToEarth([lat, lng]),
-            LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("location")).order_by("distance")[:quantity]
+    location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).prefetch_related(
+        Prefetch("foodbank", queryset=_foodbank_queryset())
+    ).annotate(
+    distance=EarthDistance([
+        LlToEarth([lat, lng]),
+        LlToEarth(['latitude', 'longitude'])
+    ])).annotate(type=Value("location")).order_by("distance")[:quantity]
 
     if foodbank:
         donationpoints = donationpoints.filter(foodbank = foodbank)
