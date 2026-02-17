@@ -1586,7 +1586,7 @@ def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_t
     if result.status_code == 200:
         return True
     else:
-        logging.error("Failed to send email to %s: %s - %s" % (to, result.status_code, result.text))
+        logging.error(f"Failed to send email to {to}: {result.status_code} - {result.text}")
         return False
 
   
