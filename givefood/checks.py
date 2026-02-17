@@ -4,10 +4,10 @@ from django.conf import settings
 
 def check_session_csrf_enabled(app_configs, **kwargs):
     errors = []
-    if "session_csrf.CsrfMiddleware" not in settings.MIDDLEWARE_CLASSES:
+    if "session_csrf.CsrfMiddleware" not in settings.MIDDLEWARE:
         errors.append(Error(
             "SESSION_CSRF_DISABLED",
-            hint="Please add 'session_csrf.CsrfMiddleware' to MIDDLEWARE_CLASSES",
+            hint="Please add 'session_csrf.CsrfMiddleware' to MIDDLEWARE",
         ))
     return errors
 
