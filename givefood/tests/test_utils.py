@@ -12,7 +12,6 @@ from givefood.utils.geo import (
 from givefood.utils.text import (
     clean_foodbank_need_text,
     diff_html,
-    remove_letters,
     text_for_comparison,
 )
 
@@ -65,13 +64,6 @@ class TestTextUtilities:
         """Test that clean_foodbank_need_text fixes UHT capitalization."""
         assert "UHT" in clean_foodbank_need_text("Uht milk")
 
-    def test_remove_letters(self):
-        """Test that remove_letters removes alphabetic characters."""
-        assert remove_letters("abc123def456") == "123456"
-
-    def test_remove_letters_with_uppercase(self):
-        """Test that remove_letters handles mixed case text."""
-        assert remove_letters("ABC123DEF456") == "123456"
 
 
 class TestGeographicUtilities:

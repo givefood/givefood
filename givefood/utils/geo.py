@@ -12,13 +12,10 @@ from openlocationcode import openlocationcode as olc
 from urllib.parse import quote
 
 from django.urls import reverse
-from django.utils.html import strip_tags
 from django.db.models import Value
 from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.const.general import SITE_DOMAIN
-from givefood.const.parlcon_mp import parlcon_mp
-from givefood.const.parlcon_party import parlcon_party
 from givefood.utils.cache import get_cred, get_all_open_foodbanks, get_all_constituencies
 
 
@@ -40,23 +37,6 @@ def geocode(address):
         except:
             lat_lng = "0,0"
     return lat_lng
-
-
-def approx_rev_geocode(lat_lng):
-
-    gmap_geocode_key = get_cred("gmap_geocode_key")
-
-    lat = lat_lng.split(",")[0]
-    lng = lat_lng.split(",")[1]
-
-    address_api_url = "https://maps.googleapis.com/maps/api/geocode/json?region=uk&key=%s&latlng=%s,%s" % (gmap_geocode_key, lat, lng)
-    request = requests.get(address_api_url)
-
-    if request.status_code == 200:
-        address_result_json = request.json()
-        address_components = address_result_json["results"][0]["address_components"]
-        sublocality = address_components[2]["long_name"]
-    return sublocality
 
 
 def get_place_id(address):
@@ -613,14 +593,6 @@ def pluscode(lat_lng, locality=None):
         return {}
 
 
-def mp_from_parlcon(parliamentary_constituency):
-
-    return {
-        "mp":parlcon_mp.get(parliamentary_constituency),
-        "party":parlcon_party.get(parliamentary_constituency),
-    }
-
-
 def mpid_from_name(name):
 
     if name:
@@ -630,73 +602,4 @@ def mpid_from_name(name):
             mpid_api_json = response.json()
             if mpid_api_json["totalResults"] != 0:
                 return mpid_api_json["items"][0]["value"]["id"]
-    return False
-
-
-def mp_contact_details(mpid):
-
-    mp_contact_details = {}
-
-    member_url = "https://members-api.parliament.uk/api/Members/%s/" % (mpid)
-    member_json = fetch_json(member_url)
-    mp_contact_details["display_name"] = member_json["value"]["nameDisplayAs"]
-
-    synopsis_url = "https://members-api.parliament.uk/api/Members/%s/Synopsis" % (mpid)
-    synopsis_json = fetch_json(synopsis_url)
-    mp_contact_details["synopsis"] = strip_tags(synopsis_json["value"])
-
-    contact_url = "https://members-api.parliament.uk/api/Members/%s/Contact" % (mpid)
-    contact_json = fetch_json(contact_url)
-    for contact_method in contact_json["value"]:
-
-        if contact_method["type"] == "Parliamentary":
-            mp_contact_details["email_parl"] = contact_method["email"]
-            address = contact_method["line1"]
-            if contact_method["line2"]:
-                address = address + "\n" + contact_method["line2"]
-            if contact_method["line3"]:
-                address = address + "\n" + contact_method["line3"]
-            if contact_method["line4"]:
-                address = address + "\n" + contact_method["line4"]
-            if contact_method["line5"]:
-                address = address + "\n" + contact_method["line5"]
-            mp_contact_details["address_parl"] = address
-            mp_contact_details["postcode_parl"] = contact_method["postcode"]
-            mp_contact_details["phone_parl"] = contact_method["phone"]
-            if mp_contact_details["address_parl"] and mp_contact_details["postcode_parl"]:
-                mp_contact_details["lat_lng_parl"] = geocode("%s\n%s" % (mp_contact_details["address_parl"], mp_contact_details["postcode_parl"]))
-
-        if contact_method["type"] == "Constituency":
-            mp_contact_details["email_con"] = contact_method["email"]
-            address = contact_method["line1"]
-            if contact_method["line2"]:
-                address = address + "\n" + contact_method["line2"]
-            if contact_method["line3"]:
-                address = address + "\n" + contact_method["line3"]
-            if contact_method["line4"]:
-                address = address + "\n" + contact_method["line4"]
-            if contact_method["line5"]:
-                address = address + "\n" + contact_method["line5"]
-            mp_contact_details["address_con"] = address
-            mp_contact_details["postcode_con"] = contact_method["postcode"]
-            mp_contact_details["phone_con"] = contact_method["phone"]
-            if mp_contact_details["address_con"] and mp_contact_details["postcode_con"]:
-                mp_contact_details["lat_lng_con"] = geocode("%s\n%s" % (mp_contact_details["address_con"], mp_contact_details["postcode_con"]))
-        
-        if contact_method["type"] == "Website":
-            mp_contact_details["website"] = contact_method["line1"]
-        
-        if contact_method["type"] == "Twitter":
-            mp_contact_details["twitter"] = contact_method["line1"].replace("https://twitter.com/","")
-
-    return mp_contact_details
-
-
-def fetch_json(url):
-
-    request = requests.get(url)
-    if request.status_code == 200:
-        url_result_json = request.json()
-        return url_result_json
-
     return False
