@@ -29,5 +29,5 @@ class TestAPI3Company:
 
     def test_company_not_found(self, client):
         """Test that an invalid company slug returns 404."""
-        response = client.get('/api/3/company/nonexistent-company/')
+        response = client.get('/api/3/donationpoints/company/nonexistent-company/')
         assert response.status_code == 404
