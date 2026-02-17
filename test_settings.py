@@ -1,14 +1,20 @@
 """
 Test settings for Give Food project.
-Uses SQLite for testing instead of PostgreSQL.
+Uses PostgreSQL for testing, matching production configuration.
 """
+import os
+
 from givefood.settings import *
 
-# Use SQLite for tests
+# Use PostgreSQL for tests (matching production)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('TEST_DB_NAME', os.environ.get('DB_NAME', 'givefood_test')),
+        'USER': os.environ.get('TEST_DB_USER', os.environ.get('DB_USER', 'postgres')),
+        'PASSWORD': os.environ.get('TEST_DB_PASS', os.environ.get('DB_PASS', 'postgres')),
+        'HOST': os.environ.get('TEST_DB_HOST', os.environ.get('DB_HOST', 'localhost')),
+        'PORT': os.environ.get('TEST_DB_PORT', os.environ.get('DB_PORT', '5432')),
     }
 }
 
@@ -19,9 +25,6 @@ CACHES = {
         'LOCATION': 'unique-snowflake',
     }
 }
-
-# Disable django-earthdistance and django_tasks.backends.database for tests since SQLite doesn't support them
-INSTALLED_APPS = [app for app in INSTALLED_APPS if app not in ['django_earthdistance', 'django_tasks.backends.database']]
 
 # Disable Sentry for tests
 SENTRY_DSN = None

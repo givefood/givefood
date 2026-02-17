@@ -17,24 +17,7 @@ DEFAULT_FORMAT = "json"
 
 @cache_page(SECONDS_IN_DAY)
 def index(request):
-    from django.db import connection
-    
-    # Use DISTINCT ON for PostgreSQL, or manual grouping for SQLite
-    if connection.vendor == 'postgresql':
-        dumps = Dump.objects.order_by('dump_type', 'dump_format', '-created').distinct('dump_type', 'dump_format').defer('the_dump')
-    else:
-        # For SQLite, get unique dump_type/dump_format combinations and get the latest for each
-        from django.db.models import Max
-        dump_ids = []
-        dump_combos = Dump.objects.values('dump_type', 'dump_format').distinct()
-        for combo in dump_combos:
-            latest = Dump.objects.filter(
-                dump_type=combo['dump_type'],
-                dump_format=combo['dump_format']
-            ).order_by('-created').first()
-            if latest:
-                dump_ids.append(latest.id)
-        dumps = Dump.objects.filter(id__in=dump_ids).order_by('dump_type', 'dump_format', '-created').defer('the_dump')
+    dumps = Dump.objects.order_by('dump_type', 'dump_format', '-created').distinct('dump_type', 'dump_format').defer('the_dump')
 
     template_vars = {
         "dumps": dumps,
@@ -718,8 +701,7 @@ def donationpoint_search(request):
     try:
         donationpoints = find_donationpoints(lat_lng, 20)
     except Exception:
-        # If geographic queries fail (e.g., SQLite in tests without PostGIS),
-        # return bad request
+        # If geographic queries fail, return bad request
         return HttpResponseBadRequest()
 
     response_list = []
