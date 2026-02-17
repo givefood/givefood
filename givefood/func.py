@@ -15,6 +15,7 @@ from openlocationcode import openlocationcode as olc
 from itertools import chain
 from math import radians, cos, sin, asin, sqrt
 from collections import OrderedDict 
+from datetime import datetime
 from django.utils import timezone
 from time import mktime, sleep
 from google import genai
