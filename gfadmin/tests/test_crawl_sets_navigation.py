@@ -56,4 +56,4 @@ class TestCrawlSetsNavigation:
         # Check that the page contains the Crawl Sets link in navigation
         content = response.content.decode('utf-8')
         assert 'href="/admin/crawl-sets/"' in content or 'href="{% url \'admin:crawl_sets\' %}"' in content
-        assert '>Crawl Sets</a>' in content
+        assert '>Crawls</a>' in content
