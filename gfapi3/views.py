@@ -13,14 +13,8 @@ def index(request):
 
 
 def company(request, slug):
-    from django.db import connection
-    
-    # Use DISTINCT ON for PostgreSQL, or values().distinct() for SQLite
-    if connection.vendor == 'postgresql':
-        allowed_slugs = [dp.company_slug for dp in FoodbankDonationPoint.objects.all().distinct("company_slug")]
-    else:
-        allowed_slugs = list(FoodbankDonationPoint.objects.values_list('company_slug', flat=True).distinct())
-    
+    allowed_slugs = [dp.company_slug for dp in FoodbankDonationPoint.objects.all().distinct("company_slug")]
+
     if slug not in allowed_slugs:
         return HttpResponse(json.dumps({"error": "Company not found"}), content_type="application/json", status=404)
     

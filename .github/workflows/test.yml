@@ -11,9 +11,36 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: givefood_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      TEST_DB_NAME: givefood_test
+      TEST_DB_USER: postgres
+      TEST_DB_PASS: postgres
+      TEST_DB_HOST: localhost
+      TEST_DB_PORT: 5432
+
     steps:
     - uses: actions/checkout@v4
+
+    - name: Install PostgreSQL extensions
+      run: |
+        PGPASSWORD=postgres psql -h localhost -U postgres -d givefood_test -c "CREATE EXTENSION IF NOT EXISTS cube;"
+        PGPASSWORD=postgres psql -h localhost -U postgres -d givefood_test -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
     
     - name: Set up Python 3.12.3
       uses: actions/setup-python@v5

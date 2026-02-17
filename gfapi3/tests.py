@@ -23,6 +23,11 @@ class TestAPI3Index:
         assert 'Give Food API 3' in content
 
 
-# Note: The company endpoint tests are skipped as they require PostgreSQL
-# (uses DISTINCT ON which is not available in SQLite).
-# These tests should be run manually against a PostgreSQL database.
+@pytest.mark.django_db
+class TestAPI3Company:
+    """Test the API v3 company endpoint."""
+
+    def test_company_not_found(self, client):
+        """Test that an invalid company slug returns 404."""
+        response = client.get('/api/3/company/nonexistent-company/')
+        assert response.status_code == 404

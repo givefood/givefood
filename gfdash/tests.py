@@ -148,13 +148,27 @@ class TestSupermarkets:
 
 @pytest.mark.django_db
 class TestDeliveries:
-    """Test the deliveries dashboard pages.
-    
-    Note: These tests use PostgreSQL-specific raw SQL (to_char function)
-    and are skipped in SQLite testing environments.
-    These tests should be run against a PostgreSQL database.
-    """
-    pass  # Tests require PostgreSQL's to_char function
+    """Test the deliveries dashboard pages."""
+
+    def test_deliveries_count_accessible(self, client):
+        """Test that the deliveries count page is accessible."""
+        response = client.get('/dashboard/deliveries/count/')
+        assert response.status_code == 200
+
+    def test_deliveries_items_accessible(self, client):
+        """Test that the deliveries items page is accessible."""
+        response = client.get('/dashboard/deliveries/items/')
+        assert response.status_code == 200
+
+    def test_deliveries_weight_accessible(self, client):
+        """Test that the deliveries weight page is accessible."""
+        response = client.get('/dashboard/deliveries/weight/')
+        assert response.status_code == 200
+
+    def test_deliveries_calories_accessible(self, client):
+        """Test that the deliveries calories page is accessible."""
+        response = client.get('/dashboard/deliveries/calories/')
+        assert response.status_code == 200
 
 
 @pytest.mark.django_db

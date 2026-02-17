@@ -16,7 +16,7 @@ The test suite is organized as follows:
   - Uses `--reuse-db` and `--nomigrations` for faster test runs
 
 - **test_settings.py** - Test-specific Django settings
-  - Uses SQLite in-memory database instead of PostgreSQL
+  - Uses PostgreSQL database matching production configuration
   - Disables Sentry for tests
   - Speeds up password hashing for tests
 
@@ -98,12 +98,12 @@ Tests for the API v2 endpoints covering index, documentation, food banks, food b
 Tests for the API v3 endpoints:
 - API v3 index page accessibility and content verification
 
-*Note: Company endpoint tests require PostgreSQL and are skipped in SQLite test environments.*
+*Note: Company endpoint tests use PostgreSQL's DISTINCT ON feature.*
 
 #### gfdash/tests.py
 Tests for the dashboard app covering index, most requested items, most excess items, item categories, item groups, weekly item count, articles, excess, food banks found, supermarkets, Trussell Trust, price per kg, price per calorie, and charity income/expenditure views.
 
-*Note: Some dashboard tests require PostgreSQL-specific features and are skipped in SQLite test environments.*
+*Note: Some dashboard tests use PostgreSQL-specific features like `to_char`.*
 
 #### gfwfbn/tests.py
 Tests for the What Food Banks Need tool covering index, food bank pages, location pages, search, donation points, nearby food banks, news pages, charity pages, markdown pages, GeoJSON endpoints, and subscription pages.
@@ -194,7 +194,7 @@ uv run pytest --cov=givefood --cov=gfapi2 --cov-report=html
 
 2. **External APIs**: Tests do not call external APIs (geocoding, maps, etc.) to avoid dependencies and rate limits.
 
-3. **PostgreSQL Extensions**: Tests use SQLite instead of PostgreSQL, so extensions like `django-earthdistance` are disabled during testing.
+3. **PostgreSQL Extensions**: Tests run against PostgreSQL with `cube` and `earthdistance` extensions, matching production configuration.
 
 ## Future Enhancements
 
