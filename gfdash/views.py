@@ -1,6 +1,6 @@
 import json
 
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 from collections import OrderedDict
 from operator import or_
 from functools import reduce
@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponseForbidden
 from django.views.decorators.cache import cache_page
 from django.db.models import Q, Count, Sum
+from django.utils import timezone
 
 from givefood.models import CharityYear, Foodbank, FoodbankChange, FoodbankArticle, FoodbankChangeLine, FoodbankDonationPoint, Order, OrderLine
 from givefood.func import group_list, get_all_foodbanks, filter_change_text
@@ -86,7 +87,7 @@ def most_requested_items(request):
     days = int(request.GET.get("days", default_days))
     if days not in allowed_days:
         return HttpResponseForbidden()
-    day_threshold = datetime.now() - timedelta(days=days)
+    day_threshold = timezone.now() - timedelta(days=days)
 
     trusselltrust = ("trusselltrust" in request.path)
 
@@ -150,7 +151,7 @@ def most_excess_items(request):
     days = int(request.GET.get("days", default_days))
     if days not in allowed_days:
         return HttpResponseForbidden()
-    day_threshold = datetime.now() - timedelta(days=days)
+    day_threshold = timezone.now() - timedelta(days=days)
 
     # Empty vars we'll use
     items = []
@@ -296,7 +297,7 @@ def beautybanks(request):
     all_needs = FoodbankChange.objects.filter(all_needs_query).filter(published = True).order_by("-created")[:50]
 
     all_needs_query = reduce(or_, (Q(change_text__contains=product) for product in products))
-    time_since = datetime.today() - timedelta(days=28)
+    time_since = timezone.now() - timedelta(days=28)
     time_since_needs = FoodbankChange.objects.filter(all_needs_query).filter(published = True).filter(created__gt = time_since).order_by("-created")
 
     london_needs_query = reduce(or_, (Q(foodbank=london_foodbank) for london_foodbank in london_foodbanks))

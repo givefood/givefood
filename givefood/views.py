@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 import requests, json, tomllib, os
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
@@ -10,6 +10,7 @@ from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http4
 from django.db.models import Sum, Case, When, Value, IntegerField
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
+from django.utils import timezone
 from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 from django.conf import settings
@@ -1011,7 +1012,7 @@ def frag(request, frag):
 
     # need-hits
     if frag == "need-hits":
-        number_hits = FoodbankHit.objects.filter(day__gte=datetime.now() - timedelta(days=7)).aggregate(Sum('hits'))["hits__sum"]
+        number_hits = FoodbankHit.objects.filter(day__gte=timezone.now() - timedelta(days=7)).aggregate(Sum('hits'))["hits__sum"]
         frag_text = intcomma(number_hits, False)
 
     # news - returns HTML from template

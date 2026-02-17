@@ -1,6 +1,7 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 from givefood.models import FoodbankSubscriber
 
@@ -13,7 +14,7 @@ class Command(BaseCommand):
 
         unconfirmed_subscribers = FoodbankSubscriber.objects.filter(
             confirmed=False,
-            created__lte=datetime.now() - timedelta(days=28),
+            created__lte=timezone.now() - timedelta(days=28),
         )
 
         subscriber_count = unconfirmed_subscribers.count()

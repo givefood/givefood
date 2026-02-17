@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 
 from django.forms import ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
@@ -33,7 +33,7 @@ class FoodbankForm(ModelForm):
 
     def save(self, commit=True): 
         foodbank = super().save(commit=False)
-        foodbank.edited = datetime.now()
+        foodbank.edited = timezone.now()
         
         if commit:
             foodbank.save()
@@ -47,7 +47,7 @@ class FoodbankUrlsForm(ModelForm):
 
     def save(self, commit=True): 
         foodbank = super().save(commit=False)
-        foodbank.edited = datetime.now()
+        foodbank.edited = timezone.now()
         
         if commit:
             foodbank.save()
@@ -61,7 +61,7 @@ class FoodbankAddressForm(ModelForm):
 
     def save(self, commit=True): 
         foodbank = super().save(commit=False)
-        foodbank.edited = datetime.now()
+        foodbank.edited = timezone.now()
         
         if commit:
             foodbank.save()
@@ -75,7 +75,7 @@ class FoodbankPhoneForm(ModelForm):
 
     def save(self, commit=True): 
         foodbank = super().save(commit=False)
-        foodbank.edited = datetime.now()
+        foodbank.edited = timezone.now()
         
         if commit:
             foodbank.save()
@@ -89,7 +89,7 @@ class FoodbankEmailForm(ModelForm):
 
     def save(self, commit=True): 
         foodbank = super().save(commit=False)
-        foodbank.edited = datetime.now()
+        foodbank.edited = timezone.now()
         
         if commit:
             foodbank.save()
@@ -103,7 +103,7 @@ class FoodbankFsaIdForm(ModelForm):
 
     def save(self, commit=True): 
         foodbank = super().save(commit=False)
-        foodbank.edited = datetime.now()
+        foodbank.edited = timezone.now()
         
         if commit:
             foodbank.save()
@@ -131,7 +131,7 @@ class FoodbankLocationForm(ModelForm):
 
     def save(self, commit=True): 
         location = super().save(commit=False)
-        location.edited = datetime.now()
+        location.edited = timezone.now()
         
         if commit:
             location.save()
@@ -152,7 +152,7 @@ class FoodbankDonationPointForm(ModelForm):
 
     def save(self, commit=True): 
         donation_point = super().save(commit=False)
-        donation_point.edited = datetime.now()
+        donation_point.edited = timezone.now()
         
         if commit:
             donation_point.save()

@@ -1,8 +1,9 @@
 """Tests for the foodbank check functionality."""
 import pytest
 from unittest.mock import patch, Mock, call
-from datetime import datetime
+from datetime import timedelta
 from django.test import RequestFactory
+from django.utils import timezone
 
 from givefood.models import Foodbank, CrawlItem
 
@@ -196,7 +197,7 @@ class TestFoodbankCheck:
         mock_render.return_value = Mock(status_code=200)
         
         # Record time before the request
-        start_time = datetime.now()
+        start_time = timezone.now()
         
         # Make a GET request to the view
         from gfadmin.views import foodbank_check
@@ -207,7 +208,7 @@ class TestFoodbankCheck:
         response = foodbank_check(request, slug=foodbank.slug)
         
         # Record time after the request
-        end_time = datetime.now()
+        end_time = timezone.now()
         
         # Verify CrawlItems were created with finish times
         crawl_items = CrawlItem.objects.filter(foodbank=foodbank, crawl_type='check')
@@ -220,7 +221,7 @@ class TestFoodbankCheck:
             # The finish time should be within the reasonable time window
             # (comparing without timezone info for simplicity)
             assert item.start.replace(tzinfo=None) >= start_time.replace(tzinfo=None, microsecond=0)
-            assert item.finish.replace(tzinfo=None) <= end_time.replace(tzinfo=None) + datetime.resolution
+            assert item.finish.replace(tzinfo=None) <= end_time.replace(tzinfo=None) + timedelta(microseconds=1)
 
     @patch('gfadmin.views.render')
     @patch('gfadmin.views.gemini')

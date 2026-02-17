@@ -3,7 +3,9 @@ import json
 from django.shortcuts import get_object_or_404, render
 import logging, requests
 
-from datetime import datetime, timedelta
+from datetime import timedelta
+
+from django.utils import timezone
 
 from django.http import HttpResponse
 from django.core.cache import cache
@@ -75,7 +77,7 @@ def discrepancy_check(request):
 
                     if not foodbank_page:
                         # No body in HTML, skip discrepancy check
-                        foodbank.last_discrepancy_check = datetime.now()
+                        foodbank.last_discrepancy_check = timezone.now()
                         foodbank.save(do_decache=False, do_geoupdate=False)
                         continue
 
@@ -118,7 +120,7 @@ def discrepancy_check(request):
                     )
                     website_discrepancy.save()
 
-        foodbank.last_discrepancy_check = datetime.now()
+        foodbank.last_discrepancy_check = timezone.now()
         foodbank.save(do_decache=False, do_geoupdate=False)
     
     return HttpResponse("OK")
