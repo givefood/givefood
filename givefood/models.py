@@ -2273,43 +2273,6 @@ class ParliamentaryConstituency(models.Model):
         self.latitude = self.centroid.split(",")[0]
         self.longitude = self.centroid.split(",")[1]
 
-        # Get MP contact details
-        # contact_details = mp_contact_details(self.mp_parl_id)
-
-        # self.mp_display_name = contact_details.get("display_name", None)
-
-        # self.website = contact_details.get("website", None)
-        # self.mp_twitter_handle = contact_details.get("twitter", None)
-        # self.mp_synopsis = contact_details.get("synopsis", None)
-        
-        # if not self.email_parl:
-        #     self.email_parl = contact_details.get("email_parl", None)
-        # self.address_parl = contact_details.get("address_parl", None)
-        # self.postcode_parl = contact_details.get("postcode_parl", None)
-        # self.lat_lng_parl = contact_details.get("lat_lng_parl", None)
-        # self.phone_parl = contact_details.get("phone_parl", None)
-
-        # self.email_con = contact_details.get("email_con", None)
-        # self.address_con = contact_details.get("address_con", None)
-        # self.postcode_con = contact_details.get("postcode_con", None)
-        # self.lat_lng_con = contact_details.get("lat_lng_con", None)
-        # self.phone_con = contact_details.get("phone_con", None)
-
-        # # Cleanup phone numbers
-        # if self.phone_parl:
-        #     self.phone_parl = self.phone_parl.replace(" ","")
-        # if self.phone_con:
-        #     self.phone_con = self.phone_con.replace(" ","")
-
-        # Resave denormed data
-        # foodbanks = Foodbank.objects.filter(parliamentary_constituency = self) 
-        # for foodbank in foodbanks:
-        #     foodbank.save()
-
-        # locations = FoodbankLocation.objects.filter(parliamentary_constituency = self)
-        # for location in locations:
-        #     location.save()
-        
         super(ParliamentaryConstituency, self).save(*args, **kwargs)
 
     class Meta:
