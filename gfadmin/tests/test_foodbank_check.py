@@ -1,6 +1,7 @@
 """Tests for the foodbank check functionality."""
 import pytest
 from unittest.mock import patch, Mock, call
+from datetime import timedelta
 from django.test import RequestFactory
 from django.utils import timezone
 
@@ -220,7 +221,7 @@ class TestFoodbankCheck:
             # The finish time should be within the reasonable time window
             # (comparing without timezone info for simplicity)
             assert item.start.replace(tzinfo=None) >= start_time.replace(tzinfo=None, microsecond=0)
-            assert item.finish.replace(tzinfo=None) <= end_time.replace(tzinfo=None) + datetime.resolution
+            assert item.finish.replace(tzinfo=None) <= end_time.replace(tzinfo=None) + timedelta(microseconds=1)
 
     @patch('gfadmin.views.render')
     @patch('gfadmin.views.gemini')

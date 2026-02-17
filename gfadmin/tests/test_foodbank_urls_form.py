@@ -1,6 +1,7 @@
 """Tests for the foodbank URLs edit form."""
 import pytest
 from unittest.mock import patch, Mock
+from datetime import timedelta
 from django.urls import reverse
 from django.test import RequestFactory
 from django.utils import timezone
@@ -144,5 +145,5 @@ class TestFoodbankUrlsForm:
         # The finish time should be within the reasonable time window
         # (comparing without timezone info for simplicity)
         assert crawl_item.start.replace(tzinfo=None) >= start_time.replace(tzinfo=None, microsecond=0)
-        assert crawl_item.finish.replace(tzinfo=None) <= end_time.replace(tzinfo=None) + datetime.resolution
+        assert crawl_item.finish.replace(tzinfo=None) <= end_time.replace(tzinfo=None) + timedelta(microseconds=1)
 
