@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+import logging
 import operator
 import urllib
 
@@ -34,7 +35,8 @@ def geocode(address):
                 address_result_json["results"][0]["geometry"]["location"]["lat"],
                 address_result_json["results"][0]["geometry"]["location"]["lng"]
             )
-        except:
+        except (KeyError, IndexError, ValueError) as e:
+            logging.warning("Failed to geocode address '%s': %s", address, e)
             lat_lng = "0,0"
     return lat_lng
 
@@ -100,7 +102,7 @@ def oc_geocode(address):
 
     oc_geocode_key = get_cred("oc_geocode_key")
 
-    address_api_url = "https://api.opencagedata.com/geocode/v1/json?q=%s&key=%s" % (urllib.quote(address.encode('utf8')), oc_geocode_key)
+    address_api_url = "https://api.opencagedata.com/geocode/v1/json?q=%s&key=%s" % (urllib.parse.quote(address), oc_geocode_key)
     request = requests.get(address_api_url)
     if request.status_code == 200:
         try:
@@ -109,7 +111,8 @@ def oc_geocode(address):
                 address_result_json["results"][0]["geometry"]["lat"],
                 address_result_json["results"][0]["geometry"]["lng"]
             )
-        except:
+        except (KeyError, IndexError, ValueError) as e:
+            logging.warning("Failed to geocode address with OpenCage '%s': %s", address, e)
             lat_lng = "0,0"
     return lat_lng
 

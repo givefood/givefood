@@ -1,14 +1,19 @@
 """
 Tests for the main givefood app utility functions.
 """
+import logging
+from unittest.mock import patch, MagicMock
+
 import pytest
 from unittest.mock import patch
 from givefood.utils.geo import (
     _foodbank_queryset,
     distance_meters,
+    geocode,
     geojson_dict,
     is_uk,
     miles,
+    oc_geocode,
     pluscode,
 )
 from givefood.utils.text import (
@@ -269,6 +274,114 @@ class TestPlusCode:
         assert result["compound"] == "GW6F+M4 City of London"
 
 
+class TestGeocode:
+    """Test geocode function exception handling."""
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_geocode_empty_results_returns_fallback(self, mock_get, mock_cred):
+        """Test geocode returns '0,0' when results array is empty."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"results": []}
+        mock_get.return_value = mock_response
+
+        result = geocode("some address")
+        assert result == "0,0"
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_geocode_missing_key_returns_fallback(self, mock_get, mock_cred):
+        """Test geocode returns '0,0' when expected keys are missing."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"results": [{"geometry": {}}]}
+        mock_get.return_value = mock_response
+
+        result = geocode("some address")
+        assert result == "0,0"
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_geocode_logs_warning_on_failure(self, mock_get, mock_cred, caplog):
+        """Test geocode logs a warning when parsing fails."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"results": []}
+        mock_get.return_value = mock_response
+
+        with caplog.at_level(logging.WARNING):
+            geocode("test address")
+        assert "Failed to geocode address" in caplog.text
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_geocode_success(self, mock_get, mock_cred):
+        """Test geocode returns correct lat_lng on success."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "results": [{"geometry": {"location": {"lat": 51.5, "lng": -0.1}}}]
+        }
+        mock_get.return_value = mock_response
+
+        result = geocode("London")
+        assert result == "51.5,-0.1"
+
+
+class TestOcGeocode:
+    """Test oc_geocode function exception handling."""
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_oc_geocode_empty_results_returns_fallback(self, mock_get, mock_cred):
+        """Test oc_geocode returns '0,0' when results array is empty."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"results": []}
+        mock_get.return_value = mock_response
+
+        result = oc_geocode("some address")
+        assert result == "0,0"
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_oc_geocode_missing_key_returns_fallback(self, mock_get, mock_cred):
+        """Test oc_geocode returns '0,0' when expected keys are missing."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"results": [{"geometry": {}}]}
+        mock_get.return_value = mock_response
+
+        result = oc_geocode("some address")
+        assert result == "0,0"
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_oc_geocode_logs_warning_on_failure(self, mock_get, mock_cred, caplog):
+        """Test oc_geocode logs a warning when parsing fails."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"results": []}
+        mock_get.return_value = mock_response
+
+        with caplog.at_level(logging.WARNING):
+            oc_geocode("test address")
+        assert "Failed to geocode address with OpenCage" in caplog.text
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_oc_geocode_success(self, mock_get, mock_cred):
+        """Test oc_geocode returns correct lat_lng on success."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "results": [{"geometry": {"lat": 51.5, "lng": -0.1}}]
+        }
+        mock_get.return_value = mock_response
+
+        result = oc_geocode("London")
+        assert result == "51.5,-0.1"
 class TestFoodbankQueryset:
     """Test _foodbank_queryset helper function."""
 
