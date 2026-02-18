@@ -2,8 +2,10 @@ import json
 import unicodecsv as csv
 
 from django.http import HttpResponse
+from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint
+from givefood.const.cache_times import SECONDS_IN_DAY
 
 DEFAULT_FORMAT = "json"
 
@@ -59,3 +61,12 @@ def company(request, slug):
         })
 
     return HttpResponse(json.dumps(response_list), content_type="application/json")
+
+
+@cache_page(SECONDS_IN_DAY)
+def slugfromid(request, uuid):
+    try:
+        foodbank = Foodbank.objects.only("slug").get(uuid=uuid)
+    except Foodbank.DoesNotExist:
+        return HttpResponse("Not found", status=404)
+    return HttpResponse(foodbank.slug, content_type="text/plain")
