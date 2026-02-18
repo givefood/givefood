@@ -5,7 +5,9 @@ import logging
 from unittest.mock import patch, MagicMock
 
 import pytest
+from unittest.mock import patch
 from givefood.utils.geo import (
+    _foodbank_queryset,
     distance_meters,
     geocode,
     geojson_dict,
@@ -380,3 +382,26 @@ class TestOcGeocode:
 
         result = oc_geocode("London")
         assert result == "51.5,-0.1"
+class TestFoodbankQueryset:
+    """Test _foodbank_queryset helper function."""
+
+    @patch("django.utils.translation.get_language", return_value="en")
+    def test_foodbank_queryset_english_no_translation_prefetch(self, mock_lang):
+        """Test that English language does not add translation prefetch."""
+        qs = _foodbank_queryset()
+        prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
+        assert "latest_need__foodbankchangetranslation_set" not in prefetches
+
+    @patch("django.utils.translation.get_language", return_value="es")
+    def test_foodbank_queryset_non_english_adds_translation_prefetch(self, mock_lang):
+        """Test that non-English language adds translation prefetch."""
+        qs = _foodbank_queryset()
+        prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
+        assert "latest_need__foodbankchangetranslation_set" in prefetches
+
+    @patch("django.utils.translation.get_language", return_value=None)
+    def test_foodbank_queryset_none_language_no_translation_prefetch(self, mock_lang):
+        """Test that None language does not add translation prefetch."""
+        qs = _foodbank_queryset()
+        prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
+        assert "latest_need__foodbankchangetranslation_set" not in prefetches
