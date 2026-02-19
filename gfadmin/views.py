@@ -3299,6 +3299,7 @@ def needtestbed(request):
                 "model": model,
                 "cpm": None,
                 "result": None,
+                "error": None,
                 "need_match": None,
                 "excess_match": None,
             }
@@ -3352,8 +3353,17 @@ def needtestbed(request):
                     if last_published_need:
                         result["need_match"] = text_for_comparison(need_text) == text_for_comparison(last_published_need.change_text)
                         result["excess_match"] = text_for_comparison(excess_text) == text_for_comparison(last_published_need.excess_change_text)
-            except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError):
+                else:
+                    result["error"] = "HTTP %s" % api_response.status_code
+                    try:
+                        error_json = api_response.json()
+                        if "error" in error_json:
+                            result["error"] = error_json["error"].get("message", result["error"])
+                    except (ValueError, KeyError):
+                        pass
+            except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError) as e:
                 logging.warning("Needtestbed: Error calling OpenRouter model %s", model)
+                result["error"] = str(e)
 
             results.append(result)
 
