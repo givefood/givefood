@@ -3224,6 +3224,10 @@ def needtestbed(request):
         "mistralai/mistral-nemo",
         "mistralai/devstral-small",
         "anthropic/claude-3-haiku",
+        "minimax/minimax-m2.5",
+        "deepseek/deepseek-v3.2",
+        "qwen/qwen3-embedding-8b",
+        "qwen/qwen3.5-397b-a17b",
     ]
 
     ninety_days_ago = timezone.now() - timedelta(days=90)
