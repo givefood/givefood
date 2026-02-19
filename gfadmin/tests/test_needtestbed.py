@@ -27,7 +27,7 @@ class TestNeedtestbedViewConstants:
             "anthropic/claude-3-haiku",
             "minimax/minimax-m2.5",
             "deepseek/deepseek-v3.2",
-            "qwen/qwen3-embedding-8b",
+
             "qwen/qwen3.5-397b-a17b",
         ]
         # Import the view and check the models list is defined
