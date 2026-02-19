@@ -3212,3 +3212,157 @@ def article_toggle_featured(request, article_id):
         )
     
     return redirect(reverse("gfadmin:index"))
+
+
+def needtestbed(request):
+
+    OPENROUTER_MODELS = [
+        "google/gemini-2.5-flash",
+        "amazon/nova-micro-v1",
+        "google/gemini-3-flash-preview",
+        "openai/gpt-5-nano",
+        "mistralai/mistral-nemo",
+        "mistralai/devstral-small",
+        "anthropic/claude-3-haiku",
+    ]
+
+    ninety_days_ago = timezone.now() - timedelta(days=90)
+    foodbanks_with_recent_needs = Foodbank.objects.filter(
+        last_need__gte=ninety_days_ago,
+    ).order_by("name")
+
+    slug = request.GET.get("slug")
+    results = []
+    foodbank = None
+    last_published_need = None
+
+    if slug:
+        foodbank = get_object_or_404(Foodbank, slug=slug)
+
+        try:
+            last_published_need = FoodbankChange.objects.filter(foodbank=foodbank, published=True).latest("created")
+        except FoodbankChange.DoesNotExist:
+            last_published_need = None
+
+        # Scrape foodbank page (same technique as do_foodbank_need_check)
+        headers = {
+            "User-Agent": BOT_USER_AGENT,
+        }
+
+        foodbank_shoppinglist_page = ""
+        foodbank_shoppinglist_html = ""
+
+        try:
+            response = requests.get(foodbank.shopping_list_url, headers=headers, timeout=10)
+            foodbank_shoppinglist_html = response.text
+            foodbank_shoppinglist_page = htmlbodytext(response.text)
+        except requests.exceptions.RequestException:
+            pass
+
+        need_prompt = render_to_string(
+            "foodbank_need_prompt.txt",
+            {
+                "foodbank":foodbank,
+                "scrape_type":"web",
+                "foodbank_page":foodbank_shoppinglist_page,
+                "foodbank_html":foodbank_shoppinglist_html,
+            }
+        )
+
+        response_schema = {
+            "type": "object",
+            "properties": {
+                "needed": {
+                    "type": "array",
+                    "description": "A list of food items the food bank is requesting or has low stock of. Items should be in Title Case and not repeated.",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "excess": {
+                    "type": "array",
+                    "description": "A list of food items the food bank has an excess of. Items should be in Title Case and not repeated.",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+            },
+            "required": ["needed", "excess"]
+        }
+
+        openrouter_key = get_cred("openrouter_needtestbed")
+
+        from givefood.utils.text import clean_foodbank_need_text, text_for_comparison
+
+        for model in OPENROUTER_MODELS:
+            result = {
+                "model": model,
+                "cpm": None,
+                "result": None,
+                "match": None,
+            }
+
+            try:
+                api_response = requests.post(
+                    "https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": "Bearer %s" % openrouter_key,
+                        "Content-Type": "application/json",
+                    },
+                    json={
+                        "model": model,
+                        "messages": [
+                            {"role": "user", "content": need_prompt}
+                        ],
+                        "response_format": {
+                            "type": "json_schema",
+                            "json_schema": {
+                                "name": "foodbank_needs",
+                                "strict": True,
+                                "schema": response_schema,
+                            }
+                        },
+                        "temperature": 0,
+                    },
+                    timeout=60,
+                )
+
+                if api_response.status_code == 200:
+                    response_json = api_response.json()
+                    usage = response_json.get("usage", {})
+                    total_cost = usage.get("total_cost") or response_json.get("total_cost")
+
+                    if total_cost is not None:
+                        result["cpm"] = float(total_cost) * 1000
+
+                    content = response_json["choices"][0]["message"]["content"]
+                    parsed = json.loads(content)
+
+                    need_text = "\n".join(parsed.get("needed", []))
+                    need_text = clean_foodbank_need_text(need_text)
+                    excess_text = "\n".join(parsed.get("excess", []))
+                    excess_text = clean_foodbank_need_text(excess_text)
+
+                    result["result"] = {
+                        "need_text": need_text,
+                        "excess_text": excess_text,
+                    }
+
+                    if last_published_need:
+                        need_match = text_for_comparison(need_text) == text_for_comparison(last_published_need.change_text)
+                        excess_match = text_for_comparison(excess_text) == text_for_comparison(last_published_need.excess_change_text)
+                        result["match"] = need_match and excess_match
+            except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError):
+                logging.warning("Needtestbed: Error calling OpenRouter model %s", model)
+
+            results.append(result)
+
+    template_vars = {
+        "foodbanks": foodbanks_with_recent_needs,
+        "selected_foodbank": foodbank,
+        "last_published_need": last_published_need,
+        "results": results,
+        "selected_slug": slug or "",
+    }
+
+    return render(request, "admin/needtestbed.html", template_vars)

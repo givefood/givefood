@@ -1,0 +1,75 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Need Testbed - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Need Testbed</h2>
+
+  <form method="get" action="">
+    <div class="field has-addons">
+      <div class="control">
+        <div class="select">
+          <select name="slug">
+            <option value="">Select a food bank...</option>
+            {% for fb in foodbanks %}
+              <option value="{{ fb.slug }}" {% if fb.slug == selected_slug %}selected{% endif %}>{{ fb.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="control">
+        <button type="submit" class="button is-link">Test</button>
+      </div>
+    </div>
+  </form>
+
+  {% if selected_foodbank %}
+
+    <h3>{{ selected_foodbank.name }}</h3>
+
+    {% if last_published_need %}
+      <div class="box">
+        <h4>Last Published Need</h4>
+        <div class="columns">
+          <div class="column">
+            <strong>Needs</strong>
+            <pre>{{ last_published_need.change_text }}</pre>
+          </div>
+          <div class="column">
+            <strong>Excess</strong>
+            <pre>{{ last_published_need.excess_change_text }}</pre>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <table class="table is-fullwidth is-striped">
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>CPM</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for result in results %}
+          <tr{% if result.match == True %} style="background-color:#c8e6c9"{% elif result.match == False %} style="background-color:#ffcdd2"{% endif %}>
+            <td>{{ result.model }}</td>
+            <td>{% if result.cpm != None %}{{ result.cpm|floatformat:4 }}{% endif %}</td>
+            <td>
+              {% if result.result %}
+                <strong>Needs:</strong> {{ result.result.need_text }}<br>
+                <strong>Excess:</strong> {{ result.result.excess_text }}
+              {% else %}
+                Error
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  {% endif %}
+
+{% endblock %}
