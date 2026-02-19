@@ -3299,7 +3299,8 @@ def needtestbed(request):
                 "model": model,
                 "cpm": None,
                 "result": None,
-                "match": None,
+                "need_match": None,
+                "excess_match": None,
             }
 
             try:
@@ -3330,10 +3331,10 @@ def needtestbed(request):
                 if api_response.status_code == 200:
                     response_json = api_response.json()
                     usage = response_json.get("usage", {})
-                    total_cost = usage.get("total_cost") or response_json.get("total_cost")
+                    cost = usage.get("cost")
 
-                    if total_cost is not None:
-                        result["cpm"] = float(total_cost) * 1000
+                    if cost is not None:
+                        result["cpm"] = float(cost) * 1000
 
                     content = response_json["choices"][0]["message"]["content"]
                     parsed = json.loads(content)
@@ -3349,9 +3350,8 @@ def needtestbed(request):
                     }
 
                     if last_published_need:
-                        need_match = text_for_comparison(need_text) == text_for_comparison(last_published_need.change_text)
-                        excess_match = text_for_comparison(excess_text) == text_for_comparison(last_published_need.excess_change_text)
-                        result["match"] = need_match and excess_match
+                        result["need_match"] = text_for_comparison(need_text) == text_for_comparison(last_published_need.change_text)
+                        result["excess_match"] = text_for_comparison(excess_text) == text_for_comparison(last_published_need.excess_change_text)
             except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError, IndexError):
                 logging.warning("Needtestbed: Error calling OpenRouter model %s", model)
 

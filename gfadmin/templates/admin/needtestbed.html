@@ -26,45 +26,35 @@
 
   {% if selected_foodbank %}
 
-    <h3>{{ selected_foodbank.name }}</h3>
-
-    {% if last_published_need %}
-      <div class="box">
-        <h4>Last Published Need</h4>
-        <div class="columns">
-          <div class="column">
-            <strong>Needs</strong>
-            <pre>{{ last_published_need.change_text }}</pre>
-          </div>
-          <div class="column">
-            <strong>Excess</strong>
-            <pre>{{ last_published_need.excess_change_text }}</pre>
-          </div>
-        </div>
-      </div>
-    {% endif %}
-
     <table class="table is-fullwidth is-striped">
       <thead>
         <tr>
-          <th>Model</th>
+          <th>Source</th>
           <th>CPM</th>
-          <th>Result</th>
+          <th>Need</th>
+          <th>Excess</th>
         </tr>
       </thead>
       <tbody>
+        {% if last_published_need %}
+          <tr>
+            <td>Last Published</td>
+            <td></td>
+            <td>{{ last_published_need.change_text }}</td>
+            <td>{{ last_published_need.excess_change_text }}</td>
+          </tr>
+        {% endif %}
         {% for result in results %}
-          <tr{% if result.match == True %} style="background-color:#c8e6c9"{% elif result.match == False %} style="background-color:#ffcdd2"{% endif %}>
+          <tr>
             <td>{{ result.model }}</td>
             <td>{% if result.cpm != None %}{{ result.cpm|floatformat:4 }}{% endif %}</td>
-            <td>
-              {% if result.result %}
-                <strong>Needs:</strong> {{ result.result.need_text }}<br>
-                <strong>Excess:</strong> {{ result.result.excess_text }}
-              {% else %}
-                Error
-              {% endif %}
-            </td>
+            {% if result.result %}
+              <td{% if result.need_match == True %} style="background-color:#c8e6c9"{% elif result.need_match == False %} style="background-color:#ffcdd2"{% endif %}>{{ result.result.need_text }}</td>
+              <td{% if result.excess_match == True %} style="background-color:#c8e6c9"{% elif result.excess_match == False %} style="background-color:#ffcdd2"{% endif %}>{{ result.result.excess_text }}</td>
+            {% else %}
+              <td>Error</td>
+              <td>Error</td>
+            {% endif %}
           </tr>
         {% endfor %}
       </tbody>
