@@ -17,7 +17,7 @@
         <dt>Start</dt>
         <dd>{{ crawl_set.start }}</dd>
         <dt>Finish</dt>
-        <dd>
+        <dd id="crawl-set-finish">
             {% if crawl_set.finish %}
                 {{ crawl_set.finish }}
             {% else %}
@@ -25,15 +25,18 @@
             {% endif %}
         </dd>
         {% if crawl_set.finish %}
-            <dt>Time Taken</dt>
-            <dd>
+            <dt id="crawl-set-time-taken-dt">Time Taken</dt>
+            <dd id="crawl-set-time-taken">
                 {{ crawl_set.time_taken }}
             </dd>
+        {% else %}
+            <dt id="crawl-set-time-taken-dt" style="display:none;">Time Taken</dt>
+            <dd id="crawl-set-time-taken" style="display:none;"></dd>
         {% endif %}
         <dt>Items</dt>
-        <dd>{{ crawl_set.item_count }}</dd>
+        <dd id="crawl-set-item-count">{{ crawl_set.item_count }}</dd>
         <dt>Objects</dt>
-        <dd>{{ crawl_set.object_count }}</dd>
+        <dd id="crawl-set-object-count">{{ crawl_set.object_count }}</dd>
     </dl>
 
     <br>
@@ -49,7 +52,7 @@
                 <th>Object</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="crawl-items-tbody">
             {% for crawl_item in crawl_items %}
             <tr>
                 <td>
@@ -101,5 +104,102 @@
     </div>
 
   </div>
+
+  {% if not crawl_set.finish %}
+  <script>
+    var knownItems = {{ crawl_items|length }};
+    var pollInterval = setInterval(function() {
+      fetch("{% url 'gfadmin:crawl_set_json' crawl_set.id %}")
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+
+          document.getElementById("crawl-set-item-count").textContent = data.item_count;
+          document.getElementById("crawl-set-object-count").textContent = data.object_count;
+
+          if (data.finish) {
+            document.getElementById("crawl-set-finish").textContent = data.finish;
+            document.getElementById("crawl-set-time-taken").textContent = data.time_taken;
+            document.getElementById("crawl-set-time-taken-dt").style.display = "";
+            document.getElementById("crawl-set-time-taken").style.display = "";
+            clearInterval(pollInterval);
+          }
+
+          if (data.items.length > knownItems) {
+            var newItems = data.items.slice(0, data.items.length - knownItems);
+            var tbody = document.getElementById("crawl-items-tbody");
+            for (var i = newItems.length - 1; i >= 0; i--) {
+              var item = newItems[i];
+              var tr = document.createElement("tr");
+
+              var tdFoodbank = document.createElement("td");
+              var a = document.createElement("a");
+              a.href = "/admin/foodbank/" + item.foodbank_slug + "/";
+              a.textContent = item.foodbank_name;
+              tdFoodbank.appendChild(a);
+              tr.appendChild(tdFoodbank);
+
+              var tdStart = document.createElement("td");
+              tdStart.textContent = item.start;
+              tr.appendChild(tdStart);
+
+              var tdFinish = document.createElement("td");
+              if (item.finish) {
+                tdFinish.textContent = item.finish;
+              } else {
+                tdFinish.innerHTML = '<span style="color:red;">Unfinished</span>';
+              }
+              tr.appendChild(tdFinish);
+
+              var tdTimeTaken = document.createElement("td");
+              if (item.time_taken_ms !== null) {
+                tdTimeTaken.textContent = item.time_taken_ms + " ms";
+              }
+              tr.appendChild(tdTimeTaken);
+
+              var tdUrl = document.createElement("td");
+              if (item.url) {
+                var urlLink = document.createElement("a");
+                urlLink.href = item.url;
+                urlLink.target = "_blank";
+                urlLink.textContent = item.url.length > 30 ? item.url.substring(0, 27) + "..." : item.url;
+                tdUrl.appendChild(urlLink);
+              }
+              tr.appendChild(tdUrl);
+
+              var tdObject = document.createElement("td");
+              if (item.object) {
+                if (item.object.status === "deleted") {
+                  tdObject.innerHTML = '<span style="color:red;">Deleted</span>';
+                } else {
+                  var objLink = document.createElement("a");
+                  objLink.href = item.object.url;
+                  if (item.object.class_name === "FoodbankChange") {
+                    objLink.textContent = item.object.need_id_short;
+                  }
+                  tdObject.appendChild(objLink);
+                  if (item.object.class_name === "FoodbankChange") {
+                    tdObject.appendChild(document.createElement("br"));
+                    if (item.object.nonpertinent) {
+                      tdObject.appendChild(document.createTextNode("Nonpertinent"));
+                    }
+                    if (item.object.published) {
+                      var pubSpan = document.createElement("span");
+                      pubSpan.style.color = "darkgreen";
+                      pubSpan.textContent = "✓ Published";
+                      tdObject.appendChild(pubSpan);
+                    }
+                  }
+                }
+              }
+              tr.appendChild(tdObject);
+
+              tbody.insertBefore(tr, tbody.firstChild);
+            }
+            knownItems = data.items.length;
+          }
+        });
+    }, 3000);
+  </script>
+  {% endif %}
 
 {% endblock %}

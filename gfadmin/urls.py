@@ -130,6 +130,7 @@ urlpatterns = (
     path("whatsapptester/send/", whatsapp_tester_send, name="whatsapp_tester_send"),
 
     path("crawl-sets/", crawl_sets, name="crawl_sets"),
+    path("crawl-set/<int:crawl_set_id>.json", crawl_set_json, name="crawl_set_json"),
     path("crawl-set/<int:crawl_set_id>/", crawl_set, name="crawl_set"),
 
     path("stats/quarter/", quarter_stats, name="quarter_stats"),

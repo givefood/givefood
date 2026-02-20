@@ -3127,6 +3127,49 @@ def crawl_set(request, crawl_set_id):
     return render(request, "admin/crawl_set.html", template_vars)
 
 
+def crawl_set_json(request, crawl_set_id):
+
+    crawl_set = get_object_or_404(CrawlSet, pk=crawl_set_id)
+    crawl_items = CrawlItem.objects.filter(crawl_set=crawl_set).select_related('foodbank').order_by("object_id", "-start")
+
+    items = []
+    for item in crawl_items:
+        object_info = None
+        if item.object_id and not item.content_object:
+            object_info = {"status": "deleted"}
+        elif item.content_object:
+            object_info = {
+                "url": item.content_object.get_absolute_url(),
+                "class_name": item.object_class_name(),
+            }
+            if item.object_class_name() == "FoodbankChange":
+                object_info["need_id_short"] = item.content_object.need_id_short
+                object_info["nonpertinent"] = item.content_object.nonpertinent
+                object_info["published"] = item.content_object.published
+
+        items.append({
+            "foodbank_name": item.foodbank.name,
+            "foodbank_slug": item.foodbank.slug,
+            "start": str(item.start),
+            "finish": str(item.finish) if item.finish else None,
+            "time_taken_ms": item.time_taken_ms(),
+            "url": item.url,
+            "object": object_info,
+        })
+
+    data = {
+        "crawl_type": crawl_set.crawl_type,
+        "start": str(crawl_set.start),
+        "finish": str(crawl_set.finish) if crawl_set.finish else None,
+        "time_taken": str(crawl_set.time_taken()) if crawl_set.time_taken() else None,
+        "item_count": crawl_set.item_count(),
+        "object_count": crawl_set.object_count(),
+        "items": items,
+    }
+
+    return JsonResponse(data)
+
+
 def proxy(request):
 
     url = request.GET.get("url")
