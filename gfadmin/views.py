@@ -3143,7 +3143,7 @@ def crawl_set_json(request, crawl_set_id):
                 "class_name": item.object_class_name(),
             }
             if item.object_class_name() == "FoodbankChange":
-                object_info["need_id_short"] = item.content_object.need_id_short
+                object_info["need_id_short"] = item.content_object.need_id_short()
                 object_info["nonpertinent"] = item.content_object.nonpertinent
                 object_info["published"] = item.content_object.published
 
