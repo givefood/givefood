@@ -1,0 +1,64 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Need Testbed - GF Admin{% endblock %}
+
+{% block body %}
+
+  <h2>Need Testbed</h2>
+
+  <form method="get" action="">
+    <div class="field has-addons">
+      <div class="control">
+        <div class="select">
+          <select name="slug">
+            <option value="">Select a food bank...</option>
+            {% for fb in foodbanks %}
+              <option value="{{ fb.slug }}" {% if fb.slug == selected_slug %}selected{% endif %}>{{ fb.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="control">
+        <button type="submit" class="button is-link">Test</button>
+      </div>
+    </div>
+  </form>
+
+  {% if selected_foodbank %}
+
+    <table class="table is-fullwidth is-striped">
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th>$CPM</th>
+          <th>Need</th>
+          <th>Excess</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if last_published_need %}
+          <tr>
+            <td>Last Published</td>
+            <td></td>
+            <td>{{ last_published_need.change_text|linebreaksbr }}</td>
+            <td>{{ last_published_need.excess_change_text|linebreaksbr }}</td>
+          </tr>
+        {% endif %}
+        {% for result in results %}
+          <tr>
+            <td>{{ result.model }}</td>
+            <td>{% if result.cpm != None %}{{ result.cpm|floatformat:4 }}{% endif %}</td>
+            {% if result.result %}
+              <td{% if result.need_match == True %} style="background-color:#c8e6c9"{% elif result.need_match == False %} style="background-color:#ffcdd2"{% endif %}>{{ result.result.need_text|linebreaksbr }}</td>
+              <td{% if result.excess_match == True %} style="background-color:#c8e6c9"{% elif result.excess_match == False %} style="background-color:#ffcdd2"{% endif %}>{{ result.result.excess_text|linebreaksbr }}</td>
+            {% else %}
+              <td colspan="2">{{ result.error }}</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  {% endif %}
+
+{% endblock %}
