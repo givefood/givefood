@@ -1218,13 +1218,17 @@ class TestRSSFeeds:
         """Test that the site-wide RSS feed returns valid XML."""
         response = client.get(reverse('wfbn:rss'))
         assert response.status_code == 200
-        assert response['Content-Type'] == 'text/xml'
+        assert response['Content-Type'] == 'application/rss+xml'
         # Check for basic RSS structure
         content = response.content.decode('utf-8')
         assert '<?xml version="1.0"' in content
-        assert '<rss version="2.0">' in content
+        assert '<rss version="2.0"' in content
+        assert 'xmlns:atom="http://www.w3.org/2005/Atom"' in content
         assert '<channel>' in content
         assert '<title>Give Food</title>' in content
+        assert '<atom:link' in content
+        assert 'rel="self"' in content
+        assert 'type="application/rss+xml"' in content
 
     def test_foodbank_specific_rss_returns_xml(self, client):
         """Test that a food bank-specific RSS feed returns valid XML."""
@@ -1246,14 +1250,17 @@ class TestRSSFeeds:
 
         response = client.get(reverse('wfbn:foodbank_rss', kwargs={'slug': 'test-food-bank'}))
         assert response.status_code == 200
-        assert response['Content-Type'] == 'text/xml'
+        assert response['Content-Type'] == 'application/rss+xml'
         # Check for basic RSS structure
         content = response.content.decode('utf-8')
         assert '<?xml version="1.0"' in content
-        assert '<rss version="2.0">' in content
+        assert '<rss version="2.0"' in content
+        assert 'xmlns:atom="http://www.w3.org/2005/Atom"' in content
         assert '<channel>' in content
         # Should include foodbank name
         assert 'Test Food Bank' in content
+        assert '<atom:link' in content
+        assert 'rel="self"' in content
 
     def test_foodbank_rss_with_needs(self, client):
         """Test that a food bank RSS feed includes needs when present."""
