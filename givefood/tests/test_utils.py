@@ -328,6 +328,17 @@ class TestGeocode:
         result = geocode("London")
         assert result == "51.5,-0.1"
 
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_geocode_non_200_returns_fallback(self, mock_get, mock_cred):
+        """Test geocode returns '0,0' when API returns non-200 status."""
+        mock_response = MagicMock()
+        mock_response.status_code = 500
+        mock_get.return_value = mock_response
+
+        result = geocode("some address")
+        assert result == "0,0"
+
 
 class TestOcGeocode:
     """Test oc_geocode function exception handling."""
@@ -382,6 +393,18 @@ class TestOcGeocode:
 
         result = oc_geocode("London")
         assert result == "51.5,-0.1"
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_oc_geocode_non_200_returns_fallback(self, mock_get, mock_cred):
+        """Test oc_geocode returns '0,0' when API returns non-200 status."""
+        mock_response = MagicMock()
+        mock_response.status_code = 500
+        mock_get.return_value = mock_response
+
+        result = oc_geocode("some address")
+        assert result == "0,0"
+
 class TestFoodbankQueryset:
     """Test _foodbank_queryset helper function."""
 

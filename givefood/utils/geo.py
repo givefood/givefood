@@ -38,6 +38,9 @@ def geocode(address):
         except (KeyError, IndexError, ValueError) as e:
             logging.warning("Failed to geocode address '%s': %s", address, e)
             lat_lng = "0,0"
+    else:
+        logging.warning("Geocoding API returned status %s for address '%s'", request.status_code, address)
+        lat_lng = "0,0"
     return lat_lng
 
 
@@ -52,6 +55,9 @@ def get_place_id(address):
     if request.status_code == 200:
         address_result_json = request.json()
         place_id = address_result_json["results"][0]["place_id"]
+    else:
+        logging.warning("Geocoding API returned status %s for place_id lookup '%s'", request.status_code, address)
+        place_id = None
 
     return place_id
 
@@ -114,6 +120,9 @@ def oc_geocode(address):
         except (KeyError, IndexError, ValueError) as e:
             logging.warning("Failed to geocode address with OpenCage '%s': %s", address, e)
             lat_lng = "0,0"
+    else:
+        logging.warning("OpenCage API returned status %s for address '%s'", request.status_code, address)
+        lat_lng = "0,0"
     return lat_lng
 
 
