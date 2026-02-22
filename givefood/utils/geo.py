@@ -53,8 +53,12 @@ def get_place_id(address):
     request = requests.get(address_api_url)
 
     if request.status_code == 200:
-        address_result_json = request.json()
-        place_id = address_result_json["results"][0]["place_id"]
+        try:
+            address_result_json = request.json()
+            place_id = address_result_json["results"][0]["place_id"]
+        except (KeyError, IndexError, ValueError) as e:
+            logging.warning("Failed to get place_id for address '%s': %s", address, e)
+            place_id = None
     else:
         logging.warning("Geocoding API returned status %s for place_id lookup '%s'", request.status_code, address)
         place_id = None
