@@ -11,6 +11,7 @@ from givefood.utils.geo import (
     distance_meters,
     geocode,
     geojson_dict,
+    get_place_id,
     is_uk,
     miles,
     oc_geocode,
@@ -338,6 +339,59 @@ class TestGeocode:
 
         result = geocode("some address")
         assert result == "0,0"
+
+
+class TestGetPlaceId:
+    """Test get_place_id function exception handling."""
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_get_place_id_success(self, mock_get, mock_cred):
+        """Test get_place_id returns correct place_id on success."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "results": [{"place_id": "ChIJdd4hrwug2EcRmSrV3Vo6llI"}]
+        }
+        mock_get.return_value = mock_response
+
+        result = get_place_id("London")
+        assert result == "ChIJdd4hrwug2EcRmSrV3Vo6llI"
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_get_place_id_non_200_returns_none(self, mock_get, mock_cred):
+        """Test get_place_id returns None when API returns non-200 status."""
+        mock_response = MagicMock()
+        mock_response.status_code = 500
+        mock_get.return_value = mock_response
+
+        result = get_place_id("some address")
+        assert result is None
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_get_place_id_empty_results_returns_none(self, mock_get, mock_cred):
+        """Test get_place_id returns None when results array is empty."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"results": []}
+        mock_get.return_value = mock_response
+
+        result = get_place_id("some address")
+        assert result is None
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_get_place_id_missing_key_returns_none(self, mock_get, mock_cred):
+        """Test get_place_id returns None when place_id key is missing."""
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"results": [{"geometry": {}}]}
+        mock_get.return_value = mock_response
+
+        result = get_place_id("some address")
+        assert result is None
 
 
 class TestOcGeocode:

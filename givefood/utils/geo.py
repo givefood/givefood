@@ -20,6 +20,11 @@ from givefood.const.general import SITE_DOMAIN
 from givefood.utils.cache import get_cred, get_all_open_foodbanks, get_all_constituencies
 
 
+def _sanitize_address_for_log(address):
+    """Replace newlines and carriage returns with spaces for safe logging."""
+    return address.replace("\r", " ").replace("\n", " ")
+
+
 def geocode(address):
 
     gmap_geocode_key = get_cred("gmap_geocode_key")
@@ -36,10 +41,10 @@ def geocode(address):
                 address_result_json["results"][0]["geometry"]["location"]["lng"]
             )
         except (KeyError, IndexError, ValueError) as e:
-            logging.warning("Failed to geocode address '%s': %s", address, e)
+            logging.warning("Failed to geocode address '%s': %s", _sanitize_address_for_log(address), e)
             lat_lng = "0,0"
     else:
-        logging.warning("Geocoding API returned status %s for address '%s'", request.status_code, address)
+        logging.warning("Geocoding API returned status %s for address '%s'", request.status_code, _sanitize_address_for_log(address))
         lat_lng = "0,0"
     return lat_lng
 
@@ -57,10 +62,10 @@ def get_place_id(address):
             address_result_json = request.json()
             place_id = address_result_json["results"][0]["place_id"]
         except (KeyError, IndexError, ValueError) as e:
-            logging.warning("Failed to get place_id for address '%s': %s", address, e)
+            logging.warning("Failed to get place_id for address '%s': %s", _sanitize_address_for_log(address), e)
             place_id = None
     else:
-        logging.warning("Geocoding API returned status %s for place_id lookup '%s'", request.status_code, address)
+        logging.warning("Geocoding API returned status %s for place_id lookup '%s'", request.status_code, _sanitize_address_for_log(address))
         place_id = None
 
     return place_id
@@ -122,10 +127,10 @@ def oc_geocode(address):
                 address_result_json["results"][0]["geometry"]["lng"]
             )
         except (KeyError, IndexError, ValueError) as e:
-            logging.warning("Failed to geocode address with OpenCage '%s': %s", address, e)
+            logging.warning("Failed to geocode address with OpenCage '%s': %s", _sanitize_address_for_log(address), e)
             lat_lng = "0,0"
     else:
-        logging.warning("OpenCage API returned status %s for address '%s'", request.status_code, address)
+        logging.warning("OpenCage API returned status %s for address '%s'", request.status_code, _sanitize_address_for_log(address))
         lat_lng = "0,0"
     return lat_lng
 
