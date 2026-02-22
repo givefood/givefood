@@ -7,7 +7,7 @@ import re
 import requests
 from datetime import date, datetime, timedelta
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin, quote
+from urllib.parse import urljoin, urlparse, quote
 
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
@@ -3181,18 +3181,25 @@ def proxy(request):
         # Parse the HTML content
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Rewrite all anchor links to go through the proxy
+        # Rewrite same-domain anchor links to go through the proxy
+        proxy_domain = urlparse(url).netloc
         for a_tag in soup.find_all('a', href=True):
             original_href = a_tag['href']
             # Convert relative URLs to absolute URLs
             absolute_url = urljoin(url, original_href)
-            # Rewrite the href to go through the proxy
-            proxy_url = reverse('admin:proxy') + '?url=' + quote(absolute_url, safe='')
-            a_tag['href'] = proxy_url
-            
-            # Remove target attribute to keep navigation inside iframe
-            if a_tag.has_attr('target'):
-                del a_tag['target']
+            link_domain = urlparse(absolute_url).netloc
+
+            if link_domain == proxy_domain:
+                # Same domain - rewrite through proxy
+                proxy_url = reverse('admin:proxy') + '?url=' + quote(absolute_url, safe='')
+                a_tag['href'] = proxy_url
+                # Remove target attribute to keep navigation inside iframe
+                if a_tag.has_attr('target'):
+                    del a_tag['target']
+            else:
+                # Different domain - open in a new window
+                a_tag['href'] = absolute_url
+                a_tag['target'] = '_blank'
         
         return HttpResponse(str(soup))
     else:
