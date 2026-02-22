@@ -167,14 +167,20 @@ def rss(request, slug=None):
     # Sort all the items by date
     items = sorted(items, key=lambda d: d['date'], reverse=True) 
 
+    if foodbank:
+        self_url = "%s%s" % (SITE_DOMAIN, reverse("wfbn:foodbank_rss", args=[foodbank.slug]))
+    else:
+        self_url = "%s%s" % (SITE_DOMAIN, reverse("wfbn:rss"))
+
     template_vars = {
         "SITE_DOMAIN":SITE_DOMAIN,
         "items":items,
+        "self_url":self_url,
     }
     if foodbank:
         template_vars["foodbank"] = foodbank
 
-    return render(request, "wfbn/rss.xml", template_vars, content_type='text/xml')
+    return render(request, "wfbn/rss.xml", template_vars, content_type='application/rss+xml')
 
 
 @never_cache

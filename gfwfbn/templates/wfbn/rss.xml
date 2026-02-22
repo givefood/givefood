@@ -1,10 +1,11 @@
 {% load i18n %}<?xml version="1.0" encoding="utf-8"?>
 {% include 'public/includes/debugcomment.html' %}
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
         <channel>
                 <title>{% if foodbank %}{{ foodbank.full_name }}{% else %}Give Food{% endif %}</title>
                 <description>{% trans "News &amp; donation requests from " %}{% if foodbank %}{{ foodbank.full_name }}{% else %}{% trans "UK food banks" %}{% endif %}</description>
                 <link>{{ SITE_DOMAIN }}{% if foodbank %}{% url 'wfbn:foodbank' foodbank.slug %}{% endif %}</link>
+                <atom:link href="{{ self_url }}" rel="self" type="application/rss+xml" />
                 <lastBuildDate>{% now "D, d M Y H:i:s O" %}</lastBuildDate>
                 {% for item in items %}
                     <item>
