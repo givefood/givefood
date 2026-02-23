@@ -1,7 +1,6 @@
-import json
 import unicodecsv as csv
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint
@@ -59,7 +58,7 @@ def company(request, slug):
             "store_id": dp.store_id,
         })
 
-    return HttpResponse(json.dumps(response_list), content_type="application/json")
+    return JsonResponse(response_list, safe=False)
 
 
 @cache_page(SECONDS_IN_DAY)
