@@ -15,6 +15,7 @@ def index(request):
 
 @cache_page(SECONDS_IN_HOUR)
 def company(request, slug):
+    
     if not FoodbankDonationPoint.objects.filter(company_slug=slug).exists():
         return HttpResponse(json.dumps({"error": "Company not found"}), content_type="application/json", status=404)
     
