@@ -1,7 +1,6 @@
-import json
 import unicodecsv as csv
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint
@@ -19,7 +18,7 @@ def company(request, slug):
     allowed_slugs = [dp.company_slug for dp in FoodbankDonationPoint.objects.all().distinct("company_slug")]
 
     if slug not in allowed_slugs:
-        return HttpResponse(json.dumps({"error": "Company not found"}), content_type="application/json", status=404)
+        return JsonResponse({"error": "Company not found"}, status=404)
     
     donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").select_related("foodbank__latest_need").filter(company_slug=slug).order_by("name")
 
@@ -61,7 +60,7 @@ def company(request, slug):
             "store_id": dp.store_id,
         })
 
-    return HttpResponse(json.dumps(response_list), content_type="application/json")
+    return JsonResponse(response_list, safe=False)
 
 
 @cache_page(SECONDS_IN_DAY)
