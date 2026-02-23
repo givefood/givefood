@@ -1403,6 +1403,9 @@ class FoodbankDonationPoint(models.Model):
             self.plus_code_global = pluscodes["global"]
 
         super(FoodbankDonationPoint, self).save(*args, **kwargs)
+
+        # Decache donation points API
+        decache_async.enqueue(prefixes=["/api/3/donationpoints/"])
         
         # Resave the parent food bank
         if do_foodbank_resave:
