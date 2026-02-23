@@ -15,7 +15,7 @@ def index(request):
 
 @cache_page(SECONDS_IN_HOUR)
 def company(request, slug):
-    
+
     if not FoodbankDonationPoint.objects.filter(company_slug=slug).exists():
         return HttpResponse(json.dumps({"error": "Company not found"}), content_type="application/json", status=404)
     
@@ -39,6 +39,15 @@ def company(request, slug):
     response_list = []
     
     for dp in donationpoints:
+
+        empty_needs = ["Facebook", "Unknown", "Nothing"]
+        if dp.foodbank.latest_need.change_text in empty_needs:
+            needs_list = []
+            excess_list = []
+        else:
+            needs_list = dp.foodbank.latest_need.change_list()
+            excess_list = dp.foodbank.latest_need.excess_list()
+
         response_list.append({
             "id": str(dp.uuid),
             "name": dp.name,
@@ -61,8 +70,8 @@ def company(request, slug):
                 "network": dp.foodbank.network,
                 "need": {
                     "id": dp.foodbank.latest_need.need_id_str,
-                    "items": dp.foodbank.latest_need.change_list(),
-                    "excess": dp.foodbank.latest_need.excess_list(),
+                    "items": needs_list,
+                    "excess": excess_list,
                     "found": str(dp.foodbank.latest_need.created),
                 },
             },
