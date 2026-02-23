@@ -16,9 +16,7 @@ def index(request):
 
 @cache_page(SECONDS_IN_HOUR)
 def company(request, slug):
-    allowed_slugs = [dp.company_slug for dp in FoodbankDonationPoint.objects.all().distinct("company_slug")]
-
-    if slug not in allowed_slugs:
+    if not FoodbankDonationPoint.objects.filter(company_slug=slug).exists():
         return HttpResponse(json.dumps({"error": "Company not found"}), content_type="application/json", status=404)
     
     donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").select_related("foodbank__latest_need").filter(company_slug=slug).order_by("name")
