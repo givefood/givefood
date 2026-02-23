@@ -19,7 +19,22 @@ def company(request, slug):
     if not FoodbankDonationPoint.objects.filter(company_slug=slug).exists():
         return HttpResponse(json.dumps({"error": "Company not found"}), content_type="application/json", status=404)
     
-    donationpoints = FoodbankDonationPoint.objects.select_related("foodbank").select_related("foodbank__latest_need").filter(company_slug=slug).order_by("name")
+    donationpoints = (
+        FoodbankDonationPoint.objects
+        .select_related("foodbank", "foodbank__latest_need")
+        .filter(company_slug=slug)
+        .only(
+            "uuid", "name", "address", "postcode", "country", "lat_lng", "place_id", "store_id",
+            "foodbank__uuid", "foodbank__name", "foodbank__alt_name", "foodbank__slug",
+            "foodbank__url", "foodbank__shopping_list_url", "foodbank__phone_number",
+            "foodbank__secondary_phone_number", "foodbank__contact_email",
+            "foodbank__address", "foodbank__postcode", "foodbank__country",
+            "foodbank__lat_lng", "foodbank__charity_number", "foodbank__network",
+            "foodbank__latest_need__need_id_str", "foodbank__latest_need__change_text",
+            "foodbank__latest_need__excess_change_text", "foodbank__latest_need__created",
+        )
+        .order_by("name")
+    )
 
     response_list = []
     
