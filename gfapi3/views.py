@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.views.decorators.cache import cache_page
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDonationPoint
-from givefood.const.cache_times import SECONDS_IN_DAY
+from givefood.const.cache_times import SECONDS_IN_DAY, SECONDS_IN_HOUR
 
 DEFAULT_FORMAT = "json"
 
@@ -14,6 +14,7 @@ def index(request):
     return HttpResponse("Give Food API 3")
 
 
+@cache_page(SECONDS_IN_HOUR)
 def company(request, slug):
     allowed_slugs = [dp.company_slug for dp in FoodbankDonationPoint.objects.all().distinct("company_slug")]
 
