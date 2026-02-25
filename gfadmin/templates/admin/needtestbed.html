@@ -1,4 +1,5 @@
 {% extends "admin/page.html" %}
+{% load custom_tags %}
 
 {% block title %}Need Testbed - GF Admin{% endblock %}
 
@@ -40,8 +41,8 @@
           <tr>
             <td>Last Published</td>
             <td></td>
-            <td>{{ last_published_need.change_text|linebreaksbr }}</td>
-            <td>{{ last_published_need.excess_change_text|linebreaksbr }}</td>
+            <td>{{ last_published_need.change_text|comma_separated }}</td>
+            <td>{{ last_published_need.excess_change_text|comma_separated }}</td>
           </tr>
         {% endif %}
         {% for result in results %}
@@ -49,8 +50,8 @@
             <td>{{ result.model }}</td>
             <td>{% if result.cpm != None %}{{ result.cpm|floatformat:4 }}{% endif %}</td>
             {% if result.result %}
-              <td{% if result.need_match == True %} style="background-color:#c8e6c9"{% elif result.need_match == False %} style="background-color:#ffcdd2"{% endif %}>{{ result.result.need_text|linebreaksbr }}</td>
-              <td{% if result.excess_match == True %} style="background-color:#c8e6c9"{% elif result.excess_match == False %} style="background-color:#ffcdd2"{% endif %}>{{ result.result.excess_text|linebreaksbr }}</td>
+              <td{% if result.need_match == True %} style="background-color:#c8e6c9"{% elif result.need_match == False %} style="background-color:#ffcdd2"{% endif %}>{{ result.result.need_text|comma_separated }}</td>
+              <td{% if result.excess_match == True %} style="background-color:#c8e6c9"{% elif result.excess_match == False %} style="background-color:#ffcdd2"{% endif %}>{{ result.result.excess_text|comma_separated }}</td>
             {% else %}
               <td colspan="2">{{ result.error }}</td>
             {% endif %}
