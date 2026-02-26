@@ -21,7 +21,7 @@ from givefood.utils.ai import gemini
 
 
 def foodbank_article_crawl(foodbank, crawl_set = None):
-
+    """Crawl a food bank's RSS feed for new articles and save any that are found."""
     from givefood.models import FoodbankArticle, CrawlItem
 
     crawl_item = CrawlItem(
@@ -67,6 +67,7 @@ def foodbank_article_crawl(foodbank, crawl_set = None):
 
 @task(priority=30)
 def foodbank_article_crawl_async(foodbank_slug):
+    """Async task to crawl a food bank's RSS feed for new articles."""
     from givefood.models import Foodbank
     foodbank = Foodbank.objects.get(slug=foodbank_slug)
     foodbank_article_crawl(foodbank)
@@ -276,7 +277,7 @@ def _crawl_charity_ni(foodbank, crawl_set = None):
 
 
 def do_foodbank_need_check(foodbank, crawl_set = None):
-
+    """Scrape a food bank's website for current needs using AI, and record any changes."""
     from givefood.models import FoodbankChange, FoodbankDiscrepancy, CrawlItem
 
     crawl_item = CrawlItem(

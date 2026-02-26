@@ -26,7 +26,7 @@ def _sanitize_address_for_log(address):
 
 
 def geocode(address):
-
+    """Geocode a UK address using the Google Maps Geocoding API, returning a 'lat,lng' string."""
     gmap_geocode_key = get_cred("gmap_geocode_key")
 
     address = "%s,UK" % (address)
@@ -50,7 +50,7 @@ def geocode(address):
 
 
 def get_place_id(address):
-    
+    """Look up a Google Maps place ID for a UK address."""
     gmap_geocode_key = get_cred("gmap_geocode_key")
 
     address = "%s,UK" % (address)
@@ -72,7 +72,7 @@ def get_place_id(address):
 
 
 def photo_from_place_id(place_id, size = 1080):
-
+    """Retrieve a photo blob for a Google Maps place ID, caching the result."""
     from givefood.models import PlacePhoto
 
     try:
@@ -100,7 +100,7 @@ def photo_from_place_id(place_id, size = 1080):
 
 
 def place_has_photo(place_id):
-    
+    """Check whether a Google Maps place has an associated photo."""
     places_key = get_cred("gmap_places_key")
     places_url = "https://maps.googleapis.com/maps/api/place/details/json?place_id=%s&fields=photo&key=%s" % (place_id, places_key)
     places_response = requests.get(places_url)
@@ -114,7 +114,7 @@ def place_has_photo(place_id):
 
 
 def oc_geocode(address):
-
+    """Geocode an address using the OpenCage Geocoding API, returning a 'lat,lng' string."""
     oc_geocode_key = get_cred("oc_geocode_key")
 
     address_api_url = "https://api.opencagedata.com/geocode/v1/json?q=%s&key=%s" % (urllib.parse.quote(address), oc_geocode_key)
@@ -136,7 +136,7 @@ def oc_geocode(address):
 
 
 def geojson_dict(geojson):
-
+    """Parse a GeoJSON string into a Python dict, stripping trailing commas."""
     geojson = geojson.strip()
     # remove last char if a comma
     if geojson[-1:] == ",":
@@ -147,7 +147,7 @@ def geojson_dict(geojson):
 
 
 def is_uk(lat_lng):
-
+    """Check whether a 'lat,lng' coordinate falls within the bounding box of the UK."""
     lat = float(lat_lng.split(",")[0])
     lng = float(lat_lng.split(",")[1])
 
@@ -165,7 +165,7 @@ def is_uk(lat_lng):
 
 
 def find_foodbanks(lattlong, quantity = 10, skip_first = False):
-
+    """Find the nearest open food banks to a 'lat,lng' coordinate, sorted by distance."""
     foodbanks = get_all_open_foodbanks()
 
     latt = float(lattlong.split(",")[0])
@@ -202,7 +202,7 @@ def _foodbank_queryset():
 
 
 def find_locations(lat_lng, quantity = 10, skip_first = False):
-
+    """Find the nearest open food banks and locations to a coordinate using PostgreSQL earthdistance via django-earthdistance."""
     from givefood.models import FoodbankLocation
     from django.db.models import Prefetch
 
@@ -363,7 +363,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
 
 
 def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
-
+    """Find the nearest open donation points and donation-point locations to a coordinate."""
     from givefood.models import FoodbankLocation, FoodbankDonationPoint
     from django.db.models import Prefetch
 
@@ -408,7 +408,7 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
 
 
 def find_parlcons(lattlong, quantity = 10, skip_first = False):
-
+    """Find the nearest parliamentary constituencies to a 'lat,lng' coordinate."""
     parlcons = get_all_constituencies()
 
     latt = float(lattlong.split(",")[0])
@@ -430,6 +430,7 @@ def find_parlcons(lattlong, quantity = 10, skip_first = False):
 
 
 def miles(meters):
+    """Convert a distance in meters to miles."""
     return meters*0.000621371192
 
 
@@ -452,7 +453,7 @@ def distance_meters(lat1, lon1, lat2, lon2):
 
 
 def validate_postcode(postcode):
-
+    """Validate a UK postcode using the postcodes.io API."""
     pc_api_url = "https://api.postcodes.io/postcodes/%s/validate" % (urllib.parse.quote(postcode))
     request = requests.get(pc_api_url)
     if request.status_code == 200:
@@ -463,6 +464,7 @@ def validate_postcode(postcode):
 
 
 def admin_regions_from_postcode(postcode):
+    """Look up administrative regions (county, country, constituency, ward, etc.) for a UK postcode."""
     pc_api_url = "https://api.postcodes.io/postcodes/%s?decache=true" % (urllib.parse.quote(postcode))
     request = requests.get(pc_api_url)
     if request.status_code == 200:
@@ -532,7 +534,7 @@ def pluscode(lat_lng, locality=None):
 
 
 def mpid_from_name(name):
-
+    """Look up a current MP's Parliament ID by name using the UK Parliament Members API."""
     if name:
         mpid_url = "https://members-api.parliament.uk/api/Members/Search?Name=%s&House=Commons&IsCurrentMember=true&skip=0&take=20" % (quote(name))
         response = requests.get(mpid_url)

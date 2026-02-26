@@ -11,7 +11,7 @@ from givefood.utils.cache import get_cred
 
 
 def validate_turnstile(turnstile_response):
-
+    """Validate a Cloudflare Turnstile CAPTCHA response and return whether it succeeded."""
     turnstile_secret = get_cred("turnstile_secret")
     turnstile_fields = {
         "secret":turnstile_secret,
@@ -23,7 +23,7 @@ def validate_turnstile(turnstile_response):
 
 
 def get_screenshot(url, width=1280, height=1280):
-
+    """Capture a screenshot of a URL using the Cloudflare Browser Rendering API."""
     cf_account_id = get_cred("cf_account_id")
     cf_api_key = get_cred("gf_browser_api")
 
@@ -57,7 +57,7 @@ def get_screenshot(url, width=1280, height=1280):
 
 
 def get_translation(language, text, source="en"):
-
+    """Translate text to the given language using the Google Cloud Translation API."""
     key = get_cred("gcp_translate_key")
 
     translate_url = "https://translation.googleapis.com/language/translate/v2?key=%s" % (key)
@@ -73,6 +73,7 @@ def get_translation(language, text, source="en"):
 
 @task(queue_name="translate")
 def translate_need_async(language, need_id_str):
+    """Async task to translate a food bank need into the given language."""
     from givefood.models import FoodbankChange
     need = FoodbankChange.objects.get(need_id_str=need_id_str)
     result = translate_need(language, need)
@@ -80,7 +81,7 @@ def translate_need_async(language, need_id_str):
 
 
 def translate_need(language, need):
-
+    """Translate a food bank need's change text and excess text into the given language."""
     from givefood.models import FoodbankChangeTranslation
 
     FoodbankChangeTranslation.objects.filter(need = need, language = language).delete()
