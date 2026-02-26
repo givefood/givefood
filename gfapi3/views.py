@@ -17,7 +17,7 @@ def index(request):
 def company(request, slug):
 
     if not FoodbankDonationPoint.objects.filter(company_slug=slug).exists():
-        return HttpResponse(json.dumps({"error": "Company not found"}), content_type="application/json", status=404)
+        return JsonResponse({"error": "Company not found"}, status=404)
     
     donationpoints = (
         FoodbankDonationPoint.objects

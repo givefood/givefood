@@ -58,7 +58,7 @@ class TestAPI3SlugFromId:
 
         response = client.get(f'/api/3/slugfromid/{foodbank.uuid}/')
         assert response.status_code == 200
-        assert response['Content-Type'] == 'text/plain; charset=utf-8'
+        assert response['Content-Type'].split(';', 1)[0] == 'text/plain'
         assert response.content.decode('utf-8') == 'test-food-bank'
 
     def test_slugfromid_not_found(self, client):

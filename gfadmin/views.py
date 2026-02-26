@@ -3161,7 +3161,7 @@ def crawl_set_json(request, crawl_set_id):
         "crawl_type": crawl_set.crawl_type,
         "start": str(crawl_set.start),
         "finish": str(crawl_set.finish) if crawl_set.finish else None,
-        "time_taken": str(crawl_set.time_taken()) if crawl_set.time_taken() else None,
+        "time_taken": str(crawl_set.time_taken()) if crawl_set.time_taken() is not None else None,
         "item_count": crawl_set.item_count(),
         "object_count": crawl_set.object_count(),
         "items": items,
