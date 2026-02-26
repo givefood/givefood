@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import json
 import urllib
 import logging
 
@@ -10,6 +11,7 @@ from time import sleep
 from google import genai
 from google.genai import types
 from google.genai.errors import ServerError
+from mistralai import Mistral
 from django_tasks import task
 
 from givefood.utils.cache import get_cred
@@ -104,6 +106,27 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
             config = config,
         )
     return response.parsed
+
+
+def mistral(prompt, temperature, response_format = "json_object", model = "open-mistral-nemo"):
+
+    client = Mistral(api_key = get_cred("mistral"))
+
+    response = client.chat.complete(
+        model = model,
+        messages = [
+            {"role": "user", "content": prompt}
+        ],
+        temperature = temperature,
+        response_format = {"type": response_format},
+    )
+
+    content = response.choices[0].message.content
+
+    if response_format == "json_object":
+        return json.loads(content)
+
+    return content
 
 
 def get_translation(language, text, source="en"):
