@@ -389,7 +389,7 @@ def needs(request):
 def needs_deleteall(request):
 
     need_ids = request.POST.getlist("need")
-    needs = FoodbankChange.objects.filter(id__in = need_ids)
+    needs = FoodbankChange.objects.filter(need_id__in = need_ids)
     needs.delete()
     return redirect(reverse("admin:index"))
 
