@@ -1,6 +1,7 @@
 """
 Tests for the main givefood app utility functions.
 """
+import json
 import logging
 from unittest.mock import patch, MagicMock
 
@@ -482,3 +483,98 @@ class TestFoodbankQueryset:
         qs = _foodbank_queryset()
         prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
         assert "latest_need__foodbankchangetranslation_set" not in prefetches
+
+
+class TestMistral:
+    """Test mistral utility function."""
+
+    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.general.Mistral")
+    def test_mistral_returns_parsed_json(self, mock_mistral_class, mock_cred):
+        """Test that mistral returns parsed JSON when response_format is json_object."""
+        from givefood.utils.general import mistral
+
+        mock_client = MagicMock()
+        mock_mistral_class.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = '{"needed": ["Pasta", "Rice"]}'
+        mock_client.chat.complete.return_value = mock_response
+
+        result = mistral("test prompt", 0)
+        assert result == {"needed": ["Pasta", "Rice"]}
+
+    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.general.Mistral")
+    def test_mistral_uses_correct_default_model(self, mock_mistral_class, mock_cred):
+        """Test that mistral uses open-mistral-nemo as default model."""
+        from givefood.utils.general import mistral
+
+        mock_client = MagicMock()
+        mock_mistral_class.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = '{"result": "ok"}'
+        mock_client.chat.complete.return_value = mock_response
+
+        mistral("test prompt", 0)
+        mock_client.chat.complete.assert_called_once_with(
+            model = "open-mistral-nemo",
+            messages = [{"role": "user", "content": "test prompt"}],
+            temperature = 0,
+            response_format = {"type": "json_object"},
+        )
+
+    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.general.Mistral")
+    def test_mistral_uses_correct_api_key(self, mock_mistral_class, mock_cred):
+        """Test that mistral retrieves the API key via get_cred('mistral')."""
+        from givefood.utils.general import mistral
+
+        mock_client = MagicMock()
+        mock_mistral_class.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = '{"result": "ok"}'
+        mock_client.chat.complete.return_value = mock_response
+
+        mistral("test prompt", 0)
+        mock_cred.assert_called_with("mistral")
+        mock_mistral_class.assert_called_once_with(api_key = "fake_api_key")
+
+    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.general.Mistral")
+    def test_mistral_custom_model(self, mock_mistral_class, mock_cred):
+        """Test that mistral allows a custom model."""
+        from givefood.utils.general import mistral
+
+        mock_client = MagicMock()
+        mock_mistral_class.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = '{"result": "ok"}'
+        mock_client.chat.complete.return_value = mock_response
+
+        mistral("test prompt", 0.5, model = "mistral-large-latest")
+        mock_client.chat.complete.assert_called_once_with(
+            model = "mistral-large-latest",
+            messages = [{"role": "user", "content": "test prompt"}],
+            temperature = 0.5,
+            response_format = {"type": "json_object"},
+        )
+
+    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.general.Mistral")
+    def test_mistral_text_response_format(self, mock_mistral_class, mock_cred):
+        """Test that mistral returns raw text when response_format is text."""
+        from givefood.utils.general import mistral
+
+        mock_client = MagicMock()
+        mock_mistral_class.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.choices = [MagicMock()]
+        mock_response.choices[0].message.content = "Plain text response"
+        mock_client.chat.complete.return_value = mock_response
+
+        result = mistral("test prompt", 0, response_format = "text")
+        assert result == "Plain text response"
