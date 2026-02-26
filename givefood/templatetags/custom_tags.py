@@ -16,3 +16,9 @@ def friendly_url(url):
     if url:
         return make_url_friendly(url)
     return ""
+
+@register.filter
+def comma_separated(value):
+    if value:
+        return ", ".join(value.splitlines())
+    return ""
