@@ -202,7 +202,7 @@ def _foodbank_queryset():
 
 
 def find_locations(lat_lng, quantity = 10, skip_first = False):
-    """Find the nearest open food banks and locations to a coordinate using PostGIS earth distance."""
+    """Find the nearest open food banks and locations to a coordinate using PostgreSQL earthdistance via django-earthdistance."""
     from givefood.models import FoodbankLocation
     from django.db.models import Prefetch
 
