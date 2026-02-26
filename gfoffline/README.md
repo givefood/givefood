@@ -37,7 +37,7 @@ Fetches and processes news articles from food bank RSS feeds.
 ```bash
 python manage.py getarticles
 ```
-Scheduled: 20 9-20 * * * (Every hour between 9:20-20:20)
+Scheduled: 20 8-22/2 * * * (Every 2 hours from 8:20-22:20)
 
 #### charityinfo
 Updates charity registration information for food banks from:
@@ -48,7 +48,7 @@ Updates charity registration information for food banks from:
 ```bash
 python manage.py charityinfo
 ```
-Scheduled: 30 4 * * * (Daily at 4:30 AM)
+Scheduled: 30 5 * * * (Daily at 5:30 AM)
 
 #### resaver
 Resaves all instances of a model to trigger save() methods and update dependent data.

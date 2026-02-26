@@ -29,7 +29,7 @@ The test suite is organized as follows:
 #### givefood/tests/
 The givefood app has multiple test files organized in a tests directory:
 
-**test_utils.py** - Unit tests for utility functions in `givefood/func.py`:
+**test_utils.py** - Unit tests for utility functions in `givefood/utils/`:
 - Text comparison and normalization functions
 - Geographic utilities (UK location validation, distance calculations)
 - HTML diff generation

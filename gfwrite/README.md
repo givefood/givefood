@@ -133,7 +133,7 @@ Fields:
 ## Technical Details
 
 ### Postcode to Constituency
-Uses `admin_regions_from_postcode()` from `givefood.func` to:
+Uses `admin_regions_from_postcode()` from `givefood.utils.geo` to:
 - Validate UK postcodes
 - Look up parliamentary constituency
 - Get constituency slug for routing
@@ -152,7 +152,7 @@ Uses `ConstituencySubscriber` model to store:
 - Opt-in timestamp
 
 ### Email Delivery
-Uses `send_email()` helper from `givefood.func` to:
+Uses `send_email()` helper from `givefood.utils.notifications` to:
 - Format emails properly
 - Set headers (To, From, CC, BCC, Reply-To)
 - Add sender details header

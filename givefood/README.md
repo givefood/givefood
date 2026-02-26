@@ -116,9 +116,9 @@ The app contains all core data models used across the entire platform:
 - **PlacePhoto** - Google Places photo metadata
 - **Changelog** - System changelog entries
 
-### Utility Functions (`func.py`)
+### Utility Functions (`utils/`)
 
-Extensive collection of 1300+ lines of helper functions including:
+Helper functions organized across multiple modules in `givefood/utils/`:
 
 #### Data Access
 - `get_all_foodbanks()` - Cached food bank retrieval
@@ -263,7 +263,7 @@ Uses Django's `@cache_page` decorator with varied cache times:
 ## Technical Requirements
 
 ### Dependencies
-- Django 5.2.7
+- Django 6.0.2
 - PostgreSQL with django-earthdistance
 - Python 3.12
 - Bulma CSS framework via django-bulma

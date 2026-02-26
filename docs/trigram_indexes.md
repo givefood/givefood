@@ -44,4 +44,4 @@ Both queries generate `ILIKE '%query%'` SQL which benefits from the trigram inde
 
 - Use `CREATE INDEX CONCURRENTLY` to avoid locking the tables during index creation
 - The pg_trgm extension is included in PostgreSQL contrib packages
-- These indexes are PostgreSQL-specific and won't work with SQLite (used in tests)
+- These indexes are PostgreSQL-specific (tests also use PostgreSQL, matching production)
