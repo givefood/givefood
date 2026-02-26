@@ -17,7 +17,7 @@ from django_tasks import task
 from givefood.const.general import BOT_USER_AGENT
 from givefood.utils.cache import get_cred
 from givefood.utils.text import clean_foodbank_need_text, text_for_comparison, htmlbodytext
-from givefood.utils.general import gemini
+from givefood.utils.ai import gemini
 
 
 def foodbank_article_crawl(foodbank, crawl_set = None):

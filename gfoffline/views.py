@@ -15,7 +15,8 @@ from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, F
 from givefood.const.general import BOT_USER_AGENT, FB_MC_KEY, LOC_MC_KEY
 from givefood.utils.cache import get_all_open_foodbanks, get_cred
 from givefood.utils.crawlers import do_foodbank_need_check
-from givefood.utils.general import gemini, translate_need
+from givefood.utils.ai import gemini
+from givefood.utils.general import translate_need
 from givefood.utils.geo import get_place_id, mpid_from_name, oc_geocode, pluscode
 from givefood.utils.text import htmlbodytext
 from django.template.loader import render_to_string
