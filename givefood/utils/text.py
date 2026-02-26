@@ -137,7 +137,7 @@ def make_url_friendly(url):
 
 
 def make_friendly_phone(phone):
-    """Format a UK phone number with spaces for readability (e.g. '01onal 234 567')."""
+    """Format a UK phone number by inserting spaces for readability."""
     if phone:
         return phone[0:5] + " " + phone[5:8] + " " + phone[8:]
     else:
