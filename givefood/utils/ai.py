@@ -16,7 +16,7 @@ from givefood.utils.cache import get_cred
 
 
 def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "gemini-2.5-flash"):
-
+    """Send a prompt to Google Gemini and return the parsed response."""
     client = genai.Client(api_key = get_cred("gemini_api_key"))
 
     config = types.GenerateContentConfig(
@@ -61,7 +61,7 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
 
 
 def mistral(prompt, temperature, response_format = "json_object", model = "open-mistral-nemo"):
-
+    """Send a prompt to the Mistral AI API and return the response content."""
     client = Mistral(api_key = get_cred("mistral"))
 
     response = client.chat.complete(
@@ -82,7 +82,7 @@ def mistral(prompt, temperature, response_format = "json_object", model = "open-
 
 
 def openrouter(prompt, temperature, model, response_schema = None, cred_name = "openrouter_needtestbed"):
-
+    """Send a prompt to the OpenRouter API and return the raw response."""
     key = get_cred(cred_name)
 
     payload = {

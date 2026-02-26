@@ -35,7 +35,7 @@ def get_slug_redirects():
 
 
 def get_all_foodbanks():
-
+    """Return all Foodbank objects, using a cached queryset."""
     from givefood.models import Foodbank
 
     all_foodbanks = cache.get(FB_MC_KEY)
@@ -46,7 +46,7 @@ def get_all_foodbanks():
 
 
 def get_all_open_foodbanks():
-
+    """Return all open Foodbank objects, using a cached queryset."""
     from givefood.models import Foodbank
 
     all_open_foodbanks = cache.get(FB_OPEN_MC_KEY)
@@ -57,7 +57,7 @@ def get_all_open_foodbanks():
 
 
 def get_all_locations():
-
+    """Return all FoodbankLocation objects, using a cached queryset."""
     from givefood.models import FoodbankLocation
 
     all_locations = cache.get(LOC_MC_KEY)
@@ -68,7 +68,7 @@ def get_all_locations():
 
 
 def get_all_open_locations():
-
+    """Return all open FoodbankLocation objects, using a cached queryset."""
     from givefood.models import FoodbankLocation
 
     all_open_locations = cache.get(LOC_OPEN_MC_KEY)
@@ -79,7 +79,7 @@ def get_all_open_locations():
 
 
 def get_all_constituencies():
-
+    """Return all ParliamentaryConstituency objects ordered by name, using a cached queryset."""
     from givefood.models import ParliamentaryConstituency
 
     all_parlcon = cache.get(PARLCON_MC_KEY)
@@ -91,12 +91,13 @@ def get_all_constituencies():
 
 @task(queue_name="decache", priority=20)
 def decache_async(urls = None, prefixes = None):
+    """Async task to purge URLs and prefixes from the Cloudflare and local caches."""
     decache(urls = urls, prefixes = prefixes)
     return True
 
 
 def decache(urls = None, prefixes = None):
-
+    """Purge specific URLs and/or URL prefixes from the Cloudflare CDN cache and clear the local cache."""
     domain = "www.givefood.org.uk"
 
     cf_zone_id = get_cred("cf_zone_id")
@@ -135,7 +136,7 @@ def decache(urls = None, prefixes = None):
 
 
 def get_cred(cred_name):
-
+    """Retrieve a credential value by name from the database, using a cached lookup."""
     from givefood.models import GfCredential
 
     cache_key = f"{CRED_MC_KEY_PREFIX}{cred_name}"

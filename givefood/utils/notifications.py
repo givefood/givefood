@@ -22,7 +22,7 @@ WHATSAPP_FROM_NUMBER = "+442039206758"
 
 
 def post_to_subscriber(need, subscriber):
-
+    """Send an email notification about a food bank need to a subscriber."""
     possible_emoji = [
         "🍝",
         "🍲",
@@ -80,6 +80,7 @@ def post_to_subscriber(need, subscriber):
 
 @task(queue_name="email")
 def send_email_async(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None, unsubscribe_url=None):
+    """Async task to send an email via Postmark."""
     return send_email(
         to = to,
         subject = subject,
@@ -97,7 +98,7 @@ def send_email_async(to, subject, body, html_body=None, cc=None, cc_name=None, r
 
 
 def send_email(to, subject, body, html_body=None, cc=None, cc_name=None, reply_to=None, reply_to_name=None, is_broadcast=False, bcc=None, bcc_name=None, unsubscribe_url=None):
-
+    """Send an email using the Postmark API."""
     api_url = "https://api.postmarkapp.com/email"
     server_token = get_cred("postmark_server_token")
 
@@ -274,6 +275,7 @@ def send_firebase_notification(need):
 
 @task(priority=10)
 def send_firebase_notification_async(need_id_str):
+    """Async task to send a Firebase Cloud Messaging notification for a food bank need."""
     from givefood.models import FoodbankChange
     need = FoodbankChange.objects.get(need_id_str=need_id_str)
     send_firebase_notification(need)
@@ -431,6 +433,7 @@ def send_webpush_notification(need):
 
 @task(priority=10)
 def send_webpush_notification_async(need_id_str):
+    """Async task to send web push notifications for a food bank need."""
     from givefood.models import FoodbankChange
     need = FoodbankChange.objects.get(need_id_str=need_id_str)
     send_webpush_notification(need)
@@ -656,6 +659,7 @@ def send_whatsapp_notification(need):
 
 @task(priority=10)
 def send_whatsapp_notification_async(need_id_str):
+    """Async task to send WhatsApp notifications for a food bank need."""
     from givefood.models import FoodbankChange
     need = FoodbankChange.objects.get(need_id_str=need_id_str)
     send_whatsapp_notification(need)

@@ -43,7 +43,7 @@ def get_user_ip(request):
 
 
 def diff_html(a,b):
-
+    """Generate an HTML diff between two sequences, marking additions and deletions."""
     the_diff = list(difflib.unified_diff(a, b, n=999))
 
     if the_diff:
@@ -61,6 +61,7 @@ def diff_html(a,b):
 
 
 def text_for_comparison(text):
+    """Normalise text for comparison by lowercasing and removing whitespace and periods."""
     if text:
         return text.lower().replace(" ", "").replace("\n", "").replace("\r", "").replace("\t", "").replace(".", "")
     else:
@@ -68,7 +69,7 @@ def text_for_comparison(text):
 
 
 def clean_foodbank_need_text(text):
-
+    """Clean up food bank need text by removing extra whitespace, empty lines, and fixing capitalisation."""
     # Remove double spaces
     text = text.replace("  "," ")
     
@@ -91,7 +92,7 @@ def clean_foodbank_need_text(text):
 
 
 def get_calories(text, weight, quantity):
-
+    """Calculate total calories for a given food item name, weight in grams, and quantity."""
     from givefood.models import OrderItem
 
     try:
@@ -106,12 +107,12 @@ def get_calories(text, weight, quantity):
 
 
 def group_list(lst):
-
+    """Group a list into (item, count) tuples using a Counter."""
     return list(Counter(lst).items())
 
 
 def filter_change_text(change_text, filter_list):
-
+    """Filter lines of change text, returning only lines that contain any item from filter_list."""
     change_text_list = change_text.splitlines()
     filtered_change_text_list = set()
 
@@ -124,6 +125,7 @@ def filter_change_text(change_text, filter_list):
 
 
 def make_url_friendly(url):
+    """Strip protocol, remove unwanted query string parameters, and trailing slash from a URL."""
     url = url.replace("https://","")
     url = url.replace("http://","")
     url = furl(url)
@@ -135,6 +137,7 @@ def make_url_friendly(url):
 
 
 def make_friendly_phone(phone):
+    """Format a UK phone number with spaces for readability (e.g. '01onal 234 567')."""
     if phone:
         return phone[0:5] + " " + phone[5:8] + " " + phone[8:]
     else:
@@ -142,6 +145,7 @@ def make_friendly_phone(phone):
 
 
 def make_full_phone(phone):
+    """Convert a UK phone number starting with '0' to international format (+44)."""
     if phone:
         if phone.startswith("0"):
             phone = "+44%s" % (phone[1:])
@@ -151,7 +155,7 @@ def make_full_phone(phone):
 
 
 def htmlbodytext(html):
-
+    """Extract the text content from the <body> of an HTML document."""
     soup = BeautifulSoup(html, features="html.parser")
     if soup.body:
         return soup.body.get_text()
