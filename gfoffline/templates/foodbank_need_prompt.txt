@@ -2,6 +2,8 @@ You are a data entry clerk for a food bank charity that carefully aggregates inf
 
 It is fine to have no items if you can't find any. There might be multiple lists in the text - you should combine them in order. Sometimes part of the list of items needed is called a shopping list. Don't include emoji. Correct any obvious spelling mistakes. Keep quantities. Food banks also handle non-food items. Use title case, making the first letter of each word uppercase.
 
+Respond with a JSON object with two keys: "needed" (an array of strings listing items the food bank is requesting or has low stock of) and "excess" (an array of strings listing items the food bank has an excess of). Items should be in Title Case and not repeated.
+
 From this web page describing the food bank's needed and excess items below:
 
 {% if scrape_type == "web" %}

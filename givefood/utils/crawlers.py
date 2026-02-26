@@ -17,7 +17,7 @@ from django_tasks import task
 from givefood.const.general import BOT_USER_AGENT
 from givefood.utils.cache import get_cred
 from givefood.utils.text import clean_foodbank_need_text, text_for_comparison, htmlbodytext
-from givefood.utils.ai import gemini
+from givefood.utils.ai import mistral
 
 
 def foodbank_article_crawl(foodbank, crawl_set = None):
@@ -372,27 +372,6 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             foodbank_shoppinglist_html = request.text
             foodbank_shoppinglist_page = request.text
 
-    response_schema = {
-        "type": "object",
-        "properties": {
-            "needed": {
-                "type": "array",
-                "description": "A list of food items the food bank is requesting or has low stock of. Items should be in Title Case and not repeated.",
-                "items": {
-                    "type": "string"
-                }
-            },
-            "excess": {
-                "type": "array",
-                "description": "A list of food items the food bank has an excess of. Items should be in Title Case and not repeated.",
-                "items": {
-                    "type": "string"
-                }
-            },
-        },
-        "required": ["needed", "excess"]
-    }
-
     need_prompt = render_to_string(
         "foodbank_need_prompt.txt",
         {
@@ -403,11 +382,9 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    need_response = gemini(
+    need_response = mistral(
         prompt = need_prompt,
         temperature = 0,
-        response_schema = response_schema,
-        response_mime_type = "application/json",
     )
 
     if need_response: 
