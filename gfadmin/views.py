@@ -27,7 +27,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from givefood.const.general import BOT_USER_AGENT, PACKAGING_WEIGHT_PC
 from givefood.utils.cache import delete_all_cached_credentials, get_all_foodbanks, get_all_locations, get_cred
 from givefood.utils.crawlers import foodbank_article_crawl, foodbank_article_crawl_async
-from givefood.utils.general import gemini
+from givefood.utils.ai import gemini, openrouter
 from givefood.utils.geo import distance_meters, find_locations
 from givefood.utils.notifications import post_to_subscriber, send_email, send_firebase_notification, send_firebase_notification_async, send_single_webpush_notification, send_webpush_notification, send_webpush_notification_async, send_whatsapp_notification, send_whatsapp_notification_async, send_whatsapp_template_notification
 from givefood.utils.text import diff_html, htmlbodytext
@@ -3342,8 +3342,6 @@ def needtestbed(request):
             "required": ["needed", "excess"]
         }
 
-        openrouter_key = get_cred("openrouter_needtestbed")
-
         from givefood.utils.text import clean_foodbank_need_text, text_for_comparison
 
         for model in OPENROUTER_MODELS:
@@ -3357,29 +3355,7 @@ def needtestbed(request):
             }
 
             try:
-                api_response = requests.post(
-                    "https://openrouter.ai/api/v1/chat/completions",
-                    headers={
-                        "Authorization": "Bearer %s" % openrouter_key,
-                        "Content-Type": "application/json",
-                    },
-                    json={
-                        "model": model,
-                        "messages": [
-                            {"role": "user", "content": need_prompt}
-                        ],
-                        "response_format": {
-                            "type": "json_schema",
-                            "json_schema": {
-                                "name": "foodbank_needs",
-                                "strict": True,
-                                "schema": response_schema,
-                            }
-                        },
-                        "temperature": 0,
-                    },
-                    timeout=60,
-                )
+                api_response = openrouter(need_prompt, 0, model, response_schema=response_schema)
 
                 if api_response.status_code == 200:
                     response_json = api_response.json()

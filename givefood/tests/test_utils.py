@@ -488,11 +488,11 @@ class TestFoodbankQueryset:
 class TestMistral:
     """Test mistral utility function."""
 
-    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
-    @patch("givefood.utils.general.Mistral")
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.Mistral")
     def test_mistral_returns_parsed_json(self, mock_mistral_class, mock_cred):
         """Test that mistral returns parsed JSON when response_format is json_object."""
-        from givefood.utils.general import mistral
+        from givefood.utils.ai import mistral
 
         mock_client = MagicMock()
         mock_mistral_class.return_value = mock_client
@@ -504,11 +504,11 @@ class TestMistral:
         result = mistral("test prompt", 0)
         assert result == {"needed": ["Pasta", "Rice"]}
 
-    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
-    @patch("givefood.utils.general.Mistral")
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.Mistral")
     def test_mistral_uses_correct_default_model(self, mock_mistral_class, mock_cred):
         """Test that mistral uses open-mistral-nemo as default model."""
-        from givefood.utils.general import mistral
+        from givefood.utils.ai import mistral
 
         mock_client = MagicMock()
         mock_mistral_class.return_value = mock_client
@@ -525,11 +525,11 @@ class TestMistral:
             response_format = {"type": "json_object"},
         )
 
-    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
-    @patch("givefood.utils.general.Mistral")
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.Mistral")
     def test_mistral_uses_correct_api_key(self, mock_mistral_class, mock_cred):
         """Test that mistral retrieves the API key via get_cred('mistral')."""
-        from givefood.utils.general import mistral
+        from givefood.utils.ai import mistral
 
         mock_client = MagicMock()
         mock_mistral_class.return_value = mock_client
@@ -542,11 +542,11 @@ class TestMistral:
         mock_cred.assert_called_with("mistral")
         mock_mistral_class.assert_called_once_with(api_key = "fake_api_key")
 
-    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
-    @patch("givefood.utils.general.Mistral")
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.Mistral")
     def test_mistral_custom_model(self, mock_mistral_class, mock_cred):
         """Test that mistral allows a custom model."""
-        from givefood.utils.general import mistral
+        from givefood.utils.ai import mistral
 
         mock_client = MagicMock()
         mock_mistral_class.return_value = mock_client
@@ -563,11 +563,11 @@ class TestMistral:
             response_format = {"type": "json_object"},
         )
 
-    @patch("givefood.utils.general.get_cred", return_value="fake_api_key")
-    @patch("givefood.utils.general.Mistral")
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.Mistral")
     def test_mistral_text_response_format(self, mock_mistral_class, mock_cred):
         """Test that mistral returns raw text when response_format is text."""
-        from givefood.utils.general import mistral
+        from givefood.utils.ai import mistral
 
         mock_client = MagicMock()
         mock_mistral_class.return_value = mock_client
