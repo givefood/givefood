@@ -84,4 +84,4 @@ The test suite includes:
 - Integration tests for API endpoints
 - Basic view tests for the main application
 
-Tests use SQLite in-memory database for speed and simplicity.
+Tests use PostgreSQL, matching the production database configuration.
