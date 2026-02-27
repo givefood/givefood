@@ -3268,6 +3268,7 @@ def needtestbed(request):
 
     OPENROUTER_MODELS = [
         "google/gemini-2.5-flash",
+        "google/gemini-2.5-flash-lite",
         "amazon/nova-micro-v1",
         "google/gemini-3-flash-preview",
         "openai/gpt-5-nano",
@@ -3275,6 +3276,8 @@ def needtestbed(request):
         "anthropic/claude-3-haiku",
         "minimax/minimax-m2.5",
         "deepseek/deepseek-v3.2",
+        "meta-llama/llama-3.3-70b-instruct",
+        "qwen/qwen-2.5-coder-32b-instruct",
         "qwen/qwen3.5-397b-a17b",
     ]
 
