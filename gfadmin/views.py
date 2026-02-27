@@ -3361,7 +3361,7 @@ def needtestbed(request):
 
             try:
                 if model in MODELS_WITHOUT_JSON_SCHEMA:
-                    api_response = openrouter(need_prompt, 0, model, response_format_type="json_object")
+                    api_response = openrouter(need_prompt, 0, model)
                 else:
                     api_response = openrouter(need_prompt, 0, model, response_schema=response_schema)
 
