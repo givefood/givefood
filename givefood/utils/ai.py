@@ -81,7 +81,7 @@ def mistral(prompt, temperature, response_format = "json_object", model = "open-
     return content
 
 
-def openrouter(prompt, temperature, model, response_schema = None, cred_name = "openrouter_needtestbed"):
+def openrouter(prompt, temperature, model, response_schema = None, response_format_type = "json_schema", cred_name = "openrouter_needtestbed"):
     """Send a prompt to the OpenRouter API and return the raw response."""
     key = get_cred(cred_name)
 
@@ -93,7 +93,7 @@ def openrouter(prompt, temperature, model, response_schema = None, cred_name = "
         "temperature": temperature,
     }
 
-    if response_schema:
+    if response_schema and response_format_type == "json_schema":
         payload["response_format"] = {
             "type": "json_schema",
             "json_schema": {
@@ -101,6 +101,10 @@ def openrouter(prompt, temperature, model, response_schema = None, cred_name = "
                 "strict": True,
                 "schema": response_schema,
             }
+        }
+    elif response_format_type == "json_object":
+        payload["response_format"] = {
+            "type": "json_object",
         }
 
     response = requests.post(

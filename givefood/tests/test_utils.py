@@ -578,3 +578,54 @@ class TestMistral:
 
         result = mistral("test prompt", 0, response_format = "text")
         assert result == "Plain text response"
+
+
+class TestOpenrouter:
+    """Test openrouter utility function."""
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.requests.post")
+    def test_openrouter_json_schema_format(self, mock_post, mock_cred):
+        """Test that openrouter sends json_schema response_format when schema is provided."""
+        from givefood.utils.ai import openrouter
+
+        mock_response = MagicMock()
+        mock_post.return_value = mock_response
+
+        schema = {"type": "object", "properties": {"needed": {"type": "array", "items": {"type": "string"}}}, "required": ["needed"]}
+        openrouter("test prompt", 0, "google/gemini-2.5-flash", response_schema=schema)
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs["json"]
+        assert payload["response_format"]["type"] == "json_schema"
+        assert payload["response_format"]["json_schema"]["schema"] == schema
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.requests.post")
+    def test_openrouter_json_object_format(self, mock_post, mock_cred):
+        """Test that openrouter sends json_object response_format when type is json_object."""
+        from givefood.utils.ai import openrouter
+
+        mock_response = MagicMock()
+        mock_post.return_value = mock_response
+
+        openrouter("test prompt", 0, "amazon/nova-micro-v1", response_format_type="json_object")
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs["json"]
+        assert payload["response_format"] == {"type": "json_object"}
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.requests.post")
+    def test_openrouter_no_response_format_by_default(self, mock_post, mock_cred):
+        """Test that openrouter omits response_format when no schema and default type."""
+        from givefood.utils.ai import openrouter
+
+        mock_response = MagicMock()
+        mock_post.return_value = mock_response
+
+        openrouter("test prompt", 0, "google/gemini-2.5-flash")
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs["json"]
+        assert "response_format" not in payload
