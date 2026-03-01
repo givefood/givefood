@@ -149,6 +149,9 @@ tfoot {
 #postcode_field, #address_field {
     width:300px;
 }
+#addressform .button, #postcodeform .button, .byitem-form .button {
+    height:var(--bulma-control-height);
+}
 #addressform {
     margin-bottom:1rem;
 }
