@@ -19,5 +19,3 @@ From this web page describing the food bank's needed and excess items below:
 {% if scrape_type == "bankthefood" %}
     {{ foodbank_page}}
 {% endif %}
-
-Respond with a JSON object with exactly two keys: "needed" (an array of strings) and "excess" (an array of strings). Do not include any other text, explanation or markdown.
