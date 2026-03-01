@@ -76,7 +76,6 @@ label, strong, b, h3 {
 /* Buttons */
 .button {
     border-radius:3px;
-    border:1px solid transparent;
 }
 .button.is-link {
     background-color: #EAF9FF;
@@ -148,9 +147,6 @@ tfoot {
 }
 #postcode_field, #address_field {
     width:300px;
-}
-#addressform .button, #postcodeform .button, .byitem-form .button {
-    height:var(--bulma-control-height);
 }
 #addressform {
     margin-bottom:1rem;
