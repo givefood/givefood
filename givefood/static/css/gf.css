@@ -83,21 +83,21 @@ label, strong, b, h3 {
 }
 .button.button.is-link:hover {
     background-color:#d9f2fc;
-    border:1px solid #b9dae8;
+    box-shadow:inset 0 0 0 1px #b9dae8;
     color:rgb(53, 55, 64);
 }
 .button.is-info.is-light:hover {
-    border:1px solid #b9dae8;
+    box-shadow:inset 0 0 0 1px #b9dae8;
 }
 .button.is-warning:hover {
-    border:1px solid #e0d4ba;
+    box-shadow:inset 0 0 0 1px #e0d4ba;
 }
 .button.is-danger:hover {
-    border:1px solid #e5b5bf;
+    box-shadow:inset 0 0 0 1px #e5b5bf;
 }
 .button[disabled] {
     background-color:#f5f5f5 !important;
-    border:1px solid #dbdbdb !important;
+    box-shadow:inset 0 0 0 1px #dbdbdb !important;
     cursor:not-allowed;
     opacity:0.7;
 }
