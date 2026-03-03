@@ -142,7 +142,7 @@ class TestRobotsTxt:
         """Test that robots.txt is accessible and returns plain text."""
         response = client.get('/robots.txt')
         assert response.status_code == 200
-        assert response['Content-Type'] == 'text/plain'
+        assert 'text/plain' in response['Content-Type']
 
     def test_robotstxt_contains_md_sitemap(self, client):
         """Test that robots.txt includes the markdown sitemap."""
