@@ -9,7 +9,7 @@ Give Food is a UK charity that uses data to highlight local and structural food 
 ## Technology Stack
 
 - **Framework:** Django 6.0.2
-- **Python Version:** 3.12
+- **Python Version:** 3.12.3
 - **Database:** PostgreSQL with django-earthdistance for geographic queries
 - **Frontend:** Bulma CSS framework via django-bulma
 - **Hosting:** Mythic Beasts (Shoreditch, London) using Coolify
@@ -18,7 +18,8 @@ Give Food is a UK charity that uses data to highlight local and structural food 
 - **Background Tasks:** django-tasks
 - **Internationalization:** Django i18n with translations in locale/ directory
 - **Error Tracking:** Sentry
-- **AI Integration:** Google GenAI for certain features
+- **AI Integration:** Google GenAI, Mistral AI, and OpenRouter
+- **Push Notifications:** Firebase (firebase-admin) and django-webpush
 
 ## Project Structure
 
@@ -29,7 +30,7 @@ The project follows Django's app-based architecture with multiple specialized ap
 | gfadmin   | Admin tool                          | https://www.givefood.org.uk/admin/     |
 | gfapi1    | Deprecated first version of our API | https://www.givefood.org.uk/api/1/     |
 | gfapi2    | Current API                         | https://www.givefood.org.uk/api/       |
-| gfapi3    | Future API (in development)         | https://www.givefood.org.uk/api/3/     |
+| gfapi3    | Future API                          | https://www.givefood.org.uk/api/3/     |
 | gfauth    | Google OAuth authentication         | https://www.givefood.org.uk/auth/      |
 | gfdash    | Data dashboards                     | https://www.givefood.org.uk/dashboard/ |
 | gfdumps   | Data dumps management               | https://www.givefood.org.uk/dumps/     |
@@ -46,6 +47,14 @@ The project follows Django's app-based architecture with multiple specialized ap
 - **URL Patterns:** Each app has its own urls.py that's included in the main URL configuration
 - **Templates:** Located in each app's `templates/` directory
 - **Static Files:** Located in `givefood/static/`
+- **Utilities:** Organized in `givefood/utils/` with specialized modules:
+  - `ai.py` - AI integrations (Gemini, Mistral, OpenRouter)
+  - `cache.py` - Caching and credential management
+  - `crawlers.py` - Web crawling utilities
+  - `general.py` - Translation, Turnstile validation, screenshots
+  - `geo.py` - Geocoding, distance calculations, location functions
+  - `notifications.py` - Email, push, and WhatsApp notifications
+  - `text.py` - Text processing, formatting, IP detection
 - **Middleware:** Custom middleware in `givefood.middleware` includes:
   - `SlugRedirectMiddleware` - Old food bank slug redirects
   - `LoginRequiredAccess` - Access control
@@ -65,7 +74,7 @@ The project follows Django's app-based architecture with multiple specialized ap
 
 - All user-facing strings should be wrapped with `{% trans %}` or `{% blocktrans %}` in templates
 - Use `gettext_lazy` for strings in Python code
-- Translation files are in `locale/` directory with support for multiple languages (es, pl, etc.)
+- Translation files are in `locale/` directory with support for 20 languages (see `docs/languages.md` for the full list)
 - Run `./manage.py makemessages` and `./manage.py compilemessages` when adding translatable strings
 
 ### Database
@@ -81,7 +90,7 @@ The project provides a public API documented at https://www.givefood.org.uk/api/
 
 - **Current API:** gfapi2 (version 2)
 - **Legacy API:** gfapi1 (deprecated)
-- **Future API:** gfapi3 (in development)
+- **Future API:** gfapi3 (version 3)
 
 API responses include food bank data, needs, locations, and parliamentary constituency information.
 
@@ -128,6 +137,7 @@ The project uses python-dotenv to load from `.env` file:
 - `manage.py` - Django management commands
 - `pyproject.toml` - Python dependencies and project metadata
 - `docs/abbreviations.md` - List of abbreviations used in the project
+- `docs/languages.md` - Supported languages and their details
 - `docs/crons.md` - Scheduled task documentation
 
 ## Key Features
