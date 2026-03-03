@@ -135,6 +135,24 @@ class TestSitemap:
 
 
 @pytest.mark.django_db
+class TestRobotsTxt:
+    """Test robots.txt generation."""
+
+    def test_robotstxt_accessible(self, client):
+        """Test that robots.txt is accessible and returns plain text."""
+        response = client.get('/robots.txt')
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'text/plain'
+
+    def test_robotstxt_contains_md_sitemap(self, client):
+        """Test that robots.txt includes the markdown sitemap."""
+        response = client.get('/robots.txt')
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        assert '/md/sitemap.xml' in content
+
+
+@pytest.mark.django_db
 class TestLLMSTxt:
     """Test llms.txt generation."""
 

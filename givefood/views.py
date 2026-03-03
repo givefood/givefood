@@ -795,6 +795,7 @@ def robotstxt(request):
     flag_url = reverse("flag")
     sitemap_url = reverse("sitemap")
     sitemap_places_index_url = reverse("sitemap_places_index")
+    md_sitemap_url = reverse("md_sitemap")
 
     disallowed_urls = ["/aac/"]
     sitemap_urls = []
@@ -804,6 +805,7 @@ def robotstxt(request):
         disallowed_urls.append(translate_url(flag_url, lang_code))
         sitemap_urls.append(translate_url(sitemap_url, lang_code))
         sitemap_urls.append(translate_url(sitemap_places_index_url, lang_code))
+    sitemap_urls.append(md_sitemap_url)
 
     template_vars = {
         "domain":SITE_DOMAIN,
