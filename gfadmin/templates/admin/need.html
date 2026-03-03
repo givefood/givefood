@@ -32,7 +32,16 @@
           <dd><a href="{{ need.uri }}">{{ need.uri|truncatechars:35 }}</a></dd>
         {% endif %}
         <dt>Food Bank Subs</dt>
-        <dd>{{ subscriber_count }}</dd>
+        <dd>
+          {{ subscriber_count }}
+          {% if email_subscribers_count or whatsapp_count or webpush_count or mobile_count %}
+            <br>
+            {% if email_subscribers_count %}<span class="mdi mdi-email"></span>&nbsp;{{ email_subscribers_count }}&ensp;{% endif %}
+            {% if whatsapp_count %}<span class="mdi mdi-whatsapp"></span>&nbsp;{{ whatsapp_count }}&ensp;{% endif %}
+            {% if webpush_count %}<span class="mdi mdi-bell"></span>&nbsp;{{ webpush_count }}&ensp;{% endif %}
+            {% if mobile_count %}<span class="mdi mdi-cellphone"></span>&nbsp;{{ mobile_count }}{% endif %}
+          {% endif %}
+        </dd>
       </dl>
 
       {% if crawl_set %}

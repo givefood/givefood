@@ -1698,6 +1698,10 @@ def need(request, id):
     crawl_set = None
     translation_count = 0
     subscriber_count = 0
+    email_subscribers_count = 0
+    whatsapp_count = 0
+    webpush_count = 0
+    mobile_count = 0
     
     if need.foodbank:
         # Fetch previous published need
@@ -1754,6 +1758,10 @@ def need(request, id):
         "crawl_set":crawl_set,
         "translation_count":translation_count,
         "subscriber_count":subscriber_count,
+        "email_subscribers_count":email_subscribers_count,
+        "whatsapp_count":whatsapp_count,
+        "webpush_count":webpush_count,
+        "mobile_count":mobile_count,
     }
     return render(request, "admin/need.html", template_vars)
 
