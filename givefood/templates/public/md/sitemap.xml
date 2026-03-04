@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% for url_name in url_names %}  <url><loc>{{ domain }}{% url url_name %}</loc></url>
+{% endfor %}{% for country_slug in country_slugs %}  <url><loc>{{ domain }}{% url 'country' country_slug %}</loc></url>
+{% endfor %}{% for foodbank in foodbanks %}  <url><loc>{{ domain }}{% url 'wfbn-md:md_foodbank' foodbank.slug %}</loc></url>
+{% endfor %}{% for location in locations %}  <url><loc>{{ domain }}{% url 'wfbn-md:md_foodbank_location' location.foodbank_slug location.slug %}</loc></url>
+{% endfor %}{% for donationpoint in donationpoints %}  <url><loc>{{ domain }}{% url 'wfbn-md:md_foodbank_donationpoint' donationpoint.foodbank_slug donationpoint.slug %}</loc></url>
+{% endfor %}{% for constituency in constituencies %}  <url><loc>{{ domain }}{% url 'wfbn:constituency' constituency.slug %}</loc></url>
+{% endfor %}</urlset>
