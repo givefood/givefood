@@ -3279,6 +3279,7 @@ def needtestbed(request):
         "google/gemini-2.5-flash-lite",
         "amazon/nova-micro-v1",
         "google/gemini-3-flash-preview",
+        "google/gemini-3.1-flash-lite-preview",
         "openai/gpt-5-nano",
         "mistralai/mistral-nemo",
         "anthropic/claude-3-haiku",
