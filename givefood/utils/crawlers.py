@@ -408,6 +408,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         temperature = 0,
         response_schema = response_schema,
         response_mime_type = "application/json",
+        model = "gemini-3.1-flash-lite-preview",
     )
 
     if need_response: 
