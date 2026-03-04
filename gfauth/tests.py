@@ -4,7 +4,7 @@ Tests for the gfauth (authentication) app.
 import pytest
 from django.test import Client
 from django.urls import reverse
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 
 @pytest.mark.django_db
