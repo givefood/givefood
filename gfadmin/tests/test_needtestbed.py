@@ -39,13 +39,11 @@ class TestNeedtestbedViewConstants:
         for model in expected_models:
             assert model in source, f"Model {model} not found in needtestbed view"
 
-    def test_models_without_json_schema(self):
-        """Verify models without json_schema support are configured and called without response_format."""
+    def test_all_models_use_json_schema(self):
+        """Verify all models use the standard json_schema path via response_schema."""
         from gfadmin.views import needtestbed
         import inspect
         source = inspect.getsource(needtestbed)
-        assert "MODELS_WITHOUT_JSON_SCHEMA" in source
+        assert "MODELS_WITHOUT_JSON_SCHEMA" not in source
         assert "amazon/nova-micro-v1" in source
         assert "anthropic/claude-3-haiku" in source
-        # Ensure the MODELS_WITHOUT_JSON_SCHEMA branch calls openrouter with json_object format
-        assert 'openrouter(need_prompt, 0, model, response_format_type="json_object")' in source

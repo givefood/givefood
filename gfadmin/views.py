@@ -3291,11 +3291,6 @@ def needtestbed(request):
         "qwen/qwen3-coder-next",
     ]
 
-    MODELS_WITHOUT_JSON_SCHEMA = {
-        "amazon/nova-micro-v1",
-        "anthropic/claude-3-haiku",
-    }
-
     ninety_days_ago = timezone.now() - timedelta(days=90)
     foodbanks_with_recent_needs = Foodbank.objects.filter(
         last_need__gte=ninety_days_ago,
@@ -3373,10 +3368,7 @@ def needtestbed(request):
             }
 
             try:
-                if model in MODELS_WITHOUT_JSON_SCHEMA:
-                    api_response = openrouter(need_prompt, 0, model, response_format_type="json_object")
-                else:
-                    api_response = openrouter(need_prompt, 0, model, response_schema=response_schema)
+                api_response = openrouter(need_prompt, 0, model, response_schema=response_schema)
 
                 if api_response.status_code == 200:
                     response_json = api_response.json()
