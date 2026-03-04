@@ -3287,10 +3287,8 @@ def needtestbed(request):
         "deepseek/deepseek-v3.2",
         "meta-llama/llama-3.3-70b-instruct",
         "qwen/qwen-2.5-7b-instruct",
-        "openrouter/sherlock-dash-alpha",
-        "openai/gpt-4o",
+        "openai/gpt-4.1-mini",
         "qwen/qwen3-coder-next",
-        "z-ai/glm-5",
     ]
 
     MODELS_WITHOUT_JSON_SCHEMA = {
