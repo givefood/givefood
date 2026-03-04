@@ -105,3 +105,20 @@ class TestAuthReceiverRedirect:
         response = client.post('/auth/receiver/', {'credential': 'fake-token'})
         assert response.status_code == 302
         assert response.url == '/auth/'
+
+    @patch('gfauth.views.id_token.verify_oauth2_token')
+    def test_ignores_protocol_relative_next_url(self, mock_verify, client):
+        """Test that protocol-relative URLs in next_url are ignored."""
+        mock_verify.return_value = {
+            'email': 'test@givefood.org.uk',
+            'email_verified': True,
+            'hd': 'givefood.org.uk',
+        }
+
+        session = client.session
+        session['next_url'] = '//evil.com/steal'
+        session.save()
+
+        response = client.post('/auth/receiver/', {'credential': 'fake-token'})
+        assert response.status_code == 302
+        assert response.url == '/auth/'
