@@ -747,7 +747,7 @@ def md_index(request):
 @cache_page(SECONDS_IN_WEEK)
 def md_sitemap(request):
     """
-    Markdown version of the sitemap
+    XML sitemap for markdown pages
     """
 
     url_names = [
@@ -782,7 +782,7 @@ def md_sitemap(request):
         "locations": locations,
         "donationpoints": donationpoints,
     }
-    return render(request, "public/md/sitemap.md", template_vars, content_type='text/markdown; charset=utf-8')
+    return render(request, "public/md/sitemap.xml", template_vars, content_type='application/xml')
 
 
 @cache_page(SECONDS_IN_WEEK)

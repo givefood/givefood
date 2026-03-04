@@ -604,14 +604,13 @@ class TestAddressAutocomplete:
 
 @pytest.mark.django_db
 class TestMarkdownPages:
-    """Test markdown versions of pages."""
+    """Test /md pages."""
 
     def test_md_sitemap_accessible(self, client):
-        """Test that the markdown sitemap is accessible."""
+        """Test that the /md sitemap is accessible as XML."""
         response = client.get('/md/sitemap.xml')
         assert response.status_code == 200
-        assert 'text/markdown' in response['Content-Type']
+        assert 'application/xml' in response['Content-Type']
         content = response.content.decode('utf-8')
-        assert '# Sitemap' in content
-
+        assert '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
 
