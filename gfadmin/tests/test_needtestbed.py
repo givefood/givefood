@@ -29,7 +29,10 @@ class TestNeedtestbedViewConstants:
             "deepseek/deepseek-v3.2",
             "meta-llama/llama-3.3-70b-instruct",
             "qwen/qwen-2.5-7b-instruct",
-            "qwen/qwen3.5-397b-a17b",
+            "openrouter/sherlock-dash-alpha",
+            "openai/gpt-4o",
+            "qwen/qwen3-coder-next",
+            "z-ai/glm-5",
         ]
         # Import the view and check the models list is defined
         from gfadmin.views import needtestbed
