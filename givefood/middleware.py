@@ -62,9 +62,11 @@ class LoginRequiredAccess:
                     "user_data"
                 ).get("hd")
             except AttributeError:
+                request.session["next_url"] = request.get_full_path()
                 return redirect("auth:sign_in")
 
             if not email_verified or hosted_domain != "givefood.org.uk":
+                request.session["next_url"] = request.get_full_path()
                 return redirect("auth:sign_in")
 
         return self.get_response(request)

@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.csrf import csrf_exempt
 from google.oauth2 import id_token
 from google.auth.transport import requests
@@ -22,6 +23,10 @@ def auth_receiver(request):
         return HttpResponse(status=403)
 
     request.session['user_data'] = user_data
+
+    next_url = request.session.pop('next_url', None)
+    if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts=None):
+        return redirect(next_url)
 
     return redirect('auth:sign_in')
 
