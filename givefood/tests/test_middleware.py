@@ -6,7 +6,7 @@ import django.db.utils
 from django.test import RequestFactory
 from django.http import HttpResponse
 from unittest.mock import Mock, patch, MagicMock
-from givefood.middleware import GeoJSONPreload, RenderTime
+from givefood.middleware import GeoJSONPreload, LoginRequiredAccess, RenderTime
 
 
 @pytest.mark.django_db
@@ -305,3 +305,44 @@ PUTTHERENDERTIMEHERE
         assert content.count('PUTTHERENDERTIMEHERE') == 1, (
             "Should replace only the first PUTTHERENDERTIMEHERE"
         )
+
+
+@pytest.mark.django_db
+class TestLoginRequiredAccessMiddleware:
+    """Test the LoginRequiredAccess middleware stores next_url in session."""
+
+    def test_unauthenticated_redirect_stores_next_url(self, client):
+        """Test that unauthenticated admin access stores the original path."""
+        response = client.get('/admin/')
+        assert response.status_code == 302
+        assert response.url == '/auth/'
+        assert client.session['next_url'] == '/admin/'
+
+    def test_unauthenticated_redirect_stores_full_path(self, client):
+        """Test that the full path including subpages is stored."""
+        response = client.get('/admin/foodbanks/')
+        assert response.status_code == 302
+        assert response.url == '/auth/'
+        assert client.session['next_url'] == '/admin/foodbanks/'
+
+    def test_authenticated_request_no_next_url(self):
+        """Test that authenticated requests don't set next_url."""
+        request = RequestFactory().get('/admin/')
+        request.session = {
+            'user_data': {
+                'email': 'test@givefood.org.uk',
+                'email_verified': True,
+                'hd': 'givefood.org.uk',
+            }
+        }
+
+        get_response = Mock(return_value=HttpResponse('OK'))
+        middleware = LoginRequiredAccess(get_response)
+
+        with patch('givefood.middleware.resolve') as mock_resolve:
+            mock_resolved = MagicMock()
+            mock_resolved.app_name = 'gfadmin'
+            mock_resolve.return_value = mock_resolved
+            middleware(request)
+
+        assert 'next_url' not in request.session

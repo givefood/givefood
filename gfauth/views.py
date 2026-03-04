@@ -23,6 +23,10 @@ def auth_receiver(request):
 
     request.session['user_data'] = user_data
 
+    next_url = request.session.pop('next_url', None)
+    if next_url and next_url.startswith('/'):
+        return redirect(next_url)
+
     return redirect('auth:sign_in')
 
 def sign_out(request):
