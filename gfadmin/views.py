@@ -3286,7 +3286,6 @@ def needtestbed(request):
         "minimax/minimax-m2.5",
         "deepseek/deepseek-v3.2",
         "meta-llama/llama-3.3-70b-instruct",
-        "qwen/qwen-2.5-coder-32b-instruct",
         "qwen/qwen-2.5-7b-instruct",
         "qwen/qwen3.5-397b-a17b",
     ]
@@ -3374,7 +3373,7 @@ def needtestbed(request):
 
             try:
                 if model in MODELS_WITHOUT_JSON_SCHEMA:
-                    api_response = openrouter(need_prompt, 0, model)
+                    api_response = openrouter(need_prompt, 0, model, response_format_type="json_object")
                 else:
                     api_response = openrouter(need_prompt, 0, model, response_schema=response_schema)
 

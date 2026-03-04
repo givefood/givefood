@@ -28,7 +28,6 @@ class TestNeedtestbedViewConstants:
             "minimax/minimax-m2.5",
             "deepseek/deepseek-v3.2",
             "meta-llama/llama-3.3-70b-instruct",
-            "qwen/qwen-2.5-coder-32b-instruct",
             "qwen/qwen-2.5-7b-instruct",
             "qwen/qwen3.5-397b-a17b",
         ]
@@ -47,5 +46,5 @@ class TestNeedtestbedViewConstants:
         assert "MODELS_WITHOUT_JSON_SCHEMA" in source
         assert "amazon/nova-micro-v1" in source
         assert "anthropic/claude-3-haiku" in source
-        # Ensure the MODELS_WITHOUT_JSON_SCHEMA branch calls openrouter without response_format_type
-        assert "openrouter(need_prompt, 0, model)" in source
+        # Ensure the MODELS_WITHOUT_JSON_SCHEMA branch calls openrouter with json_object format
+        assert 'openrouter(need_prompt, 0, model, response_format_type="json_object")' in source
