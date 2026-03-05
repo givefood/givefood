@@ -291,8 +291,8 @@
         </table>
     </div>
     <div class="column is-one-third">
-        <div class="tabs is-boxed" role="tablist" aria-label="Website previews">
-            <ul>
+        <div class="tabs is-boxed">
+            <ul role="tablist" aria-label="Website previews">
                 {% for url_name, url in foodbank_urls.items %}
                     <li class="{% if forloop.first %}is-active{% endif %}" role="presentation">
                         <a data-tab="preview-{{ url_name|slugify }}" role="tab" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="preview-{{ url_name|slugify }}-panel" id="preview-{{ url_name|slugify }}-tab">

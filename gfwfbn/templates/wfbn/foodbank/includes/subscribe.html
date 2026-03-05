@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="subscribe">
     <div class="tabs is-boxed">
-        <ul>
+        <ul role="tablist">
             <li{% if not turnstilefail %} class="is-active"{% endif %} role="presentation">
                 <a data-tab="apps" role="tab"{% if not turnstilefail %} aria-selected="true"{% else %} aria-selected="false"{% endif %} aria-controls="apps-panel" id="apps-tab">
                     <span>{% trans "Apps" %}</span>
