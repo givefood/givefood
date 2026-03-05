@@ -76,8 +76,8 @@
       {% if locations %}
         <div id="theresults" class="sections">
 
-          <div class="tabs is-boxed" role="tablist" aria-label="{% blocktrans %}Search results{% endblocktrans %}">
-            <ul>
+          <div class="tabs is-boxed">
+            <ul role="tablist" aria-label="{% blocktrans %}Search results{% endblocktrans %}">
               <li class="{% if not item_category %}is-active{% endif %}" role="presentation">
                 <a data-tab="foodbanks" role="tab" aria-selected="{% if not item_category %}true{% else %}false{% endif %}" aria-controls="foodbanks-panel" id="foodbanks-tab">
                   <span>{% blocktrans %}Food banks{% endblocktrans %}</span>
