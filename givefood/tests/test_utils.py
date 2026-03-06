@@ -100,10 +100,12 @@ class TestTextUtilities:
 
     def test_htmlbodytext_removes_svg_content(self):
         """Test that htmlbodytext removes svg tags and their content."""
-        html = "<html><body><p>Hello</p><svg><circle cx='50' cy='50' r='40'/></svg></body></html>"
+        html = "<html><body><p>Hello</p><svg><title>Chart</title><desc>A bar chart</desc><text x='10' y='20'>Label</text></svg></body></html>"
         result = htmlbodytext(html)
         assert "Hello" in result
-        assert "circle" not in result
+        assert "Chart" not in result
+        assert "bar chart" not in result
+        assert "Label" not in result
 
     def test_htmlbodytext_removes_iframe_content(self):
         """Test that htmlbodytext removes iframe tags and their content."""
@@ -121,12 +123,12 @@ class TestTextUtilities:
 
     def test_htmlbodytext_removes_multiple_unwanted_tags(self):
         """Test that htmlbodytext removes multiple unwanted tags at once."""
-        html = "<html><body><p>Content</p><script>js()</script><style>css{}</style><svg><path/></svg><iframe>if</iframe><canvas>cv</canvas></body></html>"
+        html = "<html><body><p>Content</p><script>js()</script><style>css{}</style><svg><text>chart label</text></svg><iframe>if</iframe><canvas>cv</canvas></body></html>"
         result = htmlbodytext(html)
         assert "Content" in result
         assert "js()" not in result
         assert "css{}" not in result
-        assert "path" not in result
+        assert "chart label" not in result
         assert "if" not in result
         assert "cv" not in result
 
