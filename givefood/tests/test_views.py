@@ -179,6 +179,13 @@ class TestLLMSTxt:
         assert '{{ foodbanks_count' not in content
         assert '{{ donationpoints_count' not in content
 
+    def test_llmstxt_has_sitemap_link(self, client):
+        """Test that llms.txt includes the markdown sitemap link."""
+        response = client.get('/llms.txt')
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        assert '/md/sitemap.md' in content
+
 
 @pytest.mark.django_db
 class TestManifest:
@@ -613,4 +620,12 @@ class TestMarkdownPages:
         assert 'application/xml' in response['Content-Type']
         content = response.content.decode('utf-8')
         assert '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' in content
+
+    def test_md_sitemap_md_accessible(self, client):
+        """Test that the /md/sitemap.md is accessible as Markdown."""
+        response = client.get('/md/sitemap.md')
+        assert response.status_code == 200
+        assert 'text/markdown' in response['Content-Type']
+        content = response.content.decode('utf-8')
+        assert '# Sitemap' in content
 

@@ -786,6 +786,47 @@ def md_sitemap(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
+def md_sitemap_md(request):
+    """
+    Markdown sitemap for markdown pages
+    """
+
+    url_names = [
+        "index",
+        "about_us",
+        "donate",
+        "annual_report_index",
+        "privacy",
+    ]
+
+    country_slugs = ['scotland', 'england', 'wales', 'northern-ireland']
+
+    foodbanks = Foodbank.objects.all().exclude(is_closed=True).only('slug', 'name')
+    constituencies = ParliamentaryConstituency.objects.all().only('slug', 'name')
+    locations = (
+        FoodbankLocation.objects.all()
+        .exclude(is_closed=True)
+        .only('foodbank_slug', 'slug', 'name')
+    )
+    donationpoints = (
+        FoodbankDonationPoint.objects.all()
+        .exclude(is_closed=True)
+        .only('foodbank_slug', 'slug', 'name')
+    )
+
+    template_vars = {
+        "domain": SITE_DOMAIN,
+        "url_names": url_names,
+        "country_slugs": country_slugs,
+        "foodbanks": foodbanks,
+        "constituencies": constituencies,
+        "locations": locations,
+        "donationpoints": donationpoints,
+    }
+    return render(request, "public/md/sitemap.md", template_vars, content_type='text/markdown; charset=utf-8')
+
+
+@cache_page(SECONDS_IN_WEEK)
 def robotstxt(request):
     """
     /robots.txt

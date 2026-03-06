@@ -4,6 +4,10 @@
 
 Give Food is a registered charity in England & Wales (1188192) that uses data to highlight local and structural food insecurity. We maintain near-realtime data on {{ foodbanks_count|floatformat:"0"|intcomma }} food bank locations and {{ donationpoints_count|floatformat:"0"|intcomma }}+ donation points across the UK, tracking what items they need donated and providing tools to help connect donors with those in need.
 
+## Sitemap
+
+- [Markdown Sitemap]({{ domain }}/md/sitemap.md)
+
 ## About the Charity
 
 - [About Give Food]({{ domain }}/about-us/): Information about the charity, mission, and impact
