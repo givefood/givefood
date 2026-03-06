@@ -158,6 +158,8 @@ def htmlbodytext(html):
     """Extract the text content from the <body> of an HTML document."""
     soup = BeautifulSoup(html, features="html.parser")
     if soup.body:
+        for tag in soup.body.find_all(["svg", "style", "script", "iframe", "canvas"]):
+            tag.decompose()
         return soup.body.get_text()
     else:
         return False

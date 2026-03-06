@@ -21,6 +21,7 @@ from givefood.utils.geo import (
 from givefood.utils.text import (
     clean_foodbank_need_text,
     diff_html,
+    htmlbodytext,
     text_for_comparison,
 )
 
@@ -72,6 +73,62 @@ class TestTextUtilities:
     def test_clean_foodbank_need_text_fixes_uht(self):
         """Test that clean_foodbank_need_text fixes UHT capitalization."""
         assert "UHT" in clean_foodbank_need_text("Uht milk")
+
+    def test_htmlbodytext_extracts_body_text(self):
+        """Test that htmlbodytext extracts text from body."""
+        html = "<html><body><p>Hello World</p></body></html>"
+        assert "Hello World" in htmlbodytext(html)
+
+    def test_htmlbodytext_no_body(self):
+        """Test that htmlbodytext returns False when no body tag."""
+        assert htmlbodytext("<html><head></head></html>") is False
+
+    def test_htmlbodytext_removes_script_content(self):
+        """Test that htmlbodytext removes script tags and their content."""
+        html = "<html><body><p>Hello</p><script>var x = 1;</script><p>World</p></body></html>"
+        result = htmlbodytext(html)
+        assert "Hello" in result
+        assert "World" in result
+        assert "var x" not in result
+
+    def test_htmlbodytext_removes_style_content(self):
+        """Test that htmlbodytext removes style tags and their content."""
+        html = "<html><body><p>Hello</p><style>.red { color: red; }</style></body></html>"
+        result = htmlbodytext(html)
+        assert "Hello" in result
+        assert "color" not in result
+
+    def test_htmlbodytext_removes_svg_content(self):
+        """Test that htmlbodytext removes svg tags and their content."""
+        html = "<html><body><p>Hello</p><svg><circle cx='50' cy='50' r='40'/></svg></body></html>"
+        result = htmlbodytext(html)
+        assert "Hello" in result
+        assert "circle" not in result
+
+    def test_htmlbodytext_removes_iframe_content(self):
+        """Test that htmlbodytext removes iframe tags and their content."""
+        html = "<html><body><p>Hello</p><iframe>Fallback text</iframe></body></html>"
+        result = htmlbodytext(html)
+        assert "Hello" in result
+        assert "Fallback" not in result
+
+    def test_htmlbodytext_removes_canvas_content(self):
+        """Test that htmlbodytext removes canvas tags and their content."""
+        html = "<html><body><p>Hello</p><canvas>Canvas not supported</canvas></body></html>"
+        result = htmlbodytext(html)
+        assert "Hello" in result
+        assert "Canvas not supported" not in result
+
+    def test_htmlbodytext_removes_multiple_unwanted_tags(self):
+        """Test that htmlbodytext removes multiple unwanted tags at once."""
+        html = "<html><body><p>Content</p><script>js()</script><style>css{}</style><svg><path/></svg><iframe>if</iframe><canvas>cv</canvas></body></html>"
+        result = htmlbodytext(html)
+        assert "Content" in result
+        assert "js()" not in result
+        assert "css{}" not in result
+        assert "path" not in result
+        assert "if" not in result
+        assert "cv" not in result
 
 
 
