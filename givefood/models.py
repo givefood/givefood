@@ -2023,6 +2023,9 @@ class FoodbankChange(models.Model):
                 if text_type == "excess":
                     the_text = self.excess_change_text
             
+        if not the_text:
+            return ""
+
         # Remove empty lines
         non_empty_lines = [line for line in the_text.splitlines() if line.strip()]
         the_text = "\n".join(non_empty_lines)
