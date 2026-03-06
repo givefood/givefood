@@ -358,3 +358,39 @@ class TestFoodbankChangeGetText:
 
         # Reset to English
         activate('en')
+
+    @patch('givefood.models.translate_need_async')
+    def test_get_text_returns_empty_string_when_text_is_none(self, mock_translate):
+        """Test that get_text returns empty string when change_text or excess_change_text is None."""
+        foodbank = Foodbank(
+            name="Test Food Bank None Text",
+            slug="test-food-bank-none-text",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://testnone.example.com",
+            shopping_list_url="https://testnone.example.com/shopping",
+            contact_email="testnone@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes\nPasta",
+            excess_change_text=None,
+            published=True,
+        )
+        need.save(do_translate=False)
+
+        # Should return empty string instead of raising AttributeError
+        excess_text = need.get_excess_text()
+        assert excess_text == ""
+
+        # Also verify change_text=None is handled
+        need.change_text = None
+        change_text = need.get_change_text()
+        assert change_text == ""
