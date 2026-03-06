@@ -1,0 +1,29 @@
+{% extends "admin/page.html" %}
+
+{% block title %}Map - GF Admin{% endblock %}
+
+{% block head %}
+  <style>
+    .main {
+      margin: 0;
+      padding: 0;
+    }
+    .footer {
+      display: none;
+    }
+    #map {
+      width: 100%;
+      height: calc(100vh - 52px);
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div id="map"></div>
+  {% include "public/includes/maplegend.html" %}
+{% endblock %}
+
+{% block script %}
+  {% include 'public/includes/mapconfig.html' %}
+  <script src="/static/js/wfbn.js?v={{ version }}" defer onload="init()"></script>
+{% endblock %}

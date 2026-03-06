@@ -102,6 +102,7 @@ urlpatterns = (
     path("politics/csv/", politics_csv, name="politics_csv"),
 
     path("settings/", settings, name="settings"),
+    path("map/", admin_map, name="map"),
     path("order-groups/", order_groups, name="order_groups"),
     path("order-group/<slug:slug>/", order_group, name="order_group"),
     path("order-group/<slug:slug>/edit/", order_group_form, name="order_group_edit"),
