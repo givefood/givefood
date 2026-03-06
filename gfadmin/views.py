@@ -2633,6 +2633,23 @@ def places_loader(request):
     return HttpResponse("OK")
 
 
+def admin_map(request):
+
+    map_config = {
+        "geojson":reverse("wfbn:geojson"),
+        "lat": 55.4,
+        "lng": -4,
+        "zoom": 5,
+        "location_marker": False,
+    }
+    map_config = json.dumps(map_config)
+
+    template_vars = {
+        "map_config":map_config,
+    }
+    return render(request, "admin/map.html", template_vars)
+
+
 def settings(request):
 
     # Calculate current quarter start and end dates
