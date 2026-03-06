@@ -890,6 +890,19 @@ def llmstxt(request):
 
 
 @cache_page(SECONDS_IN_WEEK)
+def securitytxt(request):
+    """
+    /.well-known/security.txt
+    """
+
+    return HttpResponse(
+        "Contact: mailto:mail@givefood.org.uk\n"
+        "Expires: 2030-01-01T00:00:00.000Z\n",
+        content_type='text/plain',
+    )
+
+
+@cache_page(SECONDS_IN_WEEK)
 def sitemap_external(request):
     """
     XML sitemap for external links
