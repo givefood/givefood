@@ -82,6 +82,7 @@ urlpatterns += [
     # Markdown versions
     path("md/", givefood.views.md_index, name="md_index"),
     path("md/sitemap.xml", givefood.views.md_sitemap, name="md_sitemap"),
+    path("md/sitemap.md", givefood.views.md_sitemap_md, name="md_sitemap_md"),
     path("md/needs/", include('gfwfbn.urls.md', namespace="wfbn-md")),
 ]
 
