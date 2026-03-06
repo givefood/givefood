@@ -61,6 +61,7 @@ urlpatterns += i18n_patterns(
 urlpatterns += [
 
     path("llms.txt", givefood.views.llmstxt, name="llmstxt"),
+    path(".well-known/security.txt", givefood.views.securitytxt, name="securitytxt"),
     path("sitemap_external.xml", givefood.views.sitemap_external, name="sitemap_external"),
     path("privacy/", givefood.views.privacy, name="privacy"),
     path("firebase-messaging-sw.js", givefood.views.service_worker, name="service_worker"),

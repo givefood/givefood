@@ -153,6 +153,24 @@ class TestRobotsTxt:
 
 
 @pytest.mark.django_db
+class TestSecurityTxt:
+    """Test security.txt generation."""
+
+    def test_securitytxt_accessible(self, client):
+        """Test that security.txt is accessible and returns plain text."""
+        response = client.get('/.well-known/security.txt')
+        assert response.status_code == 200
+        assert 'text/plain' in response['Content-Type']
+
+    def test_securitytxt_contains_required_fields(self, client):
+        """Test that security.txt contains the required Contact and Expires fields."""
+        response = client.get('/.well-known/security.txt')
+        content = response.content.decode('utf-8')
+        assert 'Contact: mailto:mail@givefood.org.uk' in content
+        assert 'Expires: 2030-01-01T00:00:00.000Z' in content
+
+
+@pytest.mark.django_db
 class TestLLMSTxt:
     """Test llms.txt generation."""
 
