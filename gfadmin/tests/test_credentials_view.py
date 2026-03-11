@@ -27,6 +27,35 @@ def credential():
 
 
 @pytest.mark.django_db
+class TestCredentialDetail:
+    """Test the credential_detail view."""
+
+    def test_credential_detail_returns_plain_text(self, credential):
+        """Test that credential detail returns the value as plain text."""
+        client = Client()
+        _setup_authenticated_session(client)
+
+        response = client.get(
+            reverse("admin:credential_detail", args=["test_key"]),
+        )
+
+        assert response.status_code == 200
+        assert response["Content-Type"] == "text/plain"
+        assert response.content.decode() == "test_value"
+
+    def test_credential_detail_returns_404_for_missing(self):
+        """Test that a non-existent credential returns 404."""
+        client = Client()
+        _setup_authenticated_session(client)
+
+        response = client.get(
+            reverse("admin:credential_detail", args=["nonexistent"]),
+        )
+
+        assert response.status_code == 404
+
+
+@pytest.mark.django_db
 class TestDeleteCredential:
     """Test the delete_credential view."""
 

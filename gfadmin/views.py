@@ -2817,6 +2817,12 @@ def credentials_form(request):
     return render(request, "admin/form.html", template_vars)
 
 
+def credential_detail(request, name):
+    """Return a credential's value as plain text."""
+    credential = get_object_or_404(GfCredential, cred_name=name)
+    return HttpResponse(credential.cred_value, content_type="text/plain")
+
+
 def credentials_decache(request):
     """Clear all cached credentials."""
     delete_all_cached_credentials()
