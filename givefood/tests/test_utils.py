@@ -544,6 +544,48 @@ class TestFoodbankQueryset:
         assert "latest_need__foodbankchangetranslation_set" not in prefetches
 
 
+class TestGemini:
+    """Test gemini utility function."""
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_without_url(self, mock_genai, mock_cred):
+        """Test that gemini does not set tools when url is not provided."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = {"result": "ok"}
+        mock_client.models.generate_content.return_value = mock_response
+
+        gemini("test prompt", 0)
+
+        call_kwargs = mock_client.models.generate_content.call_args
+        config = call_kwargs.kwargs["config"]
+        assert config.tools is None
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_with_url(self, mock_genai, mock_cred):
+        """Test that gemini sets url_context tool when url is provided."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = {"result": "ok"}
+        mock_client.models.generate_content.return_value = mock_response
+
+        gemini("test prompt", 0, url = "https://example.com")
+
+        call_kwargs = mock_client.models.generate_content.call_args
+        config = call_kwargs.kwargs["config"]
+        assert config.tools is not None
+        assert len(config.tools) == 1
+        assert config.tools[0].url_context is not None
+
+
 class TestMistral:
     """Test mistral utility function."""
 
