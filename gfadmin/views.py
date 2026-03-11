@@ -2823,6 +2823,18 @@ def credentials_decache(request):
     return redirect("admin:credentials")
 
 
+@require_POST
+def delete_credential(request):
+    """Delete a credential by ID."""
+    cred_id = request.POST.get("id")
+    if not cred_id:
+        raise Http404
+    credential = get_object_or_404(GfCredential, id=cred_id)
+    credential.delete()
+    delete_all_cached_credentials()
+    return redirect("admin:credentials")
+
+
 def subscriptions(request):
 
     sub_type = request.GET.get("type", "all")

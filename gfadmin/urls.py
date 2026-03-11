@@ -116,6 +116,7 @@ urlpatterns = (
     path("credentials/", credentials, name="credentials"),
     path("credentials/new/", credentials_form, name="credential_new"),
     path("credentials/decache/", credentials_decache, name="credentials_decache"),
+    path("credential/delete/", delete_credential, name="credential_delete"),
 
     path("search/", search_results, name="search_results"),
 
