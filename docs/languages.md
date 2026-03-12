@@ -20,3 +20,4 @@
 | Lietuvių              | Lithuanian                 | lt            | →              | 0.06%                        | [🔗](https://www.givefood.org.uk/lt) |
 | Gaeilge               | Irish                      | ga            | →              | 0.02%                        | [🔗](https://www.givefood.org.uk/ga) |
 | Български             | Bulgarian                  | bg            | →              | 0.02%                        | [🔗](https://www.givefood.org.uk/bg) |
+| tlhIngan Hol          | Klingon                    | tlh           | →              | -                            | [🔗](https://www.givefood.org.uk/tlh) |

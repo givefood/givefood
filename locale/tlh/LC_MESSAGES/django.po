@@ -1,0 +1,1418 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-12 07:47+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: gfdumps/templates/gfdumps/dumps.html:5
+#: gfdumps/templates/gfdumps/dumps.html:25
+#: gfdumps/templates/gfdumps/dumps.html:42
+msgid "Dumps"
+msgstr ""
+
+#: gfdumps/templates/gfdumps/dumps.html:24
+#: gfwfbn/templates/wfbn/constituency/constituency.html:42
+#: gfwfbn/templates/wfbn/constituency/index.html:31
+#: gfwfbn/templates/wfbn/foodbank/charity.html:42
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:47
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:41
+#: gfwfbn/templates/wfbn/foodbank/index.html:49
+#: gfwfbn/templates/wfbn/foodbank/location.html:47
+#: gfwfbn/templates/wfbn/foodbank/locations.html:41
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:41
+#: gfwfbn/templates/wfbn/foodbank/news.html:42
+#: gfwfbn/templates/wfbn/foodbank/updates.html:40
+#: givefood/templates/public/page.html:72
+msgid "Home"
+msgstr ""
+
+#: gfdumps/templates/gfdumps/dumps.html:67
+msgid "Date"
+msgstr ""
+
+#: gfdumps/templates/gfdumps/dumps.html:68
+msgid "Size"
+msgstr ""
+
+#: gfdumps/templates/gfdumps/dumps.html:69
+msgid "Rows"
+msgstr ""
+
+#: gfdumps/templates/gfdumps/dumps.html:75
+msgid "Latest"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:43
+msgid "Constituencies"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:48
+#, python-format
+msgid "Food banks in %(constituency_name)s"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:58
+#, python-format
+msgid "%(constituency_name)s constituency is represented by"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:60
+msgid "who is the Speaker of the House of Commons."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:62
+#, python-format
+msgid "of the %(mp_party)s party."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:65
+msgid "Write"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:68
+#, python-format
+msgid ""
+"The following food banks operate in the %(constituency_name)s constituency. "
+"Here is what they are requesting to have donated."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:75
+#, python-format
+msgid "Part of <a href=\"/needs/at/%(foodbank_slug)s/\">%(foodbank_name)s</a>"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:82
+#: gfwfbn/templates/wfbn/index.html:117 gfwfbn/templates/wfbn/index.html:217
+msgid "Phone"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:86
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:17
+#: gfwfbn/templates/wfbn/index.html:120 gfwfbn/templates/wfbn/index.html:220
+#: givefood/templates/403.html:30 givefood/templates/404.html:30
+#: givefood/templates/500.html:30
+msgid "Email"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:90
+#: gfwfbn/templates/wfbn/index.html:122 gfwfbn/templates/wfbn/index.html:222
+msgid "Check the foodbank's "
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:91
+#: gfwfbn/templates/wfbn/index.html:123 gfwfbn/templates/wfbn/index.html:223
+msgid "Facebook page"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:92
+#: gfwfbn/templates/wfbn/index.html:124 gfwfbn/templates/wfbn/index.html:224
+msgid " for what they need"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/constituency.html:111
+msgid "Nearby Constituencies"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/index.html:32
+#: gfwfbn/templates/wfbn/constituency/index.html:36
+msgid "Parliamentary Constituencies"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/index.html:42
+msgid ""
+"Find which food banks operate in your parliamentary constituency, then "
+"donate or take action."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/index.html:46
+msgid "Sorry, we didn't recognise this postcode. Could you try again?"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/index.html:51
+msgid "Search by postcode"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/index.html:51
+msgid "Postcode"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/constituency/index.html:52
+#: gfwfbn/templates/wfbn/index.html:65 gfwfbn/templates/wfbn/index.html:196
+#: givefood/templates/public/country.html:44
+#: givefood/templates/public/index.html:41
+msgid "Go"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:24
+#: gfwfbn/templates/wfbn/foodbank/charity.html:44
+#: gfwfbn/templates/wfbn/foodbank/charity.html:48
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:15
+msgid "Charity"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:58
+#, python-format
+msgid "%(name)s is a registered charity."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:58
+#, python-format
+msgid "%(name)s operates under a registered charity."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:60
+msgid "Charity name"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:62
+msgid "Regulator"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:68
+msgid "Charity number"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:73
+msgid "Charity type"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:77
+msgid "Registration date"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:82
+msgid "Objectives"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:86
+msgid "Purposes"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:100
+msgid "Year"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:101
+msgid "Income"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/charity.html:102
+msgid "Expenditure"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:49
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:23
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:43
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:47
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:9
+#: gfwfbn/templates/wfbn/index.html:88 givefood/templates/public/index.html:172
+msgid "Donation points"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:65
+#: gfwfbn/templates/wfbn/foodbank/index.html:65
+#: gfwfbn/templates/wfbn/foodbank/location.html:64
+msgid "This food bank is closed"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:68
+#, python-format
+msgid ""
+"is a donation point for <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:68
+msgid "Here they are requesting to have donated..."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:76
+#: gfwfbn/templates/wfbn/foodbank/index.html:79
+#: gfwfbn/templates/wfbn/foodbank/location.html:78
+msgid "They don't need any more"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:91
+msgid "Only accepts in-store purchases as donations"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:92
+msgid ""
+"Although, sometimes you can add items marked as not from the store. Best to "
+"check."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:97
+msgid "Wheelchair accessible"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint.html:123
+#: gfwfbn/templates/wfbn/foodbank/index.html:144
+#: gfwfbn/templates/wfbn/foodbank/index.html:157
+#: gfwfbn/templates/wfbn/foodbank/location.html:133
+#: gfwfbn/templates/wfbn/foodbank/location.html:145
+msgid "Directions"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:3
+msgid "Open"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:5
+#: givefood/models.py:1206
+msgid "Closed"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoint_openinghours.html:15
+msgid "Hours may vary because of"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:59
+#: gfwfbn/templates/wfbn/foodbank/locations.html:62
+msgid "Main"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/donationpoints.html:67
+#: gfwfbn/templates/wfbn/foodbank/index.html:156
+#: gfwfbn/templates/wfbn/foodbank/location.html:143
+#: gfwfbn/templates/wfbn/foodbank/locations.html:71
+msgid "Delivery"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:6
+#, python-format
+msgid ""
+"Charity Registration <a href=\"%(charity_url)s\" "
+"id=\"charity_link\">%(charity_number)s</a>"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:8
+msgid "Part of"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/charitynetwork.html:13
+msgid "is a registered charity in England &amp; Wales"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:5
+#: givefood/templates/public/country.html:52
+#: givefood/templates/public/donate.html:5
+#: givefood/templates/public/donate.html:21
+#: givefood/templates/public/index.html:52
+#: givefood/templates/public/page.html:77
+msgid "Donate"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:6
+msgid "Food, money or your time"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/ctas.html:12
+msgid "Donate using "
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:4
+msgid "Details"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:6
+#: gfwfbn/templates/wfbn/foodbank/locations.html:23
+#: gfwfbn/templates/wfbn/foodbank/locations.html:43
+#: gfwfbn/templates/wfbn/foodbank/locations.html:47
+msgid "Locations"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:12
+#: gfwfbn/templates/wfbn/foodbank/news.html:24
+#: gfwfbn/templates/wfbn/foodbank/news.html:44
+#: gfwfbn/templates/wfbn/foodbank/news.html:48
+msgid "News"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/menu.html:17
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:23
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:43
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:47
+msgid "Nearby"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:7
+#: givefood/templates/public/page.html:73
+msgid "Apps"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:12
+msgid "Web"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:22
+msgid "WhatsApp"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:30
+#, python-format
+msgid ""
+"Get a notification of what is needed when you are near a donation point with "
+"our <a href=\"%(apps_url)s\">mobile apps</a>"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:32
+#, python-format
+msgid ""
+"Get updates on what is needed with our <a href=\"%(apps_url)s\">mobile apps</"
+"a>"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:37
+msgid "Have this web browser notify when the shopping list changes"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:39
+msgid "Get browser notifications"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:44
+msgid "Sorry, the security check failed. Please try again."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:47
+msgid "Get updates on this shopping list via email"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:52
+msgid "Email address"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:55
+msgid "Get updates"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:58
+msgid ""
+"We'll never use your email address for anything else, and you can "
+"unsubscribe at any time"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:65
+msgid "Get updates on this shopping list via WhatsApp"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/includes/subscribe.html:66
+msgid "Get WhatsApp updates"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/index.html:71
+msgid "You can find out what is needed on the foodbank's Facebook page:"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/index.html:74
+msgid "is currently requesting the following items to be donated:"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/index.html:101
+#: gfwfbn/templates/wfbn/foodbank/index.html:103
+msgid ""
+"This food bank is located at a school, so may not be open to the public."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/index.html:142
+#: gfwfbn/templates/wfbn/foodbank/locations.html:60
+msgid "Administrative"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/location.html:82
+#: gfwfbn/templates/wfbn/foodbank/location.html:93
+msgid "This location accepts donations"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/location.html:85
+#: gfwfbn/templates/wfbn/foodbank/location.html:96
+msgid "Mobile food bank location"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:66
+#: gfwfbn/templates/wfbn/foodbank/nearby.html:68
+#: gfwfbn/templates/wfbn/index.html:108 gfwfbn/templates/wfbn/index.html:155
+#: gfwfbn/templates/wfbn/index.html:208
+msgid "away"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/includes/need_text.html:3
+msgid ""
+"We currently don't know what is needed at this food bank. Please contact "
+"them to find out."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/includes/need_text.html:6
+msgid ""
+"This food bank isn't requesting anything, but may appreciate other support "
+"like a financial donation or volunteers. Please contact them to find out."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:11
+msgid "What Food Banks Need"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:12 gfwfbn/templates/wfbn/index.html:13
+#: givefood/views.py:872
+msgid ""
+"Use Give Food's tool to find what food banks near you are requesting to have "
+"donated"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:15
+msgid "Map of UK food banks"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:33 gfwfbn/templates/wfbn/index.html:41
+msgid "Find Food Banks To Help"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:36 gfwfbn/templates/wfbn/index.html:39
+msgid "food banks"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:60
+#: givefood/templates/public/country.html:39
+#: givefood/templates/public/index.html:36
+msgid "Use my location"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:62
+#: givefood/templates/public/country.html:41
+#: givefood/templates/public/index.html:38
+msgid "Postcode or town"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:63 givefood/templates/public/index.html:39
+msgid "e.g. EX4 6PX or Sheffield"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:68
+#, python-format
+msgid "Foodbanks in %(location)s"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:69
+#, python-format
+msgid ""
+"Find a food bank near %(location)s, see what they need and how you can help "
+"by donating or volunteering."
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:73
+msgid "Sorry, we couldn't use that location. Is it inside the United Kingdom?"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:80
+msgid "Search results"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:83 givefood/templates/public/index.html:123
+#: givefood/templates/public/index.html:168
+msgid "Food banks"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:93
+msgid "By item"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:106 gfwfbn/templates/wfbn/index.html:206
+#, python-format
+msgid "Part of <a href=\"%(parent_url)s\">%(foodbank_name)s</a>"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:114 gfwfbn/templates/wfbn/index.html:160
+#: gfwfbn/templates/wfbn/index.html:214
+msgid "Nothing right now, thanks"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:154
+#, python-format
+msgid "For <a href=\"%(foodbank_url)s\">%(foodbank_name)s</a>"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:162
+msgid "Sorry. We don't know what's needed here, please contact the food bank"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:179
+msgid "Find an item needed by a food bank nearby"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:187
+msgid "Select an item category"
+msgstr ""
+
+#: gfwfbn/templates/wfbn/index.html:236
+msgid "We don't know of any food banks nearby that need this item right now."
+msgstr ""
+
+#: gfwfbn/views.py:152
+msgid "items requested at"
+msgstr ""
+
+#: givefood/const/item_types.py:4
+msgid "Tinned Tomatoes"
+msgstr ""
+
+#: givefood/const/item_types.py:4 givefood/const/item_types.py:5
+#: givefood/const/item_types.py:6 givefood/const/item_types.py:7
+#: givefood/const/item_types.py:9 givefood/const/item_types.py:10
+#: givefood/const/item_types.py:15 givefood/const/item_types.py:17
+#: givefood/const/item_types.py:18 givefood/const/item_types.py:21
+#: givefood/const/item_types.py:22 givefood/const/item_types.py:24
+#: givefood/const/item_types.py:25 givefood/const/item_types.py:29
+#: givefood/const/item_types.py:30 givefood/const/item_types.py:31
+#: givefood/const/item_types.py:32
+msgid "Meal Food"
+msgstr ""
+
+#: givefood/const/item_types.py:5
+msgid "Tinned Meat"
+msgstr ""
+
+#: givefood/const/item_types.py:6
+msgid "Tinned Vegetarian"
+msgstr ""
+
+#: givefood/const/item_types.py:7
+msgid "Tinned Pasta"
+msgstr ""
+
+#: givefood/const/item_types.py:8
+msgid "Confectionery"
+msgstr ""
+
+#: givefood/const/item_types.py:8 givefood/const/item_types.py:19
+#: givefood/const/item_types.py:20
+msgid "Snack Food"
+msgstr ""
+
+#: givefood/const/item_types.py:9
+msgid "Cereal"
+msgstr ""
+
+#: givefood/const/item_types.py:10
+msgid "Tinned Fruit"
+msgstr ""
+
+#: givefood/const/item_types.py:11
+msgid "Milk"
+msgstr ""
+
+#: givefood/const/item_types.py:11 givefood/const/item_types.py:12
+#: givefood/const/item_types.py:13 givefood/const/item_types.py:26
+#: givefood/const/item_types.py:27 givefood/const/item_types.py:53
+msgid "Drink"
+msgstr ""
+
+#: givefood/const/item_types.py:12
+msgid "Fruit Juice"
+msgstr ""
+
+#: givefood/const/item_types.py:13
+msgid "Squash"
+msgstr ""
+
+#: givefood/const/item_types.py:14
+msgid "Condiment"
+msgstr ""
+
+#: givefood/const/item_types.py:14 givefood/const/item_types.py:16
+#: givefood/const/item_types.py:23 givefood/const/item_types.py:28
+#: givefood/const/item_types.py:50
+msgid "Cooking"
+msgstr ""
+
+#: givefood/const/item_types.py:15
+msgid "Noodles"
+msgstr ""
+
+#: givefood/const/item_types.py:16
+msgid "Cooking Oil"
+msgstr ""
+
+#: givefood/const/item_types.py:17
+msgid "Tinned Fish"
+msgstr ""
+
+#: givefood/const/item_types.py:18
+msgid "Soup"
+msgstr ""
+
+#: givefood/const/item_types.py:19
+msgid "Crisps"
+msgstr ""
+
+#: givefood/const/item_types.py:20
+msgid "Biscuits"
+msgstr ""
+
+#: givefood/const/item_types.py:21
+msgid "Baked Beans"
+msgstr ""
+
+#: givefood/const/item_types.py:22
+msgid "Tinned Vegetables"
+msgstr ""
+
+#: givefood/const/item_types.py:23
+msgid "Pasta Sauce"
+msgstr ""
+
+#: givefood/const/item_types.py:24
+msgid "Pasta"
+msgstr ""
+
+#: givefood/const/item_types.py:25
+msgid "Rice"
+msgstr ""
+
+#: givefood/const/item_types.py:26
+msgid "Tea"
+msgstr ""
+
+#: givefood/const/item_types.py:27
+msgid "Coffee"
+msgstr ""
+
+#: givefood/const/item_types.py:28
+msgid "Sugar"
+msgstr ""
+
+#: givefood/const/item_types.py:29
+msgid "Spread"
+msgstr ""
+
+#: givefood/const/item_types.py:30
+msgid "Vegetable"
+msgstr ""
+
+#: givefood/const/item_types.py:31
+msgid "Instant Mash"
+msgstr ""
+
+#: givefood/const/item_types.py:32
+msgid "Dessert"
+msgstr ""
+
+#: givefood/const/item_types.py:33
+msgid "Washing Up Liquid"
+msgstr ""
+
+#: givefood/const/item_types.py:33 givefood/const/item_types.py:40
+#: givefood/const/item_types.py:46 givefood/const/item_types.py:47
+msgid "Cleaning"
+msgstr ""
+
+#: givefood/const/item_types.py:34
+msgid "Toilet Roll"
+msgstr ""
+
+#: givefood/const/item_types.py:34 givefood/const/item_types.py:35
+#: givefood/const/item_types.py:36 givefood/const/item_types.py:37
+#: givefood/const/item_types.py:38 givefood/const/item_types.py:39
+#: givefood/const/item_types.py:41 givefood/const/item_types.py:52
+msgid "Toiletries"
+msgstr ""
+
+#: givefood/const/item_types.py:35
+msgid "Shower Gel"
+msgstr ""
+
+#: givefood/const/item_types.py:36
+msgid "Shampoo"
+msgstr ""
+
+#: givefood/const/item_types.py:37
+msgid "Soap"
+msgstr ""
+
+#: givefood/const/item_types.py:38
+msgid "Dental"
+msgstr ""
+
+#: givefood/const/item_types.py:39
+msgid "Deodorant"
+msgstr ""
+
+#: givefood/const/item_types.py:40
+msgid "Laundry"
+msgstr ""
+
+#: givefood/const/item_types.py:41
+msgid "Sanitary Products"
+msgstr ""
+
+#: givefood/const/item_types.py:42
+msgid "Baby Food"
+msgstr ""
+
+#: givefood/const/item_types.py:42 givefood/const/item_types.py:43
+#: givefood/const/item_types.py:44 givefood/const/item_types.py:45
+msgid "Baby Supplies"
+msgstr ""
+
+#: givefood/const/item_types.py:43
+msgid "Baby Milk"
+msgstr ""
+
+#: givefood/const/item_types.py:44
+msgid "Nappies"
+msgstr ""
+
+#: givefood/const/item_types.py:45
+msgid "Wipes"
+msgstr ""
+
+#: givefood/const/item_types.py:46
+msgid "Kitchen Roll"
+msgstr ""
+
+#: givefood/const/item_types.py:47
+msgid "Household Supplies"
+msgstr ""
+
+#: givefood/const/item_types.py:48
+msgid "Pet Food"
+msgstr ""
+
+#: givefood/const/item_types.py:48 givefood/const/item_types.py:49
+#: givefood/const/item_types.py:51
+msgid "Other"
+msgstr ""
+
+#: givefood/const/item_types.py:49
+msgid "Carrier Bags"
+msgstr ""
+
+#: givefood/const/item_types.py:50
+msgid "Sauce"
+msgstr ""
+
+#: givefood/const/item_types.py:53
+msgid "Hot Chocolate"
+msgstr ""
+
+#: givefood/models.py:302 givefood/models.py:304
+msgid "Foodbank"
+msgstr ""
+
+#: givefood/templates/403.html:4 givefood/templates/403.html:19
+msgid "403 - Forbidden"
+msgstr ""
+
+#: givefood/templates/403.html:25 givefood/templates/500.html:25
+msgid ""
+"Sorry, something has gone wrong there and we can't serve that page. This "
+"error has been logged and we'll look into it."
+msgstr ""
+
+#: givefood/templates/403.html:28 givefood/templates/404.html:28
+#: givefood/templates/500.html:28
+msgid "Homepage"
+msgstr ""
+
+#: givefood/templates/403.html:29 givefood/templates/404.html:29
+#: givefood/templates/500.html:29
+msgid "Find what food banks need"
+msgstr ""
+
+#: givefood/templates/404.html:4 givefood/templates/404.html:19
+msgid "404 - Not Found"
+msgstr ""
+
+#: givefood/templates/404.html:25
+msgid ""
+"Sorry, we can't find that page. It may have been removed or you might have "
+"entered an incorrect URL."
+msgstr ""
+
+#: givefood/templates/500.html:4 givefood/templates/500.html:19
+msgid "500 - Internal Server Error"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:5
+#: givefood/templates/public/about_us.html:23
+#: givefood/templates/public/country.html:54
+#: givefood/templates/public/index.html:54
+#: givefood/templates/public/page.html:78
+msgid "About us"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:25
+msgid ""
+"\n"
+"                <p>Give Food is a UK charity that uses data to highlight "
+"local and structural food insecurity, then provides tools to help alleviate "
+"it.</p>\n"
+"\n"
+"                <p>We run the only <a href=\"/needs/\">national public "
+"database of food banks</a>, tracking in realtime what they are requesting to "
+"have donated.</p>\n"
+"\n"
+"                <p>Working with a wide variety of public and private "
+"organisations, including many other charities, we share our data with "
+"millions of users each year, helping people learn about and engage with food "
+"poverty causes.</p>\n"
+"\n"
+"                <p>We became a <a href=\"https://register-of-charities."
+"charitycommission.gov.uk/en/charity-search/-/charity-"
+"details/5147019\">charity</a> in February 2020, just weeks before the UK "
+"entered COVID-19 lockdowns, and since then we've worked with hundreds of "
+"local food insecurity alleviation organisations delivering hundreds of "
+"tonnes of vitally needed supplies.</p>\n"
+"\n"
+"                <p>For example, during the pandemic we delivered <a "
+"href=\"/2020/#ppe-supplies\">1.2m items of PPE</a> to help keep food banks "
+"from Penzance to Lerwick as safe as possible whilst continuing to support "
+"their communities.</p>\n"
+"\n"
+"                <p>We help the public act on food insecurity by using our "
+"data to show which food banks are in their parliamentary constituency, and "
+"provide a <a href=\"/write/\">tool to easily email their Member of "
+"Parliament</a> asking what action they are taking to remedy it.</p>\n"
+"\n"
+"                <p>Our operations are open source and transparent, with "
+"almost all of our current and historical <a href=\"https://github.com/"
+"givefood/givefood\">code</a> and <a href=\"/api/\">data</a> published, plus "
+"<a href=\"https://register-of-charities.charitycommission.gov.uk/charity-"
+"search/-/charity-details/5147019/accounts-and-annual-returns\">accounts</a> "
+"and <a href=\"/annual-reports/\">annual reports</a> available to view.</p>\n"
+"\n"
+"                <p>Please don't hesitate to contact us with any suggestions, "
+"comments, criticism or encouragement.</p>\n"
+"\n"
+"                <p>\n"
+"                    <em>The Give Food Trustees</em>\n"
+"                </p>\n"
+"                <p>\n"
+"                    <a href=\"mailto:mail@givefood.org.uk\">mail@givefood."
+"org.uk</a>\n"
+"                </p>\n"
+"\n"
+"            "
+msgstr ""
+
+#: givefood/templates/public/about_us.html:55
+msgid "Apr"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:56
+msgid "First test grocery deliveries to foodbanks"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:59
+#: givefood/templates/public/about_us.html:107
+msgid "Jun"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:60
+msgid "Formed Give Food"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:63
+msgid "Jan"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:64
+msgid "Released first <a href=\"/\">UK public database of food banks</a>"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:67
+#: givefood/templates/public/about_us.html:79
+msgid "Feb"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:68
+msgid ""
+"Became a <a href=\"https://register-of-charities.charitycommission.gov.uk/en/"
+"charity-search/-/charity-details/5147019\">registered charity</a>"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:71
+#: givefood/templates/public/about_us.html:115
+msgid "Dec"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:72
+msgid ""
+"Open sourced <a href=\"https://github.com/givefood/\">much of our code and "
+"versioned data</a>"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:75
+msgid "Oct"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:76
+msgid "Complete redesign of our website"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:80
+msgid ""
+"Released our tool to allow the public to easily <a href=\"/write/\">email "
+"their MP about food insecurity</a>"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:83
+#: givefood/templates/public/about_us.html:91
+#: givefood/templates/public/about_us.html:111
+msgid "Nov"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:84
+msgid "Started monitoring foodbank item excess in addition to shortages"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:87
+#: givefood/templates/public/about_us.html:99
+msgid "May"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:88
+msgid ""
+"Selected to be part of British Library's <a href=\"https://www.webarchive."
+"org.uk/\">UK Web Archive</a>"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:92
+msgid "First used AI to augment our data processing"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:95
+msgid "Mar"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:96
+msgid "Added food bank donation points to our data"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:100
+msgid ""
+"Rebuilt our email your MP tool to contact parlimentary candidates for the <a "
+"href=\"/2024/#general-election\">UK general election</a>"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:103
+msgid "Sep"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:104
+msgid ""
+"Launched our site in <a href=\"/cy/\">Welsh</a> and <a href=\"/gd/\">Scots "
+"Gaelic</a>"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:108
+msgid "Data now includes charity financial information"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:112
+msgid "Released <a href=\"/apps/\">mobile apps</a>"
+msgstr ""
+
+#: givefood/templates/public/about_us.html:116
+msgid "Website now available in 20 languages"
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:5
+#: givefood/templates/public/ar/index.html:22
+#: givefood/templates/public/page.html:76
+msgid "Annual reports"
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:8
+#: givefood/templates/public/donate.html:8
+#: givefood/templates/public/managed_donation.html:10
+#: givefood/templates/public/managed_donation_items.html:10
+msgid ""
+"Give Food is a UK charity that uses data to highlight local and structural "
+"food insecurity then provides tools to help alleviate it."
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:25
+msgid "Even more AI, translations and mobile apps"
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:28
+msgid "AI, general election, site translation"
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:31
+msgid "Rebrand, refresh, rewrite &amp; categorisation"
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:34
+msgid "Write to your MP tool, surplus monitoring, data audits"
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:37
+msgid "Data &amp; UX review, dashboards, charity reporting"
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:40
+msgid "Pandemic response, becoming a charity, publishing our data"
+msgstr ""
+
+#: givefood/templates/public/ar/index.html:43
+msgid "Initial deliveries, Christmas"
+msgstr ""
+
+#: givefood/templates/public/colophon.html:5
+#: givefood/templates/public/colophon.html:19
+#: givefood/templates/public/page.html:79
+msgid "Colophon"
+msgstr ""
+
+#: givefood/templates/public/country.html:10
+#, python-format
+msgid ""
+"Find food banks in %(country)s, see what they need and how you can help by "
+"donating or volunteering."
+msgstr ""
+
+#: givefood/templates/public/country.html:14
+#, python-format
+msgid "Food banks in %(country)s"
+msgstr ""
+
+#: givefood/templates/public/country.html:15
+#, python-format
+msgid ""
+"Find food banks in %(country)s, see what they need and how you can help."
+msgstr ""
+
+#: givefood/templates/public/country.html:50
+#: givefood/templates/public/index.html:50
+msgid "Write to your MP"
+msgstr ""
+
+#: givefood/templates/public/country.html:50
+#: givefood/templates/public/index.html:50
+#: givefood/templates/public/page.html:75
+msgid "English"
+msgstr ""
+
+#: givefood/templates/public/country.html:53
+msgid "Register a foodbank"
+msgstr ""
+
+#: givefood/templates/public/country.html:57
+#: givefood/templates/public/index.html:57
+msgid "Recently updated"
+msgstr ""
+
+#: givefood/templates/public/country.html:63
+#: givefood/templates/public/index.html:64
+msgid "Most viewed this week"
+msgstr ""
+
+#: givefood/templates/public/donate.html:27
+msgid "To"
+msgstr ""
+
+#: givefood/templates/public/donate.html:28
+msgid ""
+"All donations from the public to Give Food are used directly to efficiently "
+"and quickly deliver requested food and supplies to UK food banks."
+msgstr ""
+
+#: givefood/templates/public/donate.html:29
+msgid "Donate using CAF Donate"
+msgstr ""
+
+#: givefood/templates/public/donate.html:32
+msgid "To a food bank"
+msgstr ""
+
+#: givefood/templates/public/donate.html:33
+msgid ""
+"Use our tool to find a local food bank and see what they need. Then donate "
+"food, household supplies, toiletries, money or your time."
+msgstr ""
+
+#: givefood/templates/public/donate.html:34
+msgid "Find a food bank"
+msgstr ""
+
+#: givefood/templates/public/donate.html:40
+msgid "Managed donations"
+msgstr ""
+
+#: givefood/templates/public/donate.html:41
+msgid ""
+"For donations or grants of £500 or more we can provide a managed service. "
+"Leveraging our data and logistical expertise we can ensure your donation is "
+"used to effectively deliver the required items to food banks that match your "
+"charitable aims. Realtime reports and tracking of how your donation is used "
+"are provided."
+msgstr ""
+
+#: givefood/templates/public/flag.html:5 givefood/templates/public/flag.html:23
+msgid "Flag something wrong"
+msgstr ""
+
+#: givefood/templates/public/flag.html:31
+msgid ""
+"Sorry that you've found something wrong. We'll review your report within 24 "
+"hours, usually quicker."
+msgstr ""
+
+#: givefood/templates/public/human.html:4
+msgid "Human check"
+msgstr ""
+
+#: givefood/templates/public/human.html:21
+msgid "Sorry, but we just have to check you are a human..."
+msgstr ""
+
+#: givefood/templates/public/includes/appbadges.html:4
+msgid "Download on the App Store"
+msgstr ""
+
+#: givefood/templates/public/includes/appbadges.html:7
+msgid "Get it on Google Play"
+msgstr ""
+
+#: givefood/templates/public/includes/country.html:2
+msgid "England"
+msgstr ""
+
+#: givefood/templates/public/includes/country.html:3
+msgid "Wales"
+msgstr ""
+
+#: givefood/templates/public/includes/country.html:4
+msgid "Scotland"
+msgstr ""
+
+#: givefood/templates/public/includes/country.html:5
+msgid "Northern Ireland"
+msgstr ""
+
+#: givefood/templates/public/includes/country.html:6
+msgid "Isle of Man"
+msgstr ""
+
+#: givefood/templates/public/includes/country.html:7
+msgid "Jersey"
+msgstr ""
+
+#: givefood/templates/public/includes/country.html:8
+msgid "Guernsey"
+msgstr ""
+
+#: givefood/templates/public/includes/debugcomment.html:3
+msgid "Hello"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:4
+msgid "Organisation"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:4
+#: givefood/templates/public/includes/maplegend.html:5
+#: givefood/templates/public/includes/maplegend.html:7
+msgid "marker"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:5
+msgid "Location"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:6
+msgid "Service area"
+msgstr ""
+
+#: givefood/templates/public/includes/maplegend.html:7
+msgid "Donation point"
+msgstr ""
+
+#: givefood/templates/public/includes/serviceareadisclaimer.html:3
+msgid "Service areas are approximate. You should check with the food bank"
+msgstr ""
+
+#: givefood/templates/public/index.html:11
+msgid ""
+"Give Food a UK charity uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
+msgstr ""
+
+#: givefood/templates/public/index.html:16
+#: givefood/templates/public/index.html:33
+msgid ""
+"We're a UK charity that uses data to highlight local and structural food "
+"insecurity then provides tools to help alleviate it."
+msgstr ""
+
+#: givefood/templates/public/index.html:34
+msgid ""
+"Use our unique database to find a food bank near you, see what they need and "
+"how you can help by donating or volunteering."
+msgstr ""
+
+#: givefood/templates/public/index.html:53
+#: givefood/templates/public/index.html:125
+msgid "Services for food banks"
+msgstr ""
+
+#: givefood/templates/public/index.html:71
+msgid "News from food banks"
+msgstr ""
+
+#: givefood/templates/public/index.html:91
+msgid "We've worked with"
+msgstr ""
+
+#: givefood/templates/public/index.html:112
+msgid "How we can help"
+msgstr ""
+
+#: givefood/templates/public/index.html:118
+msgid "Public"
+msgstr ""
+
+#: givefood/templates/public/index.html:119
+msgid ""
+"Use our tool to find your local food banks, then donate, volunteer or take "
+"political action."
+msgstr ""
+
+#: givefood/templates/public/index.html:120
+msgid "Find out how to help"
+msgstr ""
+
+#: givefood/templates/public/index.html:124
+msgid ""
+"Free websites, entry in our data and open data services to support your "
+"important work."
+msgstr ""
+
+#: givefood/templates/public/index.html:128
+msgid "Media"
+msgstr ""
+
+#: givefood/templates/public/index.html:129
+msgid ""
+"Journalists, in particular data journalists, can use our data for stories "
+"around food poverty."
+msgstr ""
+
+#: givefood/templates/public/index.html:130
+#: givefood/templates/public/index.html:135
+msgid "Use our API"
+msgstr ""
+
+#: givefood/templates/public/index.html:133
+msgid "Researchers & students"
+msgstr ""
+
+#: givefood/templates/public/index.html:134
+msgid ""
+"We can provide our data in bulk, plus advice on how to interpret it, to "
+"researchers. Have a look at our API or email us."
+msgstr ""
+
+#: givefood/templates/public/index.html:141
+msgid "Countries"
+msgstr ""
+
+#: givefood/templates/public/index.html:162
+msgid "Statistics"
+msgstr ""
+
+#: givefood/templates/public/index.html:176
+msgid "Items requested"
+msgstr ""
+
+#: givefood/templates/public/index.html:180
+msgid "Meals delivered"
+msgstr ""
+
+#: givefood/templates/public/index.html:184
+#: givefood/templates/public/page.html:61
+msgid "Last updated"
+msgstr ""
+
+#: givefood/templates/public/index.html:196
+msgid "Read our"
+msgstr ""
+
+#: givefood/templates/public/index.html:196
+msgid "annual report"
+msgstr ""
+
+#: givefood/templates/public/page.html:56
+msgid "Something wrong in this page?"
+msgstr ""
+
+#: givefood/templates/public/page.html:62
+msgid "food bank needs viewed this week"
+msgstr ""
+
+#: givefood/templates/public/page.html:65
+msgid "Give Food is a registered charity in England & Wales"
+msgstr ""
+
+#: givefood/templates/public/page.html:66
+msgid "Registered with the"
+msgstr ""
+
+#: givefood/templates/public/page.html:67
+msgid "ICO Data Protection Registration"
+msgstr ""
+
+#: givefood/templates/public/page.html:74
+msgid "Dashboards"
+msgstr ""
+
+#: givefood/templates/public/page.html:80
+msgid "Privacy policy"
+msgstr ""
+
+#: givefood/templates/public/register_foodbank.html:9
+#: givefood/templates/public/register_foodbank.html:21
+msgid "Register a food bank"
+msgstr ""
+
+#: givefood/views.py:69
+msgid "e.g. EH12 5PJ or Glasgow"
+msgstr ""
+
+#: givefood/views.py:70
+msgid "e.g. HA9 0WS or Manchester"
+msgstr ""
+
+#: givefood/views.py:71
+msgid "e.g. CF10 1NS or Cardiff"
+msgstr ""
+
+#: givefood/views.py:72
+msgid "e.g. BT12 6LW or Belfast"
+msgstr ""
+
+#: givefood/views.py:1066
+msgid "minutes"
+msgstr ""
+
+#: givefood/views.py:1067
+msgid "Under a minute ago"
+msgstr ""
+
+#: givefood/views.py:1069
+msgid "ago"
+msgstr ""
