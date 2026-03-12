@@ -193,6 +193,14 @@ LANG_INFO['gu'] = {
     'name_local': 'ગુજરાતી',
 }
 
+# Add Klingon language support (not included in Django by default)
+LANG_INFO['tlh'] = {
+    'bidi': False,
+    'code': 'tlh',
+    'name': 'Klingon',
+    'name_local': 'tlhIngan Hol',
+}
+
 LANGUAGES = [
     ("en", "English"),
     ("pl", "Polski"),
@@ -214,6 +222,7 @@ LANGUAGES = [
     ("zh-hans", "简体中文"),
     ("tr", "Türkçe"),
     ("bg", "Български"),
+    ("tlh", "tlhIngan Hol"),
 ]
 
 LOCALE_PATHS = (
