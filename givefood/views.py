@@ -1507,6 +1507,7 @@ def address_autocomplete(request):
     results = []
     
     # Search places - use icontains to capture all matches, then prioritize with annotation
+    # SQL: CREATE INDEX idx_place_pop_name ON givefood_place (population DESC NULLS LAST, name);
     places = Place.objects.filter(
         name__icontains=query
     ).annotate(
