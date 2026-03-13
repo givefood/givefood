@@ -2393,6 +2393,8 @@ class Place(models.Model):
     type = models.CharField(max_length=100, null=True, blank=True)
     county = models.CharField(max_length=100, null=True, blank=True)
 
+    population = models.IntegerField(null=True, blank=True)
+
     name_slug = models.CharField(max_length=100, editable=False)
     county_slug = models.CharField(max_length=100, editable=False)
 
