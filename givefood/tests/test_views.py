@@ -626,6 +626,43 @@ class TestAddressAutocomplete:
         postcodes = [item for item in data if item['t'] == 'c']
         assert any(p['n'] == 'W1A 1AB' for p in postcodes), "Should find postcodes starting with query"
 
+    def test_aac_places_ordered_by_population_descending(self, client):
+        """Test that places are ordered by population descending within the same priority group."""
+        Place.objects.create(
+            gbpnid=99980,
+            name='Linton',
+            lat_lng='52.0967,0.2815',
+            population=100,
+        )
+        Place.objects.create(
+            gbpnid=99981,
+            name='Lincoln',
+            lat_lng='53.2307,-0.5406',
+            population=100000,
+        )
+        Place.objects.create(
+            gbpnid=99982,
+            name='Lindfield',
+            lat_lng='51.0225,-0.0893',
+            population=5000,
+        )
+
+        response = client.get('/aac/?q=lin')
+        data = json.loads(response.content)
+
+        places = [item for item in data if item['t'] == 'p']
+        assert len(places) >= 3
+
+        lincoln_idx = next((i for i, p in enumerate(places) if p['n'] == 'Lincoln'), None)
+        lindfield_idx = next((i for i, p in enumerate(places) if p['n'] == 'Lindfield'), None)
+        linton_idx = next((i for i, p in enumerate(places) if p['n'] == 'Linton'), None)
+
+        assert lincoln_idx is not None
+        assert lindfield_idx is not None
+        assert linton_idx is not None
+        assert lincoln_idx < lindfield_idx < linton_idx, \
+            "Places should be ordered by population descending"
+
 
 @pytest.mark.django_db
 class TestMarkdownPages:
