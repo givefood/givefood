@@ -79,8 +79,8 @@ class TestPlacePopulationsCommand:
         out = StringIO()
         call_command('place_populations', stdout=out)
 
-        assert Place.objects.get(gbpnid=1).population in [1000, 2000]
-        assert Place.objects.get(gbpnid=2).population in [1000, 2000]
+        populations = set(Place.objects.values_list("population", flat=True))
+        assert populations == {1000, 2000}
         assert mock_gemini.call_count == 2
 
     @patch('gfoffline.management.commands.place_populations.gemini')
