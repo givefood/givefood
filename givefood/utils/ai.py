@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import asyncio
 import json
 import logging
 
@@ -53,6 +54,51 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
     except ServerError:
         sleep(60)
         response = client.models.generate_content(
+            model = model,
+            contents = [prompt],
+            config = config,
+        )
+    return response.parsed
+
+
+async def gemini_async(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "gemini-2.5-flash"):
+    """Send a prompt to Google Gemini asynchronously and return the parsed response."""
+    client = genai.Client(api_key = get_cred("gemini_api_key"))
+
+    config = types.GenerateContentConfig(
+        temperature = temperature,
+        response_mime_type = response_mime_type,
+        response_schema = response_schema,
+        thinking_config = types.ThinkingConfig(thinking_budget = 0),
+        safety_settings = [
+            types.SafetySetting(
+                category = types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold = types.HarmBlockThreshold.BLOCK_NONE,
+            ),
+            types.SafetySetting(
+                category = types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold = types.HarmBlockThreshold.BLOCK_NONE,
+            ),
+            types.SafetySetting(
+                category = types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                threshold = types.HarmBlockThreshold.BLOCK_NONE,
+            ),
+            types.SafetySetting(
+                category = types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold = types.HarmBlockThreshold.BLOCK_NONE,
+            ),
+        ]
+    )
+
+    try:
+        response = await client.aio.models.generate_content(
+            model = model,
+            contents = [prompt],
+            config = config,
+        )
+    except ServerError:
+        await asyncio.sleep(60)
+        response = await client.aio.models.generate_content(
             model = model,
             contents = [prompt],
             config = config,
