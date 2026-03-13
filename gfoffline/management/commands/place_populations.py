@@ -6,7 +6,7 @@ from givefood.utils.ai import gemini_async
 from givefood.utils.cache import get_cred
 from givefood.models import Place
 
-BATCH_SIZE = 10
+BATCH_SIZE = 100
 
 RESPONSE_SCHEMA = {
     "type": "object",
