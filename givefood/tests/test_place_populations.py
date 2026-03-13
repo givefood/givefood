@@ -29,8 +29,9 @@ class TestPlacePopulationsCommand:
         defaults.update(kwargs)
         return Place.objects.create(**defaults)
 
+    @patch('gfoffline.management.commands.place_populations.get_cred', return_value="fake-key")
     @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
-    def test_populates_place_without_population(self, mock_gemini):
+    def test_populates_place_without_population(self, mock_gemini, mock_cred):
         """Test that a place without population gets populated."""
         self._create_place(1, "Test Town")
         mock_gemini.return_value = {"population": 5000}
@@ -65,8 +66,9 @@ class TestPlacePopulationsCommand:
         assert not mock_gemini.called
         assert "Found 0 places without population" in out.getvalue()
 
+    @patch('gfoffline.management.commands.place_populations.get_cred', return_value="fake-key")
     @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
-    def test_populates_multiple_places(self, mock_gemini):
+    def test_populates_multiple_places(self, mock_gemini, mock_cred):
         """Test that multiple places get populated."""
         self._create_place(1, "Town A")
         self._create_place(2, "Town B")
@@ -83,8 +85,9 @@ class TestPlacePopulationsCommand:
         assert populations == {1000, 2000}
         assert mock_gemini.call_count == 2
 
+    @patch('gfoffline.management.commands.place_populations.get_cred', return_value="fake-key")
     @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
-    def test_only_populates_null_population(self, mock_gemini):
+    def test_only_populates_null_population(self, mock_gemini, mock_cred):
         """Test that only places with null population are processed."""
         self._create_place(1, "Has Pop", population=500)
         self._create_place(2, "No Pop")
@@ -98,8 +101,9 @@ class TestPlacePopulationsCommand:
         assert Place.objects.get(gbpnid=1).population == 500
         assert Place.objects.get(gbpnid=2).population == 3000
 
+    @patch('gfoffline.management.commands.place_populations.get_cred', return_value="fake-key")
     @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
-    def test_population_can_be_zero(self, mock_gemini):
+    def test_population_can_be_zero(self, mock_gemini, mock_cred):
         """Test that AI can return zero population."""
         self._create_place(1, "Ghost Town")
 
@@ -112,8 +116,9 @@ class TestPlacePopulationsCommand:
         assert place.population == 0
         assert "Ghost Town: 0" in out.getvalue()
 
+    @patch('gfoffline.management.commands.place_populations.get_cred', return_value="fake-key")
     @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
-    def test_prompt_includes_all_fields(self, mock_gemini):
+    def test_prompt_includes_all_fields(self, mock_gemini, mock_cred):
         """Test that the prompt includes all place fields."""
         self._create_place(
             1, "Detail Town",
@@ -141,8 +146,9 @@ class TestPlacePopulationsCommand:
         assert "England" in prompt
         assert "City" in prompt
 
+    @patch('gfoffline.management.commands.place_populations.get_cred', return_value="fake-key")
     @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
-    def test_gemini_called_with_correct_params(self, mock_gemini):
+    def test_gemini_called_with_correct_params(self, mock_gemini, mock_cred):
         """Test that gemini is called with the correct parameters."""
         self._create_place(1, "Param Town")
         mock_gemini.return_value = {"population": 100}
@@ -155,8 +161,9 @@ class TestPlacePopulationsCommand:
         assert "population" in call_kwargs["response_schema"]["properties"]
         assert call_kwargs["response_schema"]["properties"]["population"]["type"] == "integer"
 
+    @patch('gfoffline.management.commands.place_populations.get_cred', return_value="fake-key")
     @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
-    def test_output_shows_count(self, mock_gemini):
+    def test_output_shows_count(self, mock_gemini, mock_cred):
         """Test that the output shows the count of places."""
         self._create_place(1, "Town A")
         self._create_place(2, "Town B")
