@@ -15,15 +15,20 @@ from mistralai import Mistral
 from givefood.utils.cache import get_cred
 
 
-def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "gemini-2.5-flash"):
+def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "gemini-2.5-flash", url = None):
     """Send a prompt to Google Gemini and return the parsed response."""
     client = genai.Client(api_key = get_cred("gemini_api_key"))
+
+    tools = None
+    if url:
+        tools = [types.Tool(url_context = types.UrlContext())]
 
     config = types.GenerateContentConfig(
         temperature = temperature,
         response_mime_type = response_mime_type,
         response_schema = response_schema,
         thinking_config = types.ThinkingConfig(thinking_budget = 0),
+        tools = tools,
         safety_settings = [
             types.SafetySetting(
                 category = types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
