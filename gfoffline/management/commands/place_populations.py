@@ -10,7 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        places = Place.objects.filter(population__isnull=True)
+        places = Place.objects.filter(population__isnull=True).order_by("gbpnid")
         place_count = places.count()
 
         self.stdout.write(f"Found {place_count} places without population")
