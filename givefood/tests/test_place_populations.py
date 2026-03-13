@@ -1,6 +1,6 @@
 import pytest
 from io import StringIO
-from unittest.mock import patch, call, AsyncMock
+from unittest.mock import patch, call
 
 from django.core.management import call_command
 
@@ -29,7 +29,7 @@ class TestPlacePopulationsCommand:
         defaults.update(kwargs)
         return Place.objects.create(**defaults)
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_populates_place_without_population(self, mock_gemini):
         """Test that a place without population gets populated."""
         self._create_place(1, "Test Town")
@@ -43,7 +43,7 @@ class TestPlacePopulationsCommand:
         assert mock_gemini.called
         assert "Test Town: 5000" in out.getvalue()
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_skips_place_with_existing_population(self, mock_gemini):
         """Test that places with existing population are skipped."""
         self._create_place(1, "Existing Town", population=10000)
@@ -54,7 +54,7 @@ class TestPlacePopulationsCommand:
         assert not mock_gemini.called
         assert "Found 0 places without population" in out.getvalue()
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_skips_place_with_zero_population(self, mock_gemini):
         """Test that places with zero population are skipped."""
         self._create_place(1, "Zero Town", population=0)
@@ -65,7 +65,7 @@ class TestPlacePopulationsCommand:
         assert not mock_gemini.called
         assert "Found 0 places without population" in out.getvalue()
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_populates_multiple_places(self, mock_gemini):
         """Test that multiple places get populated."""
         self._create_place(1, "Town A")
@@ -83,7 +83,7 @@ class TestPlacePopulationsCommand:
         assert populations == {1000, 2000}
         assert mock_gemini.call_count == 2
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_only_populates_null_population(self, mock_gemini):
         """Test that only places with null population are processed."""
         self._create_place(1, "Has Pop", population=500)
@@ -98,7 +98,7 @@ class TestPlacePopulationsCommand:
         assert Place.objects.get(gbpnid=1).population == 500
         assert Place.objects.get(gbpnid=2).population == 3000
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_population_can_be_zero(self, mock_gemini):
         """Test that AI can return zero population."""
         self._create_place(1, "Ghost Town")
@@ -112,7 +112,7 @@ class TestPlacePopulationsCommand:
         assert place.population == 0
         assert "Ghost Town: 0" in out.getvalue()
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_prompt_includes_all_fields(self, mock_gemini):
         """Test that the prompt includes all place fields."""
         self._create_place(
@@ -141,7 +141,7 @@ class TestPlacePopulationsCommand:
         assert "England" in prompt
         assert "City" in prompt
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_gemini_called_with_correct_params(self, mock_gemini):
         """Test that gemini is called with the correct parameters."""
         self._create_place(1, "Param Town")
@@ -155,7 +155,7 @@ class TestPlacePopulationsCommand:
         assert "population" in call_kwargs["response_schema"]["properties"]
         assert call_kwargs["response_schema"]["properties"]["population"]["type"] == "integer"
 
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
+    @patch('gfoffline.management.commands.place_populations.gemini')
     def test_output_shows_count(self, mock_gemini):
         """Test that the output shows the count of places."""
         self._create_place(1, "Town A")
@@ -170,17 +170,3 @@ class TestPlacePopulationsCommand:
         call_command('place_populations', stdout=out)
 
         assert "Found 2 places without population" in out.getvalue()
-
-    @patch('gfoffline.management.commands.place_populations.gemini_async', new_callable=AsyncMock)
-    def test_batching(self, mock_gemini):
-        """Test that places are processed in batches."""
-        for i in range(15):
-            self._create_place(i + 1, f"Town {i + 1}")
-
-        mock_gemini.side_effect = [{"population": i * 100} for i in range(15)]
-
-        out = StringIO()
-        call_command('place_populations', stdout=out)
-
-        assert mock_gemini.call_count == 15
-        assert Place.objects.filter(population__isnull=False).count() == 15
