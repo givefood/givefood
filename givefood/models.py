@@ -2421,6 +2421,9 @@ class Place(models.Model):
 
     class Meta:
         app_label = 'givefood'
+        indexes = [
+            models.Index(fields=['-population', 'name']),
+        ]
 
 
 class PlacePhoto(models.Model):
