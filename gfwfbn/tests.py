@@ -4,6 +4,7 @@ from django.test import Client
 from django.urls import reverse
 from django.core.cache import cache
 from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankChange, FoodbankLocation
+import xml.etree.ElementTree as ET
 
 
 @pytest.fixture
@@ -1295,7 +1296,7 @@ class TestRSSFeeds:
         assert 'items requested at' in content
 
     def test_foodbank_rss_description_escapes_ampersands(self, client):
-        """Test that RSS description properly escapes ampersands for HTML interoperability."""
+        """Test that RSS description exposes correct text for ampersands to consumers."""
         foodbank = Foodbank(
             name="Test Food Bank 3",
             slug="test-food-bank-3",
@@ -1320,13 +1321,20 @@ class TestRSSFeeds:
 
         response = client.get(reverse('wfbn:foodbank_rss', kwargs={'slug': 'test-food-bank-3'}))
         assert response.status_code == 200
-        content = response.content.decode('utf-8')
-        # Description should be wrapped in CDATA with HTML-escaped ampersands
-        assert '<![CDATA[' in content
-        assert ']]>' in content
-        # Ampersands should be HTML-escaped inside CDATA
-        assert 'F&amp;M' in content
-        assert 'Eggs &amp; Treats' in content
+
+        # Parse the RSS XML and assert on the consumer-visible description text
+        root = ET.fromstring(response.content)
+        channel = root.find('channel')
+        assert channel is not None
+        item = channel.find('item')
+        assert item is not None
+        description_el = item.find('description')
+        assert description_el is not None
+        description_text = description_el.text or ""
+
+        # The description text surfaced to consumers should contain literal ampersands
+        assert 'F&M' in description_text
+        assert 'Eggs & Treats' in description_text
 
     def test_foodbank_rss_invalid_slug_returns_404(self, client):
         """Test that requesting RSS for non-existent food bank returns 404."""
