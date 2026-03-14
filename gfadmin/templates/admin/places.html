@@ -26,7 +26,8 @@
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Name</th>
-          <th>LatLng</th>
+          <th>Type</th>
+          <th>Lat,Lng</th>
           <th>County</th>
           <th>Population</th>
           <th></th>
@@ -34,6 +35,7 @@
         {% for place in places %}
           <tr>
             <td>{{ place.name }}</td>
+            <td>{{ place.type }}</td>
             <td>{{ place.lat_lng }}</td>
             <td>{{ place.county }}</td>
             <td>{{ place.population|intcomma }}</td>
