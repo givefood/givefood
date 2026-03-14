@@ -15,17 +15,19 @@
         <tr>
           <th>Name</th>
           <th>LatLng</th>
-          <th>HistCounty</th>
-          <th>AdCounty</th>
-          <th>Checked</th>
+          <th>County</th>
+          <th>Population</th>
+          <th></th>
         </tr>
         {% for place in places %}
           <tr>
             <td>{{ place.name }}</td>
             <td>{{ place.lat_lng }}</td>
-            <td>{{ place.histcounty }}</td>
-            <td>{{ place.adcounty }}</td>
-            <td>{{ place.checked }}</td>
+            <td>{{ place.county }}</td>
+            <td>{{ place.population|intcomma }}</td>
+            <td>
+              <a href="{% url 'admin:place_form' place.pk %}" class="button is-small is-light">Edit</a>
+            </td>
           </tr>
         {% endfor %}
       </table>

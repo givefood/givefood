@@ -2,7 +2,7 @@ from django.utils import timezone
 
 from django.forms import ModelForm, DateInput, ModelChoiceField, HiddenInput
 from django import forms
-from givefood.models import FoodbankDonationPoint, OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine, SlugRedirect
+from givefood.models import FoodbankDonationPoint, OrderGroup, Foodbank, Order, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, OrderItem, GfCredential, FoodbankGroup, FoodbankChangeLine, SlugRedirect, Place
 from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
@@ -234,6 +234,12 @@ class ParliamentaryConstituencyForm(ModelForm):
 class GfCredentialForm(ModelForm):
     class Meta:
         model = GfCredential
+        fields = "__all__"
+
+
+class PlaceForm(ModelForm):
+    class Meta:
+        model = Place
         fields = "__all__"
 
 

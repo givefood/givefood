@@ -32,7 +32,7 @@ from givefood.utils.geo import distance_meters, find_locations
 from givefood.utils.notifications import post_to_subscriber, send_email, send_firebase_notification, send_firebase_notification_async, send_single_webpush_notification, send_webpush_notification, send_webpush_notification_async, send_whatsapp_notification, send_whatsapp_notification_async, send_whatsapp_template_notification
 from givefood.utils.text import diff_html, htmlbodytext
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankGroup, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, FoodbankGroup, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber, PlacePhoto
-from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm
+from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, FoodbankGroupForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm, PlaceForm
 from django_tasks.backends.database.models import DBTaskResult
 from django_tasks.base import TaskResultStatus
 
@@ -2981,13 +2981,33 @@ def delete_subscription(request):
 
 def places(request):
     
-    places = Place.objects.all().order_by("-checked")[:1000]
+    places = Place.objects.all().order_by("name")
 
     template_vars = {
         "section":"settings",
         "places":places,
     }
     return render(request, "admin/places.html", template_vars)
+
+
+def place_form(request, pk):
+
+    place = get_object_or_404(Place, pk=pk)
+    page_title = "Edit %s" % place.name
+
+    if request.POST:
+        form = PlaceForm(request.POST, instance=place)
+        if form.is_valid():
+            form.save()
+            return redirect("admin:places")
+    else:
+        form = PlaceForm(instance=place)
+
+    template_vars = {
+        "form":form,
+        "page_title":page_title,
+    }
+    return render(request, "admin/form.html", template_vars)
 
 
 def foodbanks_without_need(request):

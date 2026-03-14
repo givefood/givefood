@@ -97,6 +97,7 @@ urlpatterns = (
 
     path("places/", places, name="places"),
     path("places/loader/", places_loader, name="places_loader"),
+    path("place/<int:pk>/edit/", place_form, name="place_form"),
 
     path("politics/", politics, name="politics"),
     path("politics/csv/", politics_csv, name="politics_csv"),
