@@ -3002,13 +3002,22 @@ def places(request):
             label = sort_option.replace("_", " ").title()
         display_sort_options[sort_option] = label
 
-    places = Place.objects.all().order_by(sort)
+    all_places = Place.objects.all().order_by(sort)
+
+    from django.core.paginator import Paginator
+    paginator = Paginator(all_places, 20000)
+    page_number = request.GET.get("page", 1)
+    try:
+        page_obj = paginator.page(page_number)
+    except:
+        page_obj = paginator.page(1)
 
     template_vars = {
         "section":"settings",
         "sort":sort,
         "display_sort_options":display_sort_options,
-        "places":places,
+        "places":page_obj.object_list,
+        "page_obj":page_obj,
     }
     return render(request, "admin/places.html", template_vars)
 
