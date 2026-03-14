@@ -11,24 +11,76 @@
 
     <div class="column">
 
+      <div class="field is-pulled-right">
+        <div class="control">
+          <div class="select">
+            <select onchange="javascript:window.location.href=this.value">
+              {% for sort_option in display_sort_options.items %}
+                <option value="?sort={{ sort_option.0 }}"{% if sort == sort_option.0 %} selected{% endif %}>{{ sort_option.1 }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+
       <table class="table is-fullwidth is-hoverable">
         <tr>
           <th>Name</th>
-          <th>LatLng</th>
-          <th>HistCounty</th>
-          <th>AdCounty</th>
-          <th>Checked</th>
+          <th>Type</th>
+          <th>Lat,Lng</th>
+          <th>County</th>
+          <th>Population</th>
+          <th></th>
         </tr>
         {% for place in places %}
           <tr>
             <td>{{ place.name }}</td>
+            <td>{{ place.type }}</td>
             <td>{{ place.lat_lng }}</td>
-            <td>{{ place.histcounty }}</td>
-            <td>{{ place.adcounty }}</td>
-            <td>{{ place.checked }}</td>
+            <td>{{ place.county }}</td>
+            <td>{{ place.population|intcomma }}</td>
+            <td>
+              <a href="{% url 'admin:place_form' place.pk %}" class="button is-small is-light">Edit</a>
+            </td>
           </tr>
         {% endfor %}
       </table>
+
+      {% if page_obj.has_other_pages %}
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          {% if page_obj.has_previous %}
+            <a class="pagination-previous" href="?sort={{ sort }}&page={{ page_obj.previous_page_number }}">Previous</a>
+          {% else %}
+            <a class="pagination-previous" disabled>Previous</a>
+          {% endif %}
+          
+          {% if page_obj.has_next %}
+            <a class="pagination-next" href="?sort={{ sort }}&page={{ page_obj.next_page_number }}">Next</a>
+          {% else %}
+            <a class="pagination-next" disabled>Next</a>
+          {% endif %}
+          
+          <ul class="pagination-list">
+            {% for num in page_obj.paginator.page_range %}
+              {% if page_obj.number == num %}
+                <li><a class="pagination-link is-current" aria-label="Page {{ num }}" aria-current="page">{{ num }}</a></li>
+              {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li><a class="pagination-link" href="?sort={{ sort }}&page={{ num }}" aria-label="Go to page {{ num }}">{{ num }}</a></li>
+              {% elif num == 1 %}
+                <li><a class="pagination-link" href="?sort={{ sort }}&page={{ num }}" aria-label="Go to page {{ num }}">{{ num }}</a></li>
+                {% if page_obj.number > 4 %}
+                  <li><span class="pagination-ellipsis">&hellip;</span></li>
+                {% endif %}
+              {% elif num == page_obj.paginator.num_pages %}
+                {% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+                  <li><span class="pagination-ellipsis">&hellip;</span></li>
+                {% endif %}
+                <li><a class="pagination-link" href="?sort={{ sort }}&page={{ num }}" aria-label="Go to page {{ num }}">{{ num }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
 
     </div>
 
