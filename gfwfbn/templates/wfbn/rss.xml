@@ -14,7 +14,7 @@
                             <guid isPermaLink="true">{{ item.url }}</guid>
                             <pubDate>{{ item.date|date:"D, d M Y H:i:s O" }}</pubDate>
                             {% if item.description %}
-                                <description>{{ item.description }}</description>
+                                <description><![CDATA[{{ item.description }}]]></description>
                             {% endif %}
                     </item>
                 {% endfor %}

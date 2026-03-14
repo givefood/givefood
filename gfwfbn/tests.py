@@ -1294,6 +1294,40 @@ class TestRSSFeeds:
         assert '<item>' in content
         assert 'items requested at' in content
 
+    def test_foodbank_rss_description_escapes_ampersands(self, client):
+        """Test that RSS description properly escapes ampersands for HTML interoperability."""
+        foodbank = Foodbank(
+            name="Test Food Bank 3",
+            slug="test-food-bank-3",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        # Create a need with ampersands in the text (like "F&M" or "Treats &")
+        need = FoodbankChange.objects.create(
+            foodbank=foodbank,
+            change_text="Deodorant (F&M)\nEaster Eggs & Treats",
+            published=True,
+        )
+
+        response = client.get(reverse('wfbn:foodbank_rss', kwargs={'slug': 'test-food-bank-3'}))
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        # Description should be wrapped in CDATA with HTML-escaped ampersands
+        assert '<![CDATA[' in content
+        assert ']]>' in content
+        # Ampersands should be HTML-escaped inside CDATA
+        assert 'F&amp;M' in content
+        assert 'Eggs &amp; Treats' in content
+
     def test_foodbank_rss_invalid_slug_returns_404(self, client):
         """Test that requesting RSS for non-existent food bank returns 404."""
         response = client.get(reverse('wfbn:foodbank_rss', kwargs={'slug': 'non-existent-foodbank'}))
