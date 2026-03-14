@@ -2980,11 +2980,34 @@ def delete_subscription(request):
 
 
 def places(request):
-    
-    places = Place.objects.all().order_by("name")
+
+    sort_options = [
+        "name",
+        "-name",
+        "county",
+        "-county",
+        "population",
+        "-population",
+    ]
+    sort = request.GET.get("sort", "name")
+    if sort not in sort_options:
+        return HttpResponseForbidden()
+
+    display_sort_options = {}
+    for sort_option in sort_options:
+        if sort_option.startswith("-"):
+            label = sort_option[1:].replace("_", " ").title()
+            label = f"{label} (Desc)"
+        else:
+            label = sort_option.replace("_", " ").title()
+        display_sort_options[sort_option] = label
+
+    places = Place.objects.all().order_by(sort)
 
     template_vars = {
         "section":"settings",
+        "sort":sort,
+        "display_sort_options":display_sort_options,
         "places":places,
     }
     return render(request, "admin/places.html", template_vars)
