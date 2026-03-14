@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
-from django.db.models import Sum, Case, When, Value, IntegerField, F
+from django.db.models import Sum, F
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
 from django.utils import timezone
@@ -1492,9 +1492,10 @@ def address_autocomplete(request):
     
     Accepts a query parameter 'q' for partial address search.
     Searches both Place and Postcode models.
-    Results are ordered with places starting with the query appearing first,
-    followed by places containing the query. Within each group, places are
-    ordered by population descending so more populated areas appear first.
+    Uses a two-pass approach: first returns up to 10 prefix matches
+    (istartswith), then fills remaining slots with substring matches
+    (icontains). Within each group, places are ordered by population
+    descending so more populated areas appear first.
     Returns JSON with name and lat_lng for matching results.
     
     Example: /aac/?q=sw
@@ -1506,25 +1507,34 @@ def address_autocomplete(request):
     
     results = []
     
-    # Search places - use icontains to capture all matches, then prioritize with annotation
-    places = Place.objects.filter(
-        name__icontains=query
-    ).annotate(
-        # Add a priority field: 0 for startswith (higher priority), 1 for contains
-        priority=Case(
-            When(name__istartswith=query, then=Value(0, output_field=IntegerField())),
-            default=Value(1, output_field=IntegerField()),
-            output_field=IntegerField(),
-        )
-    ).order_by('priority', F('population').desc(nulls_last=True), 'name').values('name', 'lat_lng', 'county').distinct()[:10]
+    # Search places - two-pass approach: prefix matches first, then substring matches
+    prefix_places = Place.objects.filter(
+        name__istartswith=query
+    ).order_by(F('population').desc(nulls_last=True), 'name').values('name', 'lat_lng', 'county')[:10]
     
-    for place in places:
+    for place in prefix_places:
         results.append({
             "n": place['name'],
             "l": place['lat_lng'],
             "t": "p",
             "c": place['county']
         })
+    
+    # Fill remaining slots with substring matches (excluding prefix matches)
+    if len(results) < 10:
+        substring_places = Place.objects.filter(
+            name__icontains=query
+        ).exclude(
+            name__istartswith=query
+        ).order_by(F('population').desc(nulls_last=True), 'name').values('name', 'lat_lng', 'county')[:10 - len(results)]
+        
+        for place in substring_places:
+            results.append({
+                "n": place['name'],
+                "l": place['lat_lng'],
+                "t": "p",
+                "c": place['county']
+            })
     
     # Search postcodes - only fetch if we have room for more results
     if len(results) < 20:
