@@ -16,12 +16,20 @@
         <table class="table is-striped is-narrow is-fullwidth">
             <tr>
                 <th>year-week</th>
-                <th>Subscriptions</th>
+                <th>Email</th>
+                <th>WhatsApp</th>
+                <th>Web Push</th>
+                <th>App</th>
+                <th>Total</th>
             </tr>
-            {% for week in week_subs.items reversed %}
+            {% for week_key, counts in week_subs.items reversed %}
                 <tr>
-                    <td>{{ week.0 }}</td>
-                    <td>{{ week.1 }}</td>
+                    <td>{{ week_key }}</td>
+                    <td>{{ counts.email }}</td>
+                    <td>{{ counts.whatsapp }}</td>
+                    <td>{{ counts.webpush }}</td>
+                    <td>{{ counts.mobile }}</td>
+                    <td>{{ counts.total }}</td>
                 </tr>
             {% endfor %}
         </table>
@@ -39,6 +47,9 @@
             type: 'shadow'
           }
         },
+        legend: {
+          data: ['Email', 'WhatsApp', 'Web Push', 'App']
+        },
         grid: {
           left: '3%',
           right: '4%',
@@ -48,8 +59,8 @@
         xAxis: {
           type: 'category',
           data: [
-            {% for week in week_subs.items %}
-              '{{ week.0 }}'{% if not forloop.last %},{% endif %}
+            {% for week_key, counts in week_subs.items %}
+              '{{ week_key }}'{% if not forloop.last %},{% endif %}
             {% endfor %}
           ],
           axisLabel: {
@@ -62,11 +73,42 @@
         },
         series: [
           {
-            name: 'Subscriptions',
+            name: 'Email',
             type: 'bar',
+            stack: 'total',
             data: [
-              {% for week in week_subs.items %}
-                {{ week.1 }}{% if not forloop.last %},{% endif %}
+              {% for week_key, counts in week_subs.items %}
+                {{ counts.email }}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+            ]
+          },
+          {
+            name: 'WhatsApp',
+            type: 'bar',
+            stack: 'total',
+            data: [
+              {% for week_key, counts in week_subs.items %}
+                {{ counts.whatsapp }}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+            ]
+          },
+          {
+            name: 'Web Push',
+            type: 'bar',
+            stack: 'total',
+            data: [
+              {% for week_key, counts in week_subs.items %}
+                {{ counts.webpush }}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+            ]
+          },
+          {
+            name: 'App',
+            type: 'bar',
+            stack: 'total',
+            data: [
+              {% for week_key, counts in week_subs.items %}
+                {{ counts.mobile }}{% if not forloop.last %},{% endif %}
               {% endfor %}
             ]
           }
