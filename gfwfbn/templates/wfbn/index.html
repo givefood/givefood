@@ -142,8 +142,8 @@
                     {% if donationpoint.place_has_photo %}
                       <a href="{{ donationpoint.url }}">
                         <picture>
-                          <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=avif{{ donationpoint.photo_url }} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=avif{{ donationpoint.photo_url }} 300w" type="image/avif">
-                          <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=webp{{ donationpoint.photo_url }} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=webp{{ donationpoint.photo_url }} 300w" type="image/webp">
+                          <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=avif{{ donationpoint.photo_url }} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=avif{{ donationpoint.photo_url }} 300w" type="image/avif" sizes="150px">
+                          <source srcset="https://www.givefood.org.uk/cdn-cgi/image/width=150,format=webp{{ donationpoint.photo_url }} 150w, https://www.givefood.org.uk/cdn-cgi/image/width=300,format=webp{{ donationpoint.photo_url }} 300w" type="image/webp" sizes="150px">
                           <img src="https://www.givefood.org.uk/cdn-cgi/image/width=300{{ donationpoint.photo_url }}" alt="{{ donationpoint.name }}" loading="lazy" class="placephoto" style="width:150px;" sizes="150px">
                         </picture>
                       </a>
