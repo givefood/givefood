@@ -116,8 +116,8 @@
             {% if location.place_has_photo and not location.boundary_geojson %}
               <div>
                 <picture>
-                  <source srcset="https://www.givefood.org.uk/cdn-cgi/image/format=avif,width=540{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/format=avif,width=1080{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 1080w" type="image/avif">
-                  <source srcset="https://www.givefood.org.uk/cdn-cgi/image/format=webp,width=540{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/format=webp,width=1080{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 1080w" type="image/webp">
+                  <source srcset="https://www.givefood.org.uk/cdn-cgi/image/format=avif,width=540{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/format=avif,width=1080{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 1080w" type="image/avif" sizes="(max-width: 540px) 540px, 1080px">
+                  <source srcset="https://www.givefood.org.uk/cdn-cgi/image/format=webp,width=540{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 540w, https://www.givefood.org.uk/cdn-cgi/image/format=webp,width=1080{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %} 1080w" type="image/webp" sizes="(max-width: 540px) 540px, 1080px">
                   <img src="https://www.givefood.org.uk/cdn-cgi/image/width=1080{% url 'wfbn-generic:foodbank_location_photo' foodbank.slug location.slug %}" alt="{{ location.name }}" loading="lazy" class="placephoto">
                 </picture>
               </div>
