@@ -2407,15 +2407,44 @@ def subscriber_stats(request):
 
 def subscriber_graph(request):
 
+    week_keys = OrderedDict()
+
+    email_subs = {}
+    whatsapp_subs = {}
+    webpush_subs = {}
+    mobile_subs = {}
+
+    for sub in FoodbankSubscriber.objects.filter(confirmed = True).order_by("created"):
+        week_key = "%s-%s" % (sub.created.year, sub.created.isocalendar()[1])
+        email_subs[week_key] = email_subs.get(week_key, 0) + 1
+        week_keys[week_key] = True
+
+    for sub in WhatsappSubscriber.objects.all().order_by("created"):
+        week_key = "%s-%s" % (sub.created.year, sub.created.isocalendar()[1])
+        whatsapp_subs[week_key] = whatsapp_subs.get(week_key, 0) + 1
+        week_keys[week_key] = True
+
+    for sub in WebPushSubscription.objects.all().order_by("created"):
+        week_key = "%s-%s" % (sub.created.year, sub.created.isocalendar()[1])
+        webpush_subs[week_key] = webpush_subs.get(week_key, 0) + 1
+        week_keys[week_key] = True
+
+    for sub in MobileSubscriber.objects.all().order_by("created"):
+        week_key = "%s-%s" % (sub.created.year, sub.created.isocalendar()[1])
+        mobile_subs[week_key] = mobile_subs.get(week_key, 0) + 1
+        week_keys[week_key] = True
+
+    # Build combined ordered dict with per-type counts
     week_subs = OrderedDict()
-
-    subs = FoodbankSubscriber.objects.filter(confirmed = True).order_by("created")
-
-    for sub in subs:
-        week_number = sub.created.isocalendar()[1]
-        year = sub.created.year
-        week_key = "%s-%s" % (year, week_number)
-        week_subs[week_key] = week_subs.get(week_key, 0) + 1
+    for week_key in week_keys:
+        counts = {
+            "email": email_subs.get(week_key, 0),
+            "whatsapp": whatsapp_subs.get(week_key, 0),
+            "webpush": webpush_subs.get(week_key, 0),
+            "mobile": mobile_subs.get(week_key, 0),
+        }
+        counts["total"] = sum(counts.values())
+        week_subs[week_key] = counts
 
     template_vars = {
         "week_subs":week_subs,

@@ -594,7 +594,7 @@
         </tr>
         {% for subscription in all_subscriptions %}
           <tr>
-            <td>{{ subscription.type_emoji|safe }} {{ subscription.type|title }}</td>
+            <td style="white-space:nowrap">{{ subscription.type_emoji|safe }} {{ subscription.type|title }}</td>
             <td>{{ subscription.identifier }}</td>
             <td>{{ subscription.created }}</td>
           </tr>
