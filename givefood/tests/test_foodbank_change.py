@@ -192,7 +192,7 @@ class TestFoodbankChangeTranslation:
 
         # Verify that translate_need_async.enqueue was NOT called for "tlh"
         calls = mock_translate.enqueue.call_args_list
-        translated_languages = [c[0][0] for c in calls]
+        translated_languages = [call_args[0][0] for call_args in calls]
         assert "tlh" not in translated_languages
         # But it should still be called for other non-English languages
         assert len(translated_languages) > 0
