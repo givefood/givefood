@@ -26,7 +26,7 @@ from django.contrib.contenttypes.models import ContentType
 from requests import PreparedRequest
 import requests
 
-from givefood.settings import LANGUAGES
+from givefood.settings import LANGUAGES, LANGUAGES_SKIP_TRANSLATE
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN, CRAWL_TYPE_ICONS, CRAWL_TYPE_ICON_DEFAULT
 from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
@@ -2017,7 +2017,8 @@ class FoodbankChange(models.Model):
                     the_text = translated_text.change_text
                 if text_type == "excess":
                     the_text = translated_text.excess_change_text
-            else:
+
+            if not translated_text or not the_text:
                 if text_type == "change":
                     the_text = self.change_text
                 if text_type == "excess":
@@ -2085,7 +2086,7 @@ class FoodbankChange(models.Model):
         if self.published and do_translate:
             for language in LANGUAGES:
                 language_code = language[0]
-                if language_code != "en":
+                if language_code != "en" and language_code not in LANGUAGES_SKIP_TRANSLATE:
                     translate_need_async.enqueue(language_code, self.need_id_str)
     
     def delete(self, *args, **kwargs):

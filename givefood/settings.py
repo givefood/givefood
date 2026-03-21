@@ -225,6 +225,8 @@ LANGUAGES = [
     ("tlh", "tlhIngan Hol"),
 ]
 
+LANGUAGES_SKIP_TRANSLATE = {"tlh"}
+
 LOCALE_PATHS = (
     os.path.abspath(os.path.join(BASE_DIR, "locale")),
 )

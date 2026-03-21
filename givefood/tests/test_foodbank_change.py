@@ -164,6 +164,39 @@ class TestFoodbankChangeTranslation:
         # Should not crash, and translation might or might not be called
         # (depending on implementation - it's valid either way)
 
+    @patch('givefood.models.translate_need_async')
+    def test_save_does_not_translate_skipped_languages(self, mock_translate):
+        """Test that saving a need does not trigger translation for languages in LANGUAGES_SKIP_TRANSLATE (e.g. tlh/Klingon)."""
+        foodbank = Foodbank(
+            name="Test Food Bank Skip Lang",
+            slug="test-food-bank-skip-lang",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://testskiplang.example.com",
+            shopping_list_url="https://testskiplang.example.com/shopping",
+            contact_email="testskiplang@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes\nPasta\nRice",
+            published=True,
+        )
+        need.save()
+
+        # Verify that translate_need_async.enqueue was NOT called for "tlh"
+        calls = mock_translate.enqueue.call_args_list
+        translated_languages = [c[0][0] for c in calls]
+        assert "tlh" not in translated_languages
+        # But it should still be called for other non-English languages
+        assert len(translated_languages) > 0
+
 
 @pytest.mark.django_db
 class TestFoodbankChangeGetText:
@@ -394,3 +427,52 @@ class TestFoodbankChangeGetText:
         need.change_text = None
         change_text = need.get_change_text()
         assert change_text == ""
+
+    @patch('givefood.models.translate_need_async')
+    def test_get_text_fallback_to_english_when_translation_has_empty_text(self, mock_translate):
+        """Test that get_text falls back to English when translation record exists but has empty/None text."""
+        foodbank = Foodbank(
+            name="Test Food Bank Empty Translation",
+            slug="test-food-bank-empty-translation",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://testempty.example.com",
+            shopping_list_url="https://testempty.example.com/shopping",
+            contact_email="testempty@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+
+        need = FoodbankChange(
+            foodbank=foodbank,
+            change_text="Tinned Tomatoes\nPasta\nRice",
+            excess_change_text="Bread\nMilk",
+            published=True,
+        )
+        need.save(do_translate=False)
+
+        # Create a translation with empty text (simulates failed API translation)
+        translation = FoodbankChangeTranslation(
+            need=need,
+            language="es",
+            change_text="",
+            excess_change_text="",
+        )
+        translation.save()
+
+        # Activate Spanish
+        activate('es')
+
+        # Should fall back to English text instead of returning empty string
+        change_text = need.get_change_text()
+        assert change_text == "Tinned Tomatoes\nPasta\nRice"
+
+        excess_text = need.get_excess_text()
+        assert excess_text == "Bread\nMilk"
+
+        # Reset to English
+        activate('en')
