@@ -352,6 +352,9 @@ class Foodbank(models.Model):
         if self.country == "England":
             return "🏴󠁧󠁢󠁥󠁮󠁧󠁿"
 
+    def is_charity_country(self):
+        return self.country in ["England", "Wales", "Scotland", "Northern Ireland"]
+
     def charity_register_url(self):
         if not self.charity_number:
             return None

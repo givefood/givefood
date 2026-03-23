@@ -620,7 +620,7 @@ def foodbank_charity(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     charity_years = CharityYear.objects.filter(foodbank = foodbank).order_by("-date")
 
-    if not foodbank.charity_name:
+    if not foodbank.charity_name or not foodbank.is_charity_country():
         return HttpResponseNotFound()
 
     template_vars = {
@@ -776,7 +776,7 @@ def md_foodbank_charity(request, slug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     charity_years = CharityYear.objects.filter(foodbank = foodbank).order_by("-date")
 
-    if not foodbank.charity_name:
+    if not foodbank.charity_name or not foodbank.is_charity_country():
         return HttpResponseNotFound()
 
     template_vars = {
