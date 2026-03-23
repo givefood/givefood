@@ -1913,33 +1913,33 @@ class TestMarkdownFoodbankViews:
 class TestCharityCountryCheck:
     """Test that charity page is only available for England, Wales, Scotland and Northern Ireland."""
 
-    def test_is_charity_country_england(self, create_test_foodbank):
+    def test_has_charity_details_england(self, create_test_foodbank):
         foodbank = create_test_foodbank(name="England FB", slug="england-fb", country="England")
-        assert foodbank.is_charity_country() is True
+        assert foodbank.has_charity_details() is True
 
-    def test_is_charity_country_wales(self, create_test_foodbank):
+    def test_has_charity_details_wales(self, create_test_foodbank):
         foodbank = create_test_foodbank(name="Wales FB", slug="wales-fb", country="Wales")
-        assert foodbank.is_charity_country() is True
+        assert foodbank.has_charity_details() is True
 
-    def test_is_charity_country_scotland(self, create_test_foodbank):
+    def test_has_charity_details_scotland(self, create_test_foodbank):
         foodbank = create_test_foodbank(name="Scotland FB", slug="scotland-fb", country="Scotland")
-        assert foodbank.is_charity_country() is True
+        assert foodbank.has_charity_details() is True
 
-    def test_is_charity_country_northern_ireland(self, create_test_foodbank):
+    def test_has_charity_details_northern_ireland(self, create_test_foodbank):
         foodbank = create_test_foodbank(name="NI FB", slug="ni-fb", country="Northern Ireland")
-        assert foodbank.is_charity_country() is True
+        assert foodbank.has_charity_details() is True
 
     def test_is_not_charity_country_isle_of_man(self, create_test_foodbank):
         foodbank = create_test_foodbank(name="IoM FB", slug="iom-fb", country="Isle of Man")
-        assert foodbank.is_charity_country() is False
+        assert foodbank.has_charity_details() is False
 
     def test_is_not_charity_country_jersey(self, create_test_foodbank):
         foodbank = create_test_foodbank(name="Jersey FB", slug="jersey-fb", country="Jersey")
-        assert foodbank.is_charity_country() is False
+        assert foodbank.has_charity_details() is False
 
     def test_is_not_charity_country_guernsey(self, create_test_foodbank):
         foodbank = create_test_foodbank(name="Guernsey FB", slug="guernsey-fb", country="Guernsey")
-        assert foodbank.is_charity_country() is False
+        assert foodbank.has_charity_details() is False
 
     def test_charity_page_404_for_non_charity_country(self, client, create_test_foodbank):
         """Test that the charity page returns 404 for food banks in non-charity countries."""

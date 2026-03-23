@@ -3,7 +3,7 @@
     <br>
     {% if not foodbank.name == "Salvation Army" %}
         <p>
-            {% if foodbank.is_charity_country %}
+            {% if foodbank.has_charity_details %}
                 {% url 'wfbn:foodbank_charity' foodbank.slug as charity_url %}{% blocktrans with charity_url=charity_url charity_number=foodbank.charity_number %}Charity Registration <a href="{{ charity_url }}" id="charity_link">{{ charity_number }}</a>{% endblocktrans %}<br>
             {% else %}
                 {% blocktrans with charity_number=foodbank.charity_number %}Charity Registration {{ charity_number }}{% endblocktrans %}<br>
