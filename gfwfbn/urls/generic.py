@@ -10,6 +10,7 @@ urlpatterns = [
 
     # Photos and screenshots
     path("at/<slug:slug>/photo.jpg", foodbank_photo, name="foodbank_photo"),
+    path("at/<slug:slug>/favicon.png", foodbank_favicon, name="foodbank_favicon"),
     re_path(r"at/(?P<slug>[-\w]+)/screenshots/(?P<page_name>homepage|shoppinglist|donationpoints|contacts|locations).png", foodbank_screenshot, name="foodbank_screenshot"),
     path("at/<slug:slug>/donationpoint/<slug:dpslug>/photo.jpg", foodbank_donationpoint_photo, name="foodbank_donationpoint_photo"),
     path("at/<slug:slug>/<slug:locslug>/photo.jpg", foodbank_location_photo, name="foodbank_location_photo"),
