@@ -348,6 +348,7 @@ version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
+    { name = "cryptography" },
     { name = "dicttoxml" },
     { name = "django" },
     { name = "django-bulma" },
@@ -364,7 +365,10 @@ dependencies = [
     { name = "gunicorn" },
     { name = "mistralai" },
     { name = "openlocationcode" },
+    { name = "protobuf" },
     { name = "psycopg2-binary" },
+    { name = "pyasn1" },
+    { name = "pyjwt" },
     { name = "pytest" },
     { name = "pytest-django" },
     { name = "pytest-html" },
@@ -376,6 +380,7 @@ dependencies = [
     { name = "requests-toolbelt" },
     { name = "sentry-sdk", extra = ["django"] },
     { name = "setuptools" },
+    { name = "sqlparse" },
     { name = "unicodecsv" },
     { name = "urllib3" },
     { name = "whitenoise" },
@@ -392,6 +397,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "beautifulsoup4" },
+    { name = "cryptography", specifier = ">=46.0.5" },
     { name = "dicttoxml" },
     { name = "django", specifier = "==6.0.3" },
     { name = "django-bulma", specifier = "==0.10.0" },
@@ -408,7 +414,10 @@ requires-dist = [
     { name = "gunicorn" },
     { name = "mistralai" },
     { name = "openlocationcode" },
+    { name = "protobuf", specifier = ">=6.33.5" },
     { name = "psycopg2-binary" },
+    { name = "pyasn1", specifier = ">=0.6.3" },
+    { name = "pyjwt", specifier = ">=2.12.0" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "pytest-cov", marker = "extra == 'dev'" },
@@ -424,6 +433,7 @@ requires-dist = [
     { name = "requests-toolbelt" },
     { name = "sentry-sdk", extras = ["django"] },
     { name = "setuptools" },
+    { name = "sqlparse", specifier = ">=0.5.4" },
     { name = "unicodecsv" },
     { name = "urllib3", specifier = ">=2.6.0" },
     { name = "whitenoise" },
