@@ -79,6 +79,7 @@ This is Give Food's primary public-facing application that helps people find foo
 ### Media Endpoints
 - `/needs/at/<slug>/map.png` - Static map image (600x400 or 1080px)
 - `/needs/at/<slug>/photo.jpg` - Food bank photo from Google Places
+- `/needs/at/<slug>/favicon.png` - Food bank website favicon
 - `/needs/at/<slug>/screenshots/homepage.png` - Screenshot of food bank website
 - `/needs/at/<slug>/screenshots/shoppinglist.png` - Screenshot of shopping list page
 - `/needs/at/<slug>/<locslug>/map.png` - Static map of a location

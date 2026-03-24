@@ -1962,3 +1962,60 @@ class TestCharityCountryCheck:
         )
         response = client.get(f'/needs/at/{foodbank.slug}/charity/')
         assert response.status_code == 200
+
+
+@pytest.mark.django_db
+class TestFoodbankFavicon:
+    """Test the foodbank_favicon endpoint"""
+
+    @patch('gfwfbn.views.requests.get')
+    def test_foodbank_favicon_returns_png(self, mock_requests_get, client, create_test_foodbank):
+        """Test that foodbank favicon returns PNG image data."""
+        mock_response = Mock()
+        mock_response.content = b"fake_favicon_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+
+        foodbank = create_test_foodbank(name="Favicon Test FB 1", slug="favicon-test-fb-1")
+        url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': foodbank.slug})
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        assert response.content == b"fake_favicon_data"
+
+    @patch('gfwfbn.views.requests.get')
+    def test_foodbank_favicon_uses_google_api(self, mock_requests_get, client, create_test_foodbank):
+        """Test that the correct Google favicon URL is called."""
+        mock_response = Mock()
+        mock_response.content = b"fake_favicon_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+
+        foodbank = create_test_foodbank(name="Favicon Test FB 2", slug="favicon-test-fb-2")
+        url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': foodbank.slug})
+        client.get(url)
+
+        mock_requests_get.assert_called_once_with(
+            "https://www.google.com/s2/favicons?domain=test.example.com&sz=64"
+        )
+
+    @patch('gfwfbn.views.requests.get')
+    def test_foodbank_favicon_404_on_fetch_failure(self, mock_requests_get, client, create_test_foodbank):
+        """Test that a failed favicon fetch returns 404."""
+        mock_response = Mock()
+        mock_response.status_code = 500
+        mock_requests_get.return_value = mock_response
+
+        foodbank = create_test_foodbank(name="Favicon Test FB 3", slug="favicon-test-fb-3")
+        url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': foodbank.slug})
+        response = client.get(url)
+
+        assert response.status_code == 404
+
+    def test_foodbank_favicon_404_on_invalid_slug(self, client):
+        """Test that an invalid slug returns 404."""
+        url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': 'nonexistent-foodbank'})
+        response = client.get(url)
+
+        assert response.status_code == 404

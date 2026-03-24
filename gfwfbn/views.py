@@ -1,4 +1,5 @@
 import json, requests, datetime, os
+from urllib.parse import urlparse
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, Http404
@@ -498,6 +499,28 @@ def foodbank_photo(request, slug):
     photo = photo_from_place_id(foodbank.place_id, size)
     
     return HttpResponse(photo, content_type='image/jpeg')
+
+
+@cache_page(SECONDS_IN_WEEK)
+def foodbank_favicon(request, slug):
+    """
+    Food bank favicon PNG
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    if not foodbank.url:
+        return HttpResponseNotFound()
+
+    domain = urlparse(foodbank.url).netloc
+
+    favicon_url = "https://www.google.com/s2/favicons?domain=%s&sz=64" % (domain)
+    response = requests.get(favicon_url)
+
+    if response.status_code != 200:
+        return HttpResponseNotFound()
+
+    return HttpResponse(response.content, content_type='image/png')
 
 
 @cache_page(SECONDS_IN_WEEK)
