@@ -515,7 +515,7 @@ def foodbank_favicon(request, slug):
     domain = urlparse(foodbank.url).netloc
 
     favicon_url = "https://www.google.com/s2/favicons?domain=%s&sz=64" % (domain)
-    response = requests.get(favicon_url)
+    response = requests.get(favicon_url, timeout=10)
 
     if response.status_code != 200:
         return HttpResponseNotFound()

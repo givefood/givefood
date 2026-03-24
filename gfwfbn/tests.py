@@ -1997,7 +1997,8 @@ class TestFoodbankFavicon:
         client.get(url)
 
         mock_requests_get.assert_called_once_with(
-            "https://www.google.com/s2/favicons?domain=test.example.com&sz=64"
+            "https://www.google.com/s2/favicons?domain=test.example.com&sz=64",
+            timeout=10
         )
 
     @patch('gfwfbn.views.requests.get')
