@@ -41,6 +41,8 @@ from django_tasks.base import TaskResultStatus
 DEVICE_ID_TRUNCATE_LENGTH = 20
 ENDPOINT_TRUNCATE_LENGTH = 30
 
+FOODBANKS_CACHE_TTL = 300  # seconds
+
 
 def index(request):
 
@@ -268,26 +270,30 @@ def foodbanks(request):
             label = sort_option.replace("_", " ").title()
         display_sort_options[sort_option] = label
 
-    # Annotate foodbanks with hits from last 28 days
-    # Note: Annotation is always included because the template displays the hits column
-    cutoff_date = date.today() - timedelta(days=28)
-    foodbanks = (
-        Foodbank.objects
-        .exclude(is_closed=True)
-        .only(
-            'slug', 'name', 'postcode', 'is_closed',
-            'no_locations', 'no_donation_points', 'network',
-            'last_order', 'last_need', 'last_need_check',
-            'created', 'modified', 'edited',
-        )
-        .annotate(
-            hits_last_28_days=Coalesce(
-                Sum('foodbankhit__hits', filter=Q(foodbankhit__day__gte=cutoff_date)),
-                0,
+    cache_key = f"admin_foodbanks_{sort}"
+    foodbanks = cache.get(cache_key)
+    if foodbanks is None:
+        # Annotate foodbanks with hits from last 28 days
+        # Note: Annotation is always included because the template displays the hits column
+        cutoff_date = date.today() - timedelta(days=28)
+        foodbanks = list(
+            Foodbank.objects
+            .exclude(is_closed=True)
+            .only(
+                'slug', 'name', 'postcode', 'is_closed',
+                'no_locations', 'no_donation_points', 'network',
+                'last_order', 'last_need', 'last_need_check',
+                'created', 'modified', 'edited',
             )
+            .annotate(
+                hits_last_28_days=Coalesce(
+                    Sum('foodbankhit__hits', filter=Q(foodbankhit__day__gte=cutoff_date)),
+                    0,
+                )
+            )
+            .order_by(sort)
         )
-        .order_by(sort)
-    )
+        cache.set(cache_key, foodbanks, FOODBANKS_CACHE_TTL)
 
     template_vars = {
         "sort":sort,

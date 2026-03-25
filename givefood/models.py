@@ -2380,6 +2380,12 @@ class FoodbankHit(models.Model):
     day = models.DateField()
     hits = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        app_label = 'givefood'
+        indexes = [
+            models.Index(fields=['foodbank', 'day']),
+        ]
+
 
 class Place(models.Model):
 
