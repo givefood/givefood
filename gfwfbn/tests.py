@@ -2020,3 +2020,136 @@ class TestFoodbankFavicon:
         response = client.get(url)
 
         assert response.status_code == 404
+
+
+@pytest.mark.django_db
+class TestDonationPointFavicon:
+    """Test the foodbank_donationpoint_favicon endpoint"""
+
+    @patch('gfwfbn.views.requests.get')
+    def test_donationpoint_favicon_returns_png(self, mock_requests_get, client, create_test_foodbank):
+        """Test that donation point favicon returns PNG image data."""
+        mock_response = Mock()
+        mock_response.content = b"fake_favicon_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+
+        foodbank = create_test_foodbank(name="DP Favicon Test FB 1", slug="dp-favicon-test-fb-1")
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test DP Favicon 1",
+            slug="test-dp-favicon-1",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            url="https://dp.example.com",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+
+        url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': foodbank.slug, 'dpslug': donationpoint.slug})
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        assert response.content == b"fake_favicon_data"
+
+    @patch('gfwfbn.views.requests.get')
+    def test_donationpoint_favicon_uses_google_api(self, mock_requests_get, client, create_test_foodbank):
+        """Test that the correct Google favicon URL is called."""
+        mock_response = Mock()
+        mock_response.content = b"fake_favicon_data"
+        mock_response.status_code = 200
+        mock_requests_get.return_value = mock_response
+
+        foodbank = create_test_foodbank(name="DP Favicon Test FB 2", slug="dp-favicon-test-fb-2")
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test DP Favicon 2",
+            slug="test-dp-favicon-2",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            url="https://dp.example.com/store/123",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+
+        url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': foodbank.slug, 'dpslug': donationpoint.slug})
+        client.get(url)
+
+        mock_requests_get.assert_called_once_with(
+            "https://www.google.com/s2/favicons?domain=dp.example.com&sz=64",
+            timeout=10
+        )
+
+    @patch('gfwfbn.views.requests.get')
+    def test_donationpoint_favicon_404_on_fetch_failure(self, mock_requests_get, client, create_test_foodbank):
+        """Test that a failed favicon fetch returns 404."""
+        mock_response = Mock()
+        mock_response.status_code = 500
+        mock_requests_get.return_value = mock_response
+
+        foodbank = create_test_foodbank(name="DP Favicon Test FB 3", slug="dp-favicon-test-fb-3")
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test DP Favicon 3",
+            slug="test-dp-favicon-3",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+            url="https://dp.example.com",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+
+        url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': foodbank.slug, 'dpslug': donationpoint.slug})
+        response = client.get(url)
+
+        assert response.status_code == 404
+
+    def test_donationpoint_favicon_404_on_no_url(self, client, create_test_foodbank):
+        """Test that a donation point without a URL returns 404."""
+        foodbank = create_test_foodbank(name="DP Favicon Test FB 4", slug="dp-favicon-test-fb-4")
+        donationpoint = FoodbankDonationPoint(
+            foodbank=foodbank,
+            foodbank_name=foodbank.name,
+            foodbank_slug=foodbank.slug,
+            foodbank_network=foodbank.network,
+            name="Test DP Favicon 4",
+            slug="test-dp-favicon-4",
+            address="123 Test St",
+            postcode="SW1A 1AA",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            country="England",
+        )
+        donationpoint.save(do_geoupdate=False, do_foodbank_resave=False, do_photo_update=False)
+
+        url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': foodbank.slug, 'dpslug': donationpoint.slug})
+        response = client.get(url)
+
+        assert response.status_code == 404
+
+    def test_donationpoint_favicon_404_on_invalid_slugs(self, client):
+        """Test that invalid slugs return 404."""
+        url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': 'nonexistent-fb', 'dpslug': 'nonexistent-dp'})
+        response = client.get(url)
+
+        assert response.status_code == 404

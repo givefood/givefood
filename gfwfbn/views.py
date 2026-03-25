@@ -1024,6 +1024,29 @@ def foodbank_donationpoint_photo(request, slug, dpslug):
 
 
 @cache_page(SECONDS_IN_WEEK)
+def foodbank_donationpoint_favicon(request, slug, dpslug):
+    """
+    Food bank donation point favicon PNG
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
+
+    if not donationpoint.url:
+        return HttpResponseNotFound()
+
+    domain = urlparse(donationpoint.url).netloc
+
+    favicon_url = "https://www.google.com/s2/favicons?domain=%s&sz=64" % (domain)
+    response = requests.get(favicon_url, timeout=10)
+
+    if response.status_code != 200:
+        return HttpResponseNotFound()
+
+    return HttpResponse(response.content, content_type='image/png')
+
+
+@cache_page(SECONDS_IN_WEEK)
 def constituencies(request):
     """
     Food bank constituencies index
