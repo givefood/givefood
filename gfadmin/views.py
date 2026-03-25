@@ -20,6 +20,7 @@ from django.utils import timezone
 from django.core.cache import cache
 from django.db import IntegrityError
 from django.db.models import Sum, Q, Count
+from django.db.models.functions import Coalesce
 from django.contrib.contenttypes.models import ContentType
 from django.core.validators import validate_email, URLValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
@@ -270,15 +271,23 @@ def foodbanks(request):
     # Annotate foodbanks with hits from last 28 days
     # Note: Annotation is always included because the template displays the hits column
     cutoff_date = date.today() - timedelta(days=28)
-    foodbanks = Foodbank.objects.all().exclude(is_closed = True).annotate(
-        hits_last_28_days=Sum(
-            'foodbankhit__hits',
-            filter=Q(foodbankhit__day__gte=cutoff_date)
+    foodbanks = (
+        Foodbank.objects
+        .exclude(is_closed=True)
+        .only(
+            'slug', 'name', 'postcode', 'is_closed',
+            'no_locations', 'no_donation_points', 'network',
+            'last_order', 'last_need', 'last_need_check',
+            'created', 'modified', 'edited',
         )
+        .annotate(
+            hits_last_28_days=Coalesce(
+                Sum('foodbankhit__hits', filter=Q(foodbankhit__day__gte=cutoff_date)),
+                0,
+            )
+        )
+        .order_by(sort)
     )
-    
-    # Apply sorting
-    foodbanks = foodbanks.order_by(sort)
 
     template_vars = {
         "sort":sort,
