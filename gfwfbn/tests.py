@@ -1968,13 +1968,10 @@ class TestCharityCountryCheck:
 class TestFoodbankFavicon:
     """Test the foodbank_favicon endpoint"""
 
-    @patch('gfwfbn.views.requests.get')
-    def test_foodbank_favicon_returns_png(self, mock_requests_get, client, create_test_foodbank):
+    @patch('gfwfbn.views.get_favicon')
+    def test_foodbank_favicon_returns_png(self, mock_get_favicon, client, create_test_foodbank):
         """Test that foodbank favicon returns PNG image data."""
-        mock_response = Mock()
-        mock_response.content = b"fake_favicon_data"
-        mock_response.status_code = 200
-        mock_requests_get.return_value = mock_response
+        mock_get_favicon.return_value = b"fake_favicon_data"
 
         foodbank = create_test_foodbank(name="Favicon Test FB 1", slug="favicon-test-fb-1")
         url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': foodbank.slug})
@@ -1984,29 +1981,21 @@ class TestFoodbankFavicon:
         assert response['Content-Type'] == 'image/png'
         assert response.content == b"fake_favicon_data"
 
-    @patch('gfwfbn.views.requests.get')
-    def test_foodbank_favicon_uses_google_api(self, mock_requests_get, client, create_test_foodbank):
-        """Test that the correct Google favicon URL is called."""
-        mock_response = Mock()
-        mock_response.content = b"fake_favicon_data"
-        mock_response.status_code = 200
-        mock_requests_get.return_value = mock_response
+    @patch('gfwfbn.views.get_favicon')
+    def test_foodbank_favicon_calls_get_favicon(self, mock_get_favicon, client, create_test_foodbank):
+        """Test that get_favicon is called with the foodbank URL."""
+        mock_get_favicon.return_value = b"fake_favicon_data"
 
         foodbank = create_test_foodbank(name="Favicon Test FB 2", slug="favicon-test-fb-2")
         url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': foodbank.slug})
         client.get(url)
 
-        mock_requests_get.assert_called_once_with(
-            "https://www.google.com/s2/favicons?domain=test.example.com&sz=64",
-            timeout=10
-        )
+        mock_get_favicon.assert_called_once_with("https://test.example.com")
 
-    @patch('gfwfbn.views.requests.get')
-    def test_foodbank_favicon_404_on_fetch_failure(self, mock_requests_get, client, create_test_foodbank):
+    @patch('gfwfbn.views.get_favicon')
+    def test_foodbank_favicon_404_on_fetch_failure(self, mock_get_favicon, client, create_test_foodbank):
         """Test that a failed favicon fetch returns 404."""
-        mock_response = Mock()
-        mock_response.status_code = 500
-        mock_requests_get.return_value = mock_response
+        mock_get_favicon.return_value = None
 
         foodbank = create_test_foodbank(name="Favicon Test FB 3", slug="favicon-test-fb-3")
         url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': foodbank.slug})
@@ -2026,13 +2015,10 @@ class TestFoodbankFavicon:
 class TestDonationPointFavicon:
     """Test the foodbank_donationpoint_favicon endpoint"""
 
-    @patch('gfwfbn.views.requests.get')
-    def test_donationpoint_favicon_returns_png(self, mock_requests_get, client, create_test_foodbank):
+    @patch('gfwfbn.views.get_favicon')
+    def test_donationpoint_favicon_returns_png(self, mock_get_favicon, client, create_test_foodbank):
         """Test that donation point favicon returns PNG image data."""
-        mock_response = Mock()
-        mock_response.content = b"fake_favicon_data"
-        mock_response.status_code = 200
-        mock_requests_get.return_value = mock_response
+        mock_get_favicon.return_value = b"fake_favicon_data"
 
         foodbank = create_test_foodbank(name="DP Favicon Test FB 1", slug="dp-favicon-test-fb-1")
         donationpoint = FoodbankDonationPoint(
@@ -2059,13 +2045,10 @@ class TestDonationPointFavicon:
         assert response['Content-Type'] == 'image/png'
         assert response.content == b"fake_favicon_data"
 
-    @patch('gfwfbn.views.requests.get')
-    def test_donationpoint_favicon_uses_google_api(self, mock_requests_get, client, create_test_foodbank):
-        """Test that the correct Google favicon URL is called."""
-        mock_response = Mock()
-        mock_response.content = b"fake_favicon_data"
-        mock_response.status_code = 200
-        mock_requests_get.return_value = mock_response
+    @patch('gfwfbn.views.get_favicon')
+    def test_donationpoint_favicon_calls_get_favicon(self, mock_get_favicon, client, create_test_foodbank):
+        """Test that get_favicon is called with the donation point URL."""
+        mock_get_favicon.return_value = b"fake_favicon_data"
 
         foodbank = create_test_foodbank(name="DP Favicon Test FB 2", slug="dp-favicon-test-fb-2")
         donationpoint = FoodbankDonationPoint(
@@ -2088,17 +2071,12 @@ class TestDonationPointFavicon:
         url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': foodbank.slug, 'dpslug': donationpoint.slug})
         client.get(url)
 
-        mock_requests_get.assert_called_once_with(
-            "https://www.google.com/s2/favicons?domain=dp.example.com&sz=64",
-            timeout=10
-        )
+        mock_get_favicon.assert_called_once_with("https://dp.example.com/store/123")
 
-    @patch('gfwfbn.views.requests.get')
-    def test_donationpoint_favicon_404_on_fetch_failure(self, mock_requests_get, client, create_test_foodbank):
+    @patch('gfwfbn.views.get_favicon')
+    def test_donationpoint_favicon_404_on_fetch_failure(self, mock_get_favicon, client, create_test_foodbank):
         """Test that a failed favicon fetch returns 404."""
-        mock_response = Mock()
-        mock_response.status_code = 500
-        mock_requests_get.return_value = mock_response
+        mock_get_favicon.return_value = None
 
         foodbank = create_test_foodbank(name="DP Favicon Test FB 3", slug="dp-favicon-test-fb-3")
         donationpoint = FoodbankDonationPoint(
