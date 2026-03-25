@@ -19,7 +19,7 @@ from givefood.const.item_types import ITEM_CATEGORIES_CHOICES
 
 from givefood.models import CharityYear, Foodbank, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, MobileSubscriber, ParliamentaryConstituency, FoodbankChange, FoodbankSubscriber, FoodbankArticle, Place
 from givefood.utils.cache import get_all_constituencies, get_cred
-from givefood.utils.general import get_screenshot, validate_turnstile
+from givefood.utils.general import get_favicon, get_screenshot, validate_turnstile
 from givefood.utils.geo import admin_regions_from_postcode, find_donationpoints, find_locations, find_locations_by_category, geocode, is_uk, photo_from_place_id
 from givefood.utils.notifications import send_email
 from givefood.utils.text import get_user_ip
@@ -512,15 +512,12 @@ def foodbank_favicon(request, slug):
     if not foodbank.url:
         return HttpResponseNotFound()
 
-    domain = urlparse(foodbank.url).netloc
+    favicon = get_favicon(foodbank.url)
 
-    favicon_url = "https://www.google.com/s2/favicons?domain=%s&sz=64" % (domain)
-    response = requests.get(favicon_url, timeout=10)
-
-    if response.status_code != 200:
+    if not favicon:
         return HttpResponseNotFound()
 
-    return HttpResponse(response.content, content_type='image/png')
+    return HttpResponse(favicon, content_type='image/png')
 
 
 @cache_page(SECONDS_IN_WEEK)
@@ -1021,6 +1018,26 @@ def foodbank_donationpoint_photo(request, slug, dpslug):
     photo = photo_from_place_id(donationpoint.place_id, size)
     
     return HttpResponse(photo, content_type='image/jpeg')
+
+
+@cache_page(SECONDS_IN_WEEK)
+def foodbank_donationpoint_favicon(request, slug, dpslug):
+    """
+    Food bank donation point favicon PNG
+    """
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+    donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
+
+    if not donationpoint.url:
+        return HttpResponseNotFound()
+
+    favicon = get_favicon(donationpoint.url)
+
+    if not favicon:
+        return HttpResponseNotFound()
+
+    return HttpResponse(favicon, content_type='image/png')
 
 
 @cache_page(SECONDS_IN_WEEK)

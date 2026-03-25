@@ -3,6 +3,7 @@
 
 import urllib
 import logging
+from urllib.parse import urlparse
 
 import requests
 from django_tasks import task
@@ -54,6 +55,18 @@ def get_screenshot(url, width=1280, height=1280):
         return False
     else:
         return response.content
+
+
+def get_favicon(url):
+    """Fetch a favicon PNG for the given URL via Google's favicon service. Returns image bytes or None."""
+    if not url:
+        return None
+    domain = urlparse(url).netloc
+    favicon_url = "https://www.google.com/s2/favicons?domain=%s&sz=64" % (domain)
+    response = requests.get(favicon_url, timeout=10)
+    if response.status_code != 200:
+        return None
+    return response.content
 
 
 def get_translation(language, text, source="en"):

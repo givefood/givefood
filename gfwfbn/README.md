@@ -85,6 +85,7 @@ This is Give Food's primary public-facing application that helps people find foo
 - `/needs/at/<slug>/<locslug>/map.png` - Static map of a location
 - `/needs/at/<slug>/<locslug>/photo.jpg` - Location photo
 - `/needs/at/<slug>/donationpoint/<dpslug>/photo.jpg` - Donation point photo
+- `/needs/at/<slug>/donationpoint/<dpslug>/favicon.png` - Donation point website favicon
 - `/needs/at/<slug>/donationpoint/<dpslug>/openinghours/` - Opening hours table
 
 ### Analytics
