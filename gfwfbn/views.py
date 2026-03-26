@@ -25,6 +25,11 @@ from givefood.utils.notifications import send_email
 from givefood.utils.text import get_user_ip
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_WEEK
 from django.db.models import Sum
+from django.conf import settings
+
+DEFAULT_FAVICON_PATH = os.path.join(settings.STATIC_ROOT, "img", "default_favicon.png")
+with open(DEFAULT_FAVICON_PATH, "rb") as _f:
+    DEFAULT_FAVICON = _f.read()
 
 
 def fix_base64_padding(s):
@@ -509,13 +514,12 @@ def foodbank_favicon(request, slug):
 
     foodbank = get_object_or_404(Foodbank, slug = slug)
 
-    if not foodbank.url:
-        return HttpResponseNotFound()
-
-    favicon = get_favicon(foodbank.url)
+    favicon = None
+    if foodbank.url:
+        favicon = get_favicon(foodbank.url)
 
     if not favicon:
-        return HttpResponseNotFound()
+        favicon = DEFAULT_FAVICON
 
     return HttpResponse(favicon, content_type='image/png')
 
@@ -1029,13 +1033,12 @@ def foodbank_donationpoint_favicon(request, slug, dpslug):
     foodbank = get_object_or_404(Foodbank, slug = slug)
     donationpoint = get_object_or_404(FoodbankDonationPoint, slug = dpslug, foodbank = foodbank)
 
-    if not donationpoint.url:
-        return HttpResponseNotFound()
-
-    favicon = get_favicon(donationpoint.url)
+    favicon = None
+    if donationpoint.url:
+        favicon = get_favicon(donationpoint.url)
 
     if not favicon:
-        return HttpResponseNotFound()
+        favicon = DEFAULT_FAVICON
 
     return HttpResponse(favicon, content_type='image/png')
 
