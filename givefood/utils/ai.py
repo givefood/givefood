@@ -57,7 +57,18 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
             contents = [prompt],
             config = config,
         )
-    return response.parsed
+    if response.parsed is not None:
+        return response.parsed
+
+    # When no response_schema is provided, the SDK doesn't populate parsed.
+    # Fall back to parsing response.text.
+    text = response.text
+    if text is not None and response_mime_type == "application/json":
+        try:
+            return json.loads(text)
+        except (json.JSONDecodeError, TypeError):
+            return text.strip()
+    return text.strip() if text else text
 
 
 def mistral(prompt, temperature, response_format = "json_object", model = "open-mistral-nemo"):

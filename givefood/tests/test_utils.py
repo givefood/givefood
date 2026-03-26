@@ -639,6 +639,73 @@ class TestMistral:
         assert result == "Plain text response"
 
 
+class TestGemini:
+    """Test gemini utility function."""
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_returns_parsed_when_available(self, mock_genai, mock_cred):
+        """Test that gemini returns response.parsed when it is not None."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = [{"name": "Pasta", "quantity": 2}]
+        mock_client.models.generate_content.return_value = mock_response
+
+        result = gemini("test prompt", 0.5, response_schema={"type": "array"})
+        assert result == [{"name": "Pasta", "quantity": 2}]
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_falls_back_to_text_json_parsing(self, mock_genai, mock_cred):
+        """Test that gemini parses response.text as JSON when parsed is None."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = None
+        mock_response.text = '"Pasta"'
+        mock_client.models.generate_content.return_value = mock_response
+
+        result = gemini("test prompt", 0.1)
+        assert result == "Pasta"
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_strips_text_on_json_decode_error(self, mock_genai, mock_cred):
+        """Test that gemini strips and returns text when JSON decode fails."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = None
+        mock_response.text = "Pasta\n"
+        mock_client.models.generate_content.return_value = mock_response
+
+        result = gemini("test prompt", 0.1)
+        assert result == "Pasta"
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_returns_none_when_text_is_none(self, mock_genai, mock_cred):
+        """Test that gemini returns None when both parsed and text are None."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = None
+        mock_response.text = None
+        mock_client.models.generate_content.return_value = mock_response
+
+        result = gemini("test prompt", 0.1)
+        assert result is None
+
+
 class TestOpenrouter:
     """Test openrouter utility function."""
 
