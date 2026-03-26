@@ -470,6 +470,61 @@ def heatmap(request):
 
 
 @cache_page(SECONDS_IN_HOUR)
+def price_per_item_category(request):
+
+    MIN_ITEMS_FOR_CATEGORY = 100
+
+    # Get all categories with their total item counts
+    all_categories = OrderLine.objects.values(
+        'category'
+    ).annotate(
+        total_count=Count('id')
+    ).filter(
+        total_count__gte=MIN_ITEMS_FOR_CATEGORY
+    ).order_by('-total_count')
+
+    category_names = [c['category'] for c in all_categories]
+
+    # Get monthly price-per-item data for all qualifying categories
+    category_months = OrderLine.objects.filter(
+        category__in=category_names
+    ).annotate(
+        month=TruncMonth('delivery_date'),
+        year=TruncYear('delivery_date')
+    ).values(
+        'month',
+        'year',
+        'category'
+    ).annotate(
+        total_cost=Sum('line_cost'),
+        total_items=Count('id'),
+        price_per_item=Sum('line_cost') / Count('id'),
+    ).order_by('month', 'category')
+
+    # Organize data by category
+    categories_data = {}
+    for row in category_months:
+        cat = row['category']
+        if cat not in categories_data:
+            categories_data[cat] = []
+        categories_data[cat].append({
+            'year': row['year'].year,
+            'month': row['month'].month,
+            'price_per_item': row['price_per_item'],
+        })
+
+    # Build JSON data for the template
+    categories_json = json.dumps(categories_data)
+
+    template_vars = {
+        "categories_data": categories_json,
+        "category_names": category_names,
+        "min_items": MIN_ITEMS_FOR_CATEGORY,
+    }
+    return render(request, "dash/price_per_item_category.html", template_vars)
+
+
+@cache_page(SECONDS_IN_HOUR)
 def price_per_calorie(request):
 
     months = OrderLine.objects.filter(

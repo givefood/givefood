@@ -1,0 +1,146 @@
+{% extends "public/page.html" %}
+{% load humanize %}
+
+{% block title %}Price Per Item Category - Give Food{% endblock %}
+
+{% block body %}
+
+    <div class="columns">
+      <div class="column">
+          <a href="{% url 'index' %}" class="logo"><img src="/static/img/logo.svg" alt="Give Food"></a>
+      </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'dash:index' %}">Dashboards</a></li>
+                <li class="is-active"><a href="{% url 'dash:price_per_item_category' %}" aria-current="page">Price Per Item Category</a></li>
+            </ul>
+            </nav>
+        </div>
+    </div>
+
+  <div class="columns">
+
+    <div class="column is-three-quarters">
+      <h1>Price Per Item Category</h1>
+      <p>Average price per item (in pence) by item category over time. Categories with more than {{ min_items }} items are shown. Select categories to compare using the checkboxes.</p>
+      <div id="chart" style="height:500px"></div>
+    </div>
+
+    <div class="column is-one-quarter">
+      <h2 class="is-size-5">Categories</h2>
+      <div id="category-checkboxes">
+        {% for cat in category_names %}
+          <label class="checkbox" style="display:block;margin-bottom:4px;">
+            <input type="checkbox" value="{{ cat }}" {% if cat == "Baked Beans" %}checked{% endif %}> {{ cat }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div><br><br>
+
+  <script src="/static/js/echarts.js"></script>
+  <script src="/static/js/chart-colors.js"></script>
+
+  <script>
+    var chartDom = document.getElementById('chart');
+    var myChart = echarts.init(chartDom);
+    var categoriesData = {{ categories_data|safe }};
+
+    function getSelectedCategories() {
+      var checkboxes = document.querySelectorAll('#category-checkboxes input[type=checkbox]');
+      var selected = [];
+      checkboxes.forEach(function(cb) {
+        if (cb.checked) selected.push(cb.value);
+      });
+      return selected;
+    }
+
+    function updateHash(selected) {
+      window.location.hash = selected.join(',');
+    }
+
+    function loadFromHash() {
+      var hash = window.location.hash.replace('#', '');
+      if (hash) {
+        var cats = hash.split(',').map(function(c) { return decodeURIComponent(c); });
+        var checkboxes = document.querySelectorAll('#category-checkboxes input[type=checkbox]');
+        checkboxes.forEach(function(cb) {
+          cb.checked = cats.indexOf(cb.value) !== -1;
+        });
+      }
+    }
+
+    function updateChart() {
+      var selected = getSelectedCategories();
+      updateHash(selected);
+
+      var series = [];
+      var colorIndex = 0;
+
+      selected.forEach(function(cat) {
+        var data = categoriesData[cat];
+        if (!data) return;
+        var points = data.map(function(d) {
+          return [new Date(d.year, d.month - 1, 1), d.price_per_item];
+        });
+        series.push({
+          name: cat,
+          type: 'line',
+          stack: 'price',
+          areaStyle: {},
+          emphasis: { focus: 'series' },
+          data: points
+        });
+        colorIndex++;
+      });
+
+      var option = {
+        color: gfChartColors,
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: { type: 'cross' }
+        },
+        legend: {
+          data: selected,
+          top: '0%'
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          top: '15%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'time'
+        },
+        yAxis: {
+          type: 'value',
+          name: 'Price per item (pence)'
+        },
+        series: series
+      };
+
+      myChart.setOption(option, true);
+    }
+
+    // Load categories from hash on page load
+    loadFromHash();
+
+    // Attach change listeners
+    var checkboxes = document.querySelectorAll('#category-checkboxes input[type=checkbox]');
+    checkboxes.forEach(function(cb) {
+      cb.addEventListener('change', updateChart);
+    });
+
+    // Initial render
+    updateChart();
+  </script>
+
+{% endblock %}

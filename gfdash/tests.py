@@ -212,6 +212,22 @@ class TestPricePerCalorie:
 
 
 @pytest.mark.django_db
+class TestPricePerItemCategory:
+    """Test the price per item category dashboard page."""
+
+    def test_price_per_item_category_accessible(self, client):
+        """Test that the price per item category page is accessible."""
+        response = client.get('/dashboard/price-per/item-category/')
+        assert response.status_code == 200
+
+    def test_price_per_item_category_has_correct_template(self, client):
+        """Test that the page uses the correct template."""
+        response = client.get('/dashboard/price-per/item-category/')
+        content = response.content.decode('utf-8')
+        assert 'Price Per Item Category' in content
+
+
+@pytest.mark.django_db
 class TestHeatmap:
     """Test the heatmap dashboard page."""
 
