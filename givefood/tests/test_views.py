@@ -43,6 +43,13 @@ class TestStaticPages:
         # Should either exist or redirect
         assert response.status_code in [200, 301, 302]
 
+    def test_news_page(self, client):
+        """Test that the news page is accessible."""
+        response = client.get('/news/')
+        assert response.status_code == 200
+        content = response.content.decode('utf-8')
+        assert 'News' in content
+
 
 @pytest.mark.django_db
 class TestTestPages:
