@@ -1644,7 +1644,8 @@ class OrderLine(models.Model):
 
     def save(self, *args, **kwargs):
         self.delivery_date = self.order.delivery_date
-        self.item_cost = self.line_cost // self.quantity
+        if self.quantity:
+            self.item_cost = self.line_cost // self.quantity
         if not self.category:
             try:
                 prev_line = OrderLine.objects.filter(name=self.name).exclude(category="").latest("id")
