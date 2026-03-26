@@ -596,6 +596,18 @@ def managed_donation_items(request, slug, key):
     return render(request, "public/managed_donation_items.html", template_vars)
 
 
+@cache_page(SECONDS_IN_DAY)
+def news(request):
+    """
+    News page showing the last 100 food bank articles
+    """
+    articles = FoodbankArticle.objects.select_related('foodbank').order_by('-published_date')[:100]
+    template_vars = {
+        "articles":articles,
+    }
+    return render(request, "public/news.html", template_vars)
+
+
 @cache_page(SECONDS_IN_WEEK)
 def about_us(request):
     """

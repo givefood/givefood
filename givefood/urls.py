@@ -26,6 +26,7 @@ urlpatterns += i18n_patterns(
     path("apps/", givefood.views.apps, name="apps"),
     path("frag/<slug:frag>/", givefood.views.frag, name="frag"),
     path("human/", givefood.views.human, name="human"),
+    path("news/", givefood.views.news, name="news"),
     path("flag/", givefood.views.flag, name="flag"),
     
     # Country pages - must be before generic slug patterns
