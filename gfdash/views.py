@@ -494,7 +494,7 @@ def price_per_item_category(request):
         'month',
         'category'
     ).annotate(
-        price_per_item=Sum('line_cost') / Count('id'),
+        price_per_item=Sum('item_cost') / Count('id'),
     ).order_by('month', 'category')
 
     # Collect all unique months and organize data by category
