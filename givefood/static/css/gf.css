@@ -76,11 +76,11 @@ label, strong, b, h3 {
 .favicon {
     width:16px;
     height:16px;
-    margin-right:2px;
+    margin-right:3px;
     vertical-align:middle;
 }
 .news-page .foodbank-news li {
-    margin-bottom:10px;
+    margin-bottom:6px;
 }
 /* Buttons */
 .button {
