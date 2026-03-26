@@ -1646,7 +1646,7 @@ class OrderLine(models.Model):
         self.delivery_date = self.order.delivery_date
         if not self.category:
             try:
-                prev_need_line = FoodbankChangeLine.objects.filter(item=self.name).latest("created")
+                prev_need_line = FoodbankChangeLine.objects.filter(item=self.name).exclude(category="").latest("created")
                 self.category = prev_need_line.category
             except FoodbankChangeLine.DoesNotExist:
                 prompt = render_to_string(
@@ -1665,7 +1665,7 @@ class OrderLine(models.Model):
                 else:
                     self.category = "Other"
         if not self.group:
-            self.group = ITEM_CATEGORY_GROUPS[self.category]
+            self.group = ITEM_CATEGORY_GROUPS.get(self.category, "Other")
         super(OrderLine, self).save(*args, **kwargs)
 
     def weight_kg(self):
