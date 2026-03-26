@@ -73,6 +73,12 @@ label, strong, b, h3 {
     margin:-3px 2px 0 0;
     border:1px solid #3B3B3B;
 }
+.favicon {
+    width:16px;
+    height:16px;
+    margin-right:5px;
+    vertical-align:middle;
+}
 /* Buttons */
 .button {
     border-radius:3px;
