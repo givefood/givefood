@@ -490,14 +490,10 @@ def price_per_item_category(request):
         category__in=category_names
     ).annotate(
         month=TruncMonth('delivery_date'),
-        year=TruncYear('delivery_date')
     ).values(
         'month',
-        'year',
         'category'
     ).annotate(
-        total_cost=Sum('line_cost'),
-        total_items=Count('id'),
         price_per_item=Sum('line_cost') / Count('id'),
     ).order_by('month', 'category')
 
@@ -508,7 +504,7 @@ def price_per_item_category(request):
         if cat not in categories_data:
             categories_data[cat] = []
         categories_data[cat].append({
-            'year': row['year'].year,
+            'year': row['month'].year,
             'month': row['month'].month,
             'price_per_item': row['price_per_item'],
         })

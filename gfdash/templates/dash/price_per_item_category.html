@@ -81,7 +81,6 @@
       updateHash(selected);
 
       var series = [];
-      var colorIndex = 0;
 
       selected.forEach(function(cat) {
         var data = categoriesData[cat];
@@ -97,7 +96,6 @@
           emphasis: { focus: 'series' },
           data: points
         });
-        colorIndex++;
       });
 
       var option = {
