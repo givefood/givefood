@@ -29,7 +29,7 @@ import requests
 from givefood.settings import LANGUAGES, LANGUAGES_SKIP_TRANSLATE
 
 from givefood.const.general import DELIVERY_HOURS_CHOICES, COUNTRIES_CHOICES, DELIVERY_PROVIDER_CHOICES, DISCREPANCY_STATUS_CHOICES, DISCREPANCY_TYPES_CHOICES, FOODBANK_NETWORK_CHOICES, PACKAGING_WEIGHT_PC, QUERYSTRING_RUBBISH, TRUSSELL_TRUST_SCHEMA, IFAN_SCHEMA, NEED_INPUT_TYPES_CHOICES, DONT_APPEND_FOOD_BANK, POSTCODE_REGEX, NEED_LINE_TYPES_CHOICES, DONATION_POINT_COMPANIES_CHOICES, DAYS_OF_WEEK, SITE_DOMAIN, CRAWL_TYPE_ICONS, CRAWL_TYPE_ICON_DEFAULT
-from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORY_GROUPS
+from givefood.const.item_types import ITEM_GROUPS_CHOICES, ITEM_CATEGORIES_CHOICES, ITEM_CATEGORIES, ITEM_CATEGORY_GROUPS
 from givefood.utils.cache import decache_async, get_cred
 from givefood.utils.ai import gemini
 from givefood.utils.general import translate_need_async
@@ -1644,6 +1644,28 @@ class OrderLine(models.Model):
 
     def save(self, *args, **kwargs):
         self.delivery_date = self.order.delivery_date
+        if not self.category:
+            try:
+                prev_need_line = FoodbankChangeLine.objects.filter(item=self.name).latest("created")
+                self.category = prev_need_line.category
+            except FoodbankChangeLine.DoesNotExist:
+                prompt = render_to_string(
+                    "categorisation_prompt.txt",
+                    {
+                        "item": self.name,
+                        "item_categories": ITEM_CATEGORIES,
+                    }
+                )
+                ai_response = gemini(
+                    prompt=prompt,
+                    temperature=0.1,
+                )
+                if ai_response in ITEM_CATEGORIES:
+                    self.category = ai_response
+                else:
+                    self.category = "Other"
+        if not self.group:
+            self.group = ITEM_CATEGORY_GROUPS[self.category]
         super(OrderLine, self).save(*args, **kwargs)
 
     def weight_kg(self):

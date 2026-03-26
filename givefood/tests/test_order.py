@@ -1,7 +1,8 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from datetime import date
-from givefood.models import Foodbank, Order, OrderGroup, OrderLine
+from givefood.models import Foodbank, FoodbankChange, FoodbankChangeLine, Order, OrderGroup, OrderLine
+from givefood.const.item_types import ITEM_CATEGORY_GROUPS
 
 
 @pytest.mark.django_db
@@ -347,3 +348,148 @@ class TestNullableFoodbank:
         assert order1.id != order2.id
         # Verify they have different order_ids (because timestamps differ)
         assert order1.order_id != order2.order_id
+
+
+@pytest.mark.django_db
+class TestOrderLineCategorisation:
+    """Test that OrderLine.save() sets category and group."""
+
+    def _create_foodbank(self, name="Test Food Bank", slug="test-food-bank"):
+        foodbank = Foodbank(
+            name=name,
+            slug=slug,
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+            contact_email="test@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        return foodbank
+
+    def _create_order(self, foodbank, mock_gemini):
+        mock_gemini.return_value = []
+        order = Order(
+            foodbank=foodbank,
+            items_text="Test items",
+            delivery_date=date.today(),
+            delivery_hour=10,
+        )
+        order.save(do_foodbank_save=False)
+        return order
+
+    @patch('givefood.models.gemini')
+    def test_uses_gemini_when_no_previous_categorisation(self, mock_gemini):
+        """Test that Gemini is called when the item name has no previous categorisation."""
+        foodbank = self._create_foodbank()
+        order = self._create_order(foodbank, mock_gemini)
+
+        mock_gemini.reset_mock()
+        mock_gemini.return_value = "Pasta"
+
+        order_line = OrderLine(
+            order=order,
+            name="Fusilli Pasta 500g",
+            quantity=2,
+            item_cost=100,
+            line_cost=200,
+            weight=1000,
+            calories=0,
+        )
+        order_line.save()
+
+        assert order_line.category == "Pasta"
+        assert order_line.group == ITEM_CATEGORY_GROUPS["Pasta"]
+        mock_gemini.assert_called_once()
+
+    @patch('givefood.models.gemini')
+    def test_uses_existing_foodbank_change_line_category(self, mock_gemini):
+        """Test that existing FoodbankChangeLine category is used instead of Gemini."""
+        foodbank = self._create_foodbank(name="Test FB Cat", slug="test-fb-cat")
+        order = self._create_order(foodbank, mock_gemini)
+
+        # Create a FoodbankChange and FoodbankChangeLine with a known category
+        need = FoodbankChange(
+            foodbank=foodbank,
+            uri="https://test.example.com",
+            change_text="Baked Beans",
+            published=True,
+        )
+        need.save(do_translate=False, do_foodbank_save=False)
+        change_line = FoodbankChangeLine(
+            need=need,
+            item="Baked Beans 400g",
+            type="need",
+            category="Baked Beans",
+        )
+        change_line.save()
+
+        mock_gemini.reset_mock()
+
+        order_line = OrderLine(
+            order=order,
+            name="Baked Beans 400g",
+            quantity=1,
+            item_cost=50,
+            line_cost=50,
+            weight=400,
+            calories=0,
+        )
+        order_line.save()
+
+        assert order_line.category == "Baked Beans"
+        assert order_line.group == ITEM_CATEGORY_GROUPS["Baked Beans"]
+        mock_gemini.assert_not_called()
+
+    @patch('givefood.models.gemini')
+    def test_defaults_to_other_when_gemini_returns_invalid(self, mock_gemini):
+        """Test that category defaults to 'Other' when Gemini returns an invalid category."""
+        foodbank = self._create_foodbank(name="Test FB Inv", slug="test-fb-inv")
+        order = self._create_order(foodbank, mock_gemini)
+
+        mock_gemini.reset_mock()
+        mock_gemini.return_value = "InvalidCategory"
+
+        order_line = OrderLine(
+            order=order,
+            name="Unknown Item XYZ",
+            quantity=1,
+            item_cost=100,
+            line_cost=100,
+            weight=500,
+            calories=0,
+        )
+        order_line.save()
+
+        assert order_line.category == "Other"
+        assert order_line.group == ITEM_CATEGORY_GROUPS["Other"]
+
+    @patch('givefood.models.gemini')
+    def test_does_not_overwrite_existing_category(self, mock_gemini):
+        """Test that an already-set category is not overwritten."""
+        foodbank = self._create_foodbank(name="Test FB Pre", slug="test-fb-pre")
+        order = self._create_order(foodbank, mock_gemini)
+
+        mock_gemini.reset_mock()
+
+        order_line = OrderLine(
+            order=order,
+            name="Some Item",
+            quantity=1,
+            item_cost=100,
+            line_cost=100,
+            weight=500,
+            calories=0,
+            category="Rice",
+            group="Meal Food",
+        )
+        order_line.save()
+
+        assert order_line.category == "Rice"
+        assert order_line.group == "Meal Food"
+        mock_gemini.assert_not_called()
