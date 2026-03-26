@@ -25,7 +25,6 @@ from givefood.const.general import BOT_USER_AGENT, SITE_DOMAIN, PLACES_PER_SITEM
 from givefood.const.cache_times import (
     SECONDS_IN_DAY,
     SECONDS_IN_HOUR,
-    SECONDS_IN_TWO_MINUTES,
     SECONDS_IN_WEEK
 )
 from givefood.settings import LANGUAGES
