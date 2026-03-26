@@ -1646,24 +1646,28 @@ class OrderLine(models.Model):
         self.delivery_date = self.order.delivery_date
         if not self.category:
             try:
-                prev_line = OrderLine.objects.filter(name=self.name).exclude(category__isnull=True).latest("id")
+                prev_line = OrderLine.objects.filter(name=self.name).exclude(category="").latest("id")
                 self.category = prev_line.category
             except OrderLine.DoesNotExist:
-                prompt = render_to_string(
-                    "categorisation_prompt.txt",
-                    {
-                        "item": self.name,
-                        "item_categories": ITEM_CATEGORIES,
-                    }
-                )
-                ai_response = gemini(
-                    prompt=prompt,
-                    temperature=0.1,
-                )
-                if ai_response in ITEM_CATEGORIES:
-                    self.category = ai_response
-                else:
-                    self.category = "Other"
+                try:
+                    prev_need_line = FoodbankChangeLine.objects.filter(item=self.name).exclude(category="").latest("created")
+                    self.category = prev_need_line.category
+                except FoodbankChangeLine.DoesNotExist:
+                    prompt = render_to_string(
+                        "categorisation_prompt.txt",
+                        {
+                            "item": self.name,
+                            "item_categories": ITEM_CATEGORIES,
+                        }
+                    )
+                    ai_response = gemini(
+                        prompt=prompt,
+                        temperature=0.1,
+                    )
+                    if ai_response in ITEM_CATEGORIES:
+                        self.category = ai_response
+                    else:
+                        self.category = "Other"
             if not self.group:
                 self.group = ITEM_CATEGORY_GROUPS.get(self.category, "Other")
         super(OrderLine, self).save(*args, **kwargs)
