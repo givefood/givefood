@@ -493,3 +493,81 @@ class TestOrderLineCategorisation:
         assert order_line.category == "Rice"
         assert order_line.group == "Meal Food"
         mock_gemini.assert_not_called()
+
+
+@pytest.mark.django_db
+class TestOrderLineItemCost:
+    """Test that OrderLine.save() always sets item_cost = line_cost // quantity."""
+
+    def _create_foodbank(self):
+        foodbank = Foodbank(
+            name="Test FB Cost",
+            slug="test-fb-cost",
+            address="Test Address",
+            postcode="SW1A 1AA",
+            country="England",
+            lat_lng="51.5014,-0.1419",
+            latitude=51.5014,
+            longitude=-0.1419,
+            network="Independent",
+            url="https://test.example.com",
+            shopping_list_url="https://test.example.com/shopping",
+            contact_email="test@example.com",
+        )
+        foodbank.save(do_geoupdate=False, do_decache=False)
+        return foodbank
+
+    def _create_order(self, foodbank, mock_gemini):
+        mock_gemini.return_value = []
+        order = Order(
+            foodbank=foodbank,
+            items_text="Test items",
+            delivery_date=date.today(),
+            delivery_hour=10,
+        )
+        order.save(do_foodbank_save=False)
+        return order
+
+    @patch('givefood.models.gemini')
+    def test_item_cost_corrected_on_save(self, mock_gemini):
+        """Test that item_cost is recalculated as line_cost // quantity on save."""
+        foodbank = self._create_foodbank()
+        order = self._create_order(foodbank, mock_gemini)
+
+        mock_gemini.reset_mock()
+        mock_gemini.return_value = "Other"
+
+        order_line = OrderLine(
+            order=order,
+            name="Test Item 500g",
+            quantity=5,
+            item_cost=275,
+            line_cost=275,
+            weight=2500,
+            calories=0,
+        )
+        order_line.save()
+
+        assert order_line.item_cost == 55
+
+    @patch('givefood.models.gemini')
+    def test_item_cost_unchanged_when_correct(self, mock_gemini):
+        """Test that item_cost stays the same when it already equals line_cost // quantity."""
+        foodbank = self._create_foodbank()
+        order = self._create_order(foodbank, mock_gemini)
+
+        mock_gemini.reset_mock()
+        mock_gemini.return_value = "Other"
+
+        order_line = OrderLine(
+            order=order,
+            name="Test Item 400g",
+            quantity=9,
+            item_cost=52,
+            line_cost=468,
+            weight=3600,
+            calories=0,
+        )
+        order_line.save()
+
+        assert order_line.item_cost == 52
