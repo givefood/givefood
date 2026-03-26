@@ -1993,15 +1993,27 @@ class TestFoodbankFavicon:
         mock_get_favicon.assert_called_once_with("https://test.example.com")
 
     @patch('gfwfbn.views.get_favicon')
-    def test_foodbank_favicon_404_on_fetch_failure(self, mock_get_favicon, client, create_test_foodbank):
-        """Test that a failed favicon fetch returns 404."""
+    def test_foodbank_favicon_returns_default_on_fetch_failure(self, mock_get_favicon, client, create_test_foodbank):
+        """Test that a failed favicon fetch returns the default favicon."""
         mock_get_favicon.return_value = None
 
         foodbank = create_test_foodbank(name="Favicon Test FB 3", slug="favicon-test-fb-3")
         url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': foodbank.slug})
         response = client.get(url)
 
-        assert response.status_code == 404
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        assert len(response.content) > 0
+
+    def test_foodbank_favicon_returns_default_on_no_url(self, client, create_test_foodbank):
+        """Test that a foodbank without a URL returns the default favicon."""
+        foodbank = create_test_foodbank(name="Favicon Test FB 4", slug="favicon-test-fb-4", url="")
+        url = reverse('wfbn-generic:foodbank_favicon', kwargs={'slug': foodbank.slug})
+        response = client.get(url)
+
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        assert len(response.content) > 0
 
     def test_foodbank_favicon_404_on_invalid_slug(self, client):
         """Test that an invalid slug returns 404."""
@@ -2074,8 +2086,8 @@ class TestDonationPointFavicon:
         mock_get_favicon.assert_called_once_with("https://dp.example.com/store/123")
 
     @patch('gfwfbn.views.get_favicon')
-    def test_donationpoint_favicon_404_on_fetch_failure(self, mock_get_favicon, client, create_test_foodbank):
-        """Test that a failed favicon fetch returns 404."""
+    def test_donationpoint_favicon_returns_default_on_fetch_failure(self, mock_get_favicon, client, create_test_foodbank):
+        """Test that a failed favicon fetch returns the default favicon."""
         mock_get_favicon.return_value = None
 
         foodbank = create_test_foodbank(name="DP Favicon Test FB 3", slug="dp-favicon-test-fb-3")
@@ -2099,10 +2111,12 @@ class TestDonationPointFavicon:
         url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': foodbank.slug, 'dpslug': donationpoint.slug})
         response = client.get(url)
 
-        assert response.status_code == 404
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        assert len(response.content) > 0
 
-    def test_donationpoint_favicon_404_on_no_url(self, client, create_test_foodbank):
-        """Test that a donation point without a URL returns 404."""
+    def test_donationpoint_favicon_returns_default_on_no_url(self, client, create_test_foodbank):
+        """Test that a donation point without a URL returns the default favicon."""
         foodbank = create_test_foodbank(name="DP Favicon Test FB 4", slug="dp-favicon-test-fb-4")
         donationpoint = FoodbankDonationPoint(
             foodbank=foodbank,
@@ -2123,7 +2137,9 @@ class TestDonationPointFavicon:
         url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': foodbank.slug, 'dpslug': donationpoint.slug})
         response = client.get(url)
 
-        assert response.status_code == 404
+        assert response.status_code == 200
+        assert response['Content-Type'] == 'image/png'
+        assert len(response.content) > 0
 
     def test_donationpoint_favicon_404_on_invalid_slugs(self, client):
         """Test that invalid slugs return 404."""
