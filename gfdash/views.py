@@ -470,6 +470,65 @@ def heatmap(request):
 
 
 @cache_page(SECONDS_IN_HOUR)
+def price_per_item_category(request):
+
+    MIN_ITEMS_FOR_CATEGORY = 100
+
+    # Get all categories with their total item counts
+    all_categories = OrderLine.objects.values(
+        'category'
+    ).annotate(
+        total_count=Count('id')
+    ).filter(
+        total_count__gte=MIN_ITEMS_FOR_CATEGORY
+    ).order_by('-total_count')
+
+    category_names = [c['category'] for c in all_categories]
+
+    # Get monthly price-per-item data for all qualifying categories
+    category_months = OrderLine.objects.filter(
+        category__in=category_names
+    ).annotate(
+        month=TruncMonth('delivery_date'),
+    ).values(
+        'month',
+        'category'
+    ).annotate(
+        price_per_item=Sum('line_cost') / Count('id'),
+    ).order_by('month', 'category')
+
+    # Collect all unique months and organize data by category
+    all_months = set()
+    categories_data = {}
+    for row in category_months:
+        cat = row['category']
+        month_key = row['month'].strftime('%Y-%m')
+        all_months.add(month_key)
+        if cat not in categories_data:
+            categories_data[cat] = {}
+        categories_data[cat][month_key] = row['price_per_item']
+
+    # Sort months chronologically
+    all_months_sorted = sorted(all_months)
+
+    # Build aligned data: every category has a value for every month (0 if missing)
+    categories_aligned = {}
+    for cat in categories_data:
+        categories_aligned[cat] = [categories_data[cat].get(m, 0) for m in all_months_sorted]
+
+    categories_json = json.dumps(categories_aligned)
+    months_json = json.dumps(all_months_sorted)
+
+    template_vars = {
+        "categories_data": categories_json,
+        "months_json": months_json,
+        "category_names": category_names,
+        "min_items": MIN_ITEMS_FOR_CATEGORY,
+    }
+    return render(request, "dash/price_per_item_category.html", template_vars)
+
+
+@cache_page(SECONDS_IN_HOUR)
 def price_per_calorie(request):
 
     months = OrderLine.objects.filter(

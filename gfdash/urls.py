@@ -25,6 +25,7 @@ urlpatterns = (
     path("price-per/kg/", price_per_kg, name="price_per_kg"),
     path("heatmap/", heatmap, name="heatmap"),
     path("price-per/calorie/", price_per_calorie, name="price_per_calorie"),
+    path("price-per/item-category/", price_per_item_category, name="price_per_item_category"),
     path("price-per-kg/", RedirectView.as_view(url='/dashboard/price-per/kg/', permanent=True)),
 
 )
