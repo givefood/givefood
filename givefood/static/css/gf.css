@@ -79,6 +79,9 @@ label, strong, b, h3 {
     margin-right:2px;
     vertical-align:middle;
 }
+.news-page .foodbank-news li {
+    margin-bottom:10px;
+}
 /* Buttons */
 .button {
     border-radius:3px;
