@@ -51,6 +51,7 @@
     var chartDom = document.getElementById('chart');
     var myChart = echarts.init(chartDom);
     var categoriesData = {{ categories_data|safe }};
+    var allMonths = {{ months_json|safe }};
 
     function getSelectedCategories() {
       var checkboxes = document.querySelectorAll('#category-checkboxes input[type=checkbox]');
@@ -85,16 +86,13 @@
       selected.forEach(function(cat) {
         var data = categoriesData[cat];
         if (!data) return;
-        var points = data.map(function(d) {
-          return [new Date(d.year, d.month - 1, 1), d.price_per_item];
-        });
         series.push({
           name: cat,
           type: 'line',
           stack: 'price',
           areaStyle: {},
           emphasis: { focus: 'series' },
-          data: points
+          data: data
         });
       });
 
@@ -116,7 +114,12 @@
           containLabel: true
         },
         xAxis: {
-          type: 'time'
+          type: 'category',
+          boundaryGap: false,
+          data: allMonths,
+          axisLabel: {
+            rotate: 45
+          }
         },
         yAxis: {
           type: 'value',
