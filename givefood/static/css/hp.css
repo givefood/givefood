@@ -165,14 +165,14 @@ h1 {
 .how-help-cat {
     padding-bottom:2rem;
 }
-.how-help-cat a svg {
+.how-help-cat a svg, .all-news svg {
     width:10px;
     height:10px;
     stroke:#007BC7;
     stroke-width:1.5;
     margin-left:3px;
 }
-.how-help-cat a:hover svg {
+.how-help-cat a:hover svg, .all-news:hover svg {
     stroke:#363636;
 }
 

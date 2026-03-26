@@ -185,7 +185,7 @@ def index(request):
         .filter(published=True)
         .exclude(change_text__in=exclude_change_text)
         .only('foodbank_name')
-        .order_by("-created")[:10]
+        .order_by("-created")[:8]
     )
 
     # Most viewed food banks
@@ -196,12 +196,17 @@ def index(request):
             foodbankhit__day__lte=date.today()
         )
         .annotate(total_hits=Sum('foodbankhit__hits'))
-        .order_by('-total_hits')[:10]
+        .order_by('-total_hits')[:8]
         .only('name', 'slug')
     )
 
     # Featured articles
-    articles = FoodbankArticle.objects.filter(featured=True).select_related('foodbank').order_by('-published_date')[:5]
+    articles = (
+        FoodbankArticle.objects
+        .filter(featured=True)
+        .select_related('foodbank')
+        .order_by('-published_date')[:5]
+    )
 
     map_config = {
         "geojson":reverse("wfbn:geojson"),
