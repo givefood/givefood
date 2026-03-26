@@ -1637,6 +1637,9 @@ class OrderLine(models.Model):
     weight = models.PositiveIntegerField(editable=False,null=True)
     calories = models.PositiveIntegerField(editable=False,null=True)
 
+    category = models.CharField(max_length=250, choices=ITEM_CATEGORIES_CHOICES, editable=False)
+    group = models.CharField(max_length=250, choices=ITEM_GROUPS_CHOICES, editable=False)
+
     delivery_date = models.DateField(editable=False)
 
     def save(self, *args, **kwargs):
