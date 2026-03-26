@@ -27,7 +27,9 @@ from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_
 from django.db.models import Sum
 from django.conf import settings
 
-DEFAULT_FAVICON_PATH = os.path.join(settings.STATIC_ROOT, "img", "favicon.png")
+DEFAULT_FAVICON_PATH = os.path.join(settings.STATIC_ROOT, "img", "default_favicon.png")
+with open(DEFAULT_FAVICON_PATH, "rb") as _f:
+    DEFAULT_FAVICON = _f.read()
 
 
 def fix_base64_padding(s):
@@ -504,11 +506,6 @@ def foodbank_photo(request, slug):
     return HttpResponse(photo, content_type='image/jpeg')
 
 
-def _default_favicon():
-    with open(DEFAULT_FAVICON_PATH, "rb") as f:
-        return f.read()
-
-
 @cache_page(SECONDS_IN_WEEK)
 def foodbank_favicon(request, slug):
     """
@@ -522,7 +519,7 @@ def foodbank_favicon(request, slug):
         favicon = get_favicon(foodbank.url)
 
     if not favicon:
-        favicon = _default_favicon()
+        favicon = DEFAULT_FAVICON
 
     return HttpResponse(favicon, content_type='image/png')
 
@@ -1041,7 +1038,7 @@ def foodbank_donationpoint_favicon(request, slug, dpslug):
         favicon = get_favicon(donationpoint.url)
 
     if not favicon:
-        favicon = _default_favicon()
+        favicon = DEFAULT_FAVICON
 
     return HttpResponse(favicon, content_type='image/png')
 
