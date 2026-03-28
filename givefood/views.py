@@ -600,7 +600,7 @@ def managed_donation_items(request, slug, key):
     return render(request, "public/managed_donation_items.html", template_vars)
 
 
-@cache_page(SECONDS_IN_DAY)
+@cache_page(SECONDS_IN_HOUR)
 def news(request):
     """
     News page showing the last 100 food bank articles
