@@ -3,7 +3,7 @@
     {% for article in articles %}
         <li>
           <img src="{% url 'wfbn-generic:foodbank_favicon' article.foodbank.slug %}" alt="{{ article.foodbank.name }}" class="favicon"><a href="{{ article.url_with_ref }}">{{ article.title_captialised }}</a>
-          <div class="is-size-7"><a href="{% url 'wfbn:foodbank' article.foodbank.slug %}">{{ article.foodbank.name }}</a> {{ article.published_date|date:"j M" }}</div>
+          <div class="is-size-7"><a href="{% url 'wfbn:foodbank' article.foodbank.slug %}">{{ article.foodbank.name }}</a> {% if show_time %}{{ article.published_date|date:"j M P" }}{% else %}{{ article.published_date|date:"j M" }}{% endif %}</div>
         </li>
     {% endfor %}
 </ul>
