@@ -109,11 +109,6 @@ urlpatterns = (
     path("order-group/<slug:slug>/edit/", order_group_form, name="order_group_edit"),
     path("order-groups/new/", order_group_form, name="order_group_new"),
 
-    path("foodbank-groups/", foodbank_groups, name="foodbank_groups"),
-    path("foodbank-group/<slug:slug>/", foodbank_group, name="foodbank_group"),
-    path("foodbank-group/<slug:slug>/edit/", foodbank_group_form, name="foodbank_group_edit"),
-    path("foodbank-groups/new/", foodbank_group_form, name="foodbank_group_new"),
-
     path("credentials/", credentials, name="credentials"),
     path("credentials/new/", credentials_form, name="credential_new"),
     path("credentials/decache/", credentials_decache, name="credentials_decache"),
