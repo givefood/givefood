@@ -410,7 +410,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         response_mime_type = "application/json",
     )
 
-    if need_response: 
+    if isinstance(need_response, dict): 
         need_text = '\n'.join(need_response["needed"])
         need_text = clean_foodbank_need_text(need_text)
         excess_text = '\n'.join(need_response["excess"])
