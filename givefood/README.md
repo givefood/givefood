@@ -94,7 +94,6 @@ The app contains all core data models used across the entire platform:
 - **FoodbankChange** - Historical record of food bank needs updates
 - **FoodbankChangeLine** - Individual items in a needs update
 - **FoodbankChangeTranslation** - Multilingual translations of needs
-- **FoodbankGroup** - Networks/groupings of food banks
 - **FoodbankDiscrepancy** - Data quality issues flagged for review
 - **FoodbankArticle** - News articles mentioning food banks
 - **FoodbankHit** - Analytics tracking for food bank pages
