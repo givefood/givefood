@@ -2427,10 +2427,12 @@ class Place(models.Model):
         app_label = 'givefood'
         indexes = [
             models.Index(fields=['-population', 'name']),
+            # Optimizes istartswith queries: UPPER(name) LIKE 'PREFIX%'
             models.Index(
                 OpClass(Upper('name'), name='text_pattern_ops'),
                 name='place_name_upper_like',
             ),
+            # Optimizes icontains queries: UPPER(name) LIKE '%SUBSTR%' (requires pg_trgm)
             GinIndex(
                 OpClass(Upper('name'), name='gin_trgm_ops'),
                 name='place_name_upper_trgm',
