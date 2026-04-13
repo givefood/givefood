@@ -57,7 +57,7 @@ dependencies = [
     "openlocationcode",
     "urllib3>=2.6.3",
     "cryptography>=46.0.5",
-    "protobuf>=6.33.5",
+    "protobuf>=7.34.1",
     "pyasn1>=0.6.3",
     "pyjwt>=2.12.0",
     "sqlparse>=0.5.4",
