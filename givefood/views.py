@@ -80,18 +80,6 @@ def index(request):
 
     logos = [
         {
-            "name":"Trussell",
-            "slug":"trussell",
-            "url":"https://www.trussell.org.uk",
-            "format":"svg",
-        },
-        {
-            "name":"The Times",
-            "slug":"thetimes",
-            "url":"https://www.thetimes.co.uk",
-            "format":"png",
-        },
-        {
             "name":"NHS",
             "slug":"nhs",
             "url":"https://www.nhs.uk",
@@ -125,12 +113,6 @@ def index(request):
             "name":"Age UK",
             "slug":"ageuk",
             "url":"https://www.ageuk.org.uk",
-            "format":"svg",
-        },
-        {
-            "name":"Independent Food Aid Network",
-            "slug":"ifan",
-            "url":"https://www.foodaidnetwork.org.uk",
             "format":"svg",
         },
         {
