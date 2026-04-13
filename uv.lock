@@ -435,7 +435,7 @@ requires-dist = [
     { name = "setuptools" },
     { name = "sqlparse", specifier = ">=0.5.4" },
     { name = "unicodecsv" },
-    { name = "urllib3", specifier = ">=2.6.0" },
+    { name = "urllib3", specifier = ">=2.6.3" },
     { name = "whitenoise" },
 ]
 provides-extras = ["dev"]
