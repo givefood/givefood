@@ -20,8 +20,10 @@ from django.utils.translation import get_language
 from django.utils import timezone
 from django.template.loader import render_to_string
 from django.db.models import Max, Min
+from django.db.models.functions import Upper
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.postgres.indexes import GinIndex, OpClass
 
 from requests import PreparedRequest
 import requests
@@ -2425,6 +2427,16 @@ class Place(models.Model):
         app_label = 'givefood'
         indexes = [
             models.Index(fields=['-population', 'name']),
+            # Optimizes istartswith queries: UPPER(name) LIKE 'PREFIX%'
+            models.Index(
+                OpClass(Upper('name'), name='text_pattern_ops'),
+                name='place_name_upper_like',
+            ),
+            # Optimizes icontains queries: UPPER(name) LIKE '%SUBSTR%' (requires pg_trgm)
+            GinIndex(
+                OpClass(Upper('name'), name='gin_trgm_ops'),
+                name='place_name_upper_trgm',
+            ),
         ]
 
 

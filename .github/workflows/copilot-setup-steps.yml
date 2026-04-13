@@ -35,6 +35,7 @@ jobs:
         run: |
           PGPASSWORD=postgres psql -h localhost -U postgres -d givefood_test -c "CREATE EXTENSION IF NOT EXISTS cube;"
           PGPASSWORD=postgres psql -h localhost -U postgres -d givefood_test -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
+          PGPASSWORD=postgres psql -h localhost -U postgres -d givefood_test -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
       - name: Install uv
         uses: astral-sh/setup-uv@v7
       - name: Set up Python
