@@ -45,8 +45,6 @@ Give Food is a registered charity in England & Wales [1188192](https://register-
 ## Contact us
 
 * Email mail@givefood.org.uk
-* Twitter https://twitter.com/GiveFoodCharity
-* Facebook https://www.facebook.com/GiveFoodOrgUK
 
 # Local development
 
