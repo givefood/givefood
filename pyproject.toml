@@ -50,7 +50,7 @@ dependencies = [
     "setuptools",
     "pyyaml",
     "sentry-sdk[django]",
-    "django-tasks>=0.10.0",
+    "django-tasks>=0.12.0",
     "firebase-admin",
     "django-webpush==0.3.6",
     "pywebpush==1.14.1",
@@ -61,7 +61,7 @@ dependencies = [
     "pyasn1>=0.6.3",
     "pyjwt>=2.12.0",
     "sqlparse>=0.5.4",
-    "pytest>=8.4.2",
+    "pytest>=9.0.3",
     "pytest-django>=4.11.1",
     "pytest-html>=4.1.1",
 ]
