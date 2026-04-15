@@ -51,6 +51,7 @@ dependencies = [
     "pyyaml",
     "sentry-sdk[django]",
     "django-tasks>=0.12.0",
+    "django-tasks-db>=0.12.0",
     "firebase-admin",
     "django-webpush==0.3.6",
     "pywebpush==1.14.1",

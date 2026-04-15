@@ -39,9 +39,9 @@ jobs:
 
     - name: Install PostgreSQL extensions
       run: |
-        PGPASSWORD=postgres psql -h localhost -U postgres -d givefood_test -c "CREATE EXTENSION IF NOT EXISTS cube;"
-        PGPASSWORD=postgres psql -h localhost -U postgres -d givefood_test -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
-        PGPASSWORD=postgres psql -h localhost -U postgres -d givefood_test -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
+        PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c "CREATE EXTENSION IF NOT EXISTS cube;"
+        PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
+        PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
     
     - name: Set up Python 3.12.3
       uses: actions/setup-python@v5
