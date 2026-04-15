@@ -68,7 +68,7 @@ INSTALLED_APPS = [
 
     "bulma",
     "django_tasks",
-    "django_tasks.backends.database",
+    "django_tasks_db",
     "webpush",
 
     "gfadmin",
@@ -103,7 +103,7 @@ MIDDLEWARE = [
 
 TASKS = {
     "default": {
-        "BACKEND": "django_tasks.backends.database.DatabaseBackend",
+        "BACKEND": "django_tasks_db.DatabaseBackend",
         "QUEUES": [],
     }
 }

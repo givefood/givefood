@@ -1,7 +1,7 @@
 """Tests for the admin frag endpoint."""
 import pytest
 from django.urls import reverse
-from django_tasks.backends.database.models import DBTaskResult
+from django_tasks_db.models import DBTaskResult
 from django_tasks.base import TaskResultStatus
 
 
@@ -32,7 +32,7 @@ class TestFragEndpoint:
         )
         # Create a completed task (should not be counted)
         DBTaskResult.objects.create(
-            status=TaskResultStatus.SUCCEEDED,
+            status=TaskResultStatus.SUCCESSFUL,
             task_path='test_task_3',
             args_kwargs={},
             run_after=None,

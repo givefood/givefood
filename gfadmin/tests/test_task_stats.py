@@ -4,7 +4,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.urls import reverse
 
-from django_tasks.backends.database.models import DBTaskResult
+from django_tasks_db.models import DBTaskResult
 from django_tasks.base import TaskResultStatus
 
 
@@ -13,13 +13,13 @@ class TestTaskStats:
     """Test the task statistics logic on the admin index page."""
 
     def test_tasks_24h_counts_succeeded_tasks(self):
-        """Test that tasks_24h includes SUCCEEDED tasks from the last 24 hours."""
+        """Test that tasks_24h includes SUCCESSFUL tasks from the last 24 hours."""
         now = timezone.now()
         yesterday = now - timedelta(days=1)
         
         # Create a succeeded task within the last 24 hours
         DBTaskResult.objects.create(
-            status=TaskResultStatus.SUCCEEDED,
+            status=TaskResultStatus.SUCCESSFUL,
             task_path='test.task',
             args_kwargs={},
             backend_name='database',
@@ -32,7 +32,7 @@ class TestTaskStats:
         tasks_24h = DBTaskResult.objects.filter(
             finished_at__gte=yesterday
         ).filter(
-            status__in=[TaskResultStatus.SUCCEEDED, TaskResultStatus.FAILED]
+            status__in=[TaskResultStatus.SUCCESSFUL, TaskResultStatus.FAILED]
         ).count()
         
         assert tasks_24h == 1
@@ -59,7 +59,7 @@ class TestTaskStats:
         tasks_24h = DBTaskResult.objects.filter(
             finished_at__gte=yesterday
         ).filter(
-            status__in=[TaskResultStatus.SUCCEEDED, TaskResultStatus.FAILED]
+            status__in=[TaskResultStatus.SUCCESSFUL, TaskResultStatus.FAILED]
         ).count()
         
         assert tasks_24h == 1
@@ -72,7 +72,7 @@ class TestTaskStats:
         
         # Create an old succeeded task (should be excluded)
         DBTaskResult.objects.create(
-            status=TaskResultStatus.SUCCEEDED,
+            status=TaskResultStatus.SUCCESSFUL,
             task_path='test.task',
             args_kwargs={},
             backend_name='database',
@@ -85,7 +85,7 @@ class TestTaskStats:
         tasks_24h = DBTaskResult.objects.filter(
             finished_at__gte=yesterday
         ).filter(
-            status__in=[TaskResultStatus.SUCCEEDED, TaskResultStatus.FAILED]
+            status__in=[TaskResultStatus.SUCCESSFUL, TaskResultStatus.FAILED]
         ).count()
         
         assert tasks_24h == 0
@@ -110,7 +110,7 @@ class TestTaskStats:
         tasks_24h = DBTaskResult.objects.filter(
             finished_at__gte=yesterday
         ).filter(
-            status__in=[TaskResultStatus.SUCCEEDED, TaskResultStatus.FAILED]
+            status__in=[TaskResultStatus.SUCCESSFUL, TaskResultStatus.FAILED]
         ).count()
         
         assert tasks_24h == 0
@@ -142,7 +142,7 @@ class TestTaskStats:
         
         # Create succeeded and failed tasks (should be excluded)
         DBTaskResult.objects.create(
-            status=TaskResultStatus.SUCCEEDED,
+            status=TaskResultStatus.SUCCESSFUL,
             task_path='test.task',
             args_kwargs={},
             backend_name='database',
@@ -223,7 +223,7 @@ class TestTaskStats:
         foodbank.save(do_geoupdate=False, do_decache=False)
         
         DBTaskResult.objects.create(
-            status=TaskResultStatus.SUCCEEDED,
+            status=TaskResultStatus.SUCCESSFUL,
             task_path='test.task',
             args_kwargs={},
             backend_name='database',

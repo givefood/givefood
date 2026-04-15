@@ -34,7 +34,7 @@ from givefood.utils.notifications import post_to_subscriber, send_email, send_fi
 from givefood.utils.text import diff_html, htmlbodytext
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber, PlacePhoto
 from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm, PlaceForm
-from django_tasks.backends.database.models import DBTaskResult
+from django_tasks_db.models import DBTaskResult
 from django_tasks.base import TaskResultStatus
 
 # Constants for subscription display truncation
@@ -73,7 +73,7 @@ def index(request):
     # Task queue stats
     tasks_24h = DBTaskResult.objects.filter(
         finished_at__gte=yesterday,
-        status__in=[TaskResultStatus.SUCCEEDED, TaskResultStatus.FAILED]
+        status__in=[TaskResultStatus.SUCCESSFUL, TaskResultStatus.FAILED]
     ).count()
     
     tasks_outstanding = DBTaskResult.objects.filter(status=TaskResultStatus.READY).count()
