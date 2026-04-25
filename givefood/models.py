@@ -1039,7 +1039,7 @@ class FoodbankDonationPoint(models.Model):
 
     company = models.CharField(max_length=100, null=True, blank=True, choices=DONATION_POINT_COMPANIES_CHOICES)
     company_slug = models.CharField(max_length=100, null=True, blank=True, editable=False)
-    store_id = models.IntegerField(null=True, blank=True, help_text="The company's store ID")
+    store_id = models.CharField(max_length=64, null=True, blank=True, help_text="The company's store ID")
 
     notes = models.TextField(null=True, blank=True, help_text="These notes are public")
 
@@ -1337,13 +1337,13 @@ class FoodbankDonationPoint(models.Model):
         if self.company == "Tesco" and self.url:
             match = re.search(r'stc\*(\d+)', self.url)
             if match:
-                self.store_id = int(match.group(1))
+                self.store_id = match.group(1)
             else:
                 self.store_id = None
         if self.company == "Sainsbury's" and self.url:
             match = re.search(r'/(\d+)/', self.url)
             if match:
-                self.store_id = int(match.group(1))
+                self.store_id = match.group(1)
             else:
                 self.store_id = None
 
@@ -1353,7 +1353,7 @@ class FoodbankDonationPoint(models.Model):
                 page_html = page_request.text
                 match = re.search(r'id":"(\d+)",', page_html)
                 if match:
-                    self.store_id = int(match.group(1))
+                    self.store_id = match.group(1)
                 else:
                     self.store_id = None
 
@@ -1367,7 +1367,7 @@ class FoodbankDonationPoint(models.Model):
         if self.company == "Morrisons" and self.url:
             match = re.search(r'/(\d+)', self.url)
             if match:
-                self.store_id = int(match.group(1))
+                self.store_id = match.group(1)
             else:
                 self.store_id = None
 
