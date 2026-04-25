@@ -978,7 +978,7 @@ class FoodbankLocation(models.Model):
             # Update politics - only if postcode is provided
             if self.postcode:
                 regions = admin_regions_from_postcode(self.postcode)
-                self.country = regions.get("country", None)
+                self.country = regions.get("country", None) or self.foodbank.country
                 self.county = regions.get("county", None)
                 self.ward = regions.get("ward", None)
                 self.district = regions.get("district", None)
@@ -1374,7 +1374,7 @@ class FoodbankDonationPoint(models.Model):
         if do_geoupdate:
             # Update politics
             regions = admin_regions_from_postcode(self.postcode)
-            self.country = regions.get("country", None)
+            self.country = regions.get("country", None) or self.foodbank.country
             self.county = regions.get("county", None)
             self.ward = regions.get("ward", None)
             self.district = regions.get("district", None)
