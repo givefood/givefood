@@ -1,4 +1,4 @@
-<img width="200" alt="Give Food" src="https://github.com/givefood/givefood/assets/763913/0b5033f6-a5be-467a-87e4-79b5c33810af"><br>
+<img width="200" alt="Give Food" src="https://codeberg.org/givefood/givefood/raw/branch/main/givefood/static/img/logo_full.png"><br>
 
 
 The source of https://www.givefood.org.uk - built using Django, hosted at [Mythic Beasts](https://www.mythic-beasts.com/) in Shoreditch, London using [Coolify](https://www.coolify.io/) and fronted by [Cloudflare](https://www.cloudflare.com/).
