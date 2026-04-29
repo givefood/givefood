@@ -61,7 +61,7 @@ Access any language via: {{ domain }}/{language-code}/
 
 - [API Overview]({{ domain }}/api/): Introduction to the public API for accessing food bank data
 - [API v2 Documentation]({{ domain }}/api/2/docs/): Interactive documentation with all endpoints and examples
-- [API Technical Guide](https://github.com/givefood/givefood/blob/main/gfapi2/README.md): Comprehensive technical documentation
+- [API Technical Guide](https://codeberg.org/givefood/givefood/blob/main/gfapi2/README.md): Comprehensive technical documentation
 
 ## API Endpoints (v2)
 
@@ -110,19 +110,19 @@ API endpoints support multiple formats via `?format=` parameter:
 
 ## Source Code & Documentation
 
-- [Main Repository](https://github.com/givefood/givefood): Complete source code for the Give Food platform
-- [Project README](https://github.com/givefood/givefood/blob/main/README.md): Repository overview and architecture
-- [Testing Guide](https://github.com/givefood/givefood/blob/main/TESTING.md): How to run tests and contribute
-- [Development Guidelines](https://github.com/givefood/givefood/blob/main/.github/copilot-instructions.md): Coding conventions and best practices
-- [Languages Documentation](https://github.com/givefood/givefood/blob/main/docs/languages.md): Internationalization and translation info
+- [Main Repository](https://codeberg.org/givefood/givefood): Complete source code for the Give Food platform
+- [Project README](https://codeberg.org/givefood/givefood/blob/main/README.md): Repository overview and architecture
+- [Testing Guide](https://codeberg.org/givefood/givefood/blob/main/TESTING.md): How to run tests and contribute
+- [Development Guidelines](https://codeberg.org/givefood/givefood/blob/main/.github/copilot-instructions.md): Coding conventions and best practices
+- [Languages Documentation](https://codeberg.org/givefood/givefood/blob/main/docs/languages.md): Internationalization and translation info
 
 ## Technical Components
 
-- [Public App](https://github.com/givefood/givefood/blob/main/givefood/README.md): Core framework and public-facing pages
-- [What Food Banks Need](https://github.com/givefood/givefood/blob/main/gfwfbn/README.md): Food bank search tool
-- [Dashboard](https://github.com/givefood/givefood/blob/main/gfdash/README.md): Data visualization components
-- [Write to MP](https://github.com/givefood/givefood/blob/main/gfwrite/README.md): MP contact functionality
-- [API v2](https://github.com/givefood/givefood/blob/main/gfapi2/README.md): Current production API
+- [Public App](https://codeberg.org/givefood/givefood/blob/main/givefood/README.md): Core framework and public-facing pages
+- [What Food Banks Need](https://codeberg.org/givefood/givefood/blob/main/gfwfbn/README.md): Food bank search tool
+- [Dashboard](https://codeberg.org/givefood/givefood/blob/main/gfdash/README.md): Data visualization components
+- [Write to MP](https://codeberg.org/givefood/givefood/blob/main/gfwrite/README.md): MP contact functionality
+- [API v2](https://codeberg.org/givefood/givefood/blob/main/gfapi2/README.md): Current production API
 
 ## Key Features
 
