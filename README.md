@@ -1,3 +1,9 @@
+# This repo has moved
+Moved to https://codeberg.org/givefood/givefood
+
+
+<hr>
+
 <img width="200" alt="Give Food" src="https://github.com/givefood/givefood/assets/763913/0b5033f6-a5be-467a-87e4-79b5c33810af"><br>
 
 
