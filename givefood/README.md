@@ -262,7 +262,7 @@ Uses Django's `@cache_page` decorator with varied cache times:
 ## Technical Requirements
 
 ### Dependencies
-- Django 6.0.2
+- Django (see [pyproject.toml](../pyproject.toml) for current version)
 - PostgreSQL with django-earthdistance
 - Python 3.12
 - Bulma CSS framework via django-bulma

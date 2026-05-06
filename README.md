@@ -23,7 +23,6 @@ The source of https://www.givefood.org.uk - built using Django, hosted at [Mythi
 - [Abbreviations](docs/abbreviations.md)
 - [Languages](docs/languages.md)
 - [Crons](docs/crons.md)
-- [Copilot instructions](/.github/copilot-instructions.md)
 - [Deepwiki repository summary](https://deepwiki.com/givefood/givefood)
 
 ## About Us
