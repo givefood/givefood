@@ -43,8 +43,6 @@
       
       <div id="index-intro">
 
-        {% include 'public/includes/appbadges.html' %}
-
         <ul>
             {% if enable_write %}
               <li><a href="{% url 'write:index' %}">{% trans 'Write to your MP' %}</a>{% if language_code != 'en' %} ({% trans 'English' %}){% endif %}</li>
