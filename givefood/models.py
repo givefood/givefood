@@ -2658,6 +2658,14 @@ class Postcode(models.Model):
 
     class Meta:
         app_label = 'givefood'
+        indexes = [
+            # Optimizes startswith queries: postcode_normalized LIKE 'PREFIX%'
+            # Default db_index btree doesn't support LIKE on non-C collation.
+            models.Index(
+                OpClass('postcode_normalized', name='text_pattern_ops'),
+                name='postcode_norm_like',
+            ),
+        ]
 
     def __str__(self):
         return self.postcode
