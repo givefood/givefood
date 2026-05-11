@@ -1487,7 +1487,7 @@ def _handle_unsubscribe(phone_number, foodbank_slug):
 def address_autocomplete(request):
     """
     Address autocomplete API endpoint.
-    
+
     Accepts a query parameter 'q' for partial address search.
     Searches both Place and Postcode models.
     Uses a two-pass approach: first returns up to 10 prefix matches
@@ -1495,7 +1495,7 @@ def address_autocomplete(request):
     (icontains). Within each group, places are ordered by population
     descending so more populated areas appear first.
     Returns JSON with name and lat_lng for matching results.
-    
+
     Example: /aac/?q=sw
     """
     query = request.GET.get("q", "").strip()
