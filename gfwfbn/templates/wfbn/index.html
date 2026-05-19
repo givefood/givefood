@@ -126,7 +126,7 @@
                           {{ change_text|linebreaks }}
                         {% endif %}
                       {% endwith %}
-                      <script src="{% url 'wfbn-generic:foodbank_hit' location.foodbank_slug %}" defer></script>
+                      {% include 'wfbn/includes/hit.html' with slug=location.foodbank_slug %}
                     </div>
                   </td>
                 </tr>
@@ -166,7 +166,7 @@
                           {{ change_text|linebreaks }}
                         {% endif %}
                     {% endwith %}
-                    <script src="{% url 'wfbn-generic:foodbank_hit' donationpoint.foodbank_slug %}" defer></script>
+                    {% include 'wfbn/includes/hit.html' with slug=donationpoint.foodbank_slug %}
                   </td>
                 </tr>
               {% endfor %}
@@ -226,7 +226,7 @@
                             {{ change_text|linebreaks }}
                           {% endif %}
                         {% endwith %}
-                        <script src="{% url 'wfbn-generic:foodbank_hit' location.foodbank_slug %}" defer></script>
+                        {% include 'wfbn/includes/hit.html' with slug=location.foodbank_slug %}
                       </div>
                     </td>
                   </tr>

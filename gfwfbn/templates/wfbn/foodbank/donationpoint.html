@@ -151,6 +151,6 @@
   
   {% include 'public/includes/mapconfig.html' %}
   <script src="/static/js/wfbn.js?v={{ version }}" defer onload="init()"></script>
-  <script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
+  {% include 'wfbn/includes/hit.html' with slug=foodbank.slug %}
 {% endblock %}
 

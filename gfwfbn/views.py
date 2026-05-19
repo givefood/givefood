@@ -1200,6 +1200,8 @@ def updates(request, slug, action):
     return render(request, "wfbn/foodbank/updates.html", template_vars)
 
 
+@csrf_exempt
+@require_POST
 @never_cache
 def foodbank_hit(request, slug):
     """
@@ -1223,7 +1225,7 @@ def foodbank_hit(request, slug):
     if not created:
         FoodbankHit.objects.filter(pk=hit.pk).update(hits=hit.hits + 1)
 
-    return render(request, "wfbn/foodbank/hit.js", content_type="text/javascript")
+    return HttpResponse(status=204)
 
 @cache_page(SECONDS_IN_HOUR)
 def webpush_config(request):

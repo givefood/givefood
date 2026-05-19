@@ -124,7 +124,7 @@
 
 {% block script %}
 
-<script src="{% url 'wfbn-generic:foodbank_hit' foodbank.slug %}" defer></script>
+{% include 'wfbn/includes/hit.html' with slug=foodbank.slug %}
 <script src="/static/js/wfbn.js?v={{ version }}" defer></script>
 
 {% endblock %}

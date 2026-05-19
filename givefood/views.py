@@ -836,7 +836,7 @@ def robotstxt(request):
     sitemap_places_index_url = reverse("sitemap_places_index")
     md_sitemap_url = reverse("md_sitemap")
 
-    disallowed_urls = ["/aac/"]
+    disallowed_urls = ["/aac/", "/at/*/hit/"]
     sitemap_urls = []
     for language in LANGUAGES:
         lang_code = language[0]
