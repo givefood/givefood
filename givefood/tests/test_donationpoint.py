@@ -7,7 +7,7 @@ from givefood.models import Foodbank, FoodbankDonationPoint
 class TestDonationPointDecaching:
     """Test that FoodbankDonationPoint triggers decaching of /api/3/donationpoints/ when saved."""
 
-    @patch('givefood.models.decache_async')
+    @patch('givefood.models.foodbank.decache_async')
     def test_save_triggers_decaching(self, mock_decache):
         """Test that saving a donation point triggers decaching of the donationpoints API prefix."""
         # Create a food bank

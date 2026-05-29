@@ -8,7 +8,7 @@ from givefood.models import Foodbank, FoodbankChange, FoodbankChangeTranslation
 class TestFoodbankChangeTranslation:
     """Test that FoodbankChange triggers translation when published."""
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_save_with_published_true_triggers_translation(self, mock_translate):
         """Test that saving a need with published=True triggers translation."""
         # Create a food bank
@@ -47,7 +47,7 @@ class TestFoodbankChangeTranslation:
         for call_args in calls:
             assert call_args[0][1] == str(need.need_id)
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_save_with_published_false_does_not_trigger_translation(self, mock_translate):
         """Test that saving a need with published=False does not trigger translation."""
         # Create a food bank
@@ -78,7 +78,7 @@ class TestFoodbankChangeTranslation:
         # Verify that translate_need_async.enqueue was NOT called
         assert not mock_translate.enqueue.called
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_update_to_published_true_triggers_translation(self, mock_translate):
         """Test that updating a need to published=True triggers translation."""
         # Create a food bank
@@ -120,7 +120,7 @@ class TestFoodbankChangeTranslation:
         for call_args in calls:
             assert call_args[0][1] == str(need.need_id)
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_save_with_do_translate_false_does_not_trigger_translation(self, mock_translate):
         """Test that saving with do_translate=False prevents translation even when published=True."""
         # Create a food bank
@@ -151,7 +151,7 @@ class TestFoodbankChangeTranslation:
         # Verify that translate_need_async.enqueue was NOT called
         assert not mock_translate.enqueue.called
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_save_without_foodbank_does_not_crash(self, mock_translate):
         """Test that saving a need without a foodbank doesn't crash."""
         # Create a need without a foodbank
@@ -164,7 +164,7 @@ class TestFoodbankChangeTranslation:
         # Should not crash, and translation might or might not be called
         # (depending on implementation - it's valid either way)
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_save_does_not_translate_skipped_languages(self, mock_translate):
         """Test that saving a need does not trigger translation for languages in LANGUAGES_SKIP_TRANSLATE (e.g. tlh/Klingon)."""
         foodbank = Foodbank(
@@ -202,7 +202,7 @@ class TestFoodbankChangeTranslation:
 class TestFoodbankChangeGetText:
     """Test that FoodbankChange.get_text() handles missing translations."""
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_get_text_fallback_to_english_when_translation_missing(self, mock_translate):
         """Test that get_text falls back to English when translation doesn't exist."""
         # Create a food bank
@@ -244,7 +244,7 @@ class TestFoodbankChangeGetText:
         # Reset to English
         activate('en')
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_get_text_uses_translation_when_available(self, mock_translate):
         """Test that get_text uses translation when it exists."""
         # Create a food bank
@@ -295,7 +295,7 @@ class TestFoodbankChangeGetText:
         # Reset to English
         activate('en')
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_get_text_returns_english_when_language_is_english(self, mock_translate):
         """Test that get_text returns English text when language is English."""
         # Create a food bank
@@ -334,7 +334,7 @@ class TestFoodbankChangeGetText:
         excess_text = need.get_excess_text()
         assert excess_text == "Bread\nMilk"
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_get_text_uses_prefetched_translations(self, mock_translate):
         """Test that get_text uses prefetched translations when available to avoid N+1 queries."""
         from django.db.models import Prefetch
@@ -392,7 +392,7 @@ class TestFoodbankChangeGetText:
         # Reset to English
         activate('en')
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_get_text_returns_empty_string_when_text_is_none(self, mock_translate):
         """Test that get_text returns empty string when change_text or excess_change_text is None."""
         foodbank = Foodbank(
@@ -428,7 +428,7 @@ class TestFoodbankChangeGetText:
         change_text = need.get_change_text()
         assert change_text == ""
 
-    @patch('givefood.models.translate_need_async')
+    @patch('givefood.models.needs.translate_need_async')
     def test_get_text_fallback_to_english_when_translation_has_empty_text(self, mock_translate):
         """Test that get_text falls back to English when translation record exists but has empty/None text."""
         foodbank = Foodbank(

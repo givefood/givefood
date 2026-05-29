@@ -4,7 +4,7 @@ Tests for the opening_hours_days method and is_open property of FoodbankDonation
 import pytest
 from datetime import date, datetime
 from unittest.mock import patch, MagicMock
-from givefood.models import _get_bank_holidays
+from givefood.models.foodbank import _get_bank_holidays
 
 
 # Test constant for opening hours
@@ -83,7 +83,7 @@ class TestOpeningHoursDays:
             }
         }
         
-        with patch('givefood.models._get_bank_holidays', return_value=mock_holidays):
+        with patch('givefood.models.foodbank._get_bank_holidays', return_value=mock_holidays):
             from givefood.models import FoodbankDonationPoint
             result = FoodbankDonationPoint.opening_hours_days(mock_donation_point)
             
@@ -113,7 +113,7 @@ class TestOpeningHoursDays:
             }
         }
         
-        with patch('givefood.models._get_bank_holidays', return_value=mock_holidays):
+        with patch('givefood.models.foodbank._get_bank_holidays', return_value=mock_holidays):
             from givefood.models import FoodbankDonationPoint
             # This should NOT raise TypeError: strptime() argument 1 must be str, not datetime.date
             result = FoodbankDonationPoint.opening_hours_days(mock_donation_point)
@@ -129,7 +129,7 @@ class TestOpeningHoursDays:
 
         mock_holidays = {"england-and-wales": {"events": []}}
 
-        with patch('givefood.models._get_bank_holidays', return_value=mock_holidays):
+        with patch('givefood.models.foodbank._get_bank_holidays', return_value=mock_holidays):
             from givefood.models import FoodbankDonationPoint
             result = FoodbankDonationPoint.opening_hours_days(mock_donation_point)
 
@@ -149,8 +149,8 @@ class TestOpeningHoursDays:
         # Use a fixed date (a Wednesday) to make assertions predictable
         mock_holidays = {"england-and-wales": {"events": []}}
 
-        with patch('givefood.models._get_bank_holidays', return_value=mock_holidays):
-            with patch('givefood.models.date') as mock_date:
+        with patch('givefood.models.foodbank._get_bank_holidays', return_value=mock_holidays):
+            with patch('givefood.models.foodbank.date') as mock_date:
                 mock_date.today.return_value = date(2026, 2, 16)  # A Monday
                 mock_date.side_effect = lambda *args, **kw: date(*args, **kw)
                 from givefood.models import FoodbankDonationPoint
@@ -169,7 +169,7 @@ class TestOpeningHoursDays:
 
         mock_holidays = {"england-and-wales": {"events": []}}
 
-        with patch('givefood.models._get_bank_holidays', return_value=mock_holidays):
+        with patch('givefood.models.foodbank._get_bank_holidays', return_value=mock_holidays):
             from givefood.models import FoodbankDonationPoint
             result = FoodbankDonationPoint.opening_hours_days(mock_donation_point)
 
@@ -198,7 +198,7 @@ class TestIsOpen:
         # Mock timezone.now() to a Saturday at noon
         mock_now = datetime(2026, 2, 14, 12, 0)  # Saturday
         from givefood.models import FoodbankDonationPoint
-        with patch('givefood.models.timezone') as mock_timezone:
+        with patch('givefood.models.foodbank.timezone') as mock_timezone:
             mock_timezone.now.return_value = mock_now
             assert FoodbankDonationPoint.is_open.fget(mock_dp) is False
 
@@ -210,7 +210,7 @@ class TestIsOpen:
         # Mock timezone.now() to a Monday at 2pm
         mock_now = datetime(2026, 2, 16, 14, 0)  # Monday
         from givefood.models import FoodbankDonationPoint
-        with patch('givefood.models.timezone') as mock_timezone:
+        with patch('givefood.models.foodbank.timezone') as mock_timezone:
             mock_timezone.now.return_value = mock_now
             assert FoodbankDonationPoint.is_open.fget(mock_dp) is True
 
@@ -222,7 +222,7 @@ class TestIsOpen:
         # Mock timezone.now() to Sunday at 5pm (after 4pm closing)
         mock_now = datetime(2026, 2, 15, 17, 0)  # Sunday
         from givefood.models import FoodbankDonationPoint
-        with patch('givefood.models.timezone') as mock_timezone:
+        with patch('givefood.models.foodbank.timezone') as mock_timezone:
             mock_timezone.now.return_value = mock_now
             assert FoodbankDonationPoint.is_open.fget(mock_dp) is False
 
@@ -234,7 +234,7 @@ class TestIsOpen:
         # Mock timezone.now() to a Monday at 7am (before 9am opening)
         mock_now = datetime(2026, 2, 16, 7, 0)  # Monday
         from givefood.models import FoodbankDonationPoint
-        with patch('givefood.models.timezone') as mock_timezone:
+        with patch('givefood.models.foodbank.timezone') as mock_timezone:
             mock_timezone.now.return_value = mock_now
             assert FoodbankDonationPoint.is_open.fget(mock_dp) is False
 
@@ -253,7 +253,7 @@ class TestIsOpen:
 
         mock_now = datetime(2026, 2, 16, 14, 0)  # Monday at 2pm
         from givefood.models import FoodbankDonationPoint
-        with patch('givefood.models.timezone') as mock_timezone:
+        with patch('givefood.models.foodbank.timezone') as mock_timezone:
             mock_timezone.now.return_value = mock_now
             assert FoodbankDonationPoint.is_open.fget(mock_dp) is True
 
@@ -264,7 +264,7 @@ class TestIsOpen:
 
         mock_now = datetime(2026, 2, 16, 14, 0)  # Monday at 2pm
         from givefood.models import FoodbankDonationPoint
-        with patch('givefood.models.timezone') as mock_timezone:
+        with patch('givefood.models.foodbank.timezone') as mock_timezone:
             mock_timezone.now.return_value = mock_now
             assert FoodbankDonationPoint.is_open.fget(mock_dp) is True
 
@@ -276,7 +276,7 @@ class TestIsOpen:
         # Monday at 5:13pm should be open (6am-midnight)
         mock_now = datetime(2026, 2, 16, 17, 13)  # Monday
         from givefood.models import FoodbankDonationPoint
-        with patch('givefood.models.timezone') as mock_timezone:
+        with patch('givefood.models.foodbank.timezone') as mock_timezone:
             mock_timezone.now.return_value = mock_now
             assert FoodbankDonationPoint.is_open.fget(mock_dp) is True
 
@@ -288,7 +288,7 @@ class TestIsOpen:
         # Monday at 5am should be closed (before 6am)
         mock_now = datetime(2026, 2, 16, 5, 0)  # Monday
         from givefood.models import FoodbankDonationPoint
-        with patch('givefood.models.timezone') as mock_timezone:
+        with patch('givefood.models.foodbank.timezone') as mock_timezone:
             mock_timezone.now.return_value = mock_now
             assert FoodbankDonationPoint.is_open.fget(mock_dp) is False
 

@@ -9,8 +9,8 @@ from givefood.const.item_types import ITEM_CATEGORY_GROUPS
 class TestOrderGroupDecaching:
     """Test that Order triggers decaching of OrderGroup public pages when saved."""
 
-    @patch('givefood.models.decache_async')
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.decache_async')
+    @patch('givefood.models.orders.gemini')
     def test_save_with_public_order_group_triggers_decaching(self, mock_gemini, mock_decache):
         """Test that saving an order with a public OrderGroup triggers decaching."""
         # Mock gemini to return empty list to avoid AI call
@@ -64,8 +64,8 @@ class TestOrderGroupDecaching:
         assert f"/donate/managed/{order_group.slug}-{order_group.key}/geo.json" in urls[1]
         assert f"/donate/managed/{order_group.slug}-{order_group.key}/items/" in urls[2]
 
-    @patch('givefood.models.decache_async')
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.decache_async')
+    @patch('givefood.models.orders.gemini')
     def test_save_with_non_public_order_group_does_not_trigger_decaching(self, mock_gemini, mock_decache):
         """Test that saving an order with a non-public OrderGroup does not trigger decaching."""
         # Mock gemini to return empty list to avoid AI call
@@ -110,8 +110,8 @@ class TestOrderGroupDecaching:
         # Verify that decache_async.enqueue was NOT called
         assert not mock_decache.enqueue.called
 
-    @patch('givefood.models.decache_async')
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.decache_async')
+    @patch('givefood.models.orders.gemini')
     def test_save_without_order_group_does_not_trigger_decaching(self, mock_gemini, mock_decache):
         """Test that saving an order without an OrderGroup does not trigger decaching."""
         # Mock gemini to return empty list to avoid AI call
@@ -152,7 +152,7 @@ class TestOrderGroupDecaching:
 class TestNullableFoodbank:
     """Test that Order can be created without a foodbank."""
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_order_without_foodbank(self, mock_gemini):
         """Test that an order can be created without a foodbank."""
         # Mock gemini to return empty list to avoid AI call
@@ -173,7 +173,7 @@ class TestNullableFoodbank:
         assert order.order_id.startswith("gf-unassigned-")
         assert order.country == ""
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_foodbank_name_slug_with_null_foodbank(self, mock_gemini):
         """Test that foodbank_name_slug returns 'unassigned' for orders without a foodbank."""
         # Mock gemini to return empty list to avoid AI call
@@ -191,7 +191,7 @@ class TestNullableFoodbank:
         # Verify the foodbank_name_slug method
         assert order.foodbank_name_slug() == "unassigned"
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_foodbank_name_slug_with_foodbank(self, mock_gemini):
         """Test that foodbank_name_slug returns the foodbank slug when foodbank is set."""
         # Mock gemini to return empty list to avoid AI call
@@ -226,7 +226,7 @@ class TestNullableFoodbank:
         # Verify the foodbank_name_slug method
         assert order.foodbank_name_slug() == "test-food-bank"
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_foodbank_deletion_unassigns_orders(self, mock_gemini):
         """Test that deleting a foodbank unassigns orders instead of deleting them."""
         # Mock gemini to return empty list to avoid AI call
@@ -266,7 +266,7 @@ class TestNullableFoodbank:
         order = Order.objects.get(id=order_id)
         assert order.foodbank is None
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_order_line_accessible_via_order_when_foodbank_deleted(self, mock_gemini):
         """Test that OrderLine can access foodbank via order.foodbank after foodbank deletion."""
         # Mock gemini to return empty list to avoid AI call
@@ -313,7 +313,7 @@ class TestNullableFoodbank:
             line.refresh_from_db()
             assert line.order.foodbank is None
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_multiple_unassigned_orders_allowed(self, mock_gemini):
         """Test that multiple unassigned orders with same delivery date/provider are allowed."""
         # Mock gemini to return empty list to avoid AI call
@@ -383,7 +383,7 @@ class TestOrderLineCategorisation:
         order.save(do_foodbank_save=False)
         return order
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_uses_gemini_when_no_previous_categorisation(self, mock_gemini):
         """Test that Gemini is called when the item name has no previous categorisation."""
         foodbank = self._create_foodbank()
@@ -407,7 +407,7 @@ class TestOrderLineCategorisation:
         assert order_line.group == ITEM_CATEGORY_GROUPS["Pasta"]
         mock_gemini.assert_called_once()
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_uses_existing_foodbank_change_line_category(self, mock_gemini):
         """Test that existing FoodbankChangeLine category is used instead of Gemini."""
         foodbank = self._create_foodbank(name="Test FB Cat", slug="test-fb-cat")
@@ -446,7 +446,7 @@ class TestOrderLineCategorisation:
         assert order_line.group == ITEM_CATEGORY_GROUPS["Baked Beans"]
         mock_gemini.assert_not_called()
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_defaults_to_other_when_gemini_returns_invalid(self, mock_gemini):
         """Test that category defaults to 'Other' when Gemini returns an invalid category."""
         foodbank = self._create_foodbank(name="Test FB Inv", slug="test-fb-inv")
@@ -469,7 +469,7 @@ class TestOrderLineCategorisation:
         assert order_line.category == "Other"
         assert order_line.group == ITEM_CATEGORY_GROUPS["Other"]
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_does_not_overwrite_existing_category(self, mock_gemini):
         """Test that an already-set category is not overwritten."""
         foodbank = self._create_foodbank(name="Test FB Pre", slug="test-fb-pre")
@@ -528,7 +528,7 @@ class TestOrderLineItemCost:
         order.save(do_foodbank_save=False)
         return order
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_item_cost_corrected_on_save(self, mock_gemini):
         """Test that item_cost is recalculated as line_cost // quantity on save."""
         foodbank = self._create_foodbank()
@@ -550,7 +550,7 @@ class TestOrderLineItemCost:
 
         assert order_line.item_cost == 55
 
-    @patch('givefood.models.gemini')
+    @patch('givefood.models.orders.gemini')
     def test_item_cost_unchanged_when_correct(self, mock_gemini):
         """Test that item_cost stays the same when it already equals line_cost // quantity."""
         foodbank = self._create_foodbank()

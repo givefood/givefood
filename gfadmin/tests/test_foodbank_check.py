@@ -843,7 +843,7 @@ class TestFoodbankCheckDetailChanges:
         assert detail_changes['contact_email'] is False
         assert detail_changes['charity_number'] is False
 
-    @patch('givefood.models.geocode')
+    @patch('givefood.models.foodbank.geocode')
     @patch('gfadmin.views.render')
     @patch('gfadmin.views.gemini')
     @patch('gfadmin.views.requests.get')

@@ -159,7 +159,7 @@ class TestArticleFeaturedToggle:
 
     def test_toggling_featured_clears_homepage_cache(self, article):
         """Test that toggling featured status triggers cache clearing for homepage."""
-        with patch('givefood.models.decache_async') as mock_decache:
+        with patch('givefood.models.articles.decache_async') as mock_decache:
             # Toggle featured from False to True
             article.featured = True
             article.save()
@@ -187,7 +187,7 @@ class TestArticleFeaturedToggle:
 
     def test_saving_without_changing_featured_does_not_clear_cache(self, article):
         """Test that saving an article without changing featured status doesn't clear cache."""
-        with patch('givefood.models.decache_async') as mock_decache:
+        with patch('givefood.models.articles.decache_async') as mock_decache:
             # Save without changing featured status
             article.title = "Updated Title"
             article.save()
