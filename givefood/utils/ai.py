@@ -15,15 +15,27 @@ from mistralai import Mistral
 from givefood.utils.cache import get_cred
 
 
-def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "gemini-2.5-flash"):
-    """Send a prompt to Google Gemini and return the parsed response."""
+def gemini(prompt, temperature, response_mime_type = "application/json", response_schema = None, model = "gemini-2.5-flash", tools = None, return_response = False, disable_thinking = True, timeout = None):
+    """Send a prompt to Google Gemini and return the parsed response.
+
+    tools: optional list of types.Tool (e.g. URL Context). When set, attached to the request config.
+    return_response: when True, return the raw response object so callers can inspect metadata
+        (e.g. url_context_metadata). When False (default), return parsed JSON or the text fallback.
+    disable_thinking: when True (default), forces thinking_budget=0 as before. Set False for Gemini 3
+        models, which don't support thinking_budget the same way (this SDK has no thinking_level), so
+        we omit thinking_config and let the model use its default.
+    timeout: optional client-side request timeout in seconds. When set, a stalled request fails
+        instead of hanging forever (important now Gemini fetches URLs itself via the URL Context tool).
+    """
     client = genai.Client(api_key = get_cred("gemini_api_key"))
 
     config = types.GenerateContentConfig(
         temperature = temperature,
         response_mime_type = response_mime_type,
         response_schema = response_schema,
-        thinking_config = types.ThinkingConfig(thinking_budget = 0),
+        tools = tools,
+        thinking_config = types.ThinkingConfig(thinking_budget = 0) if disable_thinking else None,
+        http_options = types.HttpOptions(timeout = int(timeout * 1000)) if timeout else None,
         safety_settings = [
             types.SafetySetting(
                 category = types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
@@ -57,6 +69,10 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
             contents = [prompt],
             config = config,
         )
+
+    if return_response:
+        return response
+
     if response.parsed is not None:
         return response.parsed
 

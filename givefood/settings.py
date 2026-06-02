@@ -38,6 +38,12 @@ LOGGING = {
             "level": "DEBUG",
             "propagate": True,
         },
+        # gemini-3.5-flash returns a thought_signature part alongside the JSON; the SDK
+        # warns about the non-text part on every need check even though .parsed is correct.
+        "google_genai.types": {
+            "level": "ERROR",
+            "propagate": True,
+        },
     },
 }
 

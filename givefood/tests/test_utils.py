@@ -705,6 +705,75 @@ class TestGemini:
         result = gemini("test prompt", 0.1)
         assert result is None
 
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_forwards_tools(self, mock_genai, mock_cred):
+        """Test that tools are passed through to the request config."""
+        from givefood.utils.ai import gemini
+        from google.genai import types
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = {"needed": [], "excess": []}
+        mock_client.models.generate_content.return_value = mock_response
+
+        tools = [types.Tool(url_context=types.UrlContext())]
+        gemini("test prompt", 0, tools=tools)
+
+        config = mock_client.models.generate_content.call_args.kwargs["config"]
+        assert config.tools == tools
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_disable_thinking_false_omits_thinking_config(self, mock_genai, mock_cred):
+        """Test that disable_thinking=False omits the thinking_config (Gemini 3)."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = {"needed": [], "excess": []}
+        mock_client.models.generate_content.return_value = mock_response
+
+        gemini("test prompt", 0, disable_thinking=False)
+
+        config = mock_client.models.generate_content.call_args.kwargs["config"]
+        assert config.thinking_config is None
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_disable_thinking_true_sets_zero_budget(self, mock_genai, mock_cred):
+        """Test that the default disable_thinking=True keeps thinking_budget=0."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = {"needed": [], "excess": []}
+        mock_client.models.generate_content.return_value = mock_response
+
+        gemini("test prompt", 0)
+
+        config = mock_client.models.generate_content.call_args.kwargs["config"]
+        assert config.thinking_config is not None
+        assert config.thinking_config.thinking_budget == 0
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_return_response_returns_raw(self, mock_genai, mock_cred):
+        """Test that return_response=True returns the raw response object."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = {"needed": [], "excess": []}
+        mock_client.models.generate_content.return_value = mock_response
+
+        result = gemini("test prompt", 0, return_response=True)
+        assert result is mock_response
+
 
 class TestOpenrouter:
     """Test openrouter utility function."""
