@@ -2,17 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import re
-import json
 import logging
-
-from urllib.parse import urlparse, parse_qsl, urlencode, urlunparse
 
 import requests
 from datetime import datetime
 from time import mktime
 import feedparser
-
-from google.genai import types
 
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -21,6 +16,7 @@ from django_tasks import task
 
 from givefood.const.general import BOT_USER_AGENT
 from givefood.utils.cache import get_cred
+from givefood.utils.general import get_markdown
 from givefood.utils.text import clean_foodbank_need_text, text_for_comparison, htmlbodytext
 from givefood.utils.ai import gemini
 
@@ -303,34 +299,19 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
     if "bankthefood.org" in foodbank.shopping_list_url:
         scrape_type = "bankthefood"
 
-    # Networked food banks (Trussell/IFAN, identified by a network_id) publish needs on shared
-    # Next.js platforms (e.g. *.foodbank.org.uk) whose rendered text Gemini's URL Context tool
-    # can't read, so we fetch and extract those ourselves. Independent web food banks use URL
-    # Context, where Gemini downloads the page itself.
-    use_url_context = scrape_type == "web" and not foodbank.network_id
-
     foodbank_shoppinglist_page = None
     foodbank_shoppinglist_html = None
 
-    need_url = foodbank.shopping_list_url
-    if use_url_context:
-        # Append a cache-busting param so Gemini's URL Context tool can't serve a stale copy
-        # from Google's web index — a novel query string forces the live-fetch fallback.
-        url_parts = urlparse(foodbank.shopping_list_url)
-        query = parse_qsl(url_parts.query)
-        query.append(("_gfcb", timezone.now().strftime("%Y%m%d%H%M%S")))
-        need_url = urlunparse(url_parts._replace(query=urlencode(query)))
-        crawl_item.url = need_url
-
-    if scrape_type == "web" and not use_url_context:
-        # Networked food bank: fetch the page ourselves and extract the body text for the prompt.
-        try:
-            foodbank_shoppinglist_page = requests.get(foodbank.shopping_list_url, headers=headers, timeout=10)
-        except requests.exceptions.RequestException:
+    if scrape_type == "web":
+        # Render the page to Markdown via Cloudflare Browser Rendering. It uses a headless
+        # browser, so JS-heavy sites (e.g. the Trussell/IFAN *.foodbank.org.uk platforms)
+        # render correctly.
+        foodbank_shoppinglist_page = get_markdown(foodbank.shopping_list_url)
+        if not foodbank_shoppinglist_page:
             website_discrepancy = FoodbankDiscrepancy(
                 foodbank = foodbank,
                 discrepancy_type = "website",
-                discrepancy_text = "Website %s connection failed" % (foodbank.url),
+                discrepancy_text = "Website %s render failed" % (foodbank.url),
                 url = foodbank.url,
             )
             website_discrepancy.save()
@@ -343,14 +324,12 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
                 "need_prompt": "Connection error: Unable to retrieve needs from foodbank website. Please try again later.",
                 "is_nonpertinent": False,
                 "is_change": False,
-                "change_state": ["Connection failed"],
+                "change_state": ["Render failed"],
                 "need_text": "",
                 "excess_text": "",
                 "last_published_need": None,
                 "last_nonpublished_needs": [],
             }
-        foodbank_shoppinglist_html = foodbank_shoppinglist_page.text
-        foodbank_shoppinglist_page = htmlbodytext(foodbank_shoppinglist_page.text)
 
     if scrape_type == "facebook":
 
@@ -421,81 +400,23 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         {
             "foodbank":foodbank,
             "scrape_type":scrape_type,
-            "use_url_context":use_url_context,
-            "need_url":need_url,
             "foodbank_page":foodbank_shoppinglist_page,
             "foodbank_html":foodbank_shoppinglist_html,
         }
     )
 
-    if use_url_context:
-        # Gemini downloads the page itself via the URL Context tool. This needs a Gemini 3 model
-        # (URL Context + an enforced response_schema can't be combined on gemini-2.5-flash).
-        response = gemini(
-            prompt = need_prompt,
-            temperature = 0,
-            response_schema = response_schema,
-            response_mime_type = "application/json",
-            model = "gemini-3.5-flash",
-            tools = [types.Tool(url_context = types.UrlContext())],
-            disable_thinking = False,
-            return_response = True,
-            timeout = 120,
-        )
+    need_response, need_usage = gemini(
+        prompt = need_prompt,
+        temperature = 0,
+        response_schema = response_schema,
+        response_mime_type = "application/json",
+        timeout = 120,
+        return_usage = True,
+    )
 
-        # Confirm Gemini actually retrieved the URL. If it didn't, treat it like the old
-        # connection failure: record a discrepancy and bail out without wiping the need.
-        retrieval_ok = False
-        retrieval_status = "no metadata"
-        candidates = response.candidates or []
-        if candidates and candidates[0].url_context_metadata:
-            url_metadata = candidates[0].url_context_metadata.url_metadata or []
-            for url_meta in url_metadata:
-                retrieval_status = str(url_meta.url_retrieval_status)
-                if url_meta.url_retrieval_status == types.UrlRetrievalStatus.URL_RETRIEVAL_STATUS_SUCCESS:
-                    retrieval_ok = True
-                    break
-
-        if not retrieval_ok:
-            website_discrepancy = FoodbankDiscrepancy(
-                foodbank = foodbank,
-                discrepancy_type = "website",
-                discrepancy_text = "Website %s URL retrieval failed (%s)" % (foodbank.shopping_list_url, retrieval_status),
-                url = foodbank.url,
-            )
-            website_discrepancy.save()
-            foodbank.last_need_check = timezone.now()
-            foodbank.save(do_decache=False, do_geoupdate=False)
-
-            crawl_item.finish = timezone.now()
-            crawl_item.save()
-
-            return {
-                "foodbank": foodbank,
-                "need_prompt": need_prompt,
-                "is_nonpertinent": False,
-                "is_change": False,
-                "change_state": ["URL retrieval failed"],
-                "need_text": "",
-                "excess_text": "",
-                "last_published_need": None,
-                "last_nonpublished_needs": [],
-            }
-
-        need_response = response.parsed
-        if need_response is None and response.text is not None:
-            try:
-                need_response = json.loads(response.text)
-            except (json.JSONDecodeError, TypeError):
-                need_response = None
-    else:
-        need_response = gemini(
-            prompt = need_prompt,
-            temperature = 0,
-            response_schema = response_schema,
-            response_mime_type = "application/json",
-            timeout = 120,
-        )
+    prompt_tokens = getattr(need_usage, "prompt_token_count", None) or 0
+    output_tokens = getattr(need_usage, "candidates_token_count", None) or 0
+    total_tokens = getattr(need_usage, "total_token_count", None) or 0
 
     if isinstance(need_response, dict):
         need_text = '\n'.join(need_response["needed"])
@@ -567,4 +488,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         "excess_text":excess_text,
         "last_published_need":last_published_need,
         "last_nonpublished_needs":last_nonpublished_needs,
+        "prompt_tokens":prompt_tokens,
+        "output_tokens":output_tokens,
+        "total_tokens":total_tokens,
     }

@@ -26,6 +26,7 @@ class Command(BaseCommand):
         the_counter = 1
         foodbank_count = foodbanks.count()
         failures = []
+        total_tokens = 0
 
         for foodbank in foodbanks:
 
@@ -36,21 +37,29 @@ class Command(BaseCommand):
             # Keep the sweep going if a single food bank fails (e.g. a Gemini 503/deadline)
             # so one transient error can't abort the whole run.
             try:
-                do_foodbank_need_check(foodbank, crawl_set)
+                result = do_foodbank_need_check(foodbank, crawl_set)
             except Exception as e:
                 failures.append(foodbank.name)
                 self.stderr.write(f"Failed {foodbank.name}: {e!r}")
                 self.stderr.write(traceback.format_exc())
             else:
-                end_time = time.perf_counter()
-                elapsed_time = end_time - start_time
-                self.stdout.write(f"Done  {foodbank.name} ({elapsed_time:.2f} seconds)")
+                elapsed_time = time.perf_counter() - start_time
+                result = result or {}
+                tokens = result.get("total_tokens", 0)
+                prompt_tokens = result.get("prompt_tokens", 0)
+                output_tokens = result.get("output_tokens", 0)
+                total_tokens += tokens
+                self.stdout.write(
+                    f"Done  {foodbank.name} ({elapsed_time:.2f} seconds, "
+                    f"{tokens:,} tokens: {prompt_tokens:,} in / {output_tokens:,} out)"
+                )
 
             the_counter += 1
 
         crawl_set.finish = timezone.now()
         crawl_set.save()
 
+        self.stdout.write(f"Total tokens used: {total_tokens:,}")
         if failures:
             self.stdout.write(f"Completed with {len(failures)} failure(s): {', '.join(failures)}")
         else:

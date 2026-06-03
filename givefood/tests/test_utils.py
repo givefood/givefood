@@ -707,27 +707,8 @@ class TestGemini:
 
     @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
     @patch("givefood.utils.ai.genai")
-    def test_gemini_forwards_tools(self, mock_genai, mock_cred):
-        """Test that tools are passed through to the request config."""
-        from givefood.utils.ai import gemini
-        from google.genai import types
-
-        mock_client = MagicMock()
-        mock_genai.Client.return_value = mock_client
-        mock_response = MagicMock()
-        mock_response.parsed = {"needed": [], "excess": []}
-        mock_client.models.generate_content.return_value = mock_response
-
-        tools = [types.Tool(url_context=types.UrlContext())]
-        gemini("test prompt", 0, tools=tools)
-
-        config = mock_client.models.generate_content.call_args.kwargs["config"]
-        assert config.tools == tools
-
-    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
-    @patch("givefood.utils.ai.genai")
-    def test_gemini_disable_thinking_false_omits_thinking_config(self, mock_genai, mock_cred):
-        """Test that disable_thinking=False omits the thinking_config (Gemini 3)."""
+    def test_gemini_timeout_sets_http_options(self, mock_genai, mock_cred):
+        """Test that a timeout (seconds) is sent as http_options in milliseconds."""
         from givefood.utils.ai import gemini
 
         mock_client = MagicMock()
@@ -736,15 +717,16 @@ class TestGemini:
         mock_response.parsed = {"needed": [], "excess": []}
         mock_client.models.generate_content.return_value = mock_response
 
-        gemini("test prompt", 0, disable_thinking=False)
+        gemini("test prompt", 0, timeout=120)
 
         config = mock_client.models.generate_content.call_args.kwargs["config"]
-        assert config.thinking_config is None
+        assert config.http_options is not None
+        assert config.http_options.timeout == 120000
 
     @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
     @patch("givefood.utils.ai.genai")
-    def test_gemini_disable_thinking_true_sets_zero_budget(self, mock_genai, mock_cred):
-        """Test that the default disable_thinking=True keeps thinking_budget=0."""
+    def test_gemini_no_timeout_omits_http_options(self, mock_genai, mock_cred):
+        """Test that http_options is omitted when no timeout is given."""
         from givefood.utils.ai import gemini
 
         mock_client = MagicMock()
@@ -756,13 +738,29 @@ class TestGemini:
         gemini("test prompt", 0)
 
         config = mock_client.models.generate_content.call_args.kwargs["config"]
-        assert config.thinking_config is not None
-        assert config.thinking_config.thinking_budget == 0
+        assert config.http_options is None
 
     @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
     @patch("givefood.utils.ai.genai")
-    def test_gemini_return_response_returns_raw(self, mock_genai, mock_cred):
-        """Test that return_response=True returns the raw response object."""
+    def test_gemini_return_usage_returns_tuple(self, mock_genai, mock_cred):
+        """Test that return_usage=True returns a (result, usage_metadata) tuple."""
+        from givefood.utils.ai import gemini
+
+        mock_client = MagicMock()
+        mock_genai.Client.return_value = mock_client
+        mock_response = MagicMock()
+        mock_response.parsed = {"needed": [], "excess": []}
+        mock_response.usage_metadata = MagicMock(total_token_count=1613)
+        mock_client.models.generate_content.return_value = mock_response
+
+        result, usage = gemini("test prompt", 0, return_usage=True)
+        assert result == {"needed": [], "excess": []}
+        assert usage.total_token_count == 1613
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.genai")
+    def test_gemini_default_returns_bare_result(self, mock_genai, mock_cred):
+        """Test that without return_usage the result is returned directly (not a tuple)."""
         from givefood.utils.ai import gemini
 
         mock_client = MagicMock()
@@ -771,8 +769,65 @@ class TestGemini:
         mock_response.parsed = {"needed": [], "excess": []}
         mock_client.models.generate_content.return_value = mock_response
 
-        result = gemini("test prompt", 0, return_response=True)
-        assert result is mock_response
+        result = gemini("test prompt", 0)
+        assert result == {"needed": [], "excess": []}
+        assert not isinstance(result, tuple)
+
+
+class TestGetMarkdown:
+    """Test get_markdown utility function (Cloudflare Browser Rendering)."""
+
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: {"cf_account_id": "acct123", "cf_need_browser_render": "tok456"}[n])
+    @patch("givefood.utils.general.requests.post")
+    def test_get_markdown_returns_result(self, mock_post, mock_cred):
+        """Test that get_markdown posts to the markdown endpoint and returns the result."""
+        from givefood.utils.general import get_markdown
+
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"success": True, "result": "# Needs\n- Beans"}
+        mock_post.return_value = mock_response
+
+        result = get_markdown("https://example.org/needs")
+        assert result == "# Needs\n- Beans"
+
+        call = mock_post.call_args
+        assert call.args[0] == "https://api.cloudflare.com/client/v4/accounts/acct123/browser-rendering/markdown"
+        assert call.kwargs["json"]["url"] == "https://example.org/needs"
+        assert call.kwargs["headers"]["Authorization"] == "Bearer tok456"
+
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: "x")
+    @patch("givefood.utils.general.requests.post")
+    def test_get_markdown_returns_none_on_error_status(self, mock_post, mock_cred):
+        """Test that get_markdown returns None on a non-200 response."""
+        from givefood.utils.general import get_markdown
+
+        mock_response = MagicMock()
+        mock_response.status_code = 500
+        mock_post.return_value = mock_response
+
+        assert get_markdown("https://example.org/needs") is None
+
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: "x")
+    @patch("givefood.utils.general.requests.post")
+    def test_get_markdown_returns_none_on_unsuccessful_payload(self, mock_post, mock_cred):
+        """Test that get_markdown returns None when the API reports success=False."""
+        from givefood.utils.general import get_markdown
+
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"success": False, "errors": ["boom"]}
+        mock_post.return_value = mock_response
+
+        assert get_markdown("https://example.org/needs") is None
+
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: "x")
+    @patch("givefood.utils.general.requests.post", side_effect=__import__("requests").exceptions.Timeout)
+    def test_get_markdown_returns_none_on_request_exception(self, mock_post, mock_cred):
+        """Test that get_markdown returns None when the request raises."""
+        from givefood.utils.general import get_markdown
+
+        assert get_markdown("https://example.org/needs") is None
 
 
 class TestOpenrouter:

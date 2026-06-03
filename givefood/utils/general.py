@@ -57,6 +57,44 @@ def get_screenshot(url, width=1280, height=1280):
         return response.content
 
 
+def get_markdown(url):
+    """Render a URL to Markdown using the Cloudflare Browser Rendering API.
+
+    Uses a headless browser, so JS-rendered pages render correctly. Returns the Markdown
+    string, or None if the render failed.
+    """
+    cf_account_id = get_cred("cf_account_id")
+    cf_api_key = get_cred("cf_need_browser_render")
+
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer %s" % (cf_api_key),
+    }
+    api_url = "https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/markdown" % (cf_account_id)
+
+    try:
+        response = requests.post(api_url, headers = headers, json = {
+            "url": url,
+            "rejectResourceTypes": ["image"],
+            "rejectRequestPattern": ["/^.*\\.(css)/"],
+            "gotoOptions": {
+                "waitUntil": "networkidle0",
+                "timeout": 45000,
+            },
+        }, timeout = 60)
+    except requests.exceptions.RequestException:
+        return None
+
+    if response.status_code != 200:
+        return None
+
+    response_json = response.json()
+    if not response_json.get("success"):
+        return None
+
+    return response_json.get("result")
+
+
 def get_favicon(url):
     """Fetch a favicon PNG for the given URL via Google's favicon service. Returns image bytes or None."""
     if not url:
