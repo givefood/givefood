@@ -433,6 +433,36 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         last_published_need = None
     last_nonpublished_needs = FoodbankChange.objects.filter(foodbank = foodbank, published = False).order_by("-created")[:10]
 
+    # Safety net: a completely empty extraction when the food bank previously had needs almost
+    # always means a failed/blocked render (e.g. an anti-bot interstitial that slipped through),
+    # not a genuine change. Don't wipe the published need on that — record a discrepancy and skip.
+    if not need_text and not excess_text and last_published_need and (last_published_need.change_text or last_published_need.excess_change_text):
+        website_discrepancy = FoodbankDiscrepancy(
+            foodbank = foodbank,
+            discrepancy_type = "website",
+            discrepancy_text = "Empty needs extracted for %s despite an existing published need; skipped to avoid wiping it" % (foodbank.url),
+            url = foodbank.url,
+        )
+        website_discrepancy.save()
+        foodbank.last_need_check = timezone.now()
+        foodbank.save(do_decache=False, do_geoupdate=False)
+        crawl_item.finish = timezone.now()
+        crawl_item.save()
+        return {
+            "foodbank": foodbank,
+            "need_prompt": need_prompt,
+            "is_nonpertinent": False,
+            "is_change": False,
+            "change_state": ["Empty extraction skipped"],
+            "need_text": "",
+            "excess_text": "",
+            "last_published_need": last_published_need,
+            "last_nonpublished_needs": last_nonpublished_needs,
+            "prompt_tokens": prompt_tokens,
+            "output_tokens": output_tokens,
+            "total_tokens": total_tokens,
+        }
+
     is_nonpertinent = False
     is_change = False
     change_state = []

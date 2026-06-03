@@ -829,6 +829,41 @@ class TestGetMarkdown:
 
         assert get_markdown("https://example.org/needs") is None
 
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: "x")
+    @patch("givefood.utils.general.requests.post")
+    def test_get_markdown_returns_none_on_challenge_page(self, mock_post, mock_cred):
+        """Test that an anti-bot interstitial page is treated as a failed render (None)."""
+        from givefood.utils.general import get_markdown
+
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "success": True,
+            "result": "Please wait while we verify you're not a robot! Loading...",
+        }
+        mock_post.return_value = mock_response
+
+        assert get_markdown("https://example.org/needs") is None
+        # all attempts should have been made against the challenge page
+        assert mock_post.call_count == 3
+
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: "x")
+    @patch("givefood.utils.general.requests.post")
+    def test_get_markdown_retries_past_challenge(self, mock_post, mock_cred):
+        """Test that get_markdown retries and returns real content after a challenge page."""
+        from givefood.utils.general import get_markdown
+
+        challenge = MagicMock()
+        challenge.status_code = 200
+        challenge.json.return_value = {"success": True, "result": "Just a moment..."}
+        good = MagicMock()
+        good.status_code = 200
+        good.json.return_value = {"success": True, "result": "# Needs\n- Beans"}
+        mock_post.side_effect = [challenge, good]
+
+        assert get_markdown("https://example.org/needs") == "# Needs\n- Beans"
+        assert mock_post.call_count == 2
+
 
 class TestOpenrouter:
     """Test openrouter utility function."""

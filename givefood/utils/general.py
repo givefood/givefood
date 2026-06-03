@@ -57,11 +57,31 @@ def get_screenshot(url, width=1280, height=1280):
         return response.content
 
 
-def get_markdown(url):
+# Markers of anti-bot interstitial / "verify you're not a robot" holding pages that the
+# headless browser sometimes captures instead of the real content. These render as a 200
+# with non-empty markdown, so they must be detected explicitly and retried.
+MARKDOWN_CHALLENGE_MARKERS = (
+    "verify you're not a robot",
+    "verify you are not a robot",
+    "just a moment",
+    "checking your browser",
+    "enable javascript and cookies to continue",
+    "please wait while we verify",
+)
+
+
+def _is_markdown_challenge(markdown):
+    """Return True if the rendered markdown looks like a bot-challenge / interstitial page."""
+    low = markdown.lower()
+    return any(marker in low for marker in MARKDOWN_CHALLENGE_MARKERS)
+
+
+def get_markdown(url, attempts = 3):
     """Render a URL to Markdown using the Cloudflare Browser Rendering API.
 
-    Uses a headless browser, so JS-rendered pages render correctly. Returns the Markdown
-    string, or None if the render failed.
+    Uses a headless browser, so JS-rendered pages render correctly. Retries on transient
+    failures and on anti-bot interstitial pages (which render intermittently). Returns the
+    Markdown string, or None if every attempt failed or only returned a challenge page.
     """
     cf_account_id = get_cred("cf_account_id")
     cf_api_key = get_cred("cf_need_browser_render")
@@ -72,27 +92,38 @@ def get_markdown(url):
     }
     api_url = "https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/markdown" % (cf_account_id)
 
-    try:
-        response = requests.post(api_url, headers = headers, json = {
-            "url": url,
-            "rejectResourceTypes": ["image"],
-            "rejectRequestPattern": ["/^.*\\.(css)/"],
-            "gotoOptions": {
-                "waitUntil": "networkidle0",
-                "timeout": 45000,
-            },
-        }, timeout = 60)
-    except requests.exceptions.RequestException:
-        return None
+    for _attempt in range(attempts):
+        try:
+            response = requests.post(api_url, headers = headers, json = {
+                "url": url,
+                "rejectResourceTypes": ["image"],
+                "rejectRequestPattern": ["/^.*\\.(css)/"],
+                "gotoOptions": {
+                    "waitUntil": "networkidle0",
+                    "timeout": 45000,
+                },
+            }, timeout = 60)
+        except requests.exceptions.RequestException:
+            continue
 
-    if response.status_code != 200:
-        return None
+        if response.status_code != 200:
+            continue
 
-    response_json = response.json()
-    if not response_json.get("success"):
-        return None
+        try:
+            response_json = response.json()
+        except ValueError:
+            continue
 
-    return response_json.get("result")
+        if not response_json.get("success"):
+            continue
+
+        result = response_json.get("result")
+        if not result or _is_markdown_challenge(result):
+            continue
+
+        return result
+
+    return None
 
 
 def get_favicon(url):
