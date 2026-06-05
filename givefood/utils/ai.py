@@ -10,7 +10,6 @@ from time import sleep
 from google import genai
 from google.genai import types
 from google.genai.errors import ServerError
-from mistralai import Mistral
 
 from givefood.utils.cache import get_cred
 
@@ -82,27 +81,6 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
     if return_usage:
         return result, response.usage_metadata
     return result
-
-
-def mistral(prompt, temperature, response_format = "json_object", model = "open-mistral-nemo"):
-    """Send a prompt to the Mistral AI API and return the response content."""
-    client = Mistral(api_key = get_cred("mistral"))
-
-    response = client.chat.complete(
-        model = model,
-        messages = [
-            {"role": "user", "content": prompt}
-        ],
-        temperature = temperature,
-        response_format = {"type": response_format},
-    )
-
-    content = response.choices[0].message.content
-
-    if response_format == "json_object":
-        return json.loads(content)
-
-    return content
 
 
 def openrouter(prompt, temperature, model, response_schema = None, response_format_type = "json_schema", cred_name = "openrouter_needtestbed"):

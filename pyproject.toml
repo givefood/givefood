@@ -40,7 +40,6 @@ dependencies = [
     "furl",
     "beautifulsoup4",
     "google-genai",
-    "mistralai",
     "django-earthdistance",
     "google-cloud-translate",
     "google-api-python-client",

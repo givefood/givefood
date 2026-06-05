@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import re
+import json
 import logging
 
 import requests
 from datetime import datetime
-from time import mktime
+from time import mktime, sleep
 import feedparser
 
 from django.template.loader import render_to_string
@@ -18,7 +19,7 @@ from givefood.const.general import BOT_USER_AGENT
 from givefood.utils.cache import get_cred
 from givefood.utils.general import get_markdown
 from givefood.utils.text import clean_foodbank_need_text, text_for_comparison, htmlbodytext
-from givefood.utils.ai import gemini
+from givefood.utils.ai import openrouter
 
 
 def foodbank_article_crawl(foodbank, crawl_set = None):
@@ -405,18 +406,34 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    need_response, need_usage = gemini(
-        prompt = need_prompt,
-        temperature = 0,
-        response_schema = response_schema,
-        response_mime_type = "application/json",
-        timeout = 120,
-        return_usage = True,
-    )
+    # Extract needs from the rendered page via DeepSeek on OpenRouter.
+    need_check_kwargs = {
+        "prompt": need_prompt,
+        "temperature": 0,
+        "model": "deepseek/deepseek-v4-flash",
+        "response_schema": response_schema,
+        "cred_name": "openrouter_liveneed",
+    }
+    api_response = openrouter(**need_check_kwargs)
+    if api_response.status_code != 200:
+        # Retry once on a transient error so a single blip doesn't drop the food bank.
+        sleep(60)
+        api_response = openrouter(**need_check_kwargs)
+    if api_response.status_code != 200:
+        raise RuntimeError("OpenRouter need check failed: HTTP %s %s" % (api_response.status_code, api_response.text[:500]))
 
-    prompt_tokens = getattr(need_usage, "prompt_token_count", None) or 0
-    output_tokens = getattr(need_usage, "candidates_token_count", None) or 0
-    total_tokens = getattr(need_usage, "total_token_count", None) or 0
+    response_json = api_response.json()
+
+    usage = response_json.get("usage", {}) or {}
+    prompt_tokens = usage.get("prompt_tokens", 0) or 0
+    output_tokens = usage.get("completion_tokens", 0) or 0
+    total_tokens = usage.get("total_tokens", 0) or 0
+
+    need_content = response_json["choices"][0]["message"]["content"]
+    try:
+        need_response = json.loads(need_content)
+    except (json.JSONDecodeError, TypeError):
+        need_response = None
 
     if isinstance(need_response, dict):
         need_text = '\n'.join(need_response["needed"])
@@ -522,3 +539,18 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         "output_tokens":output_tokens,
         "total_tokens":total_tokens,
     }
+
+
+@task(queue_name="needcheck")
+def do_foodbank_need_check_async(foodbank_slug, crawl_set_id=None):
+    """Async task to check a single food bank's website for updated needs.
+
+    Enqueued one-per-food-bank by the `needcheck` management command onto the
+    "needcheck" queue, so the sweep is drained by the task worker rather than run
+    inline.
+    """
+    from givefood.models import Foodbank, CrawlSet
+    foodbank = Foodbank.objects.get(slug=foodbank_slug)
+    crawl_set = CrawlSet.objects.filter(pk=crawl_set_id).first() if crawl_set_id is not None else None
+    do_foodbank_need_check(foodbank, crawl_set)
+    return True
