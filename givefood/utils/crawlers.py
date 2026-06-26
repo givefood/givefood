@@ -18,7 +18,7 @@ from django_tasks import task
 from givefood.const.general import BOT_USER_AGENT
 from givefood.utils.cache import get_cred
 from givefood.utils.general import get_markdown
-from givefood.utils.text import clean_foodbank_need_text, text_for_comparison, htmlbodytext
+from givefood.utils.text import clean_foodbank_need_text, need_items_key, htmlbodytext
 from givefood.utils.ai import openrouter
 
 
@@ -396,6 +396,21 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         "required": ["needed", "excess"]
     }
 
+    # Fetch the last published need now so we can prime the extraction prompt with it. The model is
+    # told to reuse the previous wording for items that are still on the page, which stops cosmetic
+    # re-wording drift (Tin vs Tinned, spelling, splitting) from registering as a change in the need
+    # comparison below — without a separate judging call. Order/separator drift is handled there too
+    # by need_items_key.
+    try:
+        last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
+    except FoodbankChange.DoesNotExist:
+        last_published_need = None
+
+    # Don't prime with placeholder records (e.g. a legacy "Facebook" need) — they aren't real lists.
+    priming_need = last_published_need
+    if priming_need and priming_need.change_text in ("Facebook", "Unknown", "Nothing"):
+        priming_need = None
+
     need_prompt = render_to_string(
         "foodbank_need_prompt.txt",
         {
@@ -403,6 +418,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             "scrape_type":scrape_type,
             "foodbank_page":foodbank_shoppinglist_page,
             "foodbank_html":foodbank_shoppinglist_html,
+            "last_need":priming_need,
         }
     )
 
@@ -444,10 +460,6 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         need_text = ""
         excess_text = ""
 
-    try:
-        last_published_need = FoodbankChange.objects.filter(foodbank = foodbank, published = True).latest("created")
-    except FoodbankChange.DoesNotExist:
-        last_published_need = None
     last_nonpublished_needs = FoodbankChange.objects.filter(foodbank = foodbank, published = False).order_by("-created")[:10]
 
     # Safety net: a completely empty extraction when the food bank previously had needs almost
@@ -485,9 +497,8 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
     change_state = []
 
     for last_nonpublished_need in last_nonpublished_needs:
-        if text_for_comparison(need_text) == text_for_comparison(last_nonpublished_need.change_text) and text_for_comparison(excess_text) == text_for_comparison(last_nonpublished_need.excess_change_text):
+        if need_items_key(need_text) == need_items_key(last_nonpublished_need.change_text) and need_items_key(excess_text) == need_items_key(last_nonpublished_need.excess_change_text):
             is_nonpertinent = True
-            last_nonpublished_need.is_nonpertinent = True
             change_state.append("Nonpub same")
 
     if last_published_need is None:
@@ -496,10 +507,12 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
             is_change = True
             change_state.append("First need")
     else:
-        if text_for_comparison(need_text) != text_for_comparison(last_published_need.change_text):
+        # Order- and separator-insensitive: priming keeps wording stable, and this stops a pure
+        # reordering or a "/" vs "-" separator difference from registering as a change.
+        if need_items_key(need_text) != need_items_key(last_published_need.change_text):
             is_change = True
             change_state.append("Last pub need change")
-        if text_for_comparison(excess_text) != text_for_comparison(last_published_need.excess_change_text):
+        if need_items_key(excess_text) != need_items_key(last_published_need.excess_change_text):
             is_change = True
             change_state.append("Last pub excess change")
 

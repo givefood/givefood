@@ -3401,6 +3401,11 @@ def needtestbed(request):
         except requests.exceptions.RequestException:
             pass
 
+        # Prime with the last published need (placeholders excluded), mirroring do_foodbank_need_check.
+        priming_need = last_published_need
+        if priming_need and priming_need.change_text in ("Facebook", "Unknown", "Nothing"):
+            priming_need = None
+
         need_prompt = render_to_string(
             "foodbank_need_prompt.txt",
             {
@@ -3408,6 +3413,7 @@ def needtestbed(request):
                 "scrape_type":"web",
                 "foodbank_page":foodbank_shoppinglist_page,
                 "foodbank_html":foodbank_shoppinglist_html,
+                "last_need":priming_need,
             }
         )
 
@@ -3432,7 +3438,7 @@ def needtestbed(request):
             "required": ["needed", "excess"]
         }
 
-        from givefood.utils.text import clean_foodbank_need_text, text_for_comparison
+        from givefood.utils.text import clean_foodbank_need_text, need_items_key
 
         for model in OPENROUTER_MODELS:
             result = {
@@ -3469,8 +3475,8 @@ def needtestbed(request):
                     }
 
                     if last_published_need:
-                        result["need_match"] = text_for_comparison(need_text) == text_for_comparison(last_published_need.change_text)
-                        result["excess_match"] = text_for_comparison(excess_text) == text_for_comparison(last_published_need.excess_change_text)
+                        result["need_match"] = need_items_key(need_text) == need_items_key(last_published_need.change_text)
+                        result["excess_match"] = need_items_key(excess_text) == need_items_key(last_published_need.excess_change_text)
                 else:
                     result["error"] = "HTTP %s" % api_response.status_code
                     try:

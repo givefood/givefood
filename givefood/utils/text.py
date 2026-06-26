@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+import html
 import difflib
 from collections import Counter
 
@@ -68,8 +69,31 @@ def text_for_comparison(text):
         return text
 
 
+def need_items_key(text):
+    """Order- and separator-insensitive key for comparing food bank need lists.
+
+    Splits the text into per-line items, reduces each item to its lowercase alphanumeric characters,
+    and returns a frozenset. This makes a need-change check ignore item ORDER and separator
+    punctuation within an item (slashes, commas, dashes), so cosmetic reordering or a "/" vs "-"
+    style difference doesn't register as a change. It deliberately does NOT merge items that are
+    split across different lines, so a genuine added/removed item still changes the set.
+    """
+    if not text:
+        return frozenset()
+    items = set()
+    for line in text.splitlines():
+        token = re.sub(r"[^a-z0-9]", "", line.lower())
+        if token:
+            items.add(token)
+    return frozenset(items)
+
+
 def clean_foodbank_need_text(text):
     """Clean up food bank need text by removing extra whitespace, empty lines, and fixing capitalisation."""
+    # Decode HTML entities (e.g. "&amp;" -> "&") that can leak in from the rendered page, so the same
+    # item doesn't drift between "&" and "&amp;" across runs.
+    text = html.unescape(text)
+
     # Remove double spaces
     text = text.replace("  "," ")
     
