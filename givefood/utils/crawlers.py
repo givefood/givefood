@@ -422,13 +422,17 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    # Extract needs from the rendered page via DeepSeek on OpenRouter.
+    # Extract needs from the rendered page via DeepSeek on OpenRouter. A fixed seed makes the call
+    # reproducible (OpenRouter routes seeded requests stickily to one provider), so an unchanged page
+    # yields the same extraction run-to-run instead of drifting between the ~18 providers' differing
+    # quantizations. That lets the nonpertinent suppression below catch repeats without a second call.
     need_check_kwargs = {
         "prompt": need_prompt,
         "temperature": 0,
         "model": "deepseek/deepseek-v4-flash",
         "response_schema": response_schema,
         "cred_name": "openrouter_liveneed",
+        "seed": 1,
     }
     api_response = openrouter(**need_check_kwargs)
     if api_response.status_code != 200:

@@ -83,8 +83,13 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
     return result
 
 
-def openrouter(prompt, temperature, model, response_schema = None, response_format_type = "json_schema", cred_name = "openrouter_needtestbed"):
-    """Send a prompt to the OpenRouter API and return the raw response."""
+def openrouter(prompt, temperature, model, response_schema = None, response_format_type = "json_schema", cred_name = "openrouter_needtestbed", seed = None):
+    """Send a prompt to the OpenRouter API and return the raw response.
+
+    Pass `seed` to make the call reproducible: OpenRouter routes a seeded request stickily to one
+    provider, so the same prompt yields the same output across calls (important for the need check,
+    where this model is otherwise served by ~18 providers at different quantizations).
+    """
     key = get_cred(cred_name)
 
     payload = {
@@ -94,6 +99,9 @@ def openrouter(prompt, temperature, model, response_schema = None, response_form
         ],
         "temperature": temperature,
     }
+
+    if seed is not None:
+        payload["seed"] = seed
 
     if response_schema and response_format_type == "json_schema":
         payload["response_format"] = {
