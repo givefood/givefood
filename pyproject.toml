@@ -76,8 +76,8 @@ dev = [
 
 [project.urls]
 Homepage = "https://www.givefood.org.uk"
-Repository = "https://codeberg.org/givefood/givefood"
-"Bug Tracker" = "https://codeberg.org/givefood/givefood/issues"
+Repository = "https://github.com/givefood/givefood"
+"Bug Tracker" = "https://github.com/givefood/givefood/issues"
 Documentation = "https://www.givefood.org.uk/api/"
 
 [tool.setuptools.packages.find]
