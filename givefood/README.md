@@ -83,37 +83,62 @@ The `givefood` app's URL configuration includes routes for:
 
 ## Core Components
 
-### Data Models (`models.py`)
+### Data Models (`models/`)
 
-The app contains all core data models used across the entire platform:
+The app contains all core data models used across the entire platform. These live in a
+`givefood/models/` package grouped by domain rather than a single `models.py`. Every model is
+re-exported from `models/__init__.py`, so `from givefood.models import Foodbank` works regardless
+of which module a model actually lives in.
 
-#### Food Bank Models
+#### `foodbank.py`
 - **Foodbank** - Main food bank organizations with address, charity info, political data, contact details
 - **FoodbankLocation** - Distribution points operated by food banks
 - **FoodbankDonationPoint** - Third-party donation collection points (supermarkets, etc.)
+
+#### `needs.py`
 - **FoodbankChange** - Historical record of food bank needs updates
 - **FoodbankChangeLine** - Individual items in a needs update
 - **FoodbankChangeTranslation** - Multilingual translations of needs
 - **FoodbankDiscrepancy** - Data quality issues flagged for review
-- **FoodbankArticle** - News articles mentioning food banks
-- **FoodbankHit** - Analytics tracking for food bank pages
-- **FoodbankSubscriber** - Email subscription management
 
-#### Order & Delivery Models
+#### `orders.py`
 - **Order** - Food deliveries from Give Food to food banks
 - **OrderLine** - Individual line items in orders (deprecated)
 - **OrderItem** - Items in orders
 - **OrderGroup** - Bulk donation campaigns spanning multiple orders
 
-#### Political Models
+#### `political.py`
 - **ParliamentaryConstituency** - UK parliamentary constituency data with boundaries, MPs, and political information
-- **ConstituencySubscriber** - Constituency-level email subscriptions
 
-#### Supporting Models
-- **GfCredential** - Secure storage for API keys and credentials
+#### `subscribers.py`
+- **FoodbankSubscriber** - Email subscription management
+- **ConstituencySubscriber** - Constituency-level email subscriptions
+- **WebPushSubscription** - Browser push notification endpoints
+- **MobileSubscriber** - Mobile app push registrations
+- **WhatsappSubscriber** - WhatsApp notification subscriptions
+
+#### `geo.py`
 - **Place** - Google Places data cache
 - **PlacePhoto** - Google Places photo metadata
-- **Changelog** - System changelog entries
+- **Postcode** - Cached postcode lookups
+
+#### `articles.py`
+- **FoodbankArticle** - News articles mentioning food banks
+
+#### `analytics.py`
+- **FoodbankHit** - Analytics tracking for food bank pages
+- **CrawlSet** - A single run of the crawler across food bank sites
+- **CrawlItem** - Per-site result within a crawl set
+
+#### `operations.py`
+- **GfCredential** - Secure storage for API keys and credentials
+- **CharityYear** - Annual charity accounts data
+- **Dump** - Generated CSV/JSON data dumps
+- **SlugRedirect** - Redirects from retired food bank slugs
+
+#### `base.py`
+Shared abstract bases rather than concrete tables: **TimestampedModel**, **CreatedModel**,
+**EditableModel**, **UUIDModel** and **PhysicalPlace**.
 
 ### Utility Functions (`utils/`)
 

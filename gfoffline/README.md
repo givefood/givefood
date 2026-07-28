@@ -20,13 +20,16 @@ The following views are triggered by scheduled jobs or internal processes:
 - **place_ids** (`/place_ids/`) - Fetches Google Place IDs for food banks and locations
 - **load_mps** (`/load_mps/`) - Imports MP data from CSV and downloads their photos
 - **refresh_mps** (`/refresh_mps/`) - Updates MP information from Parliament API
+- **render_proxy** (`/render_proxy/`) - Renders a URL to Markdown via Cloudflare Browser Rendering, used by the need check
 
 ### Management Commands
 
 Run these commands using `python manage.py <command>`:
 
 #### needcheck
-Crawls all open food banks to check and update their current needs.
+Queues a need check for every open food bank onto the `needcheck` queue, recording the batch as a
+`CrawlSet`. The checks themselves are performed by the `db_worker` task worker, not by this command —
+it returns as soon as everything is enqueued.
 ```bash
 python manage.py needcheck
 ```
@@ -75,6 +78,37 @@ Regenerates unique IDs for food bank needs.
 python manage.py regenerate_need_ids
 ```
 
+#### set_foodbank_bounds
+Sets the map bounds (`bounds_north`, `bounds_south`, `bounds_east`, `bounds_west`) for all food banks
+from their locations and donation points.
+```bash
+python manage.py set_foodbank_bounds
+```
+
+#### place_populations
+Populates the `population` field on each Place using AI (Gemini), in batches.
+```bash
+python manage.py place_populations
+```
+
+#### import_places
+Replaces all Place rows with the contents of `places.csv`.
+```bash
+python manage.py import_places
+```
+
+#### import_postcodes
+Imports postcodes from a CSV file, skipping any not marked "In Use".
+```bash
+python manage.py import_postcodes
+```
+
+#### newlang
+Translates `latest_need` for all food banks into a specified language — used when adding a new locale.
+```bash
+python manage.py newlang <language_code>
+```
+
 ## Templates
 
 The app includes AI prompt templates for:
@@ -86,8 +120,11 @@ The app includes AI prompt templates for:
 ## Key Functions
 
 ### Automated Data Maintenance
-- **Web Scraping**: Monitors food bank websites for changes using the GiveFoodBot user agent
-- **AI Integration**: Uses Google GenAI (Gemini) to extract and categorize food bank needs
+- **Web Scraping**: Monitors food bank websites for changes using the GiveFoodBot user agent. Pages
+  are rendered to Markdown via Cloudflare Browser Rendering, so JS-heavy sites (the Trussell/IFAN
+  `*.foodbank.org.uk` platforms) resolve correctly
+- **AI Integration**: Needs are extracted with DeepSeek via OpenRouter; Google GenAI (Gemini) handles
+  contact-detail extraction, item categorisation and place populations
 - **Geocoding**: Maintains location data with Google Plus Codes and Place IDs
 - **Charity Data**: Syncs with official charity registries across UK nations
 
@@ -102,5 +139,5 @@ Maintains in-memory caches of frequently accessed data to improve API and websit
 
 ## Related Documentation
 
-- [Cron schedule](../../docs/crons.md) - Details of scheduled task timings
-- [Main README](../../README.md) - Project overview and structure
+- [Cron schedule](../docs/crons.md) - Details of scheduled task timings
+- [Main README](../README.md) - Project overview and structure

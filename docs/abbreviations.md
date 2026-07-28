@@ -21,6 +21,8 @@
   <dd>Food Standards Agency</dd>
   <dt>gd</dt>
   <dd>Gàidhlig (Gaelic, in Gaelic)</dd>
+  <dt>ifan</dt>
+  <dd>Independent Food Aid Network</dd>
   <dt>mp</dt>
   <dd>Member of Parliament</dd>
   <dt>ni</dt>

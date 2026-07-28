@@ -186,7 +186,7 @@ Policy makers can:
 
 ## Data Licensing
 
-Give Food's data is public domain. See the main project [LICENSE](../../LICENSE) file for details.
+Give Food's data is public domain. See the main project [LICENSE](../LICENSE) file for details.
 
 When using dumps:
 - **Credit**: Link to www.givefood.org.uk

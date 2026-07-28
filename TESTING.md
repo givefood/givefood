@@ -75,19 +75,30 @@ The givefood app has multiple test files organized in a tests directory:
 
 **test_middleware.py** - GeoJSON preload, GZip, and render time middleware tests
 
+**test_checks.py** - Django system check tests
+
+**test_donationpoint.py** - Donation point model tests
+
+**test_schema_org.py** - Schema.org structured data output tests
+
+**test_send_email.py** - Outbound email tests
+
+**test_place_populations.py** - `place_populations` management command tests
+
 #### gfadmin/tests/
-The admin app has an extensive test suite across 27 test files covering:
-- Food bank management (check, touch, URLs, partial forms, photos, social media, crawl display, tab icons)
-- Need views and categorisation
-- Crawl sets (view, navigation, time taken)
+The admin app has an extensive test suite across 33 test files covering:
+- Food bank management (check, touch, URLs, partial forms, photos, social media, crawl display, tab icons, next-up ordering)
+- Need views, categorisation, excess display, and bulk deletion
+- The need testbed, including the OpenRouter model list
+- Crawl sets (view, navigation, time taken, JSON)
 - Search functionality
 - Slug redirect admin
 - HTMX delete operations
-- Index and settings views
-- Subscriptions and article management
+- Index, map, and settings views
+- Subscriptions and article management, including featured articles
 - Task statistics
 - AI detail views
-- Fragment endpoints
+- Fragment and proxy endpoints
 - Food bank location area forms
 - N+1 query prevention
 
@@ -150,9 +161,18 @@ uv run pytest --cov=givefood --cov=gfapi2
 uv run pytest --cov=givefood --cov=gfapi2 --cov-report=html
 ```
 
+## Continuous Integration
+
+Tests run on GitHub Actions via `.github/workflows/test.yml`, on every push to `main` and on every
+pull request against it. The job spins up a PostgreSQL 16 service, installs the `cube`,
+`earthdistance` and `pg_trgm` extensions, then runs the suite under Python 3.12.3 with `uv`.
+
+JUnit XML and a self-contained HTML report are uploaded as a `test-results` artifact on every run,
+pass or fail.
+
 ## Test Statistics
 
-- **Total Tests**: ~500
+- **Total Tests**: 693
 - **Coverage Areas**:
   - Text processing utilities
   - Geographic calculations

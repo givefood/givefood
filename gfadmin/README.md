@@ -111,7 +111,10 @@ The main admin landing page showing:
 ## Technical Details
 
 ### URL Configuration
-Routes are defined in `urls.py` with the `admin` namespace. All URLs are prefixed with `/admin/`.
+Routes use the `admin` namespace and are all prefixed with `/admin/`. They are defined in the
+`urls/` package, split by domain — `foodbanks.py`, `needs.py`, `orders.py`, `items.py`,
+`geography.py`, `stats.py`, `subscriptions.py`, `credentials.py`, `crawl_sets.py`, `testers.py`
+and `core.py` — which `urls/__init__.py` assembles into a single `urlpatterns`.
 
 ### Context Processors
 `context_processors.py` provides Google Maps API keys and configuration to all admin templates.

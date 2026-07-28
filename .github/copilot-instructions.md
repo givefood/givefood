@@ -2,13 +2,13 @@
 
 ## About This Project
 
-Give Food is a UK charity that uses data to highlight local and structural food insecurity and provides tools to help alleviate it. We maintain the largest publicly available database of food banks and their needs in the UK, covering nearly 3000 locations.
+Give Food is a UK charity that uses data to highlight local and structural food insecurity and provides tools to help alleviate it. We maintain the largest publicly available database of food banks and their needs in the UK, covering over 3000 locations.
 
 **Charity Registration:** England & Wales [1188192](https://register-of-charities.charitycommission.gov.uk/en/charity-details/5147019)
 
 ## Technology Stack
 
-- **Framework:** Django 6.0.2
+- **Framework:** Django 6.0.7
 - **Python Version:** 3.12.3
 - **Database:** PostgreSQL with django-earthdistance for geographic queries
 - **Frontend:** Bulma CSS framework via django-bulma
@@ -18,7 +18,7 @@ Give Food is a UK charity that uses data to highlight local and structural food 
 - **Background Tasks:** django-tasks
 - **Internationalization:** Django i18n with translations in locale/ directory
 - **Error Tracking:** Sentry
-- **AI Integration:** Google GenAI, Mistral AI, and OpenRouter
+- **AI Integration:** Google GenAI (Gemini) and OpenRouter
 - **Push Notifications:** Firebase (firebase-admin) and django-webpush
 
 ## Project Structure
@@ -44,11 +44,12 @@ The project follows Django's app-based architecture with multiple specialized ap
 ### Django Specific
 
 - **Settings Module:** `givefood.settings`
-- **URL Patterns:** Each app has its own urls.py that's included in the main URL configuration
+- **URL Patterns:** Each app has its own URL configuration included in the main one. Most are a single `urls.py`; gfadmin has grown into a `gfadmin/urls/` package split by domain (foodbanks, needs, orders, geography, stats, etc.)
+- **Models:** `givefood/models/` is a package, not a single module. Models are grouped by domain — `foodbank.py`, `needs.py`, `orders.py`, `political.py`, `geo.py`, `articles.py`, `analytics.py`, `subscribers.py`, `operations.py` — with shared helpers in `base.py`. All are re-exported from `__init__.py`, so `from givefood.models import Foodbank` still works
 - **Templates:** Located in each app's `templates/` directory
 - **Static Files:** Located in `givefood/static/`
 - **Utilities:** Organized in `givefood/utils/` with specialized modules:
-  - `ai.py` - AI integrations (Gemini, Mistral, OpenRouter)
+  - `ai.py` - AI integrations (Gemini, OpenRouter)
   - `cache.py` - Caching and credential management
   - `crawlers.py` - Web crawling utilities
   - `general.py` - Translation, Turnstile validation, screenshots
