@@ -422,20 +422,23 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    # Extract needs from the rendered page via Qwen3.5-Flash on OpenRouter. A fixed seed makes the
-    # call reproducible, so an unchanged page yields the same extraction run-to-run rather than
-    # drifting; that lets the nonpertinent suppression below catch repeats without a second call.
-    # This model has a single provider (Alibaba, fp8), so there's no cross-provider quantization
-    # drift to route around either. Reasoning is off — extraction doesn't need it and thinking
-    # tokens bill at the completion rate.
+    # Extract needs from the rendered page via DeepSeek on OpenRouter. A fixed seed makes the call
+    # reproducible (OpenRouter routes seeded requests stickily to one provider), so an unchanged page
+    # yields the same extraction run-to-run instead of drifting between the ~18 providers' differing
+    # quantizations. That lets the nonpertinent suppression below catch repeats without a second call.
+    #
+    # Don't swap this model without checking the provider really honours strict json_schema, and
+    # doing it against this schema and the real prompt. OpenRouter's structured_outputs flag is not
+    # reliable: qwen/qwen3.5-flash-02-23 advertises it, but Alibaba downgrades json_schema to
+    # json_object and then rejects any prompt not containing the literal word "json" — a 400 on
+    # every call. json_object alone would not guarantee the needed/excess keys this code indexes.
     need_check_kwargs = {
         "prompt": need_prompt,
         "temperature": 0,
-        "model": "qwen/qwen3.5-flash-02-23",
+        "model": "deepseek/deepseek-v4-flash",
         "response_schema": response_schema,
         "cred_name": "openrouter_liveneed",
         "seed": 1,
-        "reasoning": False,
     }
     api_response = openrouter(**need_check_kwargs)
     if api_response.status_code != 200:
