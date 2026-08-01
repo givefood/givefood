@@ -422,10 +422,15 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    # Extract needs from the rendered page via DeepSeek on OpenRouter. A fixed seed makes the call
-    # reproducible (OpenRouter routes seeded requests stickily to one provider), so an unchanged page
-    # yields the same extraction run-to-run instead of drifting between the ~18 providers' differing
-    # quantizations. That lets the nonpertinent suppression below catch repeats without a second call.
+    # Extract needs from the rendered page via gpt-oss-120b on OpenRouter. A fixed seed makes the
+    # call reproducible (OpenRouter routes seeded requests stickily to one provider), so an unchanged
+    # page yields the same extraction run-to-run instead of drifting between the 19 providers'
+    # differing quantizations. That lets the nonpertinent suppression below catch repeats without a
+    # second call.
+    #
+    # gpt-oss is a reasoning model, but it's deliberately called without a reasoning override: that
+    # is the configuration benchmarked against deepseek-v4-flash, where it matched the baseline's
+    # extraction exactly on every food bank both models returned for.
     #
     # Don't swap this model without checking the provider really honours strict json_schema, and
     # doing it against this schema and the real prompt. OpenRouter's structured_outputs flag is not
@@ -435,7 +440,7 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
     need_check_kwargs = {
         "prompt": need_prompt,
         "temperature": 0,
-        "model": "deepseek/deepseek-v4-flash",
+        "model": "openai/gpt-oss-120b",
         "response_schema": response_schema,
         "cred_name": "openrouter_liveneed",
         "seed": 1,
