@@ -83,12 +83,15 @@ def gemini(prompt, temperature, response_mime_type = "application/json", respons
     return result
 
 
-def openrouter(prompt, temperature, model, response_schema = None, response_format_type = "json_schema", cred_name = "openrouter_needtestbed", seed = None):
+def openrouter(prompt, temperature, model, response_schema = None, response_format_type = "json_schema", cred_name = "openrouter_needtestbed", seed = None, reasoning = None):
     """Send a prompt to the OpenRouter API and return the raw response.
 
     Pass `seed` to make the call reproducible: OpenRouter routes a seeded request stickily to one
-    provider, so the same prompt yields the same output across calls (important for the need check,
-    where this model is otherwise served by ~18 providers at different quantizations).
+    provider, so the same prompt yields the same output across calls. This matters most for models
+    served by many providers at differing quantizations, where routing alone would cause drift.
+
+    Pass `reasoning = False` on hybrid thinking models (e.g. Qwen3.5) to keep them out of thinking
+    mode — extraction doesn't need it, and thinking tokens are billed at the completion rate.
     """
     key = get_cred(cred_name)
 
@@ -102,6 +105,9 @@ def openrouter(prompt, temperature, model, response_schema = None, response_form
 
     if seed is not None:
         payload["seed"] = seed
+
+    if reasoning is not None:
+        payload["reasoning"] = {"enabled": reasoning}
 
     if response_schema and response_format_type == "json_schema":
         payload["response_format"] = {

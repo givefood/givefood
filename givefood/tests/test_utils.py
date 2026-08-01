@@ -819,3 +819,33 @@ class TestOpenrouter:
         call_kwargs = mock_post.call_args
         payload = call_kwargs.kwargs["json"]
         assert "response_format" not in payload
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.requests.post")
+    def test_openrouter_reasoning_disabled(self, mock_post, mock_cred):
+        """Test that openrouter sends reasoning.enabled False when reasoning is False."""
+        from givefood.utils.ai import openrouter
+
+        mock_response = MagicMock()
+        mock_post.return_value = mock_response
+
+        openrouter("test prompt", 0, "qwen/qwen3.5-flash-02-23", reasoning=False)
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs["json"]
+        assert payload["reasoning"] == {"enabled": False}
+
+    @patch("givefood.utils.ai.get_cred", return_value="fake_api_key")
+    @patch("givefood.utils.ai.requests.post")
+    def test_openrouter_no_reasoning_by_default(self, mock_post, mock_cred):
+        """Test that openrouter omits reasoning when not specified."""
+        from givefood.utils.ai import openrouter
+
+        mock_response = MagicMock()
+        mock_post.return_value = mock_response
+
+        openrouter("test prompt", 0, "google/gemini-2.5-flash")
+
+        call_kwargs = mock_post.call_args
+        payload = call_kwargs.kwargs["json"]
+        assert "reasoning" not in payload
