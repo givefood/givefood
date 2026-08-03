@@ -57,6 +57,13 @@ class Place(TimestampedModel):
         app_label = 'givefood'
         indexes = [
             models.Index(fields=['-population', 'name']),
+            # Serves the place page lookup, which is filter(county_slug, name_slug)
+            # then .first() -- so ORDER BY id is part of the query. Including id
+            # lets the index answer the ordering too, rather than sorting after.
+            models.Index(
+                fields=['county_slug', 'name_slug', 'id'],
+                name='place_county_name_slug_idx',
+            ),
             # Optimizes istartswith queries: UPPER(name) LIKE 'PREFIX%'
             models.Index(
                 OpClass(Upper('name'), name='text_pattern_ops'),
