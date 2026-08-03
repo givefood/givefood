@@ -9,7 +9,7 @@ from django_earthdistance.models import EarthDistance, LlToEarth
 from givefood.models import Foodbank, FoodbankChange, FoodbankDonationPoint, ParliamentaryConstituency, FoodbankChange
 from .func import ApiResponse
 from givefood.utils.cache import get_all_open_foodbanks, get_all_open_locations
-from givefood.utils.geo import find_donationpoints, find_locations, geocode, is_uk, miles
+from givefood.utils.geo import NearestFirst, find_donationpoints, find_locations, geocode, is_uk, miles
 from givefood.const.cache_times import SECONDS_IN_HOUR, SECONDS_IN_DAY, SECONDS_IN_MONTH, SECONDS_IN_WEEK
 from givefood.models import Dump
 
@@ -394,7 +394,7 @@ def foodbank_search(request):
         distance=EarthDistance([
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
-        ])).order_by("distance")[:10]
+        ])).order_by(NearestFirst(lat, lng))[:10]
     
     response_list = []
 

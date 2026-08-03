@@ -13,11 +13,43 @@ from openlocationcode import openlocationcode as olc
 from urllib.parse import quote
 
 from django.urls import reverse
-from django.db.models import Value
+from django.db.models import Expression, FloatField, Value
 from django_earthdistance.models import EarthDistance, LlToEarth
 
 from givefood.const.general import SITE_DOMAIN
 from givefood.utils.cache import get_cred, get_all_open_foodbanks, get_all_constituencies
+
+
+class NearestFirst(Expression):
+    """
+    ORDER BY expression for "nearest to a point" queries.
+
+    earth_distance() returns real metres, but PostgreSQL can't answer an
+    ORDER BY on it from an index, so sorting by it means a full table scan
+    and an ll_to_earth() call for every row. The cube <-> operator is the
+    GiST KNN operator, so ordering by it is answered straight out of the
+    ll_to_earth(latitude, longitude) indexes.
+
+    <-> gives chord distance rather than great circle distance, but the two
+    are monotonic in each other so the ordering is identical. Keep annotating
+    EarthDistance() where the distance itself is needed.
+    """
+
+    def __init__(self, lat, lng, lat_field = "latitude", lng_field = "longitude"):
+        super().__init__(output_field=FloatField())
+        self.location = LlToEarth([lat_field, lng_field])
+        self.point = LlToEarth([lat, lng])
+
+    def get_source_expressions(self):
+        return [self.location, self.point]
+
+    def set_source_expressions(self, expressions):
+        self.location, self.point = expressions
+
+    def as_sql(self, compiler, connection):
+        location_sql, location_params = compiler.compile(self.location)
+        point_sql, point_params = compiler.compile(self.point)
+        return "%s <-> %s" % (location_sql, point_sql), (*location_params, *point_params)
 
 
 def _sanitize_address_for_log(address):
@@ -213,7 +245,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
         distance=EarthDistance([
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("organisation")).order_by("distance")[:quantity]
+        ])).annotate(type=Value("organisation")).order_by(NearestFirst(lat, lng))[:quantity]
 
     locations = FoodbankLocation.objects.filter(is_closed = False).prefetch_related(
         Prefetch("foodbank", queryset=_foodbank_queryset())
@@ -221,7 +253,7 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
         distance=EarthDistance([
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
-        ])).annotate(type=Value("location")).order_by("distance")[:quantity]
+        ])).annotate(type=Value("location")).order_by(NearestFirst(lat, lng))[:quantity]
 
     for foodbank in foodbanks:
         foodbank.distance_mi = miles(foodbank.distance)
@@ -299,7 +331,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
     ).filter(
         distance__lte=max_distance_meters,
         needs_category=True
-    ).annotate(type=Value("organisation")).order_by("distance")[:quantity]
+    ).annotate(type=Value("organisation")).order_by(NearestFirst(lat, lng))[:quantity]
 
     # Get the IDs of foodbanks that need the category
     foodbank_ids_with_category = list(
@@ -327,7 +359,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         ])
     ).filter(
         distance__lte=max_distance_meters
-    ).annotate(type=Value("location")).order_by("distance")[:quantity]
+    ).annotate(type=Value("location")).order_by(NearestFirst(lat, lng))[:quantity]
 
     # Process foodbanks
     for foodbank in foodbanks:
@@ -376,7 +408,7 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
     distance=EarthDistance([
         LlToEarth([lat, lng]),
         LlToEarth(['latitude', 'longitude'])
-    ])).annotate(type=Value("donationpoint")).order_by("distance")[:quantity]
+    ])).annotate(type=Value("donationpoint")).order_by(NearestFirst(lat, lng))[:quantity]
 
     location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).prefetch_related(
         Prefetch("foodbank", queryset=_foodbank_queryset())
@@ -384,7 +416,7 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
     distance=EarthDistance([
         LlToEarth([lat, lng]),
         LlToEarth(['latitude', 'longitude'])
-    ])).annotate(type=Value("location")).order_by("distance")[:quantity]
+    ])).annotate(type=Value("location")).order_by(NearestFirst(lat, lng))[:quantity]
 
     if foodbank:
         donationpoints = donationpoints.filter(foodbank = foodbank)
