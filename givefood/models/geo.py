@@ -104,7 +104,10 @@ class Postcode(models.Model):
             code="invalid_postcode",
         ),
     ])
-    postcode_normalized = models.CharField(max_length=9, blank=True, db_index=True, editable=False)
+    # No db_index: the plain btree it creates can't serve LIKE under a non-C
+    # collation, which is the only way this column is queried. postcode_norm_like
+    # below is the index that actually gets used.
+    postcode_normalized = models.CharField(max_length=9, blank=True, editable=False)
     lat_lng = models.CharField(max_length=100, verbose_name="Latitude, Longitude")
     county = models.CharField(max_length=100, null=True, blank=True)
     district = models.CharField(max_length=100, null=True, blank=True)
