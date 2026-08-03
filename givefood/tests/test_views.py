@@ -499,6 +499,76 @@ class TestAddressAutocomplete:
         assert item['n'] == 'Test Place'
         assert item['l'] == '51.5074,-0.1278'
 
+    def _place(self, gbpnid, name, population=None):
+        return Place.objects.create(
+            gbpnid=gbpnid, name=name, population=population,
+            lat_lng='51.5074,-0.1278', adcounty='Testshire',
+        )
+
+    def test_aac_orders_prefix_matches_by_population(self, client):
+        """More populous places come first, and places with no population last."""
+        self._place(90001, 'Readington', population=100)
+        self._place(90002, 'Readborough', population=90000)
+        self._place(90003, 'Readless', population=None)
+
+        data = json.loads(client.get('/aac/?q=read').content)
+
+        assert [item['n'] for item in data] == ['Readborough', 'Readington', 'Readless']
+
+    def test_aac_puts_prefix_matches_before_substring_matches(self, client):
+        """A less populous prefix match still outranks a more populous substring match."""
+        self._place(90010, 'Barnet', population=100)
+        self._place(90011, 'Great Barnwell', population=500000)
+
+        data = json.loads(client.get('/aac/?q=barn').content)
+
+        assert [item['n'] for item in data] == ['Barnet', 'Great Barnwell']
+
+    def test_aac_finds_substring_matches(self, client):
+        """Substring matches fill the remaining slots once prefixes run out."""
+        self._place(90020, 'Upper Chester', population=100)
+
+        data = json.loads(client.get('/aac/?q=chester').content)
+
+        assert [item['n'] for item in data] == ['Upper Chester']
+
+    def test_aac_skips_substring_search_below_three_characters(self, client):
+        """
+        Two characters give the trigram index nothing to work with, so the
+        substring pass is skipped rather than reading the whole table.
+        """
+        self._place(90030, 'Oxford', population=100)
+
+        prefix_hit = json.loads(client.get('/aac/?q=ox').content)
+        assert [item['n'] for item in prefix_hit] == ['Oxford']
+
+        substring_miss = json.loads(client.get('/aac/?q=xf').content)
+        assert substring_miss == []
+
+    def test_aac_escapes_like_wildcards(self, client):
+        """A percent sign is matched literally, not treated as "match everything"."""
+        self._place(90040, 'Anywhere', population=100)
+
+        assert json.loads(client.get('/aac/?q=%25%25').content) == []
+        assert json.loads(client.get('/aac/?q=__').content) == []
+        assert json.loads(client.get('/aac/?q=any').content) != []
+
+    def test_aac_matches_case_insensitively(self, client):
+        """Matching ignores case in both directions."""
+        self._place(90050, 'Aberdeen', population=100)
+
+        assert len(json.loads(client.get('/aac/?q=ABERD').content)) == 1
+        assert len(json.loads(client.get('/aac/?q=aberd').content)) == 1
+
+    def test_aac_returns_at_most_ten_places(self, client):
+        """The place passes are capped at ten results between them."""
+        for i in range(15):
+            self._place(90100 + i, 'Testville %02d' % i, population=i)
+
+        data = json.loads(client.get('/aac/?q=testville').content)
+
+        assert len(data) == 10
+
     def test_aac_postcode_result_structure(self, client):
         """Test that Postcode results have expected structure with n (name) and l (lat_lng)."""
         Postcode.objects.create(

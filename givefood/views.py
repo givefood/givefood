@@ -7,6 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, translate_url
 from django.template.loader import render_to_string
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
+from django.db import connection
 from django.db.models import Sum, F
 from django.utils.timesince import timesince
 from django.utils.translation import gettext_lazy as _, gettext
@@ -1483,6 +1484,51 @@ def _handle_unsubscribe(phone_number, foodbank_slug):
         )
 
 
+def _like_escape(value):
+    """Escape LIKE wildcards in user input, as the ORM's pattern lookups do."""
+    return value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+
+
+def _place_matches(like, not_like, limit):
+    """
+    Places matching a LIKE pattern, most populous first.
+
+    Written as SQL because the ORM form lets PostgreSQL walk idx_place_pop_name
+    in population order and filter as it goes. That fills the LIMIT quickly for
+    a common prefix, but scans all 260k rows whenever few names match -- 185ms
+    for "hackney", and worse for a string matching nothing. Since real
+    autocomplete traffic is mostly longer, rarer strings, that was the common
+    case, not the edge case.
+
+    OFFSET 0 is an optimisation fence. It stops the planner pulling the sort
+    into the scan, so the text match runs first through the trigram or pattern
+    index and only the matches get sorted. Filtering through pk__in instead
+    does not fence -- PostgreSQL flattens it to a semi-join and it gets worse,
+    not better.
+    """
+    conditions = ["UPPER(name::text) LIKE %s ESCAPE '\\'"]
+    params = [like]
+    if not_like:
+        conditions.append("UPPER(name::text) NOT LIKE %s ESCAPE '\\'")
+        params.append(not_like)
+    params.append(limit)
+
+    sql = """
+        SELECT name, lat_lng, county FROM (
+            SELECT name, lat_lng, county, population
+            FROM givefood_place
+            WHERE {conditions}
+            OFFSET 0
+        ) matches
+        ORDER BY population DESC NULLS LAST, name ASC
+        LIMIT %s
+    """.format(conditions=" AND ".join(conditions))
+
+    with connection.cursor() as cursor:
+        cursor.execute(sql, params)
+        return cursor.fetchall()
+
+
 @cache_page(SECONDS_IN_DAY)
 def address_autocomplete(request):
     """
@@ -1504,36 +1550,31 @@ def address_autocomplete(request):
         return JsonResponse([], safe=False)
     
     results = []
-    
+    escaped = _like_escape(query.upper())
+    prefix_pattern = "%s%%" % escaped
+
     # Search places - two-pass approach: prefix matches first, then substring matches
-    prefix_places = Place.objects.filter(
-        name__istartswith=query
-    ).order_by(F('population').desc(nulls_last=True), 'name').values('name', 'lat_lng', 'county')[:10]
-    
-    for place in prefix_places:
+    for name, lat_lng, county in _place_matches(prefix_pattern, None, 10):
         results.append({
-            "n": place['name'],
-            "l": place['lat_lng'],
+            "n": name,
+            "l": lat_lng,
             "t": "p",
-            "c": place['county']
+            "c": county
         })
-    
-    # Fill remaining slots with substring matches (excluding prefix matches)
-    if len(results) < 10:
-        substring_places = Place.objects.filter(
-            name__icontains=query
-        ).exclude(
-            name__istartswith=query
-        ).order_by(F('population').desc(nulls_last=True), 'name').values('name', 'lat_lng', 'county')[:10 - len(results)]
-        
-        for place in substring_places:
+
+    # Fill remaining slots with substring matches (excluding prefix matches).
+    # Below three characters there is nothing for the trigram index to match on,
+    # so a substring search there means reading the whole table for results that
+    # are barely worth having.
+    if len(results) < 10 and len(query) >= 3:
+        for name, lat_lng, county in _place_matches("%%%s" % prefix_pattern, prefix_pattern, 10 - len(results)):
             results.append({
-                "n": place['name'],
-                "l": place['lat_lng'],
+                "n": name,
+                "l": lat_lng,
                 "t": "p",
-                "c": place['county']
+                "c": county
             })
-    
+
     # Search postcodes - only fetch if we have room for more results
     if len(results) < 20:
         postcode_query = query.upper().replace(" ", "")
