@@ -17,6 +17,19 @@ class FoodbankHit(models.Model):
     day = models.DateField()
     hits = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        app_label = 'givefood'
+        constraints = [
+            # The hit counter upserts against this. hits is carried along so
+            # the same index still answers the per-food-bank totals without
+            # touching the heap.
+            models.UniqueConstraint(
+                fields=['foodbank', 'day'],
+                include=['hits'],
+                name='foodbankhit_foodbank_day_uniq',
+            ),
+        ]
+
 
 class CrawlSet(models.Model):
 

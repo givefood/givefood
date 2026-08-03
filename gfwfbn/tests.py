@@ -1,9 +1,13 @@
+import datetime
+import threading
+
 import pytest
 from unittest.mock import patch, Mock
+from django.db import IntegrityError, connection
 from django.test import Client
 from django.urls import reverse
 from django.core.cache import cache
-from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankChange, FoodbankLocation
+from givefood.models import Foodbank, FoodbankDonationPoint, FoodbankChange, FoodbankHit, FoodbankLocation
 
 
 @pytest.fixture
@@ -2146,4 +2150,87 @@ class TestDonationPointFavicon:
         url = reverse('wfbn-generic:foodbank_donationpoint_favicon', kwargs={'slug': 'nonexistent-fb', 'dpslug': 'nonexistent-dp'})
         response = client.get(url)
 
+        assert response.status_code == 404
+
+
+@pytest.mark.django_db(transaction=True)
+class TestFoodbankHit:
+    """Test the hit counter, which upserts against a unique (foodbank, day) index"""
+
+    def _post(self, client, slug):
+        return client.post(reverse('wfbn-generic:foodbank_hit', kwargs={'slug': slug}))
+
+    def test_first_hit_creates_row(self, client, create_test_foodbank):
+        """A first hit inserts a row for today with a count of one."""
+        foodbank = create_test_foodbank(name="Hit Test FB", slug="hit-test-fb")
+
+        response = self._post(client, foodbank.slug)
+
+        assert response.status_code == 204
+        hit = FoodbankHit.objects.get(foodbank=foodbank, day=datetime.date.today())
+        assert hit.hits == 1
+
+    def test_subsequent_hits_increment_same_row(self, client, create_test_foodbank):
+        """Further hits increment in place rather than inserting duplicates."""
+        foodbank = create_test_foodbank(name="Hit Test FB 2", slug="hit-test-fb-2")
+
+        for _ in range(5):
+            assert self._post(client, foodbank.slug).status_code == 204
+
+        hits = FoodbankHit.objects.filter(foodbank=foodbank, day=datetime.date.today())
+        assert hits.count() == 1
+        assert hits.first().hits == 5
+
+    def test_hits_are_counted_per_foodbank(self, client, create_test_foodbank):
+        """Each food bank keeps its own count for the day."""
+        one = create_test_foodbank(name="Hit Test FB 3", slug="hit-test-fb-3")
+        two = create_test_foodbank(name="Hit Test FB 4", slug="hit-test-fb-4")
+
+        self._post(client, one.slug)
+        self._post(client, two.slug)
+        self._post(client, two.slug)
+
+        today = datetime.date.today()
+        assert FoodbankHit.objects.get(foodbank=one, day=today).hits == 1
+        assert FoodbankHit.objects.get(foodbank=two, day=today).hits == 2
+
+    def test_duplicate_rows_cannot_be_created(self, client, create_test_foodbank):
+        """The unique index the upsert depends on is actually enforced."""
+        foodbank = create_test_foodbank(name="Hit Test FB 5", slug="hit-test-fb-5")
+        today = datetime.date.today()
+        FoodbankHit.objects.create(foodbank=foodbank, day=today, hits=1)
+
+        with pytest.raises(IntegrityError):
+            FoodbankHit.objects.create(foodbank=foodbank, day=today, hits=1)
+
+    def test_concurrent_hits_do_not_lose_increments(self, client, create_test_foodbank):
+        """
+        Overlapping requests must not lose counts. The previous read-then-write
+        implementation dropped increments here; the upsert is atomic.
+        """
+        foodbank = create_test_foodbank(name="Hit Test FB 6", slug="hit-test-fb-6")
+        errors = []
+
+        def hit():
+            try:
+                Client().post(reverse('wfbn-generic:foodbank_hit', kwargs={'slug': foodbank.slug}))
+            except Exception as e:  # pragma: no cover - surfaced via errors below
+                errors.append(e)
+            finally:
+                connection.close()
+
+        threads = [threading.Thread(target=hit) for _ in range(20)]
+        for thread in threads:
+            thread.start()
+        for thread in threads:
+            thread.join()
+
+        assert not errors
+        hits = FoodbankHit.objects.filter(foodbank=foodbank, day=datetime.date.today())
+        assert hits.count() == 1
+        assert hits.first().hits == 20
+
+    def test_unknown_slug_returns_404(self, client):
+        """An unknown food bank still 404s rather than silently counting nothing."""
+        response = self._post(client, 'no-such-foodbank')
         assert response.status_code == 404

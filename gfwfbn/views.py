@@ -3,7 +3,7 @@ from urllib.parse import urlparse
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden, HttpResponseNotFound, JsonResponse, HttpResponseBadRequest, Http404
-from django.db import IntegrityError
+from django.db import IntegrityError, connection
 from django.template.loader import render_to_string
 from django.views.decorators.cache import cache_page, never_cache
 from django.template.defaultfilters import slugify
@@ -1207,23 +1207,23 @@ def foodbank_hit(request, slug):
     """
     Food bank hit counter
     """
-    foodbank = get_object_or_404(Foodbank, slug=slug)
+    foodbank_id = Foodbank.objects.filter(slug=slug).values_list("id", flat=True).first()
+    if foodbank_id is None:
+        raise Http404("Food bank not found")
     day = datetime.date.today()
 
-    try:
-        hit, created = FoodbankHit.objects.get_or_create(
-            foodbank=foodbank,
-            day=day,
-            defaults={"hits": 1}
+    # Single atomic upsert, relying on the unique index over (foodbank, day).
+    # Reading the row and writing back hits + 1 lost increments whenever two
+    # requests overlapped, and the get_or_create it was paired with could
+    # itself race and create the duplicate rows it then had to clean up.
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """
+            INSERT INTO %s (foodbank_id, day, hits) VALUES (%%s, %%s, 1)
+            ON CONFLICT (foodbank_id, day) DO UPDATE SET hits = %s.hits + 1
+            """ % (FoodbankHit._meta.db_table, FoodbankHit._meta.db_table),
+            [foodbank_id, day],
         )
-    except FoodbankHit.MultipleObjectsReturned:
-        hits = FoodbankHit.objects.filter(foodbank=foodbank, day=day)
-        total_hits = sum(h.hits for h in hits)
-        hits.delete()
-        hit = FoodbankHit.objects.create(foodbank=foodbank, day=day, hits=total_hits + 1)
-        created = True
-    if not created:
-        FoodbankHit.objects.filter(pk=hit.pk).update(hits=hit.hits + 1)
 
     return HttpResponse(status=204)
 
