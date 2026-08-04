@@ -769,6 +769,23 @@ class TestGetMarkdown:
         assert get_markdown("https://example.org/needs") == "# Needs\n- Beans"
         assert mock_post.call_count == 2
 
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: "x")
+    @patch("givefood.utils.general.requests.post")
+    def test_get_markdown_relaxes_wait_until_on_last_attempt(self, mock_post, mock_cred):
+        """Test that a site which never reaches network idle falls back to networkidle2."""
+        from givefood.utils.general import get_markdown
+
+        timeout = MagicMock()
+        timeout.status_code = 422
+        good = MagicMock()
+        good.status_code = 200
+        good.json.return_value = {"success": True, "result": "# Needs\n- Beans"}
+        mock_post.side_effect = [timeout, timeout, good]
+
+        assert get_markdown("https://example.org/needs") == "# Needs\n- Beans"
+        wait_untils = [call.kwargs["json"]["gotoOptions"]["waitUntil"] for call in mock_post.call_args_list]
+        assert wait_untils == ["networkidle0", "networkidle0", "networkidle2"]
+
 
 class TestOpenrouter:
     """Test openrouter utility function."""

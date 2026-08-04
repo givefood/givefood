@@ -76,12 +76,23 @@ def _is_markdown_challenge(markdown):
     return any(marker in low for marker in MARKDOWN_CHALLENGE_MARKERS)
 
 
+# Navigation wait conditions, tried in order across the attempts. networkidle0 (no in-flight
+# requests for 500ms) gives JS-heavy platforms like the Trussell/IFAN *.foodbank.org.uk sites
+# the longest to settle, so it stays the default and gets a second go for transient failures.
+# But a site holding one connection permanently open — an analytics beacon, a chat widget, the
+# GoDaddy and Wix site builders — never reaches idle and times out on *every* attempt, so the
+# last attempt drops to networkidle2 (at most 2 in-flight), which renders those in about a
+# second. Cloudflare caps the per-navigation timeout at 60s, so waiting longer isn't an option.
+MARKDOWN_WAIT_UNTILS = ("networkidle0", "networkidle0", "networkidle2")
+
+
 def get_markdown(url, attempts = 3):
     """Render a URL to Markdown using the Cloudflare Browser Rendering API.
 
     Uses a headless browser, so JS-rendered pages render correctly. Retries on transient
-    failures and on anti-bot interstitial pages (which render intermittently). Returns the
-    Markdown string, or None if every attempt failed or only returned a challenge page.
+    failures and on anti-bot interstitial pages (which render intermittently), relaxing the
+    navigation wait condition on the last attempt. Returns the Markdown string, or None if
+    every attempt failed or only returned a challenge page.
     """
     cf_account_id = get_cred("cf_account_id")
     cf_api_key = get_cred("cf_need_browser_render")
@@ -93,13 +104,14 @@ def get_markdown(url, attempts = 3):
     api_url = "https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/markdown" % (cf_account_id)
 
     for _attempt in range(attempts):
+        wait_until = MARKDOWN_WAIT_UNTILS[min(_attempt, len(MARKDOWN_WAIT_UNTILS) - 1)]
         try:
             response = requests.post(api_url, headers = headers, json = {
                 "url": url,
                 "rejectResourceTypes": ["image"],
                 "rejectRequestPattern": ["/^.*\\.(css)/"],
                 "gotoOptions": {
-                    "waitUntil": "networkidle0",
+                    "waitUntil": wait_until,
                     "timeout": 45000,
                 },
             }, timeout = 60)
