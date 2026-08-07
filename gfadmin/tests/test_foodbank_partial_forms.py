@@ -18,7 +18,7 @@ class TestFoodbankAddressForm:
     def test_foodbank_address_form_has_correct_fields(self):
         """Test that the form has only the address fields."""
         form = FoodbankAddressForm()
-        expected_fields = ['address', 'postcode', 'lat_lng']
+        expected_fields = ['address', 'postcode', 'lat_lng', 'place_id']
         assert list(form.fields.keys()) == expected_fields
 
     def test_foodbank_address_form_inherits_from_model_form(self):

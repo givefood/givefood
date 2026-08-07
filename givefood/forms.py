@@ -57,7 +57,7 @@ class FoodbankUrlsForm(ModelForm):
 class FoodbankAddressForm(ModelForm):
     class Meta:
         model = Foodbank
-        fields = ["address", "postcode", "lat_lng"]
+        fields = ["address", "postcode", "lat_lng", "place_id"]
 
     def save(self, commit=True): 
         foodbank = super().save(commit=False)

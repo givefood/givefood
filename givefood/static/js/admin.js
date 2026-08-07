@@ -375,11 +375,12 @@ function initLatLngLookup() {
         event.preventDefault();
 
         try {
+            // Partial forms only render a subset of these fields
             const addressParts = [
-                DOM.name_field.value,
-                DOM.address_field.value.replace(/\n/g, ", "),
-                DOM.postcode_field.value
-            ];
+                DOM.name_field ? DOM.name_field.value : "",
+                DOM.address_field ? DOM.address_field.value.replace(/\n/g, ", ") : "",
+                DOM.postcode_field ? DOM.postcode_field.value : ""
+            ].filter(part => part.trim() !== "");
             const address = addressParts.join(", ");
 
             const data = await fetchJSON(API_URLS.geolocation(address));
