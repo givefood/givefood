@@ -3059,12 +3059,21 @@ def place_form(request, pk):
 
 def foodbanks_without_need(request):
 
+    # One DISTINCT ON for the latest published need per food bank name, rather
+    # than a .latest() per food bank. That loop was a query each for every food
+    # bank on the site, and the page only shows the need id.
+    latest_needs = {
+        need.foodbank_name: need
+        for need in FoodbankChange.objects
+            .filter(published=True)
+            .order_by("foodbank_name", "-created")
+            .distinct("foodbank_name")
+            .only("foodbank_name", "need_id", "created")
+    }
+
     foodbanks = Foodbank.objects.all()
     for foodbank in foodbanks:
-        try:
-            foodbank.need = FoodbankChange.objects.filter(foodbank_name=foodbank.name, published=True).latest("created")
-        except FoodbankChange.DoesNotExist:
-            foodbank.need = None
+        foodbank.need = latest_needs.get(foodbank.name)
 
     template_vars = {
         "section":"settings",
