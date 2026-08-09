@@ -56,6 +56,7 @@ dependencies = [
     "pywebpush==2.3.0",
     "openlocationcode",
     "urllib3>=2.6.3",
+    "h2>=4.4.1",
     "cryptography>=50.0.0",
     "protobuf>=6.33.5",
     "pyasn1>=0.6.4",
