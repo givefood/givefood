@@ -55,7 +55,10 @@ def _get_bank_holidays():
 class Foodbank(TimestampedModel, EditableModel, UUIDModel, PhysicalPlace):
 
     # Name
-    name = models.CharField(max_length=100)
+    # Unique because the database has enforced it all along via
+    # givefood_foodbank_name_key -- declaring it here is what lets forms report
+    # a duplicate as a validation error rather than an IntegrityError.
+    name = models.CharField(max_length=100, unique=True)
     alt_name = models.CharField(max_length=100, null=True, blank=True, help_text="E.g. Welsh version of the name")
     slug = models.CharField(max_length=100, editable=False)
 

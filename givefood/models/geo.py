@@ -79,7 +79,9 @@ class Place(TimestampedModel):
 
 class PlacePhoto(TimestampedModel):
 
-    place_id = models.CharField(max_length=1024, null=True, blank=True)
+    # photo_from_place_id() does a .get(place_id=...) and only works because
+    # the database has enforced this via givefood_placephoto_place_id_uniq.
+    place_id = models.CharField(max_length=1024, null=True, blank=True, unique=True)
     photo_ref= models.CharField(max_length=1024, unique=True)
     html_attributions = models.TextField()
     blob = models.BinaryField()
