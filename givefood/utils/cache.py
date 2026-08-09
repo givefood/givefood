@@ -6,7 +6,7 @@ import requests
 from django.core.cache import cache
 from django_tasks import task
 
-from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, CRED_MC_KEY_PREFIX
+from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, CRED_MC_KEY_PREFIX, STATS_MC_KEY
 
 
 def get_slug_redirects():
@@ -76,6 +76,63 @@ def get_all_open_locations():
         all_open_locations = FoodbankLocation.objects.filter(is_closed = False)
         cache.set(LOC_OPEN_MC_KEY, all_open_locations, 3600)
     return all_open_locations
+
+
+def get_site_stats():
+    """
+    Headline counts for the homepage, its markdown twin and llms.txt.
+
+    All three wanted the same numbers and each computed them itself, nine
+    queries a time, over the largest tables in the schema -- FoodbankChangeLine
+    alone holds a row per item per need, and the meals figure sums calories
+    across every order ever placed. Being behind cache_page did not save much:
+    that varies by language and by worker, so the same nine queries ran again
+    for every translation of every one of the three pages.
+
+    The Foodbank and FoodbankLocation counts are gathered per table with
+    conditional aggregates, so what was nine queries -- one of them run twice --
+    is now five.
+    """
+    from django.db.models import Count, Q, Sum
+
+    from givefood.models import (
+        Foodbank, FoodbankChangeLine, FoodbankDonationPoint, FoodbankLocation,
+        Order,
+    )
+
+    stats = cache.get(STATS_MC_KEY)
+    if stats is not None:
+        return stats
+
+    foodbanks = Foodbank.objects.aggregate(
+        total = Count("pk"),
+        delivering = Count("pk", filter = ~Q(delivery_address = "")),
+        not_administrative = Count("pk", filter = ~Q(address_is_administrative = True)),
+    )
+    locations = FoodbankLocation.objects.aggregate(
+        total = Count("pk"),
+        donation_points = Count("pk", filter = Q(is_donation_point = True)),
+    )
+    donation_points = FoodbankDonationPoint.objects.count()
+    calories = Order.objects.aggregate(Sum("calories"))["calories__sum"] or 0
+
+    stats = {
+        "foodbanks": foodbanks["total"] + foodbanks["delivering"] + locations["total"],
+        "donationpoints": (
+            donation_points
+            + foodbanks["not_administrative"]
+            + foodbanks["delivering"]
+            + locations["donation_points"]
+        ),
+        # One row per item per need. md_index counted FoodbankChange here, which
+        # is one row per shopping list, so it reported a much smaller number
+        # under the same "Items requested" label as the homepage.
+        "items": FoodbankChangeLine.objects.count(),
+        "meals": int(calories / 500),
+    }
+
+    cache.set(STATS_MC_KEY, stats, 3600)
+    return stats
 
 
 def get_all_constituencies():

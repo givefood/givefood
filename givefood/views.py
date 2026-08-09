@@ -16,9 +16,9 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 from session_csrf import anonymous_csrf
 from django.conf import settings
 
-from givefood.models import Foodbank, FoodbankArticle, FoodbankChange, FoodbankChangeLine, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, Order, OrderGroup, ParliamentaryConstituency, Place, Postcode
+from givefood.models import Foodbank, FoodbankArticle, FoodbankChange, FoodbankDonationPoint, FoodbankHit, FoodbankLocation, OrderGroup, ParliamentaryConstituency, Place, Postcode
 from givefood.forms import FoodbankRegistrationForm, FlagForm
-from givefood.utils.cache import get_cred
+from givefood.utils.cache import get_cred, get_site_stats
 from givefood.utils.general import validate_turnstile
 from givefood.utils.notifications import send_email
 from givefood.utils.text import get_user_ip
@@ -154,12 +154,7 @@ def index(request):
         },
     ]
 
-    stats = {
-        "foodbanks":Foodbank.objects.count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.count(),
-        "donationpoints":FoodbankDonationPoint.objects.count() + Foodbank.objects.exclude(address_is_administrative = True).count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.filter(is_donation_point = True).count(),
-        "items":FoodbankChangeLine.objects.count(),
-        "meals":int(Order.objects.aggregate(Sum("calories"))["calories__sum"]/500),
-    }
+    stats = get_site_stats()
 
     # Recently updated food banks
     exclude_change_text = ["Unknown", "Facebook", "Nothing"]
@@ -707,12 +702,7 @@ def md_index(request):
     Markdown version of the homepage
     """
 
-    stats = {
-        "foodbanks":Foodbank.objects.count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.count(),
-        "donationpoints":FoodbankDonationPoint.objects.count() + Foodbank.objects.exclude(address_is_administrative = True).count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.filter(is_donation_point = True).count(),
-        "items":FoodbankChange.objects.count(),
-        "meals":int(Order.objects.aggregate(Sum("calories"))["calories__sum"]/500),
-    }
+    stats = get_site_stats()
 
     exclude_change_text = ["Unknown", "Facebook", "Nothing"]
     recently_updated = (
@@ -916,14 +906,12 @@ def llmstxt(request):
     /llms.txt - LLM-friendly site index
     """
     
-    # Calculate foodbank and donation point counts same as homepage
-    foodbanks_count = Foodbank.objects.count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.count()
-    donationpoints_count = FoodbankDonationPoint.objects.count() + Foodbank.objects.exclude(address_is_administrative = True).count() + Foodbank.objects.exclude(delivery_address = "").count() + FoodbankLocation.objects.filter(is_donation_point = True).count()
-    
+    stats = get_site_stats()
+
     template_vars = {
         "domain":SITE_DOMAIN,
-        "foodbanks_count": foodbanks_count,
-        "donationpoints_count": donationpoints_count,
+        "foodbanks_count": stats["foodbanks"],
+        "donationpoints_count": stats["donationpoints"],
     }
     
     return render(request, "public/llms.txt", template_vars, content_type='text/plain; charset=utf-8')
