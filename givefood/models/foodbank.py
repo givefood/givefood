@@ -430,32 +430,16 @@ class Foodbank(TimestampedModel, EditableModel, UUIDModel, PhysicalPlace):
         from givefood.models.analytics import CrawlItem
         return CrawlItem.objects.filter(foodbank = self).order_by("-finish")[:100]
 
-    def get_footprint(self):
+    def get_footprint(self, bounds = None):
         if self.no_locations == 0 and self.no_donation_points == 0:
             return 0
 
-        # FB
-        fb_max_lat = float(self.latitude)
-        fb_min_lat = float(self.latitude)
-        fb_max_lng = float(self.longitude)
-        fb_min_lng = float(self.longitude)
-
-        # Locations
-        loc_max_lat = FoodbankLocation.objects.filter(foodbank = self).aggregate(Max('latitude'))['latitude__max']
-        loc_min_lat = FoodbankLocation.objects.filter(foodbank = self).aggregate(Min('latitude'))['latitude__min']
-        loc_max_lng = FoodbankLocation.objects.filter(foodbank = self).aggregate(Max('longitude'))['longitude__max']
-        loc_min_lng = FoodbankLocation.objects.filter(foodbank = self).aggregate(Min('longitude'))['longitude__min']
-
-        # Donation Points
-        dp_max_lat = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Max('latitude'))['latitude__max']
-        dp_min_lat = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Min('latitude'))['latitude__min']
-        dp_max_lng = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Max('longitude'))['longitude__max']
-        dp_min_lng = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(Min('longitude'))['longitude__min']
-
-        max_lat = max(x for x in [fb_max_lat, loc_max_lat, dp_max_lat] if x is not None)
-        min_lat = min(x for x in [fb_min_lat, loc_min_lat, dp_min_lat] if x is not None)
-        max_lng = max(x for x in [fb_max_lng, loc_max_lng, dp_max_lng] if x is not None)
-        min_lng = min(x for x in [fb_min_lng, loc_min_lng, dp_min_lng] if x is not None)
+        # The area is derived from the same bounding box get_bounds() returns,
+        # so save() computes it once and passes it in rather than having both
+        # walk the locations and donation points separately.
+        if bounds is None:
+            bounds = self.get_bounds()
+        max_lat, min_lat, max_lng, min_lng = bounds
 
         meters_per_degree_lat = 111_320  # meters per degree latitude
         avg_lat = (max_lat + min_lat) / 2
@@ -471,6 +455,10 @@ class Foodbank(TimestampedModel, EditableModel, UUIDModel, PhysicalPlace):
         """
         Calculate the bounding box for all foodbank locations and donation points.
         Returns a tuple of (north, south, east, west) latitudes/longitudes.
+
+        One aggregate query per related table. Asking for the four Max/Min
+        values separately made four round trips per table for numbers a single
+        SELECT already has to scan the same rows to produce.
         """
         # FB coordinates as base
         fb_lat = float(self.latitude)
@@ -481,24 +469,22 @@ class Foodbank(TimestampedModel, EditableModel, UUIDModel, PhysicalPlace):
         if not self.pk:
             return (fb_lat, fb_lat, fb_lng, fb_lng)
 
-        # Locations
-        loc_max_lat = FoodbankLocation.objects.filter(foodbank=self).aggregate(Max('latitude'))['latitude__max']
-        loc_min_lat = FoodbankLocation.objects.filter(foodbank=self).aggregate(Min('latitude'))['latitude__min']
-        loc_max_lng = FoodbankLocation.objects.filter(foodbank=self).aggregate(Max('longitude'))['longitude__max']
-        loc_min_lng = FoodbankLocation.objects.filter(foodbank=self).aggregate(Min('longitude'))['longitude__min']
+        extent = (Max('latitude'), Min('latitude'), Max('longitude'), Min('longitude'))
+        locations = FoodbankLocation.objects.filter(foodbank = self).aggregate(*extent)
+        donation_points = FoodbankDonationPoint.objects.filter(foodbank = self).aggregate(*extent)
 
-        # Donation Points
-        dp_max_lat = FoodbankDonationPoint.objects.filter(foodbank=self).aggregate(Max('latitude'))['latitude__max']
-        dp_min_lat = FoodbankDonationPoint.objects.filter(foodbank=self).aggregate(Min('latitude'))['latitude__min']
-        dp_max_lng = FoodbankDonationPoint.objects.filter(foodbank=self).aggregate(Max('longitude'))['longitude__max']
-        dp_min_lng = FoodbankDonationPoint.objects.filter(foodbank=self).aggregate(Min('longitude'))['longitude__min']
+        def limit(pick, key, own):
+            # Either aggregate is None when that table has no rows for this
+            # food bank, in which case only its own coordinate counts.
+            candidates = [own, locations[key], donation_points[key]]
+            return pick(x for x in candidates if x is not None)
 
-        north = max(x for x in [fb_lat, loc_max_lat, dp_max_lat] if x is not None)
-        south = min(x for x in [fb_lat, loc_min_lat, dp_min_lat] if x is not None)
-        east = max(x for x in [fb_lng, loc_max_lng, dp_max_lng] if x is not None)
-        west = min(x for x in [fb_lng, loc_min_lng, dp_min_lng] if x is not None)
-
-        return (north, south, east, west)
+        return (
+            limit(max, 'latitude__max', fb_lat),
+            limit(min, 'latitude__min', fb_lat),
+            limit(max, 'longitude__max', fb_lng),
+            limit(min, 'longitude__min', fb_lng),
+        )
 
 
     def get_no_locations(self):
@@ -640,15 +626,13 @@ class Foodbank(TimestampedModel, EditableModel, UUIDModel, PhysicalPlace):
         self.latitude = self.lat_lng.split(",")[0]
         self.longitude = self.lat_lng.split(",")[1]
 
-        # Footprint
-        self.footprint = self.get_footprint()
-
-        # Map bounds
+        # Map bounds, and the footprint measured from them
         bounds = self.get_bounds()
         self.bounds_north = bounds[0]
         self.bounds_south = bounds[1]
         self.bounds_east = bounds[2]
         self.bounds_west = bounds[3]
+        self.footprint = self.get_footprint(bounds)
 
         # Cleanup phone numbers
         if self.phone_number:
