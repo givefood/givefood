@@ -99,16 +99,16 @@ class TestFoodbankN1Queries:
         that are actually used in the template, preventing Django from making
         additional queries when those fields are accessed.
         """
-        from gfadmin.views import foodbank as foodbank_view
-        
+        from gfadmin.views import foodbank_tab
+
         factory = RequestFactory()
-        request = factory.get(f'/admin/foodbank/{foodbank_with_locations.slug}/')
-        
+        request = factory.get(f'/admin/foodbank/{foodbank_with_locations.slug}/tab/donationpoints/')
+
         # Mock render to get context without template rendering
         with patch('gfadmin.views.render') as mock_render:
             mock_render.return_value = None
-            foodbank_view(request, slug=foodbank_with_locations.slug)
-            
+            foodbank_tab(request, slug=foodbank_with_locations.slug, tab='donationpoints')
+
             # Get the template context
             render_args = mock_render.call_args
             template_vars = render_args[0][2]

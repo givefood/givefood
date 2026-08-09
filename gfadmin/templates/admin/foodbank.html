@@ -28,7 +28,7 @@
           <span>Donation Points <span class="tag is-info is-normal is-light">{{ counts.donation_points }}</span></span>
         </a>
       </li>
-      {% if articles %}
+      {% if counts.articles %}
         <li role="presentation">
           <a data-tab="articles" role="tab" aria-selected="false" aria-controls="articles-panel" id="articles-tab">
             <span class="icon"><i class="mdi mdi-newspaper-variant-multiple-outline"></i></span>
@@ -48,7 +48,7 @@
           <span>Crawls <span class="tag is-info is-normal is-light">{{ counts.crawls }}</span></span>
         </a>
       </li>
-      {% if photos %}
+      {% if counts.photos %}
         <li role="presentation">
           <a data-tab="photos" role="tab" aria-selected="false" aria-controls="photos-panel" id="photos-tab">
             <span class="icon"><i class="mdi mdi-image"></i></span>
@@ -79,7 +79,7 @@
                 hx-swap="outerHTML">Touch</button>
       </form>
 
-      {% if not orders %}
+      {% if not counts.orders %}
         <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light" style="margin-top:10px">New Order</a>
       {% endif %}
 
@@ -422,65 +422,44 @@
       
     </div>
 
-    {# Donation Points #}
-    <div class="column tabcontent donationpoints is-hidden" role="tabpanel" id="donationpoints-panel" aria-labelledby="donationpoints-tab">
-      <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-link is-light">New Donation Point</a>
-      {% if donation_points %}
-        <table class="table is-fullwidth is-hoverable">
-          <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Postcode</th>
-            <th>Lat Lng</th>
-            <th>Place ID</th>
-            <th>Company</th>
-            <th>Store ID</th>
-            <th>In Store Only?</th>
-            <th>Notes</th>
-            <th></th>
-          </tr>
-          {% for donation_point in donation_points %}
-            <tr>
-              <td>{{ donation_point.name }}</td>
-              <td>{{ donation_point.address|linebreaksbr }}</td>
-              <td>{{ donation_point.postcode }}</td>
-              <td>{{ donation_point.lat_lng }}</td>
-              <td>{% if donation_point.place_id %}{{ donation_point.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
-              <td>
-                {% if donation_point.company %}
-                  <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon">
-                  {{ donation_point.company }}
-                {% endif %}
-              </td>
-              <td>
-                {% if donation_point.store_id %}
-                  {{ donation_point.store_id }}
-                {% endif %}
-              </td>
-              <td>{% if donation_point.in_store_only %}Y{% endif %}</td>
-              <td>
-                {% if donation_point.notes %}
-                  {{ donation_point.notes|linebreaksbr }}
-                {% endif %}
-              <td>
-                <a href="{% url 'admin:donationpoint_edit' foodbank.slug donation_point.slug %}" class="button is-small is-link is-light">Edit</a>
-                <form action="{% url 'admin:donationpoint_delete' foodbank.slug donation_point.slug %}" method="post">
-                  <input type="submit" class="button is-small is-danger is-light" value="Delete" onclick="return confirm('Delete {{ donation_point.name}}?')">
-                  {% csrf_token %}
-                </form>
-              </td>
-            </tr>
-          {% endfor %}
-        </table>
-      {% else %}
-        <p style="margin-top:20px;">No donation points yet</p>
-      {% endif %}
-    </div>
+    {# Everything below here is fetched by htmx the first time its tab is opened #}
 
-    {# Needs #}
-    {% if needs %}
-      <div class="column tabcontent needsorders is-hidden" role="tabpanel" id="needsorders-panel" aria-labelledby="needsorders-tab">
-        <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light">New Need</a>
+    {% for tab in lazy_tabs %}
+      <div class="column tabcontent lazytab {{ tab }} is-hidden" role="tabpanel" id="{{ tab }}-panel" aria-labelledby="{{ tab }}-tab"
+           hx-get="{% url 'admin:foodbank_tab' foodbank.slug tab %}"
+           hx-trigger="showtab once"
+           hx-swap="innerHTML swap:0.06s">
+        <div class="loading"><span class="loader"></span></div>
+      </div>
+    {% endfor %}
+
+  </div>
+
+{% endblock %}
+
+
+{% block script %}
+  <script src="/static/js/tabber.js?v={{ version }}" defer></script>
+  <script>
+    function decrementPhotoCount() {
+      const countEl = document.getElementById('photos-count');
+      if (countEl) {
+        const currentCount = parseInt(countEl.textContent, 10);
+        countEl.textContent = currentCount - 1;
+      }
+    }
+  </script>
+{% endblock %}
+
+
+{# Tab panels, rendered on their own by foodbank_tab() #}
+
+{% partialdef needsorders %}
+  <div class="columns">
+
+    <div class="column">
+      <a href="{% url 'admin:newneed' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light">New Need</a>
+      {% if needs %}
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th>Published</th>
@@ -521,13 +500,14 @@
             </tr>
           {% endfor %}
         </table>
-      </div>
-    {% endif %}
+      {% else %}
+        <p style="margin-top:20px;">No needs yet</p>
+      {% endif %}
+    </div>
 
-    {# Orders #}
-    {% if orders %}
-      <div class="column tabcontent needsorders is-hidden">
-        <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light">New Order</a>
+    <div class="column">
+      <a href="{% url 'admin:neworder' %}?foodbank={{ foodbank.slug }}" class="button is-link is-light">New Order</a>
+      {% if orders %}
         <table class="table is-fullwidth is-hoverable">
           <tr>
             <th></th>
@@ -546,162 +526,191 @@
             </tr>
           {% endfor %}
         </table>
-      </div>
-    {% endif %}
-
-    {# Articles #}
-    {% if articles %}
-      <div class="column tabcontent articles is-hidden" role="tabpanel" id="articles-panel" aria-labelledby="articles-tab">
-        <table class="table is-fullwidth is-hoverable">
-          {% for article in articles %}
-            <tr>
-              <td>
-                <a href="{{ article.url }}">{{ article.title_captialised }}</a>
-              </td>
-              <td>
-                <span">{{ article.published_date|timesince }} ago</span>
-              </td>
-            </tr>
-          {% endfor %}
-        </table>
-      </div>
-    {% endif %}
-
-    {# Subscribers #}
-    <div class="column tabcontent subscribers is-hidden" role="tabpanel" id="subscribers-panel" aria-labelledby="subscribers-tab">
-      
-      <dl>
-        <dt><span class="mdi mdi-email"></span> Email</dt>
-        <dd>{{ subscription_counts.email }}</dd>
-        <dt><span class="mdi mdi-whatsapp"></span> WhatsApp</dt>
-        <dd>{{ subscription_counts.whatsapp }}</dd>
-        <dt><span class="mdi mdi-cellphone"></span> Mobile</dt>
-        <dd>{{ subscription_counts.mobile }}</dd>
-        <dt><span class="mdi mdi-bell"></span> Web Push</dt>
-        <dd>{{ subscription_counts.webpush }}</dd>
-      </dl>
-
-      <h3>All Subscriptions</h3>
-      <table class="table is-fullwidth is-hoverable">
-        <tr>
-          <th>Type</th>
-          <th>Identifier</th>
-          <th>Created</th>
-        </tr>
-        {% for subscription in all_subscriptions %}
-          <tr>
-            <td style="white-space:nowrap">{{ subscription.type_emoji|safe }} {{ subscription.type|title }}</td>
-            <td>{{ subscription.identifier }}</td>
-            <td>{{ subscription.created }}</td>
-          </tr>
-        {% endfor %}
-      </table>
-
+      {% else %}
+        <p style="margin-top:20px;">No orders yet</p>
+      {% endif %}
     </div>
-
-    {# Crawls #}
-    <div class="column tabcontent crawls is-hidden" role="tabpanel" id="crawls-panel" aria-labelledby="crawls-tab">
-
-      <table class="table is-fullwidth is-hoverable">
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Start</th>
-                <th>Finish</th>
-                <th>Time Taken</th>
-                <th>URL</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for crawl_item in crawl_items %}
-            <tr>
-                <td>{{ crawl_item.crawl_type_icon|safe }} {{ crawl_item.crawl_type }}</td>
-                <td>{{ crawl_item.start }}</td>
-                <td>
-                    {% if crawl_item.finish %}
-                        {{ crawl_item.finish }}
-                    {% else %}
-                        <span style="color:red;">Unfinished</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if crawl_item.finish %}
-                        {{ crawl_item.time_taken_ms|floatformat:0 }} ms
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ crawl_item.url }}" target="_blank">{{ crawl_item.url|truncatechars:30 }}</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-      
-    </div>
-
-    {# Photos #}
-    {% if photos %}
-      <div class="column tabcontent photos is-hidden" role="tabpanel" id="photos-panel" aria-labelledby="photos-tab">
-        <table class="table is-fullwidth is-hoverable">
-          <thead>
-            <tr>
-              <th>Place Name &amp; Type</th>
-              <th>Place ID</th>
-              <th>Photo</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="photos-tbody">
-            {% for photo in photos %}
-              <tr id="photo-row-{{ photo.photo.id }}">
-                <td>
-                  {% if photo.place_type == 'foodbank' %}
-                    <a href="#generallocations">{{ photo.place_name }}</a><br>
-                    <span class="tag is-danger is-light">{{ photo.place_type }}</span>
-                  {% elif photo.place_type == 'location' %}
-                    <a href="#generallocations">{{ photo.place_name }}</a><br>
-                    <span class="tag is-warning is-light">{{ photo.place_type }}</span>
-                  {% elif photo.place_type == 'donationpoint' %}
-                    <a href="#donationpoints">{{ photo.place_name }}</a><br>
-                    <span class="tag is-info is-light">{{ photo.place_type }}</span>
-                  {% endif %}
-                </td>
-                <td>{{ photo.place_id|truncatechars:25 }}</td>
-                <td>
-                  <a href="{{ photo.photo_url }}" target="_blank">
-                    <img src="{{ photo.photo_url }}" alt="{{ photo.place_name }}" style="max-width:100px;max-height:100px;" loading="lazy">
-                  </a>
-                </td>
-                <td>
-                  <button type="button" 
-                          class="button is-small is-danger is-light"
-                          hx-post="{% url 'admin:photo_delete' foodbank.slug photo.photo.id %}"
-                          hx-target="#photo-row-{{ photo.photo.id }}"
-                          hx-swap="delete"
-                          hx-confirm="Delete this photo?"
-                          hx-on::after-request="decrementPhotoCount()">Delete</button>
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    {% endif %}
 
   </div>
+{% endpartialdef needsorders %}
 
-{% endblock %}
+{% partialdef donationpoints %}
+  <a href="{% url 'admin:donationpoint_new' foodbank.slug %}" class="button is-link is-light">New Donation Point</a>
+  {% if donation_points %}
+    <table class="table is-fullwidth is-hoverable">
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Postcode</th>
+        <th>Lat Lng</th>
+        <th>Place ID</th>
+        <th>Company</th>
+        <th>Store ID</th>
+        <th>In Store Only?</th>
+        <th>Notes</th>
+        <th></th>
+      </tr>
+      {% for donation_point in donation_points %}
+        <tr>
+          <td>{{ donation_point.name }}</td>
+          <td>{{ donation_point.address|linebreaksbr }}</td>
+          <td>{{ donation_point.postcode }}</td>
+          <td>{{ donation_point.lat_lng }}</td>
+          <td>{% if donation_point.place_id %}{{ donation_point.place_id|truncatechars:25 }}{% else %}None{% endif %}</td>
+          <td>
+            {% if donation_point.company %}
+              <img src="/static/img/co/{{ donation_point.company|slugify }}.png" alt="{{ donation_point.company }}" class="companyicon">
+              {{ donation_point.company }}
+            {% endif %}
+          </td>
+          <td>
+            {% if donation_point.store_id %}
+              {{ donation_point.store_id }}
+            {% endif %}
+          </td>
+          <td>{% if donation_point.in_store_only %}Y{% endif %}</td>
+          <td>
+            {% if donation_point.notes %}
+              {{ donation_point.notes|linebreaksbr }}
+            {% endif %}
+          <td>
+            <a href="{% url 'admin:donationpoint_edit' foodbank.slug donation_point.slug %}" class="button is-small is-link is-light">Edit</a>
+            <form action="{% url 'admin:donationpoint_delete' foodbank.slug donation_point.slug %}" method="post">
+              <input type="submit" class="button is-small is-danger is-light" value="Delete" onclick="return confirm('Delete {{ donation_point.name}}?')">
+              {% csrf_token %}
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p style="margin-top:20px;">No donation points yet</p>
+  {% endif %}
+{% endpartialdef donationpoints %}
 
+{% partialdef articles %}
+  <table class="table is-fullwidth is-hoverable">
+    {% for article in articles %}
+      <tr>
+        <td>
+          <a href="{{ article.url }}">{{ article.title_captialised }}</a>
+        </td>
+        <td>
+          <span>{{ article.published_date|timesince }} ago</span>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endpartialdef articles %}
 
-{% block script %}
-  <script src="/static/js/tabber.js" defer></script>
-  <script>
-    function decrementPhotoCount() {
-      const countEl = document.getElementById('photos-count');
-      if (countEl) {
-        const currentCount = parseInt(countEl.textContent, 10);
-        countEl.textContent = currentCount - 1;
-      }
-    }
-  </script>
-{% endblock %}
+{% partialdef subscribers %}
+  <dl>
+    <dt><span class="mdi mdi-email"></span> Email</dt>
+    <dd>{{ subscription_counts.email }}</dd>
+    <dt><span class="mdi mdi-whatsapp"></span> WhatsApp</dt>
+    <dd>{{ subscription_counts.whatsapp }}</dd>
+    <dt><span class="mdi mdi-cellphone"></span> Mobile</dt>
+    <dd>{{ subscription_counts.mobile }}</dd>
+    <dt><span class="mdi mdi-bell"></span> Web Push</dt>
+    <dd>{{ subscription_counts.webpush }}</dd>
+  </dl>
+
+  <h3>All Subscriptions</h3>
+  <table class="table is-fullwidth is-hoverable">
+    <tr>
+      <th>Type</th>
+      <th>Identifier</th>
+      <th>Created</th>
+    </tr>
+    {% for subscription in all_subscriptions %}
+      <tr>
+        <td style="white-space:nowrap">{{ subscription.type_emoji|safe }} {{ subscription.type|title }}</td>
+        <td>{{ subscription.identifier }}</td>
+        <td>{{ subscription.created }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endpartialdef subscribers %}
+
+{% partialdef crawls %}
+  <table class="table is-fullwidth is-hoverable">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Start</th>
+        <th>Finish</th>
+        <th>Time Taken</th>
+        <th>URL</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for crawl_item in crawl_items %}
+        <tr>
+          <td>{{ crawl_item.crawl_type_icon|safe }} {{ crawl_item.crawl_type }}</td>
+          <td>{{ crawl_item.start }}</td>
+          <td>
+            {% if crawl_item.finish %}
+              {{ crawl_item.finish }}
+            {% else %}
+              <span style="color:red;">Unfinished</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if crawl_item.finish %}
+              {{ crawl_item.time_taken_ms|floatformat:0 }} ms
+            {% endif %}
+          </td>
+          <td>
+            <a href="{{ crawl_item.url }}" target="_blank">{{ crawl_item.url|truncatechars:30 }}</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endpartialdef crawls %}
+
+{% partialdef photos %}
+  <table class="table is-fullwidth is-hoverable">
+    <thead>
+      <tr>
+        <th>Place Name &amp; Type</th>
+        <th>Place ID</th>
+        <th>Photo</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="photos-tbody">
+      {% for photo in photos %}
+        <tr id="photo-row-{{ photo.photo.id }}">
+          <td>
+            {% if photo.place_type == 'foodbank' %}
+              <a href="#generallocations">{{ photo.place_name }}</a><br>
+              <span class="tag is-danger is-light">{{ photo.place_type }}</span>
+            {% elif photo.place_type == 'location' %}
+              <a href="#generallocations">{{ photo.place_name }}</a><br>
+              <span class="tag is-warning is-light">{{ photo.place_type }}</span>
+            {% elif photo.place_type == 'donationpoint' %}
+              <a href="#donationpoints">{{ photo.place_name }}</a><br>
+              <span class="tag is-info is-light">{{ photo.place_type }}</span>
+            {% endif %}
+          </td>
+          <td>{{ photo.place_id|truncatechars:25 }}</td>
+          <td>
+            <a href="{{ photo.photo_url }}" target="_blank">
+              <img src="{{ photo.photo_url }}" alt="{{ photo.place_name }}" style="max-width:100px;max-height:100px;" loading="lazy">
+            </a>
+          </td>
+          <td>
+            <button type="button"
+                    class="button is-small is-danger is-light"
+                    hx-post="{% url 'admin:photo_delete' foodbank.slug photo.photo.id %}"
+                    hx-target="#photo-row-{{ photo.photo.id }}"
+                    hx-swap="delete"
+                    hx-confirm="Delete this photo?"
+                    hx-on::after-request="decrementPhotoCount()">Delete</button>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endpartialdef photos %}

@@ -168,6 +168,27 @@ td.delivery-provider-icon img {
   opacity: 0;
   transition: opacity 0.5s ease-out;
 }
+/* Tab panels fetched on demand, which fade the spinner out and the content in */
+.lazytab.htmx-swapping {
+  opacity: 0;
+  transition: opacity 0.06s ease-out;
+}
+.lazytab > * {
+  animation: lazytab-appear 0.12s ease-out;
+}
+.lazytab .loading {
+  padding: 3rem 0;
+  opacity: 0;
+  /* Only worth showing if the fetch is slow enough to notice */
+  animation: lazytab-appear 0.3s ease-in 0.15s forwards;
+}
+.lazytab .loading .loader {
+  margin: 0 auto;
+}
+@keyframes lazytab-appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 .footer {
   margin-top:3rem;
 }

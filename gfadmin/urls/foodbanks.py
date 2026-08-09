@@ -11,6 +11,7 @@ urlpatterns = [
 
     path("foodbank/new/", foodbank_form, name="foodbank_new"),
     path("foodbank/<slug:slug>/", foodbank, name="foodbank"),
+    path("foodbank/<slug:slug>/tab/<slug:tab>/", foodbank_tab, name="foodbank_tab"),
     path("foodbank/<slug:slug>/edit/", foodbank_form, name="foodbank_edit"),
     path("foodbank/<slug:slug>/check/", foodbank_check, name="foodbank_check"),
     path("foodbank/<slug:slug>/check/prompt/", foodbank_check_prompt, name="foodbank_check_prompt"),
