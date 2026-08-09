@@ -19,7 +19,7 @@ from django.utils.encoding import smart_str
 from django.utils import timezone
 from django.core.cache import cache
 from django.db import IntegrityError
-from django.db.models import Sum, Q, Count
+from django.db.models import Sum, Q, Count, FilteredRelation
 from django.db.models.functions import Coalesce
 from django.contrib.contenttypes.models import ContentType
 from django.core.validators import validate_email, URLValidator
@@ -270,6 +270,10 @@ def foodbanks(request):
 
     # Annotate foodbanks with hits from last 28 days
     # Note: Annotation is always included because the template displays the hits column
+    # The date cutoff goes in the JOIN condition, not inside the Sum(), so the join
+    # only touches the last 28 days and foodbankhit_day_foodbank_covering_idx --
+    # btree (day, foodbank_id) INCLUDE (hits) -- can answer it index-only. Filtering
+    # inside the aggregate instead makes Postgres read the whole hits table.
     cutoff_date = date.today() - timedelta(days=28)
     foodbanks = (
         Foodbank.objects
@@ -281,10 +285,13 @@ def foodbanks(request):
             'created', 'modified', 'edited',
         )
         .annotate(
-            hits_last_28_days=Coalesce(
-                Sum('foodbankhit__hits', filter=Q(foodbankhit__day__gte=cutoff_date)),
-                0,
-            )
+            recent_hits=FilteredRelation(
+                'foodbankhit',
+                condition=Q(foodbankhit__day__gte=cutoff_date),
+            ),
+        )
+        .annotate(
+            hits_last_28_days=Coalesce(Sum('recent_hits__hits'), 0)
         )
         .order_by(sort)
     )
