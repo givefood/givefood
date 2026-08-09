@@ -576,6 +576,24 @@ class Foodbank(TimestampedModel, EditableModel, UUIDModel, PhysicalPlace):
 
     class Meta:
         app_label = 'givefood'
+        indexes = [
+            # slug is how nearly every public page, API endpoint and markdown
+            # view looks a food bank up. Nothing indexed it, so all of them
+            # seq scanned the table.
+            models.Index(fields=['slug'], name='foodbank_slug_idx'),
+            # uuid_redir tries the three place models in turn, so an unindexed
+            # uuid costs a scan per model before the redirect resolves.
+            models.Index(fields=['uuid'], name='foodbank_uuid_idx'),
+            # Constituency pages and their GeoJSON filter on the denormalised
+            # slug rather than the FK.
+            models.Index(fields=['parliamentary_constituency_slug'], name='foodbank_parlcon_slug_idx'),
+            # latest("modified") behind /frag/last-updated/.
+            models.Index(fields=['modified'], name='foodbank_modified_idx'),
+            # Dashboard "recently updated" both filters and sorts on last_need.
+            models.Index(fields=['last_need'], name='foodbank_last_need_idx'),
+            # Admin edit-age report takes the newest and the oldest edited.
+            models.Index(fields=['edited'], name='foodbank_edited_idx'),
+        ]
 
     def delete(self, *args, **kwargs):
 
@@ -779,7 +797,12 @@ class FoodbankLocation(EditableModel, UUIDModel, PhysicalPlace):
        unique_together = ('foodbank', 'name',)
        app_label = 'givefood'
        indexes = [
-           models.Index(fields=['foodbank', 'name']),
+           # Locations are always fetched by (foodbank, slug), never by name.
+           # unique_together above already indexes (foodbank, name), so the
+           # explicit copy of it that used to sit here answered no query.
+           models.Index(fields=['foodbank', 'slug'], name='location_foodbank_slug_idx'),
+           models.Index(fields=['uuid'], name='location_uuid_idx'),
+           models.Index(fields=['parliamentary_constituency_slug'], name='location_parlcon_slug_idx'),
        ]
 
     def __str__(self):
@@ -1009,7 +1032,11 @@ class FoodbankDonationPoint(EditableModel, UUIDModel, PhysicalPlace):
        unique_together = ('foodbank', 'name',)
        app_label = 'givefood'
        indexes = [
-           models.Index(fields=['foodbank', 'name']),
+           # Same as FoodbankLocation: every lookup is by (foodbank, slug), and
+           # unique_together already covers (foodbank, name).
+           models.Index(fields=['foodbank', 'slug'], name='dp_foodbank_slug_idx'),
+           models.Index(fields=['uuid'], name='dp_uuid_idx'),
+           models.Index(fields=['parliamentary_constituency_slug'], name='dp_parlcon_slug_idx'),
        ]
 
     def __str__(self):

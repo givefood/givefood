@@ -150,3 +150,8 @@ class ParliamentaryConstituency(models.Model):
 
     class Meta:
         app_label = 'givefood'
+        indexes = [
+            # Constituency pages, their GeoJSON and the MP photo redirect all
+            # get_object_or_404 on slug.
+            models.Index(fields=['slug'], name='parlcon_slug_idx'),
+        ]
