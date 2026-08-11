@@ -92,6 +92,9 @@ def openrouter(prompt, temperature, model, response_schema = None, response_form
 
     Pass `reasoning = False` on hybrid thinking models (e.g. Qwen3.5) to keep them out of thinking
     mode — extraction doesn't need it, and thinking tokens are billed at the completion rate.
+
+    When a response format is requested, routing is restricted to providers that actually support
+    it (see below) — otherwise the caller silently gets prose back instead of JSON.
     """
     key = get_cred(cred_name)
 
@@ -121,6 +124,18 @@ def openrouter(prompt, temperature, model, response_schema = None, response_form
     elif response_format_type == "json_object":
         payload["response_format"] = {
             "type": "json_object",
+        }
+
+    # By default OpenRouter will happily route to a provider that doesn't implement response_format,
+    # which then ignores it and answers in prose — a silent corruption, not an error, so the caller
+    # sees a 200 with unparseable content. Measured on the need check, roughly 1 call in 10 landed on
+    # such a provider (Mancer) and the plain-text answer was read as "no needs found". require_parameters
+    # restricts routing to providers supporting every parameter sent, response_format included. The pool
+    # stays wide (Google, DeepInfra, CoreWeave, Nebius, Novita, AkashML... all qualify), so this costs
+    # availability nothing.
+    if "response_format" in payload:
+        payload["provider"] = {
+            "require_parameters": True,
         }
 
     response = requests.post(
