@@ -109,7 +109,7 @@ function initMap() {
     // Build map options
     const mapOptions = {
         container: 'map',
-        style: 'https://tiles.openfreemap.org/styles/bright',
+        style: 'https://maptiles.opencommons.uk/styles/bright',
         attributionControl: false, // Disable default attribution
         cooperativeGestures: true, // Require Ctrl+scroll to zoom
         generateId: true, // Auto-generate feature IDs for better performance
