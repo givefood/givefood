@@ -336,6 +336,17 @@ class Foodbank(TimestampedModel, EditableModel, UUIDModel, PhysicalPlace):
             if self.country == "Isle of Man":
                 return "https://www.gov.im/about-the-government/offices/attorney-generals-chambers/crown-office/charities/index-of-charities-registered-in-the-isle-of-man/"
 
+    def open_charities_url(self):
+        if not self.charity_number:
+            return None
+        else:
+            if self.country == "Scotland":
+                return "https://opencharities.uk/sc/%s" % (self.charity_number)
+            if self.country == "Northern Ireland":
+                return "https://opencharities.uk/ni/%s" % (self.charity_number.replace("NIC",""))
+            if self.country == "Wales" or self.country == "England":
+                return "https://opencharities.uk/ew/%s" % (self.charity_number)
+
     def fsa_url(self):
         if not self.fsa_id:
             return None

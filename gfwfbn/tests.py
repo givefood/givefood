@@ -1969,6 +1969,71 @@ class TestCharityCountryCheck:
 
 
 @pytest.mark.django_db
+class TestOpenCharitiesUrl:
+    """Test the OpenCharities URL for a food bank's charity."""
+
+    def test_england(self, create_test_foodbank):
+        foodbank = create_test_foodbank(
+            name="England OC FB", slug="england-oc-fb",
+            charity_number="1188192", country="England",
+        )
+        assert foodbank.open_charities_url() == "https://opencharities.uk/ew/1188192"
+
+    def test_wales(self, create_test_foodbank):
+        foodbank = create_test_foodbank(
+            name="Wales OC FB", slug="wales-oc-fb",
+            charity_number="1188192", country="Wales",
+        )
+        assert foodbank.open_charities_url() == "https://opencharities.uk/ew/1188192"
+
+    def test_scotland_keeps_sc_prefix(self, create_test_foodbank):
+        foodbank = create_test_foodbank(
+            name="Scotland OC FB", slug="scotland-oc-fb",
+            charity_number="SC003558", country="Scotland",
+        )
+        assert foodbank.open_charities_url() == "https://opencharities.uk/sc/SC003558"
+
+    def test_northern_ireland_drops_nic_prefix(self, create_test_foodbank):
+        foodbank = create_test_foodbank(
+            name="NI OC FB", slug="ni-oc-fb",
+            charity_number="NIC100012", country="Northern Ireland",
+        )
+        assert foodbank.open_charities_url() == "https://opencharities.uk/ni/100012"
+
+    def test_none_without_charity_number(self, create_test_foodbank):
+        foodbank = create_test_foodbank(
+            name="No Number OC FB", slug="no-number-oc-fb", country="England",
+        )
+        assert foodbank.open_charities_url() is None
+
+    def test_none_for_uncovered_country(self, create_test_foodbank):
+        """OpenCharities only covers the three UK registers."""
+        foodbank = create_test_foodbank(
+            name="IoM OC FB", slug="iom-oc-fb",
+            charity_number="1234", country="Isle of Man",
+        )
+        assert foodbank.open_charities_url() is None
+
+    def test_charity_page_links_number_to_open_charities(self, client, create_test_foodbank):
+        foodbank = create_test_foodbank(
+            name="Linked Charity FB", slug="linked-charity-fb",
+            charity_name="Test Charity", charity_number="1188192", country="England",
+        )
+        response = client.get(f'/needs/at/{foodbank.slug}/charity/')
+        assert response.status_code == 200
+        assert 'href="https://opencharities.uk/ew/1188192"' in response.content.decode('utf-8')
+
+    def test_charity_markdown_links_number_to_open_charities(self, client, create_test_foodbank):
+        foodbank = create_test_foodbank(
+            name="Linked Charity MD FB", slug="linked-charity-md-fb",
+            charity_name="Test Charity", charity_number="1188192", country="England",
+        )
+        response = client.get(f'/md/needs/at/{foodbank.slug}/charity/')
+        assert response.status_code == 200
+        assert '[1188192](https://opencharities.uk/ew/1188192)' in response.content.decode('utf-8')
+
+
+@pytest.mark.django_db
 class TestFoodbankFavicon:
     """Test the foodbank_favicon endpoint"""
 

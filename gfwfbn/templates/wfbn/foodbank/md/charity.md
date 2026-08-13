@@ -3,7 +3,7 @@
 {% if foodbank.charity_just_foodbank %}{{ foodbank.full_name }} is a registered charity.{% else %}{{ foodbank.full_name }} operates under a registered charity.{% endif %}
 
 - Charity name: {{ foodbank.charity_name|title }}
-- Charity number: [{{ foodbank.charity_number }}]({{ foodbank.charity_register_url }})
+- Charity number: [{{ foodbank.charity_number }}]({{ foodbank.open_charities_url }})
 {% if foodbank.charity_type %}- Charity type: {{ foodbank.charity_type }}
 {% endif %}{% if foodbank.charity_reg_date %}- Registration date: {{ foodbank.charity_reg_date|date:'jS F Y' }}
 {% endif %}
