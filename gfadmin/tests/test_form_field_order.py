@@ -8,7 +8,6 @@ from givefood.forms import (
     FoodbankDonationPointForm,
     FoodbankForm,
     FoodbankLocationForm,
-    FoodbankLocationPoliticsForm,
     FoodbankPoliticsForm,
 )
 
@@ -20,7 +19,6 @@ from givefood.forms import (
 ORDERED_FORMS = [
     (FoodbankForm, FOODBANK_FIELD_ORDER),
     (FoodbankPoliticsForm, FOODBANK_FIELD_ORDER),
-    (FoodbankLocationPoliticsForm, FOODBANK_FIELD_ORDER),
     (FoodbankLocationForm, FOODBANK_LOCATION_FIELD_ORDER),
     (FoodbankDonationPointForm, FOODBANK_DONATION_POINT_FIELD_ORDER),
 ]

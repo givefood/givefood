@@ -34,7 +34,7 @@ from givefood.utils.geo import distance_meters, find_locations
 from givefood.utils.notifications import post_to_subscriber, send_email, send_firebase_notification, send_firebase_notification_async, send_single_webpush_notification, send_webpush_notification, send_webpush_notification_async, send_whatsapp_notification, send_whatsapp_notification_async, send_whatsapp_template_notification
 from givefood.utils.text import diff_html, htmlbodytext
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber, PlacePhoto
-from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm, PlaceForm
+from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm, PlaceForm
 from django_tasks_db.models import DBTaskResult
 from django_tasks.base import TaskResultStatus
 
@@ -1736,29 +1736,6 @@ def fblocation_area_form(request, slug):
         "page_title": page_title,
     }
     return render(request, "admin/fblocation_area_form.html", template_vars)
-
-
-def fblocation_politics_edit(request, slug, loc_slug):
-
-    if slug:
-        foodbank_location = get_object_or_404(FoodbankLocation, foodbank_slug = slug, slug = loc_slug)
-        page_title = "Edit %s Food Bank Location Politics" % (FoodbankLocation.foodbank.name)
-    else:
-        foodbank_location = None
-
-    if request.POST:
-        form = FoodbankLocationPoliticsForm(request.POST, instance=foodbank_location)
-        if form.is_valid():
-            foodbank_location = form.save()
-            return redirect("admin:foodbank", slug = foodbank_location.foodbank.slug)
-    else:
-        form = FoodbankLocationPoliticsForm(instance=foodbank_location)
-
-    template_vars = {
-        "form":form,
-        "page_title":page_title,
-    }
-    return render(request, "admin/form.html", template_vars)
 
 
 @require_POST
