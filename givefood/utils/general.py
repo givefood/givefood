@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import re
 import urllib
 import logging
 from urllib.parse import urlparse
@@ -86,6 +87,30 @@ def _is_markdown_challenge(markdown):
 MARKDOWN_WAIT_UNTILS = ("networkidle0", "networkidle0", "networkidle2")
 
 
+# rejectResourceTypes stops images being fetched, but an image inlined in the markup as a data:
+# URI was never fetched in the first place — it arrives as part of the HTML and gets transcribed
+# into the markdown in full. Cardiff's header carries its logo twice as a base64 SVG: 162,212
+# characters on one line, of which 211 are the actual nav links. That is 94% of the page, and it
+# took the need check prompt to 110,107 tokens against a 131,072 context, to find a two-item list
+# in the last 2%.
+#
+# Only a link target is matched, bounded to one line, so the payload can hold the spaces and
+# quotes a URL-encoded SVG contains without the match running on into real content further down
+# the page. An unbounded [^<>]* does exactly that: the markdown has few literal angle brackets,
+# so it spans from the first image to the last and swallows everything between.
+MARKDOWN_DATA_URI_RES = (
+    re.compile(r"\(<data:[^<>\n]*>\)"),
+    re.compile(r"\(data:[^\s)\n]*\)"),
+)
+
+
+def _strip_data_uris(markdown):
+    """Replace inlined data: URI image payloads with an empty link target."""
+    for data_uri_re in MARKDOWN_DATA_URI_RES:
+        markdown = data_uri_re.sub("()", markdown)
+    return markdown
+
+
 def get_markdown(url, attempts = 3):
     """Render a URL to Markdown using the Cloudflare Browser Rendering API.
 
@@ -133,7 +158,8 @@ def get_markdown(url, attempts = 3):
         if not result or _is_markdown_challenge(result):
             continue
 
-        return result
+        # After the challenge check, which wants the page as rendered.
+        return _strip_data_uris(result)
 
     return None
 
