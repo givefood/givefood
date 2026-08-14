@@ -43,10 +43,10 @@ jobs:
         PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
         PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
     
-    - name: Set up Python 3.12.3
+    - name: Set up Python 3.12
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12.3'
+        python-version: '3.12'
     
     - name: Install uv
       uses: astral-sh/setup-uv@v5
