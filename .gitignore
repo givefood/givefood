@@ -9,6 +9,7 @@ __pycache__/
 !/.gitmodules
 !/.flake8
 !/.github
+!/.dockerignore
 
 # C extensions
 *.so
@@ -58,9 +59,6 @@ docs/_build/
 sitepackages/*
 /messages.mo
 
-# Migrations (generated at deployment time)
-*/migrations/*.py
-!*/migrations/__init__.py
 .env
 
 # Generated files

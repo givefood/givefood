@@ -18,8 +18,9 @@ from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.utils import timezone
 from django.core.cache import cache
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import IntegrityError
-from django.db.models import Sum, Q, Count
+from django.db.models import Sum, Q, Count, OuterRef, Subquery, IntegerField
 from django.db.models.functions import Coalesce
 from django.contrib.contenttypes.models import ContentType
 from django.core.validators import validate_email, URLValidator
@@ -33,7 +34,7 @@ from givefood.utils.geo import distance_meters, find_locations
 from givefood.utils.notifications import post_to_subscriber, send_email, send_firebase_notification, send_firebase_notification_async, send_single_webpush_notification, send_webpush_notification, send_webpush_notification_async, send_whatsapp_notification, send_whatsapp_notification_async, send_whatsapp_template_notification
 from givefood.utils.text import diff_html, htmlbodytext
 from givefood.models import CrawlItem, Foodbank, FoodbankArticle, FoodbankChangeTranslation, FoodbankDonationPoint, FoodbankHit, MobileSubscriber, Order, OrderGroup, OrderItem, FoodbankChange, FoodbankLocation, ParliamentaryConstituency, GfCredential, FoodbankSubscriber, Place, FoodbankChangeLine, FoodbankDiscrepancy, CrawlSet, SlugRedirect, WebPushSubscription, WhatsappSubscriber, PlacePhoto
-from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, FoodbankLocationPoliticsForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm, PlaceForm
+from givefood.forms import FoodbankDonationPointForm, FoodbankForm, OrderForm, NeedForm, FoodbankPoliticsForm, FoodbankLocationForm, FoodbankLocationAreaForm, OrderGroupForm, ParliamentaryConstituencyForm, OrderItemForm, GfCredentialForm, NeedLineForm, FoodbankUrlsForm, FoodbankAddressForm, FoodbankPhoneForm, FoodbankEmailForm, FoodbankFsaIdForm, SlugRedirectForm, PlaceForm
 from django_tasks_db.models import DBTaskResult
 from django_tasks.base import TaskResultStatus
 
@@ -270,7 +271,21 @@ def foodbanks(request):
 
     # Annotate foodbanks with hits from last 28 days
     # Note: Annotation is always included because the template displays the hits column
+    # A correlated subquery rather than a join, because it is the shape the LIMIT can
+    # push through: sorted by any ordinary column Postgres takes the page first and
+    # only sums hits for those 100 rows. It reads them from
+    # foodbankhit_foodbank_day_uniq -- btree (foodbank_id, day) INCLUDE (hits) --
+    # so each one is an index-only range scan. Sorting by the hits column itself
+    # still has to sum every food bank, which is the one case that cannot page early.
+    # Counting is cheap too: with no GROUP BY, Postgres drops the unused subquery.
     cutoff_date = date.today() - timedelta(days=28)
+    recent_hits = (
+        FoodbankHit.objects
+        .filter(foodbank=OuterRef('pk'), day__gte=cutoff_date)
+        .values('foodbank')
+        .annotate(total=Sum('hits'))
+        .values('total')
+    )
     foodbanks = (
         Foodbank.objects
         .exclude(is_closed=True)
@@ -282,17 +297,27 @@ def foodbanks(request):
         )
         .annotate(
             hits_last_28_days=Coalesce(
-                Sum('foodbankhit__hits', filter=Q(foodbankhit__day__gte=cutoff_date)),
-                0,
+                Subquery(recent_hits, output_field=IntegerField()), 0
             )
         )
         .order_by(sort)
     )
 
+    # Paginate results - 100 per page. Rendering all ~1000 at once cost about a
+    # second of template time on the server and built a 26,000 node DOM in the
+    # browser, both of which scale linearly with the row count.
+    paginator = Paginator(foodbanks, 100)
+
+    try:
+        page_obj = paginator.page(request.GET.get("page", 1))
+    except (PageNotAnInteger, EmptyPage):
+        page_obj = paginator.page(1)
+
     template_vars = {
         "sort":sort,
         "display_sort_options":display_sort_options,
-        "foodbanks":foodbanks,
+        "foodbanks":page_obj.object_list,
+        "page_obj":page_obj,
         "section":"foodbanks",
     }
     return render(request, "admin/foodbanks.html", template_vars)
@@ -503,13 +528,62 @@ def order_delete(request, id):
     return redirect(reverse("admin:index"))
 
 
+def foodbank_aggregate(model, aggregate, **filters):
+    """
+    A correlated subquery aggregating one food bank's related rows.
+
+    Lets the food bank page collect every tab count and order total in a single
+    query, rather than paying a database round trip for each of them.
+    """
+
+    return Coalesce(
+        Subquery(
+            model.objects
+                .filter(foodbank = OuterRef("pk"), **filters)
+                .order_by()
+                .values("foodbank")
+                .annotate(total = aggregate)
+                .values("total"),
+            output_field = IntegerField(),
+        ),
+        0,
+    )
+
+
+def foodbank_totals(foodbank):
+    """Every tab count and order total for a food bank, in one query."""
+
+    totals = {
+        "needs": foodbank_aggregate(FoodbankChange, Count("pk")),
+        "orders": foodbank_aggregate(Order, Count("pk")),
+        "donation_points": foodbank_aggregate(FoodbankDonationPoint, Count("pk")),
+        "articles": foodbank_aggregate(FoodbankArticle, Count("pk")),
+        "crawls": foodbank_aggregate(CrawlItem, Count("pk")),
+        "email_subscribers": foodbank_aggregate(FoodbankSubscriber, Count("pk")),
+        "webpush_subscribers": foodbank_aggregate(WebPushSubscription, Count("pk")),
+        "mobile_subscribers": foodbank_aggregate(MobileSubscriber, Count("pk")),
+        "whatsapp_subscribers": foodbank_aggregate(WhatsappSubscriber, Count("pk")),
+        "total_weight": foodbank_aggregate(Order, Sum("weight")),
+        "total_cost": foodbank_aggregate(Order, Sum("cost")),
+        "total_items": foodbank_aggregate(Order, Sum("no_items")),
+    }
+    return Foodbank.objects.filter(pk = foodbank.pk).annotate(**totals).values(*totals).get()
+
+
+def place_ids_with_photos(places):
+    """Of the given food bank, locations and donation points, those with a photo."""
+
+    return [place.place_id for place in places if place.place_id and place.place_has_photo]
+
+
 def foodbank(request, slug):
 
     foodbank = get_object_or_404(Foodbank.objects.select_related('latest_need'), slug = slug)
 
-    # Prefetch all related data to avoid N+1 queries in template
-    # Optimize related object queries with only() to fetch only needed fields
-    locations = (
+    # Only the General & Locations tab is rendered here. The others are fetched
+    # by htmx from foodbank_tab() the first time they're opened, which keeps
+    # their rows -- and their queries -- off the initial page load.
+    locations = list(
         FoodbankLocation.objects
         .filter(foodbank=foodbank)
         .only(
@@ -518,62 +592,85 @@ def foodbank(request, slug):
         )
         .order_by("name")
     )
-    
-    donation_points = (
-        FoodbankDonationPoint.objects
-        .filter(foodbank=foodbank)
-        .only(
-            'id', 'name', 'slug', 'address', 'postcode', 'place_id', 'place_has_photo',
-            'lat_lng', 'company', 'store_id', 'in_store_only', 'notes'
-        )
-        .order_by("name")
-    )
-    
-    # Limit needs to most recent 200 to prevent loading thousands of records
-    needs = (
-        FoodbankChange.objects
-        .filter(foodbank=foodbank)
-        .order_by("-created")[:200]
-    )
-    
-    # Limit orders to most recent 200
-    orders = (
-        Order.objects
-        .filter(foodbank=foodbank)
-        .order_by("-delivery_datetime")[:200]
-    )
-    
-    articles = (
-        FoodbankArticle.objects
-        .filter(foodbank=foodbank)
-        .order_by("-published_date")[:20]
-    )
-    
-    subscribers = FoodbankSubscriber.objects.filter(foodbank=foodbank)
-    webpush_subscribers = WebPushSubscription.objects.filter(foodbank=foodbank)
-    mobile_subscribers = MobileSubscriber.objects.filter(foodbank=foodbank)
-    whatsapp_subscribers = WhatsappSubscriber.objects.filter(foodbank=foodbank)
-    crawl_items = CrawlItem.objects.filter(foodbank=foodbank).order_by("-start")[:100]
 
-    # Calculate counts from prefetched data where possible
-    locations_count = len(locations)
-    donation_points_count = len(donation_points)
-    needs_count = len(needs)
-    orders_count = len(orders)
-    articles_count = len(articles)
-    subscribers_count = len(subscribers)
-    webpush_count = len(webpush_subscribers)
-    mobile_count = len(mobile_subscribers)
-    whatsapp_count = len(whatsapp_subscribers)
-    crawl_items_count = CrawlItem.objects.filter(foodbank=foodbank).count()  # Count separately as we limit to 100
+    # Every tab count and order total, in one query
+    totals = foodbank_totals(foodbank)
 
-    subscriber_count = subscribers_count + webpush_count + mobile_count + whatsapp_count
+    # The photos tab is only offered if a photo actually exists behind one of the
+    # food bank's place IDs, which is a count rather than the tab's whole list
+    photos_count = PlacePhoto.objects.filter(
+        Q(place_id__in = place_ids_with_photos([foodbank] + locations)) |
+        Q(place_id__in = FoodbankDonationPoint.objects.filter(foodbank = foodbank, place_has_photo = True).values("place_id"))
+    ).count()
 
-    # Create unified subscription list for the subscribers tab (similar to /admin/subscriptions/)
+    counts = {
+        "locations": len(locations),
+        "needs": totals["needs"],
+        "orders": totals["orders"],
+        "donation_points": totals["donation_points"],
+        "articles": totals["articles"],
+        "subscribers": totals["email_subscribers"] + totals["webpush_subscribers"] + totals["mobile_subscribers"] + totals["whatsapp_subscribers"],
+        "crawls": totals["crawls"],
+        "photos": photos_count,
+    }
+
+    lazy_tabs = ["needsorders", "donationpoints"]
+    if counts["articles"]:
+        lazy_tabs.append("articles")
+    lazy_tabs += ["subscribers", "crawls"]
+    if counts["photos"]:
+        lazy_tabs.append("photos")
+
+    total_weight_kg = totals["total_weight"] / 1000
+
+    template_vars = {
+        "foodbank": foodbank,
+        "counts": counts,
+        "locations": locations,
+        "lazy_tabs": lazy_tabs,
+        "total_weight_kg": total_weight_kg,
+        "total_weight_kg_pkg": total_weight_kg * PACKAGING_WEIGHT_PC,
+        "total_items": totals["total_items"],
+        "total_cost": totals["total_cost"] / 100,
+        "no_orders": counts["orders"],
+        "number_subscribers": totals["email_subscribers"],
+    }
+    return render(request, "admin/foodbank.html", template_vars)
+
+
+def foodbank_needsorders_tab(foodbank):
+
+    return {
+        "needs": FoodbankChange.objects.filter(foodbank = foodbank).order_by("-created")[:200],
+        "orders": Order.objects.filter(foodbank = foodbank).order_by("-delivery_datetime")[:200],
+    }
+
+
+def foodbank_donationpoints_tab(foodbank):
+
+    return {
+        "donation_points": foodbank_donation_points(foodbank),
+    }
+
+
+def foodbank_articles_tab(foodbank):
+
+    return {
+        "articles": FoodbankArticle.objects.filter(foodbank = foodbank).order_by("-published_date")[:20],
+    }
+
+
+def foodbank_subscribers_tab(foodbank):
+
+    subscribers = FoodbankSubscriber.objects.filter(foodbank = foodbank)
+    webpush_subscribers = WebPushSubscription.objects.filter(foodbank = foodbank)
+    mobile_subscribers = MobileSubscriber.objects.filter(foodbank = foodbank)
+    whatsapp_subscribers = WhatsappSubscriber.objects.filter(foodbank = foodbank)
+
+    # A single list of every kind of subscription, like /admin/subscriptions/
     all_subscriptions = []
     confirmed_email_count = 0
 
-    # Email subscriptions - only confirmed
     for sub in subscribers:
         if sub.confirmed:
             confirmed_email_count += 1
@@ -584,7 +681,6 @@ def foodbank(request, slug):
                 'created': sub.created,
             })
 
-    # WhatsApp subscriptions
     for sub in whatsapp_subscribers:
         all_subscriptions.append({
             'type': 'whatsapp',
@@ -593,7 +689,6 @@ def foodbank(request, slug):
             'created': sub.created,
         })
 
-    # Mobile subscriptions
     for sub in mobile_subscribers:
         device_id_display = sub.device_id[:DEVICE_ID_TRUNCATE_LENGTH] + "..." if len(sub.device_id) > DEVICE_ID_TRUNCATE_LENGTH else sub.device_id
         all_subscriptions.append({
@@ -603,7 +698,6 @@ def foodbank(request, slug):
             'created': sub.created,
         })
 
-    # WebPush subscriptions
     for sub in webpush_subscribers:
         endpoint_display = sub.endpoint[:ENDPOINT_TRUNCATE_LENGTH] + "..." if len(sub.endpoint) > ENDPOINT_TRUNCATE_LENGTH else sub.endpoint
         all_subscriptions.append({
@@ -613,60 +707,41 @@ def foodbank(request, slug):
             'created': sub.created,
         })
 
-    # Sort all subscriptions by created date (newest first)
     all_subscriptions.sort(key=lambda x: x['created'], reverse=True)
 
-    # Counts by subscription type
-    subscription_counts = {
-        'email': confirmed_email_count,
-        'whatsapp': whatsapp_count,
-        'mobile': mobile_count,
-        'webpush': webpush_count,
+    return {
+        "all_subscriptions": all_subscriptions,
+        "subscription_counts": {
+            'email': confirmed_email_count,
+            'whatsapp': len(whatsapp_subscribers),
+            'mobile': len(mobile_subscribers),
+            'webpush': len(webpush_subscribers),
+        },
     }
 
-    # Calculate order aggregates in a single query
-    order_aggregates = Order.objects.filter(foodbank=foodbank).aggregate(
-        total_weight=Sum('weight'),
-        total_cost=Sum('cost'),
-        total_items=Sum('no_items')
-    )
-    total_weight = order_aggregates['total_weight'] or 0
-    total_cost = order_aggregates['total_cost'] or 0
-    total_items = order_aggregates['total_items']
-    total_weight_kg = total_weight / 1000
-    total_weight_kg_pkg = total_weight_kg * PACKAGING_WEIGHT_PC
-    total_cost_display = total_cost / 100 if total_cost else 0
 
-    # Collect photos for foodbank, locations, and donation points
+def foodbank_crawls_tab(foodbank):
+
+    return {
+        "crawl_items": CrawlItem.objects.filter(foodbank = foodbank).order_by("-start")[:100],
+    }
+
+
+def foodbank_photos_tab(foodbank):
+    """Photos of the food bank itself, its locations and its donation points."""
+
+    locations = FoodbankLocation.objects.filter(foodbank = foodbank).order_by("name")
+    donation_points = foodbank_donation_points(foodbank)
+
+    place_photos = {
+        place_photo.place_id: place_photo
+        for place_photo in PlacePhoto.objects
+            .filter(place_id__in = place_ids_with_photos([foodbank] + list(locations) + list(donation_points)))
+            .only('place_id', 'photo_ref', 'html_attributions')
+    }
+
     photos = []
-    place_ids = []
-    
-    # Main foodbank location photo
-    if foodbank.place_id and foodbank.place_has_photo:
-        place_ids.append(foodbank.place_id)
-    
-    # Location photos
-    for location in locations:
-        if location.place_id and location.place_has_photo:
-            place_ids.append(location.place_id)
-    
-    # Donation point photos
-    for dp in donation_points:
-        if dp.place_id and dp.place_has_photo:
-            place_ids.append(dp.place_id)
-    
-    # Fetch all PlacePhotos in a single query (only if we have place_ids)
-    place_photos = {}
-    if place_ids:
-        place_photos = {
-            pp.place_id: pp 
-            for pp in PlacePhoto.objects
-                .filter(place_id__in=place_ids)
-                .only('place_id', 'photo_ref', 'html_attributions')
-        }
-    
-    # Build photos list with place information
-    if foodbank.place_id and foodbank.place_has_photo and foodbank.place_id in place_photos:
+    if foodbank.place_id in place_photos:
         photos.append({
             'place_name': foodbank.name,
             'place_type': 'foodbank',
@@ -674,9 +749,9 @@ def foodbank(request, slug):
             'photo': place_photos[foodbank.place_id],
             'photo_url': f"/needs/at/{foodbank.slug}/photo.jpg",
         })
-    
+
     for location in locations:
-        if location.place_id and location.place_has_photo and location.place_id in place_photos:
+        if location.place_id in place_photos:
             photos.append({
                 'place_name': location.name,
                 'place_type': 'location',
@@ -684,54 +759,59 @@ def foodbank(request, slug):
                 'photo': place_photos[location.place_id],
                 'photo_url': f"/needs/at/{foodbank.slug}/{location.slug}/photo.jpg",
             })
-    
-    for dp in donation_points:
-        if dp.place_id and dp.place_has_photo and dp.place_id in place_photos:
+
+    for donation_point in donation_points:
+        if donation_point.place_id in place_photos:
             photos.append({
-                'place_name': dp.name,
+                'place_name': donation_point.name,
                 'place_type': 'donationpoint',
-                'place_id': dp.place_id,
-                'photo': place_photos[dp.place_id],
-                'photo_url': f"/needs/at/{foodbank.slug}/donationpoint/{dp.slug}/photo.jpg",
+                'place_id': donation_point.place_id,
+                'photo': place_photos[donation_point.place_id],
+                'photo_url': f"/needs/at/{foodbank.slug}/donationpoint/{donation_point.slug}/photo.jpg",
             })
-    
-    photos_count = len(photos)
 
-    counts = {
-        "locations": locations_count,
-        "needs": needs_count,
-        "orders": orders_count,
-        "donation_points": donation_points_count,
-        "articles": articles_count,
-        "subscribers": subscriber_count,
-        "crawls": crawl_items_count,
-        "photos": photos_count,
-    }
-
-    template_vars = {
-        "foodbank": foodbank,
-        "counts": counts,
-        "locations": locations,
-        "donation_points": donation_points,
-        "needs": needs,
-        "orders": orders,
-        "articles": articles,
-        "subscribers": subscribers,
-        "webpush_subscribers": webpush_subscribers,
-        "mobile_subscribers": mobile_subscribers,
-        "whatsapp_subscribers": whatsapp_subscribers,
-        "all_subscriptions": all_subscriptions,
-        "subscription_counts": subscription_counts,
-        "crawl_items": crawl_items,
+    return {
         "photos": photos,
-        "total_weight_kg": total_weight_kg,
-        "total_weight_kg_pkg": total_weight_kg_pkg,
-        "total_items": total_items,
-        "total_cost": total_cost_display,
-        "no_orders": orders_count,
-        "number_subscribers": subscribers_count,
     }
-    return render(request, "admin/foodbank.html", template_vars)
+
+
+def foodbank_donation_points(foodbank):
+
+    return (
+        FoodbankDonationPoint.objects
+        .filter(foodbank=foodbank)
+        .only(
+            'id', 'name', 'slug', 'address', 'postcode', 'place_id', 'place_has_photo',
+            'lat_lng', 'company', 'store_id', 'in_store_only', 'notes'
+        )
+        .order_by("name")
+    )
+
+
+FOODBANK_TABS = {
+    "needsorders": foodbank_needsorders_tab,
+    "donationpoints": foodbank_donationpoints_tab,
+    "articles": foodbank_articles_tab,
+    "subscribers": foodbank_subscribers_tab,
+    "crawls": foodbank_crawls_tab,
+    "photos": foodbank_photos_tab,
+}
+
+
+def foodbank_tab(request, slug, tab):
+    """
+    One tab of the food bank page, fetched by htmx the first time that tab is
+    opened. Each is a partial of admin/foodbank.html.
+    """
+
+    if tab not in FOODBANK_TABS:
+        raise Http404()
+
+    foodbank = get_object_or_404(Foodbank, slug = slug)
+
+    template_vars = FOODBANK_TABS[tab](foodbank)
+    template_vars["foodbank"] = foodbank
+    return render(request, "admin/foodbank.html#%s" % tab, template_vars)
 
 
 def foodbank_form(request, slug = None):
@@ -1656,29 +1736,6 @@ def fblocation_area_form(request, slug):
         "page_title": page_title,
     }
     return render(request, "admin/fblocation_area_form.html", template_vars)
-
-
-def fblocation_politics_edit(request, slug, loc_slug):
-
-    if slug:
-        foodbank_location = get_object_or_404(FoodbankLocation, foodbank_slug = slug, slug = loc_slug)
-        page_title = "Edit %s Food Bank Location Politics" % (FoodbankLocation.foodbank.name)
-    else:
-        foodbank_location = None
-
-    if request.POST:
-        form = FoodbankLocationPoliticsForm(request.POST, instance=foodbank_location)
-        if form.is_valid():
-            foodbank_location = form.save()
-            return redirect("admin:foodbank", slug = foodbank_location.foodbank.slug)
-    else:
-        form = FoodbankLocationPoliticsForm(instance=foodbank_location)
-
-    template_vars = {
-        "form":form,
-        "page_title":page_title,
-    }
-    return render(request, "admin/form.html", template_vars)
 
 
 @require_POST
@@ -3034,12 +3091,21 @@ def place_form(request, pk):
 
 def foodbanks_without_need(request):
 
+    # One DISTINCT ON for the latest published need per food bank name, rather
+    # than a .latest() per food bank. That loop was a query each for every food
+    # bank on the site, and the page only shows the need id.
+    latest_needs = {
+        need.foodbank_name: need
+        for need in FoodbankChange.objects
+            .filter(published=True)
+            .order_by("foodbank_name", "-created")
+            .distinct("foodbank_name")
+            .only("foodbank_name", "need_id", "created")
+    }
+
     foodbanks = Foodbank.objects.all()
     for foodbank in foodbanks:
-        try:
-            foodbank.need = FoodbankChange.objects.filter(foodbank_name=foodbank.name, published=True).latest("created")
-        except FoodbankChange.DoesNotExist:
-            foodbank.need = None
+        foodbank.need = latest_needs.get(foodbank.name)
 
     template_vars = {
         "section":"settings",

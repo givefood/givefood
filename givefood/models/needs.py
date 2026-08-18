@@ -332,6 +332,13 @@ class FoodbankChange(TimestampedModel):
         indexes = [
             models.Index(fields=['foodbank', '-created']),
             models.Index(fields=['published', 'foodbank']),
+            # need_id is the public identifier -- admin need pages and the api1
+            # need endpoint all get() on it.
+            models.Index(fields=['need_id'], name='need_need_id_idx'),
+            # need_id_str is the same value again, and it is what the async
+            # tasks look up by. Publishing one need enqueues a translate task
+            # per language, so this get() runs ~20 times per publish.
+            models.Index(fields=['need_id_str'], name='need_need_id_str_idx'),
         ]
 
 

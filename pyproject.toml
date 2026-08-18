@@ -7,7 +7,7 @@ name = "givefood"
 version = "1.0.0"
 description = "Give Food - UK charity using data to highlight and alleviate food insecurity"
 readme = "README.md"
-requires-python = "==3.12.3"
+requires-python = ">=3.12,<3.13"
 license = {text = "Public Domain"}
 authors = [
     {name = "Give Food", email = "mail@givefood.org.uk"}
@@ -16,7 +16,7 @@ keywords = ["charity", "food-banks", "django", "uk"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Framework :: Django",
-    "Framework :: Django :: 6.0",
+    "Framework :: Django :: 6.1",
     "Intended Audience :: Developers",
     "License :: Public Domain",
     "Operating System :: OS Independent",
@@ -27,7 +27,7 @@ classifiers = [
 ]
 
 dependencies = [
-    "django==6.0.7",
+    "django==6.1",
     "django-session-csrf",
     "python-dateutil",
     "requests-toolbelt",
@@ -56,7 +56,8 @@ dependencies = [
     "pywebpush==2.3.0",
     "openlocationcode",
     "urllib3>=2.6.3",
-    "cryptography>=46.0.5",
+    "h2>=4.4.1",
+    "cryptography>=50.0.0",
     "protobuf>=6.33.5",
     "pyasn1>=0.6.4",
     "pyjwt>=2.12.0",

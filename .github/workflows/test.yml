@@ -43,10 +43,10 @@ jobs:
         PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c "CREATE EXTENSION IF NOT EXISTS earthdistance;"
         PGPASSWORD=postgres psql -h localhost -U postgres -d template1 -c "CREATE EXTENSION IF NOT EXISTS pg_trgm;"
     
-    - name: Set up Python 3.12.3
+    - name: Set up Python 3.12
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12.3'
+        python-version: '3.12'
     
     - name: Install uv
       uses: astral-sh/setup-uv@v5
@@ -56,6 +56,25 @@ jobs:
     - name: Install dependencies
       run: uv sync
     
+    - name: Check for missing migrations
+      # The suite runs with --nomigrations, so it builds its schema straight
+      # from the models and would not notice a model change that never got a
+      # migration. Scoped to givefood: the third-party webpush package ships
+      # its own pending migration, which is not ours to generate.
+      env:
+        DJANGO_SETTINGS_MODULE: test_settings
+      run: uv run python manage.py makemigrations givefood --check --dry-run
+
+    - name: Check migrations apply to an empty database
+      # test_settings reads TEST_DB_NAME ahead of DB_NAME, so point that at a
+      # separate database rather than the one the suite uses.
+      env:
+        DJANGO_SETTINGS_MODULE: test_settings
+        TEST_DB_NAME: givefood_migrations
+      run: |
+        PGPASSWORD=postgres psql -h localhost -U postgres -d postgres -c "CREATE DATABASE givefood_migrations;"
+        uv run python manage.py migrate
+
     - name: Run tests
       run: uv run pytest -v --junit-xml=test-results.xml --html=test-report.html --self-contained-html
     

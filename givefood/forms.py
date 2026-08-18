@@ -6,6 +6,35 @@ from givefood.models import FoodbankDonationPoint, OrderGroup, Foodbank, Order, 
 from givefood.const.general import COUNTRIES_CHOICES, FOODBANK_NETWORK_CHOICES
 
 
+# A fields = "__all__" form takes its order from the model, and the model takes its order from
+# the order the fields were declared in. Foodbank, FoodbankLocation and FoodbankDonationPoint now
+# inherit their address and location fields from the PhysicalPlace abstract base, which is
+# declared in models/base.py, so those fields sort ahead of the ones declared on the model itself
+# and the forms opened with address, postcode, lat_lng and place_id.
+#
+# These pin the order each form has always had. A field added to the model but missing here still
+# appears on the form, at the end.
+FOODBANK_FIELD_ORDER = [
+    "name", "alt_name", "address", "postcode", "country", "lat_lng", "place_id",
+    "delivery_address", "network", "network_id", "notes", "charity_number",
+    "charity_just_foodbank", "facebook_page", "bankuet_slug", "fsa_id", "contact_email",
+    "notification_email", "phone_number", "secondary_phone_number", "delivery_phone_number",
+    "url", "shopping_list_url", "rss_url", "news_url", "donation_points_url", "locations_url",
+    "contacts_url", "address_is_administrative", "is_closed", "is_school",
+]
+
+FOODBANK_LOCATION_FIELD_ORDER = [
+    "foodbank", "name", "address", "postcode", "is_donation_point", "is_mobile", "lat_lng",
+    "boundary_geojson", "place_id", "phone_number", "email",
+]
+
+FOODBANK_DONATION_POINT_FIELD_ORDER = [
+    "foodbank", "name", "address", "postcode", "phone_number", "opening_hours",
+    "wheelchair_accessible", "url", "in_store_only", "company", "store_id", "notes", "lat_lng",
+    "place_id",
+]
+
+
 class FoodbankRegistrationForm(forms.Form):
     name = forms.CharField(max_length=100, help_text="E.g. 'Brixton', 'Sid Valley', or 'One Can Trust'")
     address = forms.CharField(widget=forms.Textarea)
@@ -27,6 +56,7 @@ class FlagForm(forms.Form):
 
 
 class FoodbankForm(ModelForm):
+    field_order = FOODBANK_FIELD_ORDER
     class Meta:
         model = Foodbank
         fields = "__all__"
@@ -57,7 +87,7 @@ class FoodbankUrlsForm(ModelForm):
 class FoodbankAddressForm(ModelForm):
     class Meta:
         model = Foodbank
-        fields = ["address", "postcode", "lat_lng"]
+        fields = ["address", "postcode", "lat_lng", "place_id"]
 
     def save(self, commit=True): 
         foodbank = super().save(commit=False)
@@ -111,12 +141,14 @@ class FoodbankFsaIdForm(ModelForm):
 
 
 class FoodbankPoliticsForm(ModelForm):
+    field_order = FOODBANK_FIELD_ORDER
     class Meta:
         model = Foodbank
         fields = "__all__"
 
 
 class FoodbankLocationForm(ModelForm):
+    field_order = FOODBANK_LOCATION_FIELD_ORDER
     class Meta:
         model = FoodbankLocation
         fields = "__all__"
@@ -138,6 +170,7 @@ class FoodbankLocationAreaForm(forms.Form):
 
    
 class FoodbankDonationPointForm(ModelForm):
+    field_order = FOODBANK_DONATION_POINT_FIELD_ORDER
     class Meta:
         model = FoodbankDonationPoint
         fields = "__all__"
@@ -151,12 +184,6 @@ class FoodbankDonationPointForm(ModelForm):
         if commit:
             donation_point.save()
         return donation_point
-
-
-class FoodbankLocationPoliticsForm(ModelForm):
-    class Meta:
-        model = Foodbank
-        fields = "__all__"
 
 
 class OrderForm(ModelForm):

@@ -11,10 +11,10 @@ class TestFoodbankCrawlDisplay:
 
     @patch('gfadmin.views.render')
     def test_crawl_items_passed_to_template(self, mock_render):
-        """Test that crawl items are properly passed to the template."""
-        from gfadmin.views import foodbank as foodbank_view
+        """Test that crawl items are properly passed to the crawls tab template."""
+        from gfadmin.views import foodbank_tab
         from django.test import RequestFactory
-        
+
         # Create a test foodbank
         foodbank = Foodbank(
             name='Test Foodbank',
@@ -52,10 +52,10 @@ class TestFoodbankCrawlDisplay:
         
         # Make a request to the view
         factory = RequestFactory()
-        request = factory.get(f'/admin/foodbank/{foodbank.slug}/')
-        
+        request = factory.get(f'/admin/foodbank/{foodbank.slug}/tab/crawls/')
+
         # Call the view
-        foodbank_view(request, slug=foodbank.slug)
+        foodbank_tab(request, slug=foodbank.slug, tab='crawls')
         
         # Verify render was called
         assert mock_render.called

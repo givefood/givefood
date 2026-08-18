@@ -218,7 +218,7 @@ def find_foodbanks(lattlong, quantity = 10, skip_first = False):
     return sorted_foodbanks[first_item:quantity]
 
 
-def _foodbank_queryset():
+def foodbank_queryset():
     """Build a Foodbank queryset with select_related and conditional translation prefetch."""
     from givefood.models import Foodbank, FoodbankChangeTranslation
     from django.db.models import Prefetch
@@ -241,14 +241,14 @@ def find_locations(lat_lng, quantity = 10, skip_first = False):
     lat = lat_lng.split(",")[0]
     lng = lat_lng.split(",")[1]
 
-    foodbanks = _foodbank_queryset().filter(is_closed = False).annotate(
+    foodbanks = foodbank_queryset().filter(is_closed = False).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
             LlToEarth(['latitude', 'longitude'])
         ])).annotate(type=Value("organisation")).order_by(NearestFirst(lat, lng))[:quantity]
 
     locations = FoodbankLocation.objects.filter(is_closed = False).prefetch_related(
-        Prefetch("foodbank", queryset=_foodbank_queryset())
+        Prefetch("foodbank", queryset=foodbank_queryset())
     ).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
@@ -319,7 +319,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
     )
 
     # Base foodbank query with category filter
-    foodbanks = _foodbank_queryset().filter(
+    foodbanks = foodbank_queryset().filter(
         is_closed=False,
         latest_need__isnull=False
     ).annotate(
@@ -351,7 +351,7 @@ def find_locations_by_category(lat_lng, category, max_distance_meters=20000, qua
         is_closed=False,
         foodbank_id__in=foodbank_ids_with_category
     ).prefetch_related(
-        Prefetch("foodbank", queryset=_foodbank_queryset())
+        Prefetch("foodbank", queryset=foodbank_queryset())
     ).annotate(
         distance=EarthDistance([
             LlToEarth([lat, lng]),
@@ -403,7 +403,7 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
     lng = lat_lng.split(",")[1]
 
     donationpoints = FoodbankDonationPoint.objects.filter(is_closed = False).prefetch_related(
-        Prefetch("foodbank", queryset=_foodbank_queryset())
+        Prefetch("foodbank", queryset=foodbank_queryset())
     ).annotate(
     distance=EarthDistance([
         LlToEarth([lat, lng]),
@@ -411,7 +411,7 @@ def find_donationpoints(lat_lng, quantity = 10, foodbank = None):
     ])).annotate(type=Value("donationpoint")).order_by(NearestFirst(lat, lng))[:quantity]
 
     location_donationpoints = FoodbankLocation.objects.filter(is_closed = False, is_donation_point = True).prefetch_related(
-        Prefetch("foodbank", queryset=_foodbank_queryset())
+        Prefetch("foodbank", queryset=foodbank_queryset())
     ).annotate(
     distance=EarthDistance([
         LlToEarth([lat, lng]),

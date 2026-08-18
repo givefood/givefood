@@ -8,7 +8,7 @@ from unittest.mock import patch, MagicMock
 import pytest
 from unittest.mock import patch
 from givefood.utils.geo import (
-    _foodbank_queryset,
+    foodbank_queryset,
     distance_meters,
     geocode,
     geojson_dict,
@@ -520,26 +520,26 @@ class TestOcGeocode:
         assert result == "0,0"
 
 class TestFoodbankQueryset:
-    """Test _foodbank_queryset helper function."""
+    """Test foodbank_queryset helper function."""
 
     @patch("django.utils.translation.get_language", return_value="en")
     def test_foodbank_queryset_english_no_translation_prefetch(self, mock_lang):
         """Test that English language does not add translation prefetch."""
-        qs = _foodbank_queryset()
+        qs = foodbank_queryset()
         prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
         assert "latest_need__foodbankchangetranslation_set" not in prefetches
 
     @patch("django.utils.translation.get_language", return_value="es")
     def test_foodbank_queryset_non_english_adds_translation_prefetch(self, mock_lang):
         """Test that non-English language adds translation prefetch."""
-        qs = _foodbank_queryset()
+        qs = foodbank_queryset()
         prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
         assert "latest_need__foodbankchangetranslation_set" in prefetches
 
     @patch("django.utils.translation.get_language", return_value=None)
     def test_foodbank_queryset_none_language_no_translation_prefetch(self, mock_lang):
         """Test that None language does not add translation prefetch."""
-        qs = _foodbank_queryset()
+        qs = foodbank_queryset()
         prefetches = [p.prefetch_through for p in qs._prefetch_related_lookups]
         assert "latest_need__foodbankchangetranslation_set" not in prefetches
 
@@ -768,6 +768,66 @@ class TestGetMarkdown:
 
         assert get_markdown("https://example.org/needs") == "# Needs\n- Beans"
         assert mock_post.call_count == 2
+
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: "x")
+    @patch("givefood.utils.general.requests.post")
+    def test_get_markdown_relaxes_wait_until_on_last_attempt(self, mock_post, mock_cred):
+        """Test that a site which never reaches network idle falls back to networkidle2."""
+        from givefood.utils.general import get_markdown
+
+        timeout = MagicMock()
+        timeout.status_code = 422
+        good = MagicMock()
+        good.status_code = 200
+        good.json.return_value = {"success": True, "result": "# Needs\n- Beans"}
+        mock_post.side_effect = [timeout, timeout, good]
+
+        assert get_markdown("https://example.org/needs") == "# Needs\n- Beans"
+        wait_untils = [call.kwargs["json"]["gotoOptions"]["waitUntil"] for call in mock_post.call_args_list]
+        assert wait_untils == ["networkidle0", "networkidle0", "networkidle2"]
+
+    @patch("givefood.utils.general.get_cred", side_effect=lambda n: "x")
+    @patch("givefood.utils.general.requests.post")
+    def test_get_markdown_strips_inlined_data_uris(self, mock_post, mock_cred):
+        """Test that an image inlined as a data: URI is dropped but its line's real content stays."""
+        from givefood.utils.general import get_markdown
+
+        # Cardiff's header: two logos inlined on the same line as the nav links. The URL-encoded
+        # SVG carries spaces and quotes, and the page's own text sits on later lines.
+        logo = "data:image/svg+xml,%3csvg id='a' xmlns='http://www.w3.org/2000/svg'%3e" + ("A" * 500) + "%3c/svg%3e"
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"success": True, "result": (
+            "[![](<%s>) Donate](https://example.org/donate) [![](<%s>)](https://example.org)\n"
+            "\n### Most needed items\n\n- Beans\n\n### We have plenty of...\n\n- Nappies\n- Pasta\n" % (logo, logo)
+        )}
+        mock_post.return_value = mock_response
+
+        result = get_markdown("https://example.org/needs")
+        assert "data:" not in result
+        assert "AAAA" not in result
+        # The nav links share the line with the logos, and the lists come after them.
+        assert "[![]() Donate](https://example.org/donate)" in result
+        assert "- Beans" in result
+        assert "- Nappies" in result
+        assert "- Pasta" in result
+
+    def test_strip_data_uris_stops_at_the_end_of_a_line(self):
+        """Test that a data: URI match can't run on into content further down the page."""
+        from givefood.utils.general import _strip_data_uris
+
+        # An unbounded match would span from the first "(<data:" to the last ">)" and eat
+        # everything in between, because the markdown has no literal angle brackets to stop it.
+        markdown = "![](<data:image/png;base64,AAAA>)\n\n- Nappies\n- Pasta\n\n![](<data:image/png;base64,BBBB>)\n"
+        result = _strip_data_uris(markdown)
+        assert result == "![]()\n\n- Nappies\n- Pasta\n\n![]()\n"
+
+    def test_strip_data_uris_leaves_ordinary_links_alone(self):
+        """Test that links which merely mention data are untouched."""
+        from givefood.utils.general import _strip_data_uris
+
+        markdown = "[Our data](https://example.org/data)\n\n- Tinned Potatoes\n"
+        assert _strip_data_uris(markdown) == markdown
 
 
 class TestOpenrouter:

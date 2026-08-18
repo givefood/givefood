@@ -81,4 +81,10 @@ class CrawlItem(models.Model):
         app_label = 'givefood'
         indexes = [
             models.Index(fields=['foodbank', '-finish']),
+            # The food bank admin page lists a food bank's crawls newest first
+            # by start, which the -finish index cannot order. Without this one
+            # Postgres reads every crawl row that food bank has ever had --
+            # thousands of heap blocks -- to hand back the newest hundred.
+            models.Index(fields=['foodbank', '-start'],
+                         name='crawlitem_foodbank_start_idx'),
         ]

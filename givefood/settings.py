@@ -69,7 +69,12 @@ INSTALLED_APPS = [
     "bulma",
     "django_tasks",
     "django_tasks_db",
-    "webpush",
+    # django-webpush is deliberately not installed. Web push here is pywebpush
+    # called directly from givefood.utils.notifications, against this project's
+    # own WebPushSubscription model -- none of django-webpush's models, views,
+    # URLs or template tags are used. Installing it only added migrations that
+    # want an auth_user table this database has never had, which is what made
+    # a plain `migrate` fail.
 
     "gfadmin",
     "gfapi1",

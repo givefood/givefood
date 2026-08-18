@@ -75,12 +75,27 @@ class ParliamentaryConstituency(models.Model):
 
 
     def foodbank_obj(self):
-        from givefood.models.foodbank import Foodbank
-        return Foodbank.objects.select_related("latest_need").filter(parliamentary_constituency = self, is_closed = False)
+        # foodbank_queryset() selects the latest need and, in any language but
+        # English, prefetches that need's translation. Without it the page
+        # rendered one FoodbankChangeTranslation query per food bank, because
+        # the template reaches through to get_change_text on each of them.
+        from givefood.utils.geo import foodbank_queryset
+        return foodbank_queryset().filter(parliamentary_constituency = self, is_closed = False)
 
     def location_obj(self):
+        from django.db.models import Prefetch
+
         from givefood.models.foodbank import FoodbankLocation
-        return FoodbankLocation.objects.select_related('foodbank', 'foodbank__latest_need').filter(parliamentary_constituency = self, is_closed = False)
+        from givefood.utils.geo import foodbank_queryset
+
+        # Prefetching the food bank rather than select_related-ing it costs two
+        # extra queries but carries the translation prefetch with it, which
+        # select_related cannot do. Two constant queries beat one per location.
+        return FoodbankLocation.objects.filter(
+            parliamentary_constituency = self, is_closed = False,
+        ).prefetch_related(
+            Prefetch("foodbank", queryset=foodbank_queryset())
+        )
 
     def foodbanks(self):
 
@@ -150,3 +165,8 @@ class ParliamentaryConstituency(models.Model):
 
     class Meta:
         app_label = 'givefood'
+        indexes = [
+            # Constituency pages, their GeoJSON and the MP photo redirect all
+            # get_object_or_404 on slug.
+            models.Index(fields=['slug'], name='parlcon_slug_idx'),
+        ]

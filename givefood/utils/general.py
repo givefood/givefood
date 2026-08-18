@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import re
 import urllib
 import logging
 from urllib.parse import urlparse
@@ -76,12 +77,47 @@ def _is_markdown_challenge(markdown):
     return any(marker in low for marker in MARKDOWN_CHALLENGE_MARKERS)
 
 
+# Navigation wait conditions, tried in order across the attempts. networkidle0 (no in-flight
+# requests for 500ms) gives JS-heavy platforms like the Trussell/IFAN *.foodbank.org.uk sites
+# the longest to settle, so it stays the default and gets a second go for transient failures.
+# But a site holding one connection permanently open — an analytics beacon, a chat widget, the
+# GoDaddy and Wix site builders — never reaches idle and times out on *every* attempt, so the
+# last attempt drops to networkidle2 (at most 2 in-flight), which renders those in about a
+# second. Cloudflare caps the per-navigation timeout at 60s, so waiting longer isn't an option.
+MARKDOWN_WAIT_UNTILS = ("networkidle0", "networkidle0", "networkidle2")
+
+
+# rejectResourceTypes stops images being fetched, but an image inlined in the markup as a data:
+# URI was never fetched in the first place — it arrives as part of the HTML and gets transcribed
+# into the markdown in full. Cardiff's header carries its logo twice as a base64 SVG: 162,212
+# characters on one line, of which 211 are the actual nav links. That is 94% of the page, and it
+# took the need check prompt to 110,107 tokens against a 131,072 context, to find a two-item list
+# in the last 2%.
+#
+# Only a link target is matched, bounded to one line, so the payload can hold the spaces and
+# quotes a URL-encoded SVG contains without the match running on into real content further down
+# the page. An unbounded [^<>]* does exactly that: the markdown has few literal angle brackets,
+# so it spans from the first image to the last and swallows everything between.
+MARKDOWN_DATA_URI_RES = (
+    re.compile(r"\(<data:[^<>\n]*>\)"),
+    re.compile(r"\(data:[^\s)\n]*\)"),
+)
+
+
+def _strip_data_uris(markdown):
+    """Replace inlined data: URI image payloads with an empty link target."""
+    for data_uri_re in MARKDOWN_DATA_URI_RES:
+        markdown = data_uri_re.sub("()", markdown)
+    return markdown
+
+
 def get_markdown(url, attempts = 3):
     """Render a URL to Markdown using the Cloudflare Browser Rendering API.
 
     Uses a headless browser, so JS-rendered pages render correctly. Retries on transient
-    failures and on anti-bot interstitial pages (which render intermittently). Returns the
-    Markdown string, or None if every attempt failed or only returned a challenge page.
+    failures and on anti-bot interstitial pages (which render intermittently), relaxing the
+    navigation wait condition on the last attempt. Returns the Markdown string, or None if
+    every attempt failed or only returned a challenge page.
     """
     cf_account_id = get_cred("cf_account_id")
     cf_api_key = get_cred("cf_need_browser_render")
@@ -93,13 +129,14 @@ def get_markdown(url, attempts = 3):
     api_url = "https://api.cloudflare.com/client/v4/accounts/%s/browser-rendering/markdown" % (cf_account_id)
 
     for _attempt in range(attempts):
+        wait_until = MARKDOWN_WAIT_UNTILS[min(_attempt, len(MARKDOWN_WAIT_UNTILS) - 1)]
         try:
             response = requests.post(api_url, headers = headers, json = {
                 "url": url,
                 "rejectResourceTypes": ["image"],
                 "rejectRequestPattern": ["/^.*\\.(css)/"],
                 "gotoOptions": {
-                    "waitUntil": "networkidle0",
+                    "waitUntil": wait_until,
                     "timeout": 45000,
                 },
             }, timeout = 60)
@@ -121,7 +158,8 @@ def get_markdown(url, attempts = 3):
         if not result or _is_markdown_challenge(result):
             continue
 
-        return result
+        # After the challenge check, which wants the page as rendered.
+        return _strip_data_uris(result)
 
     return None
 

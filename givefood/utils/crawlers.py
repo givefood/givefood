@@ -422,11 +422,10 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         }
     )
 
-    # Extract needs from the rendered page via gpt-oss-120b on OpenRouter. A fixed seed makes the
-    # call reproducible (OpenRouter routes seeded requests stickily to one provider), so an unchanged
-    # page yields the same extraction run-to-run instead of drifting between the 19 providers'
-    # differing quantizations. That lets the nonpertinent suppression below catch repeats without a
-    # second call.
+    # Extract needs from the rendered page via gpt-oss-120b on OpenRouter. A fixed seed pins the
+    # sampling, so an unchanged page tends to yield the same extraction run-to-run rather than
+    # drifting; the seed does NOT pin the provider, so some drift between the providers' differing
+    # quantizations remains, and the nonpertinent suppression below is what catches the repeats.
     #
     # gpt-oss is a reasoning model, but it's deliberately called without a reasoning override: that
     # is the configuration benchmarked against deepseek-v4-flash, where it matched the baseline's
@@ -445,35 +444,42 @@ def do_foodbank_need_check(foodbank, crawl_set = None):
         "cred_name": "openrouter_liveneed",
         "seed": 1,
     }
-    api_response = openrouter(**need_check_kwargs)
-    if api_response.status_code != 200:
-        # Retry once on a transient error so a single blip doesn't drop the food bank.
-        sleep(60)
+    # A reply that doesn't parse is a failure, not an empty shopping list, and has to be retried like
+    # an HTTP error rather than read as "this food bank needs nothing" — that misreading blamed the
+    # food bank's website for what was really a bad provider, and quietly held the published need at
+    # its old contents. Retry immediately: a repeat call is re-routed, so it lands somewhere else.
+    need_response = None
+    response_json = {}
+    attempts = 2
+    for attempt in range(attempts):
         api_response = openrouter(**need_check_kwargs)
-    if api_response.status_code != 200:
-        raise RuntimeError("OpenRouter need check failed: HTTP %s %s" % (api_response.status_code, api_response.text[:500]))
+        if api_response.status_code != 200:
+            # Back off on a transient error so a single blip doesn't drop the food bank.
+            if attempt + 1 < attempts:
+                sleep(60)
+            continue
+        response_json = api_response.json()
+        need_content = response_json["choices"][0]["message"]["content"]
+        try:
+            parsed_response = json.loads(need_content)
+        except (json.JSONDecodeError, TypeError):
+            parsed_response = None
+        if isinstance(parsed_response, dict) and "needed" in parsed_response and "excess" in parsed_response:
+            need_response = parsed_response
+            break
 
-    response_json = api_response.json()
+    if need_response is None:
+        if api_response.status_code != 200:
+            raise RuntimeError("OpenRouter need check failed: HTTP %s %s" % (api_response.status_code, api_response.text[:500]))
+        raise RuntimeError("OpenRouter need check returned unusable content: %s" % (api_response.text[:500]))
 
     usage = response_json.get("usage", {}) or {}
     prompt_tokens = usage.get("prompt_tokens", 0) or 0
     output_tokens = usage.get("completion_tokens", 0) or 0
     total_tokens = usage.get("total_tokens", 0) or 0
 
-    need_content = response_json["choices"][0]["message"]["content"]
-    try:
-        need_response = json.loads(need_content)
-    except (json.JSONDecodeError, TypeError):
-        need_response = None
-
-    if isinstance(need_response, dict):
-        need_text = '\n'.join(need_response["needed"])
-        need_text = clean_foodbank_need_text(need_text)
-        excess_text = '\n'.join(need_response["excess"])
-        excess_text = clean_foodbank_need_text(excess_text)
-    else:
-        need_text = ""
-        excess_text = ""
+    need_text = clean_foodbank_need_text('\n'.join(need_response["needed"]))
+    excess_text = clean_foodbank_need_text('\n'.join(need_response["excess"]))
 
     last_nonpublished_needs = FoodbankChange.objects.filter(foodbank = foodbank, published = False).order_by("-created")[:10]
 

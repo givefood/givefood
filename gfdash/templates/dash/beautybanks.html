@@ -117,7 +117,7 @@
 
 
 {% block script %}
-    <script src="/static/js/tabber.js" defer></script>
+    <script src="/static/js/tabber.js?v={{ version }}" defer></script>
 
     <link rel="stylesheet" href="/static/css/maplibre-gl.css">
     <script src="/static/js/maplibre-gl.js"></script>
@@ -127,7 +127,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const map = new maplibregl.Map({
                 container: 'the-map',
-                style: 'https://tiles.openfreemap.org/styles/bright',
+                style: 'https://maptiles.opencommons.uk/styles/bright',
                 center: [-4, 55],
                 zoom: 5,
                 attributionControl: false,

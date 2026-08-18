@@ -43,6 +43,12 @@ class TestFoodbankPhotosTab:
         self._setup_authenticated_session(client)
         return client.get(reverse('admin:foodbank', kwargs={'slug': foodbank.slug}))
 
+    def _get_photos_tab(self, foodbank):
+        """Helper to get the on demand photos tab with authentication."""
+        client = Client()
+        self._setup_authenticated_session(client)
+        return client.get(reverse('admin:foodbank_tab', kwargs={'slug': foodbank.slug, 'tab': 'photos'}))
+
     def test_photos_tab_not_shown_when_no_photos(self):
         """Test that Photos tab is not displayed when foodbank has no photos."""
         foodbank = self._create_foodbank()
@@ -95,11 +101,11 @@ class TestFoodbankPhotosTab:
             blob=b'fake_photo_data',
         )
         
-        response = self._get_foodbank_page(foodbank)
-        
+        response = self._get_photos_tab(foodbank)
+
         assert response.status_code == 200
         content = response.content.decode('utf-8')
-        
+
         # Verify photo table content
         assert 'Place Name &amp; Type' in content
         assert 'Place ID' in content

@@ -11,6 +11,7 @@ urlpatterns = [
 
     path("foodbank/new/", foodbank_form, name="foodbank_new"),
     path("foodbank/<slug:slug>/", foodbank, name="foodbank"),
+    path("foodbank/<slug:slug>/tab/<slug:tab>/", foodbank_tab, name="foodbank_tab"),
     path("foodbank/<slug:slug>/edit/", foodbank_form, name="foodbank_edit"),
     path("foodbank/<slug:slug>/check/", foodbank_check, name="foodbank_check"),
     path("foodbank/<slug:slug>/check/prompt/", foodbank_check_prompt, name="foodbank_check_prompt"),
@@ -26,7 +27,6 @@ urlpatterns = [
     path("foodbank/<slug:slug>/location/new/area/", fblocation_area_form, name="fblocation_area_new"),
     path("foodbank/<slug:slug>/location/<slug:loc_slug>/edit/", fblocation_form, name="fblocation_edit"),
     path("foodbank/<slug:slug>/location/<slug:loc_slug>/delete/", fblocation_delete, name="fblocation_delete"),
-    path("foodbank/<slug:slug>/location/<slug:loc_slug>/politics/edit/", fblocation_politics_edit, name="fblocation_politics_edit"),
 
     path("foodbank/<slug:slug>/politics/edit/", foodbank_politics_form, name="foodbank_politics_edit"),
     path("foodbank/<slug:slug>/edit/urls/", foodbank_urls_form, name="foodbank_urls_edit"),
