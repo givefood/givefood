@@ -53,7 +53,7 @@ dependencies = [
     "django-tasks-db>=0.12.0",
     "firebase-admin",
     "django-webpush==0.3.6",
-    "pywebpush==2.3.0",
+    "pywebpush==2.4.0",
     "openlocationcode",
     "urllib3>=2.6.3",
     "h2>=4.4.1",
