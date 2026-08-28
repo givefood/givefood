@@ -707,7 +707,7 @@
                     hx-target="#photo-row-{{ photo.photo.id }}"
                     hx-swap="delete"
                     hx-confirm="Delete this photo?"
-                    hx-on::after-request="decrementPhotoCount()">Delete</button>
+                    hx-on::after:request="decrementPhotoCount()">Delete</button>
           </td>
         </tr>
       {% endfor %}
