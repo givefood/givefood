@@ -955,18 +955,17 @@ def _build_foodbank_check_data(foodbank):
         if "foodbank.org.uk/support-us/donate-food" in foodbank.donation_points_url:
             
             if not foodbank.network_id:
-                # Try to get shopping list page from cache, or fetch it if not cached
-                if foodbank.shopping_list_url:
-                    if foodbank.shopping_list_url not in downloaded_pages:
-                        # Fetch if not already cached (e.g., if it was in blacklist)
-                        shopping_list_raw_for_network = fetch_page(foodbank.shopping_list_url)
-                    else:
-                        shopping_list_raw_for_network = downloaded_pages[foodbank.shopping_list_url]
-                    
-                    network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', shopping_list_raw_for_network)
+                # The network id only appears alongside a "food we need" block,
+                # which food banks put on different pages - Abergele has it on
+                # the shopping list, Stranraer only on its homepage
+                for network_id_url in (foodbank.shopping_list_url, foodbank.url, foodbank.donation_points_url):
+                    if not network_id_url:
+                        continue
+                    network_id_search = re.search(r'\\"foodBank\\":\{\\"id\\":\\"([a-f0-9\-]{36})\\"\}', fetch_page(network_id_url))
                     if network_id_search:
                         foodbank.network_id = network_id_search.group(1)
                         foodbank.save()
+                        break
             url = "%s?lat=%s&lng=%s&address=%s"  % (foodbank.donation_points_url, foodbank.latt(), foodbank.long(), foodbank.postcode)
             headers = {
                 "User-Agent": BOT_USER_AGENT,
