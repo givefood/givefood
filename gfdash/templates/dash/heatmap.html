@@ -36,7 +36,7 @@
 {% block script %}
 
     <link rel="stylesheet" href="/static/css/maplibre-gl.css">
-    <script src="/static/js/maplibre-gl.js"></script>
+    <script src="/static/js/maplibre-gl.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const map = new maplibregl.Map({
