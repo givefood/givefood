@@ -7,6 +7,8 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 from unittest.mock import patch
+
+from django.db import IntegrityError
 from givefood.utils.geo import (
     foodbank_queryset,
     distance_meters,
@@ -16,6 +18,7 @@ from givefood.utils.geo import (
     is_uk,
     miles,
     oc_geocode,
+    photo_from_place_id,
     pluscode,
 )
 from givefood.utils.text import (
@@ -452,6 +455,84 @@ class TestGetPlaceId:
 
         result = get_place_id("some address")
         assert result is None
+
+
+@pytest.mark.django_db
+class TestPhotoFromPlaceId:
+    """Test photo_from_place_id caching and concurrent inserts."""
+
+    def _place_details_response(self):
+        response = MagicMock()
+        response.json.return_value = {
+            "result": {"photos": [{"photo_reference": "photoref123"}]},
+        }
+        response.content = b"freshbytes"
+        return response
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_cached_photo_skips_api(self, mock_get, mock_cred):
+        """Test an already stored photo is returned without calling Google."""
+        from givefood.models import PlacePhoto
+
+        PlacePhoto.objects.create(
+            place_id="ChIJcached",
+            photo_ref="cachedref",
+            blob=b"cachedbytes",
+        )
+
+        # A blob read back from Postgres arrives as a memoryview.
+        assert bytes(photo_from_place_id("ChIJcached")) == b"cachedbytes"
+        assert mock_get.call_count == 0
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_stores_photo_on_miss(self, mock_get, mock_cred):
+        """Test an uncached photo is fetched and stored."""
+        from givefood.models import PlacePhoto
+
+        mock_get.return_value = self._place_details_response()
+
+        assert photo_from_place_id("ChIJmiss") == b"freshbytes"
+        assert PlacePhoto.objects.get(place_id="ChIJmiss").photo_ref == "photoref123"
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_concurrent_insert_returns_winners_photo(self, mock_get, mock_cred):
+        """Test a request that loses the race takes the stored photo, not an IntegrityError."""
+        from givefood.models import PlacePhoto
+
+        def racing_get(url, *args, **kwargs):
+            # Another request stores the photo while this one is still
+            # fetching it from Google.
+            if "place/photo" in url:
+                PlacePhoto.objects.create(
+                    place_id="ChIJraced",
+                    photo_ref="winnerref",
+                    blob=b"winnerbytes",
+                )
+            return self._place_details_response()
+
+        mock_get.side_effect = racing_get
+
+        assert bytes(photo_from_place_id("ChIJraced")) == b"winnerbytes"
+        assert PlacePhoto.objects.filter(place_id="ChIJraced").count() == 1
+
+    @patch("givefood.utils.geo.get_cred", return_value="fake_key")
+    @patch("givefood.utils.geo.requests.get")
+    def test_other_integrity_errors_are_raised(self, mock_get, mock_cred):
+        """Test an IntegrityError unrelated to the race isn't swallowed."""
+        from givefood.models import PlacePhoto
+
+        PlacePhoto.objects.create(
+            place_id="ChIJother",
+            photo_ref="photoref123",
+            blob=b"otherbytes",
+        )
+        mock_get.return_value = self._place_details_response()
+
+        with pytest.raises(IntegrityError):
+            photo_from_place_id("ChIJnewplace")
 
 
 class TestOcGeocode:

@@ -13,6 +13,7 @@ from openlocationcode import openlocationcode as olc
 from urllib.parse import quote
 
 from django.urls import reverse
+from django.db import IntegrityError, transaction
 from django.db.models import Expression, FloatField, Value
 from django_earthdistance.models import EarthDistance, LlToEarth
 
@@ -126,7 +127,16 @@ def photo_from_place_id(place_id, size = 1080):
             blob = photo_blob,
             photo_ref = photo_ref,
         )
-        photo.save()
+        try:
+            # Two requests for the same uncached photo race each other here,
+            # and place_id is unique, so the loser takes the winner's row.
+            with transaction.atomic():
+                photo.save()
+        except IntegrityError:
+            photo = PlacePhoto.objects.filter(place_id = place_id).first()
+            if photo is None:
+                # Not the race, so something else about the row is invalid.
+                raise
 
     return photo.blob
 
