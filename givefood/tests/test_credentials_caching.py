@@ -2,7 +2,7 @@
 Tests for credentials caching functionality.
 """
 from django.test import TestCase
-from django.core.cache import cache
+from django.core.cache import caches
 from givefood.const.general import CRED_MC_KEY_PREFIX
 
 
@@ -12,11 +12,11 @@ class TestCredentialsCaching(TestCase):
     def setUp(self):
         """Setup test data before each test."""
         # Clear cache before each test
-        cache.clear()
+        caches["data"].clear()
 
     def tearDown(self):
         """Cleanup after each test."""
-        cache.clear()
+        caches["data"].clear()
 
     def test_cache_key_format(self):
         """Test that the cache key format is correct."""
@@ -35,10 +35,10 @@ class TestCredentialsCaching(TestCase):
         cache_key = f"{CRED_MC_KEY_PREFIX}{test_cred_name}"
         
         # Set value in cache
-        cache.set(cache_key, test_value, 3600)
+        caches["data"].set(cache_key, test_value, 3600)
         
         # Get value from cache
-        cached_value = cache.get(cache_key)
+        cached_value = caches["data"].get(cache_key)
         self.assertEqual(cached_value, test_value)
 
     def test_cache_delete(self):
@@ -48,29 +48,29 @@ class TestCredentialsCaching(TestCase):
         cache_key = f"{CRED_MC_KEY_PREFIX}{test_cred_name}"
         
         # Set value in cache
-        cache.set(cache_key, test_value, 3600)
-        self.assertEqual(cache.get(cache_key), test_value)
+        caches["data"].set(cache_key, test_value, 3600)
+        self.assertEqual(caches["data"].get(cache_key), test_value)
         
         # Delete value from cache
-        cache.delete(cache_key)
-        self.assertIsNone(cache.get(cache_key))
+        caches["data"].delete(cache_key)
+        self.assertIsNone(caches["data"].get(cache_key))
 
     def test_multiple_credentials_cache(self):
         """Test that we can cache multiple credentials independently."""
         # Set multiple credentials in cache
-        cache.set(f"{CRED_MC_KEY_PREFIX}key1", "value1", 3600)
-        cache.set(f"{CRED_MC_KEY_PREFIX}key2", "value2", 3600)
-        cache.set(f"{CRED_MC_KEY_PREFIX}key3", "value3", 3600)
+        caches["data"].set(f"{CRED_MC_KEY_PREFIX}key1", "value1", 3600)
+        caches["data"].set(f"{CRED_MC_KEY_PREFIX}key2", "value2", 3600)
+        caches["data"].set(f"{CRED_MC_KEY_PREFIX}key3", "value3", 3600)
         
         # Verify all are cached
-        self.assertEqual(cache.get(f"{CRED_MC_KEY_PREFIX}key1"), "value1")
-        self.assertEqual(cache.get(f"{CRED_MC_KEY_PREFIX}key2"), "value2")
-        self.assertEqual(cache.get(f"{CRED_MC_KEY_PREFIX}key3"), "value3")
+        self.assertEqual(caches["data"].get(f"{CRED_MC_KEY_PREFIX}key1"), "value1")
+        self.assertEqual(caches["data"].get(f"{CRED_MC_KEY_PREFIX}key2"), "value2")
+        self.assertEqual(caches["data"].get(f"{CRED_MC_KEY_PREFIX}key3"), "value3")
         
         # Delete one
-        cache.delete(f"{CRED_MC_KEY_PREFIX}key2")
+        caches["data"].delete(f"{CRED_MC_KEY_PREFIX}key2")
         
         # Verify only the deleted one is gone
-        self.assertEqual(cache.get(f"{CRED_MC_KEY_PREFIX}key1"), "value1")
-        self.assertIsNone(cache.get(f"{CRED_MC_KEY_PREFIX}key2"))
-        self.assertEqual(cache.get(f"{CRED_MC_KEY_PREFIX}key3"), "value3")
+        self.assertEqual(caches["data"].get(f"{CRED_MC_KEY_PREFIX}key1"), "value1")
+        self.assertIsNone(caches["data"].get(f"{CRED_MC_KEY_PREFIX}key2"))
+        self.assertEqual(caches["data"].get(f"{CRED_MC_KEY_PREFIX}key3"), "value3")

@@ -8,7 +8,7 @@ from datetime import timedelta
 from django.utils import timezone
 
 from django.http import HttpResponse
-from django.core.cache import cache
+from django.core.cache import caches
 from givefood.const.item_types import ITEM_CATEGORIES
 
 from givefood.models import Foodbank, FoodbankChangeLine, FoodbankDiscrepancy, FoodbankLocation, FoodbankSubscriber, FoodbankChange, ParliamentaryConstituency
@@ -25,10 +25,10 @@ from django.template.loader import render_to_string
 def precacher(request):
 
     all_locations = FoodbankLocation.objects.all()
-    cache.set(LOC_MC_KEY, all_locations, 3600)
+    caches["data"].set(LOC_MC_KEY, all_locations, 3600)
 
     all_foodbanks = Foodbank.objects.all()
-    cache.set(FB_MC_KEY, all_foodbanks, 3600)
+    caches["data"].set(FB_MC_KEY, all_foodbanks, 3600)
 
     return HttpResponse("OK")
 

@@ -17,7 +17,7 @@ from django.shortcuts import redirect
 from django.views.decorators.http import require_POST
 from django.utils.encoding import smart_str
 from django.utils import timezone
-from django.core.cache import cache
+from django.core.cache import caches
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import IntegrityError
 from django.db.models import Sum, Q, Count, OuterRef, Subquery, IntegerField
@@ -3115,7 +3115,10 @@ def foodbanks_without_need(request):
 
 def clearcache(request):
 
-    cache.clear()
+    # Both aliases: this is the manual "clear everything" button, unlike
+    # decache(), which deliberately leaves the "data" cache alone.
+    caches["default"].clear()
+    caches["data"].clear()
     return redirect("admin:index")
 
 

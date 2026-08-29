@@ -3,7 +3,7 @@
 
 import requests
 
-from django.core.cache import cache
+from django.core.cache import caches
 from django_tasks import task
 
 from givefood.const.general import FB_MC_KEY, LOC_MC_KEY, PARLCON_MC_KEY, FB_OPEN_MC_KEY, LOC_OPEN_MC_KEY, CRED_MC_KEY_PREFIX, STATS_MC_KEY
@@ -14,7 +14,7 @@ def get_slug_redirects():
     from django.db.utils import ProgrammingError, OperationalError
     
     cache_key = 'slug_redirects_dict'
-    redirects = cache.get(cache_key)
+    redirects = caches["data"].get(cache_key)
     
     if redirects is None:
         # Import here to avoid circular imports at module load time
@@ -26,7 +26,7 @@ def get_slug_redirects():
             redirects = dict(slug_redirects)
             
             # Cache for 1 hour (3600 seconds)
-            cache.set(cache_key, redirects, 3600)
+            caches["data"].set(cache_key, redirects, 3600)
         except (ProgrammingError, OperationalError):
             # If table doesn't exist yet (e.g., during initial migration), return empty dict
             redirects = {}
@@ -38,10 +38,10 @@ def get_all_foodbanks():
     """Return all Foodbank objects, using a cached queryset."""
     from givefood.models import Foodbank
 
-    all_foodbanks = cache.get(FB_MC_KEY)
+    all_foodbanks = caches["data"].get(FB_MC_KEY)
     if all_foodbanks is None:
         all_foodbanks = Foodbank.objects.all()
-        cache.set(FB_MC_KEY, all_foodbanks, 3600)
+        caches["data"].set(FB_MC_KEY, all_foodbanks, 3600)
     return all_foodbanks
 
 
@@ -49,10 +49,10 @@ def get_all_open_foodbanks():
     """Return all open Foodbank objects, using a cached queryset."""
     from givefood.models import Foodbank
 
-    all_open_foodbanks = cache.get(FB_OPEN_MC_KEY)
+    all_open_foodbanks = caches["data"].get(FB_OPEN_MC_KEY)
     if all_open_foodbanks is None:
         all_open_foodbanks = Foodbank.objects.filter(is_closed = False)
-        cache.set(FB_OPEN_MC_KEY, all_open_foodbanks, 3600)
+        caches["data"].set(FB_OPEN_MC_KEY, all_open_foodbanks, 3600)
     return all_open_foodbanks
 
 
@@ -60,10 +60,10 @@ def get_all_locations():
     """Return all FoodbankLocation objects, using a cached queryset."""
     from givefood.models import FoodbankLocation
 
-    all_locations = cache.get(LOC_MC_KEY)
+    all_locations = caches["data"].get(LOC_MC_KEY)
     if all_locations is None:
         all_locations = FoodbankLocation.objects.all()
-        cache.set(LOC_MC_KEY, all_locations, 3600)
+        caches["data"].set(LOC_MC_KEY, all_locations, 3600)
     return all_locations
 
 
@@ -71,10 +71,10 @@ def get_all_open_locations():
     """Return all open FoodbankLocation objects, using a cached queryset."""
     from givefood.models import FoodbankLocation
 
-    all_open_locations = cache.get(LOC_OPEN_MC_KEY)
+    all_open_locations = caches["data"].get(LOC_OPEN_MC_KEY)
     if all_open_locations is None:
         all_open_locations = FoodbankLocation.objects.filter(is_closed = False)
-        cache.set(LOC_OPEN_MC_KEY, all_open_locations, 3600)
+        caches["data"].set(LOC_OPEN_MC_KEY, all_open_locations, 3600)
     return all_open_locations
 
 
@@ -100,7 +100,7 @@ def get_site_stats():
         Order,
     )
 
-    stats = cache.get(STATS_MC_KEY)
+    stats = caches["data"].get(STATS_MC_KEY)
     if stats is not None:
         return stats
 
@@ -131,7 +131,7 @@ def get_site_stats():
         "meals": int(calories / 500),
     }
 
-    cache.set(STATS_MC_KEY, stats, 3600)
+    caches["data"].set(STATS_MC_KEY, stats, 3600)
     return stats
 
 
@@ -139,10 +139,10 @@ def get_all_constituencies():
     """Return all ParliamentaryConstituency objects ordered by name, using a cached queryset."""
     from givefood.models import ParliamentaryConstituency
 
-    all_parlcon = cache.get(PARLCON_MC_KEY)
+    all_parlcon = caches["data"].get(PARLCON_MC_KEY)
     if all_parlcon is None:
         all_parlcon = ParliamentaryConstituency.objects.defer("boundary_geojson").order_by("name")
-        cache.set(PARLCON_MC_KEY, all_parlcon, 3600)
+        caches["data"].set(PARLCON_MC_KEY, all_parlcon, 3600)
     return all_parlcon
 
 
@@ -154,7 +154,7 @@ def decache_async(urls = None, prefixes = None):
 
 
 def decache(urls = None, prefixes = None):
-    """Purge specific URLs and/or URL prefixes from the Cloudflare CDN cache and clear the local cache."""
+    """Purge specific URLs and/or URL prefixes from the Cloudflare CDN cache and clear the local page cache."""
     domain = "www.givefood.org.uk"
 
     cf_zone_id = get_cred("cf_zone_id")
@@ -188,7 +188,12 @@ def decache(urls = None, prefixes = None):
                 "files": urls,
             })
 
-    cache.clear()
+    # Pages only. The "data" cache holds credentials and the all-foodbanks and
+    # all-locations querysets, which a URL purge says nothing about -- clearing
+    # them here meant every need change re-ran those queries. They carry their
+    # own hour TTL. Note this clears one worker's copy: locmem is per process,
+    # so the other gunicorn workers keep their pages until their own TTLs pass.
+    caches["default"].clear()
     return True
 
 
@@ -197,14 +202,14 @@ def get_cred(cred_name):
     from givefood.models import GfCredential
 
     cache_key = f"{CRED_MC_KEY_PREFIX}{cred_name}"
-    cred_value = cache.get(cache_key)
+    cred_value = caches["data"].get(cache_key)
     
     if cred_value is None:
         try:
             credential = GfCredential.objects.filter(cred_name = cred_name).latest("created")
             cred_value = credential.cred_value
             # Cache for 1 hour (3600 seconds)
-            cache.set(cache_key, cred_value, 3600)
+            caches["data"].set(cache_key, cred_value, 3600)
         except GfCredential.DoesNotExist:
             cred_value = None
     
@@ -221,6 +226,6 @@ def delete_all_cached_credentials():
     # Delete each cached credential
     for cred_name in cred_names:
         cache_key = f"{CRED_MC_KEY_PREFIX}{cred_name}"
-        cache.delete(cache_key)
+        caches["data"].delete(cache_key)
     
     return True

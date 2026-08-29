@@ -18,11 +18,17 @@ DATABASES = {
     }
 }
 
-# Use local memory cache for tests (allows caching tests to work while being isolated)
+# Use local memory cache for tests (allows caching tests to work while being isolated).
+# Mirrors the two aliases in settings.py: "default" for cache_page, "data" for
+# the credentials, stats and queryset helpers in givefood.utils.cache.
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake',
+    },
+    'data': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake-data',
     }
 }
 

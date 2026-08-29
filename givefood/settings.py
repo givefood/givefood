@@ -150,12 +150,36 @@ DATABASES = {
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField" 
 
 
+# Two caches, deliberately kept apart.
+#
+# "default" is what cache_page writes to. Those entries are numerous -- a key
+# per URL per language per Vary header, over 3000 food banks -- individually
+# large, and already fronted by Cloudflare, which serves the public a hit on
+# nearly everything. They are cheap to lose and expensive to hoard: locmem is
+# per process, so whatever this holds is held four times over on a box that
+# shares six vCPUs with five other sites. Hence a bounded MAX_ENTRIES.
+#
+# "data" is for the handful of expensive-to-build objects in
+# givefood.utils.cache -- credentials, site stats, the all-foodbanks and
+# all-locations querysets. A couple of dozen keys, each costing real queries to
+# rebuild, and nothing upstream caches them. They were sharing "default", where
+# two things kept evicting them: locmem culls every CULL_FREQUENCY'th key once
+# MAX_ENTRIES is passed, and decache() calls cache.clear() on every Cloudflare
+# purge -- so a need changing anywhere took the credentials down with it.
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'givefoodorguk',
+        'LOCATION': 'givefoodorguk-pages',
         'OPTIONS': {
-            'MAX_ENTRIES': 20000,
+            'MAX_ENTRIES': 3000,
+        }
+    },
+    'data': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'givefoodorguk-data',
+        'OPTIONS': {
+            # Only ever a few dozen keys; the cap is a backstop, not a budget.
+            'MAX_ENTRIES': 500,
         }
     }
 }

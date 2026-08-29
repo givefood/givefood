@@ -3,10 +3,16 @@
 
 import pytest
 from django.test import Client
-from django.core.cache import cache
+from django.core.cache import caches
 from django.db import IntegrityError
 
 from givefood.models import SlugRedirect
+
+
+def clear_caches():
+    """Reset both cache aliases: "data" holds the slug redirects, "default" any cached pages."""
+    caches["default"].clear()
+    caches["data"].clear()
 
 
 @pytest.fixture
@@ -25,7 +31,7 @@ def populate_slug_redirects():
         for old_slug, new_slug in redirects_data.items()
     ]
     SlugRedirect.objects.bulk_create(redirects)
-    cache.clear()
+    clear_caches()
     return redirects_data
 
 
@@ -71,7 +77,7 @@ class TestSlugRedirectCaching:
         """Test that slug redirects are cached after first access."""
         from givefood.utils.cache import get_slug_redirects
         
-        cache.clear()
+        clear_caches()
         
         # First call should hit the database
         redirects1 = get_slug_redirects()
@@ -86,7 +92,7 @@ class TestSlugRedirectCaching:
         
         # Verify it's actually from cache
         cache_key = 'slug_redirects_dict'
-        cached_redirects = cache.get(cache_key)
+        cached_redirects = caches["data"].get(cache_key)
         assert cached_redirects is not None
         assert cached_redirects == redirects1
 
@@ -94,7 +100,7 @@ class TestSlugRedirectCaching:
         """Test that cache can be cleared and reloaded."""
         from givefood.utils.cache import get_slug_redirects
         
-        cache.clear()
+        clear_caches()
         
         # Get redirects to populate cache
         redirects1 = get_slug_redirects()
@@ -107,7 +113,7 @@ class TestSlugRedirectCaching:
         assert "cache-test-old" not in cached_redirects
         
         # Clear cache
-        cache.clear()
+        clear_caches()
         
         # Now we should get the updated data
         fresh_redirects = get_slug_redirects()
@@ -118,7 +124,7 @@ class TestSlugRedirectCaching:
         """Test that get_slug_redirects returns a dictionary."""
         from givefood.utils.cache import get_slug_redirects
         
-        cache.clear()
+        clear_caches()
         redirects = get_slug_redirects()
         
         assert isinstance(redirects, dict)
